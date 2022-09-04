@@ -1,0 +1,59 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'pkg-server';
+
+const http = require('http');
+const fs = require('fs');
+
+const { log, error } = require('../nodejs/log');
+const { fullPath } = require('../nodejs/path');
+
+// 获取命令行参数
+const parsed = require('../nodejs/option')({}, process.argv);
+
+// 获取配置文件
+let config = require('./config')(parsed.config[0]);
+
+let index = 0;
+let server = http.createServer(function (request, response) {
+    try {
+        log("[" + index++ + "]" + request.url);
+
+        request.url = request.url.split("?")[0];
+
+        // 如果是入口html
+        if (request.url == '/' || request.url == '/index.html') {
+            let template = fs.readFileSync(fullPath('./index.html', process.cwd()));
+
+            response.writeHead(200, {
+                'content-type': "text/html;charset=utf-8"
+            });
+            response.write((template + "").replace('<!-- built files will be auto injected -->', '<script src="' + config.entry + '" type="module"></script>'));
+        }
+
+        // 其余就是普通文件
+        else {
+            let result = config.$readFileSync("." + request.url);
+            response.writeHead(200, {
+                'content-type': result.type + ";charset=utf-8"
+            });
+            response.write(result.content);
+        }
+
+
+    } catch (e) {
+        error(e);
+
+        response.writeHead(500, {
+            'content-type': "text/plain;charset=utf-8"
+        });
+        response.write(e + "");
+    }
+
+    response.end();
+});
+
+server.listen(config.devServer.port);
+log('Server running on port:' + config.devServer.port);

@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'pkg-builder';
+
+// 获取命令行参数
+const parsed = require('../nodejs/option')({}, process.argv);
+
+// 获取配置文件
+let config = require('./config')(parsed.config[0]);
+
+console.log(config);
