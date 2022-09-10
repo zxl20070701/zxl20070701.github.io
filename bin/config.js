@@ -27,7 +27,9 @@ module.exports = function (configUrl) {
                     // 并且返回的格式一定是js
                     if (config.loader[k].test.test(_filepath)) {
                         return {
-                            content: config.loader[k].handler(content),
+                            content: config.loader[k].handler.call({
+                                filepath: _filepath
+                            }, content + ""),
                             type: "application/javascript"
                         };
                     }
@@ -51,7 +53,6 @@ module.exports = function (configUrl) {
 
         throw new Error("file does not exist:" + filepath);
     };
-
 
     return config;
 };

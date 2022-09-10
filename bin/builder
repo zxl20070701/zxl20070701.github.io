@@ -4,10 +4,80 @@
 
 process.title = 'pkg-builder';
 
+const fs = require('fs');
+
+const { error, log } = require('../nodejs/log');
+const { fullPath } = require('../nodejs/path');
+const { deleteSync, copySync } = require('../nodejs/file');
+const analyseBundle = require('./pkg/analyseBundle');
+
 // 获取命令行参数
 const parsed = require('../nodejs/option')({}, process.argv);
 
 // 获取配置文件
 let config = require('./config')(parsed.config[0]);
 
-console.log(config);
+let targetFolder = fullPath(config.output.folder, process.cwd());
+
+error(`Package Program
+-------------------------------------------------------------------------
+( Crafted in China By zxl20070701. )
+`)
+
+// 先准备好环境
+deleteSync(targetFolder);
+
+// 复制静态文件
+copySync(fullPath(config.static, process.cwd()), targetFolder);
+
+// 打包后文件的地址
+global._output = fullPath(config.output.entry, fullPath(config.output.folder, process.cwd()));
+
+// 需要分析的独立bundle文件
+// 除了入口文件外，比如遇到 ()=>import() 这样的懒加载语句也会扩充下面的语句
+let needAnalyseFiles = [{
+    source: fullPath(config.entry, process.cwd()),
+    target: global._output
+}];
+
+// 复制入口文件和初始化
+let template = fs.readFileSync(fullPath('./index.html', process.cwd()));
+fs.writeFileSync(fullPath('index.html', targetFolder), (template + "").replace('<!-- built files will be auto injected -->', '<script src="' + config.output.entry + '"></script>'));
+fs.mkdirSync(fullPath("../", global._output));
+
+global._isEntry = true;// 是否是编译入口文件
+global._rootBundle = [];// 记录入口根文件已经解析的依赖文件
+global._lazyBundle = [];// 记录已经生成的lazy包
+global._currentBundle = [];// 记录当前文件已经解析的依赖文件（每次解析新的 needAnalyseFile 需要重置）
+
+while (needAnalyseFiles.length > 0) {
+    let needAnalyseFile = needAnalyseFiles.shift();
+    global._currentBundle = [];
+
+    let bundleCode = "";
+
+    // 如果是根bundle，需要搭载基本的方法
+    if (global._isEntry) {
+        bundleCode = fs.readFileSync(fullPath('./pkg/static.js', __dirname), 'utf-8');
+        bundleCode = "/******/\n" + bundleCode.replace(/^/mg, '/******/  ') + "\n/************************************************************************/\n/******/\n";
+    }
+
+    log(`\nIndependent bundle file currently analyzed:
+    ● ${needAnalyseFile.source} → ${needAnalyseFile.target}
+`);
+
+    // 分析出当前bundle文件
+    let bundle = analyseBundle(needAnalyseFile.source, config);
+    bundleCode += bundle.code;
+    for (let lazyBundleFile of bundle.lazy) { needAnalyseFiles.push(lazyBundleFile); }
+
+    // 整个程序由主bundle启动
+    if (global._isEntry) bundleCode += `\nwindow.__pkg__bundleSrc__['0']();`;
+
+    fs.writeFileSync(needAnalyseFile.target, bundleCode);
+    global._isEntry = false;
+}
+
+error(`
+Package succeeded!
+`);
