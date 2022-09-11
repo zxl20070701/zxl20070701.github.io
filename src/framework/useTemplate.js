@@ -1,5 +1,5 @@
-export default function (el, pageinfo) {
+export default function useTemplate(el, pageinfo) {
 
-    console.log(el,pageinfo);
+    console.log(el, pageinfo,useTemplate);
 
 };

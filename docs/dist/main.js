@@ -63,21 +63,50 @@ window.__pkg__bundleSrc__['0']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('1');
-var useTemplate =__pkg__scope_args__.default;
-
+var isObject =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('2');
+var isFunctin =__pkg__scope_args__.default;
+
+
+__pkg__scope_args__=window.__pkg__getBundle('4');
+var useTemplate =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('5');
+var isValidKey =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('6');
+var ref=__pkg__scope_args__.ref;
+var reactive=__pkg__scope_args__.reactive;
+
+__pkg__scope_args__=window.__pkg__getBundle('7');
+var watcher=__pkg__scope_args__.watcher;
+var proxy=__pkg__scope_args__.proxy;
+
+
+__pkg__scope_args__=window.__pkg__getBundle('8');
 var urlFormat =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('3');
+__pkg__scope_args__=window.__pkg__getBundle('9');
 var lazyLoad =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('5');
+__pkg__scope_args__=window.__pkg__getBundle('11');
+
+
+// 公共指令
+__pkg__scope_args__=window.__pkg__getBundle('12');
+var uiBind =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('13');
+var uiModel =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('14');
+var uiOn =__pkg__scope_args__.default;
 
 
 // 浏览器兼容文件
-__pkg__scope_args__=window.__pkg__getBundle('6');
+__pkg__scope_args__=window.__pkg__getBundle('15');
 
 
 var pagename = urlFormat().router[0]
@@ -86,34 +115,312 @@ var el = document.getElementById('root');
 // 默认打开主页
 if (!(pagename in lazyLoad)) pagename = "home";
 
+var initPageinfo = function (pagefactory) {
+    var key;
+
+    var pageinfo = pagefactory({
+        ref: ref,
+        reactive: reactive
+    });
+
+    // 创建实例
+    var instance = {};
+
+    // 如果js中有数据改变需要更新试图，会触发这个方法
+    var hadWillUpdate = false;
+    var upateView = function () {
+
+        // 节流处理
+        // 如果在一次有多个数据改变，保证只会触发一次更新
+        if (!hadWillUpdate) {
+            hadWillUpdate = true;
+
+            setTimeout(function () {
+
+                // 触发改变前钩子
+                if (isFunctin(pageinfo.beforeUpdate)) {
+                    pageinfo.beforeUpdate.call(instance);
+                }
+
+                // 触发更新
+                console.log('更新...', instance);
+
+                // 触发改变后钩子
+                if (isFunctin(pageinfo.updated)) {
+                    pageinfo.updated.call(instance);
+                }
+
+                hadWillUpdate = false;
+            }, 0);
+        }
+
+    };
+
+    // 实例上挂载数据并启动监听
+    if ("data" in pageinfo) {
+        for (key in pageinfo.data) {
+            isValidKey(key);
+
+            // 如果是标记需要双向绑定的
+            if (isObject(pageinfo.data[key]) && 'value' in pageinfo.data[key] && 'type' in pageinfo.data[key]) {
+                if (pageinfo.data[key].type == 'ref') {
+                    watcher(instance, pageinfo.data[key], key, upateView);
+                } else if (pageinfo.data[key].type == 'reactive') {
+                    proxy(instance, pageinfo.data[key], key, upateView);
+                }
+            }
+
+            // 否则就静态数据
+            else {
+                instance[key] = pageinfo.data[key];
+            }
+        }
+    }
+
+    // 登记全局指令
+    pageinfo.directives = pageinfo.directives || {};
+    pageinfo.directives['ui-bind'] = uiBind;
+    pageinfo.directives['ui-model'] = uiModel;
+    pageinfo.directives['ui-on'] = uiOn;
+
+    // 触发挂载前钩子
+    if (isFunctin(pageinfo.beforeMount)) {
+        pageinfo.beforeMount.call(instance);
+    }
+
+    // 初始化挂载
+    console.log("挂载...", instance);
+
+    // 触发挂载后钩子
+    if (isFunctin(pageinfo.mounted)) {
+        pageinfo.mounted.call(instance);
+    }
+
+    return pageinfo;
+};
+
 lazyLoad[pagename]().then(function (data) {
-    var pageinfo = data.default;
 
     // 挂载页面
-    useTemplate(el, pageinfo);
+    useTemplate(el, initPageinfo(data.default));
 
 });
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/framework/useTemplate
+// Original file:./src/tool/type/isObject
 /*****************************************************************/
 window.__pkg__bundleSrc__['1']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (el, pageinfo) {
+    /**
+ * 判断一个值是不是Object。
+ *
+ * @param {*} value 需要判断类型的值
+ * @returns {boolean} 如果是Object返回true，否则返回false
+ */
+__pkg__scope_bundle__.default= function (value) {
+    var type = typeof value;
+    return value != null && (type === 'object' || type === 'function');
+};
 
-    console.log(el,pageinfo);
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/isFunction
+/*****************************************************************/
+window.__pkg__bundleSrc__['2']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('3');
+var getType =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('1');
+var isObject =__pkg__scope_args__.default;
+
+
+/**
+ * 判断一个值是不是Function。
+ *
+ * @param {*} value 需要判断类型的值
+ * @returns {boolean} 如果是Function返回true，否则返回false
+ */
+__pkg__scope_bundle__.default= function (value) {
+    if (!isObject(value)) {
+        return false;
+    }
+
+    var type = getType(value);
+    return type === '[object Function]' || type === '[object AsyncFunction]' ||
+        type === '[object GeneratorFunction]' || type === '[object Proxy]';
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/getType
+/*****************************************************************/
+window.__pkg__bundleSrc__['3']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    var toString = Object.prototype.toString;
+
+/**
+ * 获取一个值的类型字符串[object type]
+ *
+ * @param {*} value 需要返回类型的值
+ * @returns {string} 返回类型字符串
+ */
+__pkg__scope_bundle__.default= function (value) {
+    if (value == null) {
+        return value === undefined ? '[object Undefined]' : '[object Null]';
+    }
+    return toString.call(value);
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/framework/useTemplate
+/*****************************************************************/
+window.__pkg__bundleSrc__['4']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function useTemplate(el, pageinfo) {
+
+    console.log(el, pageinfo,useTemplate);
 
 };
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
+// Original file:./src/framework/isValidKey
+/*****************************************************************/
+window.__pkg__bundleSrc__['5']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    
+// 判断是否是合法的方法或数据key
+
+__pkg__scope_bundle__.default= function (key) {
+    // 判断是不是_或者$开头的
+    // 这两个内部预留了
+    if (/^[_$]/.test(key)) {
+        throw new Error('The beginning of _ or $ is not allowed：' + key);
+    }
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/framework/remark-data
+/*****************************************************************/
+window.__pkg__bundleSrc__['6']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('1');
+var isObject =__pkg__scope_args__.default;
+
+
+var _ref = function (data) {
+
+    // 如果是定义的数据，不好监听，嵌套一层壳
+    return {
+        value: data,
+        type: 'ref'
+    };
+
+};
+
+__pkg__scope_bundle__.ref = _ref;
+__pkg__scope_bundle__.reactive = function (data) {
+
+    // 如果是对象
+    if (isObject(data)) {
+        return {
+            value: data,
+            type: 'reactive'
+        };
+    }
+
+    // 否则，还是用ref
+    else {
+        return _ref(data);
+    }
+
+};
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/framework/observe-data
+/*****************************************************************/
+window.__pkg__bundleSrc__['7']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.proxy = function (instance, data, key, doback) {
+
+    var _proxy = new Proxy(data.value, {
+        get: function (_target, _key) {
+            return _target[_key];
+        },
+        set: function (_target, _key, _value) {
+
+            var flag = Reflect.set(_target, _key, _value);
+
+            // 回调通知组件更新
+            doback();
+
+            return flag;
+
+        }
+    });
+
+    data.value = _proxy;
+    instance[key] = _proxy;
+
+};
+
+__pkg__scope_bundle__.watcher = function (instance, data, key, doback) {
+
+    // 记录值
+    var value = data.value;
+
+    var getter_setter = {
+        get: function () {
+            return value;
+        },
+        set: function (newValue) {
+            value = newValue;
+
+            // 回调通知组件更新
+            doback();
+        }
+    };
+
+    // setter和getter添加监听
+    Object.defineProperty(data, 'value', getter_setter);
+
+    // 组件实例新增属性
+    instance[key] = value;
+    Object.defineProperty(instance, key, getter_setter);
+
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
 // Original file:./src/tool/urlFormat
 /*****************************************************************/
-window.__pkg__bundleSrc__['2']=function(){
+window.__pkg__bundleSrc__['8']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function () {
@@ -146,14 +453,14 @@ window.__pkg__bundleSrc__['2']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['3']=function(){
+window.__pkg__bundleSrc__['9']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 首页
     home: function () {
-        return window.__pkg__getLazyBundle('./dist/main-bundle1.js','4')
+        return window.__pkg__getLazyBundle('./dist/main-bundle1.js','10')
     }
 
 };
@@ -163,7 +470,7 @@ window.__pkg__bundleSrc__['3']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/common.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['5']=function(){
+window.__pkg__bundleSrc__['11']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -174,9 +481,45 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 }
 
 /*************************** [bundle] ****************************/
+// Original file:./src/directives/ui-bind
+/*****************************************************************/
+window.__pkg__bundleSrc__['12']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= {
+    
+};
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/directives/ui-model
+/*****************************************************************/
+window.__pkg__bundleSrc__['13']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= {
+    
+};
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/directives/ui-on
+/*****************************************************************/
+window.__pkg__bundleSrc__['14']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= {
+
+};
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
 // Original file:./src/polyfill/Promise
 /*****************************************************************/
-window.__pkg__bundleSrc__['6']=function(){
+window.__pkg__bundleSrc__['15']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var isObject = function (value) {
