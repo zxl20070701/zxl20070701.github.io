@@ -3,8 +3,17 @@ import './index.scss';
 
 export default function (obj) {
     return {
+
+        // 模板
         render: template,
+
+        // 数据
         data: {
+
+        },
+
+        // 方法
+        methods: {
 
         },
 
@@ -27,5 +36,6 @@ export default function (obj) {
         updated: function () {
 
         }
+
     };
 };

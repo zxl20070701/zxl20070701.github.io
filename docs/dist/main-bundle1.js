@@ -2,19 +2,28 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/home/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['10']=function(){
+window.__pkg__bundleSrc__['21']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('16');
+    __pkg__scope_args__=window.__pkg__getBundle('24');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('17');
+__pkg__scope_args__=window.__pkg__getBundle('25');
 
 
 __pkg__scope_bundle__.default= function (obj) {
     return {
+
+        // 模板
         render: template,
+
+        // 数据
         data: {
+
+        },
+
+        // 方法
+        methods: {
 
         },
 
@@ -37,6 +46,7 @@ __pkg__scope_bundle__.default= function (obj) {
         updated: function () {
 
         }
+
     };
 };
     return __pkg__scope_bundle__;
@@ -45,22 +55,35 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/home/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['16']=function(){
+window.__pkg__bundleSrc__['24']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [
+    {
+        "type": "tag",
+        "name": "root",
+        "attrs": {},
+        "__deep__": 1,
+        "__tagType__": "double",
+        "childNodes": [
+            1
+        ],
+        "preNode": null,
+        "nextNode": null,
+        "parentNode": null
+    },
     {
         "type": "tag",
         "name": "div",
         "attrs": {
             "class": "home-view"
         },
-        "__deep__": 1,
+        "__deep__": 2,
         "__tagType__": "double",
         "childNodes": [],
         "preNode": null,
         "nextNode": null,
-        "parentNode": null
+        "parentNode": 0
     }
 ]
     return __pkg__scope_bundle__;
@@ -69,7 +92,7 @@ window.__pkg__bundleSrc__['16']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/home/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['17']=function(){
+window.__pkg__bundleSrc__['25']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

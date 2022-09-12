@@ -407,7 +407,7 @@ let nextTagFun = function (template) {
 
 module.exports = function (source) {
     // 获取读取下一个标签对象
-    let nextTag = nextTagFun(source.trim());
+    let nextTag = nextTagFun("<root>" + source.trim() + "</root>");
 
     let tag = nextTag(), DomTree = [];
     while (tag != null) {
