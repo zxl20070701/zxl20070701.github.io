@@ -16,6 +16,8 @@ if (!(pagename in lazyLoad)) pagename = "home";
 
 lazyLoad[pagename]().then(function (data) {
 
+    el.setAttribute('page-view','');
+
     // 挂载页面
     useTemplate(el, data.default);
 

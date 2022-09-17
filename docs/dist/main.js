@@ -88,6 +88,8 @@ if (!(pagename in lazyLoad)) pagename = "home";
 
 lazyLoad[pagename]().then(function (data) {
 
+    el.setAttribute('page-view','');
+
     // 挂载页面
     useTemplate(el, data.default);
 
@@ -261,19 +263,23 @@ __pkg__scope_bundle__.default= function useTemplate(el, pagefactory) {
                                 // 插入钩子直接执行
                                 if (isFunctin(directive.inserted)) {
 
-                                    value = undefined;
-                                    try { value = evalExpress(instance, attrValue) } catch (e) { }
+                                    (function (directive, attrValue, keyArray) {
 
-                                    // 为什么延迟？
-                                    // 这是为了等待节点挂载完毕
-                                    setTimeout(function () {
-                                        directive.inserted(currentEl.value, {
-                                            type: keyArray[1],
-                                            exp: attrValue,
-                                            value: value,
-                                            target: instance
+                                        // 为什么延迟？
+                                        // 这是为了等待节点挂载完毕
+                                        setTimeout(function () {
+
+                                            value = undefined;
+                                            try { value = evalExpress(instance, attrValue) } catch (e) { }
+
+                                            directive.inserted(currentEl.value, {
+                                                type: keyArray[1],
+                                                exp: attrValue,
+                                                value: value,
+                                                target: instance
+                                            });
                                         });
-                                    });
+                                    })(directive, attrValue, keyArray);
                                 }
 
                                 // 如果是更新钩子
@@ -1107,7 +1113,12 @@ window.__pkg__bundleSrc__['10']=function(){
 window.__pkg__bundleSrc__['11']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (tagname) {
+    /**
+ * 节点创建
+ * @param {string} tagname 节点名称
+ * @returns {Element} 返回创建的节点
+ */
+__pkg__scope_bundle__.default= function (tagname) {
     if (['svg', 'circle', 'path', 'rect', 'ellipse', 'line', 'polyline', 'polygon', 'text'].indexOf(tagname) > -1) {
         return {
             type: "svg",
@@ -1130,12 +1141,14 @@ window.__pkg__bundleSrc__['11']=function(){
 window.__pkg__bundleSrc__['12']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    
-// 记录需要使用xlink命名空间常见的xml属性
-const XLINK_ATTRIBUTE = ["href", "title", "show", "type", "role", "actuate"];
-
+    /**
+ * 节点属性设置
+ * @param {JSON} el 固定格式:{type:"svg"|"html",value:Element}
+ * @param {string} key 属性名称
+ * @param {any} value 属性指
+ */
 __pkg__scope_bundle__.default= function (el, key, value) {
-    if (el.type == 'svg' && XLINK_ATTRIBUTE.indexOf(key)) {
+    if (el.type == 'svg' && ["href", "title", "show", "type", "role", "actuate"].indexOf(key)) {
         el.value.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:' + key, value);
     } else {
         el.value.setAttribute(key, value);
@@ -1376,7 +1389,11 @@ window.__pkg__bundleSrc__['18']=function(){
 window.__pkg__bundleSrc__['19']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function () {
+    /**
+ * 浏览器地址格式化
+ * @returns {JSON} 固定格式:{router:Array<string>,params:{}}
+ */
+__pkg__scope_bundle__.default= function () {
 
     var splitTemp = window.location.href.split('?');
     var routerTemp = (splitTemp[0] + "#").split("#")[1].replace(/^\//, '').replace(/\/$/, '').split('/');
@@ -1428,7 +1445,7 @@ window.__pkg__bundleSrc__['22']=function(){
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n .github{\n\ntransform: rotate(-45deg);\n\nline-height: 18px;\n\ntransform-origin: 150px 23px;\n\ntext-align: center;\n\ndisplay: inline-block;\n\nbottom: 46px;\n\nright: -107px;\n\nwidth: 300px;\n\nbackground-color: #ff5722;\n\noutline: 4px solid #ff5722;\n\nborder: 2px dashed #ffffff;\n\ncolor: #ffffff;\n\nfont-size: 12px;\n\nuser-select: none;\n\nposition: fixed;\n\nz-index: 1;\n\n}\n";
+styleElement.innerHTML = "\n body{\n\nbackground-color: #fafafa;\n\n}\n\n body .quick-link{\n\nposition: fixed;\n\ntop: 120px;\n\nbackground-color: white;\n\nbox-shadow: 0 0 6px 0px #d6cdcd;\n\npadding: 5px;\n\nwidth: 60px;\n\n}\n\n body .quick-link.left{\n\nborder-radius: 0 10px 10px 0;\n\nleft: 0;\n\n}\n\n body .quick-link.right{\n\nborder-radius: 10px 0 0 10px;\n\nright: 0;\n\n}\n\n body .quick-link>a{\n\ndisplay: block;\n\nfont-size: 12px;\n\nheight: 80px;\n\nwidth: 50px;\n\nbackground-size: 100% auto;\n\nbackground-position: center top;\n\nbackground-repeat: no-repeat;\n\npadding-top: 50px;\n\nline-height: 30px;\n\ntext-align: center;\n\ncolor: black;\n\n}\n\n body .quick-link>a.github{\n\nbackground-image: url('./code-source.jpg');\n\n}\n\n body .quick-link>a.home{\n\nbackground-image: url('./logo.png');\n\n}\n\n body .quick-link>a.notebook{\n\nbackground-image: url('./notebook.png');\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
     return __pkg__scope_bundle__;
 }

@@ -48,7 +48,20 @@ module.exports = {
     }, {
         test: /\.html$/,
         handler: function (source) {
-            return "export default " + JSON.stringify(templateLoader(source), null, 4);
+
+            let render = templateLoader(source);
+            for (let index = 0; index < render.length; index++) {
+
+                // 删除无用的信息（后续升级优化再调整）
+                delete render[index].preNode;
+                delete render[index].nextNode;
+                delete render[index].parentNode;
+                delete render[index].__deep__;
+                delete render[index].__tagType__;
+
+            }
+
+            return "export default " + JSON.stringify(render) + "\n";
         }
     }]
 

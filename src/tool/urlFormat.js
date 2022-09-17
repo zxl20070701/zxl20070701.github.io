@@ -1,3 +1,7 @@
+/**
+ * 浏览器地址格式化
+ * @returns {JSON} 固定格式:{router:Array<string>,params:{}}
+ */
 export default function () {
 
     var splitTemp = window.location.href.split('?');

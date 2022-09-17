@@ -9,12 +9,17 @@ export default function (obj) {
 
         // 数据
         data: {
-
+            searchInput: obj.ref("")
         },
 
         // 方法
         methods: {
-
+            doSearch: function (event) {
+                if (event.keyCode == 13) {
+                    alert('当前内容较少，查询功能未支持！');
+                    this.searchInput = "";
+                }
+            }
         },
 
         // 挂载前
@@ -29,7 +34,7 @@ export default function (obj) {
 
         // 数据改变前
         beforeUpdate: function () {
-
+            console.log(this.searchInput)
         },
 
         // 数据改变后

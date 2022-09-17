@@ -134,19 +134,23 @@ export default function useTemplate(el, pagefactory) {
                                 // 插入钩子直接执行
                                 if (isFunctin(directive.inserted)) {
 
-                                    value = undefined;
-                                    try { value = evalExpress(instance, attrValue) } catch (e) { }
+                                    (function (directive, attrValue, keyArray) {
 
-                                    // 为什么延迟？
-                                    // 这是为了等待节点挂载完毕
-                                    setTimeout(function () {
-                                        directive.inserted(currentEl.value, {
-                                            type: keyArray[1],
-                                            exp: attrValue,
-                                            value: value,
-                                            target: instance
+                                        // 为什么延迟？
+                                        // 这是为了等待节点挂载完毕
+                                        setTimeout(function () {
+
+                                            value = undefined;
+                                            try { value = evalExpress(instance, attrValue) } catch (e) { }
+
+                                            directive.inserted(currentEl.value, {
+                                                type: keyArray[1],
+                                                exp: attrValue,
+                                                value: value,
+                                                target: instance
+                                            });
                                         });
-                                    });
+                                    })(directive, attrValue, keyArray);
                                 }
 
                                 // 如果是更新钩子
