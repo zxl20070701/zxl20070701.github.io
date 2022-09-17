@@ -19,7 +19,7 @@ export default {
             if (modifier.stop) event.stopPropagation();
             if (modifier.prevent) event.preventDefault();
 
-            binding.value.apply(binding.target, [event])
+            binding.value.apply(binding.target, [event, el])
 
             if (modifier.once) {
                 el.removeEventListener(types[0], callback, false);

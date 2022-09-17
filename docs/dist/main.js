@@ -1,57 +1,57 @@
 /******/
-/******/  // pkg Bootstrap/******/  
-/******/  /******/  
-/******/  // 记录bundle的函数源码/******/  
-/******/  window.__pkg__bundleSrc__ = {};/******/  
-/******/  /******/  
-/******/  // 记录bundle的运行结果/******/  
-/******/  window.__pkg__bundleObj__ = {};/******/  
-/******/  /******/  
-/******/  // 获取bundle结果/******/  
-/******/  window.__pkg__getBundle = function (bundleName) {/******/  
-/******/  /******/  
-/******/      // 一个bundle只有第一次导入的时候需要执行/******/  
-/******/      if (!(bundleName in window.__pkg__bundleObj__)) {/******/  
-/******/          window.__pkg__bundleObj__[bundleName] = window.__pkg__bundleSrc__[bundleName]();/******/  
-/******/      }/******/  
-/******/  /******/  
-/******/      // 返回需要的bundle的结果/******/  
-/******/      return window.__pkg__bundleObj__[bundleName];/******/  
-/******/  }/******/  
-/******/  /******/  
-/******/  window.__pkg__bundleFile__ = {};/******/  
-/******/  /******/  
-/******/  // 获取懒加载bundle结果/******/  
-/******/  window.__pkg__getLazyBundle = function (fileName, bundleName) {/******/  
-/******/      return new Promise(function (resolve) {/******/  
-/******/  /******/  
-/******/          // 如果加载过了/******/  
-/******/          if (window.__pkg__bundleFile__[fileName]) {/******/  
-/******/              resolve(window.__pkg__getBundle(bundleName));/******/  
-/******/              return;/******/  
-/******/          }/******/  
-/******/  /******/  
-/******/          // 获取head标签/******/  
-/******/          var head = document.getElementsByTagName('head')[0];/******/  
-/******/  /******/  
-/******/          // 创建script/******/  
-/******/          var script = document.createElement('script');/******/  
-/******/  /******/  
-/******/          // 设置属性/******/  
-/******/          script.src = fileName;/******/  
-/******/  /******/  
-/******/          // 追加到页面/******/  
-/******/          head.appendChild(script);/******/  
-/******/  /******/  
-/******/          window.__pkg__bundleFile__[fileName] = true;/******/  
-/******/  /******/  
-/******/          script.addEventListener('load', function () {/******/  
-/******/              resolve(window.__pkg__getBundle(bundleName));/******/  
-/******/          }, false);/******/  
-/******/  /******/  
-/******/  /******/  
-/******/      });/******/  
-/******/  }/******/  
+/******/  // pkg Bootstrap
+/******/  
+/******/  // 记录bundle的函数源码
+/******/  window.__pkg__bundleSrc__ = {};
+/******/  
+/******/  // 记录bundle的运行结果
+/******/  window.__pkg__bundleObj__ = {};
+/******/  
+/******/  // 获取bundle结果
+/******/  window.__pkg__getBundle = function (bundleName) {
+/******/  
+/******/      // 一个bundle只有第一次导入的时候需要执行
+/******/      if (!(bundleName in window.__pkg__bundleObj__)) {
+/******/          window.__pkg__bundleObj__[bundleName] = window.__pkg__bundleSrc__[bundleName]();
+/******/      }
+/******/  
+/******/      // 返回需要的bundle的结果
+/******/      return window.__pkg__bundleObj__[bundleName];
+/******/  }
+/******/  
+/******/  window.__pkg__bundleFile__ = {};
+/******/  
+/******/  // 获取懒加载bundle结果
+/******/  window.__pkg__getLazyBundle = function (fileName, bundleName) {
+/******/      return new Promise(function (resolve) {
+/******/  
+/******/          // 如果加载过了
+/******/          if (window.__pkg__bundleFile__[fileName]) {
+/******/              resolve(window.__pkg__getBundle(bundleName));
+/******/              return;
+/******/          }
+/******/  
+/******/          // 获取head标签
+/******/          var head = document.getElementsByTagName('head')[0];
+/******/  
+/******/          // 创建script
+/******/          var script = document.createElement('script');
+/******/  
+/******/          // 设置属性
+/******/          script.src = fileName;
+/******/  
+/******/          // 追加到页面
+/******/          head.appendChild(script);
+/******/  
+/******/          window.__pkg__bundleFile__[fileName] = true;
+/******/  
+/******/          script.addEventListener('load', function () {
+/******/              resolve(window.__pkg__getBundle(bundleName));
+/******/          }, false);
+/******/  
+/******/  
+/******/      });
+/******/  }
 /******/  
 /************************************************************************/
 /******/
@@ -73,11 +73,11 @@ __pkg__scope_args__=window.__pkg__getBundle('20');
 var lazyLoad =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('22');
+__pkg__scope_args__=window.__pkg__getBundle('23');
 
 
 // 浏览器兼容文件
-__pkg__scope_args__=window.__pkg__getBundle('23');
+__pkg__scope_args__=window.__pkg__getBundle('24');
 
 
 var pagename = urlFormat().router[0]
@@ -1365,7 +1365,7 @@ window.__pkg__bundleSrc__['18']=function(){
             if (modifier.stop) event.stopPropagation();
             if (modifier.prevent) event.preventDefault();
 
-            binding.value.apply(binding.target, [event])
+            binding.value.apply(binding.target, [event, el])
 
             if (modifier.once) {
                 el.removeEventListener(types[0], callback, false);
@@ -1431,6 +1431,11 @@ window.__pkg__bundleSrc__['20']=function(){
     // 首页
     home: function () {
         return window.__pkg__getLazyBundle('./dist/main-bundle1.js','21')
+    },
+
+    // 正则表达式可视化
+    "regexper-visualization": function () {
+        return window.__pkg__getLazyBundle('./dist/main-bundle2.js','22')
     }
 
 };
@@ -1440,7 +1445,7 @@ window.__pkg__bundleSrc__['20']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/common.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['22']=function(){
+window.__pkg__bundleSrc__['23']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -1453,7 +1458,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/polyfill/Promise
 /*****************************************************************/
-window.__pkg__bundleSrc__['23']=function(){
+window.__pkg__bundleSrc__['24']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var isObject = function (value) {

@@ -1,0 +1,16 @@
+<div class="help-hidden" id='help-hidden'></div>
+
+<input type="text" ui-model="expressVal">
+<button ui-on:click="doDisplay">显示</button>
+
+<div class="isString">
+    <input type="radio" name='isString' id="is-string-yes" ui-on:click='doIsString' tag='yes' />
+    是字符串
+    <span></span>
+    <input type="radio" name='isString' id="is-string-no" ui-on:click='doIsString' tag='no' />
+    不是字符串
+</div>
+
+<hr />
+
+<canvas>非常抱歉，您的浏览器不支持canvas!</canvas>

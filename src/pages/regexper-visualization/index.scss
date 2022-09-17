@@ -1,0 +1,54 @@
+[page-view] {
+    padding: 20px 0;
+
+    &>div {
+        &.help-hidden {
+            position: fixed;
+            font-size: 12px;
+            font-family: sans-serif;
+            padding: 0;
+            border: none;
+            bottom: -100px;
+        }
+    }
+
+    text-align: center;
+
+    input {
+        &[type="text"] {
+            width: 700px;
+            height: 30px;
+            padding: 0 10px;
+        }
+    }
+
+    button {
+        height: 30px;
+        margin-left: 10px;
+        background-color: #97932e;
+        color: #fefefe;
+        cursor: pointer;
+    }
+
+    canvas {
+        background-color: white;
+    }
+
+    hr {
+        margin: 20px 0;
+    }
+
+    .isString {
+        margin-top: 10px;
+        font-size: 12px;
+
+        input {
+            vertical-align: sub;
+        }
+
+        span {
+            display: inline-block;
+            width: 20px;
+        }
+    }
+}

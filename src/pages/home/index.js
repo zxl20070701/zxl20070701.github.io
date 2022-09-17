@@ -14,11 +14,17 @@ export default function (obj) {
 
         // 方法
         methods: {
-            doSearch: function (event) {
+            doSearch: function (event, target) {
                 if (event.keyCode == 13) {
                     alert('当前内容较少，查询功能未支持！');
                     this.searchInput = "";
                 }
+            },
+            goto(event, target) {
+                var el = document.createElement('a');
+                el.setAttribute('target', '_blank');
+                el.setAttribute('href', "#/" + target.getAttribute('tag'));
+                el.click();
             }
         },
 
@@ -34,7 +40,7 @@ export default function (obj) {
 
         // 数据改变前
         beforeUpdate: function () {
-            console.log(this.searchInput)
+
         },
 
         // 数据改变后
