@@ -49,6 +49,7 @@ export default function (obj) {
                 });
 
                 // 绘制
+                window.group_index = 1;
                 drawImage(painter, imageData, 30, 10);
 
                 // 绘制开头和结尾

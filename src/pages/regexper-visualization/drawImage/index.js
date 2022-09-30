@@ -9,7 +9,6 @@ var normalConfig = {
 };
 
 export default function drawImage(painter, imageData, left, top) {
-    var group_index = 1;
 
     // 绘制组标记
     if (imageData.flag != "no-group" && imageData.flag != '?@') {
@@ -27,7 +26,7 @@ export default function drawImage(painter, imageData, left, top) {
                 "?:": "仅匹配",
                 "?!": "匹配否",
                 "?=": "匹配是",
-                "group": "#" + (group_index++)
+                "group": "#" + (window.group_index++)
             }[imageData.flag], left + imageData.width * 0.5, top);
 
         // 绘制循环次数

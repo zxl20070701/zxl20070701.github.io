@@ -15,7 +15,7 @@ module.exports = {
     // 打包出口
     output: {
         folder: "docs",
-        entry: "./dist/main.js"
+        entry: "./dist/main-v0.1.0.js"
     },
 
     // 打包后原样复制的文件夹

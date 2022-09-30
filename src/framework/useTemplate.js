@@ -14,22 +14,24 @@ import uiBind from "../directives/ui-bind";
 import uiModel from "../directives/ui-model";
 import uiOn from "../directives/ui-on";
 
-export default function useTemplate(el, pagefactory) {
+export default function useTemplate(el, pagefactory, props) {
 
     var key;
 
     var pageinfo = pagefactory({
         ref: ref,
         reactive: reactive
-    });
+    }, JSON.parse(JSON.stringify(props || {})));
 
     // 创建实例
     var instance = {
 
         // 记录数据改变需要触发的更新
-        _update: []
+        _update: [],
 
     };
+
+    if ('name' in pageinfo) instance._name = pageinfo.name;
 
     // 如果js中有数据改变需要更新试图，会触发这个方法
     var hadWillUpdate = false;
@@ -156,17 +158,21 @@ export default function useTemplate(el, pagefactory) {
                                 // 如果是更新钩子
                                 // 登记
                                 if (isFunctin(directive.update)) {
-                                    instance._update.push(function () {
-                                        value = undefined;
-                                        try { value = evalExpress(instance, attrValue) } catch (e) { }
 
-                                        directive.update(currentEl.value, {
-                                            type: keyArray[1],
-                                            exp: attrValue,
-                                            value: value,
-                                            target: instance
+                                    (function (directive, attrValue, keyArray) {
+                                        instance._update.push(function () {
+                                            value = undefined;
+                                            try { value = evalExpress(instance, attrValue) } catch (e) { }
+
+                                            directive.update(currentEl.value, {
+                                                type: keyArray[1],
+                                                exp: attrValue,
+                                                value: value,
+                                                target: instance
+                                            });
                                         });
-                                    });
+                                    })(directive, attrValue, keyArray);
+
                                 }
 
                             }
@@ -204,10 +210,14 @@ export default function useTemplate(el, pagefactory) {
 
         // 触发挂载后钩子
         if (isFunctin(pageinfo.mounted)) {
-            pageinfo.mounted.call(instance);
+            setTimeout(function () {
+                pageinfo.mounted.call(instance);
+            });
         }
     } else {
         throw new Error("Render is required!");
     }
+
+    return instance;
 
 };

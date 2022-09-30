@@ -45,4 +45,36 @@ body {
             }
         }
     }
+
+    #dialog-root {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+
+        &>div {
+            &.mask {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: #7b787840;
+                display: none;
+
+                &:not(:last-child) {
+                    display: block;
+                }
+            }
+
+            &[dialog-view] {
+                display: none;
+
+                &:last-child {
+                    display: block;
+                }
+            }
+        }
+    }
 }

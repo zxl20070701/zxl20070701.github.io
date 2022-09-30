@@ -1,0 +1,33 @@
+<!-- 可视化操作切割点 -->
+<canvas id="time-line"></canvas>
+
+<!-- 新增一个切割点 -->
+<div class='add-split'>
+    <input type="text" ui-model='newTime'>
+    <button ui-on:click='addSplit'>新增</button>
+    <button ui-on:click='resetSplit' class="reset">重置</button>
+</div>
+
+<!-- 更新片段按钮 -->
+<div class='update'>
+    <span>片段列表</span>
+</div>
+
+<!-- 片段列表 -->
+<table>
+    <thead>
+        <tr>
+            <th>选择</th>
+            <th>序号</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+        </tr>
+    </thead>
+    <tbody id='table-list' ui-on:click="updatePiceSelected"></tbody>
+</table>
+
+<!-- 操作完毕按钮 -->
+<div class="btn-list">
+    <button ui-on:click='doClose' class="gray">取消</button>
+    <button ui-on:click='doSubmit'>确定</button>
+</div>

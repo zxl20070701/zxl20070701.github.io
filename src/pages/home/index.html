@@ -3,7 +3,7 @@
     <input type="text" placeholder="输入内容后回车查询" ui-on:keydown="doSearch" ui-model="searchInput">
 </header>
 <h3>
-    工具
+    代码工具
 </h3>
 <ul>
     <li tag="regexper-visualization" ui-on:click="goto">
@@ -12,6 +12,19 @@
         </h4>
         <p>
             输入一个正则表达式后可以把其变成可视化的图表来快速读懂意义
+        </p>
+    </li>
+</ul>
+<h3>
+    剪辑工具
+</h3>
+<ul>
+    <li tag="audio-editor" ui-on:click="goto">
+        <h4>
+            音频编辑器
+        </h4>
+        <p>
+            可以对音频文件进行切割、合并等操作，支持多种格式
         </p>
     </li>
 </ul>
