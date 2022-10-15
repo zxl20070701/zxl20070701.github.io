@@ -1,6 +1,7 @@
 const scssLoader = require('./bin/loader/scss');
 const styleLoader = require('./bin/loader/style');
 const templateLoader = require("./bin/loader/template");
+const pkg = require('./package.json');
 
 module.exports = {
 
@@ -15,7 +16,7 @@ module.exports = {
     // 打包出口
     output: {
         folder: "docs",
-        entry: "./dist/main-v0.1.0.js"
+        entry: "./dist/main-v" + pkg.version + ".js"
     },
 
     // 打包后原样复制的文件夹
@@ -28,7 +29,27 @@ module.exports = {
     loader: [{
         test: /\.js$/,
         handler: function (source) {
-            return source;
+
+            // 需要兼容commonjs语法的
+            if (/loader/.test(this.filepath)) {
+                return `
+
+                var module={
+                    exports:{}
+                };
+                var exports=module.exports;
+        
+                ${source}
+        
+                export default module.exports;
+        
+                `;
+            }
+
+            // 默认只支持es6+ modules语法
+            else {
+                return source;
+            }
         }
     }, {
         test: /\.json$/,
@@ -61,7 +82,12 @@ module.exports = {
 
             }
 
-            return "export default " + JSON.stringify(render) + "\n";
+            return "export default " + JSON.stringify(render);
+        }
+    }, {
+        test: /\.c$/,
+        handler: function (source) {
+            return "export default " + JSON.stringify(source);
         }
     }]
 

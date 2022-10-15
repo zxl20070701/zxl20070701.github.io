@@ -1,6 +1,6 @@
 {
   "name": "toolbox",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "在线工具网站，包含常见的图片编辑、格式转换、视频播放和小游戏等各种工具和好玩的东西",
   "scripts": {
     "dev": "node ./bin/server --config pkg.config.js",

@@ -4,6 +4,7 @@
     min-height: 100vh;
     margin: 0 auto;
     box-shadow: 0 0 7px 0px #9e9e9e;
+    padding-bottom: 50px;
 
     &>header {
         position: relative;
@@ -20,22 +21,6 @@
             background-size: auto 60%;
             font-family: cursive;
         }
-
-        &>input {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            height: 30px;
-            border: none;
-            outline: none;
-            padding: 0 10px;
-            padding-right: 35px;
-            background-image: url(./search.svg);
-            background-position: center right;
-            background-repeat: no-repeat;
-            border-radius: 3px;
-            background-color: #f3f0f0;
-        }
     }
 
     &>h3 {
@@ -49,7 +34,6 @@
         margin-left: 45px;
 
         &>li {
-            background-position: left center;
             display: inline-block;
             width: 300px;
             height: 70px;
@@ -61,6 +45,29 @@
             padding-left: 70px;
             margin: 20px 0 0 20px;
             cursor: pointer;
+            vertical-align: top;
+            position: relative;
+
+            &::after {
+                position: absolute;
+                right: -9px;
+                top: 5px;
+                font-size: 12px;
+                color: white;
+                padding: 2px 5px;
+                border-radius: 5px;
+            }
+
+            // 标记开发中
+            // 如果一个产品未开发完毕
+            // 可以用此进行说明
+            &.dev {
+                &::after {
+                    content: "开发中";
+                    background-color: #8bc34a;
+                    outline: 1px dashed #8bc34a;
+                }
+            }
 
             &:hover {
                 text-decoration: underline;
@@ -82,6 +89,30 @@
 
             &[tag="audio-editor"] {
                 background-image: url('./audio-editor.png');
+            }
+
+            &[tag="format-json"] {
+                background-image: url('./format-json.png');
+            }
+
+            &[tag="image-editor"] {
+                background-image: url('./image-editor.png');
+            }
+
+            &[tag="model-editor"] {
+                background-image: url('./model-editor.png');
+            }
+
+            &[tag="video-play"] {
+                background-image: url('./video-play.png');
+            }
+
+            &[tag="snake-eating"] {
+                background-image: url('./snake-eating.png');
+            }
+
+            &[tag="scss"] {
+                background-image: url('./scss.png');
             }
         }
     }

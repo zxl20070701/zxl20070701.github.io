@@ -10,7 +10,7 @@
  */
 
 // 把着色器字符串加载成着色器对象
-export var loadShader = function (gl, type, source) {
+var _loadShader = function (gl, type, source) {
     // 创建着色器对象
     var shader = gl.createShader(type);
     if (shader == null) throw new Error('Unable to create shader!');
@@ -25,10 +25,10 @@ export var loadShader = function (gl, type, source) {
 };
 
 // 初始化着色器
-export var useShader = function (gl, vshaderSource, fshaderSource) {
+var _useShader = function (gl, vshaderSource, fshaderSource) {
     // 分别加载顶点着色器对象和片段着色器对象
-    var vertexShader = loadShader(gl, gl.VERTEX_SHADER, vshaderSource),
-        fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fshaderSource);
+    var vertexShader = _loadShader(gl, gl.VERTEX_SHADER, vshaderSource),
+        fragmentShader = _loadShader(gl, gl.FRAGMENT_SHADER, fshaderSource);
     // 创建一个着色器程序
     var glProgram = gl.createProgram();
     // 把前面创建的两个着色器对象添加到着色器程序中
@@ -43,3 +43,6 @@ export var useShader = function (gl, vshaderSource, fshaderSource) {
     gl.useProgram(glProgram);
     return glProgram;
 };
+
+export var loadShader = _loadShader;
+export var useShader = _useShader;

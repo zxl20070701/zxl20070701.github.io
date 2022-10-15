@@ -1,0 +1,40 @@
+[dialog-view='debugger'] {
+    width: 340px;
+    height: calc(100vh - 60px);
+    position: fixed;
+    left: calc(50vw - 170px);
+    top: 30px;
+    background-color: white;
+    box-shadow: 0 0 12px 0px #607d8b;
+
+    &>header {
+
+        background-color: #f44336;
+        color: white;
+        font-size: 12px;
+        padding-left: 10px;
+        line-height: 30px;
+        position: relative;
+
+        &>span {
+            font-style: normal;
+            width: 30px;
+            height: 30px;
+            float: right;
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+
+    &>ul {
+        height: calc(100% - 30px);
+        overflow: auto;
+        font-size: 14px;
+        font-weight: 200;
+
+        &>li {
+            border-bottom: 1px solid #e2e1e1;
+            padding: 5px;
+        }
+    }
+}

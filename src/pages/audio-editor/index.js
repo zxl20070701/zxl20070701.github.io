@@ -10,6 +10,10 @@ import lazyLoad from './dialogs/lazy-load';
 export default function (obj) {
     return {
         render: template,
+        beforeMount: function () {
+            document.getElementsByTagName('title')[0].innerText = "音频编辑器";
+            document.getElementById('icon-logo').setAttribute('href', './audio-editor.png');
+        },
         methods: {
 
             // 下载按钮

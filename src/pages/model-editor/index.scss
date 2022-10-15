@@ -1,0 +1,106 @@
+[page-view] {
+    background-color: #eff2f2;
+    width: 100vw;
+    height: 100vh;
+
+    .no-view {
+        display: none;
+    }
+
+    &>div {
+        &.menu {
+            border-bottom: 1px solid #cccccc;
+            height: 30px;
+            height: 30px;
+            line-height: 30px;
+
+            &>h2 {
+                background-image: url('./model-editor.png');
+                padding-left: 30px;
+                padding-right: 10px;
+                display: inline-block;
+                vertical-align: top;
+                background-size: auto 70%;
+                background-repeat: no-repeat;
+                background-position: 5px center;
+                font-size: 12px;
+                color: rgb(0, 0, 0);
+                font-weight: 800;
+                border-right: 1px solid #cccccc;
+            }
+
+            &>span {
+                margin-left: 20px;
+                display: inline-block;
+                vertical-align: top;
+                font-size: 12px;
+                cursor: pointer;
+                white-space: nowrap;
+
+                &:hover {
+                    text-decoration: underline;
+                    font-weight: 800;
+                }
+
+                &.more {
+                    position: relative;
+                    padding-right: 10px;
+
+                    &:hover {
+                        &>div {
+                            display: block;
+                        }
+                    }
+
+                    &::after {
+                        position: absolute;
+                        top: 13px;
+                        right: -3px;
+                        width: 0;
+                        height: 0;
+                        border-left: 4px solid transparent;
+                        border-right: 4px solid transparent;
+                        border-top: 5px solid #4f5959;
+                        content: " ";
+                    }
+
+                    &>div {
+                        position: absolute;
+                        background-color: white;
+                        box-shadow: 0 0 7px 0px #cccccc;
+                        padding: 5px 0;
+                        line-height: 1.8em;
+                        display: none;
+
+                        &>span {
+                            display: block;
+                            padding: 0 10px;
+                            font-weight: 400;
+                            cursor: pointer;
+
+                            &>label {
+                                cursor: pointer;
+                            }
+
+                            &:hover {
+                                text-decoration: underline;
+                            }
+
+                            &:not(:last-child) {
+                                border-bottom: 1px solid #cccccc;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.content {
+            width: 100vw;
+            height: calc(100vh - 30px);
+            overflow: hidden;
+            text-align: center;
+            background-color: #9fa2a3;
+        }
+    }
+}

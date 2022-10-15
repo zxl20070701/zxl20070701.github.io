@@ -5,6 +5,8 @@ const analyseImport = require('./analyseImport');
 const analyseExport = require('./analyseExport');
 const urlToIndex = require('./urlToIndex');
 
+const { simpleUrl } = require('../tool');
+
 // 懒加载文件的编号
 let lazyBundleIndex = 0;
 
@@ -50,13 +52,13 @@ module.exports = function analyseBundle(filepath, config) {
 
     }
 
-    print("    * [" + urlToIndex(filepath) + "] " + filepath);
+    print("    * [" + urlToIndex(filepath) + "] " + simpleUrl(filepath));
 
     // 获取当前路径上下文
     let filecontext = fullPath('../', filepath);
 
     // 读取当前代码
-    let source = config.$readFileSync(filepath).content;
+    let source = config.$readFileSync(filepath).content + "\n";
 
     // 分析导入语句
     let importStatement = null;

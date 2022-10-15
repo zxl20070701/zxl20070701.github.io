@@ -1,0 +1,34 @@
+<div class="menu">
+    <h2>
+        3D模型编辑器
+    </h2>
+    <span ui-on:click='resetEditor'>
+        新建
+    </span>
+    <span class="more">
+        导入
+        <div>
+            <span>
+                <label for='file'>本地选择</label>
+            </span>
+        </div>
+    </span>
+    <span ui-on:click='exportFile'>
+        导出
+    </span>
+</div>
+<div class="content" id='canvas'>
+
+    <!-- 画布 -->
+    <canvas ui-bind:width='width' ui-bind:height='height'></canvas>
+
+</div>
+
+<!-- 一些辅助而不需要显示的内容 -->
+<div class='no-view'>
+
+    <!-- 选择本地文件 -->
+    <input type="file" id="file" multiple ui-on:change="inputLocalFile"
+        accept=".json,.stl,.obj,.fbx,.mtl,.ply,.gltf,.mod" />
+
+</div>

@@ -11,6 +11,8 @@ const { fullPath } = require('../nodejs/path');
 const { deleteSync, copySync } = require('../nodejs/file');
 const analyseBundle = require('./pkg/analyseBundle');
 
+const { simpleUrl } = require('./tool');
+
 // 获取命令行参数
 const parsed = require('../nodejs/option')({}, process.argv);
 
@@ -63,7 +65,7 @@ while (needAnalyseFiles.length > 0) {
     }
 
     log(`\nIndependent bundle file currently analyzed:
-    ● ${needAnalyseFile.source} → ${needAnalyseFile.target}
+    ● ${simpleUrl(needAnalyseFile.source)} → ${simpleUrl(needAnalyseFile.target)}
 `);
 
     // 分析出当前bundle文件

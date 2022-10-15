@@ -1,0 +1,58 @@
+[page-view] {
+
+    width: calc(100vw - 200px);
+    height: calc(100vh - 100px);
+    position: fixed;
+    top: 50px;
+    left: 100px;
+    font-size: 0;
+    white-space: nowrap;
+
+    &>div {
+        display: inline-block;
+        font-size: 16px;
+        white-space: normal;
+        vertical-align: top;
+        outline: 1px solid #8c9da5;
+        margin: 20px 0 0 20px;
+
+        &>h2 {
+            border-bottom: 1px solid #8c9da5;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 20px;
+            position: relative;
+            font-family: cursive;
+            font-weight: 200;
+
+            &>button {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                height: 30px;
+                line-height: 30px;
+                padding: 0 20px;
+                border: none;
+                outline: none;
+                color: white;
+                cursor: pointer;
+
+                &.run {
+                    background-color: #009688;
+                }
+            }
+        }
+
+        &>textarea {
+            width: calc(50vw - 130px);
+            height: calc(100vh - 190px);
+            outline: none;
+            border: none;
+            padding: 10px;
+            font-family: cursive;
+            font-size: 14px;
+            font-weight: 400;
+        }
+    }
+
+}

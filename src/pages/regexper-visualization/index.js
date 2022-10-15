@@ -14,6 +14,10 @@ export default function (obj) {
             expressVal: obj.ref(decodeURIComponent(urlObj.params.express || "") || "\\w{1,5}[a-e0-8]|4(534)5(35{3}|d)d(?=123)\\1"),
             isString: obj.ref(urlObj.params.isString || "no")
         },
+        beforeMount: function () {
+            document.getElementsByTagName('title')[0].innerText = "正则表达式可视化";
+            document.getElementById('icon-logo').setAttribute('href', './regexper-visualization.png');
+        },
         mounted: function () {
 
             // 调用显示

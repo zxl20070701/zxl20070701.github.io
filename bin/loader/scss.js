@@ -1,11 +1,11 @@
-let toSelector = function (preSelectorArray, deep) {
+var toSelector = function (preSelectorArray, deep) {
 
-    let selectors = preSelectorArray[0], i, j, k;
+    var selectors = preSelectorArray[0], i, j, k;
 
     // 一层层深入
     for (i = 1; i < deep; i++) {
 
-        let temp = [];
+        var temp = [];
         // 前置循环
         for (j = 0; j < selectors.length; j++) {
 
@@ -27,26 +27,26 @@ let toSelector = function (preSelectorArray, deep) {
 
 // 把代码变成代码块
 // 比如一个注释就是一块，无论注释的内容有多少
-let analyseBlock = function (source) {
+var analyseBlock = function (source) {
 
-    let i = -1,
+    var i = -1,
 
         // 当前面对的字符
         currentChar = null;
 
     // 获取下一个字符
-    let next = function () {
+    var next = function () {
         currentChar = i++ < source.length - 1 ? source[i] : null;
         return currentChar;
     };
 
     // 获取往后n个值
-    let nextNValue = function (n) {
+    var nextNValue = function (n) {
         return source.substring(i, n + i > source.length ? source.length : n + i);
     };
 
-    let blocks = [];
-    let currentBlock = "";
+    var blocks = [];
+    var currentBlock = "";
 
     next();
 
@@ -161,11 +161,11 @@ module.exports = function (source) {
 
     // 分析出代码块
 
-    let blocks = analyseBlock(source);
+    var blocks = analyseBlock(source);
 
     // 根据代码块获得最终代码
 
-    let i, j, cssCode = "", preSelectorArray = [], deep = 0;
+    var i, j, cssCode = "", preSelectorArray = [], deep = 0;
     for (i = 0; i < blocks.length; i++) {
 
         // 注释 double
@@ -185,8 +185,8 @@ module.exports = function (source) {
         // 开始
         else if (blocks[i].type == 'begin') {
 
-            let preSplit = blocks[i].value.split(',');
-            let preSelect = [];
+            var preSplit = blocks[i].value.split(',');
+            var preSelect = [];
             for (j = 0; j < preSplit.length; j++) {
 
                 // 去掉两端的空格
@@ -218,7 +218,7 @@ module.exports = function (source) {
 
             // 如果是第一个
             j = 1
-            let preType = blocks[i - j].type;
+            var preType = blocks[i - j].type;
             while (['comment-double', 'comment-single'].indexOf(preType) > -1) {
                 j += 1;
                 preType = blocks[i - j].type;
@@ -231,7 +231,7 @@ module.exports = function (source) {
 
             // 如果是最后一个
             j = 1;
-            let nextType = blocks[i + j].type;
+            var nextType = blocks[i + j].type;
             while (['comment-double', 'comment-single'].indexOf(nextType) > -1) {
                 j += 1;
                 nextType = blocks[i + j].type;

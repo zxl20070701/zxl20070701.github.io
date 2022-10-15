@@ -1,12 +1,18 @@
 import useTemplate from "./framework/useTemplate";
 
 import urlFormat from "./tool/urlFormat";
-import lazyLoad from "./pages/lazy-load";
+
+import lazyLoadPage from "./pages/lazy-load";
+import lazyLoadDialog from "./dialogs/lazy-load";
 
 import './common.scss';
 
 // 浏览器兼容文件
 import './polyfill/Promise';
+
+// 调试后台
+import runDebug from './tool/debugger/index';
+runDebug();
 
 var pagename = urlFormat().router[0]
 var viewEl = document.getElementById('view-root');
@@ -14,9 +20,9 @@ var viewEl = document.getElementById('view-root');
 var dialogRootEl = document.getElementById('dialog-root');
 
 // 默认打开主页
-if (!(pagename in lazyLoad)) pagename = "home";
+if (!(pagename in lazyLoadPage)) pagename = "home";
 
-lazyLoad[pagename]().then(function (viewData) {
+lazyLoadPage[pagename]().then(function (viewData) {
     viewEl.setAttribute('page-view', '');
     // 挂载页面
     var viewInstance = useTemplate(viewEl, viewData.default);
@@ -67,5 +73,15 @@ lazyLoad[pagename]().then(function (viewData) {
 
     // 注册打开弹框方法
     viewInstance.$openDialog = openDialog;
+
+    // 追加调试弹框
+    var debuggerEl = document.createElement('div');
+    document.body.insertBefore(debuggerEl, document.body.childNodes[0]);
+
+    // 调试窗口
+    debuggerEl.setAttribute('class', 'debugger');
+    debuggerEl.addEventListener('click', function () {
+        openDialog(lazyLoadDialog.debugger);
+    });
 
 });

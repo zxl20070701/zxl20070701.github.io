@@ -5,29 +5,33 @@
 window.__pkg__bundleSrc__['23']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('44');
+    __pkg__scope_args__=window.__pkg__getBundle('53');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('45');
+__pkg__scope_args__=window.__pkg__getBundle('54');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('46');
+__pkg__scope_args__=window.__pkg__getBundle('55');
 var newFile =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('48');
+__pkg__scope_args__=window.__pkg__getBundle('57');
 var audiobufferToWav =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('49');
+__pkg__scope_args__=window.__pkg__getBundle('58');
 var formatTime =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('50');
+__pkg__scope_args__=window.__pkg__getBundle('59');
 var lazyLoad =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj) {
     return {
         render: template,
+        beforeMount: function () {
+            document.getElementsByTagName('title')[0].innerText = "音频编辑器";
+            document.getElementById('icon-logo').setAttribute('href', './audio-editor.png');
+        },
         methods: {
 
             // 下载按钮
@@ -381,13 +385,14 @@ __pkg__scope_bundle__.default= function (obj) {
         }
     };
 };
+
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['44']=function(){
+window.__pkg__bundleSrc__['53']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,5]},{"type":"tag","name":"div","attrs":{"class":"source-view"},"childNodes":[2,4]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doImport"},"childNodes":[3]},{"type":"text","content":"导入+","childNodes":[]},{"type":"tag","name":"ul","attrs":{"id":"source-list-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"mulp-view"},"childNodes":[6,8,9]},{"type":"tag","name":"div","attrs":{"class":"play-view"},"childNodes":[7]},{"type":"tag","name":"audio","attrs":{"src":"","controls":"controls","id":"play-audio-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"editor-view","id":"editor-view-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btns-view"},"childNodes":[10,12]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doPlay"},"childNodes":[11]},{"type":"text","content":"播放","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDownload"},"childNodes":[13]},{"type":"text","content":"下载","childNodes":[]}]
@@ -398,23 +403,24 @@ window.__pkg__bundleSrc__['44']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['45']=function(){
+window.__pkg__bundleSrc__['54']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
 styleElement.innerHTML = "\n [page-view]{\n\ndisplay: flex;\n\nwidth: calc(100vw - 160px);\n\nmargin: auto;\n\nbackground-color: rgb(242 242 242);\n\nborder: 1px solid #d8d8d8;\n\nfont-size: 12px;\n\noverflow: hidden;\n\nheight: 100vh;\n\n}\n\n [page-view]>div{\n\nflex-grow: 1;\n\nheight: 100%;\n\n}\n\n [page-view]>div.source-view{\n\nflex-grow: 0;\n\nflex-shrink: 0;\n\nflex-basis: 200px;\n\nborder-right: 1px solid #d8d8d8;\n\npadding: 10px;\n\n}\n\n [page-view]>div.source-view>button{\n\nwidth: 60px;\n\nline-height: 20px;\n\nbackground-color: #939393;\n\ncolor: white;\n\nborder: none;\n\noutline: none;\n\ncursor: pointer;\n\n}\n\n [page-view]>div.source-view>ul{\n\nmargin: 10px 0;\n\n}\n\n [page-view]>div.source-view>ul>li{\n\nline-height: 20px;\n\npadding: 5px 0;\n\n}\n\n [page-view]>div.source-view>ul>li:not(:last-child){\n\nborder-bottom: 1px solid rgb(191, 190, 190);\n\n}\n\n [page-view]>div.source-view>ul>li>i{\n\ndisplay: inline-block;\n\nwidth: 24px;\n\nheight: 24px;\n\nbackground-image: url('./audio-icon.png');\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 100%;\n\nvertical-align: top;\n\n}\n\n [page-view]>div.source-view>ul>li>span{\n\nwhite-space: nowrap;\n\nwidth: 90px;\n\noverflow: hidden;\n\ntext-overflow: ellipsis;\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.source-view>ul>li>button{\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 100%;\n\nwidth: 24px;\n\nheight: 24px;\n\nfloat: right;\n\nborder: none;\n\noutline: none;\n\ncursor: pointer;\n\nbackground-color: transparent;\n\n}\n\n [page-view]>div.source-view>ul>li>button.play{\n\nbackground-image: url('./start.png');\n\n}\n\n [page-view]>div.source-view>ul>li>button.add{\n\nbackground-image: url('./add.png');\n\n}\n\n [page-view]>div.mulp-view{\n\ndisplay: flex;\n\nflex-direction: column;\n\nposition: relative;\n\n}\n\n [page-view]>div.mulp-view>div.play-view{\n\nflex-basis: 100px;\n\nline-height: 100px;\n\nborder-bottom: 1px solid #d8d8d8;\n\n}\n\n [page-view]>div.mulp-view>div.play-view>audio{\n\nwidth: 100%;\n\nvertical-align: middle;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view{\n\nflex-grow: 1;\n\nbackground-color: #e4e4e4;\n\noverflow: auto;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item{\n\nbackground-color: #f2f2f2;\n\npadding: 10px;\n\nmargin: 10px;\n\noverflow: auto;\n\nwidth: calc(100vw - 380px);\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.title{\n\nfont-size: 12px;\n\npadding-left: 10px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.btns>button{\n\nheight: 24px;\n\nwidth: 50px;\n\nmargin: 8px 0 0 8px;\n\ncursor: pointer;\n\nbackground-color: #9e9e9e;\n\ncolor: white;\n\nborder: none;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.content{\n\npadding: 5px 10px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.content>span{\n\ndisplay: inline-block;\n\nmargin-left: 1px;\n\nbackground-color: #8bc34a;\n\nheight: 5px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.repeat{\n\npadding: 0 10px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.repeat>input{\n\nwidth: 50px;\n\noutline: none;\n\npadding: 2px 5px;\n\n}\n\n [page-view]>div.mulp-view>div.btns-view{\n\nflex-basis: 40px;\n\nbackground-color: #f2f2f2;\n\nborder-top: 1px solid #d8d8d8;\n\n}\n\n [page-view]>div.mulp-view>div.btns-view>button{\n\nheight: 24px;\n\nwidth: 70px;\n\nmargin: 8px 0 0 8px;\n\ncursor: pointer;\n\nbackground: #2196f3;\n\ncolor: white;\n\nborder: none;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
+
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/newFile
 /*****************************************************************/
-window.__pkg__bundleSrc__['46']=function(){
+window.__pkg__bundleSrc__['55']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('47');
+    __pkg__scope_args__=window.__pkg__getBundle('56');
 var AudioContext =__pkg__scope_args__.default;
 
 
@@ -493,24 +499,26 @@ __pkg__scope_bundle__.default= function () {
         inputEl.click();
     });
 }
+
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/AudioContext
 /*****************************************************************/
-window.__pkg__bundleSrc__['47']=function(){
+window.__pkg__bundleSrc__['56']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default=
     window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/AudioBuffer-To-Wav
 /*****************************************************************/
-window.__pkg__bundleSrc__['48']=function(){
+window.__pkg__bundleSrc__['57']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (buffer, opt) {
@@ -592,35 +600,38 @@ function writeString(view, offset, string) {
     view.setUint8(offset + i, string.charCodeAt(i));
   }
 }
+
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/formatTime
 /*****************************************************************/
-window.__pkg__bundleSrc__['49']=function(){
+window.__pkg__bundleSrc__['58']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 把秒值变成更可读的格式
 __pkg__scope_bundle__.default= function(time) {
     return (Math.floor(time / 60)) + ":" + (Math.floor(time % 60)) + "." + ((time % 1).toFixed(3) + "").replace(/^.{0,}\./, '')
 };
+
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['50']=function(){
+window.__pkg__bundleSrc__['59']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 编辑切割点
     pice: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle4.js','51')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle11.js','60')
     }
 
 };
+
     return __pkg__scope_bundle__;
 }

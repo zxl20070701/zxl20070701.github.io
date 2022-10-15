@@ -1,6 +1,16 @@
 body {
     background-color: #fafafa;
 
+    .debugger {
+        background-image: url('./debugger.png');
+        position: fixed;
+        left: 10px;
+        bottom: 10px;
+        width: 70px;
+        height: 70px;
+        cursor: pointer;
+    }
+
     .quick-link {
         position: fixed;
         top: 120px;

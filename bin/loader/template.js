@@ -1,7 +1,7 @@
 // 标记所有没有闭合结点的直接自闭合
-let closeTag = function (tagArray) {
+var closeTag = function (tagArray) {
 
-    let needClose = [];
+    var needClose = [];
 
     tagArray.forEach(function (tag, i) {
         if (tag.type == 'beginTag') {
@@ -12,7 +12,7 @@ let closeTag = function (tagArray) {
 
             while (needClose.length > 0) {
 
-                let needCloseTag = needClose.pop();
+                var needCloseTag = needClose.pop();
 
                 if (needCloseTag[1] == tag.tagName) {
                     break;
@@ -32,12 +32,12 @@ let closeTag = function (tagArray) {
 // 我们会在这里校对那些没有结束标签的开始标签
 // 这步结束以后，每个都是一个单独的标签
 // 也就是不用再区分开始或闭合了
-let analyseDeep = function (tagArray) {
+var analyseDeep = function (tagArray) {
 
     // 闭合标签
     tagArray = closeTag(tagArray);
 
-    let deep = 0, tagDeepArray = [];
+    var deep = 0, tagDeepArray = [];
 
     tagArray.forEach(function (tag) {
 
@@ -94,15 +94,15 @@ let analyseDeep = function (tagArray) {
 };
 
 // 分析结点的属性
-let analyseTag = function (attrString) {
-    let attr = {}, index = 0;
+var analyseTag = function (attrString) {
+    var attr = {}, index = 0;
 
     attrString = attrString.trim();
 
-    let getOneAttr = function () {
+    var getOneAttr = function () {
 
         // 属性名和属性值
-        let attrName = "", attrValue = "";
+        var attrName = "", attrValue = "";
 
         // 先寻找属性名
         for (; index < attrString.length; index++) {
@@ -128,7 +128,7 @@ let analyseTag = function (attrString) {
                 index += 1;
 
                 // 由于属性可能由引号包裹或直接暴露
-                let preCode = null, preLeng = -1;
+                var preCode = null, preLeng = -1;
 
                 // 如果是由'或者"包裹
                 if (attrString.substr(index, 1) == '"' || attrString.substr(index, 1) == "'") {
@@ -195,25 +195,25 @@ let analyseTag = function (attrString) {
     return attr;
 };
 
-let nextTagFun = function (template) {
+var nextTagFun = function (template) {
 
-    let i = -1,
+    var i = -1,
 
         // 当前面对的字符
         currentChar = null;
 
     // 如果前面是获取的js或css，还有pre等开始标签，比较特殊，直接寻址闭合的
-    let preIsSpecial = false, specialCode = "";
-    let specialTag = ['script', 'pre', 'style', 'code'];
+    var preIsSpecial = false, specialCode = "";
+    var specialTag = ['script', 'pre', 'style', 'code'];
 
     // 获取下一个字符
-    let next = function () {
+    var next = function () {
         currentChar = i++ < template.length - 1 ? template[i] : null;
         return currentChar;
     };
 
     // 获取往后n个值
-    let nextNValue = function (n) {
+    var nextNValue = function (n) {
         return template.substring(i, n + i > template.length ? template.length : n + i);
     };
 
@@ -235,7 +235,7 @@ let nextTagFun = function (template) {
      */
     return function () {
 
-        let tag = currentChar, tagObj = {};
+        var tag = currentChar, tagObj = {};
 
         if (tag == null) return null;
 
@@ -294,7 +294,7 @@ let nextTagFun = function (template) {
         else if (tag == '<') {
 
             // 标记是否处于属性值是字符串包裹中
-            let isAttrString = false, attrLeftValue = null, attrLeftLen = null;
+            var isAttrString = false, attrLeftValue = null, attrLeftLen = null;
 
             // 如果在包裹中或者没有遇到‘>’说明没有结束
             while ((isAttrString || currentChar != '>') && i < template.length) {
@@ -304,7 +304,7 @@ let nextTagFun = function (template) {
                 // 如果是包裹里面，试探是否即将遇到了结束
                 if (isAttrString) {
 
-                    let next23Value = nextNValue(attrLeftLen + 1).substring(1);
+                    var next23Value = nextNValue(attrLeftLen + 1).substring(1);
                     if (next23Value == attrLeftValue) {
                         isAttrString = false;
                     }
@@ -314,7 +314,7 @@ let nextTagFun = function (template) {
                 // 如果在包裹外面，试探是否即将进入包裹
                 else {
 
-                    let next23Value = nextNValue(2);
+                    var next23Value = nextNValue(2);
                     if (next23Value == '="' || next23Value == "='") {
                         attrLeftValue = next23Value.replace('=', '');
                         attrLeftLen = 1;
@@ -350,13 +350,13 @@ let nextTagFun = function (template) {
                 tag = tag.replace(/^</, '');
 
                 tagObj.tagName = "";
-                let j = 0;
+                var j = 0;
                 for (; j < tag.length; j++) {
                     if (tag[j] == ' ') break;
                     tagObj.tagName += tag[j];
                 }
 
-                let attrString = tag.substring(j);
+                var attrString = tag.substring(j);
                 if (/^[\x20\t\r\n\f]{0,}$/.test(attrString)) {
                     tagObj.attrs = {};
                 } else {
@@ -407,9 +407,9 @@ let nextTagFun = function (template) {
 
 module.exports = function (source) {
     // 获取读取下一个标签对象
-    let nextTag = nextTagFun("<root>" + source.trim() + "</root>");
+    var nextTag = nextTagFun("<root>" + source.trim() + "</root>");
 
-    let tag = nextTag(), DomTree = [];
+    var tag = nextTag(), DomTree = [];
     while (tag != null) {
 
         if (tag.type == 'textcode' && /^[\x20\t\r\n\f]{0,}$/.test(tag.tagName)) {
@@ -451,18 +451,18 @@ module.exports = function (source) {
      * 需要注意的是：如果一个文本结点内容只包含回车，tab，空格等空白字符，会直接被忽视
      */
 
-    let presNode = [null], preDeep = 0;
-    for (let i = 0; i < DomTree.length; i++) {
+    var presNode = [null], preDeep = 0;
+    for (var i = 0; i < DomTree.length; i++) {
 
         // 当前结点
-        let currentIndex = i, currentDeep = DomTree[i].__deep__;
+        var currentIndex = i, currentDeep = DomTree[i].__deep__;
         DomTree[i].childNodes = [];
         DomTree[i].preNode = null;
         DomTree[i].nextNode = null;
 
         // 前置三个结点
-        let lastPre = presNode[presNode.length - 1];
-        let last2Pre = presNode.length > 1 ? presNode[presNode.length - 2] : null;
+        var lastPre = presNode[presNode.length - 1];
+        var last2Pre = presNode.length > 1 ? presNode[presNode.length - 2] : null;
 
 
         // 如果遇到的是兄弟结点
@@ -497,8 +497,8 @@ module.exports = function (source) {
         // 如果是遇到了祖先
         else {
 
-            let preTempIndex = presNode[presNode.length - 1 - (preDeep - currentDeep)];
-            let preTemp2Index = presNode[presNode.length - 2 - (preDeep - currentDeep)];
+            var preTempIndex = presNode[presNode.length - 1 - (preDeep - currentDeep)];
+            var preTemp2Index = presNode[presNode.length - 2 - (preDeep - currentDeep)];
 
             // 修改兄弟关系
             DomTree[currentIndex].preNode = preTempIndex;
@@ -509,7 +509,7 @@ module.exports = function (source) {
             if (preTemp2Index != null) DomTree[preTemp2Index].childNodes.push(currentIndex);
 
             // 校对presNode
-            for (let j = 0; j < preDeep - currentDeep; j++) { presNode.pop(); }
+            for (var j = 0; j < preDeep - currentDeep; j++) { presNode.pop(); }
             presNode[presNode.length - 1] = currentIndex;
 
         }
