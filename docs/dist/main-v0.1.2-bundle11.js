@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['60']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('89');
+    __pkg__scope_args__=window.__pkg__getBundle('97');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('90');
+__pkg__scope_args__=window.__pkg__getBundle('98');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('49');
@@ -197,7 +197,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/dialogs/pice/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['89']=function(){
+window.__pkg__bundleSrc__['97']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2,8,11,23]},{"type":"tag","name":"canvas","attrs":{"id":"time-line"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"add-split"},"childNodes":[3,4,6]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"newTime"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"addSplit"},"childNodes":[5]},{"type":"text","content":"新增","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"resetSplit","class":"reset"},"childNodes":[7]},{"type":"text","content":"重置","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"update"},"childNodes":[9]},{"type":"tag","name":"span","attrs":{},"childNodes":[10]},{"type":"text","content":"片段列表","childNodes":[]},{"type":"tag","name":"table","attrs":{},"childNodes":[12,22]},{"type":"tag","name":"thead","attrs":{},"childNodes":[13]},{"type":"tag","name":"tr","attrs":{},"childNodes":[14,16,18,20]},{"type":"tag","name":"th","attrs":{},"childNodes":[15]},{"type":"text","content":"选择","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[17]},{"type":"text","content":"序号","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[19]},{"type":"text","content":"开始时间","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[21]},{"type":"text","content":"结束时间","childNodes":[]},{"type":"tag","name":"tbody","attrs":{"id":"table-list","ui-on:click":"updatePiceSelected"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btn-list"},"childNodes":[24,26]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose","class":"gray"},"childNodes":[25]},{"type":"text","content":"取消","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[27]},{"type":"text","content":"确定","childNodes":[]}]
@@ -208,7 +208,7 @@ window.__pkg__bundleSrc__['89']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/dialogs/pice/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['90']=function(){
+window.__pkg__bundleSrc__['98']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

@@ -5,13 +5,13 @@
 window.__pkg__bundleSrc__['29']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('84');
+    __pkg__scope_args__=window.__pkg__getBundle('92');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('85');
+__pkg__scope_args__=window.__pkg__getBundle('93');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('86');
+__pkg__scope_args__=window.__pkg__getBundle('94');
 var scssLoader =__pkg__scope_args__.default;
 
 
@@ -38,7 +38,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/scss/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['84']=function(){
+window.__pkg__bundleSrc__['92']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"div","attrs":{},"childNodes":[2,6]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3,4]},{"type":"text","content":"源代码","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"run","ui-on:click":"scssToCss"},"childNodes":[5]},{"type":"text","content":"运行","childNodes":[]},{"type":"tag","name":"textarea","attrs":{"id":"source-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[8,10]},{"type":"tag","name":"h2","attrs":{},"childNodes":[9]},{"type":"text","content":"运行结果","childNodes":[]},{"type":"tag","name":"textarea","attrs":{"id":"target-id"},"childNodes":[]}]
@@ -49,7 +49,7 @@ window.__pkg__bundleSrc__['84']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/scss/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['85']=function(){
+window.__pkg__bundleSrc__['93']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -63,7 +63,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./bin/loader/scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['86']=function(){
+window.__pkg__bundleSrc__['94']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     

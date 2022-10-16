@@ -17,11 +17,15 @@
         导出
     </span>
 </div>
-<div class="content" id='canvas'>
+<div class="content" id='main-view'>
 
     <!-- 画布 -->
-    <canvas ui-bind:width='width' ui-bind:height='height'></canvas>
+    <canvas ui-bind:width='width' ui-bind:height='height' id="main-view-canvas"></canvas>
 
+</div>
+
+<div class="axis" id="directive-view">
+    <canvas width="100" height="100" id="directive-view-canvas"></canvas>
 </div>
 
 <!-- 一些辅助而不需要显示的内容 -->

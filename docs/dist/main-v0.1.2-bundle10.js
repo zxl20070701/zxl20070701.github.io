@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['31']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('87');
+    __pkg__scope_args__=window.__pkg__getBundle('95');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('88');
+__pkg__scope_args__=window.__pkg__getBundle('96');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -39,7 +39,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['87']=function(){
+window.__pkg__bundleSrc__['95']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,5]},{"type":"tag","name":"header","attrs":{},"childNodes":[2,3]},{"type":"text","content":"调试窗口","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"$closeDialog"},"childNodes":[4]},{"type":"text","content":"X","childNodes":[]},{"type":"tag","name":"ul","attrs":{"id":"console-el"},"childNodes":[]}]
@@ -50,7 +50,7 @@ window.__pkg__bundleSrc__['87']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['88']=function(){
+window.__pkg__bundleSrc__['96']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

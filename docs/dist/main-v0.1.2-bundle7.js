@@ -1,22 +1,22 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.js
+// Original file:./src/pages/video-play/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['28']=function(){
+window.__pkg__bundleSrc__['27']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('82');
+    __pkg__scope_args__=window.__pkg__getBundle('88');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('83');
+__pkg__scope_args__=window.__pkg__getBundle('89');
 
 
 __pkg__scope_bundle__.default= function (obj) {
     return {
         render: template,
         beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "贪吃蛇";
-            document.getElementById('icon-logo').setAttribute('href', './snake-eating.png');
+            document.getElementsByTagName('title')[0].innerText = "视频播放器";
+            document.getElementById('icon-logo').setAttribute('href', './video-play.png');
         },
         methods: {
         }
@@ -27,9 +27,9 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.html
+// Original file:./src/pages/video-play/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['82']=function(){
+window.__pkg__bundleSrc__['88']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[]}]
@@ -38,9 +38,9 @@ window.__pkg__bundleSrc__['82']=function(){
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.scss
+// Original file:./src/pages/video-play/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['83']=function(){
+window.__pkg__bundleSrc__['89']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

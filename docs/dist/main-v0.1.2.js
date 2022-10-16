@@ -1527,47 +1527,47 @@ window.__pkg__bundleSrc__['20']=function(){
 
     // 首页
     home: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle1.js','21')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle1.js','21')
     },
 
     // 正则表达式可视化
     "regexper-visualization": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle2.js','22')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle2.js','22')
     },
 
     // 音频编辑器
     "audio-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle3.js','23')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle3.js','23')
     },
 
     // 格式化JSON字符串
     "format-json": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle4.js','24')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle4.js','24')
     },
 
     // 图片编辑器
     "image-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle5.js','25')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle5.js','25')
     },
 
     // 模型编辑器
     "model-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle6.js','26')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle6.js','26')
     },
 
     // 视频播放器
     "video-play": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle7.js','27')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle7.js','27')
     },
 
     // 贪吃蛇
     "snake-eating": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle8.js','28')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle8.js','28')
     },
 
     // scss转css
     "scss": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle9.js','29')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle9.js','29')
     },
 };
 
@@ -1584,7 +1584,7 @@ window.__pkg__bundleSrc__['30']=function(){
 
     // 调试
     debugger: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle10.js','31')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.2-bundle10.js','31')
     }
 
 };

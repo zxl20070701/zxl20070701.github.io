@@ -102,5 +102,12 @@
             text-align: center;
             background-color: #9fa2a3;
         }
+
+        &.axis {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            pointer-events: none;
+        }
     }
 }

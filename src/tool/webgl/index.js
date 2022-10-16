@@ -92,6 +92,17 @@ export default function (node, opts) {
                 return textureObj;
             },
 
+            // 视图窗口缩放设置
+            "updateScale": function (value) {
+
+                var viewWidth = gl.canvas.width * value;
+                var viewHeight = gl.canvas.height * value;
+
+                var elWidth = gl.canvas.width;
+                var elHeight = gl.canvas.height;
+
+                gl.viewport((elWidth - viewWidth) * 0.5, (elHeight - viewHeight) * 0.5, viewWidth, viewHeight);
+            }
 
         };
 
