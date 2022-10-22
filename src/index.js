@@ -1,9 +1,10 @@
 import useTemplate from "./framework/useTemplate";
 
 import urlFormat from "./tool/urlFormat";
+import isString from "./tool/type/isString";
 
-import lazyLoadPage from "./pages/lazy-load";
-import lazyLoadDialog from "./dialogs/lazy-load";
+import lazyPages from "./pages/lazy-load";
+import lazyDialogs from "./dialogs/lazy-load";
 
 import './common.scss';
 
@@ -18,11 +19,12 @@ var pagename = urlFormat().router[0]
 var viewEl = document.getElementById('view-root');
 
 var dialogRootEl = document.getElementById('dialog-root');
+var winRootEl = document.getElementById('win-root');
 
 // 默认打开主页
-if (!(pagename in lazyLoadPage)) pagename = "home";
+if (!(pagename in lazyPages)) pagename = "home";
 
-lazyLoadPage[pagename]().then(function (viewData) {
+lazyPages[pagename]().then(function (viewData) {
     viewEl.setAttribute('page-view', '');
     // 挂载页面
     var viewInstance = useTemplate(viewEl, viewData.default);
@@ -33,6 +35,7 @@ lazyLoadPage[pagename]().then(function (viewData) {
 
     // 打开弹框方法
     var openDialog = function (lazypage, props) {
+        if (isString(lazypage)) lazypage = lazyDialogs[lazypage];
 
         var dialogEl = document.createElement('div');
         dialogRootEl.appendChild(dialogEl);
@@ -74,6 +77,34 @@ lazyLoadPage[pagename]().then(function (viewData) {
     // 注册打开弹框方法
     viewInstance.$openDialog = openDialog;
 
+    // 注册打开窗口方法
+    viewInstance.$openWin = function (lazypage, props) {
+        var winEl = document.createElement('div');
+        winRootEl.appendChild(winEl);
+
+        winEl.setAttribute('win-view', '');
+
+        return new Promise(function (resolve, reject) {
+            lazypage().then(function (winData) {
+
+                // 挂载弹框
+                var winInstance = useTemplate(winEl, winData.default, props);
+
+                if ('_name' in winInstance) {
+                    winEl.setAttribute('win-view', winInstance._name);
+                }
+
+                // 注册打开弹框方法
+                winInstance.$openDialog = openDialog;
+
+                resolve({
+                    instance: winInstance,
+                    el: winEl
+                });
+            });
+        });
+    };
+
     // 追加调试弹框
     var debuggerEl = document.createElement('div');
     document.body.insertBefore(debuggerEl, document.body.childNodes[0]);
@@ -81,7 +112,7 @@ lazyLoadPage[pagename]().then(function (viewData) {
     // 调试窗口
     debuggerEl.setAttribute('class', 'debugger');
     debuggerEl.addEventListener('click', function () {
-        openDialog(lazyLoadDialog.debugger);
+        openDialog(lazyDialogs.debugger);
     });
 
 });

@@ -69,7 +69,7 @@ export default function (callback) {
         doMove(event.touches[0]);
     });
 
-    let doScale = function (value) {
+    var doScale = function (value) {
         if (value == 0) return;
 
         callback({

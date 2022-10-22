@@ -4,23 +4,21 @@ import { initPainterConfig } from './config';
 
 // 画笔对象
 
-export default function (canvas) {
+export default function (canvas, width, height) {
 
-    var width = canvas.clientWidth,//内容+内边距
-        height = canvas.clientHeight;
+    // 设置宽
+    if (width) {
+        canvas.style.width = width + "px";
+        canvas.setAttribute('width', width);
+    }
 
-    // 设置显示大小
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
-
-    // 设置画布大小（画布大小设置为显示的两倍，使得显示的时候更加清晰）
-    canvas.setAttribute('width', width * 2);
-    canvas.setAttribute('height', height * 2);
+    // 设置高
+    if (height) {
+        canvas.style.height = height + "px";
+        canvas.setAttribute('height', height);
+    }
 
     var painter = canvas.getContext("2d");
-
-    // 通过缩放实现模糊问题
-    painter.scale(2, 2);
 
     // 默认配置canvas2D对象已经存在的属性
     painter.textBaseline = 'middle';
@@ -169,6 +167,34 @@ export default function (canvas) {
             initRect(painter, x, y, width, height);
             painter.fill();
             painter.stroke();
+            return enhancePainter;
+        },
+
+        // base64
+        "toDataURL": function (type) {
+            type = type || 'image/png';
+            return canvas.toDataURL(type);
+        },
+
+        // image
+        "drawImage": function (img, sx, sy, sw, sh, x, y, w, h) {
+            sx = sx || 0;
+            sy = sy || 0;
+            x = x || 0;
+            y = y || 0;
+            w = w ? w : canvas.getAttribute('width');
+            h = h ? h : canvas.getAttribute('height');
+
+            if (img.nodeName == 'CANVAS') {
+                sw = sw ? sw : canvas.getAttribute('width');
+                sh = sh ? sh : canvas.getAttribute('height');
+            } else {
+                // 默认类型是图片
+                sw = sw || img.width;
+                sh = sh || img.height;
+            }
+
+            painter.drawImage(img, sx, sy, sw, sh, x, y, w, h);
             return enhancePainter;
         },
 

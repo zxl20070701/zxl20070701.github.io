@@ -7,7 +7,7 @@ export default function (express, _isString) {
     express = pretreatment(express, _isString);
 
     // 单词分析
-    let expressArray = analyseExpress(express.trim());
+    var expressArray = analyseExpress(express.trim());
 
     // 补充辅助括号
     expressArray.unshift(["?@"]);
@@ -20,7 +20,7 @@ export default function (express, _isString) {
      */
     return (function calcImageData(index) {
 
-        let imageData = {
+        var imageData = {
             width: 0,
             height: 0,
 
@@ -49,7 +49,7 @@ export default function (express, _isString) {
         }
 
         // 表示一行（一个组可以有并列的多行）
-        let rowObject = {
+        var rowObject = {
             contents: [],
             width: 0,
             height: 0
@@ -59,7 +59,7 @@ export default function (express, _isString) {
 
             // 说明开始一个新的匹配分组
             if (expressArray[i] == '(') {
-                let _imageData = calcImageData(i);
+                var _imageData = calcImageData(i);
                 rowObject.contents.push(_imageData[0]);
 
                 // 更新大小
@@ -100,7 +100,7 @@ export default function (express, _isString) {
 
             else {
 
-                for (let j = 0; j < expressArray[i].length; j++) {
+                for (var j = 0; j < expressArray[i].length; j++) {
 
                     // 如果是分组标记
                     if (j == 0 && ['?=', '?!', '?:', '?@'].indexOf(expressArray[i][0]) > -1) {

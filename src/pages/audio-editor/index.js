@@ -5,7 +5,7 @@ import newFile from '../../tool/audio/newFile';
 import audiobufferToWav from '../../tool/audio/AudioBuffer-To-Wav';
 import formatTime from '../../tool/formatTime';
 
-import lazyLoad from './dialogs/lazy-load';
+import lazyDialogs from './dialogs/lazy-load';
 
 export default function (obj) {
     return {
@@ -289,7 +289,7 @@ export default function (obj) {
                                 btn_piceEl.addEventListener('click', function () {
 
                                     // 打开片段编辑弹框
-                                    _this.$openDialog(lazyLoad.pice, {
+                                    _this.$openDialog(lazyDialogs.pice, {
                                         piceData: itemEl._data.pice,
                                         duration: itemEl._data.audio.content.duration
                                     }).then(function (piceData) {

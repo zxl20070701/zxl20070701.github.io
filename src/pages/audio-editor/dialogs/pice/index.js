@@ -163,9 +163,10 @@ export default function (obj, props) {
             }
         },
         mounted: function () {
+            var canvas = document.getElementById('time-line');
 
             // 获取画笔
-            painter = canvasRender(document.getElementById('time-line'));
+            painter = canvasRender(canvas, canvas.clientWidth, canvas.clientHeight);
 
             // 绘制时间轴承
             this.drawTimeLine();
@@ -174,5 +175,5 @@ export default function (obj, props) {
             this.updatePice();
 
         }
-    }
+    };
 };

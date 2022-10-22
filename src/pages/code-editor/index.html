@@ -1,0 +1,68 @@
+<header>
+    <ul>
+        <li>
+            文件
+            <ul>
+                <li>
+                    新建文件
+                    <em>Ctrl+N</em>
+                </li>
+                <li class='line'></li>
+                <li ui-on:click="openFile">
+                    打开文件
+                    <em>Ctrl+O</em>
+                </li>
+                <li ui-on:click="openFolder">
+                    打开文件夹
+                    <em>Ctrl+Shift+O</em>
+                </li>
+                <li>
+                    最近打开
+                    <em class='more'></em>
+                    <ul>
+                        <li>无文件夹</li>
+                        <li class='line'></li>
+                        <li>无文件</li>
+                    </ul>
+                </li>
+                <li class='line'></li>
+                <li>
+                    保存
+                    <em>Ctrl+S</em>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</header>
+<div class="content">
+    <div class="nav">
+        <span tag="folder" ui-on:click="changeNav" ui-bind:active="nav=='folder'?'yes':'no'" title="浏览打开的文件"></span>
+        <span tag="search" ui-on:click="changeNav" ui-bind:active="nav=='search'?'yes':'no'" title="查找文件"></span>
+        <span tag="plug" ui-on:click="changeNav" ui-bind:active="nav=='plug'?'yes':'no'" title="安装插件"></span>
+        <span tag="set" ui-on:click="changeNav" ui-bind:active="nav=='set'?'yes':'no'" title="配置系统"></span>
+    </div>
+    <div class="platform">
+
+        <!-- 文件 -->
+        <div class="folder" ui-bind:active="nav=='folder'?'yes':'no'">
+
+        </div>
+
+        <!-- 查找 -->
+        <div class="search" ui-bind:active="nav=='search'?'yes':'no'">
+
+        </div>
+
+        <!-- 插件 -->
+        <div class="plug" ui-bind:active="nav=='plug'?'yes':'no'">
+
+        </div>
+
+    </div>
+    <div class="view">
+
+    </div>
+</div>
+<footer>
+
+</footer>

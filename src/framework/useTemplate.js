@@ -13,6 +13,7 @@ import { watcher, proxy } from "./observe-data";
 import uiBind from "../directives/ui-bind";
 import uiModel from "../directives/ui-model";
 import uiOn from "../directives/ui-on";
+import uiDragdrop from "../directives/ui-dragdrop";
 
 export default function useTemplate(el, pagefactory, props) {
 
@@ -21,7 +22,7 @@ export default function useTemplate(el, pagefactory, props) {
     var pageinfo = pagefactory({
         ref: ref,
         reactive: reactive
-    }, JSON.parse(JSON.stringify(props || {})));
+    }, props || {});
 
     // 创建实例
     var instance = {
@@ -102,6 +103,7 @@ export default function useTemplate(el, pagefactory, props) {
     pageinfo.directives['ui-bind'] = uiBind;
     pageinfo.directives['ui-model'] = uiModel;
     pageinfo.directives['ui-on'] = uiOn;
+    pageinfo.directives['ui-dragdrop'] = uiDragdrop;
 
     if ("render" in pageinfo) {
 

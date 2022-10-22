@@ -4,11 +4,12 @@ body {
     .debugger {
         background-image: url('./debugger.png');
         position: fixed;
-        left: 10px;
-        bottom: 10px;
+        left: 5px;
+        bottom: 5px;
         width: 70px;
         height: 70px;
         cursor: pointer;
+        z-index: 200;
     }
 
     .quick-link {
@@ -18,6 +19,7 @@ body {
         box-shadow: 0 0 6px 0px #d6cdcd;
         padding: 5px;
         width: 60px;
+        z-index: 200;
 
         &.left {
             border-radius: 0 10px 10px 0;
@@ -56,12 +58,22 @@ body {
         }
     }
 
+    #win-root {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        z-index: 5;
+    }
+
     #dialog-root {
         position: fixed;
         left: 0;
         top: 0;
         width: 0;
         height: 0;
+        z-index: 10;
 
         &>div {
             &.mask {

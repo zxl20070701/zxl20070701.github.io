@@ -1,0 +1,182 @@
+[page-view] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 40px);
+    margin-left: 80px;
+    margin-top: 20px;
+    outline: 1px solid #e9e9e9;
+    border-radius: 5px;
+
+    &>header {
+        height: 30px;
+        line-height: 30px;
+        background-color: #e6e2ec;
+        background-image: url('./code-editor.png');
+        background-size: auto 90%;
+        padding-left: 40px;
+        background-repeat: no-repeat;
+        background-position: 10px center;
+
+        &>ul {
+            &>li {
+                display: inline-block;
+                vertical-align: top;
+                position: relative;
+                padding: 0 10px;
+                font-size: 12px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(186, 190, 194);
+
+                    &>ul {
+                        display: block;
+
+                        &>li:hover>ul {
+                            display: block;
+                        }
+                    }
+                }
+
+                ul {
+                    background-color: rgb(237, 239, 241);
+                    border: 1px solid rgb(230, 216, 216);
+                    width: 260px;
+                    box-shadow: 0px 1px 3px #c5c5c7;
+                    display: none;
+
+                    li {
+                        line-height: 26px;
+                        margin-top: 5px;
+                        padding: 0 20px;
+                        position: relative;
+
+                        &>em {
+                            position: absolute;
+                            right: 20px;
+                            font-style: normal;
+
+                            &.more {
+                                width: 20px;
+                                height: 100%;
+                                background-image: url(./toRight.png);
+                                background-repeat: no-repeat;
+                                background-position: center center;
+                            }
+                        }
+
+                        &:last-child {
+                            margin-bottom: 5px;
+                        }
+
+                        &:hover:not(.line) {
+                            background-color: rgb(205, 218, 186);
+                        }
+
+                        &.line {
+                            height: 1px;
+                            width: 240px;
+                            margin-left: 10px;
+                            background-color: #c5c5c7;
+                        }
+                    }
+                }
+
+                &>ul {
+                    position: absolute;
+                    left: -1px;
+                    z-index: 1;
+
+                    &>li {
+
+                        &>ul {
+                            position: absolute;
+                            top: 0;
+                            left: 258px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &>div {
+        &.content {
+            height: calc(100% - 60px);
+            white-space: nowrap;
+
+            &>div {
+                height: 100%;
+                vertical-align: top;
+                white-space: normal;
+                display: inline-block;
+
+                &.nav {
+                    background-color: #ededf5;
+                    width: 50px;
+                    padding-top: 20px;
+                    position: relative;
+
+                    &>span {
+                        display: inline-block;
+                        height: 50px;
+                        width: 100%;
+                        background-image: url('./editor@switch.png');
+                        cursor: pointer;
+
+                        &[tag='folder'] {
+                            background-position-y: 0px;
+                        }
+
+                        &[tag='search'] {
+                            background-position-y: -63px;
+                        }
+
+                        &[tag='plug'] {
+                            background-position-y: -134px;
+                        }
+
+                        &[tag='set'] {
+                            background-position-y: -196px;
+                            position: absolute;
+                            left: 0;
+                            bottom: 0;
+                        }
+
+                        &[active='yes'] {
+                            border-left: 2px solid #9d91af;
+                            background-color: #cecbd238;
+                            background-image: url('./editor@switch_hover.png');
+                        }
+
+                        &:hover {
+                            background-image: url('./editor@switch_hover.png');
+                        }
+                    }
+                }
+
+                &.platform {
+                    background-color: #f2f2f2;
+                    width: 240px;
+
+                    &>div {
+                        display: none;
+
+                        &[active='yes'] {
+                            display: block;
+                        }
+                    }
+                }
+
+                &.view {
+                    background-color: #f5f5f5;
+                    width: calc(100% - 290px);
+                }
+            }
+        }
+    }
+
+    &>footer {
+        height: 30px;
+        background-color: #9c86bd;
+    }
+}

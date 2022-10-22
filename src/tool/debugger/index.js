@@ -95,7 +95,7 @@ export default function () {
 
         // 监听Promise相关错误
         window.addEventListener('unhandledrejection', event => {
-            let content = event.reason.stack;
+            var content = event.reason.stack;
             trigger('console', {
                 type: "error",
                 content: [content]

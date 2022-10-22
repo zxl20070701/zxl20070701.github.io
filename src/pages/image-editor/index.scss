@@ -1,1 +1,145 @@
-[page-view] {}
+[page-view] {
+
+    .no-view {
+        display: none;
+    }
+
+    &>div {
+        &.menu {
+
+            border-bottom: 1px solid gray;
+            position: fixed;
+            z-index: 7;
+            top: 0;
+            left: 0;
+            width: 100vw;
+
+            &>h2,
+            ul {
+                vertical-align: top;
+            }
+
+            &>h2 {
+                font-size: 12px;
+                display: inline-block;
+                height: 30px;
+                line-height: 30px;
+                background-image: url('./image-editor.png');
+                background-size: auto 70%;
+                background-repeat: no-repeat;
+                background-position: 5px center;
+                padding-left: 30px;
+                padding-right: 10px;
+                border-right: 1px solid #cccccc;
+            }
+
+            &>ul {
+                display: inline-block;
+                line-height: 30px;
+                font-size: 12px;
+
+                label {
+                    cursor: pointer;
+                    padding: 0 5px;
+                    display: block;
+
+                    &>span {
+                        float: right;
+                    }
+                }
+
+                ul {
+                    label {
+                        padding-left: 20px;
+                        background-repeat: no-repeat;
+                        background-position: left center;
+
+                        &[active='yes'] {
+                            background-image: url('./right.png');
+                        }
+                    }
+                }
+
+                li {
+                    &:hover {
+                        background-color: #cfd3d5;
+
+                        &>ul {
+                            display: block;
+                        }
+                    }
+
+                    &.split-line {
+                        background-color: #ebedee;
+                        height: 1px;
+                        margin: 2px 0;
+                    }
+                }
+
+                ul {
+                    display: none;
+                }
+
+                &>li {
+                    display: inline-block;
+                    margin-left: 10px;
+                    position: relative;
+
+                    &>ul {
+                        position: absolute;
+                        border: 1px solid gray;
+                        border-radius: 5px;
+                        width: 100px;
+                        top: 25px;
+                        left: -5px;
+                        background-color: white;
+                        padding: 5px 0;
+                    }
+                }
+
+            }
+        }
+
+        &.tool-config {
+            border-bottom: 1px solid #ccc;
+            height: 50px;
+            line-height: 50px;
+            position: fixed;
+            top: 30px;
+            width: 100vw;
+            font-size: 12px;
+
+            &>ul {
+                display: none;
+
+                &[active='yes'] {
+                    display: block;
+                }
+
+                &>li {
+                    padding: 0 5px;
+
+                    &>input {
+                        width: 50px;
+                    }
+                }
+            }
+        }
+
+        &.image {
+            width: 100vw;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+            position: relative;
+            top: 80px;
+
+            &>canvas {
+                position: absolute;
+                outline: 1px solid #ccc;
+                cursor: none;
+                background-image: url('./mosaic.png');
+            }
+        }
+    }
+
+}

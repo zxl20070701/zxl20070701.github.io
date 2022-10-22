@@ -9,7 +9,8 @@ html {
 }
 
 button,
-input {
+input,
+select {
     /* 兼容部分手机下border不显示问题 */
     border: 1px solid #b2b2bd;
 }

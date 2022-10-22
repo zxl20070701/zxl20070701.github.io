@@ -1,0 +1,164 @@
+<div class="no-view">
+
+    <!-- 选择图片 -->
+    <input type="file" id="img-file1" flag="import" ui-on:change="openImage" accept="image/*" />
+    <input type="file" id="img-file2" flag="append" ui-on:change="openImage" accept="image/*" />
+
+</div>
+
+<!-- 菜单 -->
+<div class="menu">
+    <h2>图片编辑器</h2>
+    <ul>
+        <li>
+            <label>
+                文件
+            </label>
+            <ul>
+                <li>
+                    <label for="img-file1">
+                        打开
+                    </label>
+                </li>
+                <li>
+                    <label ui-on:click="saveImage">
+                        保存
+                    </label>
+                </li>
+                <li>
+                    <label for="img-file2">
+                        置入
+                    </label>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <label>
+                图像
+            </label>
+            <ul>
+                <li>
+                    <label ui-on:click="editCanvasSize">
+                        画布大小
+                    </label>
+                </li>
+                <li>
+                    <label ui-on:click="editImageSize">
+                        图像大小
+                    </label>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <label>
+                选择
+            </label>
+            <ul>
+                <li>
+                    <label>
+                        取消选择
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        反向
+                    </label>
+                </li>
+                <li class="split-line"></li>
+                <li>
+                    <label>
+                        色彩范围
+                    </label>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <label>
+                窗口
+            </label>
+            <ul>
+                <li>
+                    <label ui-on:click="toggleWin" tag="layer" ui-bind:active="isMenuOpen.layer?'yes':'no'">
+                        图层
+                    </label>
+                </li>
+                <li>
+                    <label ui-on:click="toggleWin" tag="tool" ui-bind:active="isMenuOpen.tool?'yes':'no'">
+                        工具箱
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        通道
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        画笔
+                    </label>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<!-- 工具配置 -->
+<div class="tool-config">
+
+    <!-- 移动 -->
+    <ul ui-bind:active="activeTool=='move'?'yes':'no'">
+        <li>
+            移动距离：
+            <input type="text" ui-model="move_size">
+        </li>
+    </ul>
+
+    <!-- 橡皮擦 -->
+    <ul ui-bind:active="activeTool=='eraser'?'yes':'no'">
+        <li>
+            大小：
+            <input type="text" ui-model="eraser_size">
+        </li>
+    </ul>
+
+    <!-- 背景橡皮擦 -->
+    <ul ui-bind:active="activeTool=='eraser-bg'?'yes':'no'">
+        <li>
+            大小：
+            <input type="text" ui-model="eraser_bg_size">
+        </li>
+    </ul>
+
+    <!-- 抓手工具 -->
+    <ul ui-bind:active="activeTool=='drap'?'yes':'no'">
+
+    </ul>
+
+    <!-- 画笔 -->
+    <ul ui-bind:active="activeTool=='painter'?'yes':'no'">
+
+    </ul>
+
+    <!-- 缩放工具 -->
+    <ul ui-bind:active="activeTool=='resize'?'yes':'no'">
+
+    </ul>
+
+    <!-- 文字 -->
+    <ul ui-bind:active="activeTool=='text'?'yes':'no'">
+
+    </ul>
+
+    <!-- 几何绘制 -->
+    <ul ui-bind:active="activeTool=='geometry'?'yes':'no'">
+
+    </ul>
+
+</div>
+
+<!-- 画布 -->
+<div class="image">
+    <canvas id="image-root"
+        ui-bind:style="'width:'+width+'px;height:'+height+'px;margin-top:calc(50vh - 40px - ' + height * 0.5 + 'px);margin-left:calc(50vw - ' + width * 0.5 + 'px);'">
+    </canvas>
+</div>

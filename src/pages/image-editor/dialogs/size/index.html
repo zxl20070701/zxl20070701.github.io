@@ -1,0 +1,55 @@
+<h2 ui-dragdrop ui-bind="title"></h2>
+<div class="right-btn">
+    <div>
+        <fieldset>
+            <legend>
+                当前大小
+            </legend>
+            <ul ui-bind:lock="title=='图像大小'?'yes':'no'">
+                <li>
+                    <label>宽度：</label>
+                    <span ui-bind="width"></span>px
+                </li>
+                <li>
+                    <label>宽度：</label>
+                    <span ui-bind="height"></span>px
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>
+                新建大小
+            </legend>
+            <ul ui-bind:lock="title=='图像大小'?'yes':'no'">
+                <li>
+                    <label>宽度(W)：</label>
+                    <input type="text" ui-model="newWidth" ui-on:input="calcHeight">
+                    px
+                </li>
+                <li>
+                    <label>高度(H)：</label>
+                    <input type="text" ui-model="newHeight" ui-on:input="calcWidth">
+                    px
+                </li>
+                <li ui-bind:active="title=='画布大小'?'yes':'no'">
+                    <label>定位：</label>
+                    <div class="change-type" ui-bind:type="changeType">
+                        <span ui-on:click="doChangeType" val="left-top"></span>
+                        <span ui-on:click="doChangeType" val="center-top"></span>
+                        <span ui-on:click="doChangeType" val="rigth-top"></span>
+                        <span ui-on:click="doChangeType" val="left-middle"></span>
+                        <span ui-on:click="doChangeType" val="center-middle"></span>
+                        <span ui-on:click="doChangeType" val="rigth-middle"></span>
+                        <span ui-on:click="doChangeType" val="left-bottom"></span>
+                        <span ui-on:click="doChangeType" val="center-bottom"></span>
+                        <span ui-on:click="doChangeType" val="rigth-bottom"></span>
+                    </div>
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+    <div>
+        <button ui-on:click="doSubmit">确定</button>
+        <button ui-on:click="doClose">取消</button>
+    </div>
+</div>

@@ -41,7 +41,12 @@ export default {
     },
 
     // scss转css
-    "scss": function () {
+    scss: function () {
         return import('./scss/index.js')
+    },
+
+    // 代码编辑器
+    "code-editor": function () {
+        return import('./code-editor/index.js')
     },
 };
