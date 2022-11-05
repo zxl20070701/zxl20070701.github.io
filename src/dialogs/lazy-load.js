@@ -8,6 +8,16 @@ export default {
     // 颜色选择
     "color-picker": function () {
         return import('./color-picker/index.js')
+    },
+
+    // 接口文档
+    api: function () {
+        return import('./api/index.js')
+    },
+
+    // 实验室&练习
+    labory: function () {
+        return import('./labory/index.js')
     }
 
 };

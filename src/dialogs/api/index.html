@@ -1,0 +1,25 @@
+<header ui-dragdrop>
+    <h2>接口文档</h2>
+    <i ui-on:click="doClose" id="api-close">X</i>
+</header>
+<div class="tips">
+    温馨提示：此文档提供的所有功能都是内置的，只能在本项目中使用。
+</div>
+<div class="content">
+    <div class="menu">
+        <div>
+            <h1 tag="framework" ui-on:click="loadApiPage">内置框架</h1>
+            <div></div>
+        </div>
+        <div>
+            <h1 tag="editor" ui-on:click="loadApiPage" id="init-api-el">代码编辑器</h1>
+            <div></div>
+        </div>
+        <div>
+            <h1 tag="webgl" ui-on:click="loadApiPage">WebGL</h1>
+            <div></div>
+        </div>
+    </div>
+    <div class="content" id="api-content">
+    </div>
+</div>

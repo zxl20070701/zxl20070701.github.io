@@ -1,0 +1,23 @@
+[example-view='tree'] {
+    position: fixed;
+    background-color: white;
+    width: 500px;
+    height: 500px;
+    left: calc(50vw - 250px);
+    top: calc(50vh - 250px);
+    outline: 1px solid red;
+
+    &>button {
+        position: absolute;
+        right: -30px;
+        top: 10px;
+        text-align: center;
+        width: 30px;
+        outline: none;
+        border: none;
+        background-color: red;
+        color: white;
+        padding: 5px 0;
+        cursor: pointer;
+    }
+}

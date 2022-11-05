@@ -1,5 +1,9 @@
 <header ui-dragdrop>
     调试窗口
-    <span ui-on:click="$closeDialog">X</span>
+    <span ui-on:click="$closeDialog" id="debugger-close">X</span>
 </header>
-<ul id="console-el"></ul>
+<ul id="console-el">
+    <li class="blank">
+        无打印信息～
+    </li>
+</ul>

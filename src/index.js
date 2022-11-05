@@ -105,6 +105,10 @@ lazyPages[pagename]().then(function (viewData) {
         });
     };
 
+    /**
+     * 调试
+     */
+
     // 追加调试弹框
     var debuggerEl = document.createElement('div');
     document.body.insertBefore(debuggerEl, document.body.childNodes[0]);
@@ -112,7 +116,51 @@ lazyPages[pagename]().then(function (viewData) {
     // 调试窗口
     debuggerEl.setAttribute('class', 'debugger');
     debuggerEl.addEventListener('click', function () {
-        openDialog(lazyDialogs.debugger);
+
+        var debuggerCloseEl = document.getElementById('debugger-close');
+        if (debuggerCloseEl) {
+            debuggerCloseEl.click()
+        } else {
+            openDialog(lazyDialogs.debugger);
+        }
+
+    });
+
+    /**
+     * 接口文档
+     */
+
+    // 追加文档弹框
+    var apiEl = document.createElement('div');
+    document.body.insertBefore(apiEl, document.body.childNodes[0]);
+
+    apiEl.innerHTML = '接<br />口<br />文<br />档';
+
+    // 文档窗口
+    apiEl.setAttribute('class', 'api');
+    apiEl.addEventListener('click', function () {
+
+        var apiCloseEl = document.getElementById('api-close');
+        if (apiCloseEl) {
+            apiCloseEl.click()
+        } else {
+            openDialog(lazyDialogs.api);
+        }
+
+    });
+
+    /**
+    * 实验室&练习
+    */
+
+    // 追加验室&练习弹框
+    var laboryEl = document.createElement('a');
+    document.body.insertBefore(laboryEl, document.body.childNodes[0]);
+
+    // 实验室&练习窗口
+    laboryEl.setAttribute('class', 'labory-btn');
+    laboryEl.addEventListener('click', function () {
+        openDialog(lazyDialogs.labory);
     });
 
 });

@@ -4,6 +4,7 @@ export default {
 
     inserted(el, binding) {
         binding.value = binding.value || [0, 0, 0, 0];
+        el.style.cursor = 'move';
 
         //绑定鼠标左键按下事件
         xhtml.bind(el, 'mousedown', function mousedown(event) {
@@ -31,9 +32,29 @@ export default {
                     _el.style.left = newLeft + 'px';
                 }
 
+                // 左越界
+                else if (newLeft <= binding.value[3]) {
+                    _el.style.left = binding.value[3] + 'px';
+                }
+
+                // 右越界
+                else {
+                    _el.style.left = (window.innerWidth - binding.value[1] - _el.clientWidth) + 'px';
+                }
+
                 // 判断垂直是否越界
                 if (newTop > binding.value[0] && newTop + _el.clientHeight < window.innerHeight + binding.value[2]) {
                     _el.style.top = newTop + 'px';
+                }
+
+                // 上越界
+                else if (newTop <= binding.value[0]) {
+                    _el.style.top = binding.value[0] + 'px';
+                }
+
+                // 下越界
+                else {
+                    _el.style.top = (window.innerHeight + binding.value[2] - _el.clientHeight) + 'px';
                 }
 
             }

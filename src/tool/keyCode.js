@@ -154,6 +154,8 @@ var keyCode = function (event) {
     return resultKey == '' ? _key : resultKey;
 };
 
+export var getKeyString = keyCode;
+
 /**
  * 获取键盘此时按下的键的组合结果
  * @param {Function} callback 回调，键盘有键被按下的时候触发
@@ -173,7 +175,7 @@ export default function (callback) {
         if (/command/.test(keyStringCode)) macCommand = true;
 
         if (macCommand && !/command/.test(keyStringCode) && !/ctrl/.test(keyStringCode)) keyStringCode = "ctrl+" + keyStringCode;
-        callback(keyStringCode.replace(/command/g, 'ctrl').replace('ctrl+ctrl', 'ctrl'));
+        callback(keyStringCode.replace(/command/g, 'ctrl').replace('ctrl+ctrl', 'ctrl'), event);
     };
 
     var doKeyup = function (event) {

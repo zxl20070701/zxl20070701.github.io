@@ -1,3 +1,7 @@
+import isObject from '../type/isObject';
+import showData from './showData';
+import toString from './toString';
+
 var console = window.console;
 
 // 原生的打印方法 + 当前执行的代码在堆栈中的调用路径
@@ -22,15 +26,27 @@ var colors = {
 window._consoleAppend_ = function (item) {
     var rootEl = document.getElementById('console-el');
 
-    var itemEl = document.createElement('li');
-    rootEl.appendChild(itemEl);
+    var liEl = document.createElement('li');
+    rootEl.appendChild(liEl);
 
-    var content = "", i;
+    liEl.style.color = colors[item.type];
+
+    var i, itemEl, brEl;
     for (i = 0; i < item.content.length; i++) {
-        content += item.content[i] + "<br />"
+
+        itemEl = document.createElement('div');
+        liEl.appendChild(itemEl);
+
+        showData(itemEl, item.content[i]);
+
+        if (i < item.content.length - 1) {
+            brEl = document.createElement('div');
+            liEl.appendChild(brEl);
+
+            brEl.setAttribute('class', 'br');
+        }
     }
-    itemEl.innerHTML = content;
-    itemEl.style.color = colors[item.type];
+
 };
 
 function trigger(type, info) {

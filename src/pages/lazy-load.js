@@ -30,11 +30,6 @@ export default {
         return import('./model-editor/index.js')
     },
 
-    // 视频播放器
-    "video-play": function () {
-        return import('./video-play/index.js')
-    },
-
     // 贪吃蛇
     "snake-eating": function () {
         return import('./snake-eating/index.js')
@@ -48,5 +43,5 @@ export default {
     // 代码编辑器
     "code-editor": function () {
         return import('./code-editor/index.js')
-    },
+    }
 };

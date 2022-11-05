@@ -2,7 +2,9 @@ import template from './index.html';
 import './index.scss';
 
 import scssLoader from '../../../bin/loader/scss';
+import editorRender from '../../tool/editor/index';
 
+var sourceEditor, targetEditor;
 export default function (obj) {
     return {
         render: template,
@@ -10,11 +12,21 @@ export default function (obj) {
             document.getElementsByTagName('title')[0].innerText = "scss转css";
             document.getElementById('icon-logo').setAttribute('href', './scss.png');
         },
+        mounted: function () {
+            sourceEditor = new editorRender({
+                el: document.getElementById('source-id'),
+                shader: ['css']
+            });
+
+            targetEditor = new editorRender({
+                el: document.getElementById('target-id'),
+                shader: ['css'],
+                readonly: true
+            });
+        },
         methods: {
             scssToCss: function () {
-                var sourceEl = document.getElementById('source-id');
-                var targetEl = document.getElementById('target-id');
-                targetEl.value = scssLoader(sourceEl.value);
+                targetEditor.valueOf(scssLoader(sourceEditor.valueOf()));
             }
         }
     };

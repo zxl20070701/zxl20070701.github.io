@@ -1,100 +1,129 @@
 body {
     background-color: #fafafa;
 
-    .debugger {
-        background-image: url('./debugger.png');
-        position: fixed;
-        left: 5px;
-        bottom: 5px;
-        width: 70px;
-        height: 70px;
-        cursor: pointer;
-        z-index: 200;
-    }
-
-    .quick-link {
-        position: fixed;
-        top: 120px;
-        background-color: white;
-        box-shadow: 0 0 6px 0px #d6cdcd;
-        padding: 5px;
-        width: 60px;
-        z-index: 200;
-
-        &.left {
-            border-radius: 0 10px 10px 0;
-            left: 0;
-        }
-
-        &.right {
-            border-radius: 10px 0 0 10px;
+    &>a {
+        &.labory-btn {
+            background-image: url('./labory.png');
+            position: fixed;
             right: 0;
-        }
-
-        &>a {
-            display: block;
-            font-size: 12px;
-            height: 80px;
-            width: 50px;
+            top: 350px;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            z-index: 5;
             background-size: 100% auto;
-            background-position: center top;
-            background-repeat: no-repeat;
-            padding-top: 50px;
-            line-height: 30px;
-            text-align: center;
-            color: black;
-
-            &.github {
-                background-image: url('./code-source.jpg');
-            }
-
-            &.home {
-                background-image: url('./logo.png');
-            }
-
-            &.notebook {
-                background-image: url('./notebook.png');
-            }
         }
     }
 
-    #win-root {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 0;
-        height: 0;
-        z-index: 5;
-    }
+    &>div {
+        &.debugger {
+            background-image: url('./debugger.png');
+            position: fixed;
+            left: 5px;
+            bottom: 5px;
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            z-index: 200;
+        }
 
-    #dialog-root {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 0;
-        height: 0;
-        z-index: 10;
+        &.api {
+            position: fixed;
+            left: 0;
+            bottom: 200px;
+            cursor: pointer;
+            z-index: 200;
+            background-color: #eb6736;
+            padding: 5px 5px 5px 2px;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            font-size: 12px;
+        }
 
-        &>div {
-            &.mask {
-                position: fixed;
+        &.quick-link {
+            position: fixed;
+            top: 120px;
+            background-color: white;
+            box-shadow: 0 0 6px 0px #d6cdcd;
+            padding: 5px;
+            width: 60px;
+            z-index: 200;
+
+            &.left {
+                border-radius: 0 10px 10px 0;
                 left: 0;
-                top: 0;
-                width: 100vw;
-                height: 100vh;
-                background-color: #7b787840;
-                display: none;
+            }
 
-                &:not(:last-child) {
-                    display: block;
+            &.right {
+                border-radius: 10px 0 0 10px;
+                right: 0;
+            }
+
+            &>a {
+                display: block;
+                font-size: 12px;
+                height: 80px;
+                width: 50px;
+                background-size: 100% auto;
+                background-position: center top;
+                background-repeat: no-repeat;
+                padding-top: 50px;
+                line-height: 30px;
+                text-align: center;
+                color: black;
+
+                &.github {
+                    background-image: url('./code-source.jpg');
+                }
+
+                &.home {
+                    background-image: url('./logo.png');
+                }
+
+                &.notebook {
+                    background-image: url('./notebook.png');
                 }
             }
+        }
 
-            &[dialog-view] {
-                display: none;
+        &#win-root {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 0;
+            z-index: 5;
+        }
 
-                &:last-child {
-                    display: block;
+        &#dialog-root {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 0;
+            z-index: 10;
+
+            &>div {
+                &.mask {
+                    position: fixed;
+                    left: 0;
+                    top: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background-color: #7b787840;
+                    display: none;
+
+                    &:not(:last-child) {
+                        display: block;
+                    }
+                }
+
+                &[dialog-view] {
+                    display: none;
+
+                    &:last-child {
+                        display: block;
+                    }
                 }
             }
         }

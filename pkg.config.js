@@ -31,7 +31,7 @@ module.exports = {
         handler: function (source) {
 
             // 需要兼容commonjs语法的
-            if (/loader/.test(this.filepath)) {
+            if (/loader/.test(this.filepath) || /nodejs/.test(this.filepath)) {
                 return `
 
                 var module={
