@@ -135,17 +135,17 @@ window.__pkg__bundleSrc__['138']=function(){
 
     // 内置框架
     framework: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle19.js','139')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle19.js','139')
     },
 
     // 代码编辑器
     editor: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle20.js','140')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle20.js','140')
     },
 
     // WebGL
     webgl: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle21.js','141')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle21.js','141')
     }
 
 };

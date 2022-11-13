@@ -1576,7 +1576,7 @@ var xhtml =__pkg__scope_args__.default;
 
 __pkg__scope_bundle__.default= {
 
-    inserted(el, binding) {
+    inserted: function (el, binding) {
         binding.value = binding.value || [0, 0, 0, 0];
         el.style.cursor = 'move';
 
@@ -1912,47 +1912,47 @@ window.__pkg__bundleSrc__['23']=function(){
 
     // 首页
     home: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle1.js','24')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle1.js','24')
     },
 
     // 正则表达式可视化
     "regexper-visualization": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle2.js','25')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle2.js','25')
     },
 
     // 音频编辑器
     "audio-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle3.js','26')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle3.js','26')
     },
 
     // 格式化JSON字符串
     "format-json": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle4.js','27')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle4.js','27')
     },
 
     // 图片编辑器
     "image-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle5.js','28')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle5.js','28')
     },
 
     // 模型编辑器
     "model-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle6.js','29')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle6.js','29')
     },
 
     // 贪吃蛇
     "snake-eating": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle7.js','30')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle7.js','30')
     },
 
     // scss转css
     scss: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle8.js','31')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle8.js','31')
     },
 
     // 代码编辑器
     "code-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle9.js','32')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle9.js','32')
     }
 };
 
@@ -1969,22 +1969,22 @@ window.__pkg__bundleSrc__['33']=function(){
 
     // 调试
     debugger: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle10.js','34')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle10.js','34')
     },
 
     // 颜色选择
     "color-picker": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle11.js','35')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle11.js','35')
     },
 
     // 接口文档
     api: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle12.js','36')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle12.js','36')
     },
 
     // 实验室&练习
     labory: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.4-bundle13.js','37')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.5-bundle13.js','37')
     }
 
 };
@@ -2000,7 +2000,7 @@ window.__pkg__bundleSrc__['38']=function(){
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n body{\n\nbackground-color: #fafafa;\n\n}\n\n body>a.labory-btn{\n\nbackground-image: url('./labory.png');\n\nposition: fixed;\n\nright: 0;\n\ntop: 350px;\n\nwidth: 100px;\n\nheight: 100px;\n\ncursor: pointer;\n\nz-index: 5;\n\nbackground-size: 100% auto;\n\n}\n\n body>div.debugger{\n\nbackground-image: url('./debugger.png');\n\nposition: fixed;\n\nleft: 5px;\n\nbottom: 5px;\n\nwidth: 70px;\n\nheight: 70px;\n\ncursor: pointer;\n\nz-index: 200;\n\n}\n\n body>div.api{\n\nposition: fixed;\n\nleft: 0;\n\nbottom: 200px;\n\ncursor: pointer;\n\nz-index: 200;\n\nbackground-color: #eb6736;\n\npadding: 5px 5px 5px 2px;\n\ncolor: white;\n\nborder-radius: 0 5px 5px 0;\n\nfont-size: 12px;\n\n}\n\n body>div.quick-link{\n\nposition: fixed;\n\ntop: 120px;\n\nbackground-color: white;\n\nbox-shadow: 0 0 6px 0px #d6cdcd;\n\npadding: 5px;\n\nwidth: 60px;\n\nz-index: 200;\n\n}\n\n body>div.quick-link.left{\n\nborder-radius: 0 10px 10px 0;\n\nleft: 0;\n\n}\n\n body>div.quick-link.right{\n\nborder-radius: 10px 0 0 10px;\n\nright: 0;\n\n}\n\n body>div.quick-link>a{\n\ndisplay: block;\n\nfont-size: 12px;\n\nheight: 80px;\n\nwidth: 50px;\n\nbackground-size: 100% auto;\n\nbackground-position: center top;\n\nbackground-repeat: no-repeat;\n\npadding-top: 50px;\n\nline-height: 30px;\n\ntext-align: center;\n\ncolor: black;\n\n}\n\n body>div.quick-link>a.github{\n\nbackground-image: url('./code-source.jpg');\n\n}\n\n body>div.quick-link>a.home{\n\nbackground-image: url('./logo.png');\n\n}\n\n body>div.quick-link>a.notebook{\n\nbackground-image: url('./notebook.png');\n\n}\n\n body>div#win-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\nz-index: 5;\n\n}\n\n body>div#dialog-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\nz-index: 10;\n\n}\n\n body>div#dialog-root>div.mask{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 100vw;\n\nheight: 100vh;\n\nbackground-color: #7b787840;\n\ndisplay: none;\n\n}\n\n body>div#dialog-root>div.mask:not(:last-child){\n\ndisplay: block;\n\n}\n\n body>div#dialog-root>div[dialog-view]{\n\ndisplay: none;\n\n}\n\n body>div#dialog-root>div[dialog-view]:last-child{\n\ndisplay: block;\n\n}\n";
+styleElement.innerHTML = "\n body{\n\nbackground-color: #fafafa;\n\n}\n\n body>a.labory-btn{\n\nbackground-image: url('./labory.png');\n\nposition: fixed;\n\nright: 0;\n\ntop: 350px;\n\nwidth: 100px;\n\nheight: 100px;\n\ncursor: pointer;\n\nz-index: 5;\n\nbackground-size: 100% auto;\n\n}\n\n body>div.debugger{\n\nbackground-image: url('./debugger.png');\n\nposition: fixed;\n\nleft: 5px;\n\nbottom: 5px;\n\nwidth: 70px;\n\nheight: 70px;\n\ncursor: pointer;\n\nz-index: 200;\n\n}\n\n body>div.api{\n\nposition: fixed;\n\nleft: 0;\n\nbottom: 200px;\n\ncursor: pointer;\n\nz-index: 200;\n\nbackground-color: #eb6736;\n\npadding: 5px 5px 5px 2px;\n\ncolor: white;\n\nborder-radius: 0 5px 5px 0;\n\nfont-size: 12px;\n\n}\n\n body>div.quick-link{\n\nposition: fixed;\n\ntop: 120px;\n\nbackground-color: white;\n\nbox-shadow: 0 0 6px 0px #d6cdcd;\n\npadding: 5px;\n\nwidth: 60px;\n\nz-index: 200;\n\n}\n\n body>div.quick-link.left{\n\nborder-radius: 0 10px 10px 0;\n\nleft: 0;\n\n}\n\n body>div.quick-link.right{\n\nborder-radius: 10px 0 0 10px;\n\nright: 0;\n\n}\n\n body>div.quick-link>a{\n\ndisplay: block;\n\nfont-size: 12px;\n\nheight: 80px;\n\nwidth: 50px;\n\nbackground-size: 100% auto;\n\nbackground-position: center top;\n\nbackground-repeat: no-repeat;\n\npadding-top: 50px;\n\nline-height: 30px;\n\ntext-align: center;\n\ncolor: black;\n\n}\n\n body>div.quick-link>a.github{\n\nbackground-image: url('./code-source.jpg');\n\n}\n\n body>div.quick-link>a.home{\n\nbackground-image: url('./logo.png');\n\n}\n\n body>div.quick-link>a.notebook{\n\nbackground-image: url('./notebook.png');\n\n}\n\n body>div#win-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\nz-index: 5;\n\n}\n\n body>div#dialog-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\nz-index: 10;\n\n}\n\n body>div#dialog-root>div.mask{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 100vw;\n\nheight: 100vh;\n\nbackground-color: #7b787840;\n\ndisplay: none;\n\n}\n\n body>div#dialog-root>div.mask:not(:last-child){\n\ndisplay: block;\n\n}\n\n body>div#dialog-root>div[dialog-view]{\n\nz-index: -1;\n\n}\n\n body>div#dialog-root>div[dialog-view]:last-child{\n\nz-index: 1;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

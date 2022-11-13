@@ -1,3 +1,7 @@
+<div class="tips">
+    这里主要存放一些实验性质的内容～
+</div>
+
 <button class="close" ui-on:click="doClose">X</button>
 
 <div id="labory-root">
@@ -9,7 +13,9 @@
 </h3>
 <ul>
     <li>
-        <h4 tag="tree" ui-on:click="openExample">基础树图位置计算</h4>
+        <h4>
+            <span tag="tree" ui-on:click="openExample" class="link">基础树图位置计算</span>
+        </h4>
         <hr />
         <div>
             首先，根据配置的层次关系（配置的id,child,root）把原始数据变成内部结构，方便后期位置计算，这样的好处是可以兼容所有的数据结构。

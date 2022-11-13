@@ -119,10 +119,10 @@ body {
                 }
 
                 &[dialog-view] {
-                    display: none;
+                    z-index: -1;
 
                     &:last-child {
-                        display: block;
+                        z-index: 1;
                     }
                 }
             }

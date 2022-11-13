@@ -2,7 +2,7 @@ import xhtml from '../tool/xhtml';
 
 export default {
 
-    inserted(el, binding) {
+    inserted: function (el, binding) {
         binding.value = binding.value || [0, 0, 0, 0];
         el.style.cursor = 'move';
 
