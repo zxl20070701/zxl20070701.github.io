@@ -1,4 +1,4 @@
-import xhtml from '../tool/xhtml';
+import xhtml from '../tool/xhtml.js';
 
 export default {
 

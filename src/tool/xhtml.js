@@ -1,5 +1,5 @@
-import isFunction from './type/isFunction';
-import isElement from './type/isElement';
+import isFunction from './type/isFunction.js';
+import isElement from './type/isElement.js';
 
 export default {
 

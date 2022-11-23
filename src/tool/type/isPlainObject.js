@@ -1,4 +1,4 @@
-import getType from './getType';
+import getType from './getType.js';
 
 /**
  * 判断一个值是不是一个朴素的'对象'

@@ -1,6 +1,6 @@
-import analyseExpress from './analyseExpress';
-import toPath from './toPath';
-import calcValue from './value';
+import analyseExpress from './analyseExpress.js';
+import toPath from './toPath.js';
+import calcValue from './value.js';
 
 // 解析一段表达式
 export var evalExpress = function (target, express, scope) {

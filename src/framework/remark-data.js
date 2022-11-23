@@ -1,4 +1,4 @@
-import isObject from '../tool/type/isObject';
+import isObject from '../tool/type/isObject.js';
 
 var _ref = function (data) {
 

@@ -1,19 +1,19 @@
-import isObject from "../tool/type/isObject";
-import isFunctin from "../tool/type/isFunction";
-import { evalExpress } from "../tool/value/index";
+import isObject from "../tool/type/isObject.js";
+import isFunctin from "../tool/type/isFunction.js";
+import { evalExpress } from "../tool/value/index.js";
 
-import toNode from "../tool/to-node";
-import setAttribute from "../tool/setAttribute";
+import toNode from "../tool/to-node.js";
+import setAttribute from "../tool/setAttribute.js";
 
-import isValidKey from "./isValidKey";
-import { ref, reactive } from "./remark-data";
-import { watcher, proxy } from "./observe-data";
+import isValidKey from "./isValidKey.js";
+import { ref, reactive } from "./remark-data.js";
+import { watcher, proxy } from "./observe-data.js";
 
 // 公共指令
-import uiBind from "../directives/ui-bind";
-import uiModel from "../directives/ui-model";
-import uiOn from "../directives/ui-on";
-import uiDragdrop from "../directives/ui-dragdrop";
+import uiBind from "../directives/ui-bind.js";
+import uiModel from "../directives/ui-model.js";
+import uiOn from "../directives/ui-on.js";
+import uiDragdrop from "../directives/ui-dragdrop.js";
 
 export default function useTemplate(el, pagefactory, props) {
 

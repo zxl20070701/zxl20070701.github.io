@@ -26,6 +26,7 @@ if (!(pagename in lazyPages)) pagename = "home";
 
 lazyPages[pagename]().then(function (viewData) {
     viewEl.setAttribute('page-view', '');
+
     // 挂载页面
     var viewInstance = useTemplate(viewEl, viewData.default);
 
@@ -150,17 +151,16 @@ lazyPages[pagename]().then(function (viewData) {
     });
 
     /**
-    * 实验室&练习
+    * 下载 Install 版本
     */
 
-    // 追加验室&练习弹框
-    var laboryEl = document.createElement('a');
-    document.body.insertBefore(laboryEl, document.body.childNodes[0]);
+    var downloadEl = document.createElement('a');
+    document.body.insertBefore(downloadEl, document.body.childNodes[0]);
 
-    // 实验室&练习窗口
-    laboryEl.setAttribute('class', 'labory-btn');
-    laboryEl.addEventListener('click', function () {
-        openDialog(lazyDialogs.labory);
+    downloadEl.setAttribute('class', 'download-btn');
+    downloadEl.addEventListener('click', function () {
+
+        alert("Install桌面版本研发中，敬请期待...");
+
     });
-
 });

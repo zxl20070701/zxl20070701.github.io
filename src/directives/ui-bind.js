@@ -1,4 +1,4 @@
-import isString from '../tool/type/isString';
+import isString from '../tool/type/isString.js';
 
 var doit = function (el, binding) {
 

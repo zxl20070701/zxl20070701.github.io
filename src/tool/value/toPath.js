@@ -1,6 +1,6 @@
-import evalValue from './eval';
-import calcValue from './value';
-import isString from '../type/isString';
+import evalValue from './eval.js';
+import calcValue from './value.js';
+import isString from '../type/isString.js';
 
 // 小括号去除方法
 

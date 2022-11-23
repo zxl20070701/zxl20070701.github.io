@@ -1,4 +1,4 @@
-import isString from '../type/isString';
+import isString from '../type/isString.js';
 
 var blankReg = new RegExp("[\\x20\\t\\r\\n\\f]");
 var identifier = /^[a-zA-Z_$][0-9a-zA-Z_$]{0,}$/;

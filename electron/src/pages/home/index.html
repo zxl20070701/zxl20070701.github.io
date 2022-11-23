@@ -1,0 +1,70 @@
+<header>
+    <h2 style="-webkit-app-region: drag">实用工具</h2>
+    <span class="btn fresh" style="-webkit-app-region: no-drag" ui-on:click="$fresh">
+        刷新
+    </span>
+    <span class="btn min" style="-webkit-app-region: no-drag" ui-on:click="$minimize">
+        最小化
+    </span>
+    <span class="btn close" style="-webkit-app-region: no-drag" ui-on:click="$close">
+        关闭
+    </span>
+</header>
+<div class="tips">
+    温馨提示：这里主要包含需要依赖NodeJS的本地应用，在线H5版本请
+    <span style="-webkit-app-region: no-drag" ui-on:click="openH5Page">点击此处</span>
+    查看。
+</div>
+<div class="content">
+    <h3>
+        信息传输
+    </h3>
+    <ul>
+        <li tag="talker" ui-on:click="goto" class="dev">
+            <h4>
+                聊天工具
+            </h4>
+            <p>
+                一个局域网聊天工具，可以发送信息和传输文件等
+            </p>
+        </li>
+    </ul>
+    <h3>
+        辅助开发
+    </h3>
+    <ul>
+        <li tag="terminal" ui-on:click="goto" class="dev">
+            <h4>
+                命令行工具
+            </h4>
+            <p>
+                支持一些常见的文件操作、服务器等定制化功能
+            </p>
+        </li>
+        <li tag="browser" ui-on:click="goto" class="dev">
+            <h4>
+                浏览器
+            </h4>
+            <p>
+                一个自定义浏览器，支持跨域请求等，可以方便前端代码调试
+            </p>
+        </li>
+    </ul>
+</div>
+
+<!-- 左侧导航 -->
+<div class="quick-link left">
+    <a class="notebook" href="javascript:void(0)" ui-on:click="openNoteBookPage">
+        文档笔记
+    </a>
+</div>
+
+<!-- 右侧导航 -->
+<div class="quick-link right">
+    <a class="home" href="javascript:void(0)" ui-on:click="openH5Page">
+        首页
+    </a>
+    <a class="github" href="javascript:void(0)" ui-on:click="openRepPage">
+        代码仓库
+    </a>
+</div>

@@ -1,4 +1,4 @@
-import { setValue } from "../tool/value/index";
+import { setValue } from "../tool/value/index.js";
 
 export default {
     inserted: function (el, binding) {

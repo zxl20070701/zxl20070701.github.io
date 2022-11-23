@@ -1,5 +1,5 @@
-import isPlainObject from './isPlainObject';
-import getType from './getType';
+import isPlainObject from './isPlainObject.js';
+import getType from './getType.js';
 
 /**
  * 判断一个值是不是错误对象。

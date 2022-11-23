@@ -1,5 +1,5 @@
-import getType from './getType';
-import isObject from './isObject';
+import getType from './getType.js';
+import isObject from './isObject.js';
 
 /**
  * 判断一个值是不是Function。
