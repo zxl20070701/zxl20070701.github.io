@@ -24,7 +24,7 @@ export default function (callback) {
     var doMove = function (event) {
         if (mouseP == null) return;
 
-        var tempMouseP = xhtml.mousePosition(el, event);
+        var tempMouseP = xhtml.position(el, event);
 
         // 先求解出轨迹向量
         var normal = [tempMouseP.x - mouseP.x, mouseP.y - tempMouseP.y];
@@ -49,7 +49,7 @@ export default function (callback) {
     };
 
     xhtml.bind(el, 'mousedown', function (event) {
-        mouseP = xhtml.mousePosition(el, event);
+        mouseP = xhtml.position(el, event);
     });
     xhtml.bind(el, 'mouseup', function (event) {
         mouseP = null;

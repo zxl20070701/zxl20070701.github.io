@@ -1186,7 +1186,7 @@ __pkg__scope_bundle__.default= function (callback) {
     var doMove = function (event) {
         if (mouseP == null) return;
 
-        var tempMouseP = xhtml.mousePosition(el, event);
+        var tempMouseP = xhtml.position(el, event);
 
         // 先求解出轨迹向量
         var normal = [tempMouseP.x - mouseP.x, mouseP.y - tempMouseP.y];
@@ -1211,7 +1211,7 @@ __pkg__scope_bundle__.default= function (callback) {
     };
 
     xhtml.bind(el, 'mousedown', function (event) {
-        mouseP = xhtml.mousePosition(el, event);
+        mouseP = xhtml.position(el, event);
     });
     xhtml.bind(el, 'mouseup', function (event) {
         mouseP = null;
@@ -1599,7 +1599,7 @@ __pkg__scope_bundle__.directiveView = function () {
 window.__pkg__bundleSrc__['118']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= "attribute vec4 a_position;\nuniform mat4 u_matrix;\n\nvoid main()\n{\n    vec4 temp = u_matrix * a_position;\n\n    // 表示眼睛距离vec4(0.0,0.0,1.0)的距离\n    float dist = 1.0;\n\n    // 使用投影直接计算\n    gl_Position = vec4((dist + 1.0) * temp.x / (dist + temp.z), (dist + 1.0) * temp.y / (dist + temp.z), temp.z, 1.0);\n\n}\n"
+    __pkg__scope_bundle__.default= "attribute vec4 a_position;\r\nuniform mat4 u_matrix;\r\n\r\nvoid main()\r\n{\r\n    vec4 temp = u_matrix * a_position;\r\n\r\n    // 表示眼睛距离vec4(0.0,0.0,1.0)的距离\r\n    float dist = 1.0;\r\n\r\n    // 使用投影直接计算\r\n    gl_Position = vec4((dist + 1.0) * temp.x / (dist + temp.z), (dist + 1.0) * temp.y / (dist + temp.z), temp.z, 1.0);\r\n\r\n}\r\n"
 
     return __pkg__scope_bundle__;
 }
@@ -1610,7 +1610,7 @@ window.__pkg__bundleSrc__['118']=function(){
 window.__pkg__bundleSrc__['119']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= "precision mediump float;\nuniform vec4 u_color;\n\nvoid main()\n{\n    gl_FragColor = u_color;\n}\n"
+    __pkg__scope_bundle__.default= "precision mediump float;\r\nuniform vec4 u_color;\r\n\r\nvoid main()\r\n{\r\n    gl_FragColor = u_color;\r\n}\r\n"
 
     return __pkg__scope_bundle__;
 }

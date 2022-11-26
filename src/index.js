@@ -163,4 +163,15 @@ lazyPages[pagename]().then(function (viewData) {
         alert("Install桌面版本研发中，敬请期待...");
 
     });
+
+    /**
+    * 实验仓库
+    */
+
+    var downloadEl = document.createElement('a');
+    document.body.insertBefore(downloadEl, document.body.childNodes[0]);
+
+    downloadEl.setAttribute('class', 'laboratory');
+    downloadEl.setAttribute('target', '_blank');
+    downloadEl.setAttribute('href', 'https://github.com/zxl20070701/laboratory');
 });
