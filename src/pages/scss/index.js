@@ -26,7 +26,12 @@ export default function (obj) {
         },
         methods: {
             scssToCss: function () {
-                targetEditor.valueOf(scssLoader(sourceEditor.valueOf()));
+                try {
+                    targetEditor.valueOf(scssLoader(sourceEditor.valueOf()));
+                } catch (e) {
+                    console.error(e);
+                    alert('运行出错（' + e + '）');
+                }
             }
         }
     };

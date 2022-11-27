@@ -1,18 +1,18 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/format-json/index.js
+// Original file:./src/pages/scss/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['28']=function(){
+window.__pkg__bundleSrc__['32']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('75');
+    __pkg__scope_args__=window.__pkg__getBundle('122');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('76');
+__pkg__scope_args__=window.__pkg__getBundle('123');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('77');
-var formatJSON =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('124');
+var scssLoader =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('80');
 var editorRender =__pkg__scope_args__.default;
@@ -23,24 +23,29 @@ __pkg__scope_bundle__.default= function (obj) {
     return {
         render: template,
         beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "格式化JSON字符串";
-            document.getElementById('icon-logo').setAttribute('href', './format-json.png');
+            document.getElementsByTagName('title')[0].innerText = "scss转css";
+            document.getElementById('icon-logo').setAttribute('href', './scss.png');
         },
         mounted: function () {
             sourceEditor = new editorRender({
                 el: document.getElementById('source-id'),
-                shader: ['javascript']
+                shader: ['css']
             });
 
             targetEditor = new editorRender({
                 el: document.getElementById('target-id'),
-                shader: ['javascript'],
+                shader: ['css'],
                 readonly: true
             });
         },
         methods: {
-            formatJSON: function () {
-                targetEditor.valueOf(JSON.stringify(formatJSON(sourceEditor.valueOf()), null, 4));
+            scssToCss: function () {
+                try {
+                    targetEditor.valueOf(scssLoader(sourceEditor.valueOf()));
+                } catch (e) {
+                    console.error(e);
+                    alert('运行出错（' + e + '）');
+                }
             }
         }
     };
@@ -50,313 +55,295 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/format-json/index.html
+// Original file:./src/pages/scss/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['75']=function(){
+window.__pkg__bundleSrc__['122']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"div","attrs":{},"childNodes":[2,6]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3,4]},{"type":"text","content":"源代码","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"run","ui-on:click":"formatJSON"},"childNodes":[5]},{"type":"text","content":"运行","childNodes":[]},{"type":"tag","name":"div","attrs":{"id":"source-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[8,10]},{"type":"tag","name":"h2","attrs":{},"childNodes":[9]},{"type":"text","content":"运行结果","childNodes":[]},{"type":"tag","name":"div","attrs":{"id":"target-id"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"div","attrs":{},"childNodes":[2,6]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3,4]},{"type":"text","content":"源代码","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"run","ui-on:click":"scssToCss"},"childNodes":[5]},{"type":"text","content":"运行","childNodes":[]},{"type":"tag","name":"div","attrs":{"id":"source-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[8,10]},{"type":"tag","name":"h2","attrs":{},"childNodes":[9]},{"type":"text","content":"运行结果","childNodes":[]},{"type":"tag","name":"div","attrs":{"id":"target-id"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/format-json/index.scss
+// Original file:./src/pages/scss/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['76']=function(){
+window.__pkg__bundleSrc__['123']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view]{\n\nwidth: calc(100vw - 200px);\n\nheight: calc(100vh - 100px);\n\nposition: fixed;\n\ntop: 50px;\n\nleft: 100px;\n\nfont-size: 0;\n\nwhite-space: nowrap;\n\n}\n\n [page-view]>div{\n\ndisplay: inline-block;\n\nfont-size: 16px;\n\nwhite-space: normal;\n\nvertical-align: top;\n\noutline: 1px solid #8c9da5;\n\nmargin: 20px 0 0 20px;\n\n}\n\n [page-view]>div>h2{\n\nborder-bottom: 1px solid #8c9da5;\n\nheight: 50px;\n\nline-height: 50px;\n\npadding: 0 20px;\n\nposition: relative;\n\nfont-family: cursive;\n\nfont-weight: 200;\n\n}\n\n [page-view]>div>h2>button{\n\nposition: absolute;\n\nright: 10px;\n\ntop: 10px;\n\nheight: 30px;\n\nline-height: 30px;\n\npadding: 0 20px;\n\nborder: none;\n\noutline: none;\n\ncolor: white;\n\ncursor: pointer;\n\n}\n\n [page-view]>div>h2>button.run{\n\nbackground-color: #009688;\n\n}\n\n [page-view]>div>div{\n\nwidth: calc(50vw - 130px);\n\nheight: calc(100vh - 190px);\n\n}\n";
+styleElement.innerHTML = "\n [page-view]{\n\nwidth: calc(100vw - 200px);\n\nheight: calc(100vh - 100px);\n\nposition: fixed;\n\ntop: 50px;\n\nleft: 100px;\n\nfont-size: 0;\n\nwhite-space: nowrap;\n\n}\n\n [page-view]>div{\n\ndisplay: inline-block;\n\nfont-size: 16px;\n\nwhite-space: normal;\n\nvertical-align: top;\n\noutline: 1px solid #8c9da5;\n\nmargin: 20px 0 0 20px;\n\n}\n\n [page-view]>div>h2{\n\nborder-bottom: 1px solid #8c9da5;\n\nheight: 50px;\n\nline-height: 50px;\n\npadding: 0 20px;\n\nposition: relative;\n\nfont-family: cursive;\n\nfont-weight: 200;\n\n}\n\n [page-view]>div>h2>button{\n\nposition: absolute;\n\nright: 10px;\n\ntop: 10px;\n\nheight: 30px;\n\nline-height: 30px;\n\npadding: 0 20px;\n\nborder: none;\n\noutline: none;\n\ncolor: white;\n\ncursor: pointer;\n\n}\n\n [page-view]>div>h2>button.run{\n\nbackground-color: #d05a90;\n\n}\n\n [page-view]>div>div{\n\nwidth: calc(50vw - 130px);\n\nheight: calc(100vh - 190px);\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/json/index
+// Original file:./bin/loader/scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['77']=function(){
+window.__pkg__bundleSrc__['124']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('23');
-var isString =__pkg__scope_args__.default;
+    
 
-__pkg__scope_args__=window.__pkg__getBundle('78');
-var analyseWord =__pkg__scope_args__.default;
+                var module={
+                    exports:{}
+                };
+                var exports=module.exports;
+        
+                var toSelector = function (preSelectorArray, deep) {
 
-__pkg__scope_args__=window.__pkg__getBundle('79');
-var toValue =__pkg__scope_args__.default;
+    var selectors = preSelectorArray[0], i, j, k;
 
+    // 一层层深入
+    for (i = 1; i < deep; i++) {
 
-// 把一段字符串变成json返回
-__pkg__scope_bundle__.default= function (express) {
+        var temp = [];
+        // 前置循环
+        for (j = 0; j < selectors.length; j++) {
 
-    if (isString(express)) {
+            // 预选循环
+            for (k = 0; k < preSelectorArray[i].length; k++) {
 
-        // 先分析出来单词
-        var wordArray = analyseWord(express);
+                temp.push(selectors[j] + preSelectorArray[i][k]);
 
-        /**
-         * 思路：
-         * 从后往前找，找到第一个需要归结的，直接归结，
-         * 归结完毕以后，继续，知道找到开头，说明归结完毕，
-         * 这样设计的好处是：
-         * 从后往前找，一定是叶子，这就消除了递归。
-         */
-        var i = wordArray.length - 1, j;
-
-        // 只要单词数组归结完毕
-        while (wordArray.length > 1) {
-
-            // 从后往前找第一个需要归结的子对象
-            while (i >= 0 && (wordArray[i].type != 'insign' || ['{', '['].indexOf(wordArray[i].value) < 0)) {
-                i = i - 1;
             }
-
-            if (i < 0) {
-                // 如果到开头都没有遇到，缺少开始符号
-                throw new Error("Illegal express : " + express + "\nstep='toOne-searchBeginIndex',wordArray=" + wordArray);
-            }
-
-            // 然后合并
-            j = i + 1;
-            var subWordArray = [wordArray[i]];
-            while (j < wordArray.length && (wordArray[j].type != 'insign' || wordArray[j].value != {
-                "{": "}",
-                "[": "]"
-            }[wordArray[i].value])) {
-                subWordArray.push(wordArray[j]);
-                j = j + 1;
-            }
-
-            if (j >= wordArray.length) {
-                // 如果到结尾都没有需要应该闭合的符号，缺少闭合符号
-                throw new Error("Illegal express : " + express + "\nstep='toOne-searchEndIndex',wordArray=" + wordArray);
-            } else {
-
-                // 结尾追加进去
-                subWordArray.push(wordArray[j]);
-
-                // 归结
-                wordArray[i] = toValue(subWordArray);
-
-                // 调整
-                wordArray.splice(i + 1, j - i);
-            }
-
 
         }
 
-        // 返回计算结果
-        return wordArray[0].value;
-
-    } else {
-
-        throw new Error('The data passed is not a string.');
-
+        selectors = temp;
     }
 
+    // 最后补充 {
+    return "\n" + (selectors.join(',')) + "{\n";
 };
 
+// 把代码变成代码块
+// 比如一个注释就是一块，无论注释的内容有多少
+var analyseBlock = function (source) {
 
-    return __pkg__scope_bundle__;
-}
+    var i = -1,
 
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/json/analyseWord
-/*****************************************************************/
-window.__pkg__bundleSrc__['78']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('56');
-var ReadString =__pkg__scope_args__.default;
+        // 当前面对的字符
+        currentChar = null;
 
-
-__pkg__scope_bundle__.default= function (express) {
-
-    // 剔除开头和结尾的空白
-    express = express.trim();
-
-    // 获取字符串分析对象
-    var reader = ReadString(express);
-
-    var wordArray = [];
-    var tempWord = "";
-    reader.readNext();
-
-    // 定义一个追加普通串的方法
-    var pushNormal = function () {
-        tempWord = tempWord.trim();
-        if (tempWord != '') {
-            wordArray.push({
-                type: "normal",
-                value: tempWord
-            });
-        }
-        tempWord = "";
+    // 获取下一个字符
+    var next = function () {
+        currentChar = i++ < source.length - 1 ? source[i] : null;
+        return currentChar;
     };
+
+    // 获取往后n个值
+    var nextNValue = function (n) {
+        return source.substring(i, n + i > source.length ? source.length : n + i);
+    };
+
+    var blocks = [];
+    var currentBlock = "";
+
+    next();
 
     while (true) {
 
-        if (reader.index >= express.length) break;
-
-        // 单行注释
-        if (reader.getNextN(2) == '//') {
-            while (!/\n/.test(reader.readNext()) && reader.index < express.length);
+        // 先剔除空白字符
+        // 保证正式开始的时候匹配的是有效的
+        while (new RegExp("[\\x20\\t\\r\\n\\f]").test(currentChar)) {
+            next();
         }
 
-        // 多行注释
-        else if (reader.getNextN(2) == '/*') {
-            while (reader.getNextN(2) != '*/') {
-                if (reader.index >= express.length) {
-                    throw new Error("Multiline comment not closed correctly : " + express + "\nstep='analyseWord-searchEndComment'");
-                }
-                reader.readNext();
+        // 如果匹配的字符没有了
+        if (currentChar == null) break;
+
+        // 如果是注释
+        // /* 类型一 */
+        if (nextNValue(2) == '/*') {
+
+            next(); next();
+            currentBlock = "/*";
+
+            while (nextNValue(2) != '*/' && currentChar != null) {
+                currentBlock += currentChar;
+                next();
             }
-            reader.readNext();
-            reader.readNext();
-        }
 
-        // 如果是边界符号
-        else if (['{', '}', ',', '[', ']', ':'].indexOf(reader.currentChar) > -1) {
-            pushNormal();
-
-            wordArray.push({
-                type: "insign",
-                value: reader.currentChar
-            });
-            reader.readNext();
-        }
-
-        // 如果遇到字符串，应该是一个独立的单词
-        else if (['"', "'"].indexOf(reader.currentChar) > -1) {
-
-            var tempStrWord = "";
-            while (['"', "'"].indexOf(reader.readNext()) < 0) {
-                if (reader.index >= express.length) {
-                    throw new Error("The string is not closed correctly : " + express + "\nstep='analyseWord-searchString',currentStrWord=" + tempStrWord);
-                }
-                tempStrWord += reader.currentChar;
+            // 对于注释 /* */
+            // 如果到结尾都没有闭合，应该提示语法错误
+            if (currentChar == null) {
+                throw new Error('The comment is not closed.');
             }
-            reader.readNext();
-            wordArray.push({
-                type: "string",
-                value: tempStrWord
+
+            currentBlock += "*/";
+            next(); next();
+
+            blocks.push({
+                value: currentBlock,
+                type: "comment-double"
+            });
+        }
+
+        // 如果是注释
+        // // 类型二
+        else if (nextNValue(2) == '//') {
+            currentBlock = '';
+
+            while (currentChar != '\n' && currentChar != null) {
+                currentBlock += currentChar;
+                next();
+            }
+
+            blocks.push({
+                value: currentBlock,
+                type: "comment-single"
             });
 
-        } else {
-            tempWord += reader.currentChar;
-            reader.readNext();
+        }
+
+        // 如果是结束
+        //  }
+        else if (currentChar == '}') {
+
+            blocks.push({
+                value: "}",
+                type: "end"
+            });
+
+            next();
+
+        }
+
+        // 余下，只有两种情况：
+        // 1.如是是开始
+        //  xxx {
+        // 2.可能是一个语句
+        //  xxx : xxx ;
+        // 这两种都需要进一步匹配
+        else {
+
+            currentBlock = '';
+
+            // 目前先没有考虑下列情况：
+            // 语句 content:";"
+            while (currentChar != '{' && currentChar != ';' && currentChar != null) {
+                currentBlock += currentChar;
+                next();
+            }
+
+            if (currentChar == null) {
+                throw new Error('Statement or code block missing closure.');
+            }
+
+            blocks.push({
+                value: currentBlock + currentChar,
+                type: {
+                    '{': "begin",
+                    ';': 'statement'
+                }[currentChar]
+            });
+
+            next();
+
         }
 
     }
 
-    return wordArray;
+    return blocks;
 };
 
 
-    return __pkg__scope_bundle__;
-}
+module.exports = function (source) {
 
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/ReadString
-/*****************************************************************/
-window.__pkg__bundleSrc__['56']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (express) {
+    // 分析出代码块
 
-    var reader = {
-        index: -1,
-        currentChar: null
-    };
+    var blocks = analyseBlock(source);
 
-    // 读取下一个字符
-    reader.readNext = function () {
-        reader.currentChar = reader.index++ < express.length - 1 ? express[reader.index] : null;
-        return reader.currentChar;
-    };
+    // 根据代码块获得最终代码
 
-    // 获取往后num个值
-    reader.getNextN = function (num) {
-        return express.substring(reader.index, num + reader.index > express.length ? express.length : num + reader.index);
-    };
+    var i, j, cssCode = "", preSelectorArray = [], deep = 0;
+    for (i = 0; i < blocks.length; i++) {
 
-    return reader;
+        // 注释 double
+        if (blocks[i].type == 'comment-double') {
+
+            cssCode += blocks[i].value;
+
+        }
+
+        // 注释 single
+        else if (blocks[i].type == 'comment-single') {
+
+            cssCode += "\n/* " + blocks[i].value + " */\n";
+
+        }
+
+        // 开始
+        else if (blocks[i].type == 'begin') {
+
+            var preSplit = blocks[i].value.split(',');
+            var preSelect = [];
+            for (j = 0; j < preSplit.length; j++) {
+
+                // 去掉两端的空格
+                preSelect[j] = preSplit[j].replace(/\{$/, '').trim();
+
+                // 判断拼接方式
+                if (/^&/.test(preSelect[j])) {
+                    preSelect[j] = preSelect[j].replace(/^&/, '');
+                } else {
+                    preSelect[j] = " " + preSelect[j];
+                }
+
+            }
+
+            // 登记到前缀数组
+            preSelectorArray[deep] = preSelect;
+            deep += 1;
+        }
+
+        // 结束
+        else if (blocks[i].type == 'end') {
+
+            deep -= 1;
+
+        }
+
+        // 语句
+        else if (blocks[i].type == 'statement') {
+
+            // 如果是第一个
+            j = 1
+            var preType = blocks[i - j].type;
+            while (['comment-double', 'comment-single'].indexOf(preType) > -1) {
+                j += 1;
+                preType = blocks[i - j].type;
+            }
+            if (['end', 'begin'].indexOf(preType) > -1) {
+                cssCode += toSelector(preSelectorArray, deep);
+            }
+
+            cssCode += "\n" + blocks[i].value + "\n";
+
+            // 如果是最后一个
+            j = 1;
+            var nextType = blocks[i + j].type;
+            while (['comment-double', 'comment-single'].indexOf(nextType) > -1) {
+                j += 1;
+                nextType = blocks[i + j].type;
+            }
+            if (['end', 'begin'].indexOf(nextType) > -1) {
+                cssCode += "\n}\n";
+            }
+
+        }
+
+    }
+
+    return cssCode;
 };
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/json/toValue
-/*****************************************************************/
-window.__pkg__bundleSrc__['79']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    var toValue = function (word) {
-
-    if (word.type != 'string' && word.type != 'object') {
-
-        // 数字
-        if (/[+-]{0,1}\d{1,}\.{0,1}\d{0,}/.test(word.value)) {
-            return +word.value;
-        }
-
-        // undefined
-        else if (word.value == 'undefined') {
-            return undefined;
-        }
-
-        // null
-        else if (word.value == 'null') {
-            return null;
-        }
-
-        // false
-        else if (word.value == 'false') {
-            return false;
-        }
-
-        // true
-        else if (word.value == 'true') {
-            return true;
-        }
-
-    }
-
-    return word.value;
-}
-
-__pkg__scope_bundle__.default= function (wordArray) {
-
-    var value, i;
-
-    // 是json
-    if (wordArray[0].value == '{') {
-        value = {};
-        for (i = 3; i < wordArray.length; i += 4) {
-            value[wordArray[i - 2].value] = toValue(wordArray[i]);
-        }
-    }
-
-    // 数组
-    else {
-        value = [];
-        for (i = 2; i < wordArray.length; i += 2) {
-            value.push(toValue(wordArray[i - 1]));
-        }
-    }
-
-    return {
-        type: "object",
-        value: value
-    };
-};
-
+        
+                __pkg__scope_bundle__.default= module.exports;
+        
+                
 
     return __pkg__scope_bundle__;
 }

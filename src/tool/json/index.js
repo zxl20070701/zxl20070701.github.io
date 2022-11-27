@@ -29,7 +29,7 @@ export default function (express) {
 
             if (i < 0) {
                 // 如果到开头都没有遇到，缺少开始符号
-                throw new Error("Illegal express : " + express + "\nstep='toOne-searchBeginIndex',wordArray=" + wordArray);
+                throw new Error("Illegal express : " + express + "\nstep='toOne-searchBeginIndex',wordArray=" + JSON.stringify(wordArray));
             }
 
             // 然后合并
@@ -45,7 +45,7 @@ export default function (express) {
 
             if (j >= wordArray.length) {
                 // 如果到结尾都没有需要应该闭合的符号，缺少闭合符号
-                throw new Error("Illegal express : " + express + "\nstep='toOne-searchEndIndex',wordArray=" + wordArray);
+                throw new Error("Illegal express : " + express + "\nstep='toOne-searchEndIndex',wordArray=" + JSON.stringify(wordArray));
             } else {
 
                 // 结尾追加进去

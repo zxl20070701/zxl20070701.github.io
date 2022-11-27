@@ -26,7 +26,13 @@ export default function (obj) {
         },
         methods: {
             formatJSON: function () {
-                targetEditor.valueOf(JSON.stringify(formatJSON(sourceEditor.valueOf()), null, 4));
+
+                try {
+                    targetEditor.valueOf(JSON.stringify(formatJSON(sourceEditor.valueOf()), null, 4));
+                } catch (e) {
+                    console.error(e);
+                    alert('运行出错（' + e + '）');
+                }
             }
         }
     };
