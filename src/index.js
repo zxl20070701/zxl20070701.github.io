@@ -151,20 +151,6 @@ lazyPages[pagename]().then(function (viewData) {
     });
 
     /**
-    * 下载 Install 版本
-    */
-
-    var downloadEl = document.createElement('a');
-    document.body.insertBefore(downloadEl, document.body.childNodes[0]);
-
-    downloadEl.setAttribute('class', 'download-btn');
-    downloadEl.addEventListener('click', function () {
-
-        alert("Install桌面版本研发中，敬请期待...");
-
-    });
-
-    /**
     * 实验仓库
     */
 

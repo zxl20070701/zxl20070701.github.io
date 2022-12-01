@@ -131,7 +131,7 @@ export default function toPath(target, expressArray, scope) {
 
     var newExpressArray = doit1(target, expressArray, scope);
 
-    // 其实无法就三类
+    // 其实无非就三类
     // 第一类：[express][express][express]express
     // 第二类：express
     // 第三类：[express][express][express]

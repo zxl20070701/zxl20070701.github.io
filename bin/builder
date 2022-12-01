@@ -24,10 +24,7 @@ let targetFolder = fullPath(config.output.folder, process.cwd());
 error(`Package Program
 -------------------------------------------------------------------------
 ( Crafted in China By zxl20070701. )
-`)
-
-// 先准备好环境
-deleteSync(targetFolder);
+`);
 
 // 复制静态文件
 copySync(fullPath(config.static, process.cwd()), targetFolder);

@@ -104,23 +104,103 @@ export default function (obj) {
 
             // 图像 / 画布大小
             editCanvasSize: function () {
+                var _this = this;
+
                 this.$openDialog(lazyDialogs.size, {
                     title: "画布大小",
-                    width: this.width, // 先写死，后续获取
+                    width: this.width,
                     height: this.height
                 }).then(function (data) {
-                    console.log(data);
+
+                    // 计算图片的对齐方式
+
+                    var _left, _top;
+                    var changeType = data.changeType.split('-');
+
+                    // 水平方向
+                    if (changeType[0] == 'left') {
+                        _left = 0;
+                    } else if (changeType[0] == 'right') {
+                        _left = data.width - _this.width;
+                    } else {
+                        _left = (data.width - _this.width) * 0.5;
+                    }
+
+                    // 垂直方向
+                    if (changeType[1] == 'top') {
+                        _top = 0;
+                    } else if (changeType[1] == 'bottom') {
+                        _top = data.height - _this.height;
+                    } else {
+                        _top = (data.height - _this.height) * 0.5;
+                    }
+
+                    // 先调整画布
+                    _this.width = data.width;
+                    _this.height = data.height;
+                    painter = canvasRender(document.getElementById('image-root'), _this.width, _this.height);
+
+                    // 一个个图层调整好
+                    (function doit(layerIndex) {
+                        if (layerIndex < _this.layers.length) {
+
+                            var img = new Image();
+                            img.src = _this.layers[layerIndex].painter.toDataURL();
+                            img.onload = function () {
+
+                                // 调整图层画布和画笔
+                                _this.layers[layerIndex].painter = canvasRender(_this.layers[layerIndex].canvas, _this.width, _this.height);
+                                _this.layers[layerIndex].painter.drawImage(img, 0, 0, img.width, img.height, _left, _top, img.width, img.height);
+
+                                _this.layers[layerIndex].iconEl.style.backgroundImage = "url(" + _this.layers[layerIndex].painter.toDataURL() + ")";
+
+                                // 在画布中绘制
+                                painter.drawImage(_this.layers[layerIndex].canvas);
+
+                            };
+
+                            doit(layerIndex + 1);
+                        }
+                    })(0);
                 });
             },
 
             // 图像 / 图像大小
             editImageSize: function () {
+                var _this = this;
+
                 this.$openDialog(lazyDialogs.size, {
                     title: "图像大小",
                     width: this.width,
                     height: this.height
                 }).then(function (data) {
-                    console.log(data);
+
+                    // 先调整画布
+                    _this.width = data.width;
+                    _this.height = data.height;
+                    painter = canvasRender(document.getElementById('image-root'), _this.width, _this.height);
+
+                    // 一个个图层调整好
+                    (function doit(layerIndex) {
+                        if (layerIndex < _this.layers.length) {
+
+                            var img = new Image();
+                            img.src = _this.layers[layerIndex].painter.toDataURL();
+                            img.onload = function () {
+
+                                // 调整图层画布和画笔
+                                _this.layers[layerIndex].painter = canvasRender(_this.layers[layerIndex].canvas, _this.width, _this.height);
+                                _this.layers[layerIndex].painter.drawImage(img, 0, 0, img.width, img.height, 0, 0, _this.width, _this.height);
+
+                                // 在画布中绘制
+                                painter.drawImage(_this.layers[layerIndex].canvas);
+
+                            };
+
+                            doit(layerIndex + 1);
+                        }
+                    })(0);
+
                 });
             },
 

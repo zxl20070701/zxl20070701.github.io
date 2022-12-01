@@ -229,20 +229,6 @@ lazyPages[pagename]().then(function (viewData) {
     });
 
     /**
-    * 下载 Install 版本
-    */
-
-    var downloadEl = document.createElement('a');
-    document.body.insertBefore(downloadEl, document.body.childNodes[0]);
-
-    downloadEl.setAttribute('class', 'download-btn');
-    downloadEl.addEventListener('click', function () {
-
-        alert("Install桌面版本研发中，敬请期待...");
-
-    });
-
-    /**
     * 实验仓库
     */
 
@@ -1090,7 +1076,7 @@ __pkg__scope_bundle__.default= function toPath(target, expressArray, scope) {
 
     var newExpressArray = doit1(target, expressArray, scope);
 
-    // 其实无法就三类
+    // 其实无非就三类
     // 第一类：[express][express][express]express
     // 第二类：express
     // 第三类：[express][express][express]
@@ -1948,47 +1934,47 @@ window.__pkg__bundleSrc__['24']=function(){
 
     // 首页
     home: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle1.js','25')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle1.js','25')
     },
 
     // 正则表达式可视化
     "regexper-visualization": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle2.js','26')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle2.js','26')
     },
 
     // 音频编辑器
     "audio-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle3.js','27')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle3.js','27')
     },
 
     // 格式化JSON字符串
     "format-json": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle4.js','28')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle4.js','28')
     },
 
     // 图片编辑器
     "image-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle5.js','29')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle5.js','29')
     },
 
     // 模型编辑器
     "model-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle6.js','30')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle6.js','30')
     },
 
     // 贪吃蛇
     "snake-eating": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle7.js','31')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle7.js','31')
     },
 
     // scss转css
     scss: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle8.js','32')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle8.js','32')
     },
 
     // 代码编辑器
     "code-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle9.js','33')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle9.js','33')
     }
 };
 
@@ -2005,17 +1991,17 @@ window.__pkg__bundleSrc__['34']=function(){
 
     // 调试
     debugger: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle10.js','35')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle10.js','35')
     },
 
     // 颜色选择
     "color-picker": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle11.js','36')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle11.js','36')
     },
 
     // 接口文档
     api: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.2-bundle12.js','37')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle12.js','37')
     }
 
 };
@@ -2031,7 +2017,7 @@ window.__pkg__bundleSrc__['38']=function(){
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n body{\n\nbackground-color: #fafafa;\n\n}\n\n body>a.download-btn{\n\nbackground-image: url('./download.png');\n\nposition: fixed;\n\nright: 5px;\n\ntop: 300px;\n\nwidth: 50px;\n\nheight: 50px;\n\ncursor: pointer;\n\nz-index: 200;\n\nbackground-size: 70% auto;\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\n}\n\n body>a.laboratory{\n\nbackground-image: url('./laboratory.png');\n\nposition: fixed;\n\nright: 5px;\n\ntop: 400px;\n\nwidth: 100px;\n\nheight: 100px;\n\ncursor: pointer;\n\nz-index: 200;\n\nbackground-size: 100% auto;\n\n}\n\n body>div.debugger{\n\nbackground-image: url('./debugger.png');\n\nposition: fixed;\n\nleft: 5px;\n\nbottom: 5px;\n\nwidth: 70px;\n\nheight: 70px;\n\ncursor: pointer;\n\nz-index: 200;\n\n}\n\n body>div.api{\n\nposition: fixed;\n\nleft: 0;\n\nbottom: 200px;\n\ncursor: pointer;\n\nz-index: 200;\n\nbackground-color: #eb6736;\n\npadding: 5px 5px 5px 2px;\n\ncolor: white;\n\nborder-radius: 0 5px 5px 0;\n\nfont-size: 12px;\n\n}\n\n body>div.quick-link{\n\nposition: fixed;\n\ntop: 120px;\n\nbackground-color: white;\n\nbox-shadow: 0 0 6px 0px #d6cdcd;\n\npadding: 5px;\n\nwidth: 60px;\n\nz-index: 200;\n\n}\n\n body>div.quick-link.left{\n\nborder-radius: 0 10px 10px 0;\n\nleft: 0;\n\n}\n\n body>div.quick-link.right{\n\nborder-radius: 10px 0 0 10px;\n\nright: 0;\n\n}\n\n body>div.quick-link>a{\n\ndisplay: block;\n\nfont-size: 12px;\n\nheight: 80px;\n\nwidth: 50px;\n\nbackground-size: 100% auto;\n\nbackground-position: center top;\n\nbackground-repeat: no-repeat;\n\npadding-top: 50px;\n\nline-height: 30px;\n\ntext-align: center;\n\ncolor: black;\n\n}\n\n body>div.quick-link>a.github{\n\nbackground-image: url('./code-source.jpg');\n\n}\n\n body>div.quick-link>a.home{\n\nbackground-image: url('./logo.png');\n\n}\n\n body>div.quick-link>a.notebook{\n\nbackground-image: url('./notebook.png');\n\n}\n\n body>div#win-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\nz-index: 5;\n\n}\n\n body>div#dialog-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\nz-index: 10;\n\n}\n\n body>div#dialog-root>div.mask{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 100vw;\n\nheight: 100vh;\n\nbackground-color: #7b787840;\n\ndisplay: none;\n\n}\n\n body>div#dialog-root>div.mask:not(:last-child){\n\ndisplay: block;\n\n}\n\n body>div#dialog-root>div[dialog-view]{\n\nz-index: -1;\n\n}\n\n body>div#dialog-root>div[dialog-view]:last-child{\n\nz-index: 1;\n\n}\n";
+styleElement.innerHTML = "\n body{\n\nbackground-color: #fafafa;\n\n}\n\n body>a.laboratory{\n\nbackground-image: url('./laboratory.png');\n\nposition: fixed;\n\nright: 5px;\n\ntop: 400px;\n\nwidth: 100px;\n\nheight: 100px;\n\ncursor: pointer;\n\nz-index: 200;\n\nbackground-size: 100% auto;\n\n}\n\n body>div.debugger{\n\nbackground-image: url('./debugger.png');\n\nposition: fixed;\n\nleft: 5px;\n\nbottom: 5px;\n\nwidth: 70px;\n\nheight: 70px;\n\ncursor: pointer;\n\nz-index: 200;\n\n}\n\n body>div.api{\n\nposition: fixed;\n\nleft: 0;\n\nbottom: 200px;\n\ncursor: pointer;\n\nz-index: 200;\n\nbackground-color: #eb6736;\n\npadding: 5px 5px 5px 2px;\n\ncolor: white;\n\nborder-radius: 0 5px 5px 0;\n\nfont-size: 12px;\n\n}\n\n body>div.quick-link{\n\nposition: fixed;\n\ntop: 120px;\n\nbackground-color: white;\n\nbox-shadow: 0 0 6px 0px #d6cdcd;\n\npadding: 5px;\n\nwidth: 60px;\n\nz-index: 200;\n\n}\n\n body>div.quick-link.left{\n\nborder-radius: 0 10px 10px 0;\n\nleft: 0;\n\n}\n\n body>div.quick-link.right{\n\nborder-radius: 10px 0 0 10px;\n\nright: 0;\n\n}\n\n body>div.quick-link>a{\n\ndisplay: block;\n\nfont-size: 12px;\n\nheight: 80px;\n\nwidth: 50px;\n\nbackground-size: 100% auto;\n\nbackground-position: center top;\n\nbackground-repeat: no-repeat;\n\npadding-top: 50px;\n\nline-height: 30px;\n\ntext-align: center;\n\ncolor: black;\n\n}\n\n body>div.quick-link>a.github{\n\nbackground-image: url('./code-source.jpg');\n\n}\n\n body>div.quick-link>a.home{\n\nbackground-image: url('./logo.png');\n\n}\n\n body>div.quick-link>a.notebook{\n\nbackground-image: url('./notebook.png');\n\n}\n\n body>div#win-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\nz-index: 5;\n\n}\n\n body>div#dialog-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\nz-index: 10;\n\n}\n\n body>div#dialog-root>div.mask{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 100vw;\n\nheight: 100vh;\n\nbackground-color: #7b787840;\n\ndisplay: none;\n\n}\n\n body>div#dialog-root>div.mask:not(:last-child){\n\ndisplay: block;\n\n}\n\n body>div#dialog-root>div[dialog-view]{\n\nz-index: -1;\n\n}\n\n body>div#dialog-root>div[dialog-view]:last-child{\n\nz-index: 1;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

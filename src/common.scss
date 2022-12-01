@@ -2,20 +2,6 @@ body {
     background-color: #fafafa;
 
     &>a {
-        &.download-btn {
-            background-image: url('./download.png');
-            position: fixed;
-            right: 5px;
-            top: 300px;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            z-index: 200;
-            background-size: 70% auto;
-            background-repeat: no-repeat;
-            background-position: center center;
-        }
-
         &.laboratory {
             background-image: url('./laboratory.png');
             position: fixed;

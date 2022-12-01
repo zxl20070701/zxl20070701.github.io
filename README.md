@@ -17,22 +17,6 @@ npm run dev
 npm run build
 ```
 
-###  Install 版本
-
-部分内容我们必须借助磁盘等进行实现，因此我们还提供了一个安装版本（支持 MacOS 和 Windows ）：
-
-```
-npm run dev-install
-```
-
-启动成功以后，等待即可，会自动弹出界面。
-
-如果开发完毕需要发布，执行下面命令进行打包：
-
-```
-npm run build-install
-```
-
 ## 版权
 
 MIT License

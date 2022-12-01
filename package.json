@@ -1,15 +1,12 @@
 {
   "name": "toolbox",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "✔️ 实用工具，包含常见的图片编辑、格式转换、视频播放和小游戏等各种工具",
   "main": "./index.js",
   "scripts": {
     "dev": "node ./bin/server --config pkg.config.js",
-    "build": "node ./bin/builder --config pkg.config.js",
-    "debug": "echo 'chrome://inspect/#devices' && node --inspect-brk ./bin/builder --config pkg.config.js",
-    "dev-install": "electron ./index.js",
-    "debug-install": "echo 'chrome://inspect/#devices' && electron --inspect-brk ./index.js",
-    "build-install": "node ./bin/run -d release && electron-builder"
+    "build": "node ./bin/run -d docs && node ./bin/builder --config pkg.config.js",
+    "debug": "echo 'chrome://inspect/#devices' && node --inspect-brk ./bin/builder --config pkg.config.js"
   },
   "repository": {
     "type": "git",
@@ -17,63 +14,12 @@
   },
   "keywords": [
     "toolbox",
-    "Electron",
-    "H5",
-    "MacOS",
-    "Windows"
+    "H5"
   ],
   "author": "zxl20070701",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zxl20070701/toolbox/issues"
   },
-  "homepage": "https://zxl20070701.github.io/toolbox",
-  "build": {
-    "productName": "toolbox",
-    "appId": "io.github.zxl20070701.toolbox",
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "./bin/loader/**/*",
-      "./public/**/*",
-      "./nodejs/**/*",
-      "./src/**/*",
-      "./electron/**/*",
-      "./index.js"
-    ],
-    "mac": {
-      "icon": "../public/logo.icns",
-      "target": [
-        {
-          "target": "dmg"
-        }
-      ]
-    },
-    "dmg": {
-      "title": "toolbox",
-      "icon": "../public/logo.icns"
-    },
-    "win": {
-      "icon": "../public/logo256.ico",
-      "target": [
-        {
-          "target": "nsis"
-        }
-      ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "installerHeaderIcon": "../public/logo64.ico",
-      "installerIcon": "../public/logo64.ico"
-    }
-  },
-  "devDependencies": {
-    "electron": "^9.4.0",
-    "electron-builder": "^22.7.0"
-  }
+  "homepage": "https://zxl20070701.github.io/toolbox"
 }
