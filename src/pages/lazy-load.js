@@ -43,5 +43,10 @@ export default {
     // 代码编辑器
     "code-editor": function () {
         return import('./code-editor/index.js')
+    },
+
+    // npm download
+    "npm-download": function () {
+        return import('./npm-download/index.js')
     }
 };

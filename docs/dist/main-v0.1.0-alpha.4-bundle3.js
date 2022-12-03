@@ -5,23 +5,23 @@
 window.__pkg__bundleSrc__['27']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('67');
+    __pkg__scope_args__=window.__pkg__getBundle('68');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('68');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('69');
+
+
+__pkg__scope_args__=window.__pkg__getBundle('70');
 var newFile =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('71');
+__pkg__scope_args__=window.__pkg__getBundle('72');
 var audiobufferToWav =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('72');
+__pkg__scope_args__=window.__pkg__getBundle('73');
 var formatTime =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('73');
+__pkg__scope_args__=window.__pkg__getBundle('74');
 var lazyDialogs =__pkg__scope_args__.default;
 
 
@@ -392,7 +392,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['67']=function(){
+window.__pkg__bundleSrc__['68']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,5]},{"type":"tag","name":"div","attrs":{"class":"source-view"},"childNodes":[2,4]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doImport"},"childNodes":[3]},{"type":"text","content":"导入+","childNodes":[]},{"type":"tag","name":"ul","attrs":{"id":"source-list-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"mulp-view"},"childNodes":[6,8,9]},{"type":"tag","name":"div","attrs":{"class":"play-view"},"childNodes":[7]},{"type":"tag","name":"audio","attrs":{"src":"","controls":"controls","id":"play-audio-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"editor-view","id":"editor-view-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btns-view"},"childNodes":[10,12]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doPlay"},"childNodes":[11]},{"type":"text","content":"播放","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDownload"},"childNodes":[13]},{"type":"text","content":"下载","childNodes":[]}]
@@ -403,7 +403,7 @@ window.__pkg__bundleSrc__['67']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['68']=function(){
+window.__pkg__bundleSrc__['69']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -417,10 +417,10 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/newFile
 /*****************************************************************/
-window.__pkg__bundleSrc__['69']=function(){
+window.__pkg__bundleSrc__['70']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('70');
+    __pkg__scope_args__=window.__pkg__getBundle('71');
 var AudioContext =__pkg__scope_args__.default;
 
 
@@ -506,7 +506,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/AudioContext
 /*****************************************************************/
-window.__pkg__bundleSrc__['70']=function(){
+window.__pkg__bundleSrc__['71']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default=
@@ -518,7 +518,7 @@ window.__pkg__bundleSrc__['70']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/AudioBuffer-To-Wav
 /*****************************************************************/
-window.__pkg__bundleSrc__['71']=function(){
+window.__pkg__bundleSrc__['72']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (buffer, opt) {
@@ -607,7 +607,7 @@ function writeString(view, offset, string) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/formatTime
 /*****************************************************************/
-window.__pkg__bundleSrc__['72']=function(){
+window.__pkg__bundleSrc__['73']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 把秒值变成更可读的格式
@@ -621,14 +621,14 @@ __pkg__scope_bundle__.default= function(time) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['73']=function(){
+window.__pkg__bundleSrc__['74']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 编辑切割点
     pice: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle13.js','74')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle14.js','75')
     }
 
 };

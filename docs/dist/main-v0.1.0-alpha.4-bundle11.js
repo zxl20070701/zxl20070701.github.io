@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['35']=function(){
+window.__pkg__bundleSrc__['36']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('131');
+    __pkg__scope_args__=window.__pkg__getBundle('139');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('132');
+__pkg__scope_args__=window.__pkg__getBundle('140');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -39,7 +39,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['131']=function(){
+window.__pkg__bundleSrc__['139']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,5]},{"type":"tag","name":"header","attrs":{"ui-dragdrop":""},"childNodes":[2,3]},{"type":"text","content":"调试窗口","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"$closeDialog","id":"debugger-close"},"childNodes":[4]},{"type":"text","content":"X","childNodes":[]},{"type":"tag","name":"ul","attrs":{"id":"console-el"},"childNodes":[6]},{"type":"tag","name":"li","attrs":{"class":"blank"},"childNodes":[7]},{"type":"text","content":"无打印信息～","childNodes":[]}]
@@ -50,7 +50,7 @@ window.__pkg__bundleSrc__['131']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['132']=function(){
+window.__pkg__bundleSrc__['140']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

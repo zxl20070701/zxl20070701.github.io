@@ -5,16 +5,16 @@
 window.__pkg__bundleSrc__['31']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('120');
+    __pkg__scope_args__=window.__pkg__getBundle('121');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('121');
+__pkg__scope_args__=window.__pkg__getBundle('122');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('63');
+__pkg__scope_args__=window.__pkg__getBundle('64');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('86');
+__pkg__scope_args__=window.__pkg__getBundle('87');
 var getKeyCode =__pkg__scope_args__.default;
 
 
@@ -210,7 +210,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/snake-eating/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['120']=function(){
+window.__pkg__bundleSrc__['121']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[2]},{"type":"text","content":"贪吃蛇","childNodes":[]},{"type":"tag","name":"canvas","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:active":"isRuning?'no':'yes'"},"childNodes":[5,6]},{"type":"tag","name":"span","attrs":{"ui-bind":"tips"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"beginGame"},"childNodes":[7]},{"type":"text","content":"开始游戏","childNodes":[]}]
@@ -221,7 +221,7 @@ window.__pkg__bundleSrc__['120']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/snake-eating/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['121']=function(){
+window.__pkg__bundleSrc__['122']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -235,20 +235,20 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['63']=function(){
+window.__pkg__bundleSrc__['64']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('64');
+    __pkg__scope_args__=window.__pkg__getBundle('65');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('66');
+__pkg__scope_args__=window.__pkg__getBundle('67');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('64');
+__pkg__scope_args__=window.__pkg__getBundle('65');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -476,10 +476,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['64']=function(){
+window.__pkg__bundleSrc__['65']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('65');
+    __pkg__scope_args__=window.__pkg__getBundle('66');
 var arc =__pkg__scope_args__.default;
 
 
@@ -604,7 +604,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['65']=function(){
+window.__pkg__bundleSrc__['66']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -665,7 +665,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['66']=function(){
+window.__pkg__bundleSrc__['67']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -705,7 +705,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['86']=function(){
+window.__pkg__bundleSrc__['87']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表

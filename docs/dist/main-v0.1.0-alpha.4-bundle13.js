@@ -2,22 +2,22 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['37']=function(){
+window.__pkg__bundleSrc__['38']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('140');
+    __pkg__scope_args__=window.__pkg__getBundle('148');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('141');
+__pkg__scope_args__=window.__pkg__getBundle('149');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('142');
+__pkg__scope_args__=window.__pkg__getBundle('150');
 var lazyApiPages =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('1');
 var useTemplate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('146');
+__pkg__scope_args__=window.__pkg__getBundle('154');
 var animation =__pkg__scope_args__.default;
 
 
@@ -103,7 +103,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['140']=function(){
+window.__pkg__bundleSrc__['148']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,6,8]},{"type":"tag","name":"header","attrs":{"ui-dragdrop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"接口文档","childNodes":[]},{"type":"tag","name":"i","attrs":{"ui-on:click":"doClose","id":"api-close"},"childNodes":[5]},{"type":"text","content":"X","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tips"},"childNodes":[7]},{"type":"text","content":"温馨提示：此文档提供的所有功能都是内置的，只能在本项目中使用。","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[9,22]},{"type":"tag","name":"div","attrs":{"class":"menu"},"childNodes":[10,14,18]},{"type":"tag","name":"div","attrs":{},"childNodes":[11,13]},{"type":"tag","name":"h1","attrs":{"tag":"framework","ui-on:click":"loadApiPage"},"childNodes":[12]},{"type":"text","content":"内置框架","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[15,17]},{"type":"tag","name":"h1","attrs":{"tag":"editor","ui-on:click":"loadApiPage","id":"init-api-el"},"childNodes":[16]},{"type":"text","content":"代码编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[19,21]},{"type":"tag","name":"h1","attrs":{"tag":"webgl","ui-on:click":"loadApiPage"},"childNodes":[20]},{"type":"text","content":"WebGL","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","id":"api-content"},"childNodes":[]}]
@@ -114,7 +114,7 @@ window.__pkg__bundleSrc__['140']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['141']=function(){
+window.__pkg__bundleSrc__['149']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -128,24 +128,24 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/pages/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['142']=function(){
+window.__pkg__bundleSrc__['150']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 内置框架
     framework: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle18.js','143')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle19.js','151')
     },
 
     // 代码编辑器
     editor: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle19.js','144')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle20.js','152')
     },
 
     // WebGL
     webgl: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.3-bundle20.js','145')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle21.js','153')
     }
 
 };
@@ -156,7 +156,7 @@ window.__pkg__bundleSrc__['142']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['154']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈

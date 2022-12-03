@@ -2,19 +2,19 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/dialogs/pice/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['74']=function(){
+window.__pkg__bundleSrc__['75']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('147');
+    __pkg__scope_args__=window.__pkg__getBundle('155');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('148');
+__pkg__scope_args__=window.__pkg__getBundle('156');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('63');
+__pkg__scope_args__=window.__pkg__getBundle('64');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('72');
+__pkg__scope_args__=window.__pkg__getBundle('73');
 var formatTime =__pkg__scope_args__.default;
 
 
@@ -198,7 +198,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/dialogs/pice/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
+window.__pkg__bundleSrc__['155']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2,8,11,23]},{"type":"tag","name":"canvas","attrs":{"id":"time-line"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"add-split"},"childNodes":[3,4,6]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"newTime"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"addSplit"},"childNodes":[5]},{"type":"text","content":"新增","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"resetSplit","class":"reset"},"childNodes":[7]},{"type":"text","content":"重置","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"update"},"childNodes":[9]},{"type":"tag","name":"span","attrs":{},"childNodes":[10]},{"type":"text","content":"片段列表","childNodes":[]},{"type":"tag","name":"table","attrs":{},"childNodes":[12,22]},{"type":"tag","name":"thead","attrs":{},"childNodes":[13]},{"type":"tag","name":"tr","attrs":{},"childNodes":[14,16,18,20]},{"type":"tag","name":"th","attrs":{},"childNodes":[15]},{"type":"text","content":"选择","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[17]},{"type":"text","content":"序号","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[19]},{"type":"text","content":"开始时间","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[21]},{"type":"text","content":"结束时间","childNodes":[]},{"type":"tag","name":"tbody","attrs":{"id":"table-list","ui-on:click":"updatePiceSelected"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btn-list"},"childNodes":[24,26]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose","class":"gray"},"childNodes":[25]},{"type":"text","content":"取消","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[27]},{"type":"text","content":"确定","childNodes":[]}]
@@ -209,7 +209,7 @@ window.__pkg__bundleSrc__['147']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/dialogs/pice/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['148']=function(){
+window.__pkg__bundleSrc__['156']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -223,20 +223,20 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['63']=function(){
+window.__pkg__bundleSrc__['64']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('64');
+    __pkg__scope_args__=window.__pkg__getBundle('65');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('66');
+__pkg__scope_args__=window.__pkg__getBundle('67');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('64');
+__pkg__scope_args__=window.__pkg__getBundle('65');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -464,10 +464,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['64']=function(){
+window.__pkg__bundleSrc__['65']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('65');
+    __pkg__scope_args__=window.__pkg__getBundle('66');
 var arc =__pkg__scope_args__.default;
 
 
@@ -592,7 +592,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['65']=function(){
+window.__pkg__bundleSrc__['66']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -653,7 +653,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['66']=function(){
+window.__pkg__bundleSrc__['67']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -693,7 +693,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/formatTime
 /*****************************************************************/
-window.__pkg__bundleSrc__['72']=function(){
+window.__pkg__bundleSrc__['73']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 把秒值变成更可读的格式

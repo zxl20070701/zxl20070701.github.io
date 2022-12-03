@@ -5,26 +5,26 @@
 window.__pkg__bundleSrc__['30']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('102');
+    __pkg__scope_args__=window.__pkg__getBundle('103');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('103');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('104');
-var doResize =__pkg__scope_args__.default;
+
 
 __pkg__scope_args__=window.__pkg__getBundle('105');
+var doResize =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('106');
 var webglRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('111');
+__pkg__scope_args__=window.__pkg__getBundle('112');
 var Matrix4 =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('116');
+__pkg__scope_args__=window.__pkg__getBundle('117');
 var viewHandler =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('117');
+__pkg__scope_args__=window.__pkg__getBundle('118');
 var mainView=__pkg__scope_args__.mainView;
 var directiveView=__pkg__scope_args__.directiveView;
 
@@ -33,10 +33,10 @@ var directiveView=__pkg__scope_args__.directiveView;
 var modelValue = mainView();
 
 // 着色器
-__pkg__scope_args__=window.__pkg__getBundle('118');
+__pkg__scope_args__=window.__pkg__getBundle('119');
 var vertexShader =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('119');
+__pkg__scope_args__=window.__pkg__getBundle('120');
 var fragmentShader =__pkg__scope_args__.default;
 
 
@@ -232,7 +232,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['102']=function(){
+window.__pkg__bundleSrc__['103']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,14,16,18]},{"type":"tag","name":"div","attrs":{"class":"menu"},"childNodes":[2,4,6,12]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"3D模型编辑器","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"resetEditor"},"childNodes":[5]},{"type":"text","content":"新建","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"more"},"childNodes":[7,8]},{"type":"text","content":"导入","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[9]},{"type":"tag","name":"span","attrs":{},"childNodes":[10]},{"type":"tag","name":"label","attrs":{"for":"file"},"childNodes":[11]},{"type":"text","content":"本地选择","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"exportFile"},"childNodes":[13]},{"type":"text","content":"导出","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","id":"main-view"},"childNodes":[15]},{"type":"tag","name":"canvas","attrs":{"ui-bind:width":"width","ui-bind:height":"height","id":"main-view-canvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"axis","id":"directive-view"},"childNodes":[17]},{"type":"tag","name":"canvas","attrs":{"width":"100","height":"100","id":"directive-view-canvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"no-view"},"childNodes":[19]},{"type":"tag","name":"input","attrs":{"type":"file","id":"file","multiple":"","ui-on:change":"inputLocalFile","accept":".json,.stl,.obj,.fbx,.mtl,.ply,.gltf,.mod"},"childNodes":[]}]
@@ -243,7 +243,7 @@ window.__pkg__bundleSrc__['102']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['103']=function(){
+window.__pkg__bundleSrc__['104']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -257,7 +257,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['104']=function(){
+window.__pkg__bundleSrc__['105']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -338,26 +338,26 @@ __pkg__scope_bundle__.default= function (el, doback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['105']=function(){
+window.__pkg__bundleSrc__['106']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('106');
+    __pkg__scope_args__=window.__pkg__getBundle('107');
 var useShader=__pkg__scope_args__.useShader;
 
-__pkg__scope_args__=window.__pkg__getBundle('107');
+__pkg__scope_args__=window.__pkg__getBundle('108');
 var newBuffer=__pkg__scope_args__.newBuffer;
 var writeBuffer=__pkg__scope_args__.writeBuffer;
 var useBuffer=__pkg__scope_args__.useBuffer;
 
-__pkg__scope_args__=window.__pkg__getBundle('108');
+__pkg__scope_args__=window.__pkg__getBundle('109');
 var initTexture=__pkg__scope_args__.initTexture;
 var linkImage=__pkg__scope_args__.linkImage;
 var linkCube=__pkg__scope_args__.linkCube;
 
-__pkg__scope_args__=window.__pkg__getBundle('109');
+__pkg__scope_args__=window.__pkg__getBundle('110');
 var value =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('110');
+__pkg__scope_args__=window.__pkg__getBundle('111');
 var painter =__pkg__scope_args__.default;
 
 
@@ -490,7 +490,7 @@ __pkg__scope_bundle__.default= function (node, opts) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/shader
 /*****************************************************************/
-window.__pkg__bundleSrc__['106']=function(){
+window.__pkg__bundleSrc__['107']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -548,7 +548,7 @@ __pkg__scope_bundle__.useShader = _useShader;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/buffer
 /*****************************************************************/
-window.__pkg__bundleSrc__['107']=function(){
+window.__pkg__bundleSrc__['108']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -605,7 +605,7 @@ __pkg__scope_bundle__.useBuffer = function (gl, location, size, type, stride, of
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/texture
 /*****************************************************************/
-window.__pkg__bundleSrc__['108']=function(){
+window.__pkg__bundleSrc__['109']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -701,7 +701,7 @@ __pkg__scope_bundle__.linkCube = function (gl, type, level, format, textureType,
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/value
 /*****************************************************************/
-window.__pkg__bundleSrc__['109']=function(){
+window.__pkg__bundleSrc__['110']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (gl) {
@@ -816,7 +816,7 @@ window.__pkg__bundleSrc__['109']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/painter
 /*****************************************************************/
-window.__pkg__bundleSrc__['110']=function(){
+window.__pkg__bundleSrc__['111']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (gl) {
@@ -913,7 +913,7 @@ window.__pkg__bundleSrc__['110']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['111']=function(){
+window.__pkg__bundleSrc__['112']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 二个4x4矩阵相乘
@@ -930,16 +930,16 @@ var _multiply = function (matrix4, param) {
     return newParam;
 };
 
-__pkg__scope_args__=window.__pkg__getBundle('112');
+__pkg__scope_args__=window.__pkg__getBundle('113');
 var _move =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('113');
+__pkg__scope_args__=window.__pkg__getBundle('114');
 var _rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('114');
+__pkg__scope_args__=window.__pkg__getBundle('115');
 var _scale =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('115');
+__pkg__scope_args__=window.__pkg__getBundle('116');
 var _transform =__pkg__scope_args__.default;
 
 
@@ -1013,7 +1013,7 @@ __pkg__scope_bundle__.default= function (initMatrix4) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['112']=function(){
+window.__pkg__bundleSrc__['113']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1037,7 +1037,7 @@ __pkg__scope_bundle__.default= function (d, a, b, c) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['113']=function(){
+window.__pkg__bundleSrc__['114']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1063,7 +1063,7 @@ __pkg__scope_bundle__.default= function (deg) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/scale
 /*****************************************************************/
-window.__pkg__bundleSrc__['114']=function(){
+window.__pkg__bundleSrc__['115']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1086,7 +1086,7 @@ __pkg__scope_bundle__.default= function (xTimes, yTimes, zTimes, cx, cy, cz) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/transform
 /*****************************************************************/
-window.__pkg__bundleSrc__['115']=function(){
+window.__pkg__bundleSrc__['116']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1153,15 +1153,15 @@ __pkg__scope_bundle__.default= function (a1, b1, c1, a2, b2, c2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/viewHandler
 /*****************************************************************/
-window.__pkg__bundleSrc__['116']=function(){
+window.__pkg__bundleSrc__['117']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 屏幕3D控制信息捕获
 
-__pkg__scope_args__=window.__pkg__getBundle('43');
+__pkg__scope_args__=window.__pkg__getBundle('44');
 var xhtml =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('86');
+__pkg__scope_args__=window.__pkg__getBundle('87');
 var getKeyCode =__pkg__scope_args__.default;
 
 
@@ -1263,7 +1263,7 @@ __pkg__scope_bundle__.default= function (callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['86']=function(){
+window.__pkg__bundleSrc__['87']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
@@ -1468,7 +1468,7 @@ __pkg__scope_bundle__.default= function (callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/initModelValue
 /*****************************************************************/
-window.__pkg__bundleSrc__['117']=function(){
+window.__pkg__bundleSrc__['118']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 主视图
@@ -1596,7 +1596,7 @@ __pkg__scope_bundle__.directiveView = function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/shader-vertex.c
 /*****************************************************************/
-window.__pkg__bundleSrc__['118']=function(){
+window.__pkg__bundleSrc__['119']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= "attribute vec4 a_position;\r\nuniform mat4 u_matrix;\r\n\r\nvoid main()\r\n{\r\n    vec4 temp = u_matrix * a_position;\r\n\r\n    // 表示眼睛距离vec4(0.0,0.0,1.0)的距离\r\n    float dist = 1.0;\r\n\r\n    // 使用投影直接计算\r\n    gl_Position = vec4((dist + 1.0) * temp.x / (dist + temp.z), (dist + 1.0) * temp.y / (dist + temp.z), temp.z, 1.0);\r\n\r\n}\r\n"
@@ -1607,7 +1607,7 @@ window.__pkg__bundleSrc__['118']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/shader-fragment.c
 /*****************************************************************/
-window.__pkg__bundleSrc__['119']=function(){
+window.__pkg__bundleSrc__['120']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= "precision mediump float;\r\nuniform vec4 u_color;\r\n\r\nvoid main()\r\n{\r\n    gl_FragColor = u_color;\r\n}\r\n"

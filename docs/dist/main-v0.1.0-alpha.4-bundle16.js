@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/dialogs/save/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['97']=function(){
+window.__pkg__bundleSrc__['98']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('151');
+    __pkg__scope_args__=window.__pkg__getBundle('159');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('152');
+__pkg__scope_args__=window.__pkg__getBundle('160');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -53,7 +53,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/dialogs/save/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['151']=function(){
+window.__pkg__bundleSrc__['159']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":""},"childNodes":[2]},{"type":"text","content":"保存","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right-btn"},"childNodes":[4,21]},{"type":"tag","name":"div","attrs":{},"childNodes":[5,19]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[6,8]},{"type":"tag","name":"legend","attrs":{},"childNodes":[7]},{"type":"text","content":"基础","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[9,13]},{"type":"tag","name":"li","attrs":{},"childNodes":[10,12]},{"type":"tag","name":"label","attrs":{},"childNodes":[11]},{"type":"text","content":"名称：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"name"},"childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[14,16]},{"type":"tag","name":"label","attrs":{},"childNodes":[15]},{"type":"text","content":"格式：","childNodes":[]},{"type":"tag","name":"select","attrs":{},"childNodes":[17]},{"type":"tag","name":"option","attrs":{"value":"image/png"},"childNodes":[18]},{"type":"text","content":"png","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"review","title":"预览","ui-bind:style":"'width:'+width+'px;height:'+height+'px;'"},"childNodes":[20]},{"type":"tag","name":"span","attrs":{"ui-bind:style":"'background-image:url('+base64+');'"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[22,24]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[23]},{"type":"text","content":"确定","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose"},"childNodes":[25]},{"type":"text","content":"取消","childNodes":[]}]
@@ -64,7 +64,7 @@ window.__pkg__bundleSrc__['151']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/dialogs/save/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['152']=function(){
+window.__pkg__bundleSrc__['160']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

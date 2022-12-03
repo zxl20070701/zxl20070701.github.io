@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/layer/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['100']=function(){
+window.__pkg__bundleSrc__['101']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('155');
+    __pkg__scope_args__=window.__pkg__getBundle('163');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('156');
+__pkg__scope_args__=window.__pkg__getBundle('164');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -27,7 +27,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/layer/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['155']=function(){
+window.__pkg__bundleSrc__['163']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"图层","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"list","id":"layer-list"},"childNodes":[]}]
@@ -38,7 +38,7 @@ window.__pkg__bundleSrc__['155']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/layer/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['156']=function(){
+window.__pkg__bundleSrc__['164']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

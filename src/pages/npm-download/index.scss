@@ -1,0 +1,10 @@
+[page-view] {
+    overflow: hidden;
+
+    &>div {
+        &.chart {
+            width: 100vw;
+            height: 100vh;
+        }
+    }
+}

@@ -5,19 +5,19 @@
 window.__pkg__bundleSrc__['26']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('51');
+    __pkg__scope_args__=window.__pkg__getBundle('52');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('52');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('53');
+
+
+__pkg__scope_args__=window.__pkg__getBundle('54');
 var regexpToJson =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('60');
+__pkg__scope_args__=window.__pkg__getBundle('61');
 var drawImage =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('63');
+__pkg__scope_args__=window.__pkg__getBundle('64');
 var canvasRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
@@ -94,7 +94,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['51']=function(){
+window.__pkg__bundleSrc__['52']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2,3,5,11,12]},{"type":"tag","name":"div","attrs":{"class":"help-hidden","id":"help-hidden"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"expressVal"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDisplay"},"childNodes":[4]},{"type":"text","content":"显示","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"isString"},"childNodes":[6,7,8,9,10]},{"type":"tag","name":"input","attrs":{"type":"radio","name":"isString","id":"is-string-yes","ui-on:click":"doIsString","tag":"yes"},"childNodes":[]},{"type":"text","content":"是字符串","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"radio","name":"isString","id":"is-string-no","ui-on:click":"doIsString","tag":"no"},"childNodes":[]},{"type":"text","content":"不是字符串","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"canvas","attrs":{},"childNodes":[13]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
@@ -105,7 +105,7 @@ window.__pkg__bundleSrc__['51']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['52']=function(){
+window.__pkg__bundleSrc__['53']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -119,13 +119,13 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/regexpToJson/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['53']=function(){
+window.__pkg__bundleSrc__['54']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('54');
+    __pkg__scope_args__=window.__pkg__getBundle('55');
 var pretreatment =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('55');
+__pkg__scope_args__=window.__pkg__getBundle('56');
 var analyseExpress =__pkg__scope_args__.default;
 
 
@@ -267,7 +267,7 @@ __pkg__scope_bundle__.default= function (express, _isString) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/regexpToJson/pretreatment
 /*****************************************************************/
-window.__pkg__bundleSrc__['54']=function(){
+window.__pkg__bundleSrc__['55']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -304,25 +304,25 @@ __pkg__scope_bundle__.default= function (express, _isString) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/regexpToJson/analyseExpress
 /*****************************************************************/
-window.__pkg__bundleSrc__['55']=function(){
+window.__pkg__bundleSrc__['56']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('56');
+    __pkg__scope_args__=window.__pkg__getBundle('57');
 var ReadString =__pkg__scope_args__.default;
 
 
 // 特殊字符处理
-__pkg__scope_args__=window.__pkg__getBundle('57');
+__pkg__scope_args__=window.__pkg__getBundle('58');
 var specialWord =__pkg__scope_args__.default;
 
 
 // 范围分析
-__pkg__scope_args__=window.__pkg__getBundle('58');
+__pkg__scope_args__=window.__pkg__getBundle('59');
 var analysePurview =__pkg__scope_args__.default;
 
 
 // 用于辅助计算内容宽
-__pkg__scope_args__=window.__pkg__getBundle('59');
+__pkg__scope_args__=window.__pkg__getBundle('60');
 var calcWidth =__pkg__scope_args__.default;
 
 
@@ -551,7 +551,7 @@ __pkg__scope_bundle__.default= function (express) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ReadString
 /*****************************************************************/
-window.__pkg__bundleSrc__['56']=function(){
+window.__pkg__bundleSrc__['57']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (express) {
@@ -582,7 +582,7 @@ window.__pkg__bundleSrc__['56']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/regexpToJson/specialWord
 /*****************************************************************/
-window.__pkg__bundleSrc__['57']=function(){
+window.__pkg__bundleSrc__['58']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (word) {
@@ -626,14 +626,14 @@ window.__pkg__bundleSrc__['57']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/regexpToJson/analysePurview
 /*****************************************************************/
-window.__pkg__bundleSrc__['58']=function(){
+window.__pkg__bundleSrc__['59']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
-__pkg__scope_args__=window.__pkg__getBundle('57');
+__pkg__scope_args__=window.__pkg__getBundle('58');
 var specialWord =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('59');
+__pkg__scope_args__=window.__pkg__getBundle('60');
 var calcWidth =__pkg__scope_args__.default;
 
 
@@ -718,7 +718,7 @@ __pkg__scope_bundle__.default= function (_express) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/regexpToJson/calcWidth
 /*****************************************************************/
-window.__pkg__bundleSrc__['59']=function(){
+window.__pkg__bundleSrc__['60']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -740,13 +740,13 @@ __pkg__scope_bundle__.default= function (texts) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/drawImage/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['60']=function(){
+window.__pkg__bundleSrc__['61']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('61');
+    __pkg__scope_args__=window.__pkg__getBundle('62');
 var drawNode =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('62');
+__pkg__scope_args__=window.__pkg__getBundle('63');
 var toLoopText =__pkg__scope_args__.default;
 
 
@@ -950,7 +950,7 @@ __pkg__scope_bundle__.default= function drawImage(painter, imageData, left, top)
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/drawImage/drawNode
 /*****************************************************************/
-window.__pkg__bundleSrc__['61']=function(){
+window.__pkg__bundleSrc__['62']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (painter, x, y, width, height, color, content, textColor) {
@@ -973,7 +973,7 @@ window.__pkg__bundleSrc__['61']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/regexper-visualization/drawImage/toLoopText
 /*****************************************************************/
-window.__pkg__bundleSrc__['62']=function(){
+window.__pkg__bundleSrc__['63']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (min, max) {
@@ -994,20 +994,20 @@ window.__pkg__bundleSrc__['62']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['63']=function(){
+window.__pkg__bundleSrc__['64']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('64');
+    __pkg__scope_args__=window.__pkg__getBundle('65');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('66');
+__pkg__scope_args__=window.__pkg__getBundle('67');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('64');
+__pkg__scope_args__=window.__pkg__getBundle('65');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -1235,10 +1235,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['64']=function(){
+window.__pkg__bundleSrc__['65']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('65');
+    __pkg__scope_args__=window.__pkg__getBundle('66');
 var arc =__pkg__scope_args__.default;
 
 
@@ -1363,7 +1363,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['65']=function(){
+window.__pkg__bundleSrc__['66']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1424,7 +1424,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['66']=function(){
+window.__pkg__bundleSrc__['67']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变

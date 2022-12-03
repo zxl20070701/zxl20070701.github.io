@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/tool/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['99']=function(){
+window.__pkg__bundleSrc__['100']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('153');
+    __pkg__scope_args__=window.__pkg__getBundle('161');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('154');
+__pkg__scope_args__=window.__pkg__getBundle('162');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -49,7 +49,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/tool/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['153']=function(){
+window.__pkg__bundleSrc__['161']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3,12]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"工具箱","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"list"},"childNodes":[4,5,6,7,8,9,10,11]},{"type":"tag","name":"li","attrs":{"title":"移动工具","class":"move","ui-on:click":"changeTool","name":"move","ui-bind:active":"active=='move'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"橡皮擦","class":"eraser","ui-on:click":"changeTool","name":"eraser","ui-bind:active":"active=='eraser'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"背景橡皮擦","class":"eraser-bg","ui-on:click":"changeTool","name":"eraser-bg","ui-bind:active":"active=='eraser-bg'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"抓手工具","class":"drap","ui-on:click":"changeTool","name":"drap","ui-bind:active":"active=='drap'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"画笔","class":"painter","ui-on:click":"changeTool","name":"painter","ui-bind:active":"active=='painter'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"缩放工具","class":"resize","ui-on:click":"changeTool","name":"resize","ui-bind:active":"active=='resize'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"文字","class":"text","ui-on:click":"changeTool","name":"text","ui-bind:active":"active=='text'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"几何绘制","class":"geometry","ui-on:click":"changeTool","name":"geometry","ui-bind:active":"active=='geometry'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"color"},"childNodes":[13,14]},{"type":"tag","name":"span","attrs":{"tag":"forecolor","ui-on:click":"selectColor","title":"背景色","style":"background-color: white;"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"tag":"backcolor","ui-on:click":"selectColor","title":"前景色","style":"background-color: black;"},"childNodes":[]}]
@@ -60,7 +60,7 @@ window.__pkg__bundleSrc__['153']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/tool/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['154']=function(){
+window.__pkg__bundleSrc__['162']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
