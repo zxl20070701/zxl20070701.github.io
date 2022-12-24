@@ -64,7 +64,7 @@ inputEl.addEventListener('change', function (event) {
 });
 
 export default function () {
-    return new Promise((resolve, reject) => {
+    return new Promise(function (resolve, reject) {
 
         // 重置处理文件回调
         doit = function (datas) {

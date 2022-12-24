@@ -38,9 +38,16 @@ export default function (obj) {
                 var _this = this;
                 var urlObj = urlFormat();
 
-                if (!urlObj.params.packages) urlObj.params.packages = 'jsdoor';
-                if (!urlObj.params.interval) urlObj.params.interval = 7;
+                // 校对参数
+                if (!urlObj.params.packages || !urlObj.params.interval) {
 
+                    urlObj.params.packages = 'jsdoor';
+                    urlObj.params.interval = 7;
+                    window.location.href = "#/npm-download?interval=7&packages=jsdoor";
+
+                }
+
+                // 发送请求
                 xhr({
                     method: "GET",
                     url: this.url + urlObj.params.packages,
@@ -139,8 +146,21 @@ export default function (obj) {
                         var y = (height - 50) - item.value[index] / max * (height - 100);
 
                         painter.lineTo(x, y);
+
                     }
                     painter.stroke();
+
+                    // 绘制点
+                    painter.config({
+                        fillStyle: "white"
+                    });
+                    for (var index = 0; index < item.value.length; index++) {
+
+                        var x = index * dist + 150;
+                        var y = (height - 50) - item.value[index] / max * (height - 100);
+
+                        painter.fullCircle(x, y, 2);
+                    }
 
                     // 绘制右边提示
                     painter

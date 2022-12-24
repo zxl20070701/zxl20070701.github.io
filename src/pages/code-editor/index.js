@@ -102,6 +102,7 @@ export default function (obj) {
                                             if (textEl.getAttribute('load') == 'yes') {
                                                 textEl._navItem_.click();
                                             } else {
+
                                                 list[i].handle.getFile().then(function (file) {
                                                     var reader = new FileReader();
                                                     reader.onload = function () {
@@ -109,7 +110,12 @@ export default function (obj) {
                                                             currentInfo = _currentInfo;
                                                         }, list[i].handle, textEl);
                                                     };
-                                                    reader.readAsText(file);
+
+                                                    // 图片
+                                                    if (textEl.getAttribute('type') == 'image') reader.readAsDataURL(file);
+
+                                                    // 普通文本
+                                                    else reader.readAsText(file);
                                                 });
                                             }
                                         }
@@ -158,14 +164,19 @@ export default function (obj) {
                 if (currentInfo && currentInfo.nav.getAttribute('modify') == 'yes') {
                     // 创建写入对象
                     currentInfo.handle.createWritable().then(function (writable) {
-                        // 写入内容
-                        writable.write(currentInfo.editor.valueOf()).then(function () {
-                            // 关闭并确认写入
-                            writable.close().then(function () {
-                                // 修改记录，标记写入完毕
-                                currentInfo.nav.setAttribute('modify', 'no');
+
+                        // 对于没有新建编辑器的，说明只可以查看而不提供编辑
+                        if (currentInfo.editor) {
+
+                            // 写入内容
+                            writable.write(currentInfo.editor.valueOf()).then(function () {
+                                // 关闭并确认写入
+                                writable.close().then(function () {
+                                    // 修改记录，标记写入完毕
+                                    currentInfo.nav.setAttribute('modify', 'no');
+                                });
                             });
-                        });
+                        }
                     });
                 }
             }

@@ -1035,7 +1035,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height) {
 
     // 用于记录配置
     // 因为部分配置的设置比较特殊，只先记录意图
-    var config = {};
+    var config = {
+
+        // 文字大小
+        "font-size": 16,
+
+        // 字体，默认"sans-serif"
+        "font-family": "sans-serif",
+
+        // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
+        "arc-start-cap": 'butt',
+
+        // 圆弧结束端闭合方式，和上一个类似
+        "arc-end-cap": 'butt',
+    };
 
     // 配置生效方法
     var useConfig = function (key, value) {
@@ -1258,18 +1271,6 @@ __pkg__scope_bundle__.initPainterConfig = {
 
     // 文字垂直对齐方式（"middle"垂直居中、"top"上对齐和"bottom"下对齐）
     "textBaseline": 'middle',
-
-    // 文字大小
-    "font-size": 16,
-
-    // 字体，默认"sans-serif"
-    "font-family": "sans-serif",
-
-    // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
-    "arc-start-cap": 'butt',
-
-    // 圆弧结束端闭合方式，和上一个类似
-    "arc-end-cap": 'butt',
 
     // 设置线条虚线，应该是一个数组[number,...]
     "lineDash": [],

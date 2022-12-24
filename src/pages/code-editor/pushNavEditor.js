@@ -28,26 +28,42 @@ export default function (fileName, fileType, fileContent, setCurrentInfo, handle
     var editorItem = document.createElement('li');
     editorRootEl.appendChild(editorItem);
 
-
-    var options = {
-        el: editorItem,
-        content: fileContent
+    var currentInfo = {
+        nav: navItem,
+        handle: handle
     };
 
-    if (['html', 'svg', 'xml'].indexOf(fileType) > -1) {
-        options.shader = ['html']
-    } else if (['css', 'scss', 'sass'].indexOf(fileType) > -1) {
-        options.shader = ['css']
-    } else if (['js', 'json'].indexOf(fileType) > -1) {
-        options.shader = ['javascript']
+    // 图片
+    if (fileType == 'image') {
+        editorItem.style.backgroundImage = 'url(' + fileContent + ')';
+        editorItem.setAttribute('class', 'image');
     }
 
-    var editor = new editorRender(options);
+    // 普通文本
+    else {
 
-    // 编辑器管理的文本发生改变后会主动触发
-    editor.updated(function () {
-        navItem.setAttribute('modify', 'yes');
-    });
+        var options = {
+            el: editorItem,
+            content: fileContent
+        };
+
+        if (['html', 'svg', 'xml'].indexOf(fileType) > -1) {
+            options.shader = ['html']
+        } else if (['css', 'scss', 'sass'].indexOf(fileType) > -1) {
+            options.shader = ['css']
+        } else if (['js', 'json'].indexOf(fileType) > -1) {
+            options.shader = ['javascript']
+        }
+
+        var editor = new editorRender(options);
+
+        // 编辑器管理的文本发生改变后会主动触发
+        editor.updated(function () {
+            navItem.setAttribute('modify', 'yes');
+        });
+
+        currentInfo.editor = editor;
+    }
 
     // 关闭
     navItem_close.addEventListener('click', function (event) {
@@ -101,11 +117,7 @@ export default function (fileName, fileType, fileContent, setCurrentInfo, handle
         editorItem.style.display = '';
 
         // 记录
-        setCurrentInfo({
-            nav: navItem,
-            editor: editor,
-            handle: handle
-        });
+        setCurrentInfo(currentInfo);
 
     });
     navItem.click();

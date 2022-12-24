@@ -21,6 +21,7 @@ import filterText from './edit-view/filter';
 import innerShader from '../shader/index';
 
 var editor = function (options) {
+    var _this = this;
 
     if (!(this instanceof editor)) {
         throw new Error('Editor is a constructor and should be called with the `new` keyword');
@@ -40,14 +41,19 @@ var editor = function (options) {
     if (isElement(options.el)) {
 
         // 着色器
-        var shader = () => {
+        var shader = function () {
             var resultData = [];
-            this._contentArray.forEach(text => { resultData.push([{ content: text, color: this._colorText }]); });
+            _this._contentArray.forEach(function (text) {
+                resultData.push([{
+                    content: text,
+                    color: _this._colorText
+                }]);
+            });
             return resultData;
         };
 
         // 格式化
-        var format = textString => textString;
+        var format = function (textString) { return textString; }
 
         this._el = options.el;
         this._el.editor_terminal = 'none';
@@ -103,78 +109,81 @@ var editor = function (options) {
     // 绑定操作
     this.$$bindEvent();
 
-    this.__updated__ = () => { };
+    this.__updated__ = function () { };
     // 编辑器管理的文本发生改变后会主动触发callback方法
-    this.updated = callback => {
-        this.__updated__ = callback;
+    this.updated = function (callback) {
+        _this.__updated__ = callback;
     };
 
     // 获取当前编辑器代码
-    this.valueOf = (content) => {
+    this.valueOf = function (content) {
 
         if (content || content == '') {
 
             // 先删除内容
-            this._contentArray = null;
+            _this._contentArray = null;
 
             // 输入以触发更新
-            this.__focusDOM.value = content;
-            xhtml.trigger(this.__focusDOM, 'input');
-            this.__focusDOM.focus();
+            _this.__focusDOM.value = content;
+            xhtml.trigger(_this.__focusDOM, 'input');
+            _this.__focusDOM.focus();
 
         }
 
-        return this._contentArray.join('\n');
+        return _this._contentArray.join('\n');
     };
 
     // 在当前光标位置输入新的内容
-    this.input = (content = "", cursor = 0, number = 0) => {
+    this.input = function (content, cursor, number) {
+        content = content || "";
+        cursor = cursor || 0;
+        number = number || 0;
 
         // 先删除多余的内容
 
         if (cursor != 0) {
 
             if (number != 0) {
-                this._contentArray[this.__lineNum] =
-                    this._contentArray[this.__lineNum].substring(0, this.__leftNum + cursor) +
-                    this._contentArray[this.__lineNum].substring(this.__leftNum + cursor + number);
+                _this._contentArray[_this.__lineNum] =
+                    _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum + cursor) +
+                    _this._contentArray[_this.__lineNum].substring(_this.__leftNum + cursor + number);
             }
 
             // 修改光标位置
-            this.__leftNum += cursor;
+            _this.__leftNum += cursor;
 
         }
 
         // 输入以触发更新
-        this.__focusDOM.value = content;
-        xhtml.trigger(this.__focusDOM, 'input');
-        this.__focusDOM.focus();
+        _this.__focusDOM.value = content;
+        xhtml.trigger(_this.__focusDOM, 'input');
+        _this.__focusDOM.focus();
 
     };
 
     // 格式化代码
-    this.format = () => {
+    this.format = function () {
 
         // 格式化内容
-        this._contentArray = this.$format(this._contentArray.join('\n'), this._tabSpace).split('\n');
+        _this._contentArray = _this.$format(_this._contentArray.join('\n'), _this._tabSpace).split('\n');
 
-        this.__lineNum = this._contentArray.length - 1;
-        this.__leftNum = this._contentArray[this.__lineNum].length;
+        _this.__lineNum = _this._contentArray.length - 1;
+        _this.__leftNum = _this._contentArray[_this.__lineNum].length;
 
         // 着色
-        this.__formatData = this.$$diff(this.$shader(this._contentArray.join('\n')));
+        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
 
         // 更新视图
-        this.$$updateView();
+        _this.$$updateView();
 
         // 更新光标位置
-        this.$$initView();
+        _this.$$initView();
 
     };
 
     // 复制当前编辑器代码到电脑剪切板
-    this.copy = (callback, errorback) => {
-        xhtml.copy(this.valueOf(), callback, errorback);
+    this.copy = function (callback, errorback) {
+        xhtml.copy(_this.valueOf(), callback, errorback);
     };
 
 };

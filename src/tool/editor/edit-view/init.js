@@ -3,6 +3,7 @@ import xhtml from "../../xhtml";
 // 初始化结点
 
 export function initDom() {
+    var _this=this;
 
     this._el.innerHTML = "";
 
@@ -15,11 +16,11 @@ export function initDom() {
         overflow: "auto"
     });
 
-    xhtml.bind(this._el, 'click', () => {
+    xhtml.bind(this._el, 'click', function() {
 
         // 由于有时候点击屏幕的时候，是滚动导致的，因此位置可能没有计算好前聚焦了，导致光标错位
-        setTimeout(() => {
-            this.__focusDOM.focus();
+        setTimeout(function() {
+            _this.__focusDOM.focus();
         });
 
     })
@@ -45,12 +46,12 @@ export function initDom() {
         "z-index": 1
     });
 
-    xhtml.bind(this.__helpInputDOM, 'click', event => {
+    xhtml.bind(this.__helpInputDOM, 'click', function(event ) {
 
         xhtml.stopPropagation(event);
         xhtml.preventDefault(event);
 
-        this.__focusDOM.focus();
+        _this.__focusDOM.focus();
 
     });
 

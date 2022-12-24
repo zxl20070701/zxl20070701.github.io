@@ -3,6 +3,7 @@ import xhtml from "../../xhtml";
 // 更新编辑器内容视图
 
 export function updateView() {
+    var _this = this;
 
     // 如果有重复利用的行(可复用的过少就不选择这种方法了)
     if (this.__diff && this.__diff.beginNum + this.__diff.endNum > 10) {
@@ -47,7 +48,9 @@ export function updateView() {
     // 有时候，可能直接替换更快
     else if (this.__diff != "not update") {
         var template = "";
-        this.__formatData.forEach((line, index) => { template += this.$$toTemplate(line, index, this._noLineNumber); });
+        this.__formatData.forEach(function (line, index) {
+            template += _this.$$toTemplate(line, index, _this._noLineNumber);
+        });
         this.__showDOM.innerHTML = template;
     }
 
@@ -67,16 +70,17 @@ export function updateView() {
 // 更新编辑器选中视图
 
 export function updateSelectView() {
+    var _this = this;
 
     var ctx = this.__selectCanvas.getContext('2d');
     ctx.fillStyle = this._colorSelect;
     ctx.clearRect(0, 0, this.__selectCanvas.scrollWidth, this.__selectCanvas.scrollHeight);
 
     // 绘制二个区间
-    var drawerSelect = (beginLeftNum, endLeftNum, lineNum) => {
+    var drawerSelect = function (beginLeftNum, endLeftNum, lineNum) {
 
-        var xy1 = this.$$calcCanvasXY(beginLeftNum, lineNum);
-        var xy2 = this.$$calcCanvasXY(endLeftNum, lineNum);
+        var xy1 = _this.$$calcCanvasXY(beginLeftNum, lineNum);
+        var xy2 = _this.$$calcCanvasXY(endLeftNum, lineNum);
 
         // 如何一行过少，前置一点点选中显示
         if (beginLeftNum == endLeftNum && beginLeftNum == 0) {

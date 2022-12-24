@@ -2,7 +2,7 @@ export default function (oralValue, interval) {
 
     var value = [], time = [], max = 0;
 
-    for (var i = oralValue.length - 1; i >= interval - 1; i -= interval) {
+    for (var i = oralValue.length - 2; i >= interval - 1; i -= interval) {
 
         var temp = 0;
         for (var j = 0; j < interval; j++) {

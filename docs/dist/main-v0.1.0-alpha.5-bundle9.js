@@ -120,6 +120,7 @@ __pkg__scope_bundle__.default= function (obj) {
                                             if (textEl.getAttribute('load') == 'yes') {
                                                 textEl._navItem_.click();
                                             } else {
+
                                                 list[i].handle.getFile().then(function (file) {
                                                     var reader = new FileReader();
                                                     reader.onload = function () {
@@ -127,7 +128,12 @@ __pkg__scope_bundle__.default= function (obj) {
                                                             currentInfo = _currentInfo;
                                                         }, list[i].handle, textEl);
                                                     };
-                                                    reader.readAsText(file);
+
+                                                    // 图片
+                                                    if (textEl.getAttribute('type') == 'image') reader.readAsDataURL(file);
+
+                                                    // 普通文本
+                                                    else reader.readAsText(file);
                                                 });
                                             }
                                         }
@@ -176,14 +182,19 @@ __pkg__scope_bundle__.default= function (obj) {
                 if (currentInfo && currentInfo.nav.getAttribute('modify') == 'yes') {
                     // 创建写入对象
                     currentInfo.handle.createWritable().then(function (writable) {
-                        // 写入内容
-                        writable.write(currentInfo.editor.valueOf()).then(function () {
-                            // 关闭并确认写入
-                            writable.close().then(function () {
-                                // 修改记录，标记写入完毕
-                                currentInfo.nav.setAttribute('modify', 'no');
+
+                        // 对于没有新建编辑器的，说明只可以查看而不提供编辑
+                        if (currentInfo.editor) {
+
+                            // 写入内容
+                            writable.write(currentInfo.editor.valueOf()).then(function () {
+                                // 关闭并确认写入
+                                writable.close().then(function () {
+                                    // 修改记录，标记写入完毕
+                                    currentInfo.nav.setAttribute('modify', 'no');
+                                });
                             });
-                        });
+                        }
                     });
                 }
             }
@@ -214,7 +225,7 @@ window.__pkg__bundleSrc__['127']=function(){
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view]{\n\nwidth: calc(100vw - 160px);\n\nheight: calc(100vh - 40px);\n\nmargin-left: 80px;\n\nmargin-top: 20px;\n\noutline: 1px solid #e9e9e9;\n\nborder-radius: 5px;\n\n}\n/* 滚动条 */\n [page-view] ::-webkit-scrollbar{\n\nwidth: 0px;\n\nheight: 0px;\n\n}\n\n [page-view]>header{\n\nheight: 30px;\n\nline-height: 30px;\n\nbackground-color: #e6e2ec;\n\nbackground-image: url('./code-editor.png');\n\nbackground-size: auto 90%;\n\npadding-left: 40px;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 10px center;\n\n}\n\n [page-view]>header>ul>li{\n\ndisplay: inline-block;\n\nvertical-align: top;\n\nposition: relative;\n\npadding: 0 10px;\n\nfont-size: 12px;\n\ncursor: pointer;\n\n}\n\n [page-view]>header>ul>li:hover{\n\nbackground-color: rgb(186, 190, 194);\n\n}\n\n [page-view]>header>ul>li:hover>ul{\n\ndisplay: block;\n\n}\n\n [page-view]>header>ul>li:hover>ul>li:hover>ul{\n\ndisplay: block;\n\n}\n\n [page-view]>header>ul>li ul{\n\nbackground-color: rgb(237, 239, 241);\n\nborder: 1px solid rgb(230, 216, 216);\n\nwidth: 260px;\n\nbox-shadow: 0px 1px 3px #c5c5c7;\n\ndisplay: none;\n\n}\n\n [page-view]>header>ul>li ul li{\n\nline-height: 26px;\n\nmargin-top: 5px;\n\npadding: 0 20px;\n\nposition: relative;\n\n}\n\n [page-view]>header>ul>li ul li>em{\n\nposition: absolute;\n\nright: 20px;\n\nfont-style: normal;\n\n}\n\n [page-view]>header>ul>li ul li>em.more{\n\nwidth: 20px;\n\nheight: 100%;\n\nbackground-image: url(./toRight.png);\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\n}\n\n [page-view]>header>ul>li ul li:last-child{\n\nmargin-bottom: 5px;\n\n}\n\n [page-view]>header>ul>li ul li:hover:not(.line){\n\nbackground-color: rgb(205, 218, 186);\n\n}\n\n [page-view]>header>ul>li ul li.line{\n\nheight: 1px;\n\nwidth: 240px;\n\nmargin-left: 10px;\n\nbackground-color: #c5c5c7;\n\n}\n\n [page-view]>header>ul>li>ul{\n\nposition: absolute;\n\nleft: -1px;\n\nz-index: 1;\n\n}\n\n [page-view]>header>ul>li>ul>li>ul{\n\nposition: absolute;\n\ntop: 0;\n\nleft: 258px;\n\n}\n\n [page-view]>div.content{\n\nheight: calc(100% - 60px);\n\nwhite-space: nowrap;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.content>div{\n\nheight: 100%;\n\nvertical-align: top;\n\nwhite-space: normal;\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.nav{\n\nbackground-color: #ededf5;\n\nwidth: 50px;\n\npadding-top: 20px;\n\nposition: relative;\n\n}\n\n [page-view]>div.content>div.nav>span{\n\ndisplay: inline-block;\n\nheight: 50px;\n\nwidth: 100%;\n\nbackground-image: url('./editor@switch.png');\n\ncursor: pointer;\n\n}\n\n [page-view]>div.content>div.nav>span[tag='folder']{\n\nbackground-position-y: 0px;\n\n}\n\n [page-view]>div.content>div.nav>span[tag='search']{\n\nbackground-position-y: -63px;\n\n}\n\n [page-view]>div.content>div.nav>span[tag='plug']{\n\nbackground-position-y: -134px;\n\n}\n\n [page-view]>div.content>div.nav>span[tag='set']{\n\nbackground-position-y: -196px;\n\nposition: absolute;\n\nleft: 0;\n\nbottom: 0;\n\n}\n\n [page-view]>div.content>div.nav>span[active='yes']{\n\nborder-left: 2px solid #9d91af;\n\nbackground-color: #cecbd238;\n\nbackground-image: url('./editor@switch_hover.png');\n\n}\n\n [page-view]>div.content>div.nav>span:hover{\n\nbackground-image: url('./editor@switch_hover.png');\n\n}\n\n [page-view]>div.content>div.platform{\n\nbackground-color: #f2f2f2;\n\nwidth: 240px;\n\noverflow: auto;\n\n}\n\n [page-view]>div.content>div.platform>div{\n\ndisplay: none;\n\n}\n\n [page-view]>div.content>div.platform>div[active='yes']{\n\ndisplay: block;\n\n}\n\n/* // 无文件时\r */\n\n [page-view]>div.content>div.platform>div.folder .noFolder{\n\npadding: 20px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder .noFolder>p{\n\nline-height: 2em;\n\nmargin-top: 20px;\n\ncolor: #747179;\n\n}\n\n [page-view]>div.content>div.platform>div.folder .noFolder>p>a{\n\nfont-size: 14px;\n\nfont-family: cursive;\n\ntext-decoration: underline;\n\nmargin: 0 5px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder .noFolder>input[type='button']{\n\nline-height: 26px;\n\nwidth: 100%;\n\nmargin-top: 10px;\n\ncolor: white;\n\nfont-size: 12px;\n\ncursor: pointer;\n\nborder: none;\n\noutline: none;\n\nbackground-color: #816e9e;\n\n}\n\n [page-view]>div.content>div.platform>div.folder .noFolder>input[type='button']:hover{\n\nbackground-color: #705697;\n\n}\n\n/* // 菜单目录\r */\n\n [page-view]>div.content>div.platform>div.folder>ul ul{\n\nmargin-left: 1em;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div{\n\nbackground-image: url('./editor@icon.png');\n\nbackground-repeat: no-repeat;\n\npadding-left: 25px;\n\nline-height: 2em;\n\ncolor: #828181;\n\ncursor: pointer;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[is-directory='no']{\n\nbackground-position-y: 5px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[is-directory='yes'][open='yes']{\n\nbackground-position-y: -80px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[is-directory='yes'][open='no']{\n\nbackground-position-y: -40px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[is-directory='yes'][open='no']+ul{\n\ndisplay: none;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type]{\n\nbackground-position: 4px center;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='html']{\n\nbackground-image: url('./file-icons/HTML.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='css']{\n\nbackground-image: url('./file-icons/CSS.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='js']{\n\nbackground-image: url('./file-icons/JavaScript.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='json']{\n\nbackground-image: url('./file-icons/JSON.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='sass']{\n\nbackground-image: url('./file-icons/SASS.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='scss']{\n\nbackground-image: url('./file-icons/SASS.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='image']{\n\nbackground-image: url('./file-icons/Image.png');\n\n}\n\n [page-view]>div.content>div.view{\n\nbackground-color: #f5f5f5;\n\nwidth: calc(100% - 290px);\n\n}\n\n [page-view]>div.content>div.view>ul.nav{\n\nline-height: 34px;\n\nheight: 34px;\n\nbackground-color: #f0f0f1;\n\nwidth: calc(100% + 5px);\n\nmargin-left: -5px;\n\noverflow-x: auto;\n\noverflow-y: hidden;\n\nwhite-space: nowrap;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li{\n\ndisplay: inline-block;\n\npadding: 0 30px;\n\nposition: relative;\n\ncursor: pointer;\n\nbackground-color: #e6e6e6;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li:not(:first-child){\n\nborder-left: 1px solid #f5f5f5;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li>em, [page-view]>div.content>div.view>ul.nav>li>span{\n\nfont-style: normal;\n\nposition: absolute;\n\ndisplay: none;\n\nwidth: 30px;\n\nright: 0;\n\ntext-align: center;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li>span{\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li:hover>em{\n\ndisplay: inline-block;\n\n}\n\n/* // 当前活动\r */\n\n [page-view]>div.content>div.view>ul.nav>li[active='yes']{\n\nbackground-color: #f5f5f5;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[active='yes']>em{\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[active='yes']>span{\n\ndisplay: none;\n\n}\n\n/* // 有改动未保存\r */\n\n [page-view]>div.content>div.view>ul.nav>li[modify='yes']>em{\n\ndisplay: none;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[modify='yes']>span{\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[modify='yes']:hover>em{\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[modify='yes']:hover>span{\n\ndisplay: none;\n\n}\n\n [page-view]>div.content>div.view>ul.editor{\n\nposition: relative;\n\nheight: calc(100% - 34px);\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li{\n\nleft: 0;\n\ntop: 0;\n\noverflow: auto;\n\nposition: absolute;\n\nwidth: 100%;\n\nheight: calc(100vh - 134px);\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome{\n\ndisplay: none;\n\nbackground: #f5f5f5;\n\ntop: -34px;\n\nheight: calc(100vh - 100px);\n\nline-height: calc(100vh - 100px);\n\ntext-align: center;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome:first-child:last-child{\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div{\n\nline-height: 1em;\n\nvertical-align: middle;\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.logo{\n\nheight: 300px;\n\nbackground-image: url('./code-editor@welcome.png');\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 90%;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd{\n\nwhite-space: nowrap;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd>span{\n\ndisplay: inline-block;\n\nwidth: 200px;\n\nfont-size: 14px;\n\nline-height: 2em;\n\ncolor: rgb(128, 123, 123);\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd>span:first-child{\n\ntext-align: right;\n\npadding-right: 10px;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd>span:last-child{\n\ntext-align: left;\n\npadding-left: 10px;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd>span:last-child>em{\n\nfont-style: normal;\n\nbackground-color: #eae7e7;\n\ncolor: #2d2b2b;\n\npadding: 0 5px;\n\nfont-size: 12px;\n\nmargin: 0 10px;\n\n}\n\n [page-view]>footer{\n\nheight: 30px;\n\nbackground-color: #9c86bd;\n\n}\n";
+styleElement.innerHTML = "\n [page-view]{\n\nwidth: calc(100vw - 160px);\n\nheight: calc(100vh - 40px);\n\nmargin-left: 80px;\n\nmargin-top: 20px;\n\noutline: 1px solid #e9e9e9;\n\nborder-radius: 5px;\n\n}\n/* 滚动条 */\n [page-view] ::-webkit-scrollbar{\n\nwidth: 0px;\n\nheight: 0px;\n\n}\n\n [page-view]>header{\n\nheight: 30px;\n\nline-height: 30px;\n\nbackground-color: #e6e2ec;\n\nbackground-image: url('./code-editor.png');\n\nbackground-size: auto 90%;\n\npadding-left: 40px;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 10px center;\n\n}\n\n [page-view]>header>ul>li{\n\ndisplay: inline-block;\n\nvertical-align: top;\n\nposition: relative;\n\npadding: 0 10px;\n\nfont-size: 12px;\n\ncursor: pointer;\n\n}\n\n [page-view]>header>ul>li:hover{\n\nbackground-color: rgb(186, 190, 194);\n\n}\n\n [page-view]>header>ul>li:hover>ul{\n\ndisplay: block;\n\n}\n\n [page-view]>header>ul>li:hover>ul>li:hover>ul{\n\ndisplay: block;\n\n}\n\n [page-view]>header>ul>li ul{\n\nbackground-color: rgb(237, 239, 241);\n\nborder: 1px solid rgb(230, 216, 216);\n\nwidth: 260px;\n\nbox-shadow: 0px 1px 3px #c5c5c7;\n\ndisplay: none;\n\n}\n\n [page-view]>header>ul>li ul li{\n\nline-height: 26px;\n\nmargin-top: 5px;\n\npadding: 0 20px;\n\nposition: relative;\n\n}\n\n [page-view]>header>ul>li ul li>em{\n\nposition: absolute;\n\nright: 20px;\n\nfont-style: normal;\n\n}\n\n [page-view]>header>ul>li ul li>em.more{\n\nwidth: 20px;\n\nheight: 100%;\n\nbackground-image: url(./toRight.png);\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\n}\n\n [page-view]>header>ul>li ul li:last-child{\n\nmargin-bottom: 5px;\n\n}\n\n [page-view]>header>ul>li ul li:hover:not(.line){\n\nbackground-color: rgb(205, 218, 186);\n\n}\n\n [page-view]>header>ul>li ul li.line{\n\nheight: 1px;\n\nwidth: 240px;\n\nmargin-left: 10px;\n\nbackground-color: #c5c5c7;\n\n}\n\n [page-view]>header>ul>li>ul{\n\nposition: absolute;\n\nleft: -1px;\n\nz-index: 1;\n\n}\n\n [page-view]>header>ul>li>ul>li>ul{\n\nposition: absolute;\n\ntop: 0;\n\nleft: 258px;\n\n}\n\n [page-view]>div.content{\n\nheight: calc(100% - 60px);\n\nwhite-space: nowrap;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.content>div{\n\nheight: 100%;\n\nvertical-align: top;\n\nwhite-space: normal;\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.nav{\n\nbackground-color: #ededf5;\n\nwidth: 50px;\n\npadding-top: 20px;\n\nposition: relative;\n\n}\n\n [page-view]>div.content>div.nav>span{\n\ndisplay: inline-block;\n\nheight: 50px;\n\nwidth: 100%;\n\nbackground-image: url('./editor@switch.png');\n\ncursor: pointer;\n\n}\n\n [page-view]>div.content>div.nav>span[tag='folder']{\n\nbackground-position-y: 0px;\n\n}\n\n [page-view]>div.content>div.nav>span[tag='search']{\n\nbackground-position-y: -63px;\n\n}\n\n [page-view]>div.content>div.nav>span[tag='plug']{\n\nbackground-position-y: -134px;\n\n}\n\n [page-view]>div.content>div.nav>span[tag='set']{\n\nbackground-position-y: -196px;\n\nposition: absolute;\n\nleft: 0;\n\nbottom: 0;\n\n}\n\n [page-view]>div.content>div.nav>span[active='yes']{\n\nborder-left: 2px solid #9d91af;\n\nbackground-color: #cecbd238;\n\nbackground-image: url('./editor@switch_hover.png');\n\n}\n\n [page-view]>div.content>div.nav>span:hover{\n\nbackground-image: url('./editor@switch_hover.png');\n\n}\n\n [page-view]>div.content>div.platform{\n\nbackground-color: #f2f2f2;\n\nwidth: 240px;\n\noverflow: auto;\n\n}\n\n [page-view]>div.content>div.platform>div{\n\ndisplay: none;\n\n}\n\n [page-view]>div.content>div.platform>div[active='yes']{\n\ndisplay: block;\n\n}\n\n/* // 无文件时\r */\n\n [page-view]>div.content>div.platform>div.folder .noFolder{\n\npadding: 20px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder .noFolder>p{\n\nline-height: 2em;\n\nmargin-top: 20px;\n\ncolor: #747179;\n\n}\n\n [page-view]>div.content>div.platform>div.folder .noFolder>p>a{\n\nfont-size: 14px;\n\nfont-family: cursive;\n\ntext-decoration: underline;\n\nmargin: 0 5px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder .noFolder>input[type='button']{\n\nline-height: 26px;\n\nwidth: 100%;\n\nmargin-top: 10px;\n\ncolor: white;\n\nfont-size: 12px;\n\ncursor: pointer;\n\nborder: none;\n\noutline: none;\n\nbackground-color: #816e9e;\n\n}\n\n [page-view]>div.content>div.platform>div.folder .noFolder>input[type='button']:hover{\n\nbackground-color: #705697;\n\n}\n\n/* // 菜单目录\r */\n\n [page-view]>div.content>div.platform>div.folder>ul ul{\n\nmargin-left: 1em;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div{\n\nbackground-image: url('./editor@icon.png');\n\nbackground-repeat: no-repeat;\n\npadding-left: 25px;\n\nline-height: 2em;\n\ncolor: #828181;\n\ncursor: pointer;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[is-directory='no']{\n\nbackground-position-y: 5px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[is-directory='yes'][open='yes']{\n\nbackground-position-y: -80px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[is-directory='yes'][open='no']{\n\nbackground-position-y: -40px;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[is-directory='yes'][open='no']+ul{\n\ndisplay: none;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type]{\n\nbackground-position: 4px center;\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='html']{\n\nbackground-image: url('./file-icons/HTML.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='css']{\n\nbackground-image: url('./file-icons/CSS.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='js']{\n\nbackground-image: url('./file-icons/JavaScript.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='json']{\n\nbackground-image: url('./file-icons/JSON.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='sass']{\n\nbackground-image: url('./file-icons/SASS.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='scss']{\n\nbackground-image: url('./file-icons/SASS.png');\n\n}\n\n [page-view]>div.content>div.platform>div.folder ul div[type='image']{\n\nbackground-image: url('./file-icons/Image.png');\n\n}\n\n [page-view]>div.content>div.view{\n\nbackground-color: #f5f5f5;\n\nwidth: calc(100% - 290px);\n\n}\n\n [page-view]>div.content>div.view>ul.nav{\n\nline-height: 34px;\n\nheight: 34px;\n\nbackground-color: #f0f0f1;\n\nwidth: calc(100% + 5px);\n\nmargin-left: -5px;\n\noverflow-x: auto;\n\noverflow-y: hidden;\n\nwhite-space: nowrap;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li{\n\ndisplay: inline-block;\n\npadding: 0 30px;\n\nposition: relative;\n\ncursor: pointer;\n\nbackground-color: #e6e6e6;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li:not(:first-child){\n\nborder-left: 1px solid #f5f5f5;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li>em, [page-view]>div.content>div.view>ul.nav>li>span{\n\nfont-style: normal;\n\nposition: absolute;\n\ndisplay: none;\n\nwidth: 30px;\n\nright: 0;\n\ntext-align: center;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li>span{\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li:hover>em{\n\ndisplay: inline-block;\n\n}\n\n/* // 当前活动\r */\n\n [page-view]>div.content>div.view>ul.nav>li[active='yes']{\n\nbackground-color: #f5f5f5;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[active='yes']>em{\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[active='yes']>span{\n\ndisplay: none;\n\n}\n\n/* // 有改动未保存\r */\n\n [page-view]>div.content>div.view>ul.nav>li[modify='yes']>em{\n\ndisplay: none;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[modify='yes']>span{\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[modify='yes']:hover>em{\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.nav>li[modify='yes']:hover>span{\n\ndisplay: none;\n\n}\n\n [page-view]>div.content>div.view>ul.editor{\n\nposition: relative;\n\nheight: calc(100% - 34px);\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li{\n\nleft: 0;\n\ntop: 0;\n\noverflow: auto;\n\nposition: absolute;\n\nwidth: 100%;\n\nheight: calc(100vh - 134px);\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome{\n\ndisplay: none;\n\nbackground: #f5f5f5;\n\ntop: -34px;\n\nheight: calc(100vh - 100px);\n\nline-height: calc(100vh - 100px);\n\ntext-align: center;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome:first-child:last-child{\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div{\n\nline-height: 1em;\n\nvertical-align: middle;\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.logo{\n\nheight: 300px;\n\nbackground-image: url('./code-editor@welcome.png');\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 90%;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd{\n\nwhite-space: nowrap;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd>span{\n\ndisplay: inline-block;\n\nwidth: 200px;\n\nfont-size: 14px;\n\nline-height: 2em;\n\ncolor: rgb(128, 123, 123);\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd>span:first-child{\n\ntext-align: right;\n\npadding-right: 10px;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd>span:last-child{\n\ntext-align: left;\n\npadding-left: 10px;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.welcome>div>p.cmd>span:last-child>em{\n\nfont-style: normal;\n\nbackground-color: #eae7e7;\n\ncolor: #2d2b2b;\n\npadding: 0 5px;\n\nfont-size: 12px;\n\nmargin: 0 10px;\n\n}\n\n [page-view]>div.content>div.view>ul.editor>li.image{\n\nbackground-position: center;\n\nbackground-repeat: no-repeat;\n\n}\n\n [page-view]>footer{\n\nheight: 30px;\n\nbackground-color: #9c86bd;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
@@ -518,26 +529,42 @@ __pkg__scope_bundle__.default= function (fileName, fileType, fileContent, setCur
     var editorItem = document.createElement('li');
     editorRootEl.appendChild(editorItem);
 
-
-    var options = {
-        el: editorItem,
-        content: fileContent
+    var currentInfo = {
+        nav: navItem,
+        handle: handle
     };
 
-    if (['html', 'svg', 'xml'].indexOf(fileType) > -1) {
-        options.shader = ['html']
-    } else if (['css', 'scss', 'sass'].indexOf(fileType) > -1) {
-        options.shader = ['css']
-    } else if (['js', 'json'].indexOf(fileType) > -1) {
-        options.shader = ['javascript']
+    // 图片
+    if (fileType == 'image') {
+        editorItem.style.backgroundImage = 'url(' + fileContent + ')';
+        editorItem.setAttribute('class', 'image');
     }
 
-    var editor = new editorRender(options);
+    // 普通文本
+    else {
 
-    // 编辑器管理的文本发生改变后会主动触发
-    editor.updated(function () {
-        navItem.setAttribute('modify', 'yes');
-    });
+        var options = {
+            el: editorItem,
+            content: fileContent
+        };
+
+        if (['html', 'svg', 'xml'].indexOf(fileType) > -1) {
+            options.shader = ['html']
+        } else if (['css', 'scss', 'sass'].indexOf(fileType) > -1) {
+            options.shader = ['css']
+        } else if (['js', 'json'].indexOf(fileType) > -1) {
+            options.shader = ['javascript']
+        }
+
+        var editor = new editorRender(options);
+
+        // 编辑器管理的文本发生改变后会主动触发
+        editor.updated(function () {
+            navItem.setAttribute('modify', 'yes');
+        });
+
+        currentInfo.editor = editor;
+    }
 
     // 关闭
     navItem_close.addEventListener('click', function (event) {
@@ -591,11 +618,7 @@ __pkg__scope_bundle__.default= function (fileName, fileType, fileContent, setCur
         editorItem.style.display = '';
 
         // 记录
-        setCurrentInfo({
-            nav: navItem,
-            editor: editor,
-            handle: handle
-        });
+        setCurrentInfo(currentInfo);
 
     });
     navItem.click();
@@ -669,6 +692,7 @@ var innerShader =__pkg__scope_args__.default;
 
 
 var editor = function (options) {
+    var _this = this;
 
     if (!(this instanceof editor)) {
         throw new Error('Editor is a constructor and should be called with the `new` keyword');
@@ -688,14 +712,19 @@ var editor = function (options) {
     if (isElement(options.el)) {
 
         // 着色器
-        var shader = () => {
+        var shader = function () {
             var resultData = [];
-            this._contentArray.forEach(text => { resultData.push([{ content: text, color: this._colorText }]); });
+            _this._contentArray.forEach(function (text) {
+                resultData.push([{
+                    content: text,
+                    color: _this._colorText
+                }]);
+            });
             return resultData;
         };
 
         // 格式化
-        var format = textString => textString;
+        var format = function (textString) { return textString; }
 
         this._el = options.el;
         this._el.editor_terminal = 'none';
@@ -751,78 +780,81 @@ var editor = function (options) {
     // 绑定操作
     this.$$bindEvent();
 
-    this.__updated__ = () => { };
+    this.__updated__ = function () { };
     // 编辑器管理的文本发生改变后会主动触发callback方法
-    this.updated = callback => {
-        this.__updated__ = callback;
+    this.updated = function (callback) {
+        _this.__updated__ = callback;
     };
 
     // 获取当前编辑器代码
-    this.valueOf = (content) => {
+    this.valueOf = function (content) {
 
         if (content || content == '') {
 
             // 先删除内容
-            this._contentArray = null;
+            _this._contentArray = null;
 
             // 输入以触发更新
-            this.__focusDOM.value = content;
-            xhtml.trigger(this.__focusDOM, 'input');
-            this.__focusDOM.focus();
+            _this.__focusDOM.value = content;
+            xhtml.trigger(_this.__focusDOM, 'input');
+            _this.__focusDOM.focus();
 
         }
 
-        return this._contentArray.join('\n');
+        return _this._contentArray.join('\n');
     };
 
     // 在当前光标位置输入新的内容
-    this.input = (content = "", cursor = 0, number = 0) => {
+    this.input = function (content, cursor, number) {
+        content = content || "";
+        cursor = cursor || 0;
+        number = number || 0;
 
         // 先删除多余的内容
 
         if (cursor != 0) {
 
             if (number != 0) {
-                this._contentArray[this.__lineNum] =
-                    this._contentArray[this.__lineNum].substring(0, this.__leftNum + cursor) +
-                    this._contentArray[this.__lineNum].substring(this.__leftNum + cursor + number);
+                _this._contentArray[_this.__lineNum] =
+                    _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum + cursor) +
+                    _this._contentArray[_this.__lineNum].substring(_this.__leftNum + cursor + number);
             }
 
             // 修改光标位置
-            this.__leftNum += cursor;
+            _this.__leftNum += cursor;
 
         }
 
         // 输入以触发更新
-        this.__focusDOM.value = content;
-        xhtml.trigger(this.__focusDOM, 'input');
-        this.__focusDOM.focus();
+        _this.__focusDOM.value = content;
+        xhtml.trigger(_this.__focusDOM, 'input');
+        _this.__focusDOM.focus();
 
     };
 
     // 格式化代码
-    this.format = () => {
+    this.format = function () {
 
         // 格式化内容
-        this._contentArray = this.$format(this._contentArray.join('\n'), this._tabSpace).split('\n');
+        _this._contentArray = _this.$format(_this._contentArray.join('\n'), _this._tabSpace).split('\n');
 
-        this.__lineNum = this._contentArray.length - 1;
-        this.__leftNum = this._contentArray[this.__lineNum].length;
+        _this.__lineNum = _this._contentArray.length - 1;
+        _this.__leftNum = _this._contentArray[_this.__lineNum].length;
 
         // 着色
-        this.__formatData = this.$$diff(this.$shader(this._contentArray.join('\n')));
+        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
 
         // 更新视图
-        this.$$updateView();
+        _this.$$updateView();
 
         // 更新光标位置
-        this.$$initView();
+        _this.$$initView();
 
     };
 
     // 复制当前编辑器代码到电脑剪切板
-    this.copy = (callback, errorback) => {
-        xhtml.copy(this.valueOf(), callback, errorback);
+    this.copy = function (callback, errorback) {
+        xhtml.copy(_this.valueOf(), callback, errorback);
     };
 
 };
@@ -933,6 +965,8 @@ __pkg__scope_bundle__.selectIsNotBlank=function() {
 // 根据内容生成模板
 
 __pkg__scope_bundle__.toTemplate=function(line, index, noLineNumber) {
+    var _this = this;
+
     var template = "";
 
     template += "<div style='min-width: fit-content;white-space: nowrap;line-height:21px;height:21px;'>";
@@ -941,7 +975,7 @@ __pkg__scope_bundle__.toTemplate=function(line, index, noLineNumber) {
 
     template += "<em style='" + lineStyle + "color:" + this._colorNumber + ";user-select: none;display:inline-block;font-style:normal;width:35px;text-align:right;margin-right:5px;'>" + (index + 1) + "</em>";
 
-    line.forEach(text => {
+    line.forEach(function (text) {
 
         var contentText = text.content;
 
@@ -949,7 +983,7 @@ __pkg__scope_bundle__.toTemplate=function(line, index, noLineNumber) {
         contentText = contentText.replace(/\&/g, "&amp;");/*[&]*/
         contentText = contentText.replace(/</g, "&lt;"); contentText = contentText.replace(/>/g, "&gt;");/*[<,>]*/
 
-        template += "<span style='user-select: none;font-weight:" + this._fontWeight + ";white-space: pre;color:" + text.color + "'>" + contentText + "</span>";
+        template += "<span style='user-select: none;font-weight:" + _this._fontWeight + ";white-space: pre;color:" + text.color + "'>" + contentText + "</span>";
 
     });
 
@@ -995,6 +1029,7 @@ var xhtml =__pkg__scope_args__.default;
 // 初始化结点
 
 __pkg__scope_bundle__.initDom=function() {
+    var _this=this;
 
     this._el.innerHTML = "";
 
@@ -1007,11 +1042,11 @@ __pkg__scope_bundle__.initDom=function() {
         overflow: "auto"
     });
 
-    xhtml.bind(this._el, 'click', () => {
+    xhtml.bind(this._el, 'click', function() {
 
         // 由于有时候点击屏幕的时候，是滚动导致的，因此位置可能没有计算好前聚焦了，导致光标错位
-        setTimeout(() => {
-            this.__focusDOM.focus();
+        setTimeout(function() {
+            _this.__focusDOM.focus();
         });
 
     })
@@ -1037,12 +1072,12 @@ __pkg__scope_bundle__.initDom=function() {
         "z-index": 1
     });
 
-    xhtml.bind(this.__helpInputDOM, 'click', event => {
+    xhtml.bind(this.__helpInputDOM, 'click', function(event ) {
 
         xhtml.stopPropagation(event);
         xhtml.preventDefault(event);
 
-        this.__focusDOM.focus();
+        _this.__focusDOM.focus();
 
     });
 
@@ -1126,6 +1161,7 @@ var xhtml =__pkg__scope_args__.default;
 // 更新编辑器内容视图
 
 __pkg__scope_bundle__.updateView=function() {
+    var _this = this;
 
     // 如果有重复利用的行(可复用的过少就不选择这种方法了)
     if (this.__diff && this.__diff.beginNum + this.__diff.endNum > 10) {
@@ -1170,7 +1206,9 @@ __pkg__scope_bundle__.updateView=function() {
     // 有时候，可能直接替换更快
     else if (this.__diff != "not update") {
         var template = "";
-        this.__formatData.forEach((line, index) => { template += this.$$toTemplate(line, index, this._noLineNumber); });
+        this.__formatData.forEach(function (line, index) {
+            template += _this.$$toTemplate(line, index, _this._noLineNumber);
+        });
         this.__showDOM.innerHTML = template;
     }
 
@@ -1190,16 +1228,17 @@ __pkg__scope_bundle__.updateView=function() {
 // 更新编辑器选中视图
 
 __pkg__scope_bundle__.updateSelectView=function() {
+    var _this = this;
 
     var ctx = this.__selectCanvas.getContext('2d');
     ctx.fillStyle = this._colorSelect;
     ctx.clearRect(0, 0, this.__selectCanvas.scrollWidth, this.__selectCanvas.scrollHeight);
 
     // 绘制二个区间
-    var drawerSelect = (beginLeftNum, endLeftNum, lineNum) => {
+    var drawerSelect = function (beginLeftNum, endLeftNum, lineNum) {
 
-        var xy1 = this.$$calcCanvasXY(beginLeftNum, lineNum);
-        var xy2 = this.$$calcCanvasXY(endLeftNum, lineNum);
+        var xy1 = _this.$$calcCanvasXY(beginLeftNum, lineNum);
+        var xy2 = _this.$$calcCanvasXY(endLeftNum, lineNum);
 
         // 如何一行过少，前置一点点选中显示
         if (beginLeftNum == endLeftNum && beginLeftNum == 0) {
@@ -1350,6 +1389,7 @@ var getInputMessage=__pkg__scope_args__.getInputMessage;
 // 绑定键盘和鼠标等交互事件处理
 
 __pkg__scope_bundle__.default= function () {
+    var _this = this;
 
     // 鼠标是否按下
     var mouseDown = false;
@@ -1358,124 +1398,124 @@ __pkg__scope_bundle__.default= function () {
     var shiftDown = false;
 
     // 辅助计算选择光标位置
-    var calcCursor = (event) => {
-        var position = xhtml.position(this._el, event);
+    var calcCursor = function (event) {
+        var position = xhtml.position(_this._el, event);
         var topIndex = Math.round((position.y - 20.5) / 21);
 
         if (topIndex < 0) topIndex = 0;
-        if (topIndex >= this._contentArray.length) topIndex = this._contentArray.length - 1;
+        if (topIndex >= _this._contentArray.length) topIndex = _this._contentArray.length - 1;
 
         return {
-            leftNum: this.$$bestLeftNum(position.x, topIndex),
+            leftNum: _this.$$bestLeftNum(position.x, topIndex),
             lineNum: topIndex
         };
     };
 
     // 获取光标之间的内容
-    var calcTwoCursor = () => {
+    var calcTwoCursor = function () {
 
         // 假定cursor2是结束光标
-        var beginCursor = this.__cursor2,
-            endCursor = this.__cursor1;
+        var beginCursor = _this.__cursor2,
+            endCursor = _this.__cursor1;
 
         // 根据行号来校对
-        if (this.__cursor1.lineNum < this.__cursor2.lineNum) {
-            beginCursor = this.__cursor1;
-            endCursor = this.__cursor2;
-        } else if (this.__cursor1.lineNum == this.__cursor2.lineNum) {
+        if (_this.__cursor1.lineNum < _this.__cursor2.lineNum) {
+            beginCursor = _this.__cursor1;
+            endCursor = _this.__cursor2;
+        } else if (_this.__cursor1.lineNum == _this.__cursor2.lineNum) {
 
             // 根据列号来校对
-            if (this.__cursor1.leftNum < this.__cursor2.leftNum) {
-                beginCursor = this.__cursor1;
-                endCursor = this.__cursor2;
+            if (_this.__cursor1.leftNum < _this.__cursor2.leftNum) {
+                beginCursor = _this.__cursor1;
+                endCursor = _this.__cursor2;
             }
 
-            return this._contentArray[beginCursor.lineNum].substring(beginCursor.leftNum, endCursor.leftNum);
+            return _this._contentArray[beginCursor.lineNum].substring(beginCursor.leftNum, endCursor.leftNum);
         }
 
         // 余下的一定是多行
         var resultData = "";
-        resultData += this._contentArray[beginCursor.lineNum].substr(beginCursor.leftNum) + "\n";
+        resultData += _this._contentArray[beginCursor.lineNum].substr(beginCursor.leftNum) + "\n";
         for (var lineNum = beginCursor.lineNum + 1; lineNum < endCursor.lineNum; lineNum++) {
-            resultData += this._contentArray[lineNum] + "\n";
+            resultData += _this._contentArray[lineNum] + "\n";
         }
-        resultData += this._contentArray[endCursor.lineNum].substr(0, endCursor.leftNum);
+        resultData += _this._contentArray[endCursor.lineNum].substr(0, endCursor.leftNum);
 
         return resultData;
 
     };
 
     // 鼠标按下的时候，记录开始光标位置并标记鼠标按下动作
-    xhtml.bind(this._el, 'mousedown', event => {
+    xhtml.bind(this._el, 'mousedown', function (event) {
         mouseDown = true;
-        this.__cursor2 = this.__cursor1 = calcCursor(event);
+        _this.__cursor2 = _this.__cursor1 = calcCursor(event);
 
-        this.$$updateCanvasSize();
+        _this.$$updateCanvasSize();
 
         // 绘制选中效果
-        this.$$updateSelectView();
+        _this.$$updateSelectView();
 
     });
 
     // 移动的时候不停的同步结束光标位置
-    xhtml.bind(this._el, 'mousemove', event => {
+    xhtml.bind(this._el, 'mousemove', function (event) {
         if (!mouseDown) return;
-        this.__cursor2 = calcCursor(event);
+        _this.__cursor2 = calcCursor(event);
 
         // 绘制选中效果
-        this.$$updateSelectView();
+        _this.$$updateSelectView();
     });
 
     // 鼠标放开或移出的时候，标记鼠标放开
-    xhtml.bind(this._el, 'mouseup', () => mouseDown = false);
+    xhtml.bind(this._el, 'mouseup', function () { mouseDown = false });
 
     // 点击编辑界面
-    xhtml.bind(this._el, 'click', event => {
+    xhtml.bind(this._el, 'click', function (event) {
 
-        this.__helpInputDOM.innerHTML = '';
+        _this.__helpInputDOM.innerHTML = '';
 
-        var position = xhtml.position(this._el, event);
+        var position = xhtml.position(_this._el, event);
         var topIndex = Math.round((position.y - 20.5) / 21);
 
         // 如果超过了内容区域
-        if (topIndex < 0 || topIndex >= this._contentArray.length) return;
+        if (topIndex < 0 || topIndex >= _this._contentArray.length) return;
 
         var __lineNum = topIndex;
-        var __leftNum = this.$$bestLeftNum(position.x, __lineNum);
+        var __leftNum = _this.$$bestLeftNum(position.x, __lineNum);
 
         // 多选
         if (shiftDown) {
-            this.__cursor1 = {
-                leftNum: this.__leftNum,
-                lineNum: this.__lineNum
+            _this.__cursor1 = {
+                leftNum: _this.__leftNum,
+                lineNum: _this.__lineNum
             };
-            this.__cursor2 = {
+            _this.__cursor2 = {
                 leftNum: __leftNum,
                 lineNum: __lineNum
             };
 
             // 绘制选中效果
-            this.$$updateSelectView();
+            _this.$$updateSelectView();
         }
 
         // 普通点击
         else {
-            this.__lineNum = __lineNum;
-            this.__leftNum = __leftNum;
-            this.$$updateCursorPosition();
-            this.$$updateView();
+            _this.__lineNum = __lineNum;
+            _this.__leftNum = __leftNum;
+            _this.$$updateCursorPosition();
+            _this.$$updateView();
         }
 
     });
 
     // 双击编辑器界面
-    xhtml.bind(this._el, 'dblclick', event => {
-        var formateData = this.__formatData[this.__lineNum];
+    xhtml.bind(this._el, 'dblclick', function () {
+        var formateData = _this.__formatData[_this.__lineNum];
 
         // 求解左边边界
         var _left;
         for (var i = 0, leftLen = 0; i < formateData.length; i++) {
-            if (leftLen + formateData[i].content.length > this.__leftNum) {
+            if (leftLen + formateData[i].content.length > _this.__leftNum) {
                 _left = leftLen;
                 break;
             } else {
@@ -1486,7 +1526,7 @@ __pkg__scope_bundle__.default= function () {
         // 求解右边界
         var _right;
         for (var i = 0, leftLen = 0; i < formateData.length; i++) {
-            if (leftLen + formateData[i].content.length > this.__leftNum) {
+            if (leftLen + formateData[i].content.length > _this.__leftNum) {
                 _right = leftLen + formateData[i].content.length;
                 break;
             } else {
@@ -1498,42 +1538,42 @@ __pkg__scope_bundle__.default= function () {
          * 由于前置cursor1和cursor2是对象，直接修改leftNum无法成功
          */
 
-        this.__cursor1 = {
+        _this.__cursor1 = {
             leftNum: _left,
-            lineNum: this.__lineNum
+            lineNum: _this.__lineNum
         };
-        this.__cursor2 = {
+        _this.__cursor2 = {
             leftNum: _right,
-            lineNum: this.__lineNum
+            lineNum: _this.__lineNum
         };
 
         // 绘制选中效果
-        this.$$updateSelectView();
+        _this.$$updateSelectView();
     });
 
-    var update = text => {
+    var update = function (text) {
 
         // 获取输入内容
-        text = text || this.__focusDOM.value;
+        text = text || _this.__focusDOM.value;
 
-        text = this.$$filterText(text);
+        text = _this.$$filterText(text);
 
-        this.__focusDOM.value = "";
+        _this.__focusDOM.value = "";
 
         // 如果有选区，先删除选区
-        if (this.$$selectIsNotBlank()) this.$$deleteSelect();
+        if (_this.$$selectIsNotBlank()) _this.$$deleteSelect();
 
         // 如果输入的是回车，切割文本
         if (/^\n$/.test(text)) {
 
-            if (this.__leftNum >= this._contentArray[this.__lineNum].length) {
-                this._contentArray.splice(this.__lineNum + 1, 0, "");
+            if (_this.__leftNum >= _this._contentArray[_this.__lineNum].length) {
+                _this._contentArray.splice(_this.__lineNum + 1, 0, "");
             } else {
-                this._contentArray.splice(this.__lineNum + 1, 0, this._contentArray[this.__lineNum].substring(this.__leftNum));
-                this._contentArray[this.__lineNum] = this._contentArray[this.__lineNum].substring(0, this.__leftNum);
+                _this._contentArray.splice(_this.__lineNum + 1, 0, _this._contentArray[_this.__lineNum].substring(_this.__leftNum));
+                _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum);
             }
-            this.__lineNum += 1;
-            this.__leftNum = 0;
+            _this.__lineNum += 1;
+            _this.__leftNum = 0;
 
         }
 
@@ -1542,34 +1582,34 @@ __pkg__scope_bundle__.default= function () {
 
             var textArray = text.split(/\n/);
 
-            if (this._contentArray == null) {
-                this._contentArray = textArray;
-                this.__lineNum = this._contentArray.length - 1;
-                this.__leftNum = this._contentArray[this.__lineNum].length;
+            if (_this._contentArray == null) {
+                _this._contentArray = textArray;
+                _this.__lineNum = _this._contentArray.length - 1;
+                _this.__leftNum = _this._contentArray[_this.__lineNum].length;
             }
 
             // 如果只有一行文本(分开是为了加速)
             else if (textArray.length <= 1) {
-                this._contentArray[this.__lineNum] = this._contentArray[this.__lineNum].substring(0, this.__leftNum) + text + this._contentArray[this.__lineNum].substring(this.__leftNum);
-                this.__leftNum += text.length;
+                _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum) + text + _this._contentArray[_this.__lineNum].substring(_this.__leftNum);
+                _this.__leftNum += text.length;
             }
 
             // 如果是复制的多行文本
             else {
 
                 // 需要切割的行两边文本
-                var leftText = this._contentArray[this.__lineNum].substring(0, this.__leftNum);
-                var rightText = this._contentArray[this.__lineNum].substring(this.__leftNum);
+                var leftText = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum);
+                var rightText = _this._contentArray[_this.__lineNum].substring(_this.__leftNum);
 
                 // 旧行文本拼接进来
                 textArray[0] = leftText + textArray[0];
                 textArray[textArray.length - 1] += rightText;
 
                 // 新内容记录下来
-                this._contentArray.splice(this.__lineNum, 1, ...textArray);
+                _this._contentArray.splice(_this.__lineNum, 1, ...textArray);
 
-                this.__lineNum += (textArray.length - 1);
-                this.__leftNum = textArray[textArray.length - 1].length - rightText.length;
+                _this.__lineNum += (textArray.length - 1);
+                _this.__leftNum = textArray[textArray.length - 1].length - rightText.length;
 
             }
 
@@ -1577,48 +1617,48 @@ __pkg__scope_bundle__.default= function () {
 
         // 着色并更新视图
 
-        this.__formatData = this.$$diff(this.$shader(this._contentArray.join('\n')));
-        this.$$updateCursorPosition();
-        this.$$updateView();
+        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
+        _this.$$updateCursorPosition();
+        _this.$$updateView();
 
         // 通知文本改动
-        this.__updated__();
+        _this.__updated__();
 
     };
 
     // 中文输入开始
-    xhtml.bind(this.__focusDOM, 'compositionstart', () => {
-        this.__needUpdate = false;
-        this.__focusDOM.style.color = "rgba(0,0,0,0)";
-        this.__focusDOM.style.borderLeft = '1px solid ' + this._colorCursor;
+    xhtml.bind(this.__focusDOM, 'compositionstart', function () {
+        _this.__needUpdate = false;
+        _this.__focusDOM.style.color = "rgba(0,0,0,0)";
+        _this.__focusDOM.style.borderLeft = '1px solid ' + _this._colorCursor;
     });
 
     // 中文输入结束
-    xhtml.bind(this.__focusDOM, 'compositionend', () => {
-        this.__needUpdate = true;
-        this.__focusDOM.style.color = this._colorCursor;
-        this.__focusDOM.style.borderLeft = "none";
+    xhtml.bind(this.__focusDOM, 'compositionend', function () {
+        _this.__needUpdate = true;
+        _this.__focusDOM.style.color = _this._colorCursor;
+        _this.__focusDOM.style.borderLeft = "none";
         update();
 
         // 辅助输入
-        if (this.$input != null) this.__helpInputEvent = this.$input(this.__helpInputDOM, getInputMessage(this), this._contentArray) || {};
+        if (_this.$input != null) _this.__helpInputEvent = _this.$input(_this.__helpInputDOM, getInputMessage(_this), _this._contentArray) || {};
     });
 
     // 输入
-    xhtml.bind(this.__focusDOM, 'input', () => {
+    xhtml.bind(this.__focusDOM, 'input', function () {
         // 如果是中文输入开始，不应该更新
-        if (this.__needUpdate) {
+        if (_this.__needUpdate) {
             update();
 
             // 辅助输入
-            if (this.$input != null) this.__helpInputEvent = this.$input(this.__helpInputDOM, getInputMessage(this), this._contentArray) || {};
+            if (_this.$input != null) _this.__helpInputEvent = _this.$input(_this.__helpInputDOM, getInputMessage(_this), _this._contentArray) || {};
         }
     });
 
     // 记录此刻MAC电脑的Command是否按下
     var macCommand = false;
 
-    xhtml.bind(this._el, 'keyup', event => {
+    xhtml.bind(this._el, 'keyup', function (event) {
 
         var keyStringCode = getKeyString(event);
 
@@ -1630,7 +1670,7 @@ __pkg__scope_bundle__.default= function () {
     });
 
     // 处理键盘控制
-    xhtml.bind(this._el, 'keydown', event => {
+    xhtml.bind(this._el, 'keydown', function (event) {
 
         var keyStringCode = getKeyString(event);
 
@@ -1643,21 +1683,21 @@ __pkg__scope_bundle__.default= function () {
 
         // 辅助输入前置拦截
 
-        if (this.__helpInputDOM.innerHTML != '') {
-            var __helpInputEvent = this.__helpInputEvent[keyStringCode];
+        if (_this.__helpInputDOM.innerHTML != '') {
+            var __helpInputEvent = _this.__helpInputEvent[keyStringCode];
 
             if (isFunction(__helpInputEvent)) {
 
                 // 如果返回true表示继续调用，否则此快捷键结束
                 if (!__helpInputEvent()) return;
             } else {
-                this.__helpInputDOM.innerHTML = '';
+                _this.__helpInputDOM.innerHTML = '';
             }
         }
 
         // 只读模式需要拦截部分快捷键
         // 命令行不拦截
-        if (this._readonly && ['ctrl+a', 'ctrl+c'].indexOf(keyStringCode) < 0) return;
+        if (_this._readonly && ['ctrl+a', 'ctrl+c'].indexOf(keyStringCode) < 0) return;
 
         if (keyStringCode == 'shift') shiftDown = true;
 
@@ -1670,11 +1710,11 @@ __pkg__scope_bundle__.default= function () {
                 {
 
                     // 修改选区范围
-                    this.__cursor1 = { leftNum: 0, lineNum: 0 };
-                    this.__cursor2 = { lineNum: this._contentArray.length - 1, leftNum: this._contentArray[this._contentArray.length - 1].length };
+                    _this.__cursor1 = { leftNum: 0, lineNum: 0 };
+                    _this.__cursor2 = { lineNum: _this._contentArray.length - 1, leftNum: _this._contentArray[_this._contentArray.length - 1].length };
 
                     // 绘制选中效果
-                    this.$$updateSelectView();
+                    _this.$$updateSelectView();
 
                     break;
                 }
@@ -1682,9 +1722,9 @@ __pkg__scope_bundle__.default= function () {
             // 复制
             case "ctrl+c":
                 {
-                    if (this.$$selectIsNotBlank()) {
+                    if (_this.$$selectIsNotBlank()) {
                         xhtml.copy(calcTwoCursor());
-                        this.__focusDOM.focus();
+                        _this.__focusDOM.focus();
                     }
                     break;
                 }
@@ -1692,22 +1732,22 @@ __pkg__scope_bundle__.default= function () {
             // 剪切
             case "ctrl+x":
                 {
-                    if (this.$$selectIsNotBlank()) {
+                    if (_this.$$selectIsNotBlank()) {
 
                         xhtml.copy(calcTwoCursor());
-                        this.__focusDOM.focus();
-                        this.$$deleteSelect();
+                        _this.__focusDOM.focus();
+                        _this.$$deleteSelect();
 
                         // 由于内容改变，需要重新调用着色
-                        this.__formatData = this.$$diff(this.$shader(this._contentArray.join('\n')));
+                        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
 
                         // 更新视图
-                        this.$$updateCursorPosition();
-                        this.$$updateView();
-                        this.$$cancelSelect();
+                        _this.$$updateCursorPosition();
+                        _this.$$updateView();
+                        _this.$$cancelSelect();
 
                         // 通知文本改动
-                        this.__updated__();
+                        _this.__updated__();
 
                     }
                     break;
@@ -1723,38 +1763,38 @@ __pkg__scope_bundle__.default= function () {
 
                     // 计算空格
                     var blanks = "";
-                    for (var i = 0; i < this._tabSpace; i++) blanks += " ";
+                    for (var i = 0; i < _this._tabSpace; i++) blanks += " ";
 
                     // 如果有选区，特殊处理
-                    if (this.$$selectIsNotBlank()) {
+                    if (_this.$$selectIsNotBlank()) {
 
-                        var beginLineNum = this.__cursor1.lineNum,
-                            endLineNum = this.__cursor2.lineNum;
+                        var beginLineNum = _this.__cursor1.lineNum,
+                            endLineNum = _this.__cursor2.lineNum;
                         if (beginLineNum > endLineNum) {
-                            beginLineNum = this.__cursor2.lineNum;
-                            endLineNum = this.__cursor1.lineNum;
+                            beginLineNum = _this.__cursor2.lineNum;
+                            endLineNum = _this.__cursor1.lineNum;
                         }
 
                         // 在开头追究tab
                         for (var lineNum = beginLineNum; lineNum <= endLineNum; lineNum++) {
-                            this._contentArray[lineNum] = blanks + this._contentArray[lineNum];
+                            _this._contentArray[lineNum] = blanks + _this._contentArray[lineNum];
                         }
 
                         // 校对选择区域
-                        this.__cursor1.leftNum += this._tabSpace;
-                        this.__cursor2.leftNum += this._tabSpace;
+                        _this.__cursor1.leftNum += _this._tabSpace;
+                        _this.__cursor2.leftNum += _this._tabSpace;
 
                         // 校对光标
-                        this.__leftNum += this._tabSpace;
+                        _this.__leftNum += _this._tabSpace;
 
-                        this.__formatData = this.$$diff(this.$shader(this._contentArray.join('\n')));
-                        this.$$updateCursorPosition();
-                        this.$$updateView();
-                        this.$$updateCanvasSize();
-                        this.$$updateSelectView();
+                        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
+                        _this.$$updateCursorPosition();
+                        _this.$$updateView();
+                        _this.$$updateCanvasSize();
+                        _this.$$updateSelectView();
 
                         // 通知文本改动
-                        this.__updated__();
+                        _this.__updated__();
 
                     } else {
                         update(blanks);
@@ -1768,18 +1808,18 @@ __pkg__scope_bundle__.default= function () {
                 {
 
                     // 如果是第一行不需要任何处理
-                    if (this.__lineNum <= 0) return;
+                    if (_this.__lineNum <= 0) return;
 
                     // 向上一行
-                    this.__lineNum -= 1;
+                    _this.__lineNum -= 1;
 
-                    this.__leftNum = this.$$bestLeftNum(this.$$textWidth(this._contentArray[this.__lineNum + 1].substr(0, this.__leftNum)) + 40);
+                    _this.__leftNum = _this.$$bestLeftNum(_this.$$textWidth(_this._contentArray[_this.__lineNum + 1].substr(0, _this.__leftNum)) + 40);
 
-                    this.$$updateCursorPosition();
-                    this.$$updateView();
-                    this.$$cancelSelect();
+                    _this.$$updateCursorPosition();
+                    _this.$$updateView();
+                    _this.$$cancelSelect();
 
-                    this._el.scrollTop -= 21;
+                    _this._el.scrollTop -= 21;
 
                     break;
                 }
@@ -1788,18 +1828,18 @@ __pkg__scope_bundle__.default= function () {
             case "down":
                 {
 
-                    if (this.__lineNum >= this._contentArray.length - 1) return;
+                    if (_this.__lineNum >= _this._contentArray.length - 1) return;
 
                     // 向下一行
-                    this.__lineNum += 1;
+                    _this.__lineNum += 1;
 
-                    this.__leftNum = this.$$bestLeftNum(this.$$textWidth(this._contentArray[this.__lineNum - 1].substr(0, this.__leftNum)) + 40);
+                    _this.__leftNum = _this.$$bestLeftNum(_this.$$textWidth(_this._contentArray[_this.__lineNum - 1].substr(0, _this.__leftNum)) + 40);
 
-                    this.$$updateCursorPosition();
-                    this.$$updateView();
-                    this.$$cancelSelect();
+                    _this.$$updateCursorPosition();
+                    _this.$$updateView();
+                    _this.$$cancelSelect();
 
-                    this._el.scrollTop += 21;
+                    _this._el.scrollTop += 21;
 
                     break;
                 }
@@ -1808,16 +1848,16 @@ __pkg__scope_bundle__.default= function () {
             case "left":
                 {
 
-                    if (this.__leftNum <= 0) {
-                        if (this.__lineNum <= 0) return;
-                        this.__lineNum -= 1;
-                        this.__leftNum = this._contentArray[this.__lineNum].length;
+                    if (_this.__leftNum <= 0) {
+                        if (_this.__lineNum <= 0) return;
+                        _this.__lineNum -= 1;
+                        _this.__leftNum = _this._contentArray[_this.__lineNum].length;
                     } else {
-                        this.__leftNum -= 1;
+                        _this.__leftNum -= 1;
                     }
 
-                    this.$$updateCursorPosition();
-                    this.$$cancelSelect();
+                    _this.$$updateCursorPosition();
+                    _this.$$cancelSelect();
 
                     break;
                 }
@@ -1826,16 +1866,16 @@ __pkg__scope_bundle__.default= function () {
             case "right":
                 {
 
-                    if (this.__leftNum >= this._contentArray[this.__lineNum].length) {
-                        if (this.__lineNum >= this._contentArray.length - 1) return;
-                        this.__lineNum += 1;
-                        this.__leftNum = 0;
+                    if (_this.__leftNum >= _this._contentArray[_this.__lineNum].length) {
+                        if (_this.__lineNum >= _this._contentArray.length - 1) return;
+                        _this.__lineNum += 1;
+                        _this.__leftNum = 0;
                     } else {
-                        this.__leftNum += 1;
+                        _this.__leftNum += 1;
                     }
 
-                    this.$$updateCursorPosition();
-                    this.$$cancelSelect();
+                    _this.$$updateCursorPosition();
+                    _this.$$cancelSelect();
 
                     break;
                 }
@@ -1845,41 +1885,41 @@ __pkg__scope_bundle__.default= function () {
                 {
 
                     // 如果有选区
-                    if (this.$$selectIsNotBlank()) {
+                    if (_this.$$selectIsNotBlank()) {
 
                         // 删除选区
-                        this.$$deleteSelect();
+                        _this.$$deleteSelect();
 
                     }
 
                     // 无选区的常规操作
                     else {
-                        if (this.__leftNum <= 0) {
-                            if (this.__lineNum <= 0) return;
+                        if (_this.__leftNum <= 0) {
+                            if (_this.__lineNum <= 0) return;
 
-                            this.__lineNum -= 1;
-                            this.__leftNum = this._contentArray[this.__lineNum].length;
+                            _this.__lineNum -= 1;
+                            _this.__leftNum = _this._contentArray[_this.__lineNum].length;
 
                             // 一行的开头应该删除本行（合并到前一行）
-                            this._contentArray[this.__lineNum] += this._contentArray[this.__lineNum + 1];
-                            this._contentArray.splice(this.__lineNum + 1, 1);
+                            _this._contentArray[_this.__lineNum] += _this._contentArray[_this.__lineNum + 1];
+                            _this._contentArray.splice(_this.__lineNum + 1, 1);
 
                         } else {
-                            this.__leftNum -= 1;
-                            this._contentArray[this.__lineNum] = this._contentArray[this.__lineNum].substring(0, this.__leftNum) + this._contentArray[this.__lineNum].substring(this.__leftNum + 1);
+                            _this.__leftNum -= 1;
+                            _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum) + _this._contentArray[_this.__lineNum].substring(_this.__leftNum + 1);
                         }
                     }
 
                     // 由于内容改变，需要重新调用着色
-                    this.__formatData = this.$$diff(this.$shader(this._contentArray.join('\n')));
+                    _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
 
                     // 更新视图
-                    this.$$updateCursorPosition();
-                    this.$$updateView();
-                    this.$$cancelSelect();
+                    _this.$$updateCursorPosition();
+                    _this.$$updateView();
+                    _this.$$cancelSelect();
 
                     // 通知文本改动
-                    this.__updated__();
+                    _this.__updated__();
 
                     break;
                 }

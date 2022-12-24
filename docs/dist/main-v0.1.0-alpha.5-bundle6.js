@@ -444,6 +444,7 @@ __pkg__scope_bundle__.default= function (node, opts) {
                     // 链接多张图片
                     "useCube": function (images, width, height, level, format, textureType) {
                         linkCube(gl, type, level, format, textureType, images, width, height, texture);
+                        return textureObj;
                     }
                 };
                 return textureObj;
@@ -459,6 +460,8 @@ __pkg__scope_bundle__.default= function (node, opts) {
                 var elHeight = gl.canvas.height;
 
                 gl.viewport((elWidth - viewWidth) * 0.5, (elHeight - viewHeight) * 0.5, viewWidth, viewHeight);
+
+                return glObj;
             }
 
         };

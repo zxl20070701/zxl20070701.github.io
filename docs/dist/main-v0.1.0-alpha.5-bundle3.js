@@ -488,7 +488,7 @@ inputEl.addEventListener('change', function (event) {
 });
 
 __pkg__scope_bundle__.default= function () {
-    return new Promise((resolve, reject) => {
+    return new Promise(function (resolve, reject) {
 
         // 重置处理文件回调
         doit = function (datas) {
@@ -628,7 +628,7 @@ window.__pkg__bundleSrc__['74']=function(){
 
     // 编辑切割点
     pice: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle14.js','75')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.5-bundle14.js','75')
     }
 
 };

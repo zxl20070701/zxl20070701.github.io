@@ -62,9 +62,16 @@ __pkg__scope_bundle__.default= function (obj) {
                 var _this = this;
                 var urlObj = urlFormat();
 
-                if (!urlObj.params.packages) urlObj.params.packages = 'jsdoor';
-                if (!urlObj.params.interval) urlObj.params.interval = 7;
+                // 校对参数
+                if (!urlObj.params.packages || !urlObj.params.interval) {
 
+                    urlObj.params.packages = 'jsdoor';
+                    urlObj.params.interval = 7;
+                    window.location.href = "#/npm-download?interval=7&packages=jsdoor";
+
+                }
+
+                // 发送请求
                 xhr({
                     method: "GET",
                     url: this.url + urlObj.params.packages,
@@ -163,8 +170,21 @@ __pkg__scope_bundle__.default= function (obj) {
                         var y = (height - 50) - item.value[index] / max * (height - 100);
 
                         painter.lineTo(x, y);
+
                     }
                     painter.stroke();
+
+                    // 绘制点
+                    painter.config({
+                        fillStyle: "white"
+                    });
+                    for (var index = 0; index < item.value.length; index++) {
+
+                        var x = index * dist + 150;
+                        var y = (height - 50) - item.value[index] / max * (height - 100);
+
+                        painter.fullCircle(x, y, 2);
+                    }
 
                     // 绘制右边提示
                     painter
@@ -417,7 +437,7 @@ window.__pkg__bundleSrc__['137']=function(){
 
     var value = [], time = [], max = 0;
 
-    for (var i = oralValue.length - 1; i >= interval - 1; i -= interval) {
+    for (var i = oralValue.length - 2; i >= interval - 1; i -= interval) {
 
         var temp = 0;
         for (var j = 0; j < interval; j++) {
@@ -625,7 +645,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height) {
 
     // 用于记录配置
     // 因为部分配置的设置比较特殊，只先记录意图
-    var config = {};
+    var config = {
+
+        // 文字大小
+        "font-size": 16,
+
+        // 字体，默认"sans-serif"
+        "font-family": "sans-serif",
+
+        // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
+        "arc-start-cap": 'butt',
+
+        // 圆弧结束端闭合方式，和上一个类似
+        "arc-end-cap": 'butt',
+    };
 
     // 配置生效方法
     var useConfig = function (key, value) {
@@ -848,18 +881,6 @@ __pkg__scope_bundle__.initPainterConfig = {
 
     // 文字垂直对齐方式（"middle"垂直居中、"top"上对齐和"bottom"下对齐）
     "textBaseline": 'middle',
-
-    // 文字大小
-    "font-size": 16,
-
-    // 字体，默认"sans-serif"
-    "font-family": "sans-serif",
-
-    // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
-    "arc-start-cap": 'butt',
-
-    // 圆弧结束端闭合方式，和上一个类似
-    "arc-end-cap": 'butt',
 
     // 设置线条虚线，应该是一个数组[number,...]
     "lineDash": [],

@@ -24,6 +24,12 @@ var imageToCanvas =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('64');
 var canvasRender =__pkg__scope_args__.default;
 
+__pkg__scope_args__=window.__pkg__getBundle('87');
+var getKeyCode =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('44');
+var xhtml =__pkg__scope_args__.default;
+
 
 var wins = [], painter;
 __pkg__scope_bundle__.default= function (obj) {
@@ -66,9 +72,9 @@ __pkg__scope_bundle__.default= function (obj) {
             document.getElementById('icon-logo').setAttribute('href', './image-editor.png');
         },
         mounted: function () {
+            var _this = this;
             painter = canvasRender(document.getElementById('image-root'), this.width, this.height);
 
-            var _this = this;
             Promise.all([
                 this.$openWin(lazyWins.layer),
                 this.$openWin(lazyWins.tool)
@@ -82,6 +88,36 @@ __pkg__scope_bundle__.default= function (obj) {
                 newLayerCanvas.width = _this.width;
                 newLayerCanvas.height = _this.height;
                 _this.appendLayer(newLayerCanvas, '背景');
+            });
+
+            // 启动键盘监听
+            getKeyCode(function (keyCode, event) {
+
+                // 移动
+                if(_this.activeTool=='move'){
+                    
+                }
+
+                // 抓手工具
+                else if(_this.activeTool=='drap'){
+
+                }
+
+            });
+
+            // 鼠标按下
+            xhtml.bind(document.body, 'mousedown', function () {
+
+            });
+
+            // 鼠标移动
+            xhtml.bind(document.body, 'mousemove', function () {
+
+            });
+
+            // 鼠标松开
+            xhtml.bind(document.body, 'mouseup', function () {
+
             });
 
         },
@@ -373,12 +409,12 @@ window.__pkg__bundleSrc__['96']=function(){
 
     // 画布或图像大小
     size: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle15.js','97')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.5-bundle15.js','97')
     },
 
     // 保存
     save: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle16.js','98')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.5-bundle16.js','98')
     }
 
 };
@@ -396,12 +432,12 @@ window.__pkg__bundleSrc__['99']=function(){
 
     // 工具箱
     tool: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle17.js','100')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.5-bundle17.js','100')
     },
 
     // 图层
     layer: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.4-bundle18.js','101')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.5-bundle18.js','101')
     }
 
 };
@@ -482,7 +518,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height) {
 
     // 用于记录配置
     // 因为部分配置的设置比较特殊，只先记录意图
-    var config = {};
+    var config = {
+
+        // 文字大小
+        "font-size": 16,
+
+        // 字体，默认"sans-serif"
+        "font-family": "sans-serif",
+
+        // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
+        "arc-start-cap": 'butt',
+
+        // 圆弧结束端闭合方式，和上一个类似
+        "arc-end-cap": 'butt',
+    };
 
     // 配置生效方法
     var useConfig = function (key, value) {
@@ -706,18 +755,6 @@ __pkg__scope_bundle__.initPainterConfig = {
     // 文字垂直对齐方式（"middle"垂直居中、"top"上对齐和"bottom"下对齐）
     "textBaseline": 'middle',
 
-    // 文字大小
-    "font-size": 16,
-
-    // 字体，默认"sans-serif"
-    "font-family": "sans-serif",
-
-    // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
-    "arc-start-cap": 'butt',
-
-    // 圆弧结束端闭合方式，和上一个类似
-    "arc-end-cap": 'butt',
-
     // 设置线条虚线，应该是一个数组[number,...]
     "lineDash": [],
 
@@ -904,6 +941,211 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r) {
     return enhanceGradient;
 };
 
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/keyCode
+/*****************************************************************/
+window.__pkg__bundleSrc__['87']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 字典表
+var dictionary = {
+
+    // 数字
+    48: [0, ')'],
+    49: [1, '!'],
+    50: [2, '@'],
+    51: [3, '#'],
+    52: [4, '$'],
+    53: [5, '%'],
+    54: [6, '^'],
+    55: [7, '&'],
+    56: [8, '*'],
+    57: [9, '('],
+    96: [0, 0],
+    97: 1,
+    98: 2,
+    99: 3,
+    100: 4,
+    101: 5,
+    102: 6,
+    103: 7,
+    104: 8,
+    105: 9,
+    106: "*",
+    107: "+",
+    109: "-",
+    110: ".",
+    111: "/",
+
+    // 字母
+    65: ["a", "A"],
+    66: ["b", "B"],
+    67: ["c", "C"],
+    68: ["d", "D"],
+    69: ["e", "E"],
+    70: ["f", "F"],
+    71: ["g", "G"],
+    72: ["h", "H"],
+    73: ["i", "I"],
+    74: ["j", "J"],
+    75: ["k", "K"],
+    76: ["l", "L"],
+    77: ["m", "M"],
+    78: ["n", "N"],
+    79: ["o", "O"],
+    80: ["p", "P"],
+    81: ["q", "Q"],
+    82: ["r", "R"],
+    83: ["s", "S"],
+    84: ["t", "T"],
+    85: ["u", "U"],
+    86: ["v", "V"],
+    87: ["w", "W"],
+    88: ["x", "X"],
+    89: ["y", "Y"],
+    90: ["z", "Z"],
+
+    // 方向
+    37: "left",
+    38: "up",
+    39: "right",
+    40: "down",
+    33: "page up",
+    34: "page down",
+    35: "end",
+    36: "home",
+
+    // 控制键
+    16: "shift",
+    17: "ctrl",
+    18: "alt",
+    91: "command",
+    92: "command",
+    93: "command",
+    224: "command",
+    9: "tab",
+    20: "caps lock",
+    32: "spacebar",
+    8: "backspace",
+    13: "enter",
+    27: "esc",
+    46: "delete",
+    45: "insert",
+    144: "number lock",
+    145: "scroll lock",
+    12: "clear",
+    19: "pause",
+
+    // 功能键
+    112: "f1",
+    113: "f2",
+    114: "f3",
+    115: "f4",
+    116: "f5",
+    117: "f6",
+    118: "f7",
+    119: "f8",
+    120: "f9",
+    121: "f10",
+    122: "f11",
+    123: "f12",
+
+    // 余下键
+    189: ["-", "_"],
+    187: ["=", "+"],
+    219: ["[", "{"],
+    221: ["]", "}"],
+    220: ["\\", "|"],
+    186: [";", ":"],
+    222: ["'", '"'],
+    188: [",", "<"],
+    190: [".", ">"],
+    191: ["/", "?"],
+    192: ["`", "~"]
+
+};
+
+// 非独立键字典
+var help_key = ["shift", "ctrl", "alt"];
+
+// 返回键盘此时按下的键的组合结果
+var keyCode = function (event) {
+    event = event || window.event;
+
+    var keycode = event.keyCode || event.which;
+    var key = dictionary[keycode] || keycode;
+    if (!key) return;
+    if (key.constructor !== Array) key = [key, key];
+
+    var _key = key[0];
+
+    var shift = event.shiftKey ? "shift+" : "",
+        alt = event.altKey ? "alt+" : "",
+        ctrl = event.ctrlKey ? "ctrl+" : "";
+
+    var resultKey = "",
+        preKey = ctrl + shift + alt;
+
+    if (help_key.indexOf(key[0]) >= 0) {
+        key[0] = key[1] = "";
+    }
+
+    // 判断是否按下了caps lock
+    var lockPress = event.code == "Key" + event.key && !shift;
+
+    // 只有字母（且没有按下功能Ctrl、shift或alt）区分大小写
+    resultKey = (preKey + ((preKey == '' && lockPress) ? key[1] : key[0]));
+
+    if (key[0] == "") {
+        resultKey = resultKey.replace(/\+$/, '');
+    }
+
+    return resultKey == '' ? _key : resultKey;
+};
+
+__pkg__scope_bundle__.getKeyString = keyCode;
+
+/**
+ * 获取键盘此时按下的键的组合结果
+ * @param {Function} callback 回调，键盘有键被按下的时候触发
+ * @return {Function} 返回一个函数，执行此函数可以取消键盘监听
+ * @examples
+ *  keyCode(function (data) {
+ *      console.log(data);
+ *  });
+ */
+__pkg__scope_bundle__.default= function (callback) {
+
+    // 记录MacOS的command是否被按下
+    var macCommand = false;
+
+    var doKeydown = function (event) {
+        var keyStringCode = keyCode(event);
+        if (/command/.test(keyStringCode)) macCommand = true;
+
+        if (macCommand && !/command/.test(keyStringCode) && !/ctrl/.test(keyStringCode)) keyStringCode = "ctrl+" + keyStringCode;
+        callback(keyStringCode.replace(/command/g, 'ctrl').replace('ctrl+ctrl', 'ctrl'), event);
+    };
+
+    var doKeyup = function (event) {
+        var keyStringCode = keyCode(event);
+        if (/command/.test(keyStringCode)) macCommand = false;
+    };
+
+    // 在body上注册
+    document.body.addEventListener('keydown', doKeydown, false);
+    document.body.addEventListener('keyup', doKeyup, false);
+
+    // 返回取消监听函数
+    return function () {
+        document.body.removeEventListener('keydown', doKeydown, false);
+        document.body.removeEventListener('keyup', doKeyup, false);
+    }
+};
 
     return __pkg__scope_bundle__;
 }

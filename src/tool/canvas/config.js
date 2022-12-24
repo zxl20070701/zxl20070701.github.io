@@ -17,18 +17,6 @@ export var initPainterConfig = {
     // 文字垂直对齐方式（"middle"垂直居中、"top"上对齐和"bottom"下对齐）
     "textBaseline": 'middle',
 
-    // 文字大小
-    "font-size": 16,
-
-    // 字体，默认"sans-serif"
-    "font-family": "sans-serif",
-
-    // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
-    "arc-start-cap": 'butt',
-
-    // 圆弧结束端闭合方式，和上一个类似
-    "arc-end-cap": 'butt',
-
     // 设置线条虚线，应该是一个数组[number,...]
     "lineDash": [],
 

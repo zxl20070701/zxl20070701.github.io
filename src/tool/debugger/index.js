@@ -110,7 +110,7 @@ export default function () {
     if ('addEventListener' in window) {
 
         // 监听Promise相关错误
-        window.addEventListener('unhandledrejection', event => {
+        window.addEventListener('unhandledrejection', function (event) {
             var content = event.reason.stack;
             trigger('console', {
                 type: "error",
@@ -119,7 +119,7 @@ export default function () {
         });
 
         // throw new error的捕获
-        window.addEventListener('error', event => {
+        window.addEventListener('error', function (event) {
             var content = event.message + " " + event.filename + " " + event.lineno + " \nstack :\n" + (event.error ? event.error.stack : "");
             trigger('console', {
                 type: "error",

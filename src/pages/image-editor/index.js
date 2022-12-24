@@ -6,6 +6,8 @@ import lazyWins from './wins/lazy-load';
 
 import imageToCanvas from '../../tool/imageToCanvas';
 import canvasRender from '../../tool/canvas/index';
+import getKeyCode from '../../tool/keyCode';
+import xhtml from '../../tool/xhtml';
 
 var wins = [], painter;
 export default function (obj) {
@@ -48,9 +50,9 @@ export default function (obj) {
             document.getElementById('icon-logo').setAttribute('href', './image-editor.png');
         },
         mounted: function () {
+            var _this = this;
             painter = canvasRender(document.getElementById('image-root'), this.width, this.height);
 
-            var _this = this;
             Promise.all([
                 this.$openWin(lazyWins.layer),
                 this.$openWin(lazyWins.tool)
@@ -64,6 +66,36 @@ export default function (obj) {
                 newLayerCanvas.width = _this.width;
                 newLayerCanvas.height = _this.height;
                 _this.appendLayer(newLayerCanvas, '背景');
+            });
+
+            // 启动键盘监听
+            getKeyCode(function (keyCode, event) {
+
+                // 移动
+                if(_this.activeTool=='move'){
+                    
+                }
+
+                // 抓手工具
+                else if(_this.activeTool=='drap'){
+
+                }
+
+            });
+
+            // 鼠标按下
+            xhtml.bind(document.body, 'mousedown', function () {
+
+            });
+
+            // 鼠标移动
+            xhtml.bind(document.body, 'mousemove', function () {
+
+            });
+
+            // 鼠标松开
+            xhtml.bind(document.body, 'mouseup', function () {
+
             });
 
         },

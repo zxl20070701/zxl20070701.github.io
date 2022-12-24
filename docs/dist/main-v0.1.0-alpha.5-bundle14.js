@@ -1,205 +1,193 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.js
+// Original file:./src/pages/audio-editor/dialogs/pice/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['31']=function(){
+window.__pkg__bundleSrc__['75']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('121');
+    __pkg__scope_args__=window.__pkg__getBundle('155');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('122');
+__pkg__scope_args__=window.__pkg__getBundle('156');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('64');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('87');
-var getKeyCode =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('73');
+var formatTime =__pkg__scope_args__.default;
 
 
 var painter;
-__pkg__scope_bundle__.default= function (obj) {
+__pkg__scope_bundle__.default= function (obj, props) {
     return {
+        name: "pice",
         render: template,
         data: {
 
-            // 提示内容
-            tips: obj.ref("温馨提示：点击「开始游戏」启动运行！"),
+            // 时长
+            duration: props.duration,
 
-            // 记录是否游戏中
-            isRuning: obj.ref(false),
+            // 片段
+            piceData: props.piceData,
 
-            // 食物
-            foodBlock: [],
-
-            // 记录小蛇
-            blocks: [],
-
-            // 下一步走法
-            mulpD: ""
-
+            //  新的切割点
+            newTime: obj.ref("00:00.000")
         },
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "贪吃蛇";
-            document.getElementById('icon-logo').setAttribute('href', './snake-eating.png');
+        methods: {
+            // 确定
+            doSubmit: function () {
+                this.$closeDialog(this.piceData);
+            },
+
+            // 取消
+            doClose: function () {
+                this.$closeDialog();
+            },
+
+            // 更新片段选中
+            updatePiceSelected: function () {
+                var trs = document.getElementById('table-list').getElementsByTagName('tr'), index;
+                for (index = 0; index < trs.length; index++) {
+                    this.piceData.value[index] = trs[index].getElementsByTagName('input')[0].checked ? true : false;
+                }
+            },
+
+            // 更新片段
+            updatePice: function () {
+
+                var template = "", index;
+                for (index = 1; index < this.piceData.split.length; index++) {
+                    template += "<tr>" +
+                        "    <th>" +
+                        "        <input type='checkbox' " + (this.piceData.value[index - 1] ? "checked='checked'" : "") + ">" +
+                        "    </th>" +
+                        "    <th>" + index + "</th>" +
+                        "    <th>" + formatTime(this.piceData.split[index - 1]) + "</th>" +
+                        "    <th>" + formatTime(this.piceData.split[index]) + "</th>" +
+                        "</tr>";
+                }
+
+                document.getElementById('table-list').innerHTML = template;
+
+            },
+
+            // 重置切割点
+            resetSplit: function () {
+
+                this.piceData = {
+                    split: [0, this.duration],
+                    value: [true]
+                };
+
+                this.drawTimeLine();
+                this.updatePice();
+            },
+
+            // 新增切割点
+            addSplit: function () {
+
+                //  求解出新的切割点的值
+                var temp = this.newTime.split(':');
+                var val = (+temp[0]) * 60 - -temp[1];
+
+                if (val > this.duration) {
+                    alert('非法输入，因为输入的时间（' + formatTime(val) + '）大于时长(（' + formatTime(this.duration) + '）');
+                    return;
+                }
+
+                // 寻找新的切割点的保存位置
+                var index;
+                for (index = 0; index < this.piceData.split.length - 1; index++) {
+
+                    // 如果应该存放在 index ～ index+1 之间
+                    if (val >= this.piceData.split[index] && val <= this.piceData.split[index + 1]) {
+                        if (val == this.piceData.split[index] || val == this.piceData.split[index + 1]) return;
+
+                        // 插入新的切割点
+                        this.piceData.split.splice(index, 1, this.piceData.split[index], val);
+
+                        // 插入新的片段是否保存标记
+                        this.piceData.value.splice(index, 1, this.piceData.value[index], this.piceData.value[index]);
+
+                        break;
+                    }
+                }
+
+                this.drawTimeLine();
+                this.updatePice();
+            },
+
+            // 绘制时间轴方法
+            drawTimeLine: function () {
+
+                // 绘制前，先清空画布
+                painter.clearRect(0, 0, 900, 100);
+
+                var index;
+
+                painter.config({
+                    'textAlign': 'center',
+                    'font-size': 14,
+                    'fillStyle': 'black'
+                })
+
+                // 每一秒的间距
+                // (上下左右留白30)
+                var dist = (900 - 60) / this.duration;
+
+                for (index = 0; index < this.duration; index += 10) {
+
+                    if (index % 60 == 0) {
+                        painter
+                            .fillRect(index * dist + 29.5, 100 - 30, 1, -25)
+                            .fillText(index / 60 + ":00", index * dist + 29, 30)
+                    } else {
+                        painter.fillRect(index * dist + 29.5, 100 - 30, 1, -10)
+                    }
+
+                }
+
+                // 绘制底下线条
+                painter.beginPath()
+                    .moveTo(30, 100 - 30)
+                    .lineTo(900 - 30, 100 - 30)
+                    .stroke()
+
+
+                // 绘制切割标志
+                painter.config({
+                    'fillStyle': 'red'
+                })
+
+                var split;
+                for (index = 0; index < this.piceData.split.length; index++) {
+                    split = this.piceData.split[index];
+
+                    // 绘制底部的箭头
+                    painter.beginPath()
+                        .moveTo(30 + split * dist, 100 - 30)
+                        .lineTo(35 + split * dist, 100 - 20)
+                        .lineTo(25 + split * dist, 100 - 20)
+                        .fill()
+
+                    // 绘制底部的时间
+                    painter.fillText(formatTime(split), 30 + split * dist, 100 - 10)
+                }
+            }
         },
         mounted: function () {
-            var canvas = document.getElementsByTagName('canvas')[0];
+            var canvas = document.getElementById('time-line');
 
             // 获取画笔
             painter = canvasRender(canvas, canvas.clientWidth, canvas.clientHeight);
 
-            this.updateView();
+            // 绘制时间轴承
+            this.drawTimeLine();
 
-            // 启动键盘监听
-            var _this = this;
-            getKeyCode(function (keyCode) {
-                switch (keyCode) {
-                    case 'up': {
-                        _this.mulpD = [0, -1];
-                        break;
-                    }
-                    case 'down': {
-                        _this.mulpD = [0, 1];
-                        break;
-                    }
-                    case 'left': {
-                        _this.mulpD = [-1, 0];
-                        break;
-                    }
-                    case 'right': {
-                        _this.mulpD = [1, 0];
-                        break;
-                    }
-                }
-            });
-        },
-        methods: {
+            // 初始化片段视图
+            this.updatePice();
 
-            // 刷新视图
-            updateView: function () {
-                var i;
-
-                painter.clearRect(0, 0, 500, 500);
-
-                // 先绘制格子
-                painter.config({
-                    strokeStyle: "white"
-                });
-                for (i = 0; i < 25; i++) {
-                    painter
-
-                        // 横线条
-                        .beginPath().moveTo(0, i * 20).lineTo(500, i * 20).stroke()
-
-                        // 纵线条
-                        .beginPath().moveTo(i * 20, 0).lineTo(i * 20, 500).stroke();
-
-                }
-
-                //  然后绘制小格子
-                for (i = 0; i < this.blocks.length; i++) {
-                    painter.config({
-                        fillStyle: i == 0 ? "#aaaaaa" : "white"
-                    }).fillRect(this.blocks[i][0] * 20, this.blocks[i][1] * 20, 20, 20);
-                }
-
-                // 最后绘制食物
-                painter.config('fillStyle', 'red').fillRect(this.foodBlock[0] * 20, this.foodBlock[1] * 20, 20, 20);
-
-            },
-
-            // 开始游戏
-            beginGame: function () {
-
-                // 初始化参数
-                this.isRuning = true;
-                this.mulpD = [0, -1];
-                this.foodBlock = [20, 20];
-                this.blocks = [
-                    [10, 10],
-                    [10, 11],
-                    [10, 12],
-                    [10, 13],
-                    [11, 13],
-                    [12, 13],
-                    [13, 13],
-                    [14, 13]
-                ];
-
-                this.updateView();
-
-                // 轮询修改数据
-                var _this = this;
-                var interval = setInterval(function () {
-
-                    var newBlock = [
-                        _this.blocks[0][0] + _this.mulpD[0],
-                        _this.blocks[0][1] + _this.mulpD[1]
-                    ];
-
-                    // 判断是否合法
-                    if (!_this.isValidBlock(newBlock)) {
-
-                        _this.isRuning = false;
-                        clearInterval(interval);
-                        _this.tips = "[分数：" + (_this.blocks.length - 8) + "]小蛇出界或者撞到自己了。";
-
-                        return;
-                    }
-
-                    _this.blocks.unshift(newBlock);
-
-                    // 判断是否吃到食物了
-                    if (
-                        newBlock[0] == _this.foodBlock[0] &&
-                        newBlock[1] == _this.foodBlock[1]
-                    ) {
-                        _this.foodBlock = _this.newFood();
-                    } else {
-                        _this.blocks.pop();
-                    }
-
-                    _this.updateView();
-                }, 200);
-
-            },
-
-            // 判断是否合法
-            isValidBlock: function (block) {
-
-                // 如果越界了
-                if (block[0] < 0 || block[0] >= 25 || block[1] < 0 || block[1] >= 25) return false;
-
-                for (var i = 0; i < this.blocks.length; i++) {
-
-                    // 如果撞到自己了
-                    if (this.blocks[i][0] == block[0] && this.blocks[i][1] == block[1]) return false;
-                }
-
-                return true;
-            },
-
-            // 产生新的事物
-            newFood: function () {
-                var newFood, tryNum = 1;
-                do {
-
-                    if (tryNum >= 10000) {
-                        this.isRuning = false;
-                        this.tips = '意外终止，系统内部错误。';
-                    }
-
-                    newFood = [
-                        +(Math.random() * 24).toFixed(0),
-                        +(Math.random() * 24).toFixed(0)
-                    ];
-                    tryNum += 1;
-                } while (!this.isValidBlock(newFood));
-
-                return newFood;
-            }
         }
     };
 };
@@ -208,25 +196,25 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.html
+// Original file:./src/pages/audio-editor/dialogs/pice/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['121']=function(){
+window.__pkg__bundleSrc__['155']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[2]},{"type":"text","content":"贪吃蛇","childNodes":[]},{"type":"tag","name":"canvas","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:active":"isRuning?'no':'yes'"},"childNodes":[5,6]},{"type":"tag","name":"span","attrs":{"ui-bind":"tips"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"beginGame"},"childNodes":[7]},{"type":"text","content":"开始游戏","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2,8,11,23]},{"type":"tag","name":"canvas","attrs":{"id":"time-line"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"add-split"},"childNodes":[3,4,6]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"newTime"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"addSplit"},"childNodes":[5]},{"type":"text","content":"新增","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"resetSplit","class":"reset"},"childNodes":[7]},{"type":"text","content":"重置","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"update"},"childNodes":[9]},{"type":"tag","name":"span","attrs":{},"childNodes":[10]},{"type":"text","content":"片段列表","childNodes":[]},{"type":"tag","name":"table","attrs":{},"childNodes":[12,22]},{"type":"tag","name":"thead","attrs":{},"childNodes":[13]},{"type":"tag","name":"tr","attrs":{},"childNodes":[14,16,18,20]},{"type":"tag","name":"th","attrs":{},"childNodes":[15]},{"type":"text","content":"选择","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[17]},{"type":"text","content":"序号","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[19]},{"type":"text","content":"开始时间","childNodes":[]},{"type":"tag","name":"th","attrs":{},"childNodes":[21]},{"type":"text","content":"结束时间","childNodes":[]},{"type":"tag","name":"tbody","attrs":{"id":"table-list","ui-on:click":"updatePiceSelected"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btn-list"},"childNodes":[24,26]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose","class":"gray"},"childNodes":[25]},{"type":"text","content":"取消","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[27]},{"type":"text","content":"确定","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.scss
+// Original file:./src/pages/audio-editor/dialogs/pice/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['122']=function(){
+window.__pkg__bundleSrc__['156']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view]{\n\nwidth: 500px;\n\nmargin: 20px auto;\n\nposition: relative;\n\n}\n\n [page-view]>h2{\n\nfont-size: 18px;\n\nbackground-color: #98942e;\n\nline-height: 50px;\n\nbackground-image: url(\"./snake-eating.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 80%;\n\nbackground-position: 5px center;\n\npadding-left: 51px;\n\nfont-weight: 200;\n\n}\n\n [page-view]>canvas{\n\nbackground-color: #d3d0d0;\n\nheight: 500px;\n\nwidth: 500px;\n\n}\n\n [page-view]>div{\n\nposition: absolute;\n\nleft: 0;\n\ntop: 50px;\n\nwidth: 500px;\n\nheight: 500px;\n\nbackground-color: #0000005c;\n\n}\n\n [page-view]>div[active='no']{\n\ndisplay: none;\n\n}\n\n [page-view]>div>span{\n\ndisplay: inline-block;\n\nposition: absolute;\n\nleft: 20px;\n\ntop: 20px;\n\nfont-weight: 200;\n\ncolor: white;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div>button{\n\nmargin: auto;\n\ndisplay: block;\n\nbackground-color: red;\n\ncolor: white;\n\nwidth: 70px;\n\nheight: 30px;\n\nmargin-top: 235px;\n\noutline: none;\n\nborder: none;\n\ncursor: pointer;\n\n}\n";
+styleElement.innerHTML = "\n [dialog-view='pice']{\n\nwidth: 900px;\n\nheight: calc(100vh - 200px);\n\nposition: fixed;\n\nleft: calc(50vw - 450px);\n\ntop: 100px;\n\nbackground-color: white;\n\noverflow: auto;\n\n}\n\n [dialog-view='pice']>canvas{\n\nheight: 100px;\n\nwidth: 900px;\n\n}\n\n [dialog-view='pice']>div.add-split{\n\nmargin-top: 10px;\n\nmargin-left: 10px;\n\n}\n\n [dialog-view='pice']>div.add-split input{\n\nheight: 24px;\n\nwidth: 160px;\n\npadding: 0 10px;\n\nvertical-align: top;\n\noutline: none;\n\n}\n\n [dialog-view='pice']>div.add-split button{\n\nheight: 24px;\n\nborder: none;\n\nfont-size: 12px;\n\npadding: 0 10px;\n\nbackground-color: #b2b2bd;\n\ncolor: white;\n\nvertical-align: top;\n\ncursor: pointer;\n\n}\n\n [dialog-view='pice']>div.add-split button.reset{\n\nmargin-left: 10px;\n\n}\n\n [dialog-view='pice']>div.update{\n\ntext-align: center;\n\nbackground-image: url(\"./more-line.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-position: center top;\n\nmargin-top: 30px;\n\n}\n\n [dialog-view='pice']>div.update>span{\n\ncolor: #6d757a;\n\nfont-size: 12px;\n\nbackground-image: url(\"./more.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-position: center bottom;\n\nwidth: 94px;\n\nheight: 30px;\n\nline-height: 30px;\n\ndisplay: inline-block;\n\nposition: relative;\n\nbottom: 10px;\n\ncursor: pointer;\n\n}\n\n [dialog-view='pice']>div.btn-list{\n\ntext-align: center;\n\nmargin-top: 30px;\n\n}\n\n [dialog-view='pice']>div.btn-list>button{\n\nheight: 24px;\n\nborder: none;\n\nfont-size: 12px;\n\nbackground-color: #2196f3;\n\ncolor: white;\n\nwidth: 70px;\n\nmargin: 10px;\n\ncursor: pointer;\n\n}\n\n [dialog-view='pice']>div.btn-list>button.gray{\n\nbackground-color: #9e9fa0;\n\n}\n\n [dialog-view='pice']>table{\n\nwidth: calc(100% - 20px);\n\nfont-size: 14px;\n\nmargin: 10px;\n\n}\n\n [dialog-view='pice']>table thead{\n\nbackground-color: #b2b2bd;\n\n}\n\n [dialog-view='pice']>table th{\n\npadding: 5px 10px;\n\nfont-size: 12px;\n\nfont-weight: 400;\n\n}\n\n [dialog-view='pice']>table tbody, [dialog-view='pice']>table thead{\n\nborder: 1px solid #b2b2bd;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
@@ -276,7 +264,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height) {
 
     // 用于记录配置
     // 因为部分配置的设置比较特殊，只先记录意图
-    var config = {};
+    var config = {
+
+        // 文字大小
+        "font-size": 16,
+
+        // 字体，默认"sans-serif"
+        "font-family": "sans-serif",
+
+        // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
+        "arc-start-cap": 'butt',
+
+        // 圆弧结束端闭合方式，和上一个类似
+        "arc-end-cap": 'butt',
+    };
 
     // 配置生效方法
     var useConfig = function (key, value) {
@@ -500,18 +501,6 @@ __pkg__scope_bundle__.initPainterConfig = {
     // 文字垂直对齐方式（"middle"垂直居中、"top"上对齐和"bottom"下对齐）
     "textBaseline": 'middle',
 
-    // 文字大小
-    "font-size": 16,
-
-    // 字体，默认"sans-serif"
-    "font-family": "sans-serif",
-
-    // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
-    "arc-start-cap": 'butt',
-
-    // 圆弧结束端闭合方式，和上一个类似
-    "arc-end-cap": 'butt',
-
     // 设置线条虚线，应该是一个数组[number,...]
     "lineDash": [],
 
@@ -703,205 +692,14 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/keyCode
+// Original file:./src/tool/formatTime
 /*****************************************************************/
-window.__pkg__bundleSrc__['87']=function(){
+window.__pkg__bundleSrc__['73']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 字典表
-var dictionary = {
-
-    // 数字
-    48: [0, ')'],
-    49: [1, '!'],
-    50: [2, '@'],
-    51: [3, '#'],
-    52: [4, '$'],
-    53: [5, '%'],
-    54: [6, '^'],
-    55: [7, '&'],
-    56: [8, '*'],
-    57: [9, '('],
-    96: [0, 0],
-    97: 1,
-    98: 2,
-    99: 3,
-    100: 4,
-    101: 5,
-    102: 6,
-    103: 7,
-    104: 8,
-    105: 9,
-    106: "*",
-    107: "+",
-    109: "-",
-    110: ".",
-    111: "/",
-
-    // 字母
-    65: ["a", "A"],
-    66: ["b", "B"],
-    67: ["c", "C"],
-    68: ["d", "D"],
-    69: ["e", "E"],
-    70: ["f", "F"],
-    71: ["g", "G"],
-    72: ["h", "H"],
-    73: ["i", "I"],
-    74: ["j", "J"],
-    75: ["k", "K"],
-    76: ["l", "L"],
-    77: ["m", "M"],
-    78: ["n", "N"],
-    79: ["o", "O"],
-    80: ["p", "P"],
-    81: ["q", "Q"],
-    82: ["r", "R"],
-    83: ["s", "S"],
-    84: ["t", "T"],
-    85: ["u", "U"],
-    86: ["v", "V"],
-    87: ["w", "W"],
-    88: ["x", "X"],
-    89: ["y", "Y"],
-    90: ["z", "Z"],
-
-    // 方向
-    37: "left",
-    38: "up",
-    39: "right",
-    40: "down",
-    33: "page up",
-    34: "page down",
-    35: "end",
-    36: "home",
-
-    // 控制键
-    16: "shift",
-    17: "ctrl",
-    18: "alt",
-    91: "command",
-    92: "command",
-    93: "command",
-    224: "command",
-    9: "tab",
-    20: "caps lock",
-    32: "spacebar",
-    8: "backspace",
-    13: "enter",
-    27: "esc",
-    46: "delete",
-    45: "insert",
-    144: "number lock",
-    145: "scroll lock",
-    12: "clear",
-    19: "pause",
-
-    // 功能键
-    112: "f1",
-    113: "f2",
-    114: "f3",
-    115: "f4",
-    116: "f5",
-    117: "f6",
-    118: "f7",
-    119: "f8",
-    120: "f9",
-    121: "f10",
-    122: "f11",
-    123: "f12",
-
-    // 余下键
-    189: ["-", "_"],
-    187: ["=", "+"],
-    219: ["[", "{"],
-    221: ["]", "}"],
-    220: ["\\", "|"],
-    186: [";", ":"],
-    222: ["'", '"'],
-    188: [",", "<"],
-    190: [".", ">"],
-    191: ["/", "?"],
-    192: ["`", "~"]
-
-};
-
-// 非独立键字典
-var help_key = ["shift", "ctrl", "alt"];
-
-// 返回键盘此时按下的键的组合结果
-var keyCode = function (event) {
-    event = event || window.event;
-
-    var keycode = event.keyCode || event.which;
-    var key = dictionary[keycode] || keycode;
-    if (!key) return;
-    if (key.constructor !== Array) key = [key, key];
-
-    var _key = key[0];
-
-    var shift = event.shiftKey ? "shift+" : "",
-        alt = event.altKey ? "alt+" : "",
-        ctrl = event.ctrlKey ? "ctrl+" : "";
-
-    var resultKey = "",
-        preKey = ctrl + shift + alt;
-
-    if (help_key.indexOf(key[0]) >= 0) {
-        key[0] = key[1] = "";
-    }
-
-    // 判断是否按下了caps lock
-    var lockPress = event.code == "Key" + event.key && !shift;
-
-    // 只有字母（且没有按下功能Ctrl、shift或alt）区分大小写
-    resultKey = (preKey + ((preKey == '' && lockPress) ? key[1] : key[0]));
-
-    if (key[0] == "") {
-        resultKey = resultKey.replace(/\+$/, '');
-    }
-
-    return resultKey == '' ? _key : resultKey;
-};
-
-__pkg__scope_bundle__.getKeyString = keyCode;
-
-/**
- * 获取键盘此时按下的键的组合结果
- * @param {Function} callback 回调，键盘有键被按下的时候触发
- * @return {Function} 返回一个函数，执行此函数可以取消键盘监听
- * @examples
- *  keyCode(function (data) {
- *      console.log(data);
- *  });
- */
-__pkg__scope_bundle__.default= function (callback) {
-
-    // 记录MacOS的command是否被按下
-    var macCommand = false;
-
-    var doKeydown = function (event) {
-        var keyStringCode = keyCode(event);
-        if (/command/.test(keyStringCode)) macCommand = true;
-
-        if (macCommand && !/command/.test(keyStringCode) && !/ctrl/.test(keyStringCode)) keyStringCode = "ctrl+" + keyStringCode;
-        callback(keyStringCode.replace(/command/g, 'ctrl').replace('ctrl+ctrl', 'ctrl'), event);
-    };
-
-    var doKeyup = function (event) {
-        var keyStringCode = keyCode(event);
-        if (/command/.test(keyStringCode)) macCommand = false;
-    };
-
-    // 在body上注册
-    document.body.addEventListener('keydown', doKeydown, false);
-    document.body.addEventListener('keyup', doKeyup, false);
-
-    // 返回取消监听函数
-    return function () {
-        document.body.removeEventListener('keydown', doKeydown, false);
-        document.body.removeEventListener('keyup', doKeyup, false);
-    }
+    // 把秒值变成更可读的格式
+__pkg__scope_bundle__.default= function(time) {
+    return (Math.floor(time / 60)) + ":" + (Math.floor(time % 60)) + "." + ((time % 1).toFixed(3) + "").replace(/^.{0,}\./, '')
 };
 
     return __pkg__scope_bundle__;

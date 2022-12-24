@@ -52,6 +52,8 @@ export function selectIsNotBlank() {
 // 根据内容生成模板
 
 export function toTemplate(line, index, noLineNumber) {
+    var _this = this;
+
     var template = "";
 
     template += "<div style='min-width: fit-content;white-space: nowrap;line-height:21px;height:21px;'>";
@@ -60,7 +62,7 @@ export function toTemplate(line, index, noLineNumber) {
 
     template += "<em style='" + lineStyle + "color:" + this._colorNumber + ";user-select: none;display:inline-block;font-style:normal;width:35px;text-align:right;margin-right:5px;'>" + (index + 1) + "</em>";
 
-    line.forEach(text => {
+    line.forEach(function (text) {
 
         var contentText = text.content;
 
@@ -68,7 +70,7 @@ export function toTemplate(line, index, noLineNumber) {
         contentText = contentText.replace(/\&/g, "&amp;");/*[&]*/
         contentText = contentText.replace(/</g, "&lt;"); contentText = contentText.replace(/>/g, "&gt;");/*[<,>]*/
 
-        template += "<span style='user-select: none;font-weight:" + this._fontWeight + ";white-space: pre;color:" + text.color + "'>" + contentText + "</span>";
+        template += "<span style='user-select: none;font-weight:" + _this._fontWeight + ";white-space: pre;color:" + text.color + "'>" + contentText + "</span>";
 
     });
 
