@@ -3,8 +3,8 @@ import isPlainObject from '../type/isPlainObject';
 export default function (val) {
     if (Array.isArray(val)) {
         var resultData = "[";
-        for (var item of val) {
-            resultData += item + ',';
+        for (var key in val) {
+            resultData += val[key] + ',';
         }
         return resultData.replace(/\,$/, ']');
     }

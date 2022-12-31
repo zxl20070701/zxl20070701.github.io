@@ -66,8 +66,8 @@ export default function (obj) {
             // 根据模型数据进行绘制
             updateView: function (drawAxis) {
 
-                 //  当前缩放率
-                 var rateScale = 1.4;
+                //  当前缩放率
+                var rateScale = 1.4;
 
                 // 创建3d对象
                 var webgl = webglRender(document.getElementById('main-view-canvas'));
@@ -156,7 +156,7 @@ export default function (obj) {
 
                     // 鼠标拖动或手指控制
                     else if (data.type == 'rotate') {
-                        matrix.rotate(deg * data.dist * 0.07, ...data.normal);
+                        matrix.rotate(deg * data.dist * 0.07, data.normal[0], data.normal[1], data.normal[2]);
                     }
 
                     // 滚轮控制

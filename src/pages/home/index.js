@@ -34,7 +34,7 @@ export default function (obj) {
 
         // 方法
         methods: {
-            goto(event, target) {
+            goto: function (event, target) {
                 var el = document.createElement('a');
                 el.setAttribute('target', '_blank');
                 el.setAttribute('href', "#/" + target.getAttribute('tag'));

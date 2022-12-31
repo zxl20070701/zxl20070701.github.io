@@ -19,8 +19,8 @@ module.exports = {
         entry: "./dist/main-v" + pkg.version + ".js"
     },
 
-    // 打包后原样复制的文件夹
-    static: "public",
+    // 静态资源
+    static: "docs",
 
     // 可省略后缀
     suffix: ['.js', '.json'],

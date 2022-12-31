@@ -27,7 +27,7 @@ export default function (obj) {
 
         },
         methods: {
-            doIsString(event, target) {
+            doIsString: function (event, target) {
                 this.isString = target.getAttribute('tag');
                 this.doDisplay();
             },

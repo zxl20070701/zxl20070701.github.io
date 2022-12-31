@@ -26,9 +26,6 @@ error(`Package Program
 ( Crafted in China By zxl20070701. )
 `);
 
-// 复制静态文件
-copySync(fullPath(config.static, process.cwd()), targetFolder);
-
 // 打包后文件的地址
 global._output = fullPath(config.output.entry, fullPath(config.output.folder, process.cwd()));
 

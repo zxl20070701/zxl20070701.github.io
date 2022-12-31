@@ -61,8 +61,8 @@ export default function (newFormatData) {
 
         // 对比以后的差异信息
         this.__diff = {
-            beginNum,
-            endNum
+            beginNum: beginNum,
+            endNum: endNum
         };
 
     }

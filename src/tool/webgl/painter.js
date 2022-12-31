@@ -8,13 +8,13 @@ export default function (gl) {
     return {
 
         // 开启深度计算
-        openDeep() {
+        openDeep:function() {
             gl.enable(gl.DEPTH_TEST);
             return this;
         },
 
         // 绘制点
-        points(first, count, type) {
+        points:function(first, count, type) {
             if (type) {
                 gl.drawElements(gl.POINTS, count, typeMap[type], first);
             } else {
@@ -24,7 +24,7 @@ export default function (gl) {
         },
 
         // 绘制直线
-        lines(first, count, type) {
+        lines:function(first, count, type) {
             if (type) {
                 gl.drawElements(gl.LINES, count, typeMap[type], first);
             } else {
@@ -34,7 +34,7 @@ export default function (gl) {
         },
 
         // 绘制连续直线
-        stripLines(first, count, type) {
+        stripLines:function(first, count, type) {
             if (type) {
                 gl.drawElements(gl.LINE_STRIP, count, typeMap[type], first);
             } else {
@@ -44,7 +44,7 @@ export default function (gl) {
         },
 
         // 绘制闭合直线
-        loopLines(first, count, type) {
+        loopLines:function(first, count, type) {
             if (type) {
                 gl.drawElements(gl.LINE_LOOP, count, typeMap[type], first);
             } else {
@@ -54,7 +54,7 @@ export default function (gl) {
         },
 
         // 绘制三角形
-        triangles(first, count, type) {
+        triangles:function(first, count, type) {
             if (type) {
                 gl.drawElements(gl.TRIANGLES, count, typeMap[type], first);
             } else {
@@ -64,7 +64,7 @@ export default function (gl) {
         },
 
         // 绘制共有边三角形
-        stripTriangles(first, count, type) {
+        stripTriangles:function(first, count, type) {
             if (type) {
                 gl.drawElements(gl.TRIANGLE_STRIP, count, typeMap[type], first);
             } else {
@@ -74,7 +74,7 @@ export default function (gl) {
         },
 
         // 绘制旋转围绕三角形
-        fanTriangles(first, count, type) {
+        fanTriangles:function(first, count, type) {
             if (type) {
                 gl.drawElements(gl.TRIANGLE_FAN, count, typeMap[type], first);
             } else {

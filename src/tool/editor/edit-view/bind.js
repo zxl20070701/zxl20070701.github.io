@@ -223,7 +223,11 @@ export default function () {
                 textArray[textArray.length - 1] += rightText;
 
                 // 新内容记录下来
-                _this._contentArray.splice(_this.__lineNum, 1, ...textArray);
+                // _this._contentArray.splice(_this.__lineNum, 1, ...textArray);
+                _this._contentArray.splice(_this.__lineNum, 1);
+                for (var index = 0; index < textArray.length; index++) {
+                    _this._contentArray.splice(_this.__lineNum + index, 0, textArray[index]);
+                }
 
                 _this.__lineNum += (textArray.length - 1);
                 _this.__leftNum = textArray[textArray.length - 1].length - rightText.length;

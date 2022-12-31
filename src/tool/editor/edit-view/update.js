@@ -158,8 +158,8 @@ export function updateCanvasSize(width, height) {
     });
 
     xhtml.attr(this.__selectCanvas, {
-        width,
-        height
+        width: width,
+        height: height
     });
 
 };

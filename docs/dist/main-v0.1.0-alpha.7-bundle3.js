@@ -1,13 +1,31 @@
-import template from './index.html';
-import './index.scss';
 
-import newFile from '../../tool/audio/newFile';
-import audiobufferToWav from '../../tool/audio/AudioBuffer-To-Wav';
-import formatTime from '../../tool/formatTime';
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/audio-editor/index.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['27']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('68');
+var template =__pkg__scope_args__.default;
 
-import lazyDialogs from './dialogs/lazy-load';
+__pkg__scope_args__=window.__pkg__getBundle('69');
 
-export default function (obj) {
+
+__pkg__scope_args__=window.__pkg__getBundle('70');
+var newFile =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('72');
+var audiobufferToWav =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('73');
+var formatTime =__pkg__scope_args__.default;
+
+
+__pkg__scope_args__=window.__pkg__getBundle('74');
+var lazyDialogs =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (obj) {
     return {
         render: template,
         beforeMount: function () {
@@ -367,3 +385,253 @@ export default function (obj) {
         }
     };
 };
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/audio-editor/index.html
+/*****************************************************************/
+window.__pkg__bundleSrc__['68']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,5]},{"type":"tag","name":"div","attrs":{"class":"source-view"},"childNodes":[2,4]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doImport"},"childNodes":[3]},{"type":"text","content":"导入+","childNodes":[]},{"type":"tag","name":"ul","attrs":{"id":"source-list-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"mulp-view"},"childNodes":[6,8,9]},{"type":"tag","name":"div","attrs":{"class":"play-view"},"childNodes":[7]},{"type":"tag","name":"audio","attrs":{"src":"","controls":"controls","id":"play-audio-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"editor-view","id":"editor-view-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btns-view"},"childNodes":[10,12]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doPlay"},"childNodes":[11]},{"type":"text","content":"播放","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDownload"},"childNodes":[13]},{"type":"text","content":"下载","childNodes":[]}]
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/audio-editor/index.scss
+/*****************************************************************/
+window.__pkg__bundleSrc__['69']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    var styleElement = document.createElement('style');
+var head = document.head || document.getElementsByTagName('head')[0];
+styleElement.innerHTML = "\n [page-view]{\n\ndisplay: flex;\n\nwidth: calc(100vw - 160px);\n\nmargin: auto;\n\nbackground-color: rgb(242 242 242);\n\nborder: 1px solid #d8d8d8;\n\nfont-size: 12px;\n\noverflow: hidden;\n\nheight: 100vh;\n\n}\n\n [page-view]>div{\n\nflex-grow: 1;\n\nheight: 100%;\n\n}\n\n [page-view]>div.source-view{\n\nflex-grow: 0;\n\nflex-shrink: 0;\n\nflex-basis: 200px;\n\nborder-right: 1px solid #d8d8d8;\n\npadding: 10px;\n\n}\n\n [page-view]>div.source-view>button{\n\nwidth: 60px;\n\nline-height: 20px;\n\nbackground-color: #939393;\n\ncolor: white;\n\nborder: none;\n\noutline: none;\n\ncursor: pointer;\n\n}\n\n [page-view]>div.source-view>ul{\n\nmargin: 10px 0;\n\n}\n\n [page-view]>div.source-view>ul>li{\n\nline-height: 20px;\n\npadding: 5px 0;\n\n}\n\n [page-view]>div.source-view>ul>li:not(:last-child){\n\nborder-bottom: 1px solid rgb(191, 190, 190);\n\n}\n\n [page-view]>div.source-view>ul>li>i{\n\ndisplay: inline-block;\n\nwidth: 24px;\n\nheight: 24px;\n\nbackground-image: url('./audio-icon.png');\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 100%;\n\nvertical-align: top;\n\n}\n\n [page-view]>div.source-view>ul>li>span{\n\nwhite-space: nowrap;\n\nwidth: 90px;\n\noverflow: hidden;\n\ntext-overflow: ellipsis;\n\ndisplay: inline-block;\n\n}\n\n [page-view]>div.source-view>ul>li>button{\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 100%;\n\nwidth: 24px;\n\nheight: 24px;\n\nfloat: right;\n\nborder: none;\n\noutline: none;\n\ncursor: pointer;\n\nbackground-color: transparent;\n\n}\n\n [page-view]>div.source-view>ul>li>button.play{\n\nbackground-image: url('./start.png');\n\n}\n\n [page-view]>div.source-view>ul>li>button.add{\n\nbackground-image: url('./add.png');\n\n}\n\n [page-view]>div.mulp-view{\n\ndisplay: flex;\n\nflex-direction: column;\n\nposition: relative;\n\n}\n\n [page-view]>div.mulp-view>div.play-view{\n\nflex-basis: 100px;\n\nline-height: 100px;\n\nborder-bottom: 1px solid #d8d8d8;\n\n}\n\n [page-view]>div.mulp-view>div.play-view>audio{\n\nwidth: 100%;\n\nvertical-align: middle;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view{\n\nflex-grow: 1;\n\nbackground-color: #e4e4e4;\n\noverflow: auto;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item{\n\nbackground-color: #f2f2f2;\n\npadding: 10px;\n\nmargin: 10px;\n\noverflow: auto;\n\nwidth: calc(100vw - 380px);\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.title{\n\nfont-size: 12px;\n\npadding-left: 10px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.btns>button{\n\nheight: 24px;\n\nwidth: 50px;\n\nmargin: 8px 0 0 8px;\n\ncursor: pointer;\n\nbackground-color: #9e9e9e;\n\ncolor: white;\n\nborder: none;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.content{\n\npadding: 5px 10px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.content>span{\n\ndisplay: inline-block;\n\nmargin-left: 1px;\n\nbackground-color: #8bc34a;\n\nheight: 5px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.repeat{\n\npadding: 0 10px;\n\n}\n\n [page-view]>div.mulp-view>div.editor-view>div.item>div.repeat>input{\n\nwidth: 50px;\n\noutline: none;\n\npadding: 2px 5px;\n\n}\n\n [page-view]>div.mulp-view>div.btns-view{\n\nflex-basis: 40px;\n\nbackground-color: #f2f2f2;\n\nborder-top: 1px solid #d8d8d8;\n\n}\n\n [page-view]>div.mulp-view>div.btns-view>button{\n\nheight: 24px;\n\nwidth: 70px;\n\nmargin: 8px 0 0 8px;\n\ncursor: pointer;\n\nbackground: #2196f3;\n\ncolor: white;\n\nborder: none;\n\n}\n";
+styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/audio/newFile
+/*****************************************************************/
+window.__pkg__bundleSrc__['70']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('71');
+var AudioContext =__pkg__scope_args__.default;
+
+
+var inputEl = document.createElement('input');
+
+inputEl.setAttribute('type', 'file');
+inputEl.setAttribute('multiple', 'multiple'); // 可以多选
+inputEl.setAttribute('accept', 'audio/*'); // 只能选中音频文件
+
+var doit;
+inputEl.addEventListener('change', function (event) {
+    if (doit) {
+        var files = inputEl.files;
+        var datas = [];
+
+        var index;
+        for (index = 0; index < files.length; index++) {
+            (function (index) {
+                var reader = new FileReader();
+                reader.onload = function () {
+
+                    var arrayBuffer = reader.result;
+
+                    // 创建一个audio上下文
+                    var context = new AudioContext();
+
+                    // 把arrayBuffer变成audioBuffer
+                    context.decodeAudioData(arrayBuffer, function (audioBuffer) {
+
+                        /**
+                        * AudioBuffer对象是一个音频专用Buffer对象，包含很多音频信息，包括：
+                        * 
+                        * 音频时长 duration
+                        * 声道数量 numberOfChannels
+                        * 采样率 sampleRate
+                        * 等。
+                        * 
+                        * 包括一些音频声道数据处理方法，例如：
+                        * 获取通道数据 getChannelData()
+                        * 复制通道数据 copyFromChannel()
+                        * 写入通道数据 copyToChannel()
+                        * 
+                        * 文档见这里：https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
+                        */
+
+                        datas.push({
+                            name: files[index].name, // 文件名
+                            content: audioBuffer // 内容
+                        });
+
+                        // 如果解析完毕
+                        if (datas.length == files.length) {
+                            doit(datas);
+                        }
+
+                    });
+
+
+                };
+                reader.readAsArrayBuffer(files[index]);
+            })(index);
+        }
+
+    }
+});
+
+__pkg__scope_bundle__.default= function () {
+    return new Promise(function (resolve, reject) {
+
+        // 重置处理文件回调
+        doit = function (datas) {
+            resolve(datas);
+        };
+
+        // 触发打开文件
+        inputEl.click();
+    });
+}
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/audio/AudioContext
+/*****************************************************************/
+window.__pkg__bundleSrc__['71']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default=
+    window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/audio/AudioBuffer-To-Wav
+/*****************************************************************/
+window.__pkg__bundleSrc__['72']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (buffer, opt) {
+  opt = opt || {};
+
+  var numChannels = buffer.numberOfChannels;
+  var sampleRate = opt.sampleRate || buffer.sampleRate;
+  var format = opt.float32 ? 3 : 1;
+  var bitDepth = format === 3 ? 32 : 16;
+  var result;
+  if (numChannels === 2) {
+    result = interleave(buffer.getChannelData(0), buffer.getChannelData(1));
+  } else {
+    result = buffer.getChannelData(0);
+  }
+
+  return encodeWAV(result, format, sampleRate, numChannels, bitDepth);
+}
+
+function encodeWAV(samples, format, sampleRate, numChannels, bitDepth) {
+  var bytesPerSample = bitDepth / 8;
+  var blockAlign = numChannels * bytesPerSample;
+
+  var buffer = new ArrayBuffer(44 + samples.length * bytesPerSample);
+  var view = new DataView(buffer);
+
+  writeString(view, 0, "RIFF");
+  view.setUint32(4, 36 + samples.length * bytesPerSample, true);
+  writeString(view, 8, "WAVE");
+  writeString(view, 12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, format, true);
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * blockAlign, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, bitDepth, true);
+  writeString(view, 36, "data");
+  view.setUint32(40, samples.length * bytesPerSample, true);
+  if (format === 1) {
+    floatTo16BitPCM(view, 44, samples);
+  } else {
+    writeFloat32(view, 44, samples);
+  }
+
+  return buffer;
+}
+
+function interleave(inputL, inputR) {
+  var length = inputL.length + inputR.length;
+  var result = new Float32Array(length);
+
+  var index = 0;
+  var inputIndex = 0;
+
+  while (index < length) {
+    result[index++] = inputL[inputIndex];
+    result[index++] = inputR[inputIndex];
+    inputIndex++;
+  }
+  return result;
+}
+
+function writeFloat32(output, offset, input) {
+  for (var i = 0; i < input.length; i++, offset += 4) {
+    output.setFloat32(offset, input[i], true);
+  }
+}
+
+function floatTo16BitPCM(output, offset, input) {
+  for (var i = 0; i < input.length; i++, offset += 2) {
+    var s = Math.max(-1, Math.min(1, input[i]));
+    output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+  }
+}
+
+function writeString(view, offset, string) {
+  for (var i = 0; i < string.length; i++) {
+    view.setUint8(offset + i, string.charCodeAt(i));
+  }
+}
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/formatTime
+/*****************************************************************/
+window.__pkg__bundleSrc__['73']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 把秒值变成更可读的格式
+__pkg__scope_bundle__.default= function(time) {
+    return (Math.floor(time / 60)) + ":" + (Math.floor(time % 60)) + "." + ((time % 1).toFixed(3) + "").replace(/^.{0,}\./, '')
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/audio-editor/dialogs/lazy-load
+/*****************************************************************/
+window.__pkg__bundleSrc__['74']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= {
+
+    // 编辑切割点
+    pice: function () {
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle14.js','75')
+    }
+
+};
+
+    return __pkg__scope_bundle__;
+}

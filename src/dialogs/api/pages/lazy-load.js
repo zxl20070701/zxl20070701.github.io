@@ -13,6 +13,16 @@ export default {
     // WebGL
     webgl: function () {
         return import('./webgl/index.js')
+    },
+
+    // canvas
+    canvas: function () {
+        return import('./canvas/index.js')
+    },
+
+    // 颜色选择器
+    "color-picker": function () {
+        return import('./color-picker/index.js')
     }
 
 };
