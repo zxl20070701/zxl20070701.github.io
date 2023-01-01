@@ -29,13 +29,14 @@ __pkg__scope_bundle__.default= function (obj, props) {
 
             // 选择颜色
             selectColor: function (event) {
+                var _this = this;
 
                 this.$openDialog('color-picker', {
                     title: event.target.getAttribute('title'),
                     color: event.target.style.backgroundColor
                 }).then(function (data) {
                     event.target.style.backgroundColor = data;
-                    this.callback(event.target.getAttribute('tag'), data);
+                    _this.callback(event.target.getAttribute('tag'), data);
                 });
 
             }

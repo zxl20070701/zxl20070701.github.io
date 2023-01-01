@@ -53,7 +53,7 @@ export default function (obj, props) {
 
                 // 求解出鼠标的相对位置
                 var targetEl = event.target;
-                var position = xhtml.mousePosition(targetEl, event);
+                var position = xhtml.position(targetEl, event);
 
                 // 修改悬浮球位置
                 var spanEl = targetEl.getElementsByTagName('span')[0];

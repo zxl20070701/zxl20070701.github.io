@@ -1934,52 +1934,52 @@ window.__pkg__bundleSrc__['24']=function(){
 
     // 首页
     home: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle1.js','25')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle1.js','25')
     },
 
     // 正则表达式可视化
     "regexper-visualization": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle2.js','26')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle2.js','26')
     },
 
     // 音频编辑器
     "audio-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle3.js','27')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle3.js','27')
     },
 
     // 格式化JSON字符串
     "format-json": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle4.js','28')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle4.js','28')
     },
 
     // 图片编辑器
     "image-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle5.js','29')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle5.js','29')
     },
 
     // 模型编辑器
     "model-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle6.js','30')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle6.js','30')
     },
 
     // 贪吃蛇
     "snake-eating": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle7.js','31')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle7.js','31')
     },
 
     // scss转css
     scss: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle8.js','32')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle8.js','32')
     },
 
     // 代码编辑器
     "code-editor": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle9.js','33')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle9.js','33')
     },
 
     // npm download
     "npm-download": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle10.js','34')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle10.js','34')
     }
 };
 
@@ -1996,17 +1996,17 @@ window.__pkg__bundleSrc__['35']=function(){
 
     // 调试
     debugger: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle11.js','36')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle11.js','36')
     },
 
     // 颜色选择
     "color-picker": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle12.js','37')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle12.js','37')
     },
 
     // 接口文档
     api: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.7-bundle13.js','38')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-alpha.8-bundle13.js','38')
     }
 
 };
