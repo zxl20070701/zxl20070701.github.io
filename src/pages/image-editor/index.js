@@ -7,7 +7,7 @@ import lazyWins from './wins/lazy-load';
 import imageToCanvas from '../../tool/imageToCanvas';
 import canvasRender from '../../tool/canvas/index';
 import getKeyCode from '../../tool/keyCode';
-import xhtml from '../../tool/xhtml';
+import bind from '../../tool/xhtml/bind';
 
 var wins = [], painter;
 export default function (obj) {
@@ -72,29 +72,29 @@ export default function (obj) {
             getKeyCode(function (keyCode, event) {
 
                 // 移动
-                if(_this.activeTool=='move'){
-                    
+                if (_this.activeTool == 'move') {
+
                 }
 
                 // 抓手工具
-                else if(_this.activeTool=='drap'){
+                else if (_this.activeTool == 'drap') {
 
                 }
 
             });
 
             // 鼠标按下
-            xhtml.bind(document.body, 'mousedown', function () {
+            bind(document.body, 'mousedown', function () {
 
             });
 
             // 鼠标移动
-            xhtml.bind(document.body, 'mousemove', function () {
+            bind(document.body, 'mousemove', function () {
 
             });
 
             // 鼠标松开
-            xhtml.bind(document.body, 'mouseup', function () {
+            bind(document.body, 'mouseup', function () {
 
             });
 

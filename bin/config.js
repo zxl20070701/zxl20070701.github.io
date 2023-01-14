@@ -26,11 +26,12 @@ module.exports = function (configUrl) {
                     // 就需要使用对应的handler进行处理，
                     // 并且返回的格式一定是js
                     if (config.loader[k].test.test(_filepath)) {
+
                         return {
                             content: config.loader[k].handler.call({
                                 filepath: _filepath
                             }, content + ""),
-                            type: "application/javascript"
+                            type: /\.test\.html$/.test(_filepath) ? "text/html" : "application/javascript"
                         };
                     }
                 }

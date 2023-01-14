@@ -23,6 +23,10 @@ export default {
     // 颜色选择器
     "color-picker": function () {
         return import('./color-picker/index.js')
-    }
+    },
 
+    // svg
+    svg: function () {
+        return import('./svg/index.js')
+    }
 };

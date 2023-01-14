@@ -1,4 +1,5 @@
-import xhtml from '../xhtml';
+import appendTo from '../xhtml/appendTo';
+import bind from '../xhtml/bind';
 import isString from '../type/isString';
 import isFunction from '../type/isFunction';
 import isNumber from '../type/isNumber';
@@ -7,7 +8,7 @@ import toString from './toString';
 
 var doit = function (target, obj) {
 
-    xhtml.bind(target.getElementsByTagName('i')[0], 'click', function () {
+    bind(target.getElementsByTagName('i')[0], 'click', function () {
 
         // 如果是字符串，就不需要展开了
         if (isString(obj)) return;
@@ -28,7 +29,7 @@ var doit = function (target, obj) {
                 }
             }
             template += "</div>";
-            xhtml.appendTo(target, template);
+            appendTo(target, template);
 
             // 添加交互
             var index = 0, lis = target.getElementsByTagName('span');

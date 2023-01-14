@@ -1,7 +1,8 @@
 // 屏幕3D控制信息捕获
 
-import xhtml from './xhtml';
-import getKeyCode from './keyCode';
+import mousePosition from "./xhtml/mousePosition";
+import bind from "./xhtml/bind";
+import getKeyCode from "./keyCode";
 
 export default function (callback) {
 
@@ -24,7 +25,7 @@ export default function (callback) {
     var doMove = function (event) {
         if (mouseP == null) return;
 
-        var tempMouseP = xhtml.position(el, event);
+        var tempMouseP = mousePosition(el, event);
 
         // 先求解出轨迹向量
         var normal = [tempMouseP.x - mouseP.x, mouseP.y - tempMouseP.y];
@@ -48,24 +49,24 @@ export default function (callback) {
         mouseP = tempMouseP;
     };
 
-    xhtml.bind(el, 'mousedown', function (event) {
-        mouseP = xhtml.position(el, event);
+    bind(el, 'mousedown', function (event) {
+        mouseP = mousePosition(el, event);
     });
-    xhtml.bind(el, 'mouseup', function (event) {
+    bind(el, 'mouseup', function (event) {
         mouseP = null;
     });
-    xhtml.bind(el, 'mousemove', function (event) {
+    bind(el, 'mousemove', function (event) {
         doMove(event);
     });
 
     // 手指控制
-    xhtml.bind(el, 'touchend', function (event) {
+    bind(el, 'touchend', function (event) {
         mouseP = null;
     });
-    xhtml.bind(el, 'touchstart', function (event) {
-        mouseP = xhtml.mousePosition(el, event.touches[0]);
+    bind(el, 'touchstart', function (event) {
+        mouseP = mousePosition(el, event.touches[0]);
     });
-    xhtml.bind(el, 'touchmove', function (event) {
+    bind(el, 'touchmove', function (event) {
         doMove(event.touches[0]);
     });
 
@@ -80,7 +81,7 @@ export default function (callback) {
     };
 
     // 滚轮控制
-    xhtml.bind(el, 'mousewheel', function (event) {
+    bind(el, 'mousewheel', function (event) {
         doScale(event.wheelDelta);
     });
 

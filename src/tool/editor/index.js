@@ -1,5 +1,6 @@
 
-import xhtml from '../xhtml';
+import trigger from '../xhtml/trigger';
+import copy from '../xhtml/copy';
 
 import isElement from '../type/isElement';
 import isString from '../type/isString';
@@ -125,7 +126,7 @@ var editor = function (options) {
 
             // 输入以触发更新
             _this.__focusDOM.value = content;
-            xhtml.trigger(_this.__focusDOM, 'input');
+            trigger(_this.__focusDOM, 'input');
             _this.__focusDOM.focus();
 
         }
@@ -156,7 +157,7 @@ var editor = function (options) {
 
         // 输入以触发更新
         _this.__focusDOM.value = content;
-        xhtml.trigger(_this.__focusDOM, 'input');
+        trigger(_this.__focusDOM, 'input');
         _this.__focusDOM.focus();
 
     };
@@ -183,7 +184,7 @@ var editor = function (options) {
 
     // 复制当前编辑器代码到电脑剪切板
     this.copy = function (callback, errorback) {
-        xhtml.copy(_this.valueOf(), callback, errorback);
+        copy(_this.valueOf(), callback, errorback);
     };
 
 };

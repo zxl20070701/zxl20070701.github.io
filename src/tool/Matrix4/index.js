@@ -1,4 +1,4 @@
-// 二个4x4矩阵相乘
+// 两个4x4矩阵相乘
 // 或矩阵和齐次坐标相乘
 var _multiply = function (matrix4, param) {
     var newParam = [];

@@ -1,5 +1,5 @@
 import editorRender from '../../tool/editor/index';
-import xhtml from '../../tool/xhtml';
+import remove from '../../tool/xhtml/remove';
 
 export default function (fileName, fileType, fileContent, setCurrentInfo, handle, menuEl) {
 
@@ -94,8 +94,8 @@ export default function (fileName, fileType, fileContent, setCurrentInfo, handle
 
         // 关闭自己
         if (menuEl) menuEl.setAttribute('load', 'no');
-        xhtml.remove(navItem);
-        xhtml.remove(editorItem);
+        remove(navItem);
+        remove(editorItem);
     });
 
     // 切换

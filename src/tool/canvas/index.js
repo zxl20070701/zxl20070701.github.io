@@ -82,7 +82,17 @@ export default function (canvas, width, height) {
         // 属性设置或获取
         "config": function () {
             if (arguments.length === 1) {
-                if (typeof arguments[0] !== 'object') return painter[arguments[0]];
+                if (typeof arguments[0] !== 'object') {
+
+                    // 暂存的
+                    if (arguments[0] in config) return config[arguments[0]];
+
+                    // lineDash
+                    if ('lineDash' == arguments[0]) return painter.getLineDash();
+
+                    // 普通的
+                    return painter[arguments[0]];
+                }
                 for (var key in arguments[0]) {
                     useConfig(key, arguments[0][key]);
                 }

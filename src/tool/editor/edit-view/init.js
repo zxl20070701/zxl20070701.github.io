@@ -1,13 +1,18 @@
-import xhtml from "../../xhtml";
+import setStyle from "../../xhtml/setStyle";
+import bind from "../../xhtml/bind";
+import appendTo from "../../xhtml/appendTo";
+import stopPropagation from "../../xhtml/stopPropagation";
+import preventDefault from "../../xhtml/preventDefault";
+import attr from "../../xhtml/attr";
 
 // 初始化结点
 
 export function initDom() {
-    var _this=this;
+    var _this = this;
 
     this._el.innerHTML = "";
 
-    xhtml.css(this._el, {
+    setStyle(this._el, {
         "font-size": "12px",
         position: "relative",
         cursor: "text",
@@ -16,19 +21,19 @@ export function initDom() {
         overflow: "auto"
     });
 
-    xhtml.bind(this._el, 'click', function() {
+    bind(this._el, 'click', function () {
 
         // 由于有时候点击屏幕的时候，是滚动导致的，因此位置可能没有计算好前聚焦了，导致光标错位
-        setTimeout(function() {
+        setTimeout(function () {
             _this.__focusDOM.focus();
         });
 
     })
 
     // 辅助计算标签
-    this.__helpCalcDOM = xhtml.appendTo(this._el, "<span></span>");
+    this.__helpCalcDOM = appendTo(this._el, "<span></span>");
 
-    xhtml.css(this.__helpCalcDOM, {
+    setStyle(this.__helpCalcDOM, {
         position: "absolute",
         "z-index": "-1",
         "white-space": "pre",
@@ -39,26 +44,26 @@ export function initDom() {
     });
 
     // 辅助输入标签
-    this.__helpInputDOM = xhtml.appendTo(this._el, "<div></div>");
+    this.__helpInputDOM = appendTo(this._el, "<div></div>");
 
-    xhtml.css(this.__helpInputDOM, {
+    setStyle(this.__helpInputDOM, {
         position: "absolute",
         "z-index": 1
     });
 
-    xhtml.bind(this.__helpInputDOM, 'click', function(event ) {
+    bind(this.__helpInputDOM, 'click', function (event) {
 
-        xhtml.stopPropagation(event);
-        xhtml.preventDefault(event);
+        stopPropagation(event);
+        preventDefault(event);
 
         _this.__focusDOM.focus();
 
     });
 
     // 光标
-    this.__focusDOM = xhtml.appendTo(this._el, "<textarea></textarea>");
+    this.__focusDOM = appendTo(this._el, "<textarea></textarea>");
 
-    xhtml.css(this.__focusDOM, {
+    setStyle(this.__focusDOM, {
         position: "absolute",
         width: "6px",
         "margin-top": "3px",
@@ -73,7 +78,7 @@ export function initDom() {
         color: this._colorCursor
     });
 
-    xhtml.attr(this.__focusDOM, {
+    attr(this.__focusDOM, {
         wrap: "off",
         autocorrect: "off",
         autocapitalize: "off",
@@ -81,22 +86,22 @@ export function initDom() {
     });
 
     if (this._readonly) {
-        xhtml.attr(this.__focusDOM, {
+        attr(this.__focusDOM, {
             readonly: true
         });
     }
 
     // 显示区域
-    this.__showDOM = xhtml.appendTo(this._el, "<div></div>");
+    this.__showDOM = appendTo(this._el, "<div></div>");
 
-    xhtml.css(this.__showDOM, {
+    setStyle(this.__showDOM, {
         padding: "10px 0"
     });
 
     // 选中区域
-    this.__selectCanvas = xhtml.appendTo(this._el, "<canvas></canvas>");
+    this.__selectCanvas = appendTo(this._el, "<canvas></canvas>");
 
-    xhtml.css(this.__selectCanvas, {
+    setStyle(this.__selectCanvas, {
         position: "absolute",
         left: "40px",
         top: "10px",
@@ -112,7 +117,7 @@ export function initDom() {
 export function initView() {
 
     // 初始化定位光标位置
-    xhtml.css(this.__focusDOM, {
+    setStyle(this.__focusDOM, {
         left: (40 + this.$$textWidth(this._contentArray[this.__lineNum])) + "px",
         top: (10 + this.__lineNum * 21) + "px"
     });

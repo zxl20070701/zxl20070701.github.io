@@ -1,4 +1,8 @@
-import xhtml from "../../xhtml";
+import setStyle from "../../xhtml/setStyle";
+import attr from "../../xhtml/attr";
+import prependTo from "../../xhtml/prependTo";
+import after from "../../xhtml/after";
+import remove from "../../xhtml/remove";
 
 // 更新编辑器内容视图
 
@@ -20,19 +24,19 @@ export function updateView() {
          */
 
         for (var i = lineDoms_length - this.__diff.endNum - 1; i >= this.__diff.beginNum; i--) {
-            xhtml.remove(lineDoms[i]);
+            remove(lineDoms[i]);
         }
 
         // 追加不足的行
         if (this.__diff.beginNum > 0) {
             for (var i = this.__formatData.length - 1 - this.__diff.endNum; i >= this.__diff.beginNum; i--) {
-                xhtml.after(lineDoms[this.__diff.beginNum - 1], this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
+                after(lineDoms[this.__diff.beginNum - 1], this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
             }
         } else {
 
             // 如果开头没有结点保留，为了简单，我们直接采用prependTo方法追加
             for (var i = this.__formatData.length - this.__diff.endNum - 1; i >= 0; i--) {
-                xhtml.prependTo(this.__showDOM, this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
+                prependTo(this.__showDOM, this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
             }
 
         }
@@ -76,7 +80,7 @@ export function updateSelectView() {
     ctx.fillStyle = this._colorSelect;
     ctx.clearRect(0, 0, this.__selectCanvas.scrollWidth, this.__selectCanvas.scrollHeight);
 
-    // 绘制二个区间
+    // 绘制两个区间
     var drawerSelect = function (beginLeftNum, endLeftNum, lineNum) {
 
         var xy1 = _this.$$calcCanvasXY(beginLeftNum, lineNum);
@@ -136,7 +140,7 @@ export function updateCursorPosition() {
     this.__cursorTop = this.__lineNum * 21 + 10;
     this.__cursorLeft = 40 + this.$$textWidth(this._contentArray[this.__lineNum].substring(0, this.__leftNum));
 
-    xhtml.css(this.__focusDOM, {
+    setStyle(this.__focusDOM, {
         top: this.__cursorTop + "px",
         left: this.__cursorLeft + "px",
     });
@@ -152,12 +156,12 @@ export function updateCanvasSize(width, height) {
         height = this._el.scrollHeight - 10;
     }
 
-    xhtml.css(this.__selectCanvas, {
+    setStyle(this.__selectCanvas, {
         width: width + "px",
         height: height + "px",
     });
 
-    xhtml.attr(this.__selectCanvas, {
+    attr(this.__selectCanvas, {
         width: width,
         height: height
     });

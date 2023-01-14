@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../../docs/logo.png">
+    <title>svg测试用例</title>
+</head>
+
+<body>
+    <svg width="400" height="400"></svg>
+
+    <script type="module">
+        import svgRender from "./index.js";
+
+        var painter = svgRender(document.getElementsByTagName('svg')[0]);
+
+        painter.appendBoard("text").config({
+            "font-size": 50,
+            "textAlign": "center"
+        }).fillText("这是文字", 200, 200, 45);
+
+        painter
+            .config({
+                "strokeStyle": "red"
+            })
+            .appendBoard("path").beginPath().moveTo(0, 200).lineTo(400, 200).stroke()
+            .appendBoard("path").beginPath().moveTo(200, 0).lineTo(200, 400).stroke();
+
+    </script>
+
+</body>
+
+</html>

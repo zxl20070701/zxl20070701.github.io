@@ -1,13 +1,13 @@
 /**
  * 针对任意射线(a1,b1,c1)->(a2,b2,c2)
- * 计算出二个变换矩阵
+ * 计算出两个变换矩阵
  * 分别为：任意射线变成OZ轴变换矩阵 + OZ轴变回原来的射线的变换矩阵
  */
 export default function (a1, b1, c1, a2, b2, c2) {
 
     if (typeof a1 === 'number' && typeof b1 === 'number') {
 
-        // 如果设置二个点
+        // 如果设置两个点
         // 表示二维上围绕某个点旋转
         if (typeof c1 !== 'number') {
             c1 = 0; a2 = a1; b2 = b1; c2 = 1;

@@ -3,7 +3,7 @@ import './index.scss';
 
 import { formatColor } from '../../tool/formatColor';
 import drawColorCanvas from './drawColorCanvas';
-import xhtml from '../../tool/xhtml';
+import mousePosition from '../../tool/xhtml/mousePosition';
 import getColorByPosition from './getColorByPosition';
 import getColorByDeep from './getColorByDeep';
 import calcDeepWidthColor from './calcDeepWidthColor';
@@ -53,7 +53,7 @@ export default function (obj, props) {
 
                 // 求解出鼠标的相对位置
                 var targetEl = event.target;
-                var position = xhtml.position(targetEl, event);
+                var position = mousePosition(targetEl, event);
 
                 // 修改悬浮球位置
                 var spanEl = targetEl.getElementsByTagName('span')[0];

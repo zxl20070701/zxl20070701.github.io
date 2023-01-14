@@ -1,6 +1,10 @@
 import { getKeyString } from '../../keyCode';
 import isFunction from '../../type/isFunction';
-import xhtml from '../../xhtml';
+import bind from '../../xhtml/bind';
+import mousePosition from '../../xhtml/mousePosition';
+import copy from '../../xhtml/copy';
+import stopPropagation from '../../xhtml/stopPropagation';
+import preventDefault from '../../xhtml/preventDefault';
 import { getInputMessage } from './tool';
 
 // 绑定键盘和鼠标等交互事件处理
@@ -16,7 +20,7 @@ export default function () {
 
     // 辅助计算选择光标位置
     var calcCursor = function (event) {
-        var position = xhtml.position(_this._el, event);
+        var position = mousePosition(_this._el, event);
         var topIndex = Math.round((position.y - 20.5) / 21);
 
         if (topIndex < 0) topIndex = 0;
@@ -63,7 +67,7 @@ export default function () {
     };
 
     // 鼠标按下的时候，记录开始光标位置并标记鼠标按下动作
-    xhtml.bind(this._el, 'mousedown', function (event) {
+    bind(this._el, 'mousedown', function (event) {
         mouseDown = true;
         _this.__cursor2 = _this.__cursor1 = calcCursor(event);
 
@@ -75,7 +79,7 @@ export default function () {
     });
 
     // 移动的时候不停的同步结束光标位置
-    xhtml.bind(this._el, 'mousemove', function (event) {
+    bind(this._el, 'mousemove', function (event) {
         if (!mouseDown) return;
         _this.__cursor2 = calcCursor(event);
 
@@ -84,14 +88,14 @@ export default function () {
     });
 
     // 鼠标放开或移出的时候，标记鼠标放开
-    xhtml.bind(this._el, 'mouseup', function () { mouseDown = false });
+    bind(this._el, 'mouseup', function () { mouseDown = false });
 
     // 点击编辑界面
-    xhtml.bind(this._el, 'click', function (event) {
+    bind(this._el, 'click', function (event) {
 
         _this.__helpInputDOM.innerHTML = '';
 
-        var position = xhtml.position(_this._el, event);
+        var position = mousePosition(_this._el, event);
         var topIndex = Math.round((position.y - 20.5) / 21);
 
         // 如果超过了内容区域
@@ -126,7 +130,7 @@ export default function () {
     });
 
     // 双击编辑器界面
-    xhtml.bind(this._el, 'dblclick', function () {
+    bind(this._el, 'dblclick', function () {
         var formateData = _this.__formatData[_this.__lineNum];
 
         // 求解左边边界
@@ -248,14 +252,14 @@ export default function () {
     };
 
     // 中文输入开始
-    xhtml.bind(this.__focusDOM, 'compositionstart', function () {
+    bind(this.__focusDOM, 'compositionstart', function () {
         _this.__needUpdate = false;
         _this.__focusDOM.style.color = "rgba(0,0,0,0)";
         _this.__focusDOM.style.borderLeft = '1px solid ' + _this._colorCursor;
     });
 
     // 中文输入结束
-    xhtml.bind(this.__focusDOM, 'compositionend', function () {
+    bind(this.__focusDOM, 'compositionend', function () {
         _this.__needUpdate = true;
         _this.__focusDOM.style.color = _this._colorCursor;
         _this.__focusDOM.style.borderLeft = "none";
@@ -266,7 +270,7 @@ export default function () {
     });
 
     // 输入
-    xhtml.bind(this.__focusDOM, 'input', function () {
+    bind(this.__focusDOM, 'input', function () {
         // 如果是中文输入开始，不应该更新
         if (_this.__needUpdate) {
             update();
@@ -279,7 +283,7 @@ export default function () {
     // 记录此刻MAC电脑的Command是否按下
     var macCommand = false;
 
-    xhtml.bind(this._el, 'keyup', function (event) {
+    bind(this._el, 'keyup', function (event) {
 
         var keyStringCode = getKeyString(event);
 
@@ -291,7 +295,7 @@ export default function () {
     });
 
     // 处理键盘控制
-    xhtml.bind(this._el, 'keydown', function (event) {
+    bind(this._el, 'keydown', function (event) {
 
         var keyStringCode = getKeyString(event);
 
@@ -344,7 +348,7 @@ export default function () {
             case "ctrl+c":
                 {
                     if (_this.$$selectIsNotBlank()) {
-                        xhtml.copy(calcTwoCursor());
+                        copy(calcTwoCursor());
                         _this.__focusDOM.focus();
                     }
                     break;
@@ -355,7 +359,7 @@ export default function () {
                 {
                     if (_this.$$selectIsNotBlank()) {
 
-                        xhtml.copy(calcTwoCursor());
+                        copy(calcTwoCursor());
                         _this.__focusDOM.focus();
                         _this.$$deleteSelect();
 
@@ -379,8 +383,8 @@ export default function () {
                 {
 
                     // tab用来控制输入多个空格，默认事件需要禁止
-                    xhtml.stopPropagation(event);
-                    xhtml.preventDefault(event);
+                    stopPropagation(event);
+                    preventDefault(event);
 
                     // 计算空格
                     var blanks = "";
