@@ -1,7 +1,7 @@
 export default {
 
     // 首页
-    home: function () {
+    "home": function () {
         return import('./home/index.js')
     },
 
@@ -36,7 +36,7 @@ export default {
     },
 
     // scss转css
-    scss: function () {
+    "scss": function () {
         return import('./scss/index.js')
     },
 
@@ -45,8 +45,8 @@ export default {
         return import('./code-editor/index.js')
     },
 
-    // npm download
-    "npm-download": function () {
-        return import('./npm-download/index.js')
+    // 录屏软件
+    "recorder-screen": function () {
+        return import('./recorder-screen/index.js')
     }
 };

@@ -628,7 +628,7 @@ window.__pkg__bundleSrc__['77']=function(){
 
     // 编辑切割点
     pice: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle14.js','78')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle14.js','78')
     }
 
 };

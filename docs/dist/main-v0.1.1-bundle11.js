@@ -5,22 +5,16 @@
 window.__pkg__bundleSrc__['37']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('151');
+    __pkg__scope_args__=window.__pkg__getBundle('146');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('152');
+__pkg__scope_args__=window.__pkg__getBundle('147');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
     return {
         name: "debugger",
         render: template,
-        data: {
-
-        },
-        methods: {
-
-        },
         mounted: function () {
             var index;
 
@@ -28,7 +22,6 @@ __pkg__scope_bundle__.default= function (obj, props) {
             for (index = 0; index < window._consoleArray_.length; index++) {
                 window._consoleAppend_(window._consoleArray_[index]);
             }
-
         }
     }
 };
@@ -39,7 +32,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['151']=function(){
+window.__pkg__bundleSrc__['146']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,5]},{"type":"tag","name":"header","attrs":{"ui-dragdrop":""},"childNodes":[2,3]},{"type":"text","content":"调试窗口","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"$closeDialog","id":"debugger-close"},"childNodes":[4]},{"type":"text","content":"X","childNodes":[]},{"type":"tag","name":"ul","attrs":{"id":"console-el"},"childNodes":[6]},{"type":"tag","name":"li","attrs":{"class":"blank"},"childNodes":[7]},{"type":"text","content":"无打印信息～","childNodes":[]}]
@@ -50,7 +43,7 @@ window.__pkg__bundleSrc__['151']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['152']=function(){
+window.__pkg__bundleSrc__['147']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

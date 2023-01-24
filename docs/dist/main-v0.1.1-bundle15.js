@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['109']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('172');
+    __pkg__scope_args__=window.__pkg__getBundle('167');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('173');
+__pkg__scope_args__=window.__pkg__getBundle('168');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -67,7 +67,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/dialogs/size/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['172']=function(){
+window.__pkg__bundleSrc__['167']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"","ui-bind":"title"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right-btn"},"childNodes":[3,45]},{"type":"tag","name":"div","attrs":{},"childNodes":[4,18]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[5,7]},{"type":"tag","name":"legend","attrs":{},"childNodes":[6]},{"type":"text","content":"当前大小","childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:lock":"title=='图像大小'?'yes':'no'"},"childNodes":[8,13]},{"type":"tag","name":"li","attrs":{},"childNodes":[9,11,12]},{"type":"tag","name":"label","attrs":{},"childNodes":[10]},{"type":"text","content":"宽度：","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-bind":"width"},"childNodes":[]},{"type":"text","content":"px","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[14,16,17]},{"type":"tag","name":"label","attrs":{},"childNodes":[15]},{"type":"text","content":"宽度：","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-bind":"height"},"childNodes":[]},{"type":"text","content":"px","childNodes":[]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[19,21]},{"type":"tag","name":"legend","attrs":{},"childNodes":[20]},{"type":"text","content":"新建大小","childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:lock":"title=='图像大小'?'yes':'no'"},"childNodes":[22,27,32]},{"type":"tag","name":"li","attrs":{},"childNodes":[23,25,26]},{"type":"tag","name":"label","attrs":{},"childNodes":[24]},{"type":"text","content":"宽度(W)：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"newWidth","ui-on:input":"calcHeight"},"childNodes":[]},{"type":"text","content":"px","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[28,30,31]},{"type":"tag","name":"label","attrs":{},"childNodes":[29]},{"type":"text","content":"高度(H)：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"newHeight","ui-on:input":"calcWidth"},"childNodes":[]},{"type":"text","content":"px","childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:active":"title=='画布大小'?'yes':'no'"},"childNodes":[33,35]},{"type":"tag","name":"label","attrs":{},"childNodes":[34]},{"type":"text","content":"定位：","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"change-type","ui-bind:type":"changeType"},"childNodes":[36,37,38,39,40,41,42,43,44]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"left-top"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"center-top"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"right-top"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"left-middle"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"center-middle"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"right-middle"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"left-bottom"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"center-bottom"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"right-bottom"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[46,48]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[47]},{"type":"text","content":"确定","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose"},"childNodes":[49]},{"type":"text","content":"取消","childNodes":[]}]
@@ -78,7 +78,7 @@ window.__pkg__bundleSrc__['172']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/dialogs/size/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['173']=function(){
+window.__pkg__bundleSrc__['168']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

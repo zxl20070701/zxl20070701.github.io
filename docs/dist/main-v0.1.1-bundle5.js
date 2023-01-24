@@ -393,7 +393,7 @@ window.__pkg__bundleSrc__['107']=function(){
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view] .no-view{\n\ndisplay: none;\n\n}\n\n [page-view]>div.menu{\n\nborder-bottom: 1px solid gray;\n\nposition: fixed;\n\nz-index: 7;\n\ntop: 0;\n\nleft: 0;\n\nwidth: 100vw;\n\n}\n\n [page-view]>div.menu>h2, [page-view]>div.menu ul{\n\nvertical-align: top;\n\n}\n\n [page-view]>div.menu>h2{\n\nfont-size: 12px;\n\ndisplay: inline-block;\n\nheight: 30px;\n\nline-height: 30px;\n\nbackground-image: url('./image-editor.png');\n\nbackground-size: auto 70%;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 5px center;\n\npadding-left: 30px;\n\npadding-right: 10px;\n\nborder-right: 1px solid #cccccc;\n\n}\n\n [page-view]>div.menu>ul{\n\ndisplay: inline-block;\n\nline-height: 30px;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.menu>ul label{\n\ncursor: pointer;\n\npadding: 0 5px;\n\ndisplay: block;\n\n}\n\n [page-view]>div.menu>ul label>span{\n\nfloat: right;\n\n}\n\n [page-view]>div.menu>ul ul label{\n\npadding-left: 20px;\n\nbackground-repeat: no-repeat;\n\nbackground-position: left center;\n\n}\n\n [page-view]>div.menu>ul ul label[active='yes']{\n\nbackground-image: url('./right.png');\n\n}\n\n [page-view]>div.menu>ul li:hover{\n\nbackground-color: #cfd3d5;\n\n}\n\n [page-view]>div.menu>ul li:hover>ul{\n\ndisplay: block;\n\n}\n\n [page-view]>div.menu>ul li.split-line{\n\nbackground-color: #ebedee;\n\nheight: 1px;\n\nmargin: 2px 0;\n\n}\n\n [page-view]>div.menu>ul ul{\n\ndisplay: none;\n\n}\n\n [page-view]>div.menu>ul>li{\n\ndisplay: inline-block;\n\nmargin-left: 10px;\n\nposition: relative;\n\n}\n\n [page-view]>div.menu>ul>li>ul{\n\nposition: absolute;\n\nborder: 1px solid gray;\n\nborder-radius: 5px;\n\nwidth: 100px;\n\ntop: 25px;\n\nleft: -5px;\n\nbackground-color: white;\n\npadding: 5px 0;\n\n}\n\n [page-view]>div.tool-config{\n\nborder-bottom: 1px solid #ccc;\n\nheight: 50px;\n\nline-height: 50px;\n\nposition: fixed;\n\ntop: 30px;\n\nwidth: 100vw;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.tool-config>ul{\n\ndisplay: none;\n\n}\n\n [page-view]>div.tool-config>ul[active='yes']{\n\ndisplay: block;\n\n}\n\n [page-view]>div.tool-config>ul>li{\n\npadding: 0 5px;\n\n}\n\n [page-view]>div.tool-config>ul>li>input{\n\nwidth: 50px;\n\n}\n\n [page-view]>div.image{\n\nwidth: 100vw;\n\nheight: calc(100vh - 80px);\n\noverflow: hidden;\n\nposition: relative;\n\ntop: 80px;\n\n}\n\n [page-view]>div.image>canvas{\n\nposition: absolute;\n\noutline: 1px solid #ccc;\n\n/* // cursor: none;\r */\n\nbackground-image: url('./mosaic.png');\n\n}\n";
+styleElement.innerHTML = "\n [page-view] .no-view{\n\ndisplay: none;\n\n}\n\n [page-view]>div.menu{\n\nborder-bottom: 1px solid gray;\n\nposition: fixed;\n\nz-index: 7;\n\ntop: 0;\n\nleft: 0;\n\nwidth: 100vw;\n\n}\n\n [page-view]>div.menu>h2, [page-view]>div.menu ul{\n\nvertical-align: top;\n\n}\n\n [page-view]>div.menu>h2{\n\nfont-size: 12px;\n\ndisplay: inline-block;\n\nheight: 30px;\n\nline-height: 30px;\n\nbackground-image: url('./image-editor.png');\n\nbackground-size: auto 70%;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 5px center;\n\npadding-left: 30px;\n\npadding-right: 10px;\n\nborder-right: 1px solid #cccccc;\n\n}\n\n [page-view]>div.menu>ul{\n\ndisplay: inline-block;\n\nline-height: 30px;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.menu>ul label{\n\ncursor: pointer;\n\npadding: 0 5px;\n\ndisplay: block;\n\n}\n\n [page-view]>div.menu>ul label>span{\n\nfloat: right;\n\n}\n\n [page-view]>div.menu>ul ul label{\n\npadding-left: 20px;\n\nbackground-repeat: no-repeat;\n\nbackground-position: left center;\n\n}\n\n [page-view]>div.menu>ul ul label[active='yes']{\n\nbackground-image: url('./right.png');\n\n}\n\n [page-view]>div.menu>ul li:hover{\n\nbackground-color: #cfd3d5;\n\n}\n\n [page-view]>div.menu>ul li:hover>ul{\n\ndisplay: block;\n\n}\n\n [page-view]>div.menu>ul li.split-line{\n\nbackground-color: #ebedee;\n\nheight: 1px;\n\nmargin: 2px 0;\n\n}\n\n [page-view]>div.menu>ul ul{\n\ndisplay: none;\n\n}\n\n [page-view]>div.menu>ul>li{\n\ndisplay: inline-block;\n\nmargin-left: 10px;\n\nposition: relative;\n\n}\n\n [page-view]>div.menu>ul>li>ul{\n\nposition: absolute;\n\nborder: 1px solid gray;\n\nborder-radius: 5px;\n\nwidth: 100px;\n\ntop: 25px;\n\nleft: -5px;\n\nbackground-color: white;\n\npadding: 5px 0;\n\n}\n\n [page-view]>div.tool-config{\n\nborder-bottom: 1px solid #ccc;\n\nheight: 50px;\n\nline-height: 50px;\n\nposition: fixed;\n\ntop: 30px;\n\nwidth: 100vw;\n\nfont-size: 12px;\n\n}\n\n [page-view]>div.tool-config>ul{\n\ndisplay: none;\n\n}\n\n [page-view]>div.tool-config>ul[active='yes']{\n\ndisplay: block;\n\n}\n\n [page-view]>div.tool-config>ul>li{\n\npadding: 0 5px;\n\n}\n\n [page-view]>div.tool-config>ul>li>input{\n\nwidth: 50px;\n\n}\n\n [page-view]>div.image{\n\nwidth: 100vw;\n\nheight: calc(100vh - 80px);\n\noverflow: hidden;\n\nposition: relative;\n\ntop: 80px;\n\n}\n\n [page-view]>div.image>canvas{\n\nposition: absolute;\n\noutline: 1px solid #ccc;\n\n/* // cursor: none; */\n\nbackground-image: url('./mosaic.png');\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
@@ -409,12 +409,12 @@ window.__pkg__bundleSrc__['108']=function(){
 
     // 画布或图像大小
     size: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle15.js','109')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle15.js','109')
     },
 
     // 保存
     save: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle16.js','110')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle16.js','110')
     }
 
 };
@@ -432,12 +432,12 @@ window.__pkg__bundleSrc__['111']=function(){
 
     // 工具箱
     tool: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle17.js','112')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle17.js','112')
     },
 
     // 图层
     layer: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle18.js','113')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle18.js','113')
     }
 
 };

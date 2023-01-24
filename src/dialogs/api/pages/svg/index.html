@@ -43,13 +43,7 @@ painter.config({
     "font-size": 16,
 
     // 字体，默认"sans-serif"
-    "font-family": "sans-serif",
-
-    // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
-    "arc-start-cap": 'butt',
-
-    // 圆弧结束端闭合方式，和上一个类似
-    "arc-end-cap": 'butt'
+    "font-family": "sans-serif"
 });
 </pre>
 <h3>
@@ -101,6 +95,38 @@ painter.config({
 </p>
 <pre>painter.fullText(text, x, y[, deg]);</pre>
 <h4>
+    圆形
+</h4>
+<p>
+    以(cx, cy)为圆心，半径r绘制填充圆形：
+</p>
+<pre>painter.fillCircle(cx, cy, r);</pre>
+<p>
+    以(cx, cy)为圆心，半径r绘制轮廓圆形：
+</p>
+<pre>painter.strokeCircle(cx, cy, r);</pre>
+<p>
+    以(cx, cy)为圆心，半径r绘制轮廓并填充圆形：
+</p>
+<pre>painter.fullCircle(cx, cy, r);</pre>
+<h4>
+    矩形
+</h4>
+<p>
+    以(x, y)为左上角，宽width，高height绘制填充矩形：
+</p>
+<pre>
+    painter.fillRect(x, y, width, height);
+</pre>
+<p>
+    以(x, y)为左上角，宽width，高height绘制轮廓矩形：
+</p>
+<pre>painter.strokeRect(x, y, width, height);</pre>
+<p>
+    以(x, y)为左上角，宽width，高height绘制轮廓并填充矩形：
+</p>
+<pre>painter.fullRect(x, y, width, height);</pre>
+<h4>
     路径
 </h4>
 <p>
@@ -122,6 +148,20 @@ painter.config({
     画笔移动到点(x, y)，此时笔没有离开画布：
 </p>
 <pre>painter.lineTo(x, y);</pre>
+<p>
+    二次贝塞尔曲线到：
+</p>
+<pre>painter.quadraticCurveTo(cpx, cpy, x, y);</pre>
+<p class="warn">
+    只有一个控制点p(cpx, cpy),画笔当前的位置和p(x, y)分别是起点和终点。
+</p>
+<p>
+    三次贝塞尔曲线到：
+</p>
+<pre>painter.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);</pre>
+<p class="warn">
+    有两个控制点p(cp1x, cp1y)和p(cp2x, cp2y),画笔当前的位置和p(x, y)分别是起点和终点。
+</p>
 <p>
     把当前路径包裹的区域填充颜色：
 </p>

@@ -26,9 +26,10 @@ export default function useTemplate(el, pagefactory, props) {
 
     // 创建实例
     var instance = {
+        _el: el,
 
         // 记录数据改变需要触发的更新
-        _update: [],
+        _update: []
 
     };
 

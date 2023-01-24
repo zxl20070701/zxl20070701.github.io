@@ -5,19 +5,19 @@
 window.__pkg__bundleSrc__['39']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('160');
+    __pkg__scope_args__=window.__pkg__getBundle('155');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('161');
+__pkg__scope_args__=window.__pkg__getBundle('156');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('162');
+__pkg__scope_args__=window.__pkg__getBundle('157');
 var lazyApiPages =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('1');
 var useTemplate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('169');
+__pkg__scope_args__=window.__pkg__getBundle('164');
 var animation =__pkg__scope_args__.default;
 
 
@@ -30,11 +30,6 @@ __pkg__scope_bundle__.default= function (obj, props) {
             document.getElementById('init-api-el').click();
         },
         methods: {
-
-            // 关闭
-            doClose: function () {
-                this.$closeDialog();
-            },
 
             // 加载文档页面
             loadApiPage: function (event) {
@@ -103,10 +98,10 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['160']=function(){
+window.__pkg__bundleSrc__['155']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,6,8]},{"type":"tag","name":"header","attrs":{"ui-dragdrop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"接口文档","childNodes":[]},{"type":"tag","name":"i","attrs":{"ui-on:click":"doClose","id":"api-close"},"childNodes":[5]},{"type":"text","content":"X","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tips"},"childNodes":[7]},{"type":"text","content":"温馨提示：此文档提供的所有功能都是内置的，只能在本项目中使用。","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[9,34]},{"type":"tag","name":"div","attrs":{"class":"menu"},"childNodes":[10,14,18,22,26,30]},{"type":"tag","name":"div","attrs":{},"childNodes":[11,13]},{"type":"tag","name":"h1","attrs":{"tag":"framework","ui-on:click":"loadApiPage","id":"init-api-el"},"childNodes":[12]},{"type":"text","content":"内置框架","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[15,17]},{"type":"tag","name":"h1","attrs":{"tag":"editor","ui-on:click":"loadApiPage"},"childNodes":[16]},{"type":"text","content":"代码编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[19,21]},{"type":"tag","name":"h1","attrs":{"tag":"webgl","ui-on:click":"loadApiPage"},"childNodes":[20]},{"type":"text","content":"3D绘图 WebGL","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[23,25]},{"type":"tag","name":"h1","attrs":{"tag":"canvas","ui-on:click":"loadApiPage"},"childNodes":[24]},{"type":"text","content":"位图画笔 Canvas","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[27,29]},{"type":"tag","name":"h1","attrs":{"tag":"color-picker","ui-on:click":"loadApiPage"},"childNodes":[28]},{"type":"text","content":"颜色选择器","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[31,33]},{"type":"tag","name":"h1","attrs":{"tag":"svg","ui-on:click":"loadApiPage"},"childNodes":[32]},{"type":"text","content":"矢图画笔 SVG","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","id":"api-content"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,6,8]},{"type":"tag","name":"header","attrs":{"ui-dragdrop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"接口文档","childNodes":[]},{"type":"tag","name":"i","attrs":{"ui-on:click":"$closeDialog","id":"api-close"},"childNodes":[5]},{"type":"text","content":"X","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tips"},"childNodes":[7]},{"type":"text","content":"温馨提示：此文档提供的所有功能都是内置的，只能在本项目中使用。","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[9,34]},{"type":"tag","name":"div","attrs":{"class":"menu"},"childNodes":[10,14,18,22,26,30]},{"type":"tag","name":"div","attrs":{},"childNodes":[11,13]},{"type":"tag","name":"h1","attrs":{"tag":"framework","ui-on:click":"loadApiPage","id":"init-api-el"},"childNodes":[12]},{"type":"text","content":"内置框架","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[15,17]},{"type":"tag","name":"h1","attrs":{"tag":"editor","ui-on:click":"loadApiPage"},"childNodes":[16]},{"type":"text","content":"代码编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[19,21]},{"type":"tag","name":"h1","attrs":{"tag":"webgl","ui-on:click":"loadApiPage"},"childNodes":[20]},{"type":"text","content":"3D绘图 WebGL","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[23,25]},{"type":"tag","name":"h1","attrs":{"tag":"canvas","ui-on:click":"loadApiPage"},"childNodes":[24]},{"type":"text","content":"位图画笔 Canvas","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[27,29]},{"type":"tag","name":"h1","attrs":{"tag":"color-picker","ui-on:click":"loadApiPage"},"childNodes":[28]},{"type":"text","content":"颜色选择器","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[31,33]},{"type":"tag","name":"h1","attrs":{"tag":"svg","ui-on:click":"loadApiPage"},"childNodes":[32]},{"type":"text","content":"矢图画笔 SVG","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","id":"api-content"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -114,7 +109,7 @@ window.__pkg__bundleSrc__['160']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['161']=function(){
+window.__pkg__bundleSrc__['156']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -128,39 +123,39 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/pages/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['162']=function(){
+window.__pkg__bundleSrc__['157']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 内置框架
     framework: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle19.js','163')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle19.js','158')
     },
 
     // 代码编辑器
     editor: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle20.js','164')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle20.js','159')
     },
 
     // WebGL
     webgl: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle21.js','165')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle21.js','160')
     },
 
     // canvas
     canvas: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle22.js','166')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle22.js','161')
     },
 
     // 颜色选择器
     "color-picker": function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle23.js','167')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle23.js','162')
     },
 
     // svg
     svg: function () {
-        return window.__pkg__getLazyBundle('./dist/main-v0.1.0-bundle24.js','168')
+        return window.__pkg__getLazyBundle('./dist/main-v0.1.1-bundle24.js','163')
     }
 };
 
@@ -170,7 +165,7 @@ window.__pkg__bundleSrc__['162']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['169']=function(){
+window.__pkg__bundleSrc__['164']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈

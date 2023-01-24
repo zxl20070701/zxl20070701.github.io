@@ -6,7 +6,7 @@
         position: fixed;
         left: 0;
         top: 0;
-        width: 100vw;
+        width: 100%;
         line-height: 50px;
         box-shadow: rgb(213 221 225) 0px 4px 6px;
         background-color: white;
@@ -149,6 +149,10 @@
 
                     &[tag="npm-download"] {
                         background-image: url('./npm.png');
+                    }
+
+                    &[tag="recorder-screen"] {
+                        background-image: url('./recorder-screen.png');
                     }
                 }
             }

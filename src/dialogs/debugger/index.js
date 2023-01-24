@@ -5,12 +5,6 @@ export default function (obj, props) {
     return {
         name: "debugger",
         render: template,
-        data: {
-
-        },
-        methods: {
-
-        },
         mounted: function () {
             var index;
 
@@ -18,7 +12,6 @@ export default function (obj, props) {
             for (index = 0; index < window._consoleArray_.length; index++) {
                 window._consoleAppend_(window._consoleArray_[index]);
             }
-
         }
     }
 };

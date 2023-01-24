@@ -15,11 +15,6 @@ export default function (obj, props) {
         },
         methods: {
 
-            // 关闭
-            doClose: function () {
-                this.$closeDialog();
-            },
-
             // 加载文档页面
             loadApiPage: function (event) {
 

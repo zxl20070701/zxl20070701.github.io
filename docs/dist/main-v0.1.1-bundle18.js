@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['113']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('178');
+    __pkg__scope_args__=window.__pkg__getBundle('173');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('179');
+__pkg__scope_args__=window.__pkg__getBundle('174');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -27,7 +27,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/layer/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['178']=function(){
+window.__pkg__bundleSrc__['173']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"图层","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"list","id":"layer-list"},"childNodes":[]}]
@@ -38,7 +38,7 @@ window.__pkg__bundleSrc__['178']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/layer/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['179']=function(){
+window.__pkg__bundleSrc__['174']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

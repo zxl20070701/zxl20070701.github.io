@@ -29,34 +29,44 @@ export default {
                 var newLeft = left - - event.clientX - lf;
                 var newTop = top - - event.clientY - tp;
 
-                // 判断水平是否越界
-                if (newLeft > binding.value[3] && newLeft + _el.clientWidth < window.innerWidth - binding.value[1]) {
+                // 有缩放
+                if (window.scale) {
                     _el.style.left = newLeft + 'px';
-                }
-
-                // 左越界
-                else if (newLeft <= binding.value[3]) {
-                    _el.style.left = binding.value[3] + 'px';
-                }
-
-                // 右越界
-                else {
-                    _el.style.left = (window.innerWidth - binding.value[1] - _el.clientWidth) + 'px';
-                }
-
-                // 判断垂直是否越界
-                if (newTop > binding.value[0] && newTop + _el.clientHeight < window.innerHeight + binding.value[2]) {
                     _el.style.top = newTop + 'px';
                 }
 
-                // 上越界
-                else if (newTop <= binding.value[0]) {
-                    _el.style.top = binding.value[0] + 'px';
-                }
-
-                // 下越界
+                // 无缩放
                 else {
-                    _el.style.top = (window.innerHeight + binding.value[2] - _el.clientHeight) + 'px';
+
+                    // 判断水平是否越界
+                    if (newLeft > binding.value[3] && newLeft + _el.clientWidth < window.innerWidth - binding.value[1]) {
+                        _el.style.left = newLeft + 'px';
+                    }
+
+                    // 左越界
+                    else if (newLeft <= binding.value[3]) {
+                        _el.style.left = binding.value[3] + 'px';
+                    }
+
+                    // 右越界
+                    else {
+                        _el.style.left = (window.innerWidth - binding.value[1] - _el.clientWidth) + 'px';
+                    }
+
+                    // 判断垂直是否越界
+                    if (newTop > binding.value[0] && newTop + _el.clientHeight < window.innerHeight + binding.value[2]) {
+                        _el.style.top = newTop + 'px';
+                    }
+
+                    // 上越界
+                    else if (newTop <= binding.value[0]) {
+                        _el.style.top = binding.value[0] + 'px';
+                    }
+
+                    // 下越界
+                    else {
+                        _el.style.top = (window.innerHeight + binding.value[2] - _el.clientHeight) + 'px';
+                    }
                 }
 
             }

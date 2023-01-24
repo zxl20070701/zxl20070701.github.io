@@ -1,0 +1,42 @@
+[page-view] {
+    text-align: center;
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        box-shadow: rgb(213 221 225) 0px 4px 6px;
+        background-color: white;
+
+        &>h2 {
+            color: #49b4f1;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./recorder-screen.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            font-family: cursive;
+            display: inline-block;
+        }
+
+        &>button {
+            float: right;
+            height: 30px;
+            border-radius: 15px;
+            padding: 0 10px;
+            border: 1px solid #ffffff;
+            margin-top: 10px;
+            margin-right: 20px;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+        }
+    }
+
+    &>video {
+        width: calc(100vw - 160px);
+        height: calc(100vh - 70px);
+        background-color: black;
+        margin-top: 10px;
+    }
+}

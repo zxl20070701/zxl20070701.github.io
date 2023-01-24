@@ -1,4 +1,4 @@
-import { initText, initArc, initCircle, initPath, initRect } from "./config.js";
+import { initText, initCircle, initPath, initRect } from "./config.js";
 import isString from "../type/isString.js";
 import { toNode, setAttribute, getAttribute, full, fill, stroke } from "./tool.js";
 
@@ -19,10 +19,6 @@ export default function (svg) {
         // 文字设置
         "font-size": 16,
         "font-family": "sans-serif",
-
-        // arc二端闭合方式['butt':直线闭合,'round':圆帽闭合]
-        "arc-start-cap": "butt",
-        "arc-end-cap": "butt",
 
         // 虚线设置
         "lineDash": []
@@ -146,45 +142,37 @@ export default function (svg) {
             return enhancePainter;
         },
 
-        // 弧
-        fillArc: function (cx, cy, r1, r2, beginDeg, deg) {
-
-            return enhancePainter;
-        },
-        strokeArc: function (cx, cy, r1, r2, beginDeg, deg) {
-
-            return enhancePainter;
-        },
-        fullArc: function (cx, cy, r1, r2, beginDeg, deg) {
-
-            return enhancePainter;
-        },
-
         // 圆形
         fillCircle: function (cx, cy, r) {
-
+            initCircle(useEl, cx, cy, r);
+            fill(useEl, config);
             return enhancePainter;
         },
         strokeCircle: function (cx, cy, r) {
-
+            initCircle(useEl, cx, cy, r);
+            stroke(useEl, config);
             return enhancePainter;
         },
         fullCircle: function (cx, cy, r) {
-
+            initCircle(useEl, cx, cy, r);
+            full(useEl, config);
             return enhancePainter;
         },
 
         // 矩形
         fillRect: function (x, y, width, height) {
-
+            initRect(useEl, x, y, width, height);
+            fill(useEl, config);
             return enhancePainter;
         },
         strokeRect: function (x, y, width, height) {
-
+            initRect(useEl, x, y, width, height);
+            stroke(useEl, config);
             return enhancePainter;
         },
         fullRect: function (x, y, width, height) {
-
+            initRect(useEl, x, y, width, height);
+            full(useEl, config);
             return enhancePainter;
         },
 
@@ -205,10 +193,6 @@ export default function (svg) {
             path += (path == "" ? "M" : "L") + x + " " + y;
             return enhancePainter;
         },
-        arc: function (x, y, r, beginDeg, deg) {
-
-            return enhancePainter;
-        },
         fill: function () {
             initPath(useEl, path);
             fill(useEl, config);
@@ -227,24 +211,13 @@ export default function (svg) {
 
         // 路径 - 贝塞尔曲线
         quadraticCurveTo: function (cpx, cpy, x, y) {
-
+            path += "Q" + cpx + " " + cpy + "," + x + " " + y;
             return enhancePainter;
         },
         bezierCurveTo: function (cp1x, cp1y, cp2x, cp2y, x, y) {
-
+            path += "C" + cp1x + " " + cp1y + "," + cp2x + " " + cp2y + "," + x + " " + y;
             return enhancePainter;
-        },
-
-        //  线性渐变
-        createLinearGradient: function () {
-
-        },
-
-        // 环形渐变
-        createRadialGradient: function () {
-
         }
-
     };
 
     return enhancePainter;

@@ -41,14 +41,12 @@ export var initText = function (el, config, x, y, deg) {
     }
 };
 
-// 画弧统一设置方法
-export var initArc = function (el, config, cx, cy, r1, r2, beginDeg, deg) {
-
-};
-
 // 画圆统一设置方法
 export var initCircle = function (el, cx, cy, r) {
-
+    if (el.nodeName.toLowerCase() !== 'circle') throw new Error('Need a <circle> !');
+    setAttribute(el, 'cx', cx);
+    setAttribute(el, 'cy', cy);
+    setAttribute(el, 'r', r);
 };
 
 // 路径统一设置方法
@@ -59,5 +57,14 @@ export var initPath = function (el, path) {
 
 // 画矩形统一设置方法
 export var initRect = function (el, x, y, width, height) {
+    if (el.nodeName.toLowerCase() !== 'rect') throw new Error('Need a <rect> !');
 
+    // 由于高和宽不可以是负数，校对一下
+    if (height < 0) { height *= -1; y -= height; }
+    if (width < 0) { width *= -1; x -= width; }
+
+    setAttribute(el, 'x', x);
+    setAttribute(el, 'y', y);
+    setAttribute(el, 'width', width);
+    setAttribute(el, 'height', height);
 };
