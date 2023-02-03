@@ -9,9 +9,10 @@ import lazyDialogs from './dialogs/lazy-load';
 
 export default function (obj) {
     return {
+        name: "audio-editor",
         render: template,
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "音频编辑器";
+        beforeFocus: function () {
+            document.getElementsByTagName('title')[0].innerText = "音频编辑器" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './audio-editor.png');
         },
         methods: {
@@ -46,7 +47,7 @@ export default function (obj) {
 
             // 合并音频
             mergeAudio: function () {
-                var items = document.getElementById('editor-view-id').children;
+                var items = this._refs.editorView.value.children;
                 var index, audios = [];
                 for (index = 0; index < items.length; index++) {
                     if (items[index]._data.checked) {
@@ -149,7 +150,7 @@ export default function (obj) {
 
             // 播放
             play: function (audioBuffer) {
-                var audioEl = document.getElementById('play-audio-id');
+                var audioEl = this._refs.playAudio.value;
 
                 // 把AudioBuffer变成ArrayBuffer
                 var buffer = audiobufferToWav(audioBuffer);
@@ -162,7 +163,7 @@ export default function (obj) {
             doImport: function () {
                 var _this = this;
                 newFile().then(function (data) {
-                    var ulEl = document.getElementById('source-list-id');
+                    var ulEl = _this._refs.sourceList.value;
 
                     var index;
                     for (index = 0; index < data.length; index++) {
@@ -196,7 +197,7 @@ export default function (obj) {
 
                             addEl.addEventListener('click', function () {
 
-                                var editorEl = document.getElementById('editor-view-id');
+                                var editorEl = _this._refs.editorView.value;
                                 var contentEl;
 
                                 // 条目

@@ -14,6 +14,7 @@ import uiBind from "../directives/ui-bind.js";
 import uiModel from "../directives/ui-model.js";
 import uiOn from "../directives/ui-on.js";
 import uiDragdrop from "../directives/ui-dragdrop.js";
+import uiRightMenu from "../directives/ui-right-menu";
 
 export default function useTemplate(el, pagefactory, props) {
 
@@ -29,8 +30,28 @@ export default function useTemplate(el, pagefactory, props) {
         _el: el,
 
         // 记录数据改变需要触发的更新
-        _update: []
+        _update: [],
 
+        // 记录ref节点
+        _refs: {},
+
+        /**
+         * 后续需要的生命周期钩子
+         */
+        _beforeMount: pageinfo.beforeMount,
+        _mounted: pageinfo.mounted,
+        _beforeUpdate: pageinfo.beforeUpdate,
+        _updated: pageinfo.updated,
+        _beforeDestory: pageinfo.beforeDestory,
+        _destoryed: pageinfo.destoryed,
+        _minimize: pageinfo.minimize,
+        _reshow: pageinfo.reshow,
+        _beforeFocus: pageinfo.beforeFocus,
+        _focused: pageinfo.focused,
+        _beforeUnfocus: pageinfo.beforeUnfocus,
+        _unfocused: pageinfo.unfocused,
+        _show: pageinfo.show,
+        _hidden: pageinfo.hidden
     };
 
     if ('name' in pageinfo) instance._name = pageinfo.name;
@@ -105,6 +126,7 @@ export default function useTemplate(el, pagefactory, props) {
     pageinfo.directives['ui-model'] = uiModel;
     pageinfo.directives['ui-on'] = uiOn;
     pageinfo.directives['ui-dragdrop'] = uiDragdrop;
+    pageinfo.directives['ui-right-menu'] = uiRightMenu;
 
     if ("render" in pageinfo) {
 
@@ -130,6 +152,12 @@ export default function useTemplate(el, pagefactory, props) {
 
                         for (attrKey in currentNode.attrs) {
                             attrValue = currentNode.attrs[attrKey];
+
+                            // 如果是ref
+                            if (attrKey == 'ref') {
+                                instance._refs[attrValue] = currentEl;
+                            }
+
                             keyArray = (attrKey + ":").split(':');
 
                             // 指令
@@ -152,7 +180,8 @@ export default function useTemplate(el, pagefactory, props) {
                                                 type: keyArray[1],
                                                 exp: attrValue,
                                                 value: value,
-                                                target: instance
+                                                target: instance,
+                                                useTemplate: useTemplate
                                             });
                                         });
                                     })(directive, attrValue, keyArray);
@@ -171,7 +200,8 @@ export default function useTemplate(el, pagefactory, props) {
                                                 type: keyArray[1],
                                                 exp: attrValue,
                                                 value: value,
-                                                target: instance
+                                                target: instance,
+                                                useTemplate: useTemplate
                                             });
                                         });
                                     })(directive, attrValue, keyArray);

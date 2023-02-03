@@ -1,5 +1,5 @@
 <!-- 可视化操作切割点 -->
-<canvas id="time-line"></canvas>
+<canvas ref="timeLine"></canvas>
 
 <!-- 新增一个切割点 -->
 <div class='add-split'>
@@ -23,7 +23,7 @@
             <th>结束时间</th>
         </tr>
     </thead>
-    <tbody id='table-list' ui-on:click="updatePiceSelected"></tbody>
+    <tbody ref='tableList' ui-on:click="updatePiceSelected"></tbody>
 </table>
 
 <!-- 操作完毕按钮 -->

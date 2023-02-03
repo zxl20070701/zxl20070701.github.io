@@ -10,6 +10,8 @@ const fs = require('fs');
 const { log, error } = require('../nodejs/log');
 const { fullPath } = require('../nodejs/path');
 
+const globalScript = require('./global');
+
 // 获取命令行参数
 const parsed = require('../nodejs/option')({}, process.argv);
 
@@ -30,7 +32,7 @@ let server = http.createServer(function (request, response) {
             response.writeHead(200, {
                 'content-type': "text/html;charset=utf-8"
             });
-            response.write((template + "").replace('<!-- built files will be auto injected -->', '<script src="' + config.entry + '" type="module"></script>'));
+            response.write((template + "").replace('<!-- built files will be auto injected -->', globalScript + '<script defer="defer" src="' + config.entry + '" type="module"></script>'));
         }
 
         // 其余就是普通文件

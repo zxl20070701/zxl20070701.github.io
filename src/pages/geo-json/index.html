@@ -1,0 +1,26 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        geoJSON查看器
+    </h2>
+    <button ui-on:click="triggleFile">
+        选择文件
+    </button>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+</header>
+<canvas ref="mycanvas"></canvas>
+<div class="help-url">
+    <a href="javascript:void(0)" ui-on:click="openDownload">
+        点击我进入GeoJSON下载页面
+    </a>
+</div>
+
+<!-- 一些辅助而不需要显示的内容 -->
+<div class='no-view'>
+
+    <!-- 选择本地文件 -->
+    <input type="file" ref="file" ui-on:change="inputLocalFile" accept=".json" />
+
+</div>

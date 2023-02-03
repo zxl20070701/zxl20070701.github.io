@@ -1,0 +1,95 @@
+[page-view="application"] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 70px);
+    left: 80px;
+    top: 20px;
+    font-size: 0;
+    white-space: nowrap;
+    background-color: white;
+    user-select: none;
+
+    &[focus="no"] {
+        &>.left {
+            background-color: rgba(158, 196, 233, 0.85);
+        }
+    }
+
+    &>div {
+        height: 100%;
+        vertical-align: top;
+        font-size: 16px;
+        white-space: normal;
+        display: inline-block;
+
+        &.left {
+            background-color: rgba(183, 218, 253, 0.85);
+            width: 260px;
+
+            &>header {
+                background-repeat: no-repeat;
+                background-position: 5px center;
+                background-size: auto 20px;
+                background-image: url('./application.png');
+                line-height: 40px;
+                padding-left: 30px;
+                cursor: pointer;
+                color: #4b4a4a;
+                font-weight: 800;
+                margin: 10px;
+                font-size: 14px;
+                font-weight: 200;
+            }
+        }
+
+        &.right {
+            width: calc(100% - 260px);
+
+            &>header {
+                line-height: 40px;
+                margin: 10px;
+
+                &>input {
+                    background-color: rgb(230 230 230);
+                    width: 260px;
+                    height: 30px;
+                    border-radius: 15px;
+                    padding: 0 10px;
+                    font-size: 12px;
+                    border: none;
+                    outline: none;
+                }
+            }
+
+            &>div {
+                &.content {
+                    width: 100%;
+                    height: calc(100% - 60px);
+                    overflow: auto;
+
+                    &>div {
+
+                        width: 70px;
+                        padding-top: 60px;
+                        margin: 10px;
+                        font-size: 12px;
+                        color: rgb(0, 0, 0);
+                        background-size: 45px auto;
+                        background-repeat: no-repeat;
+                        background-position: center 10px;
+                        text-align: center;
+                        line-height: 1.6em;
+                        height: 100px;
+                        vertical-align: top;
+                        cursor: pointer;
+                        display: inline-block;
+
+                        &:hover {
+                            outline: 1px dashed rgb(185, 183, 183);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

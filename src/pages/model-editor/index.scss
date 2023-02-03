@@ -1,14 +1,24 @@
-[page-view] {
-    background-color: #eff2f2;
-    width: 100vw;
-    height: 100vh;
+[page-view="model-editor"] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 55px);
+    left: 80px;
+    top: 10px;
 
     .no-view {
         display: none;
     }
 
+    &[focus="no"] {
+        &>div {
+            &.menu {
+                background-color: #afbabe;
+            }
+        }
+    }
+
     &>div {
         &.menu {
+            background-color: #cad6db;
             border-bottom: 1px solid #cccccc;
             height: 30px;
             height: 30px;
@@ -96,15 +106,15 @@
         }
 
         &.content {
-            width: 100vw;
-            height: calc(100vh - 30px);
+            width: 100%;
+            height: calc(100% - 30px);
             overflow: hidden;
             text-align: center;
             background-color: #9fa2a3;
         }
 
         &.axis {
-            position: fixed;
+            position: absolute;
             right: 30px;
             bottom: 30px;
             pointer-events: none;

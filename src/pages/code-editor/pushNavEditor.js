@@ -1,12 +1,9 @@
 import editorRender from '../../tool/editor/index';
 import remove from '../../tool/xhtml/remove';
 
-export default function (fileName, fileType, fileContent, setCurrentInfo, handle, menuEl) {
+export default function (navRootEl, editorRootEl, fileName, fileType, fileContent, setCurrentInfo, handle, menuEl) {
 
     if (menuEl) menuEl.setAttribute('load', 'yes');
-
-    var navRootEl = document.getElementById('nav');
-    var editorRootEl = document.getElementById('editor');
 
     //  导航
     var navItem = document.createElement('li');
@@ -47,11 +44,13 @@ export default function (fileName, fileType, fileContent, setCurrentInfo, handle
             content: fileContent
         };
 
-        if (['html', 'svg', 'xml'].indexOf(fileType) > -1) {
+        console.log(fileType)
+
+        if (['html', 'svg', 'xml', 'vue'].indexOf(fileType) > -1) {
             options.shader = ['html']
         } else if (['css', 'scss', 'sass'].indexOf(fileType) > -1) {
             options.shader = ['css']
-        } else if (['js', 'json'].indexOf(fileType) > -1) {
+        } else if (['js', 'jsx', 'ts', 'tsx', 'json'].indexOf(fileType) > -1) {
             options.shader = ['javascript']
         }
 

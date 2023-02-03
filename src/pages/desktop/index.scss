@@ -1,0 +1,160 @@
+[page-view="desktop"] {
+    user-select: none;
+    background-color: transparent;
+    position: static;
+
+    &>ul {
+
+        &.content {
+            width: 100vw;
+            height: calc(100vh - 35px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            align-content: flex-start;
+            padding: 20px 0;
+
+            &>li {
+
+                width: 70px;
+                padding-top: 60px;
+                margin: 0 5px;
+                font-size: 12px;
+                color: white;
+                background-size: 45px auto;
+                background-repeat: no-repeat;
+                background-position: center 10px;
+                text-align: center;
+                line-height: 1.6em;
+                height: 100px;
+                vertical-align: top;
+                cursor: pointer;
+                position: relative;
+
+                &.link {
+                    &::before {
+                        content: " ";
+                        position: absolute;
+                        width: 17px;
+                        height: 17px;
+                        background-image: url("./rt.jpeg");
+                        background-size: 100% auto;
+                        background-repeat: no-repeat;
+                        background-position: center center;
+                        left: 12px;
+                        top: 38px;
+                    }
+                }
+
+                &[select='yes'] {
+                    background-color: rgba(228, 228, 228, 0.294);
+                }
+            }
+        }
+    }
+
+    &>div {
+        &.taskline {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 35px;
+            background-color: rgba(3, 71, 126, 0.6);
+            border-top: 1px solid #313333;
+            z-index: 10;
+
+            &>span {
+                position: absolute;
+
+                &.begin {
+                    cursor: pointer;
+                    width: 45px;
+                    height: 45px;
+                    left: 5px;
+                    bottom: 5px;
+                    background-image: url('./windows7.png');
+                    background-size: 100% auto;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    border-radius: 50%;
+                    box-shadow: 3px 3px 20px 0px rgba(96, 125, 139, 0.754);
+                }
+
+                &.what {
+                    cursor: pointer;
+                    width: 35px;
+                    height: 35px;
+                    background-image: url('./what.png');
+                    background-size: 100% auto;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    left: 55px;
+                    bottom: 0;
+                }
+
+                &.wins {
+                    left: 90px;
+                    bottom: 0;
+                    width: calc(100% - 185px);
+                    height: 35px;
+                    overflow: hidden;
+                    padding: 0 5px;
+                    display: flex;
+
+                    &>span {
+                        line-height: 31px;
+                        font-size: 12px;
+                        border: 1px solid #607d8b;
+                        padding-right: 5px;
+                        border-radius: 3px;
+                        margin-top: 1px;
+                        color: white;
+                        background-image: radial-gradient(rgba(255, 255, 255, 0), rgba(189, 187, 187, 0.489));
+                        flex-basis: 120px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+
+                        &[focus="yes"] {
+                            background-image: radial-gradient(rgba(255, 255, 255, 0.141), rgba(189, 187, 187, 0.675));
+                        }
+
+                        &>span {
+                            display: inline-block;
+                            width: 30px;
+                            height: 31px;
+                            background-repeat: no-repeat;
+                            background-position: center center;
+                            background-size: 80% auto;
+                            vertical-align: top;
+                        }
+                    }
+                }
+
+                &.time {
+                    right: 0;
+                    width: 100px;
+                    text-align: center;
+                    top: 2px;
+                    height: 100%;
+                    color: white;
+
+                    &>div {
+                        &:first-child {
+                            font-size: 12px;
+                            line-height: 15px;
+                        }
+
+                        &:last-child {
+                            font-size: 12px;
+                            line-height: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

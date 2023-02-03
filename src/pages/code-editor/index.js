@@ -6,21 +6,23 @@ import getKeyCode from '../../tool/keyCode';
 import pushNavEditor from './pushNavEditor';
 import getTypeName from './getTypeName';
 
-var currentInfo = null;
 export default function (obj) {
+    var currentInfo = null;
+
     return {
+        name: "code-editor",
         render: template,
         data: {
             nav: obj.ref('folder')
         },
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "代码编辑器";
+        beforeFocus: function () {
+            document.getElementsByTagName('title')[0].innerText = "代码编辑器" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './code-editor.png');
         },
         mounted: function () {
+            var _this = this;
 
             // 启动键盘监听
-            var _this = this;
             getKeyCode(function (keyCode, event) {
 
                 var handler = {
@@ -41,17 +43,19 @@ export default function (obj) {
         methods: {
 
             // 切换功能
-            changeNav: function (event) {
-                this.nav = event.target.getAttribute('tag');
+            changeNav: function (event, target) {
+                this.nav = target.getAttribute('tag');
             },
 
             // 打开文件夹
             openFolder: function () {
+                var _this = this;
+
                 window.showDirectoryPicker({
                     mode: "readwrite"
                 }).then(function (handle) {
 
-                    var el = document.getElementById('folder-root');
+                    var el = _this._refs.folder.value;
                     el.innerHTML = "";
 
                     var initMenu = function (el, handle) {
@@ -106,7 +110,7 @@ export default function (obj) {
                                                 list[i].handle.getFile().then(function (file) {
                                                     var reader = new FileReader();
                                                     reader.onload = function () {
-                                                        pushNavEditor(textEl.innerText, textEl.getAttribute('type'), reader.result, function (_currentInfo) {
+                                                        pushNavEditor(_this._refs.nav.value, _this._refs.editor.value, textEl.innerText, textEl.getAttribute('type'), reader.result, function (_currentInfo) {
                                                             currentInfo = _currentInfo;
                                                         }, list[i].handle, textEl);
                                                     };
@@ -135,12 +139,13 @@ export default function (obj) {
 
             // 打开文件
             openFile: function () {
+                var _this = this;
 
                 window.showOpenFilePicker().then(function (handles) {
                     handles[0].getFile().then(function (file) {
                         var reader = new FileReader();
                         reader.onload = function () {
-                            pushNavEditor(handles[0].name, getTypeName(handles[0].name), reader.result, function (_currentInfo) {
+                            pushNavEditor(_this._refs.nav.value, _this._refs.editor.value, handles[0].name, getTypeName(handles[0].name), reader.result, function (_currentInfo) {
                                 currentInfo = _currentInfo;
                             }, handles[0]);
                         };
@@ -151,8 +156,10 @@ export default function (obj) {
 
             // 新建文件
             newFile: function () {
+                var _this = this;
+
                 window.showSaveFilePicker().then(function (handle) {
-                    pushNavEditor(handle.name, getTypeName(handle.name), "", function (_currentInfo) {
+                    pushNavEditor(_this._refs.nav.value, _this._refs.editor.value, handle.name, getTypeName(handle.name), "", function (_currentInfo) {
                         currentInfo = _currentInfo;
                     }, handle);
                 });

@@ -1,9 +1,16 @@
-<header>
+<header ui-dragdrop:desktop>
     <h2>
         录屏软件
     </h2>
-    <button ui-on:click="screenRecorder">
-        启动录制
+    <button ui-on:click="stopRecorder" class="right-btn" ui-bind:active="isRun?'yes':'no'">
+        完成
     </button>
+    <button ui-on:click="startRecorder" class="left-btn" ui-bind:active="isRun?'no':'yes'">
+        启动
+    </button>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
 </header>
-<video id="video-id"></video>
+<video ref="video"></video>

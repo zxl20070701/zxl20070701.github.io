@@ -1,0 +1,28 @@
+[page-view="computer"] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 70px);
+    left: 80px;
+    top: 20px;
+
+    &[focus="no"] {
+        &>header {
+            background-color: rgba(158, 196, 233, 0.85);
+        }
+    }
+
+    &>header {
+        background-color: rgba(183, 218, 253, 0.85);
+        border-bottom: 1px solid gray;
+
+        &>h2 {
+            font-size: 12px;
+            line-height: 30px;
+            padding-left: 45px;
+            background-image: url('./computer.png');
+            background-repeat: no-repeat;
+            background-position: 10px center;
+            background-size: auto 90%;
+        }
+    }
+
+}

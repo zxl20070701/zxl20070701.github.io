@@ -1,3 +1,12 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        scss转css
+    </h2>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+</header>
 <div>
     <h2>
         源代码
@@ -5,11 +14,11 @@
             运行
         </button>
     </h2>
-    <div id="source-id"></div>
+    <div ref="source"></div>
 </div>
 <div>
     <h2>
         运行结果
     </h2>
-    <div id="target-id"></div>
+    <div ref="target"></div>
 </div>

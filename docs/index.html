@@ -4,30 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="manifest" href="./manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="zxl20070701 1904314465@qq.com toolbox">
     <link rel="shortcut icon" id="icon-logo" href="./logo.png">
     <link rel="stylesheet" href="./normalize.css">
     <title>《实用工具》实用工具，包含常见的图片编辑、格式转换、视频播放和小游戏等各种工具</title>
+    <script>
+        window.systeName = " - Windows 7 定制版本";
+
+        // 取消默认右键
+        document.addEventListener("contextmenu", function (event) {
+            event.preventDefault();
+        });
+    </script>
+    <script>
+    /* 
+     * 统一全局信息注入
+     */
+    window._project_ = {
+
+        // 应用名称
+        name:"toolbox",
+
+        // 版本号
+        version:"0.2.0",
+
+        // 代码仓库地址
+        repository:"https://github.com/zxl20070701/toolbox",
+
+        // 提bug地址
+        bugs:"https://github.com/zxl20070701/toolbox/issues",
+
+        // 作者信息
+        author:{"name":"zxl20070701","url":"https://github.com/zxl20070701"}
+    };
+</script><script defer="defer" src="./dist/main-v0.2.0.js"></script>
 </head>
 
 <body>
-    <!-- 左侧导航 -->
-    <div class="quick-link left">
-        <a class="notebook" href="https://zxl20070701.github.io/notebook" target="_blank">
-            文档笔记
-        </a>
-    </div>
 
-    <!-- 右侧导航 -->
-    <div class="quick-link right">
-        <a class="home" href="#/" target="_blank">
-            首页
-        </a>
-        <a class="github" href="https://github.com/zxl20070701/toolbox" target="_blank">
-            代码仓库
-        </a>
-    </div>
+    <!-- 桌面 -->
+    <div id="desktop-root" page-view="desktop"></div>
 
     <!-- 主视图 -->
     <div id="view-root"></div>
@@ -40,12 +58,31 @@
         <div class="mask"></div>
     </div>
 
-    <script src="./dist/main-v0.1.1.js"></script>
+    <!-- 右键 -->
+    <div id="contextmenu-root"></div>
 
     <!-- 控制台打印 -->
     <script>
-        console.log("%c\n\n   学习的目的绝对不只是为了追求名誉或财富，而是为了在短暂的生命里给灵魂一个栖息的地方，同时寻着一个生存之道。\n\n %cby zxl20070701\n\n", "color:#0855d7;font-size:18px;font-family:cursive;", "color:gray;padding-left:60px;");
+        console.log("%c\n\n\t\t学习的目的绝对不只是为了追求名誉或财富，而是为了在短暂的生命里给灵魂一个栖息的地方，同时寻着一个生存之道。\n\n %cby zxl20070701\n\n", "color:#555555;font-size:12px;font-family:cursive;", "color:gray;padding-left:60px;");
     </script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('./ServiceWorker.js', { scope: window.location.origin + window.location.pathname })
+                .then(function (registration) {
+
+                    // 注册成功
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(function (err) {
+
+                    // 注册失败:(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+</script>
 
 </body>
 

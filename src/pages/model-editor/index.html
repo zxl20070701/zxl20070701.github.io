@@ -1,4 +1,4 @@
-<div class="menu">
+<div class="menu" ui-dragdrop:desktop>
     <h2>
         3D模型编辑器
     </h2>
@@ -9,30 +9,34 @@
         导入
         <div>
             <span>
-                <label for='file'>本地选择</label>
+                <label ui-on:click="triggleFile">本地选择</label>
             </span>
         </div>
     </span>
     <span ui-on:click='exportFile'>
         导出
     </span>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
 </div>
-<div class="content" id='main-view'>
+<div class="content" ref='mainViewRoot'>
 
     <!-- 画布 -->
-    <canvas ui-bind:width='width' ui-bind:height='height' id="main-view-canvas"></canvas>
+    <canvas ui-bind:width='width' ui-bind:height='height' ref="mainView"></canvas>
 
 </div>
 
-<div class="axis" id="directive-view">
-    <canvas width="100" height="100" id="directive-view-canvas"></canvas>
+<div class="axis">
+    <canvas width="100" height="100" ref="directiveView"></canvas>
 </div>
 
 <!-- 一些辅助而不需要显示的内容 -->
 <div class='no-view'>
 
     <!-- 选择本地文件 -->
-    <input type="file" id="file" multiple ui-on:change="inputLocalFile"
+    <input type="file" ref="file" multiple ui-on:change="inputLocalFile"
         accept=".json,.stl,.obj,.fbx,.mtl,.ply,.gltf,.mod" />
 
 </div>

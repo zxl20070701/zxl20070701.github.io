@@ -1,0 +1,83 @@
+[dialog-view="snipping-tool"] {
+    right: 20px;
+    top: 20px;
+    font-size: 0;
+    user-select: none;
+    min-width: 300px;
+
+    &[focus="no"] {
+        &>header {
+            background-color: #e8eaed;
+        }
+    }
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        background-color: #ffffff;
+        border-bottom: 1px solid rgb(187, 184, 184);
+
+        &>h2 {
+            color: #000000;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./snipping.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            font-family: cursive;
+            display: inline-block;
+        }
+    }
+
+    &>div {
+
+        &.btns {
+            &>button {
+                margin: 10px;
+                font-size: 12px;
+                color: white;
+                background-color: #2196f3;
+                padding: 2px 5px;
+                cursor: pointer;
+                border: none;
+                outline: none;
+
+                &:not(:last-child) {
+                    margin-right: 0;
+                }
+
+                &.link {
+                    background-color: transparent;
+                    color: #607d8b;
+                    text-decoration: underline;
+                }
+
+                &.download {
+                    background-color: red;
+                    height: 30px;
+                    border-radius: 15px;
+                    width: 50px;
+                }
+            }
+
+            &.right {
+                text-align: right;
+            }
+
+            border-bottom: 1px solid rgb(187, 184, 184);
+        }
+
+        &.canvas {
+            padding: 10px;
+            text-align: center;
+
+            &>canvas {
+                outline: 1px solid rgb(244, 162, 162);
+                background-image: url('./mosaic.png');
+                background-size: 10px auto;
+            }
+        }
+    }
+
+}

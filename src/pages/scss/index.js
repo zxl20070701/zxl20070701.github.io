@@ -4,22 +4,24 @@ import './index.scss';
 import scssLoader from '../../../bin/loader/scss';
 import editorRender from '../../tool/editor/index';
 
-var sourceEditor, targetEditor;
 export default function (obj) {
+    var sourceEditor, targetEditor;
+
     return {
+        name: "scss",
         render: template,
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "scss转css";
+        beforeFocus: function () {
+            document.getElementsByTagName('title')[0].innerText = "scss转css" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './scss.png');
         },
         mounted: function () {
             sourceEditor = new editorRender({
-                el: document.getElementById('source-id'),
+                el: this._refs.source.value,
                 shader: ['css']
             });
 
             targetEditor = new editorRender({
-                el: document.getElementById('target-id'),
+                el: this._refs.target.value,
                 shader: ['css'],
                 readonly: true
             });

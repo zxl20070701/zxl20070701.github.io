@@ -64,6 +64,8 @@ export default function (el, doback) {
             // 解除对画布大小改变的监听
             observer.disconnect();
 
+        } else {
+            window.removeEventListener('resize', doit);
         }
     };
 

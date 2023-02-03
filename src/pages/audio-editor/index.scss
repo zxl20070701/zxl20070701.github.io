@@ -1,176 +1,204 @@
-[page-view] {
-    display: flex;
-    width: calc(100vw - 160px);
-    margin: auto;
-    background-color: rgb(242 242 242);
-    border: 1px solid #d8d8d8;
+[page-view='audio-editor'] {
+
+    left: 80px;
+    top: 20px;
     font-size: 12px;
     overflow: hidden;
-    height: 100vh;
+
+    &[focus="no"] {
+        &>header {
+            background-color: #e8eaed;
+        }
+    }
+
+    &>header {
+        text-align: left;
+        line-height: 40px;
+        box-shadow: rgb(213, 221, 225) 0px 4px 6px;
+        background-color: #dee1e7;
+
+        &>h2 {
+            color: #000000;
+            font-size: 14px;
+            padding-left: 35px;
+            background-image: url("./audio-editor.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            font-family: cursive;
+            display: inline-block;
+        }
+    }
 
     &>div {
+        display: flex;
+        width: calc(100vw - 160px);
+        height: calc(100vh - 110px);
 
-        flex-grow: 1;
-        height: 100%;
+        &>div {
 
-        &.source-view {
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: 200px;
-            border-right: 1px solid #d8d8d8;
-            padding: 10px;
+            flex-grow: 1;
+            height: 100%;
 
-            &>button {
-                width: 60px;
-                line-height: 20px;
-                background-color: #939393;
-                color: white;
-                border: none;
-                outline: none;
-                cursor: pointer;
-            }
+            &.source-view {
+                flex-grow: 0;
+                flex-shrink: 0;
+                flex-basis: 200px;
+                border-right: 1px solid #d8d8d8;
+                padding: 10px;
 
-            &>ul {
-                margin: 10px 0;
-
-                &>li {
+                &>button {
+                    width: 60px;
                     line-height: 20px;
-                    padding: 5px 0;
+                    background-color: #939393;
+                    color: white;
+                    border: none;
+                    outline: none;
+                    cursor: pointer;
+                }
 
-                    &:not(:last-child) {
-                        border-bottom: 1px solid rgb(191, 190, 190);
-                    }
+                &>ul {
+                    margin: 10px 0;
 
-                    &>i {
-                        display: inline-block;
-                        width: 24px;
-                        height: 24px;
-                        background-image: url('./audio-icon.png');
-                        background-repeat: no-repeat;
-                        background-position: center center;
-                        background-size: auto 100%;
-                        vertical-align: top;
-                    }
+                    &>li {
+                        line-height: 20px;
+                        padding: 5px 0;
 
-                    &>span {
-                        white-space: nowrap;
-                        width: 90px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        display: inline-block;
-                    }
-
-                    &>button {
-                        background-repeat: no-repeat;
-                        background-position: center center;
-                        background-size: auto 100%;
-                        width: 24px;
-                        height: 24px;
-                        float: right;
-                        border: none;
-                        outline: none;
-                        cursor: pointer;
-                        background-color: transparent;
-
-                        &.play {
-                            background-image: url('./start.png');
+                        &:not(:last-child) {
+                            border-bottom: 1px solid rgb(191, 190, 190);
                         }
 
-                        &.add {
-                            background-image: url('./add.png');
+                        &>i {
+                            display: inline-block;
+                            width: 24px;
+                            height: 24px;
+                            background-image: url('./audio-icon.png');
+                            background-repeat: no-repeat;
+                            background-position: center center;
+                            background-size: auto 100%;
+                            vertical-align: top;
+                        }
+
+                        &>span {
+                            white-space: nowrap;
+                            width: 90px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            display: inline-block;
+                        }
+
+                        &>button {
+                            background-repeat: no-repeat;
+                            background-position: center center;
+                            background-size: auto 100%;
+                            width: 24px;
+                            height: 24px;
+                            float: right;
+                            border: none;
+                            outline: none;
+                            cursor: pointer;
+                            background-color: transparent;
+
+                            &.play {
+                                background-image: url('./start.png');
+                            }
+
+                            &.add {
+                                background-image: url('./add.png');
+                            }
                         }
                     }
                 }
             }
-        }
 
-        &.mulp-view {
-            display: flex;
-            flex-direction: column;
-            position: relative;
+            &.mulp-view {
+                display: flex;
+                flex-direction: column;
+                position: relative;
 
-            &>div {
-                &.play-view {
-                    flex-basis: 100px;
-                    line-height: 100px;
-                    border-bottom: 1px solid #d8d8d8;
+                &>div {
+                    &.play-view {
+                        flex-basis: 100px;
+                        line-height: 100px;
+                        background-color: #f1f3f4;
 
-                    &>audio {
-                        width: 100%;
-                        vertical-align: middle;
+                        &>audio {
+                            width: 100%;
+                            vertical-align: middle;
+                        }
                     }
-                }
 
-                &.editor-view {
-                    flex-grow: 1;
-                    background-color: #e4e4e4;
-                    overflow: auto;
+                    &.editor-view {
+                        flex-grow: 1;
+                        background-color: #e4e4e4;
+                        overflow: auto;
 
-                    &>div {
-                        &.item {
-                            background-color: #f2f2f2;
-                            padding: 10px;
-                            margin: 10px;
-                            overflow: auto;
-                            width: calc(100vw - 380px);
+                        &>div {
+                            &.item {
+                                background-color: #f2f2f2;
+                                padding: 10px;
+                                margin: 10px;
+                                overflow: auto;
+                                width: calc(100vw - 380px);
 
-                            &>div {
-                                &.title {
-                                    font-size: 12px;
-                                    padding-left: 10px;
-                                }
-
-                                &.btns {
-                                    &>button {
-                                        height: 24px;
-                                        width: 50px;
-                                        margin: 8px 0 0 8px;
-                                        cursor: pointer;
-                                        background-color: #9e9e9e;
-                                        color: white;
-                                        border: none;
+                                &>div {
+                                    &.title {
                                         font-size: 12px;
+                                        padding-left: 10px;
                                     }
-                                }
 
-                                &.content {
-                                    padding: 5px 10px;
-
-                                    &>span {
-                                        display: inline-block;
-                                        margin-left: 1px;
-                                        background-color: #8bc34a;
-                                        height: 5px;
+                                    &.btns {
+                                        &>button {
+                                            height: 24px;
+                                            width: 50px;
+                                            margin: 8px 0 0 8px;
+                                            cursor: pointer;
+                                            background-color: #9e9e9e;
+                                            color: white;
+                                            border: none;
+                                            font-size: 12px;
+                                        }
                                     }
-                                }
 
-                                &.repeat {
-                                    padding: 0 10px;
+                                    &.content {
+                                        padding: 5px 10px;
 
-                                    &>input {
-                                        width: 50px;
-                                        outline: none;
-                                        padding: 2px 5px;
+                                        &>span {
+                                            display: inline-block;
+                                            margin-left: 1px;
+                                            background-color: #8bc34a;
+                                            height: 5px;
+                                        }
+                                    }
+
+                                    &.repeat {
+                                        padding: 0 10px;
+
+                                        &>input {
+                                            width: 50px;
+                                            outline: none;
+                                            padding: 2px 5px;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                &.btns-view {
-                    flex-basis: 40px;
-                    background-color: #f2f2f2;
-                    border-top: 1px solid #d8d8d8;
+                    &.btns-view {
+                        flex-basis: 40px;
+                        background-color: #f2f2f2;
+                        border-top: 1px solid #d8d8d8;
 
-                    &>button {
-                        height: 24px;
-                        width: 70px;
-                        margin: 8px 0 0 8px;
-                        cursor: pointer;
-                        background: #2196f3;
-                        color: white;
-                        border: none;
+                        &>button {
+                            height: 24px;
+                            width: 70px;
+                            margin: 8px 0 0 8px;
+                            cursor: pointer;
+                            background: #2196f3;
+                            color: white;
+                            border: none;
+                        }
                     }
                 }
             }

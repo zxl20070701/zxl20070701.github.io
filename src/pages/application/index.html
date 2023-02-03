@@ -1,0 +1,61 @@
+<div class="left">
+    <header ui-dragdrop:desktop>
+        应用中心
+    </header>
+</div>
+<div class="right">
+    <header ui-dragdrop:desktop>
+        <input type="text" placeholder="搜索功能维护中...">
+        <div class="win-btns">
+            <button class="min" ui-on:click.stop="$minView">最小化</button>
+            <button class="close" ui-on:click.stop="$closeView">关闭</button>
+        </div>
+    </header>
+    <div class="content">
+        <div tag="model-editor" ui-on:dblclick="openApp" ui-right-menu:app>
+            3D模型编辑器
+        </div>
+        <div tag="code-editor" ui-on:dblclick="openApp" ui-right-menu:app>
+            代码编辑器
+        </div>
+        <div tag="format-json" ui-on:dblclick="openApp" ui-right-menu:app>
+            格式化JSON字符串
+        </div>
+        <div tag="geo-json" ui-on:dblclick="openApp" ui-right-menu:app>
+            geoJSON查看器
+        </div>
+        <div tag="browser" ui-on:dblclick="openApp" ui-right-menu:app>
+            Internet Explorer
+        </div>
+        <div tag="scss" ui-on:dblclick="openApp" ui-right-menu:app>
+            scss转css
+        </div>
+        <div tag="image-editor" ui-on:dblclick="openApp" ui-right-menu:app>
+            图片编辑器
+        </div>
+        <div tag="regexper-visualization" ui-on:dblclick="openApp" ui-right-menu:app>
+            正则表达式可视化
+        </div>
+        <div tag="api" ui-on:dblclick="openDialog" ui-right-menu:app="dialog">
+            开发文档
+        </div>
+        <div tag="snake-eating" ui-on:dblclick="openApp" ui-right-menu:app>
+            贪吃蛇
+        </div>
+        <div tag="audio-editor" ui-on:dblclick="openApp" ui-right-menu:app>
+            音频编辑器
+        </div>
+        <div tag="debugger" ui-on:dblclick="openDialog" ui-right-menu:app="dialog">
+            调试工具
+        </div>
+        <div tag="recorder-screen" ui-on:dblclick="openApp" ui-right-menu:app>
+            录屏软件
+        </div>
+        <div tag="computer" ui-on:dblclick="openApp" ui-right-menu:app>
+            资源管理器
+        </div>
+        <div tag="snipping-tool" ui-on:dblclick="openDialog" ui-right-menu:app="dialog">
+            截图工具
+        </div>
+    </div>
+</div>

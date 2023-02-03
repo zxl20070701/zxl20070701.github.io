@@ -8,10 +8,14 @@ import imageToCanvas from '../../tool/imageToCanvas';
 import canvasRender from '../../tool/canvas/index';
 import getKeyCode from '../../tool/keyCode';
 import bind from '../../tool/xhtml/bind';
+import remove from '../../tool/xhtml/remove';
+import isString from '../../tool/type/isString';
 
-var wins = [], painter;
 export default function (obj) {
+    var wins = {}, painter, layerRootEl;
+
     return {
+        name: "image-editor",
         render: template,
         data: {
 
@@ -45,13 +49,13 @@ export default function (obj) {
 
             // 文字
         },
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "图片编辑器";
+        beforeFocus: function () {
+            document.getElementsByTagName('title')[0].innerText = "图片编辑器" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './image-editor.png');
         },
         mounted: function () {
             var _this = this;
-            painter = canvasRender(document.getElementById('image-root'), this.width, this.height);
+            painter = canvasRender(this._refs.mycanvas.value, this.width, this.height);
 
             Promise.all([
                 this.$openWin(lazyWins.layer),
@@ -99,7 +103,35 @@ export default function (obj) {
             });
 
         },
+        beforeDestory: function () {
+
+            // 销毁所有的win窗口
+            for (var winName in wins) {
+                remove(wins[winName].el);
+            }
+            this.isMenuOpen = {};
+            wins = {};
+        },
+        beforeUnfocus: function () {
+            // 关闭所有的win窗口
+            for (var winName in wins) {
+                if (this.isMenuOpen[winName]) {
+                    wins[winName].el.style.display = "none";
+                }
+            }
+        },
+        focused: function () {
+            // 显示本来应该打开的窗口
+            for (var winName in wins) {
+                if (this.isMenuOpen[winName]) {
+                    wins[winName].el.style.display = "";
+                }
+            }
+        },
         methods: {
+            triggleBtn: function (event, target) {
+                this._refs[target.getAttribute('tag')].value.click();
+            },
 
             // 新窗口初始化处理
             initWin: function (name, data) {
@@ -112,11 +144,15 @@ export default function (obj) {
                     _this[key] = value;
                 }
 
+                if (name == 'layer') {
+                    layerRootEl = data.instance._refs.layerList.value;
+                }
+
             },
 
             // 窗口控制
-            toggleWin: function (event) {
-                var winName = event.target.getAttribute('tag');
+            toggleWin: function (event, target) {
+                var winName = isString(event) ? event : target.getAttribute('tag');
 
                 // 如果已经加载，切换
                 if (wins[winName]) {
@@ -170,7 +206,7 @@ export default function (obj) {
                     // 先调整画布
                     _this.width = data.width;
                     _this.height = data.height;
-                    painter = canvasRender(document.getElementById('image-root'), _this.width, _this.height);
+                    painter = canvasRender(_this._refs.mycanvas.value, _this.width, _this.height);
 
                     // 一个个图层调整好
                     (function doit(layerIndex) {
@@ -210,7 +246,7 @@ export default function (obj) {
                     // 先调整画布
                     _this.width = data.width;
                     _this.height = data.height;
-                    painter = canvasRender(document.getElementById('image-root'), _this.width, _this.height);
+                    painter = canvasRender(_this._refs.mycanvas.value, _this.width, _this.height);
 
                     // 一个个图层调整好
                     (function doit(layerIndex) {
@@ -238,7 +274,6 @@ export default function (obj) {
 
             // 追加新图层
             appendLayer: function (newLayerCanvas, name) {
-                var layerRootEl = document.getElementById('layer-list');
 
                 var newLayer = {
                     canvas: newLayerCanvas
@@ -279,9 +314,9 @@ export default function (obj) {
             },
 
             // 导入或打开图片
-            openImage: function (event) {
+            openImage: function (event, target) {
 
-                var file = event.target.files[0];
+                var file = target.files[0];
                 var reader = new FileReader();
 
                 var _this = this;
@@ -289,14 +324,13 @@ export default function (obj) {
                     var image = new Image();
 
                     image.onload = function () {
-                        var layerRootEl = document.getElementById('layer-list');
 
                         var newLayerCanvas;
 
                         // 置入
                         // 置入就是在原来的基础上新增内容
                         // 然后会居中展开，不会修改画布大小
-                        if (event.target.getAttribute('flag') == 'append') {
+                        if (target.getAttribute('flag') == 'append') {
 
                             var _left = (_this.width - image.width) * 0.5;
                             var _top = (_this.height - image.height) * 0.5;
@@ -318,7 +352,7 @@ export default function (obj) {
                             _this.height = image.height;
 
                             // 画笔和内容
-                            painter = canvasRender(document.getElementById('image-root'), _this.width, _this.height);
+                            painter = canvasRender(_this._refs.mycanvas.value, _this.width, _this.height);
                             painter.clearRect(0, 0, image.width, image.height);
 
                         }
@@ -339,8 +373,9 @@ export default function (obj) {
                 }).then(function (data) {
 
                     var btn = document.createElement('a');
-                    btn.href = painter.toDataURL();
-                    btn.download = data.name + ".png";
+                    btn.href = painter.toDataURL(data.format[0]);
+
+                    btn.download = data.name + "." + data.format[1];
                     btn.click();
 
                 });

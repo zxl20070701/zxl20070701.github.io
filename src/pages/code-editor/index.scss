@@ -1,21 +1,26 @@
-[page-view] {
+[page-view="code-editor"] {
     width: calc(100vw - 160px);
-    height: calc(100vh - 40px);
-    margin-left: 80px;
-    margin-top: 20px;
-    outline: 1px solid #e9e9e9;
+    height: calc(100vh - 70px);
+    left: 80px;
+    top: 20px;
     border-radius: 5px;
 
     /* 滚动条 */
     ::-webkit-scrollbar {
-        width: 0px;
-        height: 0px;
+        width: 0;
+        height: 0;
+    }
+
+    &[focus="no"] {
+        &>header {
+            background-color: #e6e2ec;
+        }
     }
 
     &>header {
         height: 30px;
         line-height: 30px;
-        background-color: #e6e2ec;
+        background-color: #d1c8df;
         background-image: url('./code-editor.png');
         background-size: auto 90%;
         padding-left: 40px;
@@ -252,12 +257,28 @@
                                         background-image: url('./file-icons/HTML.png');
                                     }
 
+                                    &[type='vue'] {
+                                        background-image: url('./file-icons/Vue.png');
+                                    }
+
                                     &[type='css'] {
                                         background-image: url('./file-icons/CSS.png');
                                     }
 
                                     &[type='js'] {
                                         background-image: url('./file-icons/JavaScript.png');
+                                    }
+
+                                    &[type='ts'] {
+                                        background-image: url('./file-icons/TypeScript.png');
+                                    }
+
+                                    &[type='jsx'] {
+                                        background-image: url('./file-icons/React.png');
+                                    }
+
+                                    &[type='tsx'] {
+                                        background-image: url('./file-icons/React.png');
                                     }
 
                                     &[type='json'] {
@@ -371,14 +392,14 @@
                                 overflow: auto;
                                 position: absolute;
                                 width: 100%;
-                                height: calc(100vh - 134px);
+                                height: calc(100vh - 164px);
 
                                 &.welcome {
                                     display: none;
                                     background: #f5f5f5;
                                     top: -34px;
-                                    height: calc(100vh - 100px);
-                                    line-height: calc(100vh - 100px);
+                                    height: calc(100vh - 130px);
+                                    line-height: calc(100vh - 130px);
                                     text-align: center;
 
                                     &:first-child:last-child {

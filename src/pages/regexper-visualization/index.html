@@ -1,16 +1,26 @@
-<div class="help-hidden" id='help-hidden'></div>
+<header ui-dragdrop:desktop>
+    <h2>
+        正则表达式可视化
+    </h2>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+</header>
+
+<div class="help-hidden" ref='help'></div>
 
 <input type="text" ui-model="expressVal">
 <button ui-on:click="doDisplay">显示</button>
 
 <div class="isString">
-    <input type="radio" name='isString' id="is-string-yes" ui-on:click='doIsString' tag='yes' />
+    <input type="radio" ui-bind:name='"isString"+uniqueHash' ref="is-string-yes" ui-on:click='doIsString' tag='yes' />
     是字符串
     <span></span>
-    <input type="radio" name='isString' id="is-string-no" ui-on:click='doIsString' tag='no' />
+    <input type="radio" ui-bind:name='"isString"+uniqueHash' ref="is-string-no" ui-on:click='doIsString' tag='no' />
     不是字符串
 </div>
 
 <hr />
 
-<canvas>非常抱歉，您的浏览器不支持canvas!</canvas>
+<canvas ref="mycanvas">非常抱歉，您的浏览器不支持canvas!</canvas>

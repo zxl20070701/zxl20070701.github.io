@@ -6,16 +6,19 @@ import drawImage from './drawImage/index';
 import canvasRender from '../../tool/canvas/index';
 import urlFormat from '../../tool/urlFormat';
 
-var urlObj = urlFormat();
 export default function (obj) {
+    var urlObj = urlFormat();
+
     return {
+        name: "regexper-visualization",
         render: template,
         data: {
             expressVal: obj.ref(decodeURIComponent(urlObj.params.express || "") || "\\w{1,5}[a-e0-8]|4(534)5(35{3}|d)d(?=123)\\1"),
-            isString: obj.ref(urlObj.params.isString || "no")
+            isString: obj.ref(urlObj.params.isString || "no"),
+            uniqueHash: new Date().valueOf()
         },
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "正则表达式可视化";
+        beforeFocus: function () {
+            document.getElementsByTagName('title')[0].innerText = "正则表达式可视化" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './regexper-visualization.png');
         },
         mounted: function () {
@@ -23,7 +26,7 @@ export default function (obj) {
             // 调用显示
             this.doDisplay("load");
 
-            document.getElementById('is-string-' + this.isString).setAttribute('checked', 'checked');
+            this._refs['is-string-' + this.isString].value.setAttribute('checked', 'checked');
 
         },
         methods: {
@@ -39,10 +42,10 @@ export default function (obj) {
                 }
 
                 // 求解绘制需要的信息
-                var imageData = regexpToJson(this.expressVal, this.isString == 'yes');
+                var imageData = regexpToJson(this.expressVal, this.isString == 'yes', this._refs.help.value);
 
                 // 设置画布大小
-                var canvas = document.getElementsByTagName('canvas')[0];
+                var canvas = this._refs.mycanvas.value;
                 canvas.setAttribute('width', imageData.width + 60);
                 canvas.setAttribute('height', imageData.height + 20);
 

@@ -1,0 +1,129 @@
+[page-view="browser"] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 70px);
+    left: 80px;
+    top: 20px;
+
+    &[focus="no"] {
+        &>div {
+            &.top {
+                background-color: rgba(158, 196, 233, 0.85);
+            }
+        }
+    }
+
+    &>header {
+        height: 30px;
+        background-color: transparent;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    &>div {
+        &.top {
+            background-color: rgba(183, 218, 253, 0.85);
+            border-bottom: 1px solid gray;
+
+            &>div {
+                &.content {
+                    height: 55px;
+
+                    &>* {
+                        vertical-align: bottom;
+                    }
+
+                    &>span {
+                        display: inline-block;
+
+                        &.logo {
+                            width: 50px;
+                            height: 55px;
+                            background-image: url("./browser.png");
+                            background-repeat: no-repeat;
+                            background-position: center bottom;
+                            background-size: 90% auto;
+                        }
+                    }
+
+                    &>input {
+                        width: calc(100% - 100px);
+                        outline: none;
+                        border: 1px solid rgb(208, 207, 207);
+                        border-radius: 5px;
+                        height: 24px;
+                        padding: 0 5px;
+                    }
+
+                    &>button {
+                        height: 24px;
+                        width: 40px;
+                        background-image: url("./refresh.png");
+                        background-repeat: no-repeat;
+                        background-position: center center;
+                        background-size: auto 20px;
+                        outline: none;
+                        border: none;
+                        background-color: transparent;
+                        font-size: 0;
+                    }
+                }
+
+                &.navs {
+                    padding-top: 10px;
+                    height: 40px;
+                    display: flex;
+
+                    &>span {
+                        line-height: 30px;
+                        background-image: radial-gradient(rgba(255, 255, 255, 0), rgba(236, 230, 230, 0.489));
+                        font-size: 12px;
+                        flex-basis: 200px;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        padding-left: 10px;
+                        padding-right: 20px;
+                        position: relative;
+                        border: 1px solid rgb(197, 195, 195);
+                        margin-left: 2px;
+                        cursor: pointer;
+
+                        &[active='yes'] {
+                            background-image: radial-gradient(white, white);
+                        }
+
+                        &>i {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            width: 20px;
+                            line-height: 30px;
+                            text-align: center;
+                            font-style: normal;
+                        }
+                    }
+
+                    &>button {
+
+                        border: none;
+                        outline: none;
+                        font-size: 14px;
+                        width: 30px;
+                        height: 20px;
+                        vertical-align: top;
+                        margin-top: 5px;
+                        background-color: transparent;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+
+    &>iframe {
+        width: 100%;
+        height: calc(100% - 95px);
+    }
+}

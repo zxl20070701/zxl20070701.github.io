@@ -37,6 +37,7 @@ window.__pkg__getLazyBundle = function (fileName, bundleName) {
         var script = document.createElement('script');
 
         // 设置属性
+        script.setAttribute("async", "async");
         script.src = fileName;
 
         // 追加到页面

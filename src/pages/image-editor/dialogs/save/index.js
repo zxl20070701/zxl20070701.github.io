@@ -24,8 +24,11 @@ export default function (obj, props) {
 
             // 确定
             doSubmit: function () {
+                var formatEl = this._refs.format.value;
+
                 this.$closeDialog({
-                    name: this.name
+                    name: this.name,
+                    format: [formatEl.value, formatEl.value.replace("image\/", "")]
                 });
             },
 

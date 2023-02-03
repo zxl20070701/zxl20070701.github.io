@@ -1,0 +1,28 @@
+{
+    "short_name": "toolbox",
+    "name": "实用工具",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "./pwa/logo48.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "./pwa/logo144.png",
+            "type": "image/png",
+            "sizes": "144x144"
+        },
+        {
+            "sizes": "192x192",
+            "src": "./pwa/logo192.png",
+            "type": "image/png"
+        },
+        {
+            "sizes": "512x512",
+            "src": "./pwa/logo512.png",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "./index.html"
+}

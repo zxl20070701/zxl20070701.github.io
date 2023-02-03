@@ -29,8 +29,8 @@ export default function (obj, props) {
                 }
             },
 
-            doChangeType: function (event) {
-                this.changeType = event.target.getAttribute('val');
+            doChangeType: function (event, target) {
+                this.changeType = target.getAttribute('val');
             },
 
             // 确定

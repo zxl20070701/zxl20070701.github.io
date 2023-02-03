@@ -1,116 +1,38 @@
 body {
     background-color: #fafafa;
-
-    &>a {
-        &.laboratory {
-            background-image: url('./laboratory.png');
-            position: fixed;
-            right: 5px;
-            top: 400px;
-            width: 100px;
-            height: 100px;
-            cursor: pointer;
-            z-index: 200;
-            background-size: 100% auto;
-        }
-    }
+    background-image: url("./desktop.jpeg");
+    overflow: hidden;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 
     &>div {
-        &.debugger {
-            background-image: url('./debugger.png');
-            position: fixed;
-            left: 5px;
-            bottom: 5px;
-            width: 70px;
-            height: 70px;
-            cursor: pointer;
-            z-index: 200;
-        }
 
-        &.api {
-            position: fixed;
-            left: 0;
-            bottom: 200px;
-            cursor: pointer;
-            z-index: 200;
-            background-color: #eb6736;
-            padding: 5px 5px 5px 2px;
-            color: white;
-            border-radius: 0 5px 5px 0;
-            font-size: 12px;
-        }
-
-        &.quick-link {
-            position: fixed;
-            top: 120px;
-            background-color: white;
-            box-shadow: 0 0 6px 0px #d6cdcd;
-            padding: 5px;
-            width: 60px;
-            z-index: 200;
-
-            &.left {
-                border-radius: 0 10px 10px 0;
-                left: 0;
-            }
-
-            &.right {
-                border-radius: 10px 0 0 10px;
-                right: 0;
-            }
-
-            &>a {
-                display: block;
-                font-size: 12px;
-                height: 80px;
-                width: 50px;
-                background-size: 100% auto;
-                background-position: center top;
-                background-repeat: no-repeat;
-                padding-top: 50px;
-                line-height: 30px;
-                text-align: center;
-                color: black;
-
-                &.github {
-                    background-image: url('./code-source.jpg');
-                }
-
-                &.home {
-                    background-image: url('./logo.png');
-                }
-
-                &.notebook {
-                    background-image: url('./notebook.png');
-                }
-            }
-        }
-
-        &#win-root {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 0;
-            height: 0;
-            z-index: 5;
-        }
-
+        &#view-root,
+        &#win-root,
         &#dialog-root {
             position: fixed;
             left: 0;
             top: 0;
             width: 0;
             height: 0;
+        }
+
+        &#win-root {
+            z-index: 5;
+        }
+
+        &#dialog-root {
             z-index: 10;
 
             &>div {
                 &.mask {
-                    position: fixed;
                     left: 0;
                     top: 0;
                     width: 100vw;
                     height: 100vh;
-                    background-color: #7b787840;
+                    background-color: rgba(0, 0, 0, 0.5);
                     display: none;
 
                     &:not(:last-child) {
@@ -125,6 +47,172 @@ body {
                         z-index: 1;
                     }
                 }
+            }
+        }
+    }
+
+    // 窗口按钮
+    .win-btns {
+        position: absolute;
+        right: 20px;
+        top: -0.5px;
+        font-size: 0;
+
+        &>button {
+            font-size: 0;
+            height: 24px;
+            vertical-align: top;
+            outline: none;
+            border: none;
+            background-repeat: no-repeat;
+            background-position-y: center;
+            background-size: auto 100%;
+            cursor: pointer;
+            margin: 0 !important;
+            background-color: transparent !important;
+
+            &.min {
+                background-image: url("./min-btn.png");
+                width: 36px;
+            }
+
+            &.close {
+                background-image: url("./close-btn.png");
+                width: 59px;
+            }
+        }
+    }
+
+    // 应用logo
+
+    [tag="regexper-visualization"] {
+        background-image: url('./regexper-visualization.png');
+    }
+
+    [tag="audio-editor"] {
+        background-image: url('./audio-editor.png');
+    }
+
+    [tag="format-json"] {
+        background-image: url('./format-json.png');
+    }
+
+    [tag="image-editor"] {
+        background-image: url('./image-editor.png');
+    }
+
+    [tag="model-editor"] {
+        background-image: url('./model-editor.png');
+    }
+
+    [tag="snake-eating"] {
+        background-image: url('./snake-eating.png');
+    }
+
+    [tag="scss"] {
+        background-image: url('./scss.png');
+    }
+
+    [tag="code-editor"] {
+        background-image: url('./code-editor.png');
+    }
+
+    [tag="recorder-screen"] {
+        background-image: url('./recorder-screen.png');
+    }
+
+    [tag="api"] {
+        background-image: url('./api.png');
+    }
+
+    [tag="debugger"] {
+        background-image: url('./debugger.png');
+    }
+
+    [tag="browser"] {
+        background-image: url('./browser.png');
+    }
+
+    [tag="geo-json"] {
+        background-image: url('./geoJSON.png');
+    }
+
+    [tag="computer"] {
+        background-image: url('./computer.png');
+    }
+
+    [tag="snipping-tool"] {
+        background-image: url('./snipping.png');
+    }
+
+    [tag="application"] {
+        background-image: url('./application.png');
+    }
+}
+
+[win-view],
+[dialog-view],
+[page-view] {
+    position: fixed;
+    background-color: #fafafa;
+    box-shadow: #607d8b 2px 0px 6px 1px;
+}
+
+#contextmenu-root {
+    position: fixed;
+    z-index: 10;
+
+    ul {
+        width: 220px;
+        border: 1px solid rgb(190, 189, 189);
+        background-color: rgb(241, 241, 241);
+        border-radius: 3px;
+
+        li {
+
+            &[notshow='yes'] {
+                display: none;
+            }
+
+            &.line {
+                height: 1px;
+                background-color: #d5d9db;
+                margin-left: 50px;
+            }
+
+            &.btn {
+                line-height: 2em;
+                font-size: 14px;
+                padding-left: 60px;
+                position: relative;
+                cursor: pointer;
+
+                &::before {
+                    content: " ";
+                    position: absolute;
+                    width: 50px;
+                    height: 100%;
+                    text-align: center;
+                    left: 0;
+                    top: 0;
+                    border-right: 1px solid #d5d9db;
+                    background-repeat: no-repeat;
+                    background-size: auto 70%;
+                    background-position: center center;
+                }
+
+                &:hover {
+                    outline: 1px solid rgba(207, 208, 208, 0.72);
+                    background-color: rgba(228, 252, 254, 0.538);
+                    border-radius: 3px;
+                }
+
+                // 不可用的
+                &.gray {
+                    color: #c2c2ca;
+                    cursor: not-allowed;
+                }
+
             }
         }
     }

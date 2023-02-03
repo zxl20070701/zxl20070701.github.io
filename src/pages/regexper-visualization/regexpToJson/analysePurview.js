@@ -2,7 +2,7 @@
 import specialWord from "./specialWord";
 import calcWidth from "./calcWidth";
 
-export default function (_express) {
+export default function (_express, helpEl) {
 
     var express = [];
     for (var i = 0; i < _express.length; i++) {
@@ -26,8 +26,8 @@ export default function (_express) {
             var temp1 = specialWord(express[i]);
             var temp2 = specialWord(express[i + 2]);
 
-            var width1 = calcWidth(temp1[0]) + 10;
-            var width2 = calcWidth(temp2[0]) + 10;
+            var width1 = calcWidth(temp1[0], helpEl) + 10;
+            var width2 = calcWidth(temp2[0], helpEl) + 10;
 
             purviews.push([
 
@@ -58,7 +58,7 @@ export default function (_express) {
 
             var temp1 = specialWord(express[i]);
 
-            var width1 = calcWidth(temp1[0]) + 10;
+            var width1 = calcWidth(temp1[0], helpEl) + 10;
 
             purviews.push({
                 content: temp1[0],

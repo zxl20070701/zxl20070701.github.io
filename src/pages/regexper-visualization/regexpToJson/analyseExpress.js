@@ -11,7 +11,7 @@ import calcWidth from './calcWidth';
 
 // 对表达式进行结构分析
 
-export default function (express) {
+export default function (express, helpEl) {
 
     // 生成字符串分析辅助对象
     var reader = ReadString(express);
@@ -59,7 +59,7 @@ export default function (express) {
                             max: 1,
                             min: 1,
                             height: 44,
-                            width: calcWidth(tempContentArray[_index]) + 30
+                            width: calcWidth(tempContentArray[_index], helpEl) + 30
                         });
                     }
 
@@ -92,7 +92,7 @@ export default function (express) {
                             type: temp[1],
                             max: 1,
                             min: 1,
-                            width: calcWidth(temp[0]) + 30,
+                            width: calcWidth(temp[0], helpEl) + 30,
                             height: 44
                         });
                     }
@@ -105,7 +105,7 @@ export default function (express) {
                             temp += reader.currentChar;
                             reader.readNext();
                         }
-                        temp = analysePurview(temp.replace(/^\[/, ''));
+                        temp = analysePurview(temp.replace(/^\[/, ''), helpEl);
                         subExpressArray.push({
                             content: temp[0],
                             type: "范围",
@@ -205,7 +205,7 @@ export default function (express) {
                                 max: 1,
                                 min: 1,
                                 height: 44,
-                                width: calcWidth('任意字符') + 30
+                                width: calcWidth('任意字符', helpEl) + 30
                             });
                         } else {
                             tempContent += reader.currentChar;

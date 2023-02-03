@@ -1,11 +1,19 @@
-[page-view] {
-    text-align: center;
+[page-view="recorder-screen"] {
+    left: 80px;
+    top: 10px;
+    font-size: 0;
+
+    &[focus="no"] {
+        &>header {
+            background-color: #e8eaed;
+        }
+    }
 
     &>header {
         text-align: left;
         line-height: 50px;
-        box-shadow: rgb(213 221 225) 0px 4px 6px;
-        background-color: white;
+        background-color: #ffffff;
+        border-bottom: 1px solid black;
 
         &>h2 {
             color: #49b4f1;
@@ -22,21 +30,32 @@
         &>button {
             float: right;
             height: 30px;
-            border-radius: 15px;
             padding: 0 10px;
-            border: 1px solid #ffffff;
+            border: none;
             margin-top: 10px;
-            margin-right: 20px;
             cursor: pointer;
             background-color: red;
             color: white;
+
+            &[active='no'] {
+                background-color: rgb(239, 139, 139);
+                cursor: not-allowed;
+            }
+
+            &.left-btn {
+                border-radius: 15px 0 0 15px;
+            }
+
+            &.right-btn {
+                margin-right: 200px;
+                border-radius: 0 15px 15px 0;
+            }
         }
     }
 
     &>video {
         width: calc(100vw - 160px);
-        height: calc(100vh - 70px);
+        height: calc(100vh - 105px);
         background-color: black;
-        margin-top: 10px;
     }
 }

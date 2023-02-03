@@ -10,16 +10,24 @@ export default {
             "stop": false,
 
             // 只执行一次
-            "once": false
+            "once": false,
+
+            //  回车
+            "enter": false
 
         }, i;
 
         var callback = function (event) {
 
+            if (modifier.enter) {
+                var keycode = event.keyCode || event.which;
+                if (keycode != 13) return;
+            }
+
             if (modifier.stop) event.stopPropagation();
             if (modifier.prevent) event.preventDefault();
 
-            binding.value.apply(binding.target, [event, el])
+            binding.value.apply(binding.target, [event, el]);
 
             if (modifier.once) {
                 el.removeEventListener(types[0], callback, false);

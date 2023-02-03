@@ -1,10 +1,5 @@
 export default {
 
-    // 首页
-    "home": function () {
-        return import('./home/index.js')
-    },
-
     // 正则表达式可视化
     "regexper-visualization": function () {
         return import('./regexper-visualization/index.js')
@@ -48,5 +43,25 @@ export default {
     // 录屏软件
     "recorder-screen": function () {
         return import('./recorder-screen/index.js')
+    },
+
+    // 浏览器
+    "browser": function () {
+        return import('./browser/index.js')
+    },
+
+    // geoJSON查看器
+    "geo-json": function () {
+        return import('./geo-json/index.js')
+    },
+
+    // 我的电脑
+    "computer": function () {
+        return import('./computer/index.js')
+    },
+
+    // 应用中心
+    "application": function () {
+        return import('./application/index.js')
     }
 };

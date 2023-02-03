@@ -4,7 +4,7 @@ export default function (name) {
     var typeName = name.split('.').pop().toLowerCase();
 
     // 特殊类型
-    if (['html', 'css', 'js', 'json', 'scss', 'sass'].indexOf(typeName) > -1) {
+    if (['html', 'css', 'js', 'jsx', 'ts', 'tsx', 'json', 'scss', 'sass', 'vue'].indexOf(typeName) > -1) {
         return typeName;
     }
 

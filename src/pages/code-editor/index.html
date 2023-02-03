@@ -1,4 +1,4 @@
-<header>
+<header ui-dragdrop:desktop>
     <ul>
         <li>
             文件
@@ -33,6 +33,10 @@
             </ul>
         </li>
     </ul>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
 </header>
 <div class="content">
     <div class="nav">
@@ -44,7 +48,7 @@
     <div class="platform">
 
         <!-- 文件 -->
-        <div class="folder" ui-bind:active="nav=='folder'?'yes':'no'" id="folder-root">
+        <div class="folder" ui-bind:active="nav=='folder'?'yes':'no'" ref="folder">
             <p class="noFolder">
             <p>
                 还没有打开任何文件夹或项目。
@@ -71,8 +75,8 @@
 
     </div>
     <div class="view">
-        <ul class="nav" id='nav'></ul>
-        <ul class="editor" id='editor'>
+        <ul class="nav" ref='nav'></ul>
+        <ul class="editor" ref='editor'>
             <li class='welcome'>
                 <div>
                     <p class="logo"></p>

@@ -8,19 +8,24 @@ import viewHandler from '../../tool/viewHandler';
 
 import { mainView, directiveView } from './initModelValue';
 
-// 记录着当前的模型数据
-var modelValue = mainView();
-
 // 着色器
 import vertexShader from './shader-vertex.c';
 import fragmentShader from './shader-fragment.c';
 
-var doDraw;
 export default function (obj) {
+
+    // 记录着当前的模型数据
+    var modelValue = mainView();
+
+    var doDraw, stopDoResize;
+
+    var isFocus = false;
+
     return {
+        name: "model-editor",
         render: template,
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "3D模型编辑器";
+        beforeFocus: function () {
+            document.getElementsByTagName('title')[0].innerText = "3D模型编辑器" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './model-editor.png');
         },
         data: {
@@ -31,12 +36,12 @@ export default function (obj) {
 
             // 启动画布监听
             var _this = this;
-            var el = document.getElementById('main-view');
+            var el = this._refs.mainViewRoot.value;
 
             // 绘制刻度尺的方法
             var drawAxis = this.renderAxisView();
 
-            doResize(el, function () {
+            stopDoResize = doResize(el, function () {
                 _this.width = el.clientWidth;
                 _this.height = el.clientHeight;
 
@@ -46,7 +51,26 @@ export default function (obj) {
 
             });
         },
+        beforeDestory: function () {
+
+            // 取消对画布大小改变的监听
+            if (stopDoResize) stopDoResize();
+
+        },
+
+        beforeUnfocus: function () {
+            isFocus = false;
+        },
+
+        focused: function () {
+            isFocus = true;
+        },
+
         methods: {
+
+            triggleFile: function () {
+                this._refs.file.value.click();
+            },
 
             // 导入本地文件
             inputLocalFile: function (event) {
@@ -70,7 +94,7 @@ export default function (obj) {
                 var rateScale = 1.4;
 
                 // 创建3d对象
-                var webgl = webglRender(document.getElementById('main-view-canvas'));
+                var webgl = webglRender(this._refs.mainView.value);
                 webgl.updateScale(rateScale);
 
                 // 启用着色器
@@ -138,6 +162,7 @@ export default function (obj) {
                 // 每次调整的幅度
                 var deg = 0.1;
                 viewHandler(function (data) {
+                    if (!isFocus) return;
 
                     /*
                      * 修改相机
@@ -175,7 +200,7 @@ export default function (obj) {
 
             // 绘制刻度尺图标
             renderAxisView: function () {
-                var webgl = webglRender(document.getElementById('directive-view-canvas'));
+                var webgl = webglRender(this._refs.directiveView.value);
                 webgl.shader(vertexShader, fragmentShader);
                 var buffer = webgl.buffer();
                 var painter = webgl.painter().openDeep();

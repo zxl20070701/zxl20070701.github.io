@@ -1,0 +1,30 @@
+<div ui-dragdrop>
+    <div class="logo"></div>
+    <header>
+        <span ui-bind="project.name"></span>
+        <div>(版本 <span ui-bind="project.version"></span>)</div>
+    </header>
+    <div class="tips">
+        温馨提示：我们会根据实际情况升级维护，可能会删除或改名已经存在的内容。
+    </div>
+    <div class="current-tips">
+        由于时间问题，部分功能处于完善中，敬请理解
+    </div>
+    <div class="content">
+        <div>
+            <h2>介绍</h2>
+            ：本项目内置自定义的小型打包工具和前端框架，完全基于原生HTML、CSS和JavaScript开发。
+        </div>
+        <div>
+            <h2>初衷</h2>
+            ：致力于尝试各种前端基础技术的探索和积累。
+        </div>
+        <div>
+            欢迎任何人加入我们！
+        </div>
+    </div>
+    <div class="btn-list">
+        <a href="javascript:void(0)" ui-on:click="$closeDialog">关闭</a>
+        <a ui-bind:href="project.repository" target="_blank">访问源码</a>
+    </div>
+</div>

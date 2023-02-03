@@ -1,0 +1,20 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        截图工具
+    </h2>
+    <div class="win-btns">
+        <button class="close" ui-on:click.stop="$closeDialog">关闭</button>
+    </div>
+
+</header>
+<div class="btns">
+    <button ui-on:click="snippingWebsite" title="点击我可以截取本网站内的内容">本系统截图</button>
+    <button ui-on:click="snippingComputer" title="点击我可以截取电脑（真机）屏幕内容">真机截图</button>
+</div>
+<div class="canvas">
+    <canvas ref="mycanvas"></canvas>
+</div>
+<div class="btns right">
+    <button class="link" ui-on:click="goImageEditor">导入图片编辑器进一步编辑？</button>
+    <button class="download" ui-on:click="download">下载</button>
+</div>

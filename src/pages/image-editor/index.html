@@ -1,13 +1,13 @@
 <div class="no-view">
 
     <!-- 选择图片 -->
-    <input type="file" id="img-file1" flag="import" ui-on:change="openImage" accept="image/*" />
-    <input type="file" id="img-file2" flag="append" ui-on:change="openImage" accept="image/*" />
+    <input type="file" ref="imgFile1" flag="import" ui-on:change="openImage" accept="image/*" />
+    <input type="file" ref="imgFile2" flag="append" ui-on:change="openImage" accept="image/*" />
 
 </div>
 
 <!-- 菜单 -->
-<div class="menu">
+<div class="menu" ui-dragdrop:desktop>
     <h2>图片编辑器</h2>
     <ul>
         <li>
@@ -16,7 +16,7 @@
             </label>
             <ul>
                 <li>
-                    <label for="img-file1">
+                    <label tag="imgFile1" ui-on:click="triggleBtn">
                         打开
                     </label>
                 </li>
@@ -26,7 +26,7 @@
                     </label>
                 </li>
                 <li>
-                    <label for="img-file2">
+                    <label tag="imgFile2" ui-on:click="triggleBtn">
                         置入
                     </label>
                 </li>
@@ -100,6 +100,10 @@
             </ul>
         </li>
     </ul>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
 </div>
 
 <!-- 工具配置 -->
@@ -158,7 +162,7 @@
 
 <!-- 画布 -->
 <div class="image">
-    <canvas id="image-root"
-        ui-bind:style="'width:'+width+'px;height:'+height+'px;margin-top:calc(50vh - 40px - ' + height * 0.5 + 'px);margin-left:calc(50vw - ' + width * 0.5 + 'px);'">
+    <canvas ref="mycanvas"
+        ui-bind:style="'width:'+width+'px;height:'+height+'px;margin-top:50px;margin-left:calc(50% - ' + width * 0.5 + 'px);'">
     </canvas>
 </div>

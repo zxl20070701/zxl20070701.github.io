@@ -29,37 +29,37 @@ npm run build
 
 支持图片、代码等查看和编辑，支持文件或目录打开、编辑、新建和保存
 
-<img src="./images/code-editor.png">
+<img src="https://zxl20070701.github.io/toolbox/snipping/code-editor.jpeg">
  
  - 图片编辑器
 
 可以对图片进行编辑，包括合并、修改大小、美化等
 
-<img src="./images/image-editor.png">
+<img src="https://zxl20070701.github.io/toolbox/snipping/image-editor.jpeg">
 
 - 录屏软件
 
 一个H5版本的电脑屏幕录制软件
 
-<img src="./images/recorder-screen.png">
+<img src="https://zxl20070701.github.io/toolbox/snipping/recorder-screen.jpeg">
 
 - 正则表达式可视化
 
 输入一个正则表达式后可以把其变成可视化的图表来快速读懂意义
 
-<img src="./images/regexper-visualization.png">
+<img src="https://zxl20070701.github.io/toolbox/snipping/regexper-visualization.jpeg">
 
 - 3D模型编辑器
 
 可以编辑3D模型，支持格式包括：stl、obj、fbx、mtl、ply、gltf、mod等
 
-<img src="./images/model-editor.png">
+<img src="https://zxl20070701.github.io/toolbox/snipping/model-editor.jpeg">
 
 - 音频编辑器
 
 可以对音频文件进行切割、合并等操作，支持多种格式
 
-<img src="./images/audio-editor.png">
+<img src="https://zxl20070701.github.io/toolbox/snipping/audio-editor.jpeg">
 
 所有的功能都在初步完善和丰富，如果有什么建议或者希望我们提供的功能，可以通过[ 提issue ](https://github.com/zxl20070701/toolbox/issues)来给我们留言！
 

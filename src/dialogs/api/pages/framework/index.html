@@ -36,15 +36,33 @@ var instance = useTemplate(el, pageFunction, props);
 function (obj, props) {
     return {
 
-        render: template,// 模板
+        render: template, // 模板
         data: {}, // 数据
 
+        /*
+         * 生命周期
+         *
+         * 视图、窗口、弹框等不一定都实现了下面的钩子，
+         * 只不过，如果实现了，都会按照规范下面起名
+         *
+         * 部分钩子可以设计返回一个布尔值控制默认操作是否执行
+         */
         beforeMount: function () {}, // 挂载前
         mounted: function () {}, // 挂载后
-        beforeUpdate: function () {},// 数据改变前
+        beforeUpdate: function () {}, // 数据改变前
         updated: function () {}, // 数据改变后
+        beforeDestory: function () {}, // 组件销毁前
+        destoryed: function () {}, // 组件销毁后
+        minimize: function () {}, // 组件最小化前
+        reshow: function () {}, // 组件恢复显示后
+        beforeFocus: function () {}, // 组件聚焦显示前
+        focused: function () {}, // 组件聚焦显示后
+        beforeUnfocus: function () {}, // 组件失去聚焦前
+        unfocused: function () {}, // 组件失去聚焦后
+        show: function () {}, // 组件显示
+        hidden: function () {}, // 组件隐藏
 
-        methods: {}// 方法
+        methods: {} // 方法
     };
 };
 </pre>
@@ -88,4 +106,19 @@ export default {
         // 数据改变触发
     }
 };
+</pre>
+<h3>
+    ref
+</h3>
+<p>
+    如果你希望获取页面中一个节点，可以提前使用下面的方法标记一下：
+</p>
+<pre>
+    <canvas ref="mycanvas"></canvas>
+</pre>
+<p>
+    然后使用的时候就可以通过ref语法获取：
+</p>
+<pre>
+    var canvas = this._refs.mycanvas.value;
 </pre>

@@ -4,9 +4,11 @@ import './index.scss';
 import canvasRender from '../../tool/canvas/index';
 import getKeyCode from '../../tool/keyCode';
 
-var painter;
 export default function (obj) {
+    var painter;
+
     return {
+        name: "snake-eating",
         render: template,
         data: {
 
@@ -26,12 +28,12 @@ export default function (obj) {
             mulpD: ""
 
         },
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "贪吃蛇";
+        beforeFocus: function () {
+            document.getElementsByTagName('title')[0].innerText = "贪吃蛇" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './snake-eating.png');
         },
         mounted: function () {
-            var canvas = document.getElementsByTagName('canvas')[0];
+            var canvas = this._refs.mycanvas.value;
 
             // 获取画笔
             painter = canvasRender(canvas, canvas.clientWidth, canvas.clientHeight);

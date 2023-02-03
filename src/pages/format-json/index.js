@@ -4,22 +4,24 @@ import './index.scss';
 import formatJSON from '../../tool/json/index';
 import editorRender from '../../tool/editor/index';
 
-var sourceEditor, targetEditor;
 export default function (obj) {
+    var sourceEditor, targetEditor;
+
     return {
+        name: "format-json",
         render: template,
-        beforeMount: function () {
-            document.getElementsByTagName('title')[0].innerText = "格式化JSON字符串";
+        beforeFocus: function () {
+            document.getElementsByTagName('title')[0].innerText = "格式化JSON字符串" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './format-json.png');
         },
         mounted: function () {
             sourceEditor = new editorRender({
-                el: document.getElementById('source-id'),
+                el: this._refs.source.value,
                 shader: ['javascript']
             });
 
             targetEditor = new editorRender({
-                el: document.getElementById('target-id'),
+                el: this._refs.target.value,
                 shader: ['javascript'],
                 readonly: true
             });

@@ -1,7 +1,14 @@
-[page-view] {
+[page-view="snake-eating"] {
     width: 500px;
-    margin: 20px auto;
-    position: relative;
+    left: calc(50vw - 250px);
+    top: 50px;
+    font-size: 0;
+
+    &[focus="no"] {
+        &>h2 {
+            background-color: #817e22;
+        }
+    }
 
     &>h2 {
         font-size: 18px;
@@ -27,7 +34,7 @@
         top: 50px;
         width: 500px;
         height: 500px;
-        background-color: #0000005c;
+        background-color: rgba(0, 0, 0, 0.36);
 
         &[active='no'] {
             display: none;

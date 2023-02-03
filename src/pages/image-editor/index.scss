@@ -1,18 +1,29 @@
-[page-view] {
+[page-view="image-editor"] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 70px);
+    left: 80px;
+    top: 20px;
 
     .no-view {
         display: none;
     }
 
+    &[focus="no"] {
+        &>div {
+            &.menu {
+                background-color: #afbabe;
+            }
+        }
+    }
+
     &>div {
         &.menu {
-
+            background-color: #cad6db;
             border-bottom: 1px solid gray;
-            position: fixed;
-            z-index: 7;
+            position: relative;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 100%;
 
             &>h2,
             ul {
@@ -94,6 +105,7 @@
                         left: -5px;
                         background-color: white;
                         padding: 5px 0;
+                        z-index: 1;
                     }
                 }
 
@@ -104,9 +116,9 @@
             border-bottom: 1px solid #ccc;
             height: 50px;
             line-height: 50px;
-            position: fixed;
-            top: 30px;
-            width: 100vw;
+            position: relative;
+            top: 0;
+            width: 100%;
             font-size: 12px;
 
             &>ul {
@@ -127,11 +139,11 @@
         }
 
         &.image {
-            width: 100vw;
-            height: calc(100vh - 80px);
+            width: 100%;
+            height: calc(100% - 80px);
             overflow: hidden;
             position: relative;
-            top: 80px;
+            top: 0;
 
             &>canvas {
                 position: absolute;

@@ -1,21 +1,21 @@
 {
   "name": "toolbox",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "✔️ 实用工具，包含常见的图片编辑、格式转换、视频播放和小游戏等各种工具",
   "scripts": {
     "dev": "node ./bin/server --config pkg.config.js",
     "build": "node ./bin/run -d docs/dist && node ./bin/builder --config pkg.config.js",
     "debug": "echo 'chrome://inspect/#devices' && node --inspect-brk ./bin/builder --config pkg.config.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/zxl20070701/toolbox.git"
-  },
+  "repository": "https://github.com/zxl20070701/toolbox",
   "keywords": [
     "toolbox",
     "H5"
   ],
-  "author": "zxl20070701",
+  "author": {
+    "name": "zxl20070701",
+    "url": "https://github.com/zxl20070701"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zxl20070701/toolbox/issues"

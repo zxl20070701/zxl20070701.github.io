@@ -1,6 +1,33 @@
-[page-view] {
-    padding: 20px 0;
-    min-width: 800px;
+[page-view="regexper-visualization"] {
+    padding-bottom: 20px;
+    width: 800px;
+    left: calc(50vw - 400px);
+    top: 50px;
+
+    &[focus="no"] {
+        &>header {
+            background-color: #646125;
+        }
+    }
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        background-color: #595616;
+        margin-bottom: 30px;
+
+        &>h2 {
+            color: #98932e;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./regexper-visualization.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            font-family: cursive;
+            display: inline-block;
+        }
+    }
 
     &>div {
         &.help-hidden {

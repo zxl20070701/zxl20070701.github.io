@@ -8,10 +8,11 @@ const fs = require('fs');
 
 const { error, log } = require('../nodejs/log');
 const { fullPath } = require('../nodejs/path');
-const { deleteSync, copySync } = require('../nodejs/file');
 const analyseBundle = require('./pkg/analyseBundle');
 
 const { simpleUrl } = require('./tool');
+
+const globalScript = require('./global');
 
 // 获取命令行参数
 const parsed = require('../nodejs/option')({}, process.argv);
@@ -38,7 +39,7 @@ let needAnalyseFiles = [{
 
 // 复制入口文件和初始化
 let template = fs.readFileSync(fullPath('./index.html', process.cwd()));
-fs.writeFileSync(fullPath('index.html', targetFolder), (template + "").replace('<!-- built files will be auto injected -->', '<script src="' + config.output.entry + '"></script>'));
+fs.writeFileSync(fullPath('index.html', targetFolder), (template + "").replace('<!-- built files will be auto injected -->', globalScript + '<script defer="defer" src="' + config.output.entry + '"></script>'));
 fs.mkdirSync(fullPath("../", global._output));
 
 global._isEntry = true;// 是否是编译入口文件

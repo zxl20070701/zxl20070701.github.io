@@ -33,7 +33,7 @@ export default function (obj, props) {
 
             // 更新片段选中
             updatePiceSelected: function () {
-                var trs = document.getElementById('table-list').getElementsByTagName('tr'), index;
+                var trs = this._refs.tableList.value.getElementsByTagName('tr'), index;
                 for (index = 0; index < trs.length; index++) {
                     this.piceData.value[index] = trs[index].getElementsByTagName('input')[0].checked ? true : false;
                 }
@@ -54,7 +54,7 @@ export default function (obj, props) {
                         "</tr>";
                 }
 
-                document.getElementById('table-list').innerHTML = template;
+                this._refs.tableList.value.innerHTML = template;
 
             },
 
@@ -163,7 +163,7 @@ export default function (obj, props) {
             }
         },
         mounted: function () {
-            var canvas = document.getElementById('time-line');
+            var canvas = this._refs.timeLine.value;
 
             // 获取画笔
             painter = canvasRender(canvas, canvas.clientWidth, canvas.clientHeight);

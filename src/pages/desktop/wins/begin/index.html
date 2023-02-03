@@ -1,0 +1,107 @@
+<div class="application" ref="application" id="app">
+    <h1>
+        常用应用
+        <button tag="application" ui-on:click="openApp">
+            全部内容 ▶
+        </button>
+    </h1>
+
+    <h2>
+        #
+    </h2>
+    <div tag="model-editor" ui-on:click="openApp">
+        3D模型编辑器
+    </div>
+
+    <h2>
+        D
+    </h2>
+    <div tag="code-editor" ui-on:click="openApp">
+        代码编辑器
+    </div>
+
+    <h2>
+        G
+    </h2>
+    <div tag="format-json" ui-on:click="openApp">
+        格式化JSON字符串
+    </div>
+    <div tag="geo-json" ui-on:click="openApp">
+        geoJSON查看器
+    </div>
+
+    <h2>
+        I
+    </h2>
+    <div tag="browser" ui-on:click="openApp">
+        Internet Explorer
+    </div>
+
+    <h2>
+        J
+    </h2>
+    <div tag="snipping-tool" ui-on:click="openDialog">
+        截图工具
+    </div>
+
+    <h2>
+        L
+    </h2>
+    <div tag="recorder-screen" ui-on:click="openApp">
+        录屏软件
+    </div>
+
+    <h2>
+        S
+    </h2>
+    <div tag="scss" ui-on:click="openApp">
+        scss转css
+    </div>
+
+    <h2>T</h2>
+    <div tag="image-editor" ui-on:click="openApp">
+        图片编辑器
+    </div>
+    <div tag="snake-eating" ui-on:click="openApp">
+        贪吃蛇
+    </div>
+
+    <h2>
+        Y
+    </h2>
+    <div tag="audio-editor" ui-on:click="openApp">
+        音频编辑器
+    </div>
+
+    <h2>
+        Z
+    </h2>
+    <div tag="regexper-visualization" ui-on:click="openApp">
+        正则表达式可视化
+    </div>
+
+</div>
+
+<!-- 搜索 -->
+<div class="search">
+    <input type="text" placeholder="搜索功能维护中...">
+</div>
+
+<!-- 头像 -->
+<div class="user">
+    <div></div>
+</div>
+
+<!-- 文档、调试、源码等 -->
+<div class="quick">
+    <a target="_blank" ui-bind:href="project.author.url">
+        <span ui-bind="project.author.name"></span>
+    </a>
+    <hr />
+    <div ui-on:click="openDialog" tag="api">开发文档</div>
+    <div ui-on:click="openDialog" tag="debugger">调试工具</div>
+    <a target="_blank" ui-bind:href="project.bugs">提建议</a>
+    <hr />
+    <a target="_blank" href="https://zxl20070701.github.io/notebook/">文档笔记</a>
+    <a target="_blank" href="https://github.com/zxl20070701/laboratory">实验仓库</a>
+</div>

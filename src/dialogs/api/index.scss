@@ -1,12 +1,9 @@
 [dialog-view='api'] {
-    position: fixed;
-    background-color: white;
     width: calc(100vw - 160px);
     height: calc(100vh - 40px);
     left: 80px;
     top: 20px;
     border-radius: 5px;
-    box-shadow: 0 0 7px 3px #010101d1;
 
     &>header {
         line-height: 50px;
@@ -16,13 +13,13 @@
         user-select: none;
 
         &>h2 {
-            background-image: url("./logo.png");
+            background-image: url("./api.png");
             padding-left: 50px;
             background-repeat: no-repeat;
             background-position: 10px center;
             background-size: auto 60%;
             font-family: cursive;
-            color: #eb6736;
+            color: #4f94b5;
             font-size: 20px;
         }
 
@@ -36,6 +33,7 @@
             line-height: 50px;
             text-align: center;
             cursor: pointer;
+            font-size: 30px;
         }
     }
 

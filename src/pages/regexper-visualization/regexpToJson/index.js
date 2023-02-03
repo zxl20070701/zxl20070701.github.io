@@ -1,13 +1,13 @@
 import pretreatment from './pretreatment';
 import analyseExpress from './analyseExpress';
 
-export default function (express, _isString) {
+export default function (express, _isString, helpEl) {
 
     // 预处理
     express = pretreatment(express, _isString);
 
     // 单词分析
-    var expressArray = analyseExpress(express.trim());
+    var expressArray = analyseExpress(express.trim(), helpEl);
 
     // 补充辅助括号
     expressArray.unshift(["?@"]);
