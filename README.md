@@ -1,3 +1,5 @@
+[![Security Status](https://www.murphysec.com/platform3/v3/badge/1617646194847678464.svg?t=1)](https://www.murphysec.com/accept?code=1963e71b97d687d6a3936b1e3adbb25f&type=1&from=2&t=2)
+
 # [toolbox](https://zxl20070701.github.io/toolbox)
 ✔️ 实用工具，包含常见的图片编辑、格式转换、视频播放和小游戏等各种工具
 
