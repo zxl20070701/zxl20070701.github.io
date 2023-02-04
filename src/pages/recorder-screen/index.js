@@ -49,12 +49,12 @@ export default function (obj) {
                         // 停止的时候下载
                         mediaRecorder.addEventListener("stop", function () {
                             var blob = new Blob(chunks, {
-                                type: chunks[0].type
+                                type: "video/mp4"
                             });
                             var url = URL.createObjectURL(blob);
                             var downEl = document.createElement("a");
                             downEl.href = url;
-                            downEl.download = "屏幕录制.webm";
+                            downEl.download = "屏幕录制.mp4";
                             downEl.click();
                             _this.isRun = false;
                             mediaRecorder = null;
