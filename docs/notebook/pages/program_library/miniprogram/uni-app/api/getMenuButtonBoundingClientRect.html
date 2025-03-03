@@ -1,0 +1,85 @@
+<header>
+    getMenuButtonBoundingClientRect
+</header>
+<p>
+    在小程序平台，如果原生导航栏被隐藏，仍然在右上角会有一个悬浮按钮，微信下也被称为胶囊按钮。本API用于获取小程序下该菜单按钮的布局位置信息，方便开发者布局顶部内容时避开该按钮。
+</p>
+<p>
+    坐标信息以屏幕左上角为原点。
+</p>
+<h2>
+    平台差异说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>App</th>
+            <th>H5</th>
+            <th>微信小程序</th>
+            <th>支付宝小程序</th>
+            <th>百度小程序</th>
+            <th>抖音小程序</th>
+            <th>飞书小程序</th>
+            <th>QQ小程序</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>x</td>
+            <td>x</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>x</td>
+            <td>√</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    返回值说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性</th>
+            <th>类型</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>width</td>
+            <td>number</td>
+            <td>宽度，单位：px</td>
+        </tr>
+        <tr>
+            <td>height</td>
+            <td>number</td>
+            <td>高度，单位：px</td>
+        </tr>
+        <tr>
+            <td>top</td>
+            <td>number</td>
+            <td>上边界坐标，单位：px</td>
+        </tr>
+        <tr>
+            <td>right</td>
+            <td>number</td>
+            <td>右边界坐标，单位：px</td>
+        </tr>
+        <tr>
+            <td>bottom</td>
+            <td>number</td>
+            <td>下边界坐标，单位：px</td>
+        </tr>
+        <tr>
+            <td>left</td>
+            <td>number</td>
+            <td>左边界坐标，单位：px</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    支付宝小程序：其逻辑与微信小程序不同，它提供了菜单点击后按钮的自定义功能，可以选择显示那些系统按钮。
+</div>

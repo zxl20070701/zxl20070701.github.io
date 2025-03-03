@@ -1,0 +1,65 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        水平向下向左树
+    </h2>
+    <div class="src-url">
+        查看源码：
+        <a ui-bind:href="srcUrl" ui-bind="srcUrl" target="_blank"></a>
+    </div>
+    <div class="win-btns">
+        <button class="close" ui-on:click.stop="$closeDialog">关闭</button>
+    </div>
+</header>
+<div class="content css-tree-topleft">
+    <ul>
+        <li>
+            <span>OS</span>
+            <ul>
+                <li>
+                    <span>NOS</span>
+                    <ul>
+                        <li>
+                            <span>BSD</span>
+                        </li>
+                        <li>
+                            <span>Unix</span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>DOS</span>
+                    <ul>
+                        <li>
+                            <span>Unix</span>
+                            <ul>
+                                <li>
+                                    <span>Mac OS X</span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>Windows</span>
+                        </li>
+                        <li>
+                            <span>Linux</span>
+                            <ul>
+                                <li>
+                                    <span>openSUSE</span>
+                                </li>
+                                <li>
+                                    <span>Centos</span>
+                                </li>
+                                <li>
+                                    <span>Ubuntu</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>SOS</span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,41 @@
+<header>
+    和Webview通讯
+</header>
+<h2>
+    插件发消息，Webview接收消息
+</h2>
+<p>
+    插件里的JS
+</p>
+<pre tag="javascript">
+    panel.webview.postMessage("来自插件的数据");
+</pre>
+<p>
+    Webview里的JS
+</p>
+<pre tag="javascript">
+window.addEventListener('message',function(e){
+    // 来自插件的数据
+    console.log(e.data);
+});
+</pre>
+<h2>
+    Webview发消息，插件接收消息
+</h2>
+<p>
+    Webview里的JS
+</p>
+<pre tag="javascript">
+var vscode = acquireVsCodeApi();
+
+vscode.postMessage("来自H5的数据");
+</pre>
+<p>
+    插件里的JS
+</p>
+<pre tag="javascript">
+panel.webview.onDidReceiveMessage(function(data) {
+    // 来自H5的数据
+    console.log(data);
+});
+</pre>

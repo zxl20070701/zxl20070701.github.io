@@ -105,6 +105,11 @@ window.__pkg__bundleSrc__['37']=function(){
     // 草稿纸
     "draft": function () {
         return window.__pkg__getLazyBundle('./dist/bundle33.js','89')
+    },
+
+    // Job Resume
+    "job-resume": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle34.js','90')
     }
 };
 

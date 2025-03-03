@@ -1,8 +1,24 @@
 body {
-    background-color: black;
-    color: white;
+    background-color: #ffffff;
+    color: #000000;
     font-family: fantasy, cursive;
     padding-bottom: 100px;
+    min-width: 1000px;
+}
+
+.section-item {
+    position: relative;
+}
+
+.section-item::before {
+    position: absolute;
+    content: "";
+    width: 1000px;
+    height: 6px;
+    background-color: #447ba7;
+    left: 0;
+    top: -15px;
+    border-radius: 3px;
 }
 
 body a:hover {
@@ -13,6 +29,9 @@ body>header {
     line-height: 40px;
     font-family: cursive;
     position: relative;
+    background-color: #1e2933;
+    border-bottom: 1px solid #1f3b47;
+    color: white;
 }
 
 body>header>h2 {
@@ -27,8 +46,9 @@ body>header>h2 {
 }
 
 body>header a {
-    color: rgb(225, 221, 221);
+    color: #bbbbbb;
     display: inline-block;
+    font-weight: 800;
 }
 
 body>header>a.nav-item {
@@ -42,9 +62,12 @@ body>header>.right {
 }
 
 body>.homepage {
-    background-color: #607D8B;
+    background-color: #2b5b84;
+    background-image: linear-gradient(#1e415e 10%, #2b5b84 90%);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.03), inset 0 0 20px rgba(0, 0, 0, 0.03);
     text-align: center;
     padding: 50px 0;
+    color: #dcdcdc;
 }
 
 body>.homepage>h1 {
@@ -69,7 +92,9 @@ body>.homepage>.btn {
 
 body>.organizations {
     text-align: center;
-    margin-top: 30px;
+    margin: 0 auto;
+    margin-top: 25px;
+    width: 1000px;
 }
 
 body>.organizations>.item {
@@ -116,7 +141,8 @@ body>.organizations>.item>p {
 
 body>footer {
     font-family: monospace;
-    background-color: rgb(48 56 70);
+    background-color: #fafafa;
+    border-top: 1px solid #d3d0d0;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -128,4 +154,14 @@ body>footer>.copyright {
     line-height: 50px;
     height: 50px;
     font-size: 15px;
+}
+
+body>footer>.copyright>.btn {
+    text-decoration: underline;
+    color: #2b5b84;
+    font-weight: 400;
+}
+
+body>footer>.copyright>.btn:hover {
+    font-weight: 800;
 }

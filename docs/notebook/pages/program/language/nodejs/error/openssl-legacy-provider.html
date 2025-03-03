@@ -1,0 +1,49 @@
+<header>
+    Error: error:0308010C:digital envelope routines::unsupported
+</header>
+<h2>
+    错误描述
+</h2>
+<p>
+    启动或打包项目的时候，报错（类似下面）：
+</p>
+<p class="important">
+    js/chunk-f8275756.6fe3e9e5.js from Terser<br />
+    Error: error:0308010C:digital envelope routines::unsupported<br />
+</p>
+<h2>
+    报错原因
+</h2>
+<p>
+    出现这个错误是因为node.js V17版本中最近发布的OpenSSL3.0, 而OpenSSL3.0对允许算法和密钥大小增加了严格的限制，可能会对生态系统造成一些影响.
+</p>
+<p>
+    在node.js V17以前一些可以正常运行的的应用程序,但是在 V17 版本可能会抛出这个异常。
+</p>
+<h2>
+    如何解决？
+</h2>
+<h3>
+    方案一：版本降级
+</h3>
+<p>
+    尝试卸载Node.js 17+版本并重新安装Node.js 16+版本，然后再重新启动。
+</p>
+<h3>
+    方案二：设置参数
+</h3>
+<p>
+    在执行运行项目命令之前，先运行这个命令：
+</p>
+<h4>
+    Linux&Unix
+</h4>
+<pre tag>
+    export NODE_OPTIONS=--openssl-legacy-provider
+</pre>
+<h4>
+    Windows
+</h4>
+<pre tag>
+    set NODE_OPTIONS=--openssl-legacy-provider
+</pre>

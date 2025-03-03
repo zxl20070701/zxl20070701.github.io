@@ -70,8 +70,13 @@ export default {
         return import('./tree-radial/index.js')
     },
 
-     // 单波进度球
-     "single-wave": function () {
+    // 单波进度球
+    "single-wave": function () {
         return import('./single-wave/index.js')
+    },
+
+    // 水平向下向左树
+    "css-tree-topleft": function () {
+        return import('./css-tree-topleft/index.js')
     }
 };

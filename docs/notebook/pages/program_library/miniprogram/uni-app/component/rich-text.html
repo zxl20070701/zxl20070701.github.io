@@ -1,0 +1,366 @@
+<header>
+    rich-text
+</header>
+<p>
+    富文本。
+</p>
+<p>
+    支持默认事件，包括：click、touchstart、touchmove、touchcancel、touchend、longpress。
+</p>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+            <th>平台兼容</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>nodes</td>
+            <td>Array / String</td>
+            <td>[]</td>
+            <td>节点列表 / HTML String</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>space</td>
+            <td>string</td>
+            <td></td>
+            <td>显示连续空格</td>
+            <td>App、H5、微信基础库2.4.1+<a class="link"
+                    href="https://developers.weixin.qq.com/miniprogram/dev/component/rich-text.html"
+                    target="_blank">详见</a>、QQ小程序、抖音小程序、快手小程序<a
+                    href="https://mp.kuaishou.com/docs/develop/components/basicComponents/richText.html" target="_blank"
+                    class="link">详见</a></td>
+        </tr>
+        <tr>
+            <td>selectable</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>富文本是否可以长按选中，可用于复制，粘贴等场景</td>
+            <td>百度小程序（仅真机支持，基础库 3.150.1 以下版本默认为 false）</td>
+        </tr>
+        <tr>
+            <td>image-menu-prevent</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+                阻止长按图片时弹起默认菜单（将该属性设置为image-menu-prevent或image-menu-prevent="true"），只在初始化时有效，不能动态变更；若不想阻止弹起默认菜单，则不需要设置此属性
+            </td>
+            <td>百度小程序</td>
+        </tr>
+        <tr>
+            <td>preview</td>
+            <td>Boolean</td>
+            <td></td>
+            <td>富文本中的图片是否可点击预览。在不设置的情况下，若 rich-text 未监听点击事件，则默认开启。未显示设置 preview
+                时会进行点击默认预览判断，建议显示设置 preview</td>
+            <td>百度小程序</td>
+        </tr>
+        <tr>
+            <td>@itemclick</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>拦截点击事件（只支持 a、img标签），返回当前node信息 event.detail={node}</td>
+            <td>H5 (3.2.13+)、App-Vue (3.2.13+)</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    nodes
+</h3>
+<p>
+    nodes 值为 HTML String 时，在组件内部将自动解析为节点列表，推荐直接使用 Array 类型避免内部转换导致的性能下降。App-nvue 和支付宝小程序不支持 HTML String 方式，仅支持直接使用节点列表即
+    Array 类型，如要使用 HTML String，则需自己将 HTML String 转化为 nodes 数组，可使用
+    <a href="https://github.com/dcloudio/hello-uniapp/blob/master/common/html-parser.js" target="_blank"
+        class="link">html-parser</a>
+    转换。
+</p>
+<p>
+    节点列表内的节点现支持两种类型，通过 type 来区分，分别是元素节点和文本节点，默认是元素节点，在富文本区域里显示的 HTML 节点。
+</p>
+<h4>
+    元素节点：type = node
+</h4>
+<table>
+    <thead>
+        <tr>
+            <th>属性</th>
+            <th>说明</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>备注</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>name</td>
+            <td>标签名</td>
+            <td>String</td>
+            <td>是</td>
+            <td>支持部分受信任的 HTML 节点</td>
+        </tr>
+        <tr>
+            <td>attrs</td>
+            <td>属性</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>支持部分受信任的属性，遵循 Pascal 命名法</td>
+        </tr>
+        <tr>
+            <td>children</td>
+            <td>子节点列表</td>
+            <td>Array</td>
+            <td>否</td>
+            <td>结构和 nodes 一致</td>
+        </tr>
+    </tbody>
+</table>
+<h4>
+    文本节点：type = text
+</h4>
+<table>
+    <thead>
+        <tr>
+            <th>属性</th>
+            <th>说明</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>备注</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>text</td>
+            <td>文本</td>
+            <td>String</td>
+            <td>是</td>
+            <td>支持 entities</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    受信任的HTML节点及属性
+</h2>
+<p>
+    全局支持 class 和 style 属性，不支持 id 属性。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>节点</th>
+            <th>属性</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>a</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>abbr</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>b</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>blockquote</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>br</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>col</td>
+            <td>span，width</td>
+        </tr>
+        <tr>
+            <td>colgroup</td>
+            <td>span，width</td>
+        </tr>
+        <tr>
+            <td>dd</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>del</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>div</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>dl</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>dt</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>em</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>fieldset</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>h1</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>h2</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>h3</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>h4</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>h5</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>h6</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>hr</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>i</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>img</td>
+            <td>alt，src，height，width</td>
+        </tr>
+        <tr>
+            <td>ins</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>label</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>legend</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>li</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>ol</td>
+            <td>start，type</td>
+        </tr>
+        <tr>
+            <td>p</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>span</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>strong</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>sub</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>sup</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>table</td>
+            <td>width</td>
+        </tr>
+        <tr>
+            <td>tbody</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>td</td>
+            <td>colspan，height，rowspan，width</td>
+        </tr>
+        <tr>
+            <td>tfoot</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>th</td>
+            <td>colspan，height，rowspan，width</td>
+        </tr>
+        <tr>
+            <td>thead</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>tr</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>ul</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    Tips
+</h2>
+<ul>
+    <li>
+        nodes 不推荐使用 String 类型，性能会有所下降。
+    </li>
+    <li>
+        rich-text 组件内屏蔽所有节点的事件。所以如果内容中有链接、图片需要点击，则不能使用rich-text，此时可在
+        <a href="https://ext.dcloud.net.cn/search?q=parse" target="_blank" class="link">uni-app插件市场</a>
+        搜索parse插件使用。app-vue的rich-text组件支持链接图片点击。
+    </li>
+    <li>
+        attrs 属性不支持 id ，支持 class 。
+    </li>
+    <li>
+        name 属性大小写不敏感。
+    </li>
+    <li>
+        如果使用了不受信任的HTML节点，该节点及其所有子节点将会被移除。
+    </li>
+    <li>
+        非 App 平台 img 标签仅支持网络图片。
+    </li>
+    <li>
+        如果在自定义组件中使用 rich-text 组件，那么仅自定义组件的 css 样式对 rich-text 中的 class 生效。
+    </li>
+    <li>
+        使用 itemclick 时，如果发生节点嵌套，外层 a标签 优先级高。
+    </li>
+</ul>

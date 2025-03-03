@@ -5,19 +5,19 @@
 window.__pkg__bundleSrc__['88']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('320');
+    __pkg__scope_args__=window.__pkg__getBundle('322');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('321');
+__pkg__scope_args__=window.__pkg__getBundle('323');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('322');
+__pkg__scope_args__=window.__pkg__getBundle('324');
 
-__pkg__scope_args__=window.__pkg__getBundle('323');
+__pkg__scope_args__=window.__pkg__getBundle('325');
 var lazyDialogs =__pkg__scope_args__.default;
 
 
@@ -65,10 +65,10 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['320']=function(){
+window.__pkg__bundleSrc__['322']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"代码例子","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"content"},"childNodes":[10]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"textarea-eraser"},"childNodes":[11]},{"type":"text","content":"一个简单的多行文本擦除显示动画效果","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"代码例子","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"content"},"childNodes":[10,12]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"textarea-eraser"},"childNodes":[11]},{"type":"text","content":"一个简单的多行文本擦除显示动画效果","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"colorful-dice"},"childNodes":[13]},{"type":"text","content":"一个旋转的3D彩色骰子","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -76,7 +76,7 @@ window.__pkg__bundleSrc__['320']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['321']=function(){
+window.__pkg__bundleSrc__['323']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -90,12 +90,12 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['322']=function(){
+window.__pkg__bundleSrc__['324']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [dialog-view='code-example']{\n\nleft: 20px;\n\ntop: 20px;\n\nuser-select: none;\n\nwidth: calc(100vw - 40px);\n\nheight: calc(100vh - 40px);\n\n}\n\n [dialog-view='code-example']>header{\n\ntext-align: left;\n\nline-height: 50px;\n\nbackground-color: #ffffff;\n\nborder-bottom: 1px solid rgb(187, 184, 184);\n\nwhite-space: nowrap;\n\noverflow: hidden;\n\n}\n\n [dialog-view='code-example']>header>h2{\n\nfont-size: 20px;\n\npadding-left: 50px;\n\nbackground-image: url(\"./code-example.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 60%;\n\ndisplay: inline-block;\n\nfont-family: sans-serif;\n\n}\n\n [dialog-view='code-example']>header>h2>a{\n\ncolor: #000000;\n\n}\n\n [dialog-view='code-example']>header>h2>a:hover{\n\ntext-decoration: underline;\n\n}\n\n [dialog-view='code-example']>div.content{\n\ntext-align: center;\n\nbackground-color: white;\n\noverflow: hidden;\n\n}\n";
+styleElement.innerHTML = "\n [dialog-view=\"code-example\"]{\n\nleft: 20px;\n\ntop: 20px;\n\nuser-select: none;\n\nwidth: calc(100vw - 40px);\n\nheight: calc(100vh - 40px);\n\nbackground-color: white;\n\n}\n\n [dialog-view=\"code-example\"] > header{\n\ntext-align: left;\n\nline-height: 50px;\n\nbackground-color: #ffffff;\n\nborder-bottom: 1px solid rgb(187, 184, 184);\n\nwhite-space: nowrap;\n\noverflow: hidden;\n\n}\n\n [dialog-view=\"code-example\"] > header > h2{\n\nfont-size: 20px;\n\npadding-left: 50px;\n\nbackground-image: url(\"./code-example.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 60%;\n\ndisplay: inline-block;\n\nfont-family: sans-serif;\n\n}\n\n [dialog-view=\"code-example\"] > header > h2 > a{\n\ncolor: #000000;\n\n}\n\n [dialog-view=\"code-example\"] > header > h2 > a:hover{\n\ntext-decoration: underline;\n\n}\n\n [dialog-view=\"code-example\"] > div.content{\n\ntext-align: center;\n\noverflow: hidden;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
@@ -104,12 +104,15 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['323']=function(){
+window.__pkg__bundleSrc__['325']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
     "textarea-eraser": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle78.js','324')
+        return window.__pkg__getLazyBundle('./dist/bundle80.js','326')
+    },
+    "colorful-dice": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle81.js','327')
     }
 };
 

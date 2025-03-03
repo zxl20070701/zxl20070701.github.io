@@ -2246,7 +2246,7 @@ __pkg__scope_bundle__.default= function (value) {
 window.__pkg__bundleSrc__['33']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 删除结点
+    // 删除节点
 __pkg__scope_bundle__.default= function (el) {
     el.parentNode.removeChild(el);
 };
@@ -3021,7 +3021,7 @@ __pkg__scope_args__=window.__pkg__getBundle('50');
 var toNode =__pkg__scope_args__.default;
 
 
-// 追加结点(内部结尾)
+// 追加节点(内部结尾)
 __pkg__scope_bundle__.default= function (el, template) {
     var node = isElement(template) ? template : toNode(template);
     el.appendChild(node);

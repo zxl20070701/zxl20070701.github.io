@@ -5,22 +5,22 @@
 window.__pkg__bundleSrc__['80']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('243');
+    __pkg__scope_args__=window.__pkg__getBundle('244');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('244');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('245');
-var getBoundary =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('143');
-var canvasRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('246');
-var eoapFactory =__pkg__scope_args__.default;
+var getBoundary =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('144');
+var canvasRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('247');
+var eoapFactory =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('248');
 var drawGeometry =__pkg__scope_args__.default;
 
 
@@ -111,7 +111,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/geo-json/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['243']=function(){
+window.__pkg__bundleSrc__['244']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,11,12,15]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,6]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"geoJSON查看器","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"triggleFile"},"childNodes":[5]},{"type":"text","content":"选择文件","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[7,9]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[8]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[10]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"help-url"},"childNodes":[13]},{"type":"tag","name":"a","attrs":{"href":"javascript:void(0)","ui-on:click":"openDownload"},"childNodes":[14]},{"type":"text","content":"点击我进入GeoJSON下载页面","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"no-view"},"childNodes":[16]},{"type":"tag","name":"input","attrs":{"type":"file","ref":"file","ui-on:change":"inputLocalFile","accept":".json"},"childNodes":[]}]
@@ -122,7 +122,7 @@ window.__pkg__bundleSrc__['243']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/geo-json/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['244']=function(){
+window.__pkg__bundleSrc__['245']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -136,7 +136,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/map/getBoundary
 /*****************************************************************/
-window.__pkg__bundleSrc__['245']=function(){
+window.__pkg__bundleSrc__['246']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var calcMultiPolygon = function (data) {
@@ -253,20 +253,20 @@ __pkg__scope_bundle__.default= function (data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['143']=function(){
+window.__pkg__bundleSrc__['144']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('144');
+    __pkg__scope_args__=window.__pkg__getBundle('145');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('146');
+__pkg__scope_args__=window.__pkg__getBundle('147');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('144');
+__pkg__scope_args__=window.__pkg__getBundle('145');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -553,10 +553,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
+window.__pkg__bundleSrc__['145']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('145');
+    __pkg__scope_args__=window.__pkg__getBundle('146');
 var arc =__pkg__scope_args__.default;
 
 
@@ -675,7 +675,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['145']=function(){
+window.__pkg__bundleSrc__['146']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -736,7 +736,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['147']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -776,7 +776,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/map/eoap
 /*****************************************************************/
-window.__pkg__bundleSrc__['246']=function(){
+window.__pkg__bundleSrc__['247']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -855,10 +855,10 @@ __pkg__scope_bundle__.default= function (config) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/map/drawGeometry
 /*****************************************************************/
-window.__pkg__bundleSrc__['247']=function(){
+window.__pkg__bundleSrc__['248']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('248');
+    __pkg__scope_args__=window.__pkg__getBundle('249');
 var drawPolygon =__pkg__scope_args__.default;
 
 
@@ -893,7 +893,7 @@ __pkg__scope_bundle__.default= function (map, painter, cx, cy, geometry) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/map/drawPolygon
 /*****************************************************************/
-window.__pkg__bundleSrc__['248']=function(){
+window.__pkg__bundleSrc__['249']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (map, painter, cx, cy, coordinates) {

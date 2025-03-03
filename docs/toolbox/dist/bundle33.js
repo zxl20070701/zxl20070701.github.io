@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['89']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('325');
+    __pkg__scope_args__=window.__pkg__getBundle('328');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('326');
+__pkg__scope_args__=window.__pkg__getBundle('329');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -37,7 +37,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/draft/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['325']=function(){
+window.__pkg__bundleSrc__['328']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"草稿纸","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[]}]
@@ -48,7 +48,7 @@ window.__pkg__bundleSrc__['325']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/draft/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['326']=function(){
+window.__pkg__bundleSrc__['329']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

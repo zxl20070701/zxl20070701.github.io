@@ -6,51 +6,59 @@
 </h2>
 <p>
     首先，你需要确定你的文章应该存在的位置，目录分为两级，一级目录直接在
-    <span class="warn">index.html</span>
+    <span class="warn">/docs/notebook/index.html</span>
     中查看。比如你希望在
-    <span class="warn">计算机/编程/经验&查询</span>
+    <span class="warn">资料&笔记/编程相关/基础&通识/编程语言</span>
     中添加，那么查看这个节点：
 </p>
 <pre tag="html">
 <span tag="program-course">
-    经验&查询
+    编程语言
 </span>
 </pre>
 <p>
-    就可以知道，二级目录位置就是：<span class="warn">pages/program/course/menu.html</span>。
+    就可以知道，二级目录位置就是：<span class="warn">/docs/notebook/pages/program/language</span>。
 </p>
 <div class="tips">
     如果一级不存在你需要的分类，添加也按照一样的规则新建文件和文件夹即可，余下类似。
 </div>
 <p>
     然后，还是以上面的例子继续，现在我们希望添加的新文章位置：
-    <span class="warn">编程语言/HTML/</span>下，名称是
+    <span class="warn">HTML/</span>下，名称是
     <span class="warn">新的文章</span>，那么上面的<span class="important">menu.html</span>就大概编辑成如下：
 </p>
 <pre tag="html">
-<li>
-    <span>
-        编程语言
-    </span>
-    <ul>
-        <li>
-            <span>
-                HTML
-            </span>
-            <ul>
-                <li>
-                    <span tag="html/newPage">
-                        新的文章
-                    </span>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</li>
+<span>
+    HTML
+</span>
+<ul>
+    <li>
+        <span tag="html/newPage">
+            新的文章
+        </span>
+    </li>
+</ul>
 </pre>
 <p>
-    然后，在<span class="warn">pages/program/course/html</span>文件夹下新建文件<span class="important">newPage.html</span>即可。
+    然后，在<span class="warn">/docs/notebook/pages/program/language/html</span>文件夹下新建文件<span class="important">newPage.html</span>即可。
 </p>
+<h3>
+    页面内导航
+</h3>
+<p>
+    比如我们有个子标题，只需要额外提供一个fixed属性：
+</p>
+<pre tag="html">
+<h3 fixed="subtitle1">
+    子标题一
+</h3>
+</pre>
+<p>
+    然后在触发点，使用fixedTo方法即可：
+</p>
+<pre tag="html">
+    <button class="btn" onclick="fixedTo('subtitle1')">点击我滚动到标题一</button>
+</pre>
 <h2>
     标题级别
 </h2>

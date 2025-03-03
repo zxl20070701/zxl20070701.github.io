@@ -1,0 +1,169 @@
+<header>
+    uni.getImageInfo(OBJECT)
+</header>
+<p>
+    获取图片信息。
+</p>
+<div class="tips">
+    小程序下获取网络图片信息需先配置download域名白名单才能生效。
+</div>
+<h2>
+    平台差异说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>App</th>
+            <th>H5</th>
+            <th>微信小程序</th>
+            <th>支付宝小程序</th>
+            <th>百度小程序</th>
+            <th>抖音小程序、飞书小程序</th>
+            <th>QQ小程序</th>
+            <th>快手小程序</th>
+            <th>京东小程序</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    OBJECT 参数说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>src</td>
+            <td>String</td>
+            <td>是</td>
+            <td>图片的路径，可以是相对路径，临时文件路径，存储文件路径，网络图片路径</td>
+        </tr>
+        <tr>
+            <td>success</td>
+            <td>Function</td>
+            <td>否</td>
+            <td>接口调用成功的回调函数</td>
+        </tr>
+        <tr>
+            <td>fail</td>
+            <td>Function</td>
+            <td>否</td>
+            <td>接口调用失败的回调函数</td>
+        </tr>
+        <tr>
+            <td>complete</td>
+            <td>Function</td>
+            <td>否</td>
+            <td>接口调用结束的回调函数（调用成功、失败都会执行）</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    success 返回参数说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>说明</th>
+            <th>平台差异说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>width</td>
+            <td>Number</td>
+            <td>图片宽度，单位px</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>height</td>
+            <td>Number</td>
+            <td>图片高度，单位px</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>path</td>
+            <td>String</td>
+            <td>返回图片的本地路径</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="btn" onclick="fixedTo('orientation')">orientation</td>
+            <td>String</td>
+            <td>返回图片的方向，有效值见下表</td>
+            <td>App、小程序、京东小程序</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String</td>
+            <td>返回图片的格式</td>
+            <td>App、小程序、京东小程序</td>
+        </tr>
+    </tbody>
+</table>
+<h3 fixed="orientation">
+    orientation 参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>枚举值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>up</td>
+            <td>默认</td>
+        </tr>
+        <tr>
+            <td>down</td>
+            <td>180度旋转</td>
+        </tr>
+        <tr>
+            <td>left</td>
+            <td>逆时针旋转90度</td>
+        </tr>
+        <tr>
+            <td>right</td>
+            <td>顺时针旋转90度</td>
+        </tr>
+        <tr>
+            <td>up-mirrored</td>
+            <td>同up，但水平翻转</td>
+        </tr>
+        <tr>
+            <td>down-mirrored</td>
+            <td>同down，但水平翻转</td>
+        </tr>
+        <tr>
+            <td>left-mirrored</td>
+            <td>同left，但垂直翻转</td>
+        </tr>
+        <tr>
+            <td>right-mirrored</td>
+            <td>同right，但垂直翻转</td>
+        </tr>
+    </tbody>
+</table>

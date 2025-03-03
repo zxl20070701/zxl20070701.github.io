@@ -98,5 +98,10 @@ export default {
     // 草稿纸
     "draft": function () {
         return import('./draft/index.js')
+    },
+
+    // Job Resume
+    "job-resume": function () {
+        return import('./job-resume/index.js')
     }
 };

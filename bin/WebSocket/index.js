@@ -19,10 +19,17 @@ module.exports = function () {
 
     const server = net.createServer(socket => {
 
+        // 错误
         socket.on('error', (error) => {
-            // console.log('Connection error:', error.message);
+            console.log('Connection error:', error.message);
         });
 
+        // 数据
+        socket.on('data', buffer => {
+            console.log('Connection data:' + decodeWsFrame(buffer).payloadData.toString());
+        });
+
+        // 连接
         socket.once('data', buffer => {
 
             // 把请求头变成容易操作的json
@@ -46,11 +53,11 @@ module.exports = function () {
                 const key = headers['Sec-WebSocket-Key'];
                 const hash = crypto.createHash('sha1');  // 创建一个签名算法为sha1的哈希对象
 
-                hash.update(`${key}${GUID}`)  // 将key和GUID连接后，更新到hash
-                const result = hash.digest('base64') // 生成base64字符串
-                const header = `HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-Websocket-Accept: ${result}\r\n\r\n` // 生成供前端校验用的请求头
+                hash.update(`${key}${GUID}`);  // 将key和GUID连接后，更新到hash
+                const result = hash.digest('base64'); // 生成base64字符串
+                const header = `HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-Websocket-Accept: ${result}\r\n\r\n`; // 生成供前端校验用的请求头
 
-                socket.write(header)  // 返回HTTP头，告知客户端校验结果，HTTP状态码101表示切换协议：https://httpstatuses.com/101。
+                socket.write(header);  // 返回HTTP头，告知客户端校验结果，HTTP状态码101表示切换协议：https://httpstatuses.com/101。
                 // 若客户端校验结果正确，在控制台的Network模块可以看到HTTP请求的状态码变为101 Switching Protocols，同时客户端的ws.onopen事件被触发。
 
                 // watch文件改变后，通知浏览器

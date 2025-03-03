@@ -1,0 +1,97 @@
+[dialog-view="echarts-example"] > div.css-tree-topleft {
+  font-size: 12px;
+  line-height: 1.6em;
+  padding-right: 100px;
+
+  & > ul {
+    display: inline-block;
+  }
+
+  ul {
+    white-space: nowrap;
+    text-align: right;
+    margin-top: 50px;
+  }
+
+  li {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+  }
+
+  li:not(:last-child)::before {
+    border-top-left-radius: 20px;
+  }
+
+  li:last-child::before {
+    border-width: 0 0 0 1px;
+  }
+
+  li::before,
+  li:not(:first-child)::after {
+    content: " ";
+    display: inline-block;
+    position: absolute;
+    top: -50px;
+  }
+
+  li::before {
+    width: 50px;
+    height: 50px;
+    border-style: solid;
+    border-color: #c7d0cf;
+    border-width: 1px 0 0 1px;
+    right: -15px;
+  }
+
+  li:not(:first-child)::after {
+    height: 1px;
+    width: 100%;
+    background-color: #c7d0cf;
+    right: 15px;
+  }
+
+  li:not(:first-child):last-child:after {
+    width: calc(100% - 30px);
+    right: 35px;
+  }
+
+  & > ul > li::before {
+    display: none;
+  }
+
+  ul > li > span {
+    background-color: #607d8b;
+    border-radius: 50%;
+    padding: 10px;
+    width: 50px;
+    line-height: 50px;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    color: #c7d0cf;
+    border: 1px solid #c7d0cf;
+    box-sizing: content-box;
+  }
+
+  ul > li > span::after,
+  ul > li > span::before {
+    content: " ";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: #c7d0cf;
+    border-radius: 50%;
+    position: absolute;
+    left: 29px;
+    z-index: 1;
+  }
+
+  ul > li > span::after {
+    bottom: -10px;
+  }
+
+  ul > li > span::before {
+    top: -10px;
+  }
+}

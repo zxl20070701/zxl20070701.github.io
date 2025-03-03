@@ -1,5 +1,4 @@
 import template from './index.html';
-import "./index.css";
 import "./index.scss";
 
 

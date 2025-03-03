@@ -28,7 +28,7 @@ function doBack(event) {
     PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
 </pre>
 <p>
-    初了直接点击按钮外，你还可以dispatchEvent来模拟点击：
+    除了直接点击按钮外，你还可以dispatchEvent来模拟点击：
 </p>
 <pre tag="javascript">
 dom.dispatchEvent(new PointerEvent('click', {

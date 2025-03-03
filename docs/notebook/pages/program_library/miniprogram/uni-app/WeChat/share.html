@@ -1,0 +1,39 @@
+<header>
+     分享
+</header>
+<p>
+    更多信息可以
+    <a href="https://uniapp.dcloud.net.cn/api/plugins/share.html" target="_blank">点击此处</a>
+    查看官方文档。
+</p>
+<h2>
+    分享给朋友
+</h2>
+<pre tag="javascript">
+app.mixin({
+    onShareAppMessage: () => {
+        return {
+            title: "", // 标题
+            path: "", // 页面 path ，必须是以 / 开头的完整路径
+            query: "", // 可选参数，用于接收页面时处理
+        }
+    }
+});
+</pre>
+<h2>
+    分享到朋友圈
+</h2>
+<div class="tips">
+    温馨提示：必须企业appid。
+</div>
+<pre tag="javascript">
+app.mixin({
+    onShareTimeline: () => {
+        return {
+            title: "", // 标题
+            path: "", // 页面 path ，必须是以 / 开头的完整路径
+            query: "", // 可选参数，用于接收页面时处理
+        };
+    }
+});
+</pre>

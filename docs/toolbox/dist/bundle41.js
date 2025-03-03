@@ -1,20 +1,20 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/scss/index.js
+// Original file:./src/mobile/format-json/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['97']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('345');
+    __pkg__scope_args__=window.__pkg__getBundle('348');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('346');
+__pkg__scope_args__=window.__pkg__getBundle('349');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('232');
-var scssLoader =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('158');
+var formatJSON =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('160');
+__pkg__scope_args__=window.__pkg__getBundle('161');
 var editorRender =__pkg__scope_args__.default;
 
 
@@ -22,23 +22,23 @@ __pkg__scope_bundle__.default= function (obj) {
     var targetEditor;
 
     return {
-        name: "scss",
+        name: "format-json",
         render: template,
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "scss转css" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './scss.png');
+            document.getElementsByTagName('title')[0].innerText = "格式化JSON字符串" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './format-json.png');
         },
         mounted: function () {
             targetEditor = new editorRender({
                 el: this._refs.target.value,
-                shader: ['css'],
+                shader: ['javascript'],
                 readonly: true
             });
         },
         methods: {
-            scssToCss() {
+            formatJSON() {
                 try {
-                    targetEditor.valueOf(scssLoader(this._refs.source.value.value));
+                    targetEditor.valueOf(JSON.stringify(formatJSON(this._refs.source.value.value), null, 4));
                 } catch (e) {
                     console.error(e);
                     alert('运行出错（' + e + '）');
@@ -52,295 +52,313 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/scss/index.html
+// Original file:./src/mobile/format-json/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['345']=function(){
+window.__pkg__bundleSrc__['348']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,15]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"scss转css","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[10,14]},{"type":"tag","name":"h2","attrs":{},"childNodes":[11,12]},{"type":"text","content":"源代码","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"run","ui-on:click":"scssToCss"},"childNodes":[13]},{"type":"text","content":"运行","childNodes":[]},{"type":"tag","name":"textarea","attrs":{"ref":"source"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[16,18]},{"type":"tag","name":"h2","attrs":{},"childNodes":[17]},{"type":"text","content":"运行结果","childNodes":[]},{"type":"tag","name":"div","attrs":{"ref":"target"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,15]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"格式化JSON字符串","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[10,14]},{"type":"tag","name":"h2","attrs":{},"childNodes":[11,12]},{"type":"text","content":"源代码","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"run","ui-on:click":"formatJSON"},"childNodes":[13]},{"type":"text","content":"运行","childNodes":[]},{"type":"tag","name":"textarea","attrs":{"ref":"source"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[16,18]},{"type":"tag","name":"h2","attrs":{},"childNodes":[17]},{"type":"text","content":"运行结果","childNodes":[]},{"type":"tag","name":"div","attrs":{"ref":"target"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/scss/index.scss
+// Original file:./src/mobile/format-json/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['346']=function(){
+window.__pkg__bundleSrc__['349']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"scss\"]>div{\n\ndisplay: inline-block;\n\nfont-size: 16px;\n\nwhite-space: normal;\n\nvertical-align: top;\n\noutline: 1px solid #8c9da5;\n\nmargin: 20px 0 0 20px;\n\n}\n\n [page-view=\"scss\"]>div>h2{\n\nborder-bottom: 1px solid #8c9da5;\n\nheight: 50px;\n\nline-height: 50px;\n\npadding: 0 20px;\n\nposition: relative;\n\nfont-family: cursive;\n\nfont-weight: 200;\n\nfont-size: 16px;\n\n}\n\n [page-view=\"scss\"]>div>h2>button{\n\nposition: absolute;\n\nright: 10px;\n\ntop: 10px;\n\nheight: 30px;\n\nline-height: 30px;\n\npadding: 0 20px;\n\nborder: none;\n\noutline: none;\n\ncolor: white;\n\ncursor: pointer;\n\n}\n\n [page-view=\"scss\"]>div>h2>button.run{\n\nbackground-color: #d05a90;\n\n}\n\n [page-view=\"scss\"]>div>textarea{\n\noutline: none;\n\nborder: none;\n\nresize: none;\n\nbackground: whitesmoke;\n\n}\n\n [page-view=\"scss\"]>div>div, [page-view=\"scss\"]>div>textarea{\n\nwidth: calc(100vw - 40px);\n\nheight: calc(var(--height) * 0.5 - 100px);\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"format-json\"]>div{\n\ndisplay: inline-block;\n\nfont-size: 16px;\n\nwhite-space: normal;\n\nvertical-align: top;\n\noutline: 1px solid #8c9da5;\n\nmargin: 20px 0 0 20px;\n\n}\n\n [page-view=\"format-json\"]>div>h2{\n\nborder-bottom: 1px solid #8c9da5;\n\nheight: 50px;\n\nline-height: 50px;\n\npadding: 0 20px;\n\nposition: relative;\n\nfont-family: cursive;\n\nfont-weight: 200;\n\nfont-size: 16px;\n\n}\n\n [page-view=\"format-json\"]>div>h2>button{\n\nposition: absolute;\n\nright: 10px;\n\ntop: 10px;\n\nheight: 30px;\n\nline-height: 30px;\n\npadding: 0 20px;\n\nborder: none;\n\noutline: none;\n\ncolor: white;\n\ncursor: pointer;\n\n}\n\n [page-view=\"format-json\"]>div>h2>button.run{\n\nbackground-color: #009688;\n\n}\n\n [page-view=\"format-json\"]>div>textarea{\n\noutline: none;\n\nborder: none;\n\nresize: none;\n\nbackground: whitesmoke;\n\n}\n\n [page-view=\"format-json\"]>div>div, [page-view=\"format-json\"]>div>textarea{\n\nwidth: calc(100vw - 40px);\n\nheight: calc(var(--height) * 0.5 - 100px);\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./bin/loader/scss
+// Original file:./src/tool/json/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['232']=function(){
+window.__pkg__bundleSrc__['158']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    
+    __pkg__scope_args__=window.__pkg__getBundle('31');
+var isString =__pkg__scope_args__.default;
 
-                var module={
-                    exports:{}
-                };
-                var exports=module.exports;
-        
-                var toSelector = function (preSelectorArray, deep) {
+__pkg__scope_args__=window.__pkg__getBundle('159');
+var analyseWord =__pkg__scope_args__.default;
 
-    var selectors = preSelectorArray[0], i, j, k;
+__pkg__scope_args__=window.__pkg__getBundle('160');
+var toValue =__pkg__scope_args__.default;
 
-    // 一层层深入
-    for (i = 1; i < deep; i++) {
 
-        var temp = [];
-        // 前置循环
-        for (j = 0; j < selectors.length; j++) {
+// 把一段字符串变成json返回
+__pkg__scope_bundle__.default= function (express) {
 
-            // 预选循环
-            for (k = 0; k < preSelectorArray[i].length; k++) {
+    if (isString(express)) {
 
-                temp.push(selectors[j] + preSelectorArray[i][k]);
+        // 先分析出来单词
+        var wordArray = analyseWord(express);
 
+        /**
+         * 思路：
+         * 从后往前找，找到第一个需要归结的，直接归结，
+         * 归结完毕以后，继续，知道找到开头，说明归结完毕，
+         * 这样设计的好处是：
+         * 从后往前找，一定是叶子，这就消除了递归。
+         */
+        var i = wordArray.length - 1, j;
+
+        // 只要单词数组归结完毕
+        while (wordArray.length > 1) {
+
+            // 从后往前找第一个需要归结的子对象
+            while (i >= 0 && (wordArray[i].type != 'insign' || ['{', '['].indexOf(wordArray[i].value) < 0)) {
+                i = i - 1;
             }
+
+            if (i < 0) {
+                // 如果到开头都没有遇到，缺少开始符号
+                throw new Error("Illegal express : " + express + "\nstep='toOne-searchBeginIndex',wordArray=" + JSON.stringify(wordArray));
+            }
+
+            // 然后合并
+            j = i + 1;
+            var subWordArray = [wordArray[i]];
+            while (j < wordArray.length && (wordArray[j].type != 'insign' || wordArray[j].value != {
+                "{": "}",
+                "[": "]"
+            }[wordArray[i].value])) {
+                subWordArray.push(wordArray[j]);
+                j = j + 1;
+            }
+
+            if (j >= wordArray.length) {
+                // 如果到结尾都没有需要应该闭合的符号，缺少闭合符号
+                throw new Error("Illegal express : " + express + "\nstep='toOne-searchEndIndex',wordArray=" + JSON.stringify(wordArray));
+            } else {
+
+                // 结尾追加进去
+                subWordArray.push(wordArray[j]);
+
+                // 归结
+                wordArray[i] = toValue(subWordArray);
+
+                // 调整
+                wordArray.splice(i + 1, j - i);
+            }
+
 
         }
 
-        selectors = temp;
+        // 返回计算结果
+        return wordArray[0].value;
+
+    } else {
+
+        throw new Error('The data passed is not a string.');
+
     }
 
-    // 最后补充 {
-    return "\n" + (selectors.join(',')) + "{\n";
 };
 
-// 把代码变成代码块
-// 比如一个注释就是一块，无论注释的内容有多少
-var analyseBlock = function (source) {
 
-    var i = -1,
+    return __pkg__scope_bundle__;
+}
 
-        // 当前面对的字符
-        currentChar = null;
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/json/analyseWord
+/*****************************************************************/
+window.__pkg__bundleSrc__['159']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('137');
+var ReadString =__pkg__scope_args__.default;
 
-    // 获取下一个字符
-    var next = function () {
-        currentChar = i++ < source.length - 1 ? source[i] : null;
-        return currentChar;
+
+__pkg__scope_bundle__.default= function (express) {
+
+    // 剔除开头和结尾的空白
+    express = express.trim();
+
+    // 获取字符串分析对象
+    var reader = ReadString(express);
+
+    var wordArray = [];
+    var tempWord = "";
+    reader.readNext();
+
+    // 定义一个追加普通串的方法
+    var pushNormal = function () {
+        tempWord = tempWord.trim();
+        if (tempWord != '') {
+            wordArray.push({
+                type: "normal",
+                value: tempWord
+            });
+        }
+        tempWord = "";
     };
-
-    // 获取往后n个值
-    var nextNValue = function (n) {
-        return source.substring(i, n + i > source.length ? source.length : n + i);
-    };
-
-    var blocks = [];
-    var currentBlock = "";
-
-    next();
 
     while (true) {
 
-        // 先剔除空白字符
-        // 保证正式开始的时候匹配的是有效的
-        while (new RegExp("[\\x20\\t\\r\\n\\f]").test(currentChar)) {
-            next();
+        if (reader.index >= express.length) break;
+
+        // 单行注释
+        if (reader.getNextN(2) == '//') {
+            while (!/\n/.test(reader.readNext()) && reader.index < express.length);
         }
 
-        // 如果匹配的字符没有了
-        if (currentChar == null) break;
-
-        // 如果是注释
-        // /* 类型一 */
-        if (nextNValue(2) == '/*') {
-
-            next(); next();
-            currentBlock = "/*";
-
-            while (nextNValue(2) != '*/' && currentChar != null) {
-                currentBlock += currentChar;
-                next();
-            }
-
-            // 对于注释 /* */
-            // 如果到结尾都没有闭合，应该提示语法错误
-            if (currentChar == null) {
-                throw new Error('The comment is not closed.');
-            }
-
-            currentBlock += "*/";
-            next(); next();
-
-            blocks.push({
-                value: currentBlock,
-                type: "comment-double"
-            });
-        }
-
-        // 如果是注释
-        // // 类型二
-        else if (nextNValue(2) == '//') {
-            currentBlock = '';
-
-            while (currentChar != '\n' && currentChar != null) {
-                currentBlock += currentChar;
-                next();
-            }
-
-            blocks.push({
-                value: currentBlock,
-                type: "comment-single"
-            });
-
-        }
-
-        // 如果是结束
-        //  }
-        else if (currentChar == '}') {
-
-            blocks.push({
-                value: "}",
-                type: "end"
-            });
-
-            next();
-
-        }
-
-        // 余下，只有两种情况：
-        // 1.如是是开始
-        //  xxx {
-        // 2.可能是一个语句
-        //  xxx : xxx ;
-        // 这两种都需要进一步匹配
-        else {
-
-            currentBlock = '';
-
-            // 目前先没有考虑下列情况：
-            // 语句 content:";"
-            while (currentChar != '{' && currentChar != ';' && currentChar != null) {
-                currentBlock += currentChar;
-                next();
-            }
-
-            if (currentChar == null) {
-                throw new Error('Statement or code block missing closure.');
-            }
-
-            blocks.push({
-                value: currentBlock + currentChar,
-                type: {
-                    '{': "begin",
-                    ';': 'statement'
-                }[currentChar]
-            });
-
-            next();
-
-        }
-
-    }
-
-    return blocks;
-};
-
-
-module.exports = function (source) {
-
-    // 分析出代码块
-
-    var blocks = analyseBlock(source);
-
-    // 根据代码块获得最终代码
-
-    var i, j, cssCode = "", preSelectorArray = [], deep = 0;
-    for (i = 0; i < blocks.length; i++) {
-
-        // 注释 double
-        if (blocks[i].type == 'comment-double') {
-
-            cssCode += blocks[i].value;
-
-        }
-
-        // 注释 single
-        else if (blocks[i].type == 'comment-single') {
-
-            cssCode += "\n/* " + blocks[i].value + " */\n";
-
-        }
-
-        // 开始
-        else if (blocks[i].type == 'begin') {
-
-            var preSplit = blocks[i].value.split(',');
-            var preSelect = [];
-            for (j = 0; j < preSplit.length; j++) {
-
-                // 去掉两端的空格
-                preSelect[j] = preSplit[j].replace(/\{$/, '').trim();
-
-                // 判断拼接方式
-                if (/^&/.test(preSelect[j])) {
-                    preSelect[j] = preSelect[j].replace(/^&/, '');
-                } else {
-                    preSelect[j] = " " + preSelect[j];
+        // 多行注释
+        else if (reader.getNextN(2) == '/*') {
+            while (reader.getNextN(2) != '*/') {
+                if (reader.index >= express.length) {
+                    throw new Error("Multiline comment not closed correctly : " + express + "\nstep='analyseWord-searchEndComment'");
                 }
-
+                reader.readNext();
             }
-
-            // 登记到前缀数组
-            preSelectorArray[deep] = preSelect;
-            deep += 1;
+            reader.readNext();
+            reader.readNext();
         }
 
-        // 结束
-        else if (blocks[i].type == 'end') {
+        // 如果是边界符号
+        else if (['{', '}', ',', '[', ']', ':'].indexOf(reader.currentChar) > -1) {
+            pushNormal();
 
-            deep -= 1;
-
+            wordArray.push({
+                type: "insign",
+                value: reader.currentChar
+            });
+            reader.readNext();
         }
 
-        // 语句
-        else if (blocks[i].type == 'statement') {
+        // 如果遇到字符串，应该是一个独立的单词
+        else if (['"', "'"].indexOf(reader.currentChar) > -1) {
 
-            // 如果是第一个
-            j = 1;
-            var preType = blocks[i - j].type;
-            while (['comment-double', 'comment-single'].indexOf(preType) > -1) {
-                j += 1;
-                preType = blocks[i - j].type;
+            var tempStrWord = "";
+            while (['"', "'"].indexOf(reader.readNext()) < 0) {
+                if (reader.index >= express.length) {
+                    throw new Error("The string is not closed correctly : " + express + "\nstep='analyseWord-searchString',currentStrWord=" + tempStrWord);
+                }
+                tempStrWord += reader.currentChar;
             }
-            if (['end', 'begin'].indexOf(preType) > -1) {
-                cssCode += toSelector(preSelectorArray, deep);
-            }
+            reader.readNext();
+            wordArray.push({
+                type: "string",
+                value: tempStrWord
+            });
 
-            cssCode += "\n" + blocks[i].value + "\n";
-
-            // 如果是最后一个
-            j = 1;
-            var nextType = blocks[i + j].type;
-            while (['comment-double', 'comment-single'].indexOf(nextType) > -1) {
-                j += 1;
-                nextType = blocks[i + j].type;
-            }
-            if (['end', 'begin'].indexOf(nextType) > -1) {
-                cssCode += "\n}\n";
-            }
-
+        } else {
+            tempWord += reader.currentChar;
+            reader.readNext();
         }
 
     }
 
-    return cssCode;
+    return wordArray;
 };
-        
-                __pkg__scope_bundle__.default= module.exports;
-        
-                
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/ReadString
+/*****************************************************************/
+window.__pkg__bundleSrc__['137']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (express) {
+
+    var reader = {
+        index: -1,
+        currentChar: null
+    };
+
+    // 读取下一个字符
+    reader.readNext = function () {
+        reader.currentChar = reader.index++ < express.length - 1 ? express[reader.index] : null;
+        return reader.currentChar;
+    };
+
+    // 获取往后num个值
+    reader.getNextN = function (num) {
+        return express.substring(reader.index, num + reader.index > express.length ? express.length : num + reader.index);
+    };
+
+    return reader;
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/json/toValue
+/*****************************************************************/
+window.__pkg__bundleSrc__['160']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    var toValue = function (word) {
+
+    if (word.type != 'string' && word.type != 'object') {
+
+        // 数字
+        if (/[+-]{0,1}\d{1,}\.{0,1}\d{0,}/.test(word.value)) {
+            return +word.value;
+        }
+
+        // undefined
+        else if (word.value == 'undefined') {
+            return undefined;
+        }
+
+        // null
+        else if (word.value == 'null') {
+            return null;
+        }
+
+        // false
+        else if (word.value == 'false') {
+            return false;
+        }
+
+        // true
+        else if (word.value == 'true') {
+            return true;
+        }
+
+    }
+
+    return word.value;
+}
+
+__pkg__scope_bundle__.default= function (wordArray) {
+
+    var value, i;
+
+    // 是json
+    if (wordArray[0].value == '{') {
+        value = {};
+        for (i = 3; i < wordArray.length; i += 4) {
+            value[wordArray[i - 2].value] = toValue(wordArray[i]);
+        }
+    }
+
+    // 数组
+    else {
+        value = [];
+        for (i = 2; i < wordArray.length; i += 2) {
+            value.push(toValue(wordArray[i - 1]));
+        }
+    }
+
+    return {
+        type: "object",
+        value: value
+    };
+};
+
 
     return __pkg__scope_bundle__;
 }
@@ -348,11 +366,11 @@ module.exports = function (source) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/editor/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['160']=function(){
+window.__pkg__bundleSrc__['161']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
-__pkg__scope_args__=window.__pkg__getBundle('161');
+__pkg__scope_args__=window.__pkg__getBundle('162');
 var trigger =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('62');
@@ -371,7 +389,7 @@ var isFunction =__pkg__scope_args__.default;
 
 // 核心方法和工具方法
 
-__pkg__scope_args__=window.__pkg__getBundle('162');
+__pkg__scope_args__=window.__pkg__getBundle('163');
 var textWidth=__pkg__scope_args__.textWidth;
 var bestLeftNum=__pkg__scope_args__.bestLeftNum;
 var calcCanvasXY=__pkg__scope_args__.calcCanvasXY;
@@ -379,11 +397,11 @@ var selectIsNotBlank=__pkg__scope_args__.selectIsNotBlank;
 var toTemplate=__pkg__scope_args__.toTemplate;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('163');
+__pkg__scope_args__=window.__pkg__getBundle('164');
 var initDom=__pkg__scope_args__.initDom;
 var initView=__pkg__scope_args__.initView;
 
-__pkg__scope_args__=window.__pkg__getBundle('168');
+__pkg__scope_args__=window.__pkg__getBundle('169');
 var updateView=__pkg__scope_args__.updateView;
 var updateSelectView=__pkg__scope_args__.updateSelectView;
 var updateCursorPosition=__pkg__scope_args__.updateCursorPosition;
@@ -391,20 +409,20 @@ var updateCanvasSize=__pkg__scope_args__.updateCanvasSize;
 var cancelSelect=__pkg__scope_args__.cancelSelect;
 var deleteSelect=__pkg__scope_args__.deleteSelect;
 
-__pkg__scope_args__=window.__pkg__getBundle('171');
+__pkg__scope_args__=window.__pkg__getBundle('172');
 var bindEvent =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('173');
+__pkg__scope_args__=window.__pkg__getBundle('174');
 var diff =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('174');
+__pkg__scope_args__=window.__pkg__getBundle('175');
 var filterText =__pkg__scope_args__.default;
 
 
 // 内置着色器方法
 
-__pkg__scope_args__=window.__pkg__getBundle('175');
+__pkg__scope_args__=window.__pkg__getBundle('176');
 var innerShader =__pkg__scope_args__.default;
 
 
@@ -611,7 +629,7 @@ __pkg__scope_bundle__.default= editor;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/trigger
 /*****************************************************************/
-window.__pkg__bundleSrc__['161']=function(){
+window.__pkg__bundleSrc__['162']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
       // 触发事件
@@ -680,7 +698,7 @@ __pkg__scope_bundle__.default= function (text, callback, errorback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/editor/edit-view/tool
 /*****************************************************************/
-window.__pkg__bundleSrc__['162']=function(){
+window.__pkg__bundleSrc__['163']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -791,10 +809,10 @@ __pkg__scope_bundle__.getInputMessage=function(editor) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/editor/edit-view/init
 /*****************************************************************/
-window.__pkg__bundleSrc__['163']=function(){
+window.__pkg__bundleSrc__['164']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('164');
+    __pkg__scope_args__=window.__pkg__getBundle('165');
 var setStyle =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
@@ -803,13 +821,13 @@ var bind =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('48');
 var appendTo =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('165');
+__pkg__scope_args__=window.__pkg__getBundle('166');
 var stopPropagation =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('166');
+__pkg__scope_args__=window.__pkg__getBundle('167');
 var preventDefault =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('167');
+__pkg__scope_args__=window.__pkg__getBundle('168');
 var attr =__pkg__scope_args__.default;
 
 
@@ -938,7 +956,7 @@ __pkg__scope_bundle__.initView=function() {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/setStyle
 /*****************************************************************/
-window.__pkg__bundleSrc__['164']=function(){
+window.__pkg__bundleSrc__['165']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 修改样式
@@ -954,7 +972,7 @@ __pkg__scope_bundle__.default= function (el, styles) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/stopPropagation
 /*****************************************************************/
-window.__pkg__bundleSrc__['165']=function(){
+window.__pkg__bundleSrc__['166']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 阻止冒泡
@@ -973,7 +991,7 @@ __pkg__scope_bundle__.default= function (event) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/preventDefault
 /*****************************************************************/
-window.__pkg__bundleSrc__['166']=function(){
+window.__pkg__bundleSrc__['167']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 阻止默认事件
@@ -992,7 +1010,7 @@ __pkg__scope_bundle__.default= function (event) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/attr
 /*****************************************************************/
-window.__pkg__bundleSrc__['167']=function(){
+window.__pkg__bundleSrc__['168']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 修改属性
@@ -1008,19 +1026,19 @@ __pkg__scope_bundle__.default= function (el, attrs) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/editor/edit-view/update
 /*****************************************************************/
-window.__pkg__bundleSrc__['168']=function(){
+window.__pkg__bundleSrc__['169']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('164');
+    __pkg__scope_args__=window.__pkg__getBundle('165');
 var setStyle =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('167');
+__pkg__scope_args__=window.__pkg__getBundle('168');
 var attr =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('169');
+__pkg__scope_args__=window.__pkg__getBundle('170');
 var prependTo =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('170');
+__pkg__scope_args__=window.__pkg__getBundle('171');
 var after =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('33');
@@ -1239,7 +1257,7 @@ __pkg__scope_bundle__.deleteSelect=function() {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/prependTo
 /*****************************************************************/
-window.__pkg__bundleSrc__['169']=function(){
+window.__pkg__bundleSrc__['170']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('49');
@@ -1249,7 +1267,7 @@ __pkg__scope_args__=window.__pkg__getBundle('50');
 var toNode =__pkg__scope_args__.default;
 
 
-// 追加结点(内部开头)
+// 追加节点(内部开头)
 __pkg__scope_bundle__.default= function (el, template) {
     var node = isElement(template) ? template : toNode(template);
     el.insertBefore(node, el.childNodes[0]);
@@ -1262,7 +1280,7 @@ __pkg__scope_bundle__.default= function (el, template) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/after
 /*****************************************************************/
-window.__pkg__bundleSrc__['170']=function(){
+window.__pkg__bundleSrc__['171']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('49');
@@ -1272,7 +1290,7 @@ __pkg__scope_args__=window.__pkg__getBundle('50');
 var toNode =__pkg__scope_args__.default;
 
 
-// 在被指定元素之后插入结点
+// 在被指定元素之后插入节点
 __pkg__scope_bundle__.default= function (el, template) {
     var node = isElement(template) ? template : toNode(template);
     el.parentNode.insertBefore(node, el.nextSibling);
@@ -1286,10 +1304,10 @@ __pkg__scope_bundle__.default= function (el, template) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/editor/edit-view/bind
 /*****************************************************************/
-window.__pkg__bundleSrc__['171']=function(){
+window.__pkg__bundleSrc__['172']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('172');
+    __pkg__scope_args__=window.__pkg__getBundle('173');
 var getKeyString=__pkg__scope_args__.getKeyString;
 
 __pkg__scope_args__=window.__pkg__getBundle('32');
@@ -1298,19 +1316,19 @@ var isFunction =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('22');
 var bind =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('108');
+__pkg__scope_args__=window.__pkg__getBundle('109');
 var mousePosition =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('62');
 var copy =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('165');
+__pkg__scope_args__=window.__pkg__getBundle('166');
 var stopPropagation =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('166');
+__pkg__scope_args__=window.__pkg__getBundle('167');
 var preventDefault =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('162');
+__pkg__scope_args__=window.__pkg__getBundle('163');
 var getInputMessage=__pkg__scope_args__.getInputMessage;
 
 
@@ -1867,7 +1885,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['172']=function(){
+window.__pkg__bundleSrc__['173']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
@@ -2072,7 +2090,7 @@ __pkg__scope_bundle__.default= function (callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/mousePosition
 /*****************************************************************/
-window.__pkg__bundleSrc__['108']=function(){
+window.__pkg__bundleSrc__['109']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取鼠标相对特定元素左上角位置
@@ -2101,7 +2119,7 @@ __pkg__scope_bundle__.default= function (el, event) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/editor/edit-view/diff
 /*****************************************************************/
-window.__pkg__bundleSrc__['173']=function(){
+window.__pkg__bundleSrc__['174']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -2183,7 +2201,7 @@ __pkg__scope_bundle__.default= function (newFormatData) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/editor/edit-view/filter
 /*****************************************************************/
-window.__pkg__bundleSrc__['174']=function(){
+window.__pkg__bundleSrc__['175']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -2206,7 +2224,7 @@ __pkg__scope_bundle__.default= function (oralStr) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/shader/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['175']=function(){
+window.__pkg__bundleSrc__['176']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -2257,13 +2275,13 @@ var initConfig = function (init, data) {
     return init;
 };
 
-__pkg__scope_args__=window.__pkg__getBundle('176');
+__pkg__scope_args__=window.__pkg__getBundle('177');
 var _inner_HTML_shader =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('177');
+__pkg__scope_args__=window.__pkg__getBundle('178');
 var _inner_CSS_shader =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('178');
+__pkg__scope_args__=window.__pkg__getBundle('179');
 var _inner_ES_shader =__pkg__scope_args__.default;
 
 
@@ -2336,13 +2354,13 @@ __pkg__scope_bundle__.default= function (lang, colors) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/shader/html
 /*****************************************************************/
-window.__pkg__bundleSrc__['176']=function(){
+window.__pkg__bundleSrc__['177']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('177');
+    __pkg__scope_args__=window.__pkg__getBundle('178');
 var _inner_CSS_shader =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('178');
+__pkg__scope_args__=window.__pkg__getBundle('179');
 var _inner_ES_shader =__pkg__scope_args__.default;
 
 
@@ -2616,7 +2634,7 @@ __pkg__scope_bundle__.default= function (textString, colors) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/shader/css
 /*****************************************************************/
-window.__pkg__bundleSrc__['177']=function(){
+window.__pkg__bundleSrc__['178']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (textString, colors) {
@@ -2743,7 +2761,7 @@ window.__pkg__bundleSrc__['177']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/shader/javascript
 /*****************************************************************/
-window.__pkg__bundleSrc__['178']=function(){
+window.__pkg__bundleSrc__['179']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // JS关键字

@@ -1,0 +1,65 @@
+[dialog-view="code-example"] {
+  height: 400px;
+  width: 600px;
+  top: calc(50vh - 200px);
+  left: calc(50vw - 300px);
+
+  & > div.colorful-dice {
+    width: 400px;
+    margin: auto;
+    position: relative;
+    height: 350px;
+    & > ul {
+      position: absolute;
+      transform-style: preserve-3d;
+      transform: rotateX(45deg);
+      border: 1px solid red;
+      animation: rotate_animation 3s cubic-bezier(0.34, 0.29, 1, 1) infinite;
+      margin-left: calc(50% - 10px);
+      margin-top: calc(50% - 60px);
+      & > li {
+        width: 120px;
+        line-height: 100px;
+        height: 120px;
+        text-align: center;
+        border-radius: 20px;
+        position: absolute;
+        border: 20px solid #f3f5f6;
+        color: white;
+        font-size: 30px;
+        left: -60px;
+        top: -60px;
+
+        &:nth-child(1) {
+          transform: rotateY(0) translateZ(50px);
+          background: rgb(149, 149, 218);
+        }
+
+        &:nth-child(2) {
+          transform: rotateX(-90deg) translateZ(50px);
+          background: rgb(235, 184, 107);
+        }
+
+        &:nth-child(3) {
+          transform: rotateY(-90deg) translateZ(50px);
+          background: rgb(90, 218, 31);
+        }
+
+        &:nth-child(4) {
+          transform: rotateY(90deg) translateZ(50px);
+          background: rgb(38, 228, 228);
+        }
+
+        &:nth-child(5) {
+          transform: rotateX(90deg) translateZ(50px);
+          background: rgb(191, 24, 233);
+        }
+
+        &:nth-child(6) {
+          transform: rotateY(180deg) translateZ(50px);
+          background: rgb(236, 9, 20);
+        }
+      }
+    }
+  }
+}
