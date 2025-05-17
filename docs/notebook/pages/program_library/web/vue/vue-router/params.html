@@ -1,0 +1,64 @@
+<header>
+    参数传递
+</header>
+<h2>
+    利用Query路由传参
+</h2>
+<p>
+    利用URL上的键值来传递参数的，会将参数暴露在URL上：
+</p>
+<pre tag="javascript">
+import {useRoute} from 'vue-router'
+const route=useRoute()
+
+// 带查询参数，结果是 /register?plan=private
+router.push({ path: '/register', query: { plan: 'private' } })
+</pre>
+<p>
+    获取的地方：
+</p>
+<pre tag="javascript">
+import {useRoute} from 'vue-router'
+const route=useRoute()
+
+console.log(route.query.plan) // 'private'
+</pre>
+<h2>
+    利用params传递
+</h2>
+<p>
+    将数据储存在后台内存之中，当页面刷新之后其数据会丢失：
+</p>
+<pre tag="javascript">
+import {useRoute} from 'vue-router'
+const route=useRoute()
+
+router.push({ name: 'user', params: { username: 'eduardo' } })
+</pre>
+<p>
+    获取的地方：
+</p>
+<pre tag="javascript">
+import {useRoute} from 'vue-router'
+const route=useRoute()
+
+console.log(route.params.username) // 'eduardo'
+</pre>
+<h2>
+    使用state
+</h2>
+<p>
+    参数不显示在链接后面。
+</p>
+<pre tag="javascript">
+import {useRoute} from 'vue-router'
+const route=useRoute()
+
+router.push({ path: '/register', state: { plan: 'private' } })
+</pre>
+<p>
+    获取的地方：
+</p>
+<pre tag="javascript">
+console.log(history.state.plan) // 'private'
+</pre>

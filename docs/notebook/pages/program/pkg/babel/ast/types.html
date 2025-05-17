@@ -1,0 +1,50 @@
+<header>
+    @babel/types
+</header>
+<p>
+    官方文档地址：
+    <a href="https://babel.dev/docs/babel-types" target="_blank">
+        https://babel.dev/docs/babel-types
+    </a>
+</p>
+<p>
+    提供了一套用于创建和判断 AST 节点的工具，在遍历和修改 AST 时，常常需要使用这些工具来创建新节点或检查节点类型。
+</p>
+<h2>
+    节点创建
+</h2>
+<ul>
+    <li>types.identifier(name) - 创建标识符节点</li>
+    <li>types.stringLiteral(value) - 创建字符串字面量节点</li>
+    <li>types.numericLiteral(value) - 创建数值字面量节点</li>
+    <li>types.booleanLiteral(value) - 创建布尔字面量节点</li>
+    <li>types.nullLiteral() - 创建空字面量节点</li>
+</ul>
+<h2>
+    对象创建
+</h2>
+<ul>
+    <li>types.objectExpression(properties) - 创建对象表达式节点</li>
+    <li>types.objectProperty(key, value) - 创建对象属性节点</li>
+    <li>types.objectMethod(kind, key, params, body) - 创建对象方法节点</li>
+</ul>
+<h2>
+    数组创建
+</h2>
+<ul>
+    <li>types.arrayExpression(elements) - 创建数组表达式节点</li>
+</ul>
+<h2>
+    函数创建
+</h2>
+<ul>
+    <li>types.functionDeclaration(id, params, body) - 创建函数声明节点</li>
+    <li>types.functionExpression(id, params, body) - 创建函数表达式节点</li>
+    <li>types.arrowFunctionExpression(params, body, async) - 创建箭头函数表达式节点</li>
+</ul>
+<h2>
+    表达式创建
+</h2>
+<ul>
+    <li>types.binaryExpression(operator, left, right) - 创建二元表达式节点</li>
+</ul>

@@ -1,0 +1,60 @@
+<header>
+    Vue
+</header>
+<h2>
+    v-if 和 v-show 有什么区别？
+</h2>
+<h3>
+    手段
+</h3>
+<ul>
+    <li>
+        v-if是动态的向DOM树内添加或者删除DOM元素
+    </li>
+    <li>
+        v-show是通过设置DOM元素的display样式属性控制显隐
+    </li>
+</ul>
+<h3>
+    编译
+</h3>
+<ul>
+    <li>
+        v-if是惰性的，如果初始条件为假，则什么也不做；只有在条件第一次变为真时才开始局部编译
+    </li>
+    <li>
+        v-show是在任何条件下，无论首次条件是否为真，都被编译，然后被缓存，而且DOM元素保留
+    </li>
+</ul>
+<h3>
+    性能消耗
+</h3>
+<ul>
+    <li>
+        v-if有更高的切换消耗
+    </li>
+    <li>
+        v-show有更高的初始渲染消耗
+    </li>
+</ul>
+<p>
+    此外，v-if指令可以应用于template包装元素上，v-show不支持。
+</p>
+<h2>
+    Vue中给对象添加新属性时，界面不刷新怎么办?
+</h2>
+<h3>
+    原因
+</h3>
+<p>
+    vue2响应式采用object.defineProperty进行劫持，那个添加新属性时，新的属性不会具有get和set方法，不是一个响应式所以界面不刷新。
+</p>
+<h3>
+    解决
+</h3>
+<p>
+    Vue.set() 向响应式对象中添加一个property，并确保这个新 property 同样是响应式的。
+</p>
+<div class="tips">
+    vue3通过proxy劫持和reflect映射实现响应式，不会有这个问题。
+</div>

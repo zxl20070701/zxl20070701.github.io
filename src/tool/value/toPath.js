@@ -83,7 +83,15 @@ var doit2 = function (expressArray) {
 
                 // 计算
                 var tempValue = evalValue(temp);
-                var _value = newExpressArray[newExpressArray.length - 1][tempValue];
+                var tempObj = newExpressArray[newExpressArray.length - 1];
+
+                // 如果是字符串且标注成@string，说明不是值，需要剥离
+                // 2025年4月20日 于南宁
+                if (typeof tempObj === "string") {
+                    tempObj = tempObj.replace(/@string$/, "")
+                }
+
+                var _value = tempObj[tempValue];
                 newExpressArray[newExpressArray.length - 1] = isString(_value) ? _value + "@string" : _value;
 
                 // 状态恢复

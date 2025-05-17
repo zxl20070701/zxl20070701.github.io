@@ -17,7 +17,7 @@ body {
     height: 6px;
     background-color: #447ba7;
     left: 0;
-    top: -15px;
+    top: -40px;
     border-radius: 3px;
 }
 
@@ -93,13 +93,13 @@ body>.homepage>.btn {
 body>.organizations {
     text-align: center;
     margin: 0 auto;
-    margin-top: 25px;
+    margin-top: 60px;
     width: 1000px;
 }
 
 body>.organizations>.item {
     display: inline-block;
-    width: 260px;
+    width: 180px;
     margin: 0 30px;
     color: inherit;
 }
@@ -119,6 +119,10 @@ body>.organizations>.item>.icon.oi-contrib {
 
 body>.organizations>.item>.icon.handless-ui {
     background-image: url("../images/handlessUI.png");
+}
+
+body>.organizations>.item>.icon.rapid-start {
+    background-image: url("../images/rapid-start.png");
 }
 
 body>.organizations>.item>.icon.ll-store {

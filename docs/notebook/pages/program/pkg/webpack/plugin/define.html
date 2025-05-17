@@ -11,9 +11,13 @@
 </p>
 <pre tag="javascript">
 class DemoPlugin{
+    constructor(options) {
+
+        // 用户传递的参数
+        this.options = options;
+    }
     apply(compiler) {
         // 在这里写具体的业务代码
-        // 用户传递的参数options通过this.options获取
     }
 }
 module.exports = DemoPlugin;

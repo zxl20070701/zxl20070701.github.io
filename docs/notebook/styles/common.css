@@ -22,7 +22,7 @@
 }
 
 /* 请求进度 */
-body > #process {
+body>#process {
   position: fixed;
   width: 0;
   height: 2px;
@@ -40,31 +40,31 @@ body > #process {
   scroll-behavior: smooth;
 }
 
-.doc > header {
+.doc>header {
   font-size: 28px;
   padding: 20px 0;
   font-weight: 800;
 }
 
-.doc > h2 {
+.doc>h2 {
   font-size: 20px;
-  line-height: 2em;
-  padding: 20px 0;
+  line-height: 1.4em;
+  padding: 10px 0;
 }
 
-.doc > h3 {
+.doc>h3 {
   font-size: 16px;
   line-height: 2em;
   padding: 15px 0;
 }
 
-.doc > h4 {
+.doc>h4 {
   font-size: 12px;
   padding: 15px 0 5px 0;
   text-decoration: overline;
 }
 
-.doc > p {
+.doc>p {
   line-height: 1.6em;
   text-indent: 2em;
   color: #3c3939;
@@ -79,19 +79,21 @@ body > #process {
   text-decoration: underline;
 }
 
-.doc > ul,
-.doc > ol {
+.doc ul,
+.doc ol {
   font-size: 13px;
   line-height: 2.4em;
   margin-left: 2.5em;
 }
 
-.doc > ol > li {
+.doc ol>li {
   list-style-type: decimal;
+  white-space: normal;
 }
 
-.doc > ul > li {
+.doc ul>li {
   list-style-type: disc;
+  white-space: normal;
 }
 
 .doc .oneline {
@@ -212,43 +214,43 @@ body > #process {
   font-weight: 800;
 }
 
-.doc > table {
+.doc>table {
   max-width: 100%;
   line-height: 20px;
   font-size: 14px;
 }
 
-.doc > table > tbody > tr > * {
+.doc>table>tbody>tr>* {
   border-width: 0 1px 1px 0;
   border-style: solid;
   border-color: #c1bcbc;
 }
 
-.doc > table td,
-.doc > table th {
+.doc>table td,
+.doc>table th {
   padding: 0.5em 1em;
 }
 
-.doc > table > tbody > tr > *:first-child {
+.doc>table>tbody>tr>*:first-child {
   border-width: 0 1px 1px 1px;
 }
 
-.doc > table > tbody > tr:nth-child(2n) {
+.doc>table>tbody>tr:nth-child(2n) {
   background-color: #f5f5f5;
 }
 
-.doc > table > tbody > tr:nth-child(2n + 1) {
+.doc>table>tbody>tr:nth-child(2n + 1) {
   background-color: #fff;
 }
 
-.doc > table > thead > tr {
+.doc>table>thead>tr {
   background-color: #294e80;
   border: 1px solid #c1bcbc;
   color: #fff;
   white-space: nowrap;
 }
 
-.doc > button[tag] {
+.doc>button[tag] {
   margin: 10px 30px;
   background: red;
   color: white;
@@ -278,7 +280,7 @@ pre {
   position: relative;
 }
 
-pre > .copy-icon {
+pre>.copy-icon {
   position: absolute;
   right: 5px;
   top: 5px;

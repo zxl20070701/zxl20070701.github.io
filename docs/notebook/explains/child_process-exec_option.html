@@ -1,0 +1,36 @@
+<header>
+    options 参数说明
+</header>
+<p>
+    对象，可以是：
+</p>
+<ul>
+    <li>
+        cwd ，字符串，子进程的当前工作目录
+    </li>
+    <li>
+        env，对象 环境变量键值对
+    </li>
+    <li>
+        encoding ，字符串，字符编码（默认： 'utf8'）
+    </li>
+    <li>
+        shell ，字符串，将要执行命令的 Shell（默认: 在 UNIX 中为/bin/sh， 在 Windows 中为cmd.exe， Shell 应当能识别 -c开关在 UNIX 中，或 /s /c 在 Windows
+        中。 在Windows 中，命令行解析应当能兼容cmd.exe）
+    </li>
+    <li>
+        timeout，数字，超时时间（默认： 0）
+    </li>
+    <li>
+        maxBuffer，数字， 在 stdout 或 stderr 中允许存在的最大缓冲（二进制），如果超出那么子进程将会被杀死 （默认: 200*1024）
+    </li>
+    <li>
+        killSignal ，字符串，结束信号（默认：'SIGTERM'）
+    </li>
+    <li>
+        uid，数字，设置用户进程的 ID
+    </li>
+    <li>
+        gid，数字，设置进程组的 ID
+    </li>
+</ul>

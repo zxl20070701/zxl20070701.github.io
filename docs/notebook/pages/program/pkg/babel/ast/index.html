@@ -10,6 +10,9 @@
 <p>
     接受源码，进行词法分析、语法分析，生成AST。
 </p>
+<div class="tips">
+    一个在线工具，可以查看生成的AST：<a href="https://astexplorer.net/" target="_blank">https://astexplorer.net/</a>
+</div>
 <h3>
     @babel/traverse
 </h3>
@@ -46,7 +49,7 @@ let code = `
 <pre tag="javascript">
 let doit = function () {
     console.log("试试箭头函数");
-    };
+};
 </pre>
 <p>
     那么可以：
@@ -62,7 +65,7 @@ let ast = parse(code)
 
 traverse(ast, {
 
-    //【2】遍历语法树（递归子孙节点之前执行，还有exit：子孙节点遍历完后，回溯时执行）
+    //【2】遍历语法树
     enter(path) {
 
         //【3】修改语法树（比如节点类型是ArrowFunctionExpression的话，特殊处理一下）

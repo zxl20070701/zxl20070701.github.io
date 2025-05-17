@@ -1,0 +1,30 @@
+<header>
+    运算符
+</header>
+<h2>
+    可选链(.?)
+</h2>
+<p>
+    只有obj存在（也就是!!obj为ture）的时候，才会尝试获取其属性key（即使obj是undefined也不会报错）：
+</p>
+<pre tag="javascript">
+let val = obj.key;
+</pre>
+<h2>
+    空值合并运算符(??)
+</h2>
+<p>
+    当b不是undefined或null的时候，把b赋值给a，否则把c赋值给a：
+</p>
+<pre tag="javascript">
+let a = b ?? c;
+</pre>
+<h2>
+    空值赋值运算符(??=)
+</h2>
+<p>
+    当a是undefined或null的时候，才把b赋值给a：
+</p>
+<pre tag="javascript">
+a ??= b;
+</pre>

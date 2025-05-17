@@ -216,7 +216,7 @@ export default function (target, express, scope) {
                     var tempKey = nextNValue(len - 1);
                     // 如果不是有前置.，那就是需要求解了
                     var tempValue = tempKey in scope ? scope[tempKey] : target[tempKey];
-                    expressArray.push(isString(tempValue) ? tempValue + "@string" : tempValue);
+                    expressArray.push(typeof tempValue === "string" ? tempValue + "@string" : tempValue);
                 }
                 i += (len - 2); next();
             }
