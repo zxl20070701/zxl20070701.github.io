@@ -1,0 +1,62 @@
+<header>
+    overscroll-behavior
+</header>
+<p>
+    属性用于在尝试滚动超出滚动边界时，关闭元素的滚动链（scroll chaining）或过度滚动反馈（overscroll affordance）。
+</p>
+<div class="tips">
+    滚动链：当在一个元素上过度滚动时，会导致父元素的滚动行为（默认行为）。
+</div>
+<h2>
+    语法
+</h2>
+<pre tag="css">
+    overscroll-behavior: auto|contain|none|initial|inherit;
+</pre>
+<p>
+    具体描述如下：
+</p>
+<table class="dataintable">
+    <thead>
+        <tr>
+            <th style="width: 25%;">值</th>
+            <th>描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>auto</td>
+            <td>允许滚动链和过度滚动反馈行为（默认值）。</td>
+        </tr>
+        <tr>
+            <td>contain</td>
+            <td>允许过度滚动反馈行为，但不允许滚动链。</td>
+        </tr>
+        <tr>
+            <td>none</td>
+            <td>不允许过度滚动反馈或滚动链行为。</td>
+        </tr>
+        <tr>
+            <td>initial</td>
+            <td>将此属性设置为其默认值（比如继承无效等）。</td>
+        </tr>
+        <tr>
+            <td>inherit</td>
+            <td>从其父元素继承此属性。</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    缩写
+</h2>
+<p>
+    属性是以下属性的简写形式：
+</p>
+<ul>
+    <li>
+        overscroll-behavior-x
+    </li>
+    <li>
+        overscroll-behavior-y
+    </li>
+</ul>

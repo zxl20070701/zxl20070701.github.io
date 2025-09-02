@@ -49,7 +49,7 @@ window.__pkg__bundleSrc__['423']=function(){
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = ".circle {\n  width: 400px;\n  height: 400px;\n  background-color: aliceblue;\n  margin: 100px auto;\n  border-radius: 50%;\n  position: relative;\n  overflow: hidden;\n}\n\n.wave {\n  position: absolute;\n  left: calc(50% - 400px);\n  width: 800px;\n  height: 800px;\n  background-color: aqua;\n  border-radius: 300px;\n  top: calc(300px);\n  animation: rotate_animation 10s infinite;\n}\n\n.value {\n  line-height: 400px;\n  font-size: 60px;\n}\n\n@keyframes rotate_animation {\n  0% {\n    transform: rotate(0deg);\n  }\n\n  100% {\n    transform: rotate(360deg);\n  }\n}";
+styleElement.innerHTML = ".circle {\r\n  width: 400px;\r\n  height: 400px;\r\n  background-color: aliceblue;\r\n  margin: 100px auto;\r\n  border-radius: 50%;\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n\r\n.wave {\r\n  position: absolute;\r\n  left: calc(50% - 400px);\r\n  width: 800px;\r\n  height: 800px;\r\n  background-color: aqua;\r\n  border-radius: 300px;\r\n  top: calc(300px);\r\n  animation: rotate_animation 10s infinite;\r\n}\r\n\r\n.value {\r\n  line-height: 400px;\r\n  font-size: 60px;\r\n}\r\n\r\n@keyframes rotate_animation {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

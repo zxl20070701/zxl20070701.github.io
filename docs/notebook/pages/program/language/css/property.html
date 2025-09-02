@@ -1,0 +1,48 @@
+<header>
+    自定义 CSS 属性
+</header>
+<h2>
+    定义
+</h2>
+<p>
+    用于在样式表中直接定义自定义 CSS 属性，具有数据类型检查和约束功能，可以设置默认值，并定义属性是否可以继承值。
+</p>
+<h3>
+    CSS中
+</h3>
+<p>
+    例如：
+</p>
+<pre tag="css">
+@property --my-custom-property {
+    syntax: "&lt;color&gt;";
+    inherits: true;
+    initial-value: lightgray;
+}
+</pre>
+<p>
+    上述定义表示 --my-custom-property 是一个颜色属性，它可以从父元素继承值，且其默认值为 lightgray。
+</p>
+<h3>
+    JS中
+</h3>
+<pre tag="javascript">
+window.CSS.registerProperty({
+    name: "--my-custom-property",
+    syntax: "&lt;color&gt;", // 定义属性的值类型
+    inherits: false, // 指定属性是否可继承
+    initialValue: "lightgray", // 定义属性的初始值
+});
+</pre>
+<h2>
+    使用
+</h2>
+<pre tag="css">
+div {
+    background-color: var(--my-custom-property);
+}
+    
+div:hover {
+    --my-custom-property: blue; /* Hover 时改变颜色 */
+}
+</pre>

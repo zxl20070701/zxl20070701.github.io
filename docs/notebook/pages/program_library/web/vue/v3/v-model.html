@@ -8,7 +8,7 @@
     上面的代码等价于：
 </p>
 <pre tag="html">
-    <input :value="info" @input="info = $event.target.value">
+    <input :value="info" @input="info = $event.detail.value">
 </pre>
 <p>
     当用在组件上时，则会这样：
@@ -36,7 +36,7 @@ defineEmits(['update:modelValue'])
 <template>
     <input
     :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    @input="$emit('update:modelValue', $event.detail.value)"
     />
 </template>
 </pre>
@@ -61,7 +61,7 @@ defineEmits(['update:myValue'])
 <template>
     <input
     :value="myValue"
-    @input="$emit('update:myValue', $event.target.value)"
+    @input="$emit('update:myValue', $event.detail.value)"
     />
 </template>
 </pre>

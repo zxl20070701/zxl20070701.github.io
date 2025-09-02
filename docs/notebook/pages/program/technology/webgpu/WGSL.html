@@ -1,0 +1,127 @@
+<header>
+    着色器语言WGSL
+</header>
+<h2>
+    文档资料
+</h2>
+<ul>
+    <li>
+        WGSL英文文档：
+        <a href="https://www.w3.org/TR/WGSL/" target="_blank">
+            https://www.w3.org/TR/WGSL/
+        </a>
+    </li>
+    <li>
+        WebGPU引擎Orillusion团队翻译：
+        <a href="https://www.orillusion.com/zh/wgsl.html" target="_blank">
+            https://www.orillusion.com/zh/wgsl.html
+        </a>
+    </li>
+</ul>
+<h2>
+    基础类型
+</h2>
+<p>
+    下面是部分WGSL的数据类型：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>符号</th>
+            <th>数据类型</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>bool</td>
+            <td>布尔</td>
+        </tr>
+        <tr>
+            <td>u32</td>
+            <td>无符号整数</td>
+        </tr>
+        <tr>
+            <td>i32</td>
+            <td>有符号整数</td>
+        </tr>
+        <tr>
+            <td>f32</td>
+            <td>32位浮点数</td>
+        </tr>
+        <tr>
+            <td>f16</td>
+            <td>16位浮点数</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    声明变量
+</h2>
+<p>
+    可以用var关键字声明变量：
+</p>
+<pre tag="javascript">
+// var关键字声明一个变量a，数据类型是无符号整数
+var a:u32;
+</pre>
+<h2>
+    声明函数
+</h2>
+<pre tag="javascript">
+fn 函数名( 参数1:数据类型, 参数2:数据类型...){
+    // 代码
+}
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+fn add( x: f32, y:f32){
+    var z: f32 =  x + y;
+}
+</pre>
+<p>
+    如果函数有返回值设置符号-&gt;,后面注明返回值的数据类型：
+</p>
+<pre tag="javascript">
+fn add( x: f32, y:f32) -> f32 {
+    return x + y;
+}
+</pre>
+<h2>
+    向量
+</h2>
+<p>
+    三维向量vec3&lt;f32&gt;表示具有三个分量，可以用来表示顶点的xyz坐标。
+</p>
+<pre tag="javascript">
+var pos:vec3&lt;f32&gt;;
+pos= vec3&lt;f32&gt;(1.0, 2.0, 3.0);        
+</pre>
+<p>
+    四维向量表示齐次坐标，一个三维向量可以转化为四维向量：
+</p>
+<pre tag="javascript">
+var pos:vec3&lt;f32&gt;;
+pos = vec3&lt;f32&gt;(1.0, 2.0, 3.0);
+//等价于vec4&lt;f32&gt;(1.0, 2.0, 3.0,1.0)
+var pos2 = vec4&lt;f32&gt;(pos,1.0);        
+</pre>
+<h2>
+    结构体
+</h2>
+<pre tag="javascript">
+// 定义一个结构体表示点光源
+struct pointLight {
+    color: vec3&lt;f32&gt;,//光源颜色
+    intensity: f32//光源强度
+};
+</pre>
+<p>
+    使用的时候：
+</p>
+<pre tag="javascript">
+var light1:pointLight;
+light1.color = vec3&lt;f32&gt;(1.0, 0.0, 0.0);
+light1.intensity = 0.6;
+</pre>
