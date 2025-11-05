@@ -1,0 +1,102 @@
+<header>
+    入门简介
+</header>
+<p>
+    一个开源的机器学习库，主要用于进行计算机视觉（CV）、自然语言处理（NLP）、语音识别等领域的研究和开发。
+</p>
+<p>
+    官方文档地址：<a href="https://docs.pytorch.org/docs/stable/index.html"
+        target="_blank">https://docs.pytorch.org/docs/stable/index.html</a>。
+</p>
+<h2>
+    安装&引入
+</h2>
+<p>
+    使用 pip 安装 pytorch：
+</p>
+<pre tag>
+    pip install torch torchvision torchaudio
+</pre>
+<p>
+    为了确保 PyTorch 已正确安装，我们可以通过执行以下 PyTorch 代码来验证是否安装成功：
+</p>
+<pre tag>
+import torch
+
+# 当前安装的 PyTorch 库的版本
+print(torch.__version__)
+# 检查 CUDA 是否可用
+print(torch.cuda.is_available())
+</pre>
+<p>
+    如果 torch.cuda.is_available() 输出 True，则说明 PyTorch 成功识别到你的 GPU。
+</p>
+<h2>
+    架构总览
+</h2>
+<p>
+    PyTorch 采用模块化设计，由多个相互协作的核心组件构成：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th colspan="12">
+                PyTorch 架构图
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th colspan="12">
+                生态系统
+            </th>
+        </tr>
+        <tr>
+            <th colspan="3">
+                torchvision
+            </th>
+            <th colspan="3">
+                torchtext
+            </th>
+            <th colspan="3">
+                torchaudio
+            </th>
+            <th colspan="3">
+                其他专业库
+            </th>
+        </tr>
+        <tr>
+            <th colspan="12">
+                核心
+            </th>
+        </tr>
+        <tr>
+            <th colspan="4">
+                torch.nn<br />(神经网络)
+            </th>
+            <th colspan="4">
+                torch.optim<br />(优化器)
+            </th>
+            <th colspan="4">
+                torch.utils<br />(工具函数)
+            </th>
+        </tr>
+        <tr>
+            <th colspan="4">
+                torch 核心<br /> (张量计算)
+            </th>
+            <th colspan="4">
+                autograd<br />(自动微分)
+            </th>
+            <th colspan="4">
+                torch.utils.data<br />(数据加载)
+            </th>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    执行流程
+</h2>
+<p>
+    Python代码 → C++核心计算 → 底层CUDA/C库加速 → 返回结果。
+</p>

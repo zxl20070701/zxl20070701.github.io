@@ -1,0 +1,49 @@
+<header>
+    tf.layers.maxPooling2d
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.layers.maxPooling2d(args)
+</pre>
+<p>
+    空间数据的最大池化操作。
+</p>
+<h4>
+    Input shape
+</h4>
+<ul>
+    <li>
+        If dataFormat === CHANNEL_LAST: 4D tensor with shape: [batchSize, rows, cols, channels]
+    </li>
+    <li>
+        If dataFormat === CHANNEL_FIRST: 4D tensor with shape: [batchSize, channels, rows, cols]
+    </li>
+</ul>
+<h4>
+    Output shape
+</h4>
+<ul>
+    <li>
+        If dataFormat=CHANNEL_LAST: 4D tensor with shape: [batchSize, pooledRows, pooledCols, channels]
+    </li>
+    <li>
+        If dataFormat=CHANNEL_FIRST: 4D tensor with shape: [batchSize, channels, pooledRows, pooledCols]
+    </li>
+</ul>
+<p>
+    其中args是一个json，具体参数如下：
+</p>
+<h3>
+    poolSize
+</h3>
+<p>
+    number|[number, number]类型，在每个维度（垂直、水平）上缩小比例的因素。
+</p>
+<h3>
+    strides
+</h3>
+<p>
+    number|[number, number]类型，池窗口每个维度的步幅大小，缺省时使用poolSize的值。
+</p>

@@ -76,8 +76,12 @@ let server = http.createServer(function (request, response) {
     response.end();
 });
 
-server.listen(config.devServer.port);
-log('Server running on port:' + config.devServer.port);
+// npm run dev
+// 或自定义端口号：
+// npm run dev 20000
+let port = parsed.config[1] || config.devServer.port;
+server.listen(port);
+log('Server running on port:' + port);
 
 if (config.devServer.hot) {
 

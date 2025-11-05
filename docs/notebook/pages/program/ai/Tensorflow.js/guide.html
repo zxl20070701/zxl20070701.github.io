@@ -1,0 +1,91 @@
+<header>
+    入门简介
+</header>
+<p>
+    一个用于机器智能的开源基于WebGL加速的JavaScript库，说的简单点：就是一个帮助你进行数值计算的库，尤其是为AI相关运算提供了便利。
+</p>
+<p>
+    官方中文地址：<a href="https://tensorflow.google.cn/js?hl=zh-cn" target="_blank">https://tensorflow.google.cn/js?hl=zh-cn</a>。
+</p>
+<h2>
+    安装&引入
+</h2>
+<h3>
+    NPM
+</h3>
+<pre>
+npm install --save @tensorflow/tfjs
+</pre>
+<p>
+    然后引入即可：
+</p>
+<pre tag="javascript">
+import * as tf from '@tensorflow/tfjs';
+</pre>
+<h3>
+    CDN
+</h3>
+<pre tag="html">
+&lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"&gt;&lt;/script&gt;
+</pre>
+<h2>
+    基本概念
+</h2>
+<h3>
+    张量：tensors
+</h3>
+<p>
+    也就是一个值的序列，比如零阶张量叫标量（Scalar）也就是一个数字、一阶叫向量、二阶叫矩阵等
+</p>
+<h3>
+    变量：variables
+</h3>
+<p>
+    因为张量不可变，那就可以定义一个变量，给这个变量赋值一个张量或修改，主要是用于在模型训练时，进行数据的保存和更新。
+</p>
+<h3>
+    操作：operations
+</h3>
+<p>
+    一些操作数据等方法，就类似矩阵的加法、数量乘法等。
+</p>
+<p class="warn">
+    温馨提示：由于张量是不可改变的，所以 operations 操作并不会改变 tensors 的值，而是返回新的张量。
+</p>
+<h3>
+    模型和层
+</h3>
+<p>
+    简单的理解就是一个带有可训练参数的函数，有一个输入和输出，函数里面定义运算规则（当然，还有稍微复杂一点的神经网络模型等也是）。
+</p>
+<h3>
+    内存管理
+</h3>
+<p>
+    由于使用了GPU加速数学运算，在使用张量和变量时，管理GPU的内存是必不可少的，其提供了dispose和tf.tidy两个函数来帮助处理内存：
+</p>
+<h4>
+    dispose
+</h4>
+<p>
+    比如你定义了一个张量或变量，可以用此方法来清除和释放它的GPU内存：
+</p>
+<pre tag="javascript">
+var b = tf.tensor([[1.0, 2.0, 3.0], [10.0, 20.0, 30.0]]);
+b.dispose();
+</pre>
+<h4>
+    tf.tidy
+</h4>
+<p>
+    如果我们定义了很多的张量或变量，使用dispose会很麻烦，你可以这样：
+</p>
+<pre tag="javascript">
+var myFun = tf.tidy(()=>{
+    // 函数体内
+});
+myFun();
+</pre>
+<p>
+    所有myFun定义的函数体内，创建的中间张量，都会被清除和释放它的GPU内存，除了函数需要返回的值。
+</p>

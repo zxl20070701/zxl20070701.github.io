@@ -1,0 +1,21 @@
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.5.1/dist/tfjs-vis.umd.min.js"></script>
+
+<body></body>
+<script>
+
+    tfvis.render.scatterplot({
+        name: "散点图"
+    }, {
+        values: [
+            { x: 1, y: 1 },
+            { x: 3, y: 5 },
+            { x: 6, y: 11 },
+            { x: 9, y: 14 },
+            { x: 2, y: 3 }
+        ]
+    }, {
+        xAxisDomain: [0, 10],
+        yAxisDomain: [0, 20]
+    });
+
+</script>

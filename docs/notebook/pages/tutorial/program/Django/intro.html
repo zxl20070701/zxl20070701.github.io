@@ -1,0 +1,165 @@
+<header>
+    简介
+</header>
+<p>
+    Django 是一个由 Python 编写的一个开放源代码的 Web 应用框架。
+</p>
+<h2>
+    内置功能
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>功能</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Admin 后台</strong></td>
+            <td>自动生成管理界面，无需手动编写 CRUD 逻辑。</td>
+        </tr>
+        <tr>
+            <td><strong>ORM</strong></td>
+            <td>用 Python 类操作数据库，无需写 SQL。</td>
+        </tr>
+        <tr>
+            <td><strong>表单处理</strong></td>
+            <td>内置表单验证，防止 CSRF 攻击。</td>
+        </tr>
+        <tr>
+            <td><strong>用户认证</strong></td>
+            <td>提供登录、注册、权限管理（django.contrib.auth）。</td>
+        </tr>
+        <tr>
+            <td><strong>路由系统</strong></td>
+            <td>URL 映射灵活，支持正则表达式。</td>
+        </tr>
+        <tr>
+            <td><strong>缓存机制</strong></td>
+            <td>支持 Memcached、Redis 等后端。</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    核心特点
+</h2>
+<ul>
+    <li>
+        <strong>快速开发：</strong>Django 提供了大量内置功能，如认证、管理后台、表单处理等，让开发者专注于业务逻辑，而非底层实现。
+    </li>
+    <li>
+        <strong>自动化管理后台：</strong>只需简单的模型定义，即可生成强大的后台管理界面，支持增删改查。
+    </li>
+    <li>
+        <strong>ORM 数据库映射：</strong>Django 内置 ORM (Object-Relational Mapping)，可以让开发者使用 Python 类与数据库交互，无需编写 SQL。
+    </li>
+    <li>
+        <strong>强大的 URL 路由：</strong>使用正则表达式灵活定义 URL，轻松实现页面路由。
+    </li>
+    <li>
+        <strong>模板引擎：</strong>内置强大的模板系统，支持逻辑判断、循环处理，方便渲染 HTML 页面。
+    </li>
+    <li>
+        <strong>国际化支持：</strong>Django 支持多语言国际化，非常适合全球化应用。
+    </li>
+    <li>
+        <strong>高安全性：</strong>内置多种安全保护措施，如防止 SQL 注入、XSS 攻击、CSRF 攻击等。
+    </li>
+    <li>
+        <strong>丰富的社区与扩展：</strong>大量开源的第三方库，如 Django REST framework、Django CMS 等，快速扩展功能。
+    </li>
+</ul>
+<h2>
+    MVC 与 MTV模型
+</h2>
+<h3>
+    MVC (Model-View-Controller)
+</h3>
+<ul>
+    <li>
+        <p><strong>Model (模型)</strong>：处理与数据库的交互，定义数据的结构和业务逻辑。</p>
+    </li>
+    <li>
+        <p><strong>View (视图)</strong>：负责数据展示，生成用户看到的 HTML 页面。</p>
+    </li>
+    <li>
+        <p><strong>Controller (控制器)</strong>：接收用户请求，调用 Model 处理数据，并将结果传递给 View 渲染页面。</p>
+    </li>
+</ul>
+<p>
+    流程：
+</p>
+<ol>
+    <li>
+        <p>用户发送请求到 Controller。</p>
+    </li>
+    <li>
+        <p>Controller 处理逻辑，调用 Model 获取数据。</p>
+    </li>
+    <li>
+        <p>Controller 将数据传递给 View。</p>
+    </li>
+    <li>
+        <p>View 渲染并返回 HTML 页面给用户。</p>
+    </li>
+</ol>
+<h3>
+    MVT (Model-Template-View)
+</h3>
+<p>
+    Django 中采用了 MVT 设计模式，类似于 MVC，但有一些区别：
+</p>
+<ul>
+    <li>
+        <p><strong>Model (模型)</strong>：与数据库交互，处理数据的创建、读取、更新、删除。</p>
+    </li>
+    <li>
+        <p><strong>Template (模板)</strong>：负责页面渲染，生成最终的 HTML 内容。</p>
+    </li>
+    <li>
+        <p><strong>View (视图)</strong>：Django 的 View 更偏向于控制器的角色，接收请求并决定使用哪个模板和数据。</p>
+    </li>
+</ul>
+<p>
+    流程：
+</p>
+<ol>
+    <li>
+        <p>用户访问 URL，请求被 Django 的 urls.py 映射到相应的 View。</p>
+    </li>
+    <li>
+        <p>View 处理业务逻辑，调用 Model 获取数据。</p>
+    </li>
+    <li>
+        <p>View 将数据传递给 Template。</p>
+    </li>
+    <li>
+        <p>Template 渲染 HTML，最终返回给用户。</p>
+    </li>
+</ol>
+<h2>
+    Django 的适用场景
+</h2>
+<p>
+    适合用 Django 的项目:
+</p>
+<ul>
+    <li>
+        ✅ 内容管理系统（CMS）（如新闻网站、博客）</li>
+    <li>
+        ✅ 社交平台（用户系统、动态发布）</li>
+    <li>
+        ✅ 电子商务网站（订单管理、支付集成）</li>
+    <li>
+        ✅ API 后端（结合 Django REST framework）</li>
+</ul>
+<p>
+    不适合的场景:
+</p>
+<ul>
+    <li>
+        ❌ 超高性能要求的实时系统（如高频交易平台，推荐 Go 或 Rust）</li>
+    <li>
+        ❌ 极度轻量级的微服务（可以考虑 Flask 或 FastAPI）</li>
+</ul>

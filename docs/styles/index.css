@@ -99,9 +99,10 @@ body>.organizations {
 
 body>.organizations>.item {
     display: inline-block;
-    width: 180px;
+    width: 120px;
     margin: 0 30px;
     color: inherit;
+    vertical-align: top;
 }
 
 body>.organizations>.item>.icon {
@@ -127,6 +128,10 @@ body>.organizations>.item>.icon.rapid-start {
 
 body>.organizations>.item>.icon.ll-store {
     background-image: url("../images/LL-Store.png");
+}
+
+body>.organizations>.item>.icon.nn-studio {
+    background-image: url("../images/NN-Studio.png");
 }
 
 body>.organizations>.item>h2 {

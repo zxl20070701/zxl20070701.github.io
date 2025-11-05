@@ -1,0 +1,130 @@
+<header>
+    使用缓冲区绘制三角形
+</header>
+<p>
+    我们首先借助缓冲区绘制一个三角形：
+</p>
+<button tag="webgl-triangles">查看用例</button>
+<h2>
+    着色器
+</h2>
+<p>
+    三角形一共有3个点，因此不能再写死了，需要定义变量使用缓冲区进行传递，顶点着色器修改如下：
+</p>
+<pre tag="javascript">
+attribute vec4 a_position;
+void main(){
+    gl_Position=a_position;
+}
+</pre>
+<p>
+    虽然三角形是纯色的，颜色可以写死，不过我们想演示一下如何通过变量设置颜色，因此片元着色器也进行修改：
+</p>
+<pre tag="javascript">
+precision mediump float;
+uniform vec4 u_color;
+void main(){
+    gl_FragColor=u_color;
+}
+</pre>
+<h2>
+    设置单个颜色
+</h2>
+<p>
+    和点不同，颜色就一个值，无需借助缓冲区，比较简单，我们先看下具体代码：
+</p>
+<pre tag="javascript">
+var u_color = gl.getUniformLocation(glProgram, 'u_color');
+gl.uniform4f(u_color, 1, 0, 0, 1);
+</pre>
+<p>
+    颜色值是rgba(1,0,0,1)，也就是不透明的红色。
+</p>
+<h2>
+    借助缓冲区设置点
+</h2>
+<p>
+    首先，准备好缓冲区对象：
+</p>
+<pre tag="javascript">
+var buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+</pre>
+<p>
+    然后，准备好数据，并写入缓冲区中：
+</p>
+<pre tag="javascript">
+var data = new Float32Array([
+    -0.7, -0.7, 0,
+    0.7, -0.7, 1,
+    0, 0.7, 0
+]);
+
+gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+</pre>
+<p>
+    最后，把缓冲区中的数据分配给点变量a_position即可：
+</p>
+<pre tag="javascript">
+var a_position = gl.getAttribLocation(glProgram, "a_position");
+gl.vertexAttribPointer(a_position, 3, gl.FLOAT, false, data.BYTES_PER_ELEMENT * 3, 0);
+gl.enableVertexAttribArray(a_position);
+</pre>
+<h2>
+    绘制
+</h2>
+<pre tag="javascript">
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+</pre>
+<p>
+    如此，一个红色的三角形就画好了。那么，既然点可以传递3个，可不可以每个点的颜色也可以不一样？当然可以了。
+</p>
+<p>
+    现在，我们再把这个三角形变成渐变色的，先看看最终效果：
+</p>
+<button tag="webgl-triangles-colors">查看用例</button>
+<h2>
+    使用缓冲区设置点的颜色
+</h2>
+<h3>
+    着色器
+</h3>
+<p>
+    只有顶点着色器可以传递多个数据，因此，需要先改造顶点着色器后通过管道实现：
+</p>
+<pre tag="javascript">
+attribute vec4 a_position;
+attribute vec4 a_color;
+varying vec4 v_color;
+void main(){
+    gl_Position=a_position;
+    v_color=a_color;
+}
+</pre>
+<p>
+    然后，片段着色器借助桥梁进行接收：
+</p>
+<pre tag="javascript">
+precision mediump float;
+varying vec4 v_color;
+void main(){
+    gl_FragColor=v_color;
+}
+</pre>
+<p class="warn">
+    这里的varying类型的变量就相当于桥梁，当然，桥梁可以有多个。
+</p>
+<h3>
+    借助缓冲区设置颜色
+</h3>
+<p>
+    点的设置和之前一样，我们只需要修改一下点颜色的设置即可：
+</p>
+<pre tag="javascript">
+var a_color = gl.getAttribLocation(glProgram, "a_color");
+gl.vertexAttribPointer(a_color, 3, gl.FLOAT, false, data.BYTES_PER_ELEMENT * 6, data.BYTES_PER_ELEMENT * 3);
+gl.enableVertexAttribArray(a_color);
+</pre>
+<p>
+    余下的，就和之前一样了。
+</p>

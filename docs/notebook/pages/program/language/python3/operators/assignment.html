@@ -1,0 +1,63 @@
+<header>
+    赋值运算符
+</header>
+<table>
+    <thead>
+        <tr>
+            <th>运算符</th>
+            <th>描述</th>
+            <th>实例</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>=</td>
+            <td>简单的赋值运算符</td>
+            <td> c = a + b 将 a + b 的运算结果赋值为 c</td>
+        </tr>
+        <tr>
+            <td>+=</td>
+            <td>加法赋值运算符</td>
+            <td> c += a 等效于 c = c + a</td>
+        </tr>
+        <tr>
+            <td>-=</td>
+            <td>减法赋值运算符</td>
+            <td> c -= a 等效于 c = c - a</td>
+        </tr>
+        <tr>
+            <td>*=</td>
+            <td>乘法赋值运算符</td>
+            <td> c *= a 等效于 c = c * a</td>
+        </tr>
+        <tr>
+            <td>/=</td>
+            <td>除法赋值运算符</td>
+            <td> c /= a 等效于 c = c / a</td>
+        </tr>
+        <tr>
+            <td>%=</td>
+            <td>取模赋值运算符</td>
+            <td> c %= a 等效于 c = c % a</td>
+        </tr>
+        <tr>
+            <td>**=</td>
+            <td>幂赋值运算符</td>
+            <td> c **= a 等效于 c = c ** a</td>
+        </tr>
+        <tr>
+            <td>//=</td>
+            <td> 取整除赋值运算符</td>
+            <td> c //= a 等效于 c = c // a</td>
+        </tr>
+        <tr>
+            <td>:=</td>
+            <td>海象运算符，这个运算符的主要目的是在表达式中同时进行赋值和返回赋值的值。<strong>Python3.8 版本新增运算符</strong>。</td>
+            <td>
+                在这个示例中，赋值表达式可以避免调用 len() 两次：
+                <pre>if (n := len(a)) > 10:
+    print(f"List is too long ({n} elements, expected <= 10)")</pre>
+            </td>
+        </tr>
+    </tbody>
+</table>

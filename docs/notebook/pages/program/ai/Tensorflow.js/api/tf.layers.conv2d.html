@@ -1,0 +1,54 @@
+<header>
+    tf.layers.conv2d
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.layers.conv2d(args)
+</pre>
+<p>
+    创建一个2D卷积层（例如图像上的空间卷积）。
+</p>
+<p>
+    其中args是一个json，具体参数如下：
+</p>
+<h3>
+    filters
+</h3>
+<p>
+    number类型，输出空间的维度（即卷积中的滤波器数量）。
+</p>
+<h3>
+    kernelSize
+</h3>
+<p>
+    number|number[]类型，卷积窗口的尺寸。如果kernelSize是一个数字，卷积窗口将是正方形的。
+</p>
+<h3>
+    strides
+</h3>
+<p>
+    number|number[]类型，卷积在每个维度上的步幅。如果步幅是一个数字，那么两个维度的步幅是相等的。
+</p>
+<h3>
+    activation
+</h3>
+<p>
+    值可以是 'elu' | 'hardSigmoid' | 'linear' | 'relu' | 'relu6' | 'selu' | 'sigmoid' | 'softmax' | 'softplus' | 'softsign'
+    | 'tanh' | 'swish' | 'mish' | 'gelu' | 'gelu_new'，卷积完成后应用于数据的激活函数。
+</p>
+<h3>
+    kernelInitializer
+</h3>
+<p>
+    值可以是 'constant' | 'glorotNormal' | 'glorotUniform' | 'heNormal' | 'heUniform' | 'identity' | 'leCunNormal' |
+    'leCunUniform' | 'ones' | 'orthogonal' | 'randomNormal' | 'randomUniform' | 'truncatedNormal' | 'varianceScaling' |
+    'zeros' | string | tf.initializers.Initializer，随机初始化模型权重的方法。
+</p>
+<h3>
+    inputShape
+</h3>
+<p>
+    (null | number)[]类型，如果此参数设置了，将用于定义在此层前的一个输入层。
+</p>

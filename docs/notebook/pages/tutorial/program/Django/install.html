@@ -1,0 +1,91 @@
+<header>
+    安装
+</header>
+<p>
+    在安装 Django 前，系统需要已经安装了 Python 的开发环境（不属于这里的内容）。
+</p>
+<p>
+    Django 安装很简单使包管理工具pip3（或pip）就可以了：
+</p>
+<pre>
+    pip3 install Django
+</pre>
+<p>
+    安装完成后，你可以通过运行以下命令验证 Django 是否成功安装：
+</p>
+<pre>
+    python3 -m django --version
+</pre>
+<p>
+    如果一切顺利，你将看到安装的 Django 版本号，如：4.2.25。
+</p>
+<h2>
+    安装超时
+</h2>
+<p>
+    如果安装老是超时，比如出现类似下面的错误：
+</p>
+<p class="important">
+    ERROR: Exception:
+    Traceback (most recent call last):
+    ......
+    socket.timeout: The read operation timed out
+</p>
+<p>
+    可以试试用国内地址，比如：
+</p>
+<pre>
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple/ Django
+</pre>
+<h2>
+    版本对应
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Django 版本</th>
+            <th>Python 版本</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1.8</td>
+            <td>2.7, 3.2 , 3.3, 3.4, 3.5</td>
+        </tr>
+        <tr>
+            <td>1.9, 1.10</td>
+            <td>2.7, 3.4, 3.5</td>
+        </tr>
+        <tr>
+            <td>1.11</td>
+            <td>2.7, 3.4, 3.5, 3.6</td>
+        </tr>
+        <tr>
+            <td>2.0</td>
+            <td> 3.4, 3.5, 3.6, 3.7</td>
+        </tr>
+        <tr>
+            <td>
+                2.1, 2.2</td>
+            <td> 3.5, 3.6, 3.7</td>
+        </tr>
+
+        <tr>
+            <td>3.2</td>
+            <td>3.6, 3.7, 3.8, 3.9, 3.10</td>
+        </tr>
+        <tr>
+            <td>4.0</td>
+            <td>3.8, 3.9, 3.10</td>
+        </tr>
+        <tr>
+            <td>4.1</td>
+            <td>3.8, 3.9, 3.10, 3.11 (added in 4.1.3)</td>
+        </tr>
+        <tr>
+            <td>4.2</td>
+            <td>3.8, 3.9, 3.10, 3.11, 3.12 (added in 4.2.8)</td>
+        </tr>
+    </tbody>
+
+</table>

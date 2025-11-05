@@ -168,6 +168,20 @@ body>header>h2 {
     font-weight: 200;
 }
 
+body>header>h2>.total {
+    font-size: 16px;
+    color: black;
+}
+
+body>header>h2>.total>.value {
+    font-weight: 800;
+    text-align: center;
+    color: red;
+    padding: 0 5px;
+    display: inline-block;
+    min-width: 40px;
+}
+
 body>header>.tips {
     font-size: 12px;
     color: #2196f3;

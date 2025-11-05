@@ -1,0 +1,150 @@
+<header>
+    如何借助二维纹理进行贴图？
+</header>
+<p>
+    什么是纹理？通俗的说就是“皮肤”，下面将介绍的是其中一种纹理，叫做二维纹理，也就是把一张图片贴在一个面上。
+</p>
+<h2>
+    非纹理部分
+</h2>
+<p>
+    在贴图片之前，我们首先需要绘制一个矩形，后面我们把图片贴在这个矩形上，同样的，先看看最终的效果：
+</p>
+<button tag="webgl-rect">查看用例</button>
+<p class="warn">
+    温馨提示：贴图的不一定非要是矩形，三角形等都可以，我们这里只是简单的举个例子。
+</p>
+<p>
+    结合上一节绘制三角形的知识，这里的代码应该很容易理解，简单的描述就分为下面几步：
+</p>
+<h3>
+    准备顶点数据
+</h3>
+<p>
+    一个矩形，一共四个点：
+</p>
+<pre tag="javascript">
+var data = new Float32Array([
+    // 顶点坐标3
+    -1.0, 1.0, 0,
+    -1.0, -1.0, 0,
+    1.0, 1.0, 0,
+    1.0, -1.0, 0,
+]);
+</pre>
+<h3>
+    设置顶点数据
+</h3>
+<p>
+    也就是通过缓冲区把顶点数据设置好，数据的数组长度为 3*4=12 ，三个数据为一个点，一共四个点：
+</p>
+<pre tag="javascript">gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 3 * data.BYTES_PER_ELEMENT, 0);</pre>
+<h3>
+    绘制
+</h3>
+<p>
+    最后，调用 gl.TRIANGLE_STRIP 进行绘制：
+</p>
+<pre tag="javascript">gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);</pre>
+<h2>
+    使用纹理
+</h2>
+<p>
+    我们将在画布上，中规中矩的贴一个图片，你可以先看看最终的效果：
+</p>
+<button tag="webgl-TEXTURE_2D">查看用例</button>
+<p>
+    和不使用纹理相比，唯一的区别就是计算颜色值的时候，我们不再是写死或传递固定的值，而是去需要贴图的图片中去寻找。
+</p>
+<p class="warn">
+    温馨提示：这不只是纹理，同时也是各种光照等的基本原理，都是在计算颜色的时候进行规则调整。
+</p>
+<h3>
+    修改着色器
+</h3>
+<p>
+    首先想到的，肯定是去修改片段着色器的代码，看看我们面前此作色器的主要代码：
+</p>
+<pre tag="javascript">gl_FragColor=texture2D(u_sampler,v_textcoord);</pre>
+<p>
+    是的，和你理解的一样，u_sampler就是图片纹理，也就是你要贴图的那张图片，v_textcoord表示纹理坐标点，通过GLSL的内建函数texture2D来获取对应位置纹理的颜色rgba值。
+</p>
+<p>
+    现在，我们的问题就变成了u_sampler和v_textcoord具体是什么，以及如何设置的？
+</p>
+<h3>
+    图片纹理 u_sampler
+</h3>
+<p>
+    首先看看着色器中此变量的定义：
+</p>
+<pre tag="javascript">uniform sampler2D u_sampler;</pre>
+<p>
+    sampler2D类型的uniform类型变量，所以，我们很容易想到，既然是uniform类型，那我们在代码中直接给它设置一个sampler2D类型的值是不是就可以了？
+</p>
+<p>
+    可惜现实与理想总是存在差异，让我们看看实际上我们如何设置的：
+</p>
+<pre tag="javascript">gl.uniform1i(gl.getUniformLocation(glProgram, 'u_sampler'), 1);</pre>
+<p>
+    是的，你没看错，1，设置了一个数字。
+</p>
+<h4>
+    纹理单元
+</h4>
+<p>
+    事实是这样的：u_sampler在我们的理解上可以理解成图片，而事实是你那张图片对应的纹理单元序号，我们需要把图片“写入”到对应的纹理单元中去。
+</p>
+<p class="warn">
+    温馨提示：纹理单元是由webgl提前建立好的，只有固定的几个，如TEXTURE0|1|2|3|4|5|6|7|8，我们无需创建，只需要激活使用。
+</p>
+<h5>
+    准备好纹理对象
+</h5>
+<p>
+    使用纹理单元的第一步是获取一个纹理对象并进行必要的配置：
+</p>
+<pre tag="javascript">
+// 创建纹理对象
+var texture = gl.createTexture();
+
+// 开启纹理单元，编号1
+gl.activeTexture(gl.TEXTURE1);
+
+// 绑定纹理对象到目标上
+gl.bindTexture(gl.TEXTURE_2D, texture);
+
+// 配置纹理
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+</pre>
+<h5>
+    链接资源图片
+</h5>
+<p>
+    也就是告诉纹理对象，你对应的具体图片是什么：
+</p>
+<pre tag="javascript">gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);</pre>
+<h3>
+    纹理坐标点 v_textcoord
+</h3>
+<p>
+    简单的理解就是：我们使用的图片和最终绘制的内容坐标映射。
+</p>
+<img src="./images/uv.jpg">
+<p>
+    所以，看看我们现在准备的数据：
+</p>
+<pre tag="javascript">
+var data = new Float32Array([
+    // 顶点坐标3，纹理坐标2
+    -1.0, 1.0, 0, 0.0, 0.0,
+    -1.0, -1.0, 0, 0.0, 1.0,
+    1.0, 1.0, 0, 1.0, 0.0,
+    1.0, -1.0, 0, 1.0, 1.0
+]);
+</pre>
+<p class="warn">
+    温馨提示：无论是上面的纹理坐标还是颜色，我们都只需要设置“边界值”即可，“间值”会在逐片元的时候自行计算。
+</p>

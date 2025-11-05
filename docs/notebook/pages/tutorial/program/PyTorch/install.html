@@ -1,0 +1,55 @@
+<header>
+    环境准备
+</header>
+<h2>
+    安装要求
+</h2>
+<ul>
+    <li><strong>CPU</strong>：支持 SSE4.2 指令集的 x86_64 处理器</li>
+    <li><strong>内存</strong>：至少 4GB RAM（推荐 8GB+）</li>
+    <li><strong>存储</strong>：至少 3GB 可用空间</li>
+    <li><strong>GPU</strong>（可选）：NVIDIA GPU with CUDA Compute Capability 3.5+</li>
+</ul>
+<h2>
+    安装 PyTorch
+</h2>
+<p>
+    在安装 PyTorch 前，系统需要已经安装了 Python 的开发环境（不属于这里的内容）。
+</p>
+<p>
+    我们这里使用pip3（或pip）安装：
+</p>
+<pre>
+    pip3 install torch torchvision torchaudio
+</pre>
+<p>
+    不过，因为其和python3有版本依赖，比如针对<span class="warn">Python 3.9.12</span>，你可以指定安装版本：
+</p>
+<pre>
+    pip3 install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0
+</pre>
+<p>
+    此外，你还可以考虑安装仅CPU版本（更小的安装包）：
+</p>
+<pre>
+    pip3 install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cpu
+</pre>
+<h2>
+    验证安装
+</h2>
+<p>
+    为了确保 PyTorch 已正确安装，我们可以通过执行以下 PyTorch 代码来验证是否安装成功：
+</p>
+<pre>
+#!/usr/bin/python3
+
+import torch
+
+# 当前安装的 PyTorch 库的版本
+print(torch.__version__)
+# 检查 CUDA 是否可用
+print(torch.cuda.is_available())
+</pre>
+<p>
+    正确打印信息就表示安装成功了。
+</p>

@@ -1,0 +1,40 @@
+<header>
+    路由传参
+</header>
+<h2>
+    $state.go()
+</h2>
+<p>
+    page1.html 中有个button按钮，点击button实现状态切换的效果：
+</p>
+<pre tag="html">
+&lt;!-- 传递 两个参数：参数一为name, 参数二为age --&gt;
+&lt;button ng-click="doit('zxl20070701','17')"&gt;Page 2&lt;/button&gt;
+</pre>
+<p>
+    其中doit方法如下：
+</p>
+<pre tag="javasript">
+$scope.doit=function(name,age){
+     $state.go("page2", {
+        name,age
+     });
+};
+</pre>
+<p>
+    下面是对应的路由配置：
+</p>
+<pre tag="javascript">
+.state('page2',{
+        url:"/page2/:name/:age",
+        templateUrl: "views/page2.html",
+        controller: 'page2Controller'
+    })
+</pre>
+<p>
+    目标页面取值方式：
+</p>
+<pre tag="javascript">
+// {name: 'zxl20070701', age: '17'}
+console.log($state.params);
+</pre>

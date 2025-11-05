@@ -1,0 +1,40 @@
+<header>
+    Variable
+</header>
+<div class="tips">
+    tf.Variable extends tf.Tensor
+</div>
+<h2>
+    tf.assign
+</h2>
+<pre tag="javascript">
+    tf.assign(newValue);
+</pre>
+<p>
+    用于修改变量的值，比如：
+</p>
+<pre tag="javascript">
+myVariable.assign(tf.tensor2d([[7, 8], [9, 10], [11, 12]]));
+myVariable.print();
+</pre>
+<p>
+    打印结果：
+</p>
+<pre tag="javascript">
+Tensor
+  [[7, 8],
+   [9, 10],
+   [11, 12]]
+</pre>
+<p>
+    不过，assign要求改变的值结构是一致的，比如我们下面的代码：
+</p>
+<pre tag="javascript">
+    myVariable.assign(tf.tensor1d([1, 2, 3, 4]));
+</pre>
+<p>
+    就会提示错误：
+</p>
+<pre tag="javascript">
+Uncaught Error: shape of the new value (4) and previous value (3,2) must match
+</pre>

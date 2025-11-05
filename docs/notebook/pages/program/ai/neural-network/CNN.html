@@ -1,0 +1,76 @@
+<header>
+    卷积神经网络（CNN）
+</header>
+<p>
+    卷积神经网络主要由这几类层构成：输入层、卷积层，ReLU层、池化（Pooling）层和全连接层（实际应用中往往将卷积层与ReLU层共同称之为卷积层）。
+</p>
+<h2>
+    卷积层
+</h2>
+<p>
+    将原来的对象变小一些，但又能保证原来的信息尽量多的保留下来。
+</p>
+<h3>
+    卷积过程
+</h3>
+<h4>
+    二维卷积
+</h4>
+<p>
+    滤波器的每个格子与滤波器选中数据的格子相乘：
+</p>
+<img src="./images/neural-network/cnn-2c.png" width="500px">
+<h4>
+    三维卷积
+</h4>
+<p>
+    同时对每个维度进行卷积，最后将每个维度的卷积结果相加，输出二维：
+</p>
+<img src="./images/neural-network/cnn-3c.png" width="700px">
+<h3>
+    过滤器
+</h3>
+<p>
+    过滤器的作用是寻找图片的特征。
+</p>
+<p>
+    每一个过滤器中的数值，都是算法自己学习来的，不需要我们费心去设置。需要我们做的有：
+</p>
+<ol>
+    <li>
+        设置过滤器的大小（比如3x3）
+    </li>
+    <li>
+        设置过滤器滑动的步幅数（比如1）
+    </li>
+    <li>
+        设置过滤器的个数（比如4个）
+    </li>
+</ol>
+<h2>
+    ReLU层
+</h2>
+<p>
+    卷积神经网络中常用的激活函数层，通过公式max(0, x)实现。
+</p>
+<h2>
+    池化层
+</h2>
+<p>
+    在保留图片主要信息的前提下，将图片的尺寸缩小。池化的类型有很多种，诸如“最大池化”、“平均池化”、“求和池化”等等，它们的运算原理基本一致，下面截图采用的是“最大池化”：
+</p>
+<img src="./images/neural-network/cnn-pool.png" width="600px">
+<h2>
+    全连接层
+</h2>
+<p>
+    也就是 <a href="./index.html#/program/technology/ai/neural-network/FCNN" target="_blank"
+        rel="noopener noreferrer">全连接神经网络</a> 。
+</p>
+<h2>
+    全过程
+</h2>
+<p>
+    将CNN的所有流程，整合起来，即：
+</p>
+<img src="./images/neural-network/cnn.png" width="800px">

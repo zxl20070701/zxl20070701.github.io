@@ -51,7 +51,7 @@ window.showExamples = function (filepath, format) {
     });
 };
 
-var searchObj = [];
+var searchObj = [], totalValueEl;
 var initSearchObj = function () {
     if (window.needCache) {
         var storageData = sessionStorage.getItem("search://notebook/obj");
@@ -109,6 +109,9 @@ var initSearchObj = function () {
                                 path: firstRemarkArray.join("/") + "/" + secordRemarkArray.join("/") + "/" + secordLevelSpan.innerText.trim(),
                                 url: firstLevelUrl + "/" + secordLevelSpan.getAttribute("tag")
                             });
+
+                            if (!totalValueEl) totalValueEl = document.getElementById("total-value");
+                            totalValueEl.innerText = searchObj.length;
                         }
                     }
 

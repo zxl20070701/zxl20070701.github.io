@@ -1,0 +1,52 @@
+<header>
+    tf.tensor
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.tensor(values, shape?, dtype?)
+</pre>
+<p>
+    通过给定的values，shape和dtype创建一个张量。
+</p>
+<h3>
+    values
+</h3>
+<p>
+    表示这个张量的值，类型包括：TypedArray | Array | WebGLData | WebGPUData（如果是TypedArray，可以是Uint8Array, Uint8ClampedArray,
+    Int32Array, Float32Array）。
+</p>
+<h3>
+    shape
+</h3>
+<p>
+    应该是一个数组，表示数据的“形状”，比如：
+</p>
+<pre tag="javascript">
+tf.tensor([1, 2, 3, 4, 5, 6], [2, 3]).print();
+</pre>
+<p>
+    结果就是：
+</p>
+<pre>
+[
+    [1, 2, 3], 
+    [4, 5, 6]
+]
+</pre>
+<p>
+    当然，你也可以不提供，直接：
+</p>
+<pre tag="javascript">
+tf.tensor([[1, 2], [3, 4]]).print();
+</pre>
+<p>
+    可以推断出 shape = [2, 3] 。
+</p>
+<h3>
+    dtype
+</h3>
+<p>
+    表示数据的类型，可以是：'float32'|'int32'|'bool'|'complex64'|'string'。
+</p>
