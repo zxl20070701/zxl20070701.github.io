@@ -57,6 +57,10 @@ var initSearchObj = function () {
         var storageData = sessionStorage.getItem("search://notebook/obj");
         if (storageData) {
             searchObj = JSON.parse(storageData);
+
+            if (!totalValueEl) totalValueEl = document.getElementById("total-value");
+            totalValueEl.innerText = searchObj.length;
+
             return;
         }
     }
