@@ -1,0 +1,28 @@
+<header>
+    定义一个命令
+</header>
+<p>
+    由于配置到最后，大多都是触发一个命令command，所以命令非常非常基础和重要。
+</p>
+<h2>
+    配置
+</h2>
+<pre tag="javascript">
+"contributes": {
+    "commands": [{
+        "command": "vscode-auxiliary.example",
+        "title": "例子功能"
+    }]
+}
+</pre>
+<h2>
+    定义
+</h2>
+<p>
+    命令被触发后，类似的，需要定义命令具体实现：
+</p>
+<pre tag="javascript">
+vscode.commands.registerCommand("vscode-auxiliary.example", () => {
+    // todo
+});
+</pre>
