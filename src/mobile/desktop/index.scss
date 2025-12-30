@@ -1,0 +1,219 @@
+[page-view="desktop"] {
+    background-color: transparent;
+    box-shadow: 0 0 0 0 transparent;
+    position: static;
+
+    #wins-line-id {
+        display: none;
+    }
+
+    &>div {
+        &.desktop {
+            &>ul {
+                &.application {
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    &>li {
+                        width: 60px;
+                        height: 60px;
+                        padding-top: 65px;
+                        font-size: 12px;
+                        background-position: center top;
+                        background-repeat: no-repeat;
+                        background-size: 50px auto;
+                        text-align: center;
+                        margin: 15px 10px;
+                        color: white;
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
+
+        &.taskline {
+            position: fixed;
+            width: 100vw;
+            left: 0;
+            bottom: 20px;
+            text-align: center;
+
+            &>ul {
+                display: inline-block;
+                background-color: rgba(199, 197, 197, 0.317);
+                border-radius: 20px;
+                padding: 5px;
+
+                &>li {
+                    display: inline-block;
+                    width: 50px;
+                    height: 50px;
+                    margin: 10px;
+                    background-repeat: no-repeat;
+                    background-size: 100% auto;
+                    background-position: center;
+                    font-size: 0;
+                    vertical-align: top;
+                }
+            }
+        }
+
+        &.handler {
+            position: fixed;
+            right: 20px;
+            bottom: 300px;
+            z-index: 10;
+
+            &>div {
+                display: inline-block;
+
+                &[active='no'] {
+                    display: none;
+                }
+
+                &.drap {
+                    background-image: url("./iphone-task.png");
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: 100% auto;
+                    width: 50px;
+                    height: 50px;
+                    filter: drop-shadow(0px 0px 6px white);
+                }
+
+                &.view {
+                    position: fixed;
+                    left: 0;
+                    top: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background-color: rgba(0, 0, 0, 0.2);
+                    filter: grayscale(100%);
+
+                    &>div {
+                        position: absolute;
+                        width: 300px;
+                        height: 300px;
+                        left: calc(50vw - 150px);
+                        top: calc(50vh - 150px);
+                        background-color: #1b2145;
+                        border-radius: 10px;
+
+                        &>span {
+                            position: absolute;
+                            width: 70px;
+                            height: 70px;
+                            background-repeat: no-repeat;
+                            background-position: center top;
+                            padding-top: 55px;
+                            color: rgb(255, 255, 255);
+                            font-size: 12px;
+                            text-align: center;
+
+                            // 位置
+
+                            &:nth-child(1) {
+                                left: 115px;
+                                top: 20px;
+                            }
+
+                            &:nth-child(2) {
+                                left: 115px;
+                                bottom: 20px;
+                            }
+
+                            &:nth-child(3) {
+                                left: 20px;
+                                top: 65px;
+                            }
+
+                            &:nth-child(4) {
+                                left: 20px;
+                                bottom: 65px;
+                            }
+
+                            &:nth-child(5) {
+                                right: 20px;
+                                top: 65px;
+                            }
+
+                            &:nth-child(6) {
+                                right: 20px;
+                                bottom: 65px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#view-root {
+    [page-view] {
+        left: 0;
+        top: 0;
+        width: 100vw;
+        bottom: 0;
+        overflow: auto;
+    }
+}
+
+header {
+    &.top-title {
+        height: 45px;
+
+        &>div {
+            background-color: #fafafa;
+            color: #040404;
+            line-height: 45px;
+            width: 100vw;
+            text-align: center;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 0px -4px 18px 2px #45464657;
+
+            &>h2 {
+                font-size: 16px;
+            }
+
+            &>button {
+                position: absolute;
+                top: 0;
+                width: 45px;
+                height: 45px;
+                outline: none;
+                border: none;
+                background-color: transparent;
+                font-size: 0;
+                background-repeat: no-repeat;
+                background-position: center center;
+
+                &:first-child {
+                    left: 0;
+                }
+
+                &:last-child {
+                    right: 0;
+                }
+
+                &.goback {
+                    background-image: url('./left.png');
+                }
+
+                &.close {
+                    background-image: url('./close.png');
+                }
+            }
+        }
+    }
+}
+
+[tag="debugger"] {
+    background-image: url('./debugger.png');
+}
+
+[tag="what"] {
+    background-image: url('./what.png');
+}

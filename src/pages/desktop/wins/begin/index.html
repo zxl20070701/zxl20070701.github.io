@@ -1,0 +1,26 @@
+<div class="application" ref="application">
+
+
+</div>
+
+<!-- 搜索 -->
+<div class="search">
+    <input type="text" placeholder="搜索功能维护中...">
+</div>
+
+<!-- 头像 -->
+<div class="user">
+    <div></div>
+</div>
+
+<!-- 文档、调试、源码等 -->
+<div class="quick">
+    <a target="_blank" ui-bind:href="project.author.url">
+        <span ui-bind="project.author.name"></span>
+    </a>
+    <hr />
+    <div ui-on:click="openDialog" tag="debugger">调试工具</div>
+    <a target="_blank" ui-bind:href="project.bugs">提建议</a>
+    <hr />
+    <a target="_blank" href="../notebook/index.html">文档笔记</a>
+</div>

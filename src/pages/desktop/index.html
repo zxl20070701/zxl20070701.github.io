@@ -1,3 +1,12 @@
-<div>
-    PC版桌面
+<ul class="content" ui-on:click="doSelect" tag="">
+
+</ul>
+<div class="taskline">
+    <span class="begin" title="快速开始" tag="begin" ui-on:click.stop="toggleWin"></span>
+    <span class="what" tag="what" ui-on:click="openDialog"></span>
+    <span class="wins" id="wins-line-id"></span>
+    <span class="time" tag="tools" ui-on:click.stop="toggleWin">
+        <div ui-bind="time"></div>
+        <div ui-bind="date"></div>
+    </span>
 </div>

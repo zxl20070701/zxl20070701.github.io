@@ -1,3 +1,32 @@
-<div>
-    移动版桌面
+<!-- 桌面 -->
+<div class="desktop">
+
+    <!-- 常用应用 -->
+    <ul class="application" ref="desktopApplication">
+       
+    </ul>
+
 </div>
+
+<!-- 底部导航 -->
+<div class="taskline">
+    <ul>
+      
+    </ul>
+</div>
+
+<!-- 手势控制 -->
+<div class="handler">
+    <div class="drap" ui-dragdrop ui-bind:active="view?'no':'yes'" ui-on:click.stop="toggleView"></div>
+
+    <!-- 悬浮框 -->
+    <div class="view" ui-bind:active="view?'yes':'no'" ui-on:click.stop="toggleView">
+        <div>
+            <span tag="debugger" ui-on:click="openDialog">调试工具</span>
+            <span tag="what" ui-on:click="openDialog">说明</span>
+        </div>
+    </div>
+</div>
+
+<!-- 类似电脑桌面底部，这里默认隐藏，切换应用的时候辅助卡片效果底部显示 -->
+<span id="wins-line-id"></span>

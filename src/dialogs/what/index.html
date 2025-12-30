@@ -1,0 +1,34 @@
+<div ui-dragdrop>
+    <div class="logo"></div>
+    <header>
+        <span ui-bind="project.name"></span>
+        <div>(内部版本)</div>
+    </header>
+    <div class="tips">
+        使用电脑或手机浏览器访问会获得不一样的界面~
+    </div>
+    <div class="system-btn">
+        <button ui-bind="systemBtn" ui-on:click="changeSystem"></button>
+        <button ui-on:click="resetSystem">重置</button>
+    </div>
+    <div class="current-tips">
+        由于时间问题，部分功能处于完善中，敬请理解
+    </div>
+    <div class="content">
+        <div>
+            <h2>介绍</h2>
+            ：本项目内置自定义的小型打包工具和前端框架，完全基于原生HTML、CSS和JavaScript开发。
+        </div>
+        <div>
+            <h2>初衷</h2>
+            ：致力于尝试各种前端基础技术的探索和积累。
+        </div>
+        <div>
+            欢迎任何人加入我们！
+        </div>
+    </div>
+    <div class="btn-list">
+        <a href="javascript:void(0)" ui-on:click="$closeDialog">关闭</a>
+        <a ui-bind:href="project.repository" target="_blank">访问源码</a>
+    </div>
+</div>

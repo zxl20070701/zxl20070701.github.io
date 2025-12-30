@@ -1,0 +1,209 @@
+[page-view="desktop"] {
+  user-select: none;
+  background-color: transparent;
+  position: static;
+
+  &>div {
+    &.taskline {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 35px;
+      background-color: rgba(3, 71, 126, 0.6);
+      border-top: 1px solid #313333;
+      z-index: 10;
+
+      &>span {
+        position: absolute;
+
+        &.begin {
+          cursor: pointer;
+          width: 45px;
+          height: 45px;
+          left: 5px;
+          bottom: 5px;
+          background-image: url("./windows7.png");
+          background-size: 100% auto;
+          background-repeat: no-repeat;
+          background-position: center center;
+          border-radius: 50%;
+          box-shadow: 3px 3px 20px 0px rgba(96, 125, 139, 0.754);
+        }
+
+        &.what {
+          cursor: pointer;
+          width: 35px;
+          height: 35px;
+          background-image: url("./what.png");
+          background-size: 100% auto;
+          background-repeat: no-repeat;
+          background-position: center center;
+          left: 55px;
+          bottom: 0;
+        }
+
+        &.wins {
+          left: 90px;
+          bottom: 0;
+          width: calc(100% - 185px);
+          height: 35px;
+          overflow: hidden;
+          padding: 0 5px;
+          display: flex;
+
+          &>span {
+            line-height: 31px;
+            font-size: 12px;
+            border: 1px solid #607d8b;
+            padding-right: 5px;
+            border-radius: 3px;
+            margin-top: 1px;
+            color: white;
+            background-image: radial-gradient(rgba(255, 255, 255, 0),
+                rgba(189, 187, 187, 0.489));
+            flex-basis: 120px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+
+            &[focus="yes"] {
+              background-image: radial-gradient(rgba(255, 255, 255, 0.141),
+                  rgba(189, 187, 187, 0.675));
+            }
+
+            &>span {
+              display: inline-block;
+              width: 30px;
+              height: 31px;
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 80% auto;
+              vertical-align: top;
+            }
+          }
+        }
+
+        &.time {
+          right: 0;
+          width: 100px;
+          text-align: center;
+          top: 2px;
+          height: 100%;
+          color: white;
+
+          &>div {
+            &:first-child {
+              font-size: 12px;
+              line-height: 15px;
+            }
+
+            &:last-child {
+              font-size: 12px;
+              line-height: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 窗口按钮
+.win-btns {
+  position: absolute;
+  right: 20px;
+  top: -0.5px;
+  font-size: 0;
+
+  &>button {
+    font-size: 0;
+    height: 24px;
+    vertical-align: top;
+    outline: none;
+    border: none;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-size: auto 100%;
+    cursor: pointer;
+    margin: 0 !important;
+    background-color: transparent !important;
+
+    &.min {
+      background-image: url("./min-btn.png");
+      width: 36px;
+    }
+
+    &.close {
+      background-image: url("./close-btn.png");
+      width: 59px;
+    }
+  }
+}
+
+#contextmenu-root {
+  position: fixed;
+  z-index: 10;
+
+  ul {
+    width: 220px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #e5e8ea;
+    border: 1px solid #c3c3c3;
+    font-size: 14px;
+    line-height: 1.4em;
+
+    li {
+      &[notshow="yes"] {
+        display: none;
+      }
+
+      &.line {
+        height: 1px;
+        background-color: #d5d9db;
+        margin-left: 50px;
+      }
+
+      &.btn {
+        line-height: 2em;
+        font-size: 14px;
+        padding-left: 60px;
+        position: relative;
+        cursor: pointer;
+
+        &::before {
+          content: " ";
+          position: absolute;
+          width: 50px;
+          height: 100%;
+          text-align: center;
+          left: 0;
+          top: 0;
+          border-right: 1px solid #d5d9db;
+          background-repeat: no-repeat;
+          background-size: auto 70%;
+          background-position: center center;
+        }
+
+        &:hover {
+          outline: 1px solid rgba(207, 208, 208, 0.72);
+          background-color: rgba(228, 252, 254, 0.538);
+          border-radius: 3px;
+        }
+
+        // 不可用的
+        &.gray {
+          color: #c2c2ca;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+
+// 应用logo
+
+[tag="npm-download"] {
+  background-image: url("./npm.png");
+}

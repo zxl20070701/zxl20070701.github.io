@@ -1,0 +1,33 @@
+[page-view="npm-download"] {
+    width: 900px;
+    left: calc(50vw - 450px);
+    top: 50px;
+    font-size: 0;
+
+    &[focus="no"] {
+        &>header {
+            background-color: #bb3939;
+        }
+    }
+
+    &>header {
+        height: 50px;
+        background-color: #e10404;
+
+        &>h2 {
+            width: 100px;
+            height: 100%;
+            background-image: url("./npm.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 160%;
+            font-family: cursive;
+            display: inline-block;
+        }
+    }
+
+    &>canvas {
+        width: 100%;
+        height: 500px;
+    }
+}

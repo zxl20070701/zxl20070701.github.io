@@ -1,61 +1,61 @@
 /******/
-/******/  // pkg Bootstrap/******/  
-/******/  /******/  
-/******/  var now = new Date();/******/  
-/******/  var hash = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();/******/  
-/******/  /******/  
-/******/  // 记录bundle的函数源码/******/  
-/******/  window.__pkg__bundleSrc__ = {};/******/  
-/******/  /******/  
-/******/  // 记录bundle的运行结果/******/  
-/******/  window.__pkg__bundleObj__ = {};/******/  
-/******/  /******/  
-/******/  // 获取bundle结果/******/  
-/******/  window.__pkg__getBundle = function (bundleName) {/******/  
-/******/  /******/  
-/******/      // 一个bundle只有第一次导入的时候需要执行/******/  
-/******/      if (!(bundleName in window.__pkg__bundleObj__)) {/******/  
-/******/          window.__pkg__bundleObj__[bundleName] = window.__pkg__bundleSrc__[bundleName]();/******/  
-/******/      }/******/  
-/******/  /******/  
-/******/      // 返回需要的bundle的结果/******/  
-/******/      return window.__pkg__bundleObj__[bundleName];/******/  
-/******/  }/******/  
-/******/  /******/  
-/******/  window.__pkg__bundleFile__ = {};/******/  
-/******/  /******/  
-/******/  // 获取懒加载bundle结果/******/  
-/******/  window.__pkg__getLazyBundle = function (fileName, bundleName) {/******/  
-/******/      return new Promise(function (resolve) {/******/  
-/******/  /******/  
-/******/          // 如果加载过了/******/  
-/******/          if (window.__pkg__bundleFile__[fileName]) {/******/  
-/******/              resolve(window.__pkg__getBundle(bundleName));/******/  
-/******/              return;/******/  
-/******/          }/******/  
-/******/  /******/  
-/******/          // 获取head标签/******/  
-/******/          var head = document.getElementsByTagName('head')[0];/******/  
-/******/  /******/  
-/******/          // 创建script/******/  
-/******/          var script = document.createElement('script');/******/  
-/******/  /******/  
-/******/          // 设置属性/******/  
-/******/          script.setAttribute("async", "async");/******/  
-/******/          script.src = fileName + "?hash=" + hash;/******/  
-/******/  /******/  
-/******/          // 追加到页面/******/  
-/******/          head.appendChild(script);/******/  
-/******/  /******/  
-/******/          window.__pkg__bundleFile__[fileName] = true;/******/  
-/******/  /******/  
-/******/          script.addEventListener('load', function () {/******/  
-/******/              resolve(window.__pkg__getBundle(bundleName));/******/  
-/******/          }, false);/******/  
-/******/  /******/  
-/******/  /******/  
-/******/      });/******/  
-/******/  }/******/  
+/******/  // pkg Bootstrap
+/******/  
+/******/  var now = new Date();
+/******/  var hash = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+/******/  
+/******/  // 记录bundle的函数源码
+/******/  window.__pkg__bundleSrc__ = {};
+/******/  
+/******/  // 记录bundle的运行结果
+/******/  window.__pkg__bundleObj__ = {};
+/******/  
+/******/  // 获取bundle结果
+/******/  window.__pkg__getBundle = function (bundleName) {
+/******/  
+/******/      // 一个bundle只有第一次导入的时候需要执行
+/******/      if (!(bundleName in window.__pkg__bundleObj__)) {
+/******/          window.__pkg__bundleObj__[bundleName] = window.__pkg__bundleSrc__[bundleName]();
+/******/      }
+/******/  
+/******/      // 返回需要的bundle的结果
+/******/      return window.__pkg__bundleObj__[bundleName];
+/******/  }
+/******/  
+/******/  window.__pkg__bundleFile__ = {};
+/******/  
+/******/  // 获取懒加载bundle结果
+/******/  window.__pkg__getLazyBundle = function (fileName, bundleName) {
+/******/      return new Promise(function (resolve) {
+/******/  
+/******/          // 如果加载过了
+/******/          if (window.__pkg__bundleFile__[fileName]) {
+/******/              resolve(window.__pkg__getBundle(bundleName));
+/******/              return;
+/******/          }
+/******/  
+/******/          // 获取head标签
+/******/          var head = document.getElementsByTagName('head')[0];
+/******/  
+/******/          // 创建script
+/******/          var script = document.createElement('script');
+/******/  
+/******/          // 设置属性
+/******/          script.setAttribute("async", "async");
+/******/          script.src = fileName + "?hash=" + hash;
+/******/  
+/******/          // 追加到页面
+/******/          head.appendChild(script);
+/******/  
+/******/          window.__pkg__bundleFile__[fileName] = true;
+/******/  
+/******/          script.addEventListener('load', function () {
+/******/              resolve(window.__pkg__getBundle(bundleName));
+/******/          }, false);
+/******/  
+/******/  
+/******/      });
+/******/  }
 /******/  
 /************************************************************************/
 /******/
@@ -75,11 +75,41 @@ __pkg__scope_args__=window.__pkg__getBundle('2');
 var useTemplate =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('21');
-var lazyLoad =__pkg__scope_args__.default;
-
+__pkg__scope_args__=window.__pkg__getBundle('25');
+var urlFormat =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('26');
+var isString =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('27');
+var isFunctin =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('28');
+var remove =__pkg__scope_args__.default;
+
+
+__pkg__scope_args__=window.__pkg__getBundle('29');
+var lazyLoad =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('34');
+var lazyDialogs =__pkg__scope_args__.default;
+
+
+__pkg__scope_args__=window.__pkg__getBundle('37');
+
+
+// 浏览器兼容文件
+__pkg__scope_args__=window.__pkg__getBundle('38');
+
+
+// 调试后台
+__pkg__scope_args__=window.__pkg__getBundle('39');
+var runDebug =__pkg__scope_args__.default;
+
+runDebug();
+
+// 系统相关
+__pkg__scope_args__=window.__pkg__getBundle('48');
 
 
 // 桌面壁纸
@@ -111,13 +141,22 @@ lazyLoad[_platformName + "Pages"]().then(function (data1) {
     styleEl.innerHTML = ":root { --height:" + pageHeight + " }";
     document.getElementsByTagName('head')[0].appendChild(styleEl);
 
+    var lazyPages = data1.default;
+
     // 启动桌面
     lazyLoad[_platformName + "Desktop"]().then(function (data2) {
         var desktopOption = data2.default;
 
-        // 启动桌面
-        useTemplate(document.getElementById("desktop-root"), desktopOption);
+        var desktopInstance = useTemplate(document.getElementById("desktop-root"), desktopOption);
 
+        var pagename = urlFormat().router[0]
+        var viewRootEl = document.getElementById('view-root');
+
+        var dialogRootEl = document.getElementById('dialog-root');
+        var winRootEl = document.getElementById('win-root');
+
+        // 默认显示桌面
+        if (!(pagename in lazyPages)) pagename = "desktop";
         var goDesktop = function (init) {
             if (!init) window.location.href = "#/desktop";
 
@@ -128,8 +167,286 @@ lazyLoad[_platformName + "Pages"]().then(function (data1) {
             }[_platformName]);
         };
 
+        var openDialog, openWin, openView;
+
+        // 打开弹框方法
+        openDialog = function (lazypage, props) {
+            if (isString(lazypage)) lazypage = lazyDialogs[lazypage];
+
+            var dialogEl = document.createElement('div');
+            dialogRootEl.appendChild(dialogEl);
+
+            return new Promise(function (resolve, reject) {
+                lazypage().then(function (dialogData) {
+
+                    // 挂载弹框
+                    var dialogInstance = useTemplate(dialogEl, dialogData.default, props);
+                    dialogEl.setAttribute('dialog-view', dialogInstance._name || "");
+
+                    // 注册打开弹框方法
+                    dialogInstance.$openDialog = openDialog;
+
+                    // 注册关闭弹框方法
+                    dialogInstance.$closeDialog = function (data) {
+
+                        // 触发销毁前钩子
+                        if (dialogInstance._beforeDestory) {
+                            dialogInstance._beforeDestory.call(dialogInstance);
+                        }
+
+                        dialogRootEl.removeChild(dialogEl);
+
+                        // 如果有返回数据，就说明操作完毕
+                        if (data) {
+                            resolve(data);
+                        }
+
+                        // 否则就是取消操作
+                        else {
+                            reject("");
+                        };
+                    };
+
+                });
+            });
+        };
+
+        // 打开窗口方法
+        openWin = function (lazypage, props) {
+            var winEl = document.createElement('div');
+            winRootEl.appendChild(winEl);
+
+
+            return new Promise(function (resolve, reject) {
+                lazypage().then(function (winData) {
+
+                    // 挂载弹框
+                    var winInstance = useTemplate(winEl, winData.default, props);
+                    winEl.setAttribute('win-view', winInstance._name || "");
+
+                    // 注册打开弹框方法
+                    winInstance.$openDialog = openDialog;
+
+                    resolve({
+                        instance: winInstance,
+                        el: winEl
+                    });
+                });
+            });
+        };
+
+        // 打开视图方法
+        var viewInstances = {};
+        openView = function (pagename, props, isInit) {
+            lazyPages[pagename]().then(function (viewData) {
+
+                var viewEl = document.createElement('div');
+                viewRootEl.appendChild(viewEl);
+
+                // 挂载页面
+                var viewInstance = useTemplate(viewEl, viewData.default, props);
+
+                // 底部导航
+                var winslinesEl = document.getElementById("wins-line-id");
+
+                var lineBtnEl = document.createElement("span");
+                winslinesEl.appendChild(lineBtnEl);
+
+                // 记录
+                var uniqueHash = new Date().valueOf();
+                viewInstances[uniqueHash] = {
+                    instance: viewInstance,
+                    lineBtn: {
+                        el: lineBtnEl
+                    },
+                    isFocus: false,
+                    isShow: true,
+                    isMin: false
+                };
+
+                viewEl.setAttribute('page-view', viewInstance._name || "");
+
+                // 注册打开视图方法
+                viewInstance.$openView = openView;
+
+                // 注册打开弹框方法
+                viewInstance.$openDialog = openDialog;
+
+                // 注册打开窗口方法
+                viewInstance.$openWin = openWin;
+
+                /**
+                 * 注册操作自己的方法等
+                 */
+
+                // 关闭
+                viewInstance.$closeView = function () {
+                    // 触发销毁前钩子
+                    if (isFunctin(viewInstance._beforeDestory)) {
+                        viewInstance._beforeDestory.call(viewInstance);
+                    }
+
+                    remove(viewEl);
+                    remove(lineBtnEl);
+
+                    delete viewInstances[uniqueHash];
+                    goDesktop();
+
+                    // 触发销毁后钩子
+                    if (isFunctin(viewInstance._destoryed)) {
+                        viewInstance._destoryed.call(viewInstance);
+                    }
+                };
+
+                // 最小化
+                viewInstance.$minView = function (triggleName) {
+                    if (isFunctin(viewInstance._minimize)) {
+                        viewInstance._minimize.call(viewInstance);
+                    }
+
+                    viewInstances[uniqueHash].isMin = true;
+                    viewInstances[uniqueHash].isShow = false;
+
+                    if (isFunctin(viewInstance._beforeUnfocus)) {
+                        viewInstance._beforeUnfocus.call(viewInstance);
+                    }
+
+                    viewInstances[uniqueHash].isFocus = false;
+                    viewInstance._el.setAttribute("focus", "no");
+                    lineBtnEl.setAttribute("focus", "no");
+                    viewInstance._el.style.zIndex = 1;
+
+                    if (isFunctin(viewInstance._unfocused)) {
+                        viewInstance._unfocused.call(viewInstance);
+                    }
+
+                    viewEl.style.display = "none";
+
+                    if (triggleName != 'desktop') {
+                        goDesktop();
+                    }
+                };
+
+                // 恢复显示
+                viewInstance.$reshowView = function () {
+
+                    viewInstances[uniqueHash].isMin = false;
+                    viewInstances[uniqueHash].isShow = true;
+
+                    viewEl.style.display = "";
+
+                    if (isFunctin(viewInstance._reshow)) {
+                        viewInstance._reshow.call(viewInstance);
+                    }
+                };
+
+                // 窗口被点击时候的处理
+                viewEl.addEventListener("click", function () {
+
+                    // 如果没有被聚焦
+                    if (!viewInstances[uniqueHash].isFocus) {
+
+                        if (isFunctin(viewInstance._beforeFocus)) {
+                            viewInstance._beforeFocus.call(viewInstance);
+                        }
+
+                        for (var key in viewInstances) {
+                            if (key == uniqueHash) {
+                                viewInstances[key].isFocus = true;
+                                viewInstances[key].instance._el.style.zIndex = 2;
+
+                                viewInstances[key].instance._el.setAttribute("focus", "yes");
+                                viewInstances[key].lineBtn.el.setAttribute("focus", "yes");
+
+                                // 如果是初始化刷新打开，无需修改路由，只需要记录已经初始化完毕即可
+                                if (isInit) {
+                                    isInit = false;
+                                }
+
+                                // 否则修改路由
+                                else {
+                                    window.location.href = "#/" + pagename;
+                                }
+                            } else {
+
+                                // 如果之前获得焦点，需要出发失去焦点方法
+                                var _isFocus = viewInstances[key].isFocus;
+
+                                if (_isFocus && isFunctin(viewInstances[key].instance._beforeUnfocus)) {
+                                    viewInstances[key].instance._beforeUnfocus.call(viewInstances[key].instance);
+                                }
+
+                                viewInstances[key].isFocus = false;
+                                viewInstances[key].instance._el.style.zIndex = 1;
+
+                                viewInstances[key].instance._el.setAttribute("focus", "no");
+                                viewInstances[key].lineBtn.el.setAttribute("focus", "no");
+
+                                if (_isFocus && isFunctin(viewInstances[key].instance._unfocused)) {
+                                    viewInstances[key].instance._unfocused.call(viewInstances[key].instance);
+                                }
+
+                            }
+                        }
+
+                        if (isFunctin(viewInstance._focused)) {
+                            viewInstance._focused.call(viewInstance);
+                        }
+
+                    }
+
+                });
+                viewEl.click();
+
+                var tagName = (document.getElementsByTagName("title")[0].innerText + "").replace(window.systeName, "");
+                lineBtnEl.setAttribute("title", tagName);
+                lineBtnEl.innerHTML = "<span tag='" + viewInstance._name + "'></span>" + tagName;
+
+                // 底部按钮被点击时候的处理
+                lineBtnEl.addEventListener("click", function () {
+
+                    // 如果最小化了，恢复
+                    if (viewInstances[uniqueHash].isMin) {
+                        viewInstance.$reshowView();
+
+                        viewEl.click();
+                    } else {
+
+                        // 没有最小化，可是没有聚焦
+                        if (!viewInstances[uniqueHash].isFocus) {
+                            viewEl.click();
+                        }
+
+                        // 否则最小化
+                        else {
+                            viewInstance.$minView();
+                        }
+                    }
+
+                });
+
+            });
+        };
+
+        desktopInstance.$openView = openView;
+        desktopInstance.$openWin = openWin;
+        desktopInstance.$openDialog = openDialog;
+
+        // 隐藏所有窗口
+        window._minAllView_ = function () {
+            for (var key in viewInstances) {
+                viewInstances[key].instance.$minView("desktop");
+            }
+
+            goDesktop();
+        };
+
         // 启动
-        goDesktop(true);
+        if (pagename != "desktop") {
+            openView(pagename, {}, true);
+        } else {
+            goDesktop(true);
+        }
     });
 
 });
@@ -197,6 +514,9 @@ var uiModel =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('20');
 var uiOn =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('21');
+var uiDragdrop =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function useTemplate(el, pagefactory, props) {
@@ -307,6 +627,7 @@ __pkg__scope_bundle__.default= function useTemplate(el, pagefactory, props) {
     pageinfo.directives['ui-bind'] = uiBind;
     pageinfo.directives['ui-model'] = uiModel;
     pageinfo.directives['ui-on'] = uiOn;
+    pageinfo.directives['ui-dragdrop'] = uiDragdrop;
 
     if ("render" in pageinfo) {
 
@@ -1543,31 +1864,350 @@ window.__pkg__bundleSrc__['20']=function(){
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/lazy-load
+// Original file:./src/directives/ui-dragdrop.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['21']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('22');
+var bind =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('23');
+var unbind =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('24');
+var getStyle =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('1');
+var platformName=__pkg__scope_args__.platformName;
+
+
+var _platformName = platformName();
+__pkg__scope_bundle__.default= {
+
+    inserted: function (el, binding) {
+        var bindingValue = binding.value || [0, 0, 0, 0];
+        el.style.cursor = 'move';
+
+        // 寻找窗口轮廓
+        var _el = el.parentNode;
+        while (getStyle(_el, 'position') == 'static' && _el) {
+            _el = _el.parentNode;
+        }
+
+        //绑定鼠标左键按下事件
+        bind(el, _platformName == 'mobile' ? 'touchstart' : 'mousedown', function mousedown(event) {
+            event.stopPropagation();
+
+            //解决浏览器全选无法拖拽弹框
+            el.setCapture && el.setCapture();
+
+            var lf = _platformName == 'mobile' ? event.touches[0].clientX : event.clientX;
+            var tp = _platformName == 'mobile' ? event.touches[0].clientY : event.clientY;
+
+            if (binding.type == 'desktop') {
+                bindingValue = [0, 50 - _el.clientWidth, _el.clientHeight - 50, 50 - _el.clientWidth];
+            }
+
+            var left = getStyle(_el, 'left').replace('px', '');
+            var top = getStyle(_el, 'top').replace('px', '');
+
+            //绑定鼠标移动事件
+            function mousemove(event) {
+                event.stopPropagation();
+
+                var newLeft = left - - (_platformName == 'mobile' ? event.touches[0].clientX : event.clientX) - lf;
+                var newTop = top - - (_platformName == 'mobile' ? event.touches[0].clientY : event.clientY) - tp;
+
+                // 判断水平是否越界
+                if (newLeft > bindingValue[3] && newLeft + _el.clientWidth < window.innerWidth - bindingValue[1]) {
+                    _el.style.left = newLeft + 'px';
+                }
+
+                // 左越界
+                else if (newLeft <= bindingValue[3]) {
+                    _el.style.left = bindingValue[3] + 'px';
+                }
+
+                // 右越界
+                else {
+                    _el.style.left = (window.innerWidth - bindingValue[1] - _el.clientWidth) + 'px';
+                }
+
+                // 判断垂直是否越界
+                if (newTop > bindingValue[0] && newTop + _el.clientHeight < window.innerHeight + bindingValue[2]) {
+                    _el.style.top = newTop + 'px';
+                }
+
+                // 上越界
+                else if (newTop <= bindingValue[0]) {
+                    _el.style.top = bindingValue[0] + 'px';
+                }
+
+                // 下越界
+                else {
+                    _el.style.top = (window.innerHeight + bindingValue[2] - _el.clientHeight) + 'px';
+                }
+
+                _el.style.right = 'auto';
+                _el.style.bottom = 'auto';
+
+            }
+            bind(document, _platformName == 'mobile' ? 'touchmove' : 'mousemove', mousemove);
+
+            //绑定鼠标松开事件,清除鼠标移动绑定
+            bind(document, _platformName == 'mobile' ? 'touchend' : 'mouseup', function (event) {
+                event.stopPropagation();
+
+                unbind(document, _platformName == 'mobile' ? 'touchmove' : 'mousemove', mousemove);
+                _el.releaseCapture && _el.releaseCapture();
+                return false;
+            });
+        });
+
+    }
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/bind
+/*****************************************************************/
+window.__pkg__bundleSrc__['22']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 绑定事件
+var bindEvent = function (dom, eventType, callback) {
+
+    if (dom.constructor === Array || dom.constructor === NodeList || dom.constructor === HTMLCollection) {
+        for (var i = 0; i < dom.length; i++) {
+            bindEvent(dom[i], eventType, callback);
+        }
+        return;
+    }
+
+    if (window.attachEvent)
+        dom.attachEvent("on" + eventType, callback);
+    else
+        dom.addEventListener(eventType, callback, false);
+};
+
+__pkg__scope_bundle__.default= bindEvent;
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/unbind
+/*****************************************************************/
+window.__pkg__bundleSrc__['23']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 去掉绑定事件
+var unbindEvent = function (dom, eventType, handler) {
+
+    if (dom.constructor === Array || dom.constructor === NodeList || dom.constructor === HTMLCollection) {
+        for (var i = 0; i < dom.length; i++) {
+            unbindEvent(dom[i], eventType, handler);
+        }
+        return;
+    }
+
+    if (window.detachEvent)
+        dom.detachEvent('on' + eventType, handler);
+    else
+        dom.removeEventListener(eventType, handler, false);
+
+};
+
+__pkg__scope_bundle__.default= unbindEvent;
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/getStyle
+/*****************************************************************/
+window.__pkg__bundleSrc__['24']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 获取样式
+__pkg__scope_bundle__.default= function (dom, name) {
+    // 获取结点的全部样式
+    var allStyle = document.defaultView && document.defaultView.getComputedStyle ?
+        document.defaultView.getComputedStyle(dom, null) :
+        dom.currentStyle;
+
+    // 如果没有指定属性名称，返回全部样式
+    return typeof name === 'string' ?
+        allStyle.getPropertyValue(name) :
+        allStyle;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/urlFormat
+/*****************************************************************/
+window.__pkg__bundleSrc__['25']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    /**
+ * 浏览器地址格式化
+ * @returns {JSON} 固定格式:{router:Array<string>,params:{}}
+ */
+__pkg__scope_bundle__.default= function () {
+
+    var splitTemp = window.location.href.split('?');
+    var routerTemp = (splitTemp[0] + "#").split("#")[1].replace(/^\//, '').replace(/\/$/, '').split('/');
+    var paramTemp = splitTemp[1] || "";
+
+    var paramResult, paramArray;
+    if (paramTemp == "") {
+        paramResult = {};
+    } else {
+        paramArray = paramTemp.split("&"), paramResult = {};
+        paramArray.forEach(function (item) {
+            var temp = item.split("=");
+            paramResult[temp[0]] = temp[1];
+        })
+    }
+
+    var resultData = {
+        router: routerTemp[0] == '' ? [] : routerTemp,
+        params: paramResult
+    };
+
+    return resultData;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/isString
+/*****************************************************************/
+window.__pkg__bundleSrc__['26']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('5');
+var getType =__pkg__scope_args__.default;
+
+
+/**
+ * 判断一个值是不是String。
+ *
+ * @param {*} value 需要判断类型的值
+ * @returns {boolean} 如果是String返回true，否则返回false
+ */
+__pkg__scope_bundle__.default= function (value) {
+    var type = typeof value;
+    return type === 'string' || (type === 'object' && value != null && !Array.isArray(value) && getType(value) === '[object String]');
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/isFunction
+/*****************************************************************/
+window.__pkg__bundleSrc__['27']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('5');
+var getType =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('3');
+var isObject =__pkg__scope_args__.default;
+
+
+/**
+ * 判断一个值是不是Function。
+ *
+ * @param {*} value 需要判断类型的值
+ * @returns {boolean} 如果是Function返回true，否则返回false
+ */
+__pkg__scope_bundle__.default= function (value) {
+    if (!isObject(value)) {
+        return false;
+    }
+
+    var type = getType(value);
+    return type === '[object Function]' || type === '[object AsyncFunction]' ||
+        type === '[object GeneratorFunction]' || type === '[object Proxy]';
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/remove
+/*****************************************************************/
+window.__pkg__bundleSrc__['28']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 删除节点
+__pkg__scope_bundle__.default= function (el) {
+    el.parentNode.removeChild(el);
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/lazy-load
+/*****************************************************************/
+window.__pkg__bundleSrc__['29']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // PC
     "pcDesktop": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle1.js','22')
+        return window.__pkg__getLazyBundle('./dist/bundle1.js','30')
     },
 
     // Mobile
     "mobileDesktop": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle2.js','23')
+        return window.__pkg__getLazyBundle('./dist/bundle2.js','31')
     },
 
     // PC应用列表
     "pcPages": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle3.js','24')
+        return window.__pkg__getLazyBundle('./dist/bundle3.js','32')
     },
 
     // Mobile应用列表
     "mobilePages": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle4.js','25')
+        return window.__pkg__getLazyBundle('./dist/bundle4.js','33')
+    }
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/dialogs/lazy-load
+/*****************************************************************/
+window.__pkg__bundleSrc__['34']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= {
+
+    // 调试
+    debugger: function () {
+        return window.__pkg__getLazyBundle('./dist/bundle5.js','35')
+    },
+
+    // 项目介绍
+    what: function () {
+        return window.__pkg__getLazyBundle('./dist/bundle6.js','36')
     }
 
 };
@@ -1578,13 +2218,938 @@ window.__pkg__bundleSrc__['21']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/common.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['26']=function(){
+window.__pkg__bundleSrc__['37']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "";
+styleElement.innerHTML = "\n body{\n\nbackground-color: #fafafa;\n\noverflow: hidden;\n\nwidth:100vw;\n\nbackground-size: cover;\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\n}\n\n body .help-height{\n\nposition: fixed;\n\nwidth:100vw;\n\ntop: 0;\n\nbottom: 0;\n\npointer-events: none;\n\n}\n\n body>div#view-root, body>div#win-root, body>div#dialog-root{\n\nposition: fixed;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 0;\n\nheight: 0;\n\n}\n\n body>div#win-root{\n\nz-index: 5;\n\n}\n\n body>div#dialog-root{\n\nz-index: 10;\n\n}\n\n body>div#dialog-root>div.mask{\n\nleft: 0;\n\ntop: 0;\n\nwidth: 100vw;\n\nheight: 100vh;\n\nbackground-color: rgba(0, 0, 0, 0.5);\n\ndisplay: none;\n\n}\n\n body>div#dialog-root>div.mask:not(:last-child){\n\ndisplay: block;\n\n}\n\n body>div#dialog-root>div[dialog-view]{\n\nz-index: -1;\n\n}\n\n body>div#dialog-root>div[dialog-view]:last-child{\n\nz-index: 1;\n\n}\n\n [win-view], [dialog-view], [page-view]{\n\nposition: fixed;\n\nbackground-color: #fafafa;\n\nbox-shadow: #607d8b 2px 0px 6px 1px;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/polyfill/Promise
+/*****************************************************************/
+window.__pkg__bundleSrc__['38']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    var isObject = function (value) {
+    var type = typeof value;
+    return value != null && (type === 'object' || type === 'function');
+};
+
+var getType = function (value) {
+    if (value == null) {
+        return value === undefined ? '[object Undefined]' : '[object Null]';
+    }
+    return Object.prototype.toString.call(value);
+};
+
+var isFunction = function (value) {
+    if (!isObject(value)) {
+        return false;
+    }
+
+    var type = getType(value);
+    return type === '[object Function]' || type === '[object AsyncFunction]' ||
+        type === '[object GeneratorFunction]' || type === '[object Proxy]';
+};
+
+function Promise(doback) {
+
+    var doResolve = function (doback, that) {
+
+        // 防止重复修改状态
+        var done = false;
+
+        try {
+            doback(function (value) {
+                if (done) return; done = true;
+                that.$$changeState(value, 'fulfilled');
+
+            }, function (reason) {
+                if (done) return; done = true;
+                that.$$changeState(reason, 'rejected');
+
+            });
+        } catch (error) {
+            if (done) return; done = true;
+            that.$$changeState(error, 'rejected');
+        }
+
+    };
+
+    if (!(this instanceof Promise)) {
+
+        // 所有的报错方式和内容我们都尽力和原生的保持一致，下同
+        throw new TypeError('undefined is not a promise');
+    }
+
+    if (!(isFunction(doback))) {
+        throw new TypeError('Promise resolver ' + doback + ' is not a function');
+    }
+
+    /**
+     * 参数初始化
+     */
+
+    // 当前的值
+    this.__value = undefined;
+
+    // 记录着由于then，catch或finally登记的方法
+    // Array<onFulfilled|undefined, onRejected|undefined, callback|undefined>
+    this.__hocks = [];
+
+    // 状态
+    this.__state = 'pending';
+
+    /**
+     * 准备完毕以后，开始处理
+     */
+    doResolve(doback, this);
+}
+
+// 添加辅助方法
+Promise.prototype.$$changeState = function (data, state) {
+
+    // 更改状态
+    this.__state = state;
+    this.__value = data;
+
+    // 由于状态改变了，触发对then，finnaly，catch等的执行更新
+    this.$$triggerEvent();
+
+};
+
+Promise.prototype.$$triggerEvent = function () {
+
+    // 这个方法的任务就是把__hocks中记录的方法依次执行了
+    // 什么时候会停止？两种情况：
+    // 1.队列执行完了
+    // 2.遇到其中一个执行方法返回Promise
+
+    var currentHock = null;
+
+    // 同意状态就去寻找下一个onFulfilled
+    // 拒绝状态就去寻找下一个onRejected
+    // 数组下标0和1分别记录这两个状态，因此先根据状态确定下标即可
+    var index = this.__state == 'fulfilled' ? 0 : 1, i;
+
+    // 可能找到，可能到结尾都没有找到
+    while (this.__hocks.length > 0) {
+
+        if (isFunction(this.__hocks[0][index])) {
+            currentHock = this.__hocks.shift();
+            break;
+        }
+
+        // 对于路过的finally执行一下
+        else if (isFunction(this.__hocks[0][2])) {
+            this.__hocks[0][2]();
+        }
+
+        this.__hocks.shift();
+
+    }
+
+    // 如果找到了
+    if (currentHock !== null) {
+        var result = currentHock[index](this.__value);
+
+        // 如果是Promise
+        if (isObject(result) && result.constructor === this.constructor) {
+            for (var i = 0; i < this.__hocks.length; i++) {
+                result.__hocks.push(this.__hocks[i]);
+                if (result.__state != 'pending') result.$$triggerEvent();
+            }
+
+            this.then = function (onFulfilled, onRejected) {
+
+                result.then(onFulfilled, onRejected);
+            };
+            this.catch = function (onRejected) {
+
+                result.catch(onRejected);
+            };
+            this.finally = function (callback) {
+
+                result.finally(callback);
+            };
+
+        }
+
+        // 否则
+        else {
+
+            this.__value = result;
+            this.__state = "fulfilled";
+            this.$$triggerEvent();
+
+        }
+
+    }
+
+};
+
+/**
+ * 原型上的方法
+ */
+
+// 添加解决(fulfillment)和拒绝(rejection)回调到当前 promise,
+// 返回一个新的 promise,
+// 将以回调的返回值来resolve。
+Promise.prototype.then = function (onFulfilled, onRejected) {
+
+    this.__hocks.push([onFulfilled, onRejected, undefined]);
+
+    if (this.__state != 'pending') { this.$$triggerEvent(); }
+
+    return this;
+
+};
+
+// 添加一个拒绝(rejection) 回调到当前 promise, 返回一个新的promise。
+// 当这个回调函数被调用，
+// 新 promise 将以它的返回值来resolve，
+// 否则如果当前promise 进入fulfilled状态，
+// 则以当前promise的完成结果作为新promise的完成结果。
+Promise.prototype.catch = function (onRejected) {
+
+    this.__hocks.push([undefined, onRejected, undefined]);
+
+    if (this.__state != 'pending') { this.$$triggerEvent(); }
+
+    return this;
+
+};
+
+// 添加一个事件处理回调于当前promise对象，
+// 并且在原promise对象解析完毕后，
+// 返回一个新的promise对象。
+// 回调会在当前promise运行完毕后被调用，
+// 无论当前promise的状态是完成(fulfilled)还是失败(rejected)。
+Promise.prototype.finally = function (callback) {
+
+    this.__hocks.push([undefined, undefined, callback]);
+
+    if (this.__state != 'pending') { this.$$triggerEvent(); }
+
+    return this;
+
+
+};
+
+/**
+ * 静态方法
+ */
+
+// 返回一个状态由给定value决定的Promise对象。
+// 如果该值是thenable(即，带有then方法的对象)，
+// 返回的Promise对象的最终状态由then方法执行决定；
+// 否则的话(该value为空，基本类型或者不带then方法的对象),
+// 返回的Promise对象状态为fulfilled，
+// 并且将该value传递给对应的then方法。
+// 通常而言，如果您不知道一个值是否是Promise对象，使用Promise.resolve(value) 来返回一个Promise对象,
+// 这样就能将该value以Promise对象形式使用。
+Promise.resolve = function (value) {
+
+    if (isObject(value) && value.constructor === Promise) {
+        return value;
+    }
+
+    return new Promise(function (resolve) {
+        resolve(value);
+    });
+
+};
+
+// 返回一个状态为失败的Promise对象，
+// 并将给定的失败信息传递给对应的处理方法。
+Promise.reject = function (reason) {
+
+    return new Promise(function (resolve, reject) {
+        reject(reason);
+    });
+
+};
+
+// 这个方法返回一个新的promise对象，
+// 该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，
+// 一旦有任何一个iterable里面的promise对象失败则立即触发该promise对象的失败。
+// 这个新的promise对象在触发成功状态以后，
+// 会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，
+// 顺序跟iterable的顺序保持一致；
+// 如果这个新的promise对象触发了失败状态，
+// 它会把iterable里第一个触发失败的promise对象的错误信息作为它的失败错误信息。
+// Promise.all方法常被用于处理多个promise对象的状态集合.
+Promise.all = function (iterable) {
+
+    return new Promise(function (resolve, reject) {
+
+        if (!Array.isArray(iterable)) {
+            return reject(new TypeError('undefined is not iterable (cannot read property Symbol(Symbol.iterator))'));
+        }
+
+        var resultData = Array.prototype.slice.call(iterable), num = 0;
+
+        if (resultData.length == 0) resolve([]);
+
+        var doHelp = function (index, item) {
+            if (item.__state !== "pending") {
+
+                num += 1;
+
+                if (item.__state == 'rejected') {
+
+                    // 如果遇到第一个失败的，拒绝即可
+                    reject(item.__value);
+                } else {
+
+                    resultData[index] = item.__value;
+
+                    if (num == resultData.length) {
+                        resolve(resultData);
+                    }
+                }
+
+            } else {
+                setTimeout(function () { doHelp(index, item); });
+            }
+        };
+
+        for (var i = 0; i < resultData.length; i++) {
+            doHelp(i, resultData[i]);
+        }
+
+    });
+
+};
+
+// 等到所有promises都已敲定（settled）（每个promise都已兑现（fulfilled）或已拒绝（rejected））。
+// 返回一个promise，该promise在所有promise完成后完成。并带有一个对象数组，每个对象对应每个promise的结果。
+Promise.allSettled = function (iterable) {
+
+    return new Promise(function (resolve, reject) {
+
+        if (!Array.isArray(iterable)) {
+            return reject(new TypeError('undefined is not iterable (cannot read property Symbol(Symbol.iterator))'));
+        }
+
+        var resultData = Array.prototype.slice.call(iterable), num = 0;
+
+        if (resultData.length == 0) resolve([]);
+
+        var doHelp = function (index, item) {
+            if (item.__state !== "pending") {
+
+                num += 1;
+
+                resultData[index] = {
+                    status: item.__state
+                };
+
+                if (item.__state == 'fulfilled') {
+                    resultData[index].value = item.__value;
+                } else {
+                    resultData[index].reason = item.__value;
+                }
+
+                if (num == resultData.length) {
+                    resolve(resultData);
+                }
+
+            } else {
+                setTimeout(function () { doHelp(index, item); });
+            }
+        };
+
+        for (var i = 0; i < resultData.length; i++) {
+            doHelp(i, resultData[i]);
+        }
+
+    });
+
+};
+// 收一个Promise对象的集合，
+// 当其中的一个 promise 成功，
+// 就返回那个成功的promise的值。
+Promise.any = function (iterable) {
+
+    return new Promise(function (resolve, reject) {
+
+        if (!Array.isArray(iterable)) {
+            return reject(new TypeError('undefined is not iterable (cannot read property Symbol(Symbol.iterator))'));
+        }
+
+        var num = 0;
+
+        if (iterable.length == 0) resolve(undefined);
+
+        var doHelp = function (index, item) {
+            if (item.__state !== "pending") {
+
+                num += 1;
+
+                if (item.__state == 'rejected') {
+
+                    if (num == iterable.length) {
+
+                        // 为了兼容性，我们放弃AggregateError
+                        return reject(new Error('All promises were rejected'));
+                    }
+
+                } else {
+
+                    // 遇到第一个成功的，标记解决即可
+                    resolve(item.__value);
+
+                }
+
+            } else {
+                setTimeout(function () { doHelp(index, item); });
+            }
+        };
+
+        for (var i = 0; i < iterable.length; i++) {
+            doHelp(i, iterable[i]);
+        }
+
+    });
+};
+
+// 当iterable参数里的任意一个子promise被成功或失败后，
+// 父promise马上也会用子promise的成功返回值或失败详情作为参数调用父promise绑定的相应句柄，
+// 并返回该promise对象。
+Promise.race = function (iterable) {
+
+    return new Promise(function (resolve, reject) {
+
+        if (!Array.isArray(iterable)) {
+            return reject(new TypeError('undefined is not iterable (cannot read property Symbol(Symbol.iterator))'));
+        }
+
+        if (iterable.length == 0) resolve(undefined);
+
+        var doHelp = function (index, item) {
+            if (item.__state !== "pending") {
+
+                if (item.__state == 'rejected') {
+                    reject(item.__value);
+                } else {
+                    resolve(item.__value);
+                }
+
+            } else {
+                setTimeout(function () { doHelp(index, item); });
+            }
+        };
+
+        for (var i = 0; i < iterable.length; i++) {
+            doHelp(i, iterable[i]);
+        }
+
+    });
+};
+
+// 如果Promise不存在
+if (!('Promise' in window)) {
+    window['Promise'] = Promise;
+}
+
+// 由于不同浏览器对一些具体的方法兼容不一样
+// （比如一些浏览器支持Promise，可是不支持某个方法，需要对该方法进行兼容）
+// 需要进一步嗅探，后续如果有必要再说
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/debugger/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['39']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('40');
+var showData =__pkg__scope_args__.default;
+
+
+var console = window.console;
+
+// 原生的打印方法 + 当前执行的代码在堆栈中的调用路径
+var log = console.log;
+var info = console.info;
+var debug = console.debug;
+var warn = console.warn;
+var error = console.error;
+var trace = console.trace;
+
+// 记录的打印、错误等日志记录
+window._consoleArray_ = [];
+
+var colors = {
+    log: "black",
+    info: 'green',
+    debug: 'blue',
+    warn: 'f1c010',
+    error: 'red',
+    trace: 'pink'
+};
+window._consoleAppend_ = function (item) {
+    var rootEl = document.getElementById('console-el');
+
+    var liEl = document.createElement('li');
+    rootEl.appendChild(liEl);
+
+    liEl.style.color = colors[item.type];
+
+    var i, itemEl, brEl;
+    for (i = 0; i < item.content.length; i++) {
+
+        itemEl = document.createElement('div');
+        liEl.appendChild(itemEl);
+
+        showData(itemEl, item.content[i]);
+
+        if (i < item.content.length - 1) {
+            brEl = document.createElement('div');
+            liEl.appendChild(brEl);
+
+            brEl.setAttribute('class', 'br');
+        }
+    }
+
+};
+
+function trigger(type, info) {
+    if (type == 'console') {
+
+        // 先保存起来
+        window._consoleArray_.push(info);
+
+        // 如果弹框打开，同步追加
+        if (document.getElementById('console-el')) {
+            window._consoleAppend_(info);
+        }
+    }
+}
+
+__pkg__scope_bundle__.default= function () {
+
+    console.log = function () {
+        log.apply(this, arguments);
+        trigger('console', {
+            type: "log",
+            content: arguments
+        });
+    };
+    console.info = function () {
+        info.apply(this, arguments);
+        trigger('console', {
+            type: "info",
+            content: arguments
+        });
+    };
+    console.debug = function () {
+        debug.apply(this, arguments);
+        trigger('console', {
+            type: "debug",
+            content: arguments
+        });
+    };
+    console.warn = function () {
+        warn.apply(this, arguments);
+        trigger('console', {
+            type: "warn",
+            content: arguments
+        });
+    };
+    console.error = function () {
+        error.apply(this, arguments);
+        trigger('console', {
+            type: "error",
+            content: arguments
+        });
+    };
+    console.trace = function () {
+        trace.apply(this, arguments);
+        trigger('console', {
+            type: "trace",
+            content: arguments
+        });
+    };
+
+    if ('addEventListener' in window) {
+
+        // 监听Promise相关错误
+        window.addEventListener('unhandledrejection', function (event) {
+            var content = event.reason.stack;
+            trigger('console', {
+                type: "error",
+                content: [content]
+            });
+        });
+
+        // throw new error的捕获
+        window.addEventListener('error', function (event) {
+            var content = event.message + " " + event.filename + " " + event.lineno + " \nstack :\n" + (event.error ? event.error.stack : "");
+            trigger('console', {
+                type: "error",
+                content: [content]
+            });
+        });
+    }
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/debugger/showData
+/*****************************************************************/
+window.__pkg__bundleSrc__['40']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('41');
+var appendTo =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('22');
+var bind =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('26');
+var isString =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('27');
+var isFunction =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('44');
+var isNumber =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('45');
+var isBoolean =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('46');
+var toString =__pkg__scope_args__.default;
+
+
+var doit = function (target, obj) {
+
+    bind(target.getElementsByTagName('i')[0], 'click', function () {
+
+        // 如果是字符串，就不需要展开了
+        if (isString(obj)) return;
+
+        // 如果没有加载过
+        if (target.getAttribute('hadload') != 'yes') {
+
+            target.setAttribute('hadload', 'yes');
+            target.setAttribute('isopen', 'yes');
+
+            var template = "<div class='item'>";
+
+            for (var key in obj) {
+                try {
+                    template += "<span isopen='no'><i><em style='font-style:normal;color:#905'>" + key + "</em>:" + toString(obj[key]) + "</i></span>";
+                } catch (e) {
+                    // todo
+                }
+            }
+            template += "</div>";
+            appendTo(target, template);
+
+            // 添加交互
+            var index = 0, lis = target.getElementsByTagName('span');
+            for (var key in obj) {
+                doit(lis[index++], obj[key]);
+            }
+        }
+
+        // 如果加载过了，直接控制打开或者关闭即可
+        else {
+            if (target.getAttribute('isopen') == 'no') target.setAttribute('isopen', 'yes');
+            else target.setAttribute('isopen', 'no');
+        }
+
+    });
+
+};
+
+__pkg__scope_bundle__.default= function (target, msg) {
+
+    // 如果是字符串、函数、数字等
+    if (isString(msg) || isFunction(msg) || isNumber(msg) || isBoolean(msg)) {
+        target.innerText = msg;
+    }
+
+    else if (msg === undefined) target.innerText = 'undefined';
+    else if (msg === null) target.innerText = 'null';
+
+    else {
+        target.setAttribute('defType', 'showobject');
+        target.setAttribute('class', 'item');
+
+        // 默认作为对象显示
+        target.setAttribute('hadload', 'no');
+        target.setAttribute('isopen', 'no');
+        target.innerHTML = "<i>" + toString(msg) + "</i>";
+        doit(target, msg);
+    }
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/appendTo
+/*****************************************************************/
+window.__pkg__bundleSrc__['41']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('42');
+var isElement =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('43');
+var toNode =__pkg__scope_args__.default;
+
+
+// 追加节点(内部结尾)
+__pkg__scope_bundle__.default= function (el, template) {
+    var node = isElement(template) ? template : toNode(template);
+    el.appendChild(node);
+    return node;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/isElement
+/*****************************************************************/
+window.__pkg__bundleSrc__['42']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (dom) {
+    return dom !== null && typeof dom === 'object' &&
+        [1, 9, 11].indexOf(dom.nodeType) > -1
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/toNode
+/*****************************************************************/
+window.__pkg__bundleSrc__['43']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('42');
+var isElement =__pkg__scope_args__.default;
+
+
+// 变成结点
+__pkg__scope_bundle__.default= function (template) {
+    var frameTagName = 'div';
+
+    // 大部分的标签可以直接使用div作为容器
+    // 部分特殊的需要特殊的容器标签
+
+    if (/^<tr[> ]/.test(template)) {
+
+        frameTagName = "tbody";
+
+    } else if (/^<th[> ]/.test(template) || /^<td[> ]/.test(template)) {
+
+        frameTagName = "tr";
+
+    } else if (/^<thead[> ]/.test(template) || /^<tbody[> ]/.test(template)) {
+
+        frameTagName = "table";
+
+    }
+
+    var frame = document.createElement(frameTagName);
+    frame.innerHTML = template;
+    var childNodes = frame.childNodes;
+    for (var i = 0; i < childNodes.length; i++) {
+        if (isElement(childNodes[i])) return childNodes[i];
+    }
+    return null;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/isNumber
+/*****************************************************************/
+window.__pkg__bundleSrc__['44']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('5');
+var getType =__pkg__scope_args__.default;
+
+
+/**
+ * 判断一个值是不是number。
+ *
+ * @param {*} value 需要判断类型的值
+ * @returns {boolean} 如果是number返回true，否则返回false
+ */
+__pkg__scope_bundle__.default= function (value) {
+    return typeof value === 'number' || (
+        value !== null && typeof value === 'object' &&
+        getType(value) === '[object Number]'
+    );
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/isBoolean
+/*****************************************************************/
+window.__pkg__bundleSrc__['45']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('5');
+var getType =__pkg__scope_args__.default;
+
+
+/**
+ * 判断一个值是不是Boolean。
+ *
+ * @param {*} value 需要判断类型的值
+ * @returns {boolean} 如果是Boolean返回true，否则返回false
+ */
+__pkg__scope_bundle__.default= function (value) {
+    return value === true || value === false ||
+        (value !== null && typeof value === 'object' && getType(value) === '[object Boolean]');
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/debugger/toString
+/*****************************************************************/
+window.__pkg__bundleSrc__['46']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('47');
+var isPlainObject =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (val) {
+    if (Array.isArray(val)) {
+        var resultData = "[";
+        for (var key in val) {
+            resultData += val[key] + ',';
+        }
+        return resultData.replace(/\,$/, ']');
+    }
+
+    if (isPlainObject(val)) {
+        var resultData = "{";
+        for (var key in val) {
+            resultData += key + ":" + val[key] + ",";
+        }
+        return resultData.replace(/\,$/, '}');
+    }
+
+    return val;
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/isPlainObject
+/*****************************************************************/
+window.__pkg__bundleSrc__['47']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('5');
+var getType =__pkg__scope_args__.default;
+
+
+/**
+ * 判断一个值是不是一个朴素的'对象'
+ * 所谓"纯粹的对象"，就是该对象是通过"{}"或"new Object"创建的
+ *
+ * @param {*} value 需要判断类型的值
+ * @returns {boolean} 如果是朴素的'对象'返回true，否则返回false
+ */
+
+__pkg__scope_bundle__.default= function (value) {
+    if (value === null || typeof value !== 'object' || getType(value) != '[object Object]') {
+        return false;
+    }
+
+    // 如果原型为null
+    if (Object.getPrototypeOf(value) === null) {
+        return true;
+    }
+
+    var proto = value;
+    while (Object.getPrototypeOf(proto) !== null) {
+        proto = Object.getPrototypeOf(proto);
+    }
+    return Object.getPrototypeOf(value) === proto;
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/system/keep-time
+/*****************************************************************/
+window.__pkg__bundleSrc__['48']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 如果time不是空，说明当前打开前，已经有这个页面打开了，无需更新打开时间
+var time = localStorage.getItem('stayTime');
+if (!time) {
+    localStorage.setItem('stayTime', new Date().valueOf());
+}
+
+// 记录打开页面的个数
+var count = localStorage.getItem('stayTime@count') || 0;
+localStorage.setItem('stayTime@count', 1 - - count);
+
+var doBeforeunload = function () {
+
+    var _count = +localStorage.getItem('stayTime@count');
+
+    _count < 1 ? 1 : _count;
+    localStorage.setItem('stayTime@count', _count - 1);
+
+    // 说明当前页面是最后一个页签
+    if (_count - 1 <= 0) {
+
+        var stayTime = localStorage.getItem('stayTime');
+
+        var _time = stayTime ? (new Date().valueOf()) - stayTime : 0;
+        localStorage.setItem('stayTime@result', _time);
+
+        localStorage.removeItem('stayTime');
+        localStorage.removeItem('stayTime@count');
+    }
+
+};
+
+window.onbeforeunload = doBeforeunload;
+
+setTimeout(function () {
+    console.log("上次窗口停留的时间是：" + (localStorage.getItem("stayTime@result") || 0) + "ms");
+});
 
     return __pkg__scope_bundle__;
 }

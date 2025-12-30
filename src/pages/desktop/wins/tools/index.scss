@@ -1,0 +1,105 @@
+[win-view="tools"] {
+    right: 0;
+    bottom: 35px;
+    width: 360px;
+    height: calc(100vh - 35px);
+    background-color: rgb(91 90 90 / 10%);
+    z-index: 1;
+    font-size: 12px;
+    box-shadow: none;
+
+    &>div {
+        box-shadow: 0 0 15px 3px #000000ab;
+        border: 1px solid #ffffff52;
+
+        &.calendar {
+            width: 326px;
+            margin: auto;
+            text-align: center;
+            color: white;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #382f1d;
+            border-radius: 10px;
+
+            &>div {
+
+                &.header {
+
+                    &>button {
+                        border: none;
+                        outline: none;
+                        background-color: transparent;
+                        font-size: 14px;
+                        color: rgb(184, 182, 182);
+                        cursor: pointer;
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 5px;
+
+                        &:hover {
+                            background-color: #eff9f80f;
+                        }
+                    }
+
+                    &>h3 {
+                        display: inline-block;
+                        width: 200px;
+                        text-align: left;
+                        padding-top: 20px;
+                        padding-bottom: 30px;
+                        font-size: 18px;
+                        font-weight: 200;
+                        font-family: monospace;
+                    }
+                }
+
+                &.title {
+                    margin-top: 10px;
+
+                    &>span {
+                        line-height: 20px;
+                        height: 20px;
+                    }
+                }
+
+                &.items {
+                    padding: 20px;
+
+                    &>span {
+                        border-radius: 50%;
+                        cursor: pointer;
+
+                        &.gray {
+                            color: #75756c;
+                        }
+
+                        &:not(.gray):hover {
+                            background-color: #eff9f80f;
+                        }
+
+                        &.today {
+                            background-color: #55c8fb;
+                            color: black;
+
+                            &:hover {
+                                background-color: #60bae1;
+                            }
+                        }
+
+                    }
+                }
+
+                &>span {
+                    display: inline-block;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+
+                }
+            }
+        }
+    }
+}
