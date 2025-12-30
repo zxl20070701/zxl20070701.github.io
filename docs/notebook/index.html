@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./images/logo.png">
+    <meta name="keywords" content="zxl20070701 1904314465@qq.com notebook math web english computer 小程序 经济学 算法">
+    <link rel="stylesheet" href="../styles/normalize.css">
+    <link rel="stylesheet" href="./styles/common.css">
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/F12.css">
+    <script src="./scripts/tool.js"></script>
+    <script src="./scripts/zh-tw.js"></script>
+    <script src="./scripts/shader.js"></script>
+    <script src="./scripts/formula.js"></script>
+    <script src="./scripts/F12.js"></script>
+    <script src="./scripts/index.js"></script>
+    <title>《文档笔记》包括编程、数学、计算机、英语、历史、经济学等各种常用的内容快速查询</title>
+    <script>
+
+        // 控制是否需要缓存
+        var host = window.location.host;
+        window.needCache = !(/^127\.0\.0\.1/.test(host) || /^localhost/.test(host) || host == "");
+
+        // 是否是手机模式？
+        window.isPhone = /Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent);
+
+        // 计算vw和vh具体应该是什么
+        window.getVwVh = function () {
+            var _vw = "vw", _vh = "vh";
+            if (window.isPhone && window.innerWidth < window.innerHeight) {
+                _vw = "vh";
+                _vh = "vw";
+            }
+            return {
+                vw: _vw,
+                vh: _vh
+            }
+        };
+
+        // 监听浏览器点击了回退按钮
+        if (window.addEventListener)
+            window.addEventListener("hashchange", function () {
+                setTimeout(function () {
+                    if (window.noFresh) {
+                        window.noFresh = false;
+                    } else {
+                        window.location.reload();
+                    }
+                }, 200);
+            }, false);
+
+    </script>
+    <script>
+
+        var _updateView_params_ = {
+            willDo: false, // 记录是否已经有未完成的任务
+            noNew: true // 记录是否可以立刻执行未完成的任务
+        };
+
+        // 调整显示区域的尺寸
+        // 兼容不同大小的屏幕
+        function updateView() {
+            document.getElementsByTagName("body")[0].setAttribute("phone", window.isPhone ? "yes" : "no");
+
+            // 如果前置任务都完成了
+            if (!_updateView_params_.willDo) {
+
+                // 记录有未完成的任务
+                _updateView_params_.willDo = true;
+
+                // 既然前置任务已经没有了，那么就可以更新了？
+                // 不是的，可能非常短的时间里，后续有改变，
+                // 因此延迟一点点来看看后续有没有改变，
+                // 如果改变了，就再延迟看看
+                var interval = window.setInterval(function () {
+
+                    // 判断当前是否可以立刻更新
+                    // 如果后续又来新任务，noNew肯定被设置成false了，那就只能再等等
+                    if (_updateView_params_.noNew) {
+                        var vwVh = window.getVwVh();
+                        var _height, _vw = vwVh.vw, _vh = vwVh.vh, _transform = "";
+
+                        // 计算缩放比
+                        window.scale = window.innerWidth / (window.isPhone ? 900 : 1400);
+
+                        if (window.isPhone) {
+                            if (window.innerWidth < window.innerHeight) {
+                                window.scale = window.innerWidth / 700;
+                                _transform = "rotate(90deg) translateY(-" + 100 / window.scale + "vw)";
+                            } else {
+                                window.scale = window.innerWidth / 1500;
+                            }
+
+                        }
+
+                        // 进行缩放
+                        document.body.style.transformOrigin = 'left top';
+                        document.body.style.transform = 'scale(' + window.scale + ', ' + window.scale + ') ' + _transform;
+
+                        // 恢复
+                        // 为什么需要恢复？
+                        // 因为现在屏幕的内容可能无法和内容大小保持一致了，
+                        // 比如屏幕小，那body就要缩小，那内容也缩小了，就需要把内容区域设置大点
+
+                        document.body.style.width = (100 / window.scale) + _vw; // body
+                        document.body.style.height = (100 / window.scale) + _vh;
+
+                        _height = "calc(" + (100 / window.scale) + _vh + " - 50px)";
+                        _width = "calc(" + (100 / window.scale) + _vw + " - 520px)";
+
+                        document.getElementById('doc-id').style.height = window.isFull ? (100 / window.scale) + _vh : _height; // 内容的高
+                        document.getElementById('book-view-id').style.height = "calc(" + (100 / window.scale) + _vh + " - 220px)";
+                        document.getElementById('menu-view-id').style.height = _height;
+
+                        document.getElementById('doc-id').style.width = _width; // 内容的宽
+
+                        var wOverH = window.innerWidth > window.innerHeight;
+
+                        // 例子界面
+                        if ((!window.isPhone && wOverH) || window.isPhone) {
+                            document.getElementById('example-win').style.whiteSpace = "nowrap";
+                            document.getElementById('example-left-id').style.width = 'calc(' + (45 / window.scale) + _vw + ' - 30px)'; // 宽屏幕
+                            document.getElementById('example-left-id').style.height = 'calc(' + (90 / window.scale) + _vh + ' - 40px)';
+                            document.getElementById('example-right-id').style.width = 'calc(' + (45 / window.scale) + _vw + ' - 30px)';
+                            document.getElementById('example-right-id').style.height = 'calc(' + (90 / window.scale) + _vh + ' - 40px)';
+                        } else {
+                            document.getElementById('example-win').style.whiteSpace = "normal";
+                            document.getElementById('example-left-id').style.width = 'calc(' + (90 / window.scale) + _vw + ' - 40px)'; // 高屏幕
+                            document.getElementById('example-left-id').style.height = 'calc(' + (45 / window.scale) + _vh + ' - 30px)';
+                            document.getElementById('example-right-id').style.width = 'calc(' + (90 / window.scale) + _vw + ' - 40px)';
+                            document.getElementById('example-right-id').style.height = 'calc(' + (45 / window.scale) + _vh + ' - 30px)';
+                        }
+
+                        document.getElementById('explain-content-id').style.width = 'calc(' + (100 / window.scale) + _vw + ' - 420px)';// 解释说明
+                        document.getElementById('explain-content-id').style.height = 'calc(' + (100 / window.scale) + _vh + ' - 50px)';
+
+                        // 标记任务完毕
+                        window.clearInterval(interval);
+                        _updateView_params_.willDo = false;
+
+                    }
+
+                    //  标记没有新任务了，如果后续有，会被重新设置为false
+                    _updateView_params_.noNew = true;
+                }, 100);
+
+            }
+
+            // 如果前置有任务，
+            // 那么当前应该干的事情是记录已经有的任务不能立刻执行，
+            // 需要等会看看会不会又有新任务
+            else {
+                _updateView_params_.noNew = false;
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="initMenu();updateView();" onresize="updateView();">
+
+    <!-- 全屏下的fixed -->
+    <div class="fixed-view" id="fixed-id">
+
+        <!-- 快速定位 -->
+        <div class="menu" id="fixed-menu-id"></div>
+
+        <!-- 右侧 -->
+        <div class="right">
+
+            <!-- 捐款 -->
+            <div class="sponsors wx"></div>
+            <div class="sponsors zfb"></div>
+
+            <!-- 提意见 -->
+            <div class="help">
+                <h2 class="title">没有找到你想看的？</h2>
+                你可以
+                <a href="https://github.com/zxl20070701/zxl20070701.github.io/issues" target="_blank">点击此处</a>
+                给我们留言哦~
+            </div>
+        </div>
+    </div>
+
+    <!-- 进度 -->
+    <div id="process"></div>
+
+    <!-- 顶部 -->
+    <header id="header-id">
+        <h2>
+            文档笔记
+            <span class="total">
+                本站已收录<i id="total-value" class="value"></i>篇文章
+            </span>
+        </h2>
+        <div class="tips">
+            温馨提示：我们会根据实际情况升级维护，可能会删除或改名已经存在的内容。
+        </div>
+        <a class="github" href="https://github.com/zxl20070701/zxl20070701.github.io" id="github-id" tag="type1"
+            target="_blank">
+            Fork Me On Github
+        </a>
+    </header>
+
+    <!-- 主界面 -->
+    <div class="main-view" id="main-view-id">
+        <div class="book" id="book-view-id">
+            <ul id="book-id">
+                <li class="kind-title">
+                    前言
+                </li>
+                <li>
+                    <span tag="begin-edit">
+                        参与笔记编辑？
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div class="menu" id="menu-view-id">
+            <h2>目录</h2>
+            <ul id="menu-id"></ul>
+        </div>
+        <div class="doc" id="doc-id"></div>
+    </div>
+
+    <!-- 搜索 -->
+    <div class="form-view">
+        <form onsubmit="doSearch(event)">
+            <input type="text" placeholder="输入内容后回车进行查询" spellcheck="false" autocomplete="off" id="search-input">
+            <button type="submit" id="search-btn">查询</button>
+        </form>
+    </div>
+
+    <!-- 例子 -->
+    <div class="example-view" id="example-root">
+        <div id="example-win">
+            <div id="example-left-id">
+                <h2>
+                    源代码
+                    <button class="run" id="run-btn" onclick="runExample()">
+                        运行
+                    </button>
+                </h2>
+                <textarea id="source-id" spellcheck="false"></textarea>
+            </div>
+            <div id="example-right-id">
+                <h2>
+                    运行结果
+                    <button class="close" id="example-close-id">
+                        关闭
+                    </button>
+                </h2>
+                <div class="iframe">
+                    <iframe id="run-id"></iframe>
+                    <div class="f12">
+                        <ul class="nav">
+                            <li class="active">
+                                Console
+                            </li>
+                        </ul>
+                        <ul id="f12-console"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // 运行例子
+        function runExample() {
+            var iframeDocument = document.getElementById('run-id').contentWindow.document;
+            var iframeWindow = document.getElementById('run-id').contentWindow;
+
+            // 启动F12
+            window.rebotF12({
+                window: iframeWindow
+            });
+
+            iframeDocument.open();
+            iframeDocument.write(document.getElementById('source-id').value);
+            iframeDocument.close();
+        }
+
+    </script>
+
+    <!-- 解释说明 -->
+    <div class="explain-view" id="explain-root">
+        <div class="doc" id="explain-content-id">
+        </div>
+        <button id="explain-close-id">
+            关闭
+        </button>
+    </div>
+
+    <!-- 快捷导航 -->
+    <div class="quick-link" id="quick-link-id">
+        <a class="toolbox" href="../toolbox/index.html" target="_blank">
+            实用工具
+        </a>
+    </div>
+
+    <a href="./home.html" class="goback" title="点击我，可以返回首页哦～"></a>
+
+    <!-- 切换文字 -->
+    <div class="lang-change">
+        <span id="zh-cn-btn" onclick="changeLang('zh-cn')">简体</span>
+        <span id="zh-tw-btn" onclick="changeLang('zh-tw')">繁体</span>
+    </div>
+
+    <script>
+
+        // 文字切换按钮标记
+        document.getElementById(sessionStorage.getItem('lang') + "-btn").setAttribute('class', 'active');
+
+        // 非xhr的文字切换
+        var langIds = ['main-view-id', 'header-id', 'example-root', 'quick-link-id'], langEl;
+        for (langIndex = 0; langIndex < langIds.length; langIndex++) {
+            langEl = document.getElementById(langIds[langIndex]);
+            langEl.innerHTML = window.zhcnTozhtw(langEl.innerHTML);
+        }
+    </script>
+
+    <!-- 控制台打印 -->
+    <script>
+        console.log("%c\n\n\t\t学习的目的绝对不只是为了追求名誉或财富，而是为了在短暂的生命里给灵魂一个栖息的地方，同时寻着一个生存之道。\n\n %cby zxl20070701\n\n", "color:#555555;font-size:12px;font-family:cursive;", "color:gray;padding-left:60px;");
+
+        var colors1 = ["red", "#aaa", "gray"];
+
+        console.log(
+            "\n%c【希腊字母】\n" +
+            "\n%c    大写：%cΑ Β Γ Δ Ε Ζ Η Θ Ι Κ ∧ Μ Ν Ξ Ο ∏ Ρ ∑ Τ Υ Φ Χ Ψ Ω" +
+            "\n%c    小写：%cα β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω" +
+            "\n",
+            "color:" + colors1[0],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2]);
+
+        console.log(
+            "\n%c【数学符号】\n" +
+            "\n%c    运算：%c ＋ － × ÷ ± ·" +
+            "\n%c    几何：%c ⊥ ∥ ∽" +
+            "\n%c    记号：%c ㏒ ∞ π" +
+            "\n%c    集合：%c ∪ ∩ ∈ ∉ Ø ⊆ ⊂ ⊇ ⊃ ∨∧" +
+            "\n%c    比较：%c ≈ ≡ ≌ ≠ ≤ ≥ ＜ ＞" +
+            "\n%c    积分：%c ∮ ∫" +
+            "\n%c    概率：%c Ω σ ℱ" +
+            "\n%c    序号：%c ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩" +
+            "\n%c    其它：%c → ƒ ∠" +
+            "\n",
+            "color:" + colors1[0],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2],
+            "color:" + colors1[1],
+            "color:" + colors1[2]);
+    </script>
+
+</body>
+
+</html>
+
+<!--
+
+我还惊讶地意识到， 在我生命中有很多时刻， 每当我遇到一个遥不可及、令人害怕的情境，
+并感到惊慌失措时， 我都能够应付——因为我回想起了很久以前自己上过的那一课。
+我提醒自己不要看下面遥远的岩石， 而是注意相对轻松、容易的第一小步， 迈出一小步、再一小步，
+就这样体会每一步带来的成就感， 直到完成了自己想要完成的， 达到了自己的目标，
+然后再回头看时， 不禁对自己走过的这段漫漫长路感到惊讶和自豪。
+
+                                        ———— 摘自 莫顿·亨特《走一步，再走一步》
+
+-->

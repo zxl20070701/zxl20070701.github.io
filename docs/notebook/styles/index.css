@@ -1,0 +1,714 @@
+html {
+    height: 100vh !important;
+    overflow: hidden;
+}
+
+body {
+    background-color: white;
+    overflow: hidden;
+}
+
+/* 有弹框时 */
+[dialog='yes'] .main-view>div {
+    z-index: -1;
+}
+
+[dialog='yes'] header .tips,
+[dialog='yes'] .form-view {
+    display: none;
+}
+
+/* 全屏时 */
+[isfull='yes'] header .tips,
+[isfull='yes'] .main-view>div.book,
+[isfull='yes'] .main-view>div.menu {
+    display: none;
+}
+
+[isfull='yes'] .form-view {
+    top: 0;
+    margin-right: 260px;
+}
+
+[isfull='yes'] .search-list {
+    top: 46px;
+    margin-right: 260px;
+}
+
+/* 手机模式 */
+[phone='yes'][isfull='no'] .form-view {
+    right: 160px;
+    top: 2px;
+    box-shadow: none;
+}
+
+[phone='yes'][isfull='no'] .search-list {
+    right: 160px;
+    top: 46px;
+}
+
+[phone='yes'] .tips {
+    left: 200px;
+}
+
+/* 查询表单 */
+.form-view {
+    position: fixed;
+    right: 180px;
+    top: 49px;
+    padding: 10px;
+    font-size: 0;
+    box-shadow: rgb(213 221 225) 0px 4px 6px;
+    background-color: #ffffff;
+    width: 260px;
+    white-space: nowrap;
+}
+
+.form-view input {
+    line-height: 26px;
+    height: 26px;
+    width: 200px;
+    padding: 0 5px;
+    outline: none;
+    font-size: 12px;
+    border-width: 1px 0 1px 1px;
+    border-color: #2c6ddc;
+    border-radius: 0;
+}
+
+.form-view:focus-within input {
+    border-color: #2a5cb0;
+}
+
+.form-view button {
+    height: 26px;
+    width: 40px;
+    display: inline-block;
+    vertical-align: top;
+    background-color: #2c6ddc;
+    color: white;
+    border: none;
+    outline: none;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+}
+
+.form-view:focus-within button {
+    background-color: #2a5cb0;
+}
+
+.search-list {
+    position: fixed;
+    right: 180px;
+    top: 95px;
+    width: 450px;
+    max-height: calc(100% - 200px) !important;
+    background-color: rgb(255, 255, 255);
+    z-index: 2;
+    box-shadow: rgb(213 221 225) 0px 4px 6px;
+    border: none !important;
+    overflow: auto;
+    padding: 0 10px;
+}
+
+.search-list>.item {
+    padding: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.search-list>.item:hover {
+    background-color: #e8f1f9;
+    text-decoration: underline;
+}
+
+.search-list>.item>.title {
+    font-size: 14px;
+    padding-bottom: 7px;
+}
+
+.search-list>.item>.remark {
+    font-size: 12px;
+}
+
+.search-list>.notify {
+    text-align: center;
+    line-height: 40px;
+    font-weight: 800;
+    font-family: cursive;
+    font-style: italic;
+}
+
+.search-list>.notify.error {
+    color: red;
+}
+
+.search-list>.notify.msg {
+    color: black;
+}
+
+/* 页头 */
+body>header {
+    background-color: #ffffff;
+    padding: 10px;
+    height: 50px;
+    box-shadow: rgb(213 221 225) 0px 4px 6px;
+    background-image: url("../images/logo.png");
+    background-size: auto 90%;
+    background-repeat: no-repeat;
+    padding-left: 70px;
+    background-position: 15px center;
+}
+
+body>header>h2 {
+    font-family: cursive;
+    color: #0855d7;
+    font-weight: 200;
+}
+
+body>header>h2>.total {
+    font-size: 16px;
+    color: black;
+}
+
+body>header>h2>.total>.value {
+    font-weight: 800;
+    text-align: center;
+    color: red;
+    padding: 0 5px;
+    display: inline-block;
+    min-width: 40px;
+}
+
+body>header>.tips {
+    font-size: 12px;
+    color: #2196f3;
+    background-color: #ffeb3b;
+    position: fixed;
+    user-select: none;
+    width: 500px;
+    line-height: 30px;
+    height: 30px;
+    left: calc(50% - 250px);
+    top: 10px;
+    text-align: center;
+}
+
+body>header>.github {
+    user-select: none;
+    position: fixed;
+    z-index: 1;
+}
+
+body>header>.github[tag='type1'] {
+    right: 20px;
+    top: 0;
+    line-height: 50px;
+    color: black;
+    text-decoration: underline;
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 200;
+    cursor: pointer;
+    z-index: 1;
+}
+
+body>header>.github[tag='type2'] {
+    transform: rotate(-45deg);
+    line-height: 18px;
+    transform-origin: 150px 23px;
+    text-align: center;
+    display: inline-block;
+    bottom: 46px;
+    right: -107px;
+    width: 300px;
+    background-color: #2196f3;
+    outline: 4px solid #2196f3;
+    border: 2px dashed #ffffff;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+body>header>.github:hover {
+    font-weight: 400;
+}
+
+/* 页面布局 */
+.main-view {
+    white-space: nowrap;
+    font-size: 0;
+}
+
+.main-view>div {
+    vertical-align: top;
+    display: inline-block;
+    height: calc(100vh - 50px);
+    font-size: 16px;
+    padding: 10px;
+    white-space: normal;
+    overflow: auto;
+}
+
+.main-view>div:not(:last-child) {
+    border-right: 1px solid rgb(188, 186, 186);
+    border-bottom: 1px solid rgb(188, 186, 186);
+    user-select: none;
+}
+
+.main-view>div:not(:last-child)>h2 {
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.main-view>div:not(:last-child) ul {
+    padding-left: 10px;
+}
+
+.main-view>div:not(:last-child) li[is-open='no']>ul {
+    display: none;
+}
+
+.main-view>div:not(:last-child) li[is-open='no']>span {
+    background-image: url("../images/close.png");
+}
+
+.main-view>div:not(:last-child) li[is-open='yes']>span {
+    background-image: url("../images/open.png");
+}
+
+.main-view>div:not(:last-child) li[is-open]>span {
+    background-repeat: no-repeat;
+    background-position: -4px center;
+    background-size: 20px auto;
+    padding-left: 15px;
+}
+
+.main-view>div:not(:last-child) span {
+    font-weight: 400;
+    font-size: 14px;
+    color: #304455;
+    cursor: pointer;
+    margin: 7px 0;
+    height: 1.2em;
+    width: 100%;
+    display: inline-block;
+}
+
+.menu-tip {
+    display: block;
+    font-size: 12px;
+    line-height: 2em;
+    color: gray;
+    margin-left: -10px;
+}
+
+.main-view span[tag]:hover {
+    text-decoration: underline;
+}
+
+.kind-title {
+    margin-left: -10px;
+    width: calc(100% + 10px);
+    font-weight: 800;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+.kind-title>i {
+    font-size: 12px;
+    font-weight: 800;
+    color: red;
+    text-decoration: underline;
+}
+
+.main-view>.book {
+    width: 260px;
+}
+
+.main-view>.menu {
+    width: 260px;
+    position: relative;
+}
+
+/* 回到首页 */
+.goback {
+    background-image: url('../images/home.png');
+    position: fixed;
+    left: 0px;
+    bottom: 70px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    background-size: 80% auto;
+    z-index: 2;
+    background-color: #f7f7f7;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 0 6px 0px black;
+}
+
+/* 切换文字 */
+.lang-change {
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 6px 0px #d6cdcd;
+    padding: 10px 5px;
+    font-size: 12px;
+    z-index: 2;
+}
+
+.lang-change>span {
+    cursor: pointer;
+    margin: 0 5px;
+    padding: 2px 0;
+    display: inline-block;
+}
+
+.lang-change>span.active {
+    background-color: #334669;
+    padding: 2px 5px;
+    color: white;
+}
+
+/* 快捷导航 */
+.quick-link {
+    position: fixed;
+    left: 160px;
+    bottom: 81px;
+    background-color: white;
+    border: 1px solid rgb(188, 186, 186);
+    border-top: none;
+    padding: 5px 10px;
+    width: 70px;
+    border-radius: 0 0 10px 10px;
+}
+
+.quick-link>a {
+    display: block;
+    font-size: 12px;
+    height: 80px;
+    width: 50px;
+    background-size: 100% auto;
+    background-position: center top;
+    background-repeat: no-repeat;
+    padding-top: 50px;
+    line-height: 30px;
+    text-align: center;
+    color: black;
+}
+
+.quick-link>a.toolbox {
+    background-image: url('../images/toolbox.png');
+}
+
+/* 例子 */
+.example-view {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(228, 224, 224, 0.661);
+    display: none;
+    z-index: 20;
+}
+
+.example-view>div {
+    width: 90%;
+    height: 90%;
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    background-color: white;
+    font-size: 0;
+    box-shadow: 0 0 16px black;
+}
+
+.example-view>div>div {
+    display: inline-block;
+    font-size: 16px;
+    white-space: normal;
+    vertical-align: top;
+    outline: 1px solid #8c9da5;
+    margin: 20px 0 0 20px;
+}
+
+.example-view>div>div>h2 {
+    border-bottom: 1px solid #8c9da5;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px;
+    position: relative;
+    font-family: cursive;
+}
+
+.example-view>div>div>.iframe,
+.example-view>div>div>textarea {
+    width: 100%;
+    height: calc(100% - 50px);
+}
+
+.example-view>div>div>.iframe>iframe,
+.example-view>div>div>textarea {
+    outline: none;
+    border: none;
+}
+
+.example-view>div>div>.iframe>iframe {
+    width: 100%;
+    height: calc(100% - 240px);
+}
+
+.example-view>div>div>.iframe>.f12 {
+    width: 100%;
+    height: 240px;
+    border-top: 1px solid #8c9da5;
+}
+
+.example-view>div>div>textarea {
+    padding: 10px;
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    resize: none;
+}
+
+.example-view>div>div>h2>button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 20px;
+    border: none;
+    outline: none;
+    color: white;
+    cursor: pointer;
+}
+
+.example-view>div>div>h2>button.run {
+    background-color: red;
+}
+
+.example-view>div>div>h2>button.close {
+    background-color: #e6e3dd;
+}
+
+/* 解释说明 */
+.explain-view {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.explain-view>div {
+    width: calc(100vw - 420px);
+    height: calc(100vh - 50px);
+    position: fixed;
+    top: 25px;
+    right: 210px;
+    background-color: #ffffff;
+    font-size: 0;
+    white-space: nowrap;
+    box-shadow: 0 0 16px black;
+    overflow: auto;
+    border-radius: 10px;
+}
+
+.explain-view>div::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.explain-view>button {
+    position: fixed;
+    top: 40px;
+    right: 160px;
+    background-image: url("../images/close-pink.png");
+    height: 40px;
+    width: 40px;
+    font-size: 0;
+    background-size: auto 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+/* 按钮 */
+
+.doc a.to-editor-btn {
+    margin: 30px 0 40px 0;
+    display: block;
+    width: fit-content;
+    font-size: 16px;
+    color: #0286b6;
+    border-bottom: 1px solid #0286b6;
+    padding: 0 5px;
+    font-family: cursive;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.editor-btn,
+.full-btn {
+    position: fixed;
+    top: 49px;
+    right: 10px;
+    cursor: pointer;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+    border-style: solid;
+    border-color: rgb(188, 186, 186);
+    background-color: rgb(255, 255, 255);
+}
+
+.editor-btn[isFull='yes'],
+.full-btn[isFull='yes'] {
+    top: 0;
+    right: 256px;
+}
+
+/* 编辑按钮 */
+.editor-btn {
+    margin-right: 65px !important;
+    background-size: 100% auto;
+    background-image: url('../images/edit.png');
+    border-width: 0 0 1px 1px;
+    border-radius: 0 0 0 10px;
+}
+
+/* 全屏右侧 */
+
+.fixed-view>.right {
+    position: fixed;
+    right: 15px;
+    top: 10px;
+    width: 230px;
+    height: calc(100% - 20px);
+    overflow: auto;
+    padding: 10px;
+    outline: 1px solid rgb(205, 203, 203);
+    background-color: white;
+    border-radius: 5px;
+}
+
+.fixed-view>.right>.sponsors {
+    background-position: center center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+}
+
+.fixed-view>.right>.sponsors.zfb {
+    height: 335px;
+    background-image: url("../images/zfb.jpeg");
+}
+
+.fixed-view>.right>.sponsors.wx {
+    height: 200px;
+    background-image: url("../images/wx.jpeg");
+}
+
+.fixed-view>.right>.help {
+    font-size: 12px;
+    padding: 10px;
+}
+
+.fixed-view>.right>.help>.title {
+    font-weight: 800;
+    font-size: 14px;
+    display: block;
+    line-height: 2.5em;
+}
+
+.fixed-view>.right>.help>a {
+    color: rgb(10, 165, 226);
+    text-decoration: underline;
+}
+
+/* 最大化快速定位相关 */
+.full-btn {
+    background-size: 70% auto;
+    margin-right: 20px !important;
+    border-width: 0 1px 1px 0;
+    border-radius: 0 0 10px 0;
+}
+
+.full-btn[tag='toFull'] {
+    background-image: url('../images/icon1.png');
+}
+
+.full-btn[tag='toRight'] {
+    background-image: url('../images/icon2.png');
+}
+
+.fixed-view {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f7f7f7;
+    display: none;
+}
+
+.fixed-view>.menu {
+    position: fixed;
+    left: 15px;
+    top: 10px;
+    width: 230px;
+    height: calc(100% - 181px);
+    overflow: auto;
+    padding: 10px;
+    outline: 1px solid rgb(205, 203, 203);
+    background-color: white;
+    border-radius: 5px;
+}
+
+.fixed-view>.menu>h1 {
+    padding: 10px 0;
+    font-size: 16px;
+    border-bottom: 1px solid rgb(205, 203, 203);
+}
+
+.fixed-view>.menu>h2,
+.fixed-view>.menu>h3,
+.fixed-view>.menu>h4 {
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: 400;
+}
+
+.fixed-view>.menu>h2:hover,
+.fixed-view>.menu>h3:hover,
+.fixed-view>.menu>h4:hover {
+    text-decoration: underline;
+}
+
+.fixed-view>.menu>h2 {
+    padding-left: 1em;
+}
+
+.fixed-view>.menu>h3 {
+    padding-left: 2em;
+}
+
+.fixed-view>.menu>h4 {
+    padding-left: 3em;
+}

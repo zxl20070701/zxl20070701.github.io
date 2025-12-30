@@ -1,0 +1,50 @@
+{
+  "name": "zxl20070701.github.io",
+  "description": "✔️ 包含文档笔记和实用工具等",
+  "scripts": {
+    "dev": "node ./bin/server --config ./config/dev.config.js",
+    "build": "node ./bin/run -d docs/toolbox/dist && node ./bin/builder --config ./config/build.config.js",
+    "debug": "echo 'chrome://inspect/#devices' && node --inspect-brk ./bin/builder --config ./config/build.config.js"
+  },
+  "repository": "https://github.com/zxl20070701/zxl20070701.github.io",
+  "keywords": [
+    "导航",
+    "notebook",
+    "fragement",
+    "webgl",
+    "canvas",
+    "nodejs",
+    "python3",
+    "pdfjs",
+    "babel",
+    "数学",
+    "经济学",
+    "英语",
+    "english",
+    "harmonyos",
+    "linux",
+    "计算机",
+    "algorithm",
+    "算法",
+    "toolbox",
+    "H5",
+    "canvas",
+    "svg",
+    "webgl",
+    "vislite",
+    "algorithm",
+    "regexper",
+    "geoJSON",
+    "snipping",
+    "editor"
+  ],
+  "author": {
+    "name": "zxl20070701",
+    "url": "https://github.com/zxl20070701"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zxl20070701/zxl20070701.github.io/issues"
+  },
+  "homepage": "https://zxl20070701.github.io"
+}

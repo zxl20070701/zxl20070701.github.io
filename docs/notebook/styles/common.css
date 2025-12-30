@@ -1,0 +1,328 @@
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 2.5px rgb(0 0 0 / 30%);
+  box-shadow: inset 0 0 2.5px rgb(0 0 0 / 30%);
+  border-radius: 2.5px;
+  background-color: #294e80;
+  opacity: 0.7;
+  transition: opacity ease-in-out 200ms;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 2.5px rgb(0 0 0 / 30%);
+  box-shadow: inset 0 0 2.5px rgb(0 0 0 / 30%);
+  border-radius: 2.5px;
+  background-color: #f5f5f5;
+}
+
+/* 请求进度 */
+body>#process {
+  position: fixed;
+  width: 0;
+  height: 2px;
+  left: 0;
+  top: 0;
+  background-color: #0855d7;
+  z-index: 10;
+}
+
+/* 文档 */
+.doc {
+  width: calc(100vw - 520px);
+  padding: 30px;
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+.doc>header {
+  font-size: 28px;
+  padding: 20px 0;
+  font-weight: 800;
+}
+
+.doc>h2 {
+  font-size: 20px;
+  line-height: 1.4em;
+  padding: 10px 0;
+}
+
+.doc>h3 {
+  font-size: 16px;
+  line-height: 2em;
+  padding: 15px 0;
+}
+
+.doc>h4 {
+  font-size: 12px;
+  padding: 15px 0 5px 0;
+  text-decoration: overline;
+}
+
+.doc>p {
+  line-height: 1.6em;
+  text-indent: 2em;
+  color: #3c3939;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.doc a {
+  color: #0286b6;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.doc ul,
+.doc ol {
+  font-size: 13px;
+  line-height: 2.4em;
+  margin-left: 2.5em;
+}
+
+.doc ol>li {
+  list-style-type: decimal;
+  white-space: normal;
+}
+
+.doc ul>li {
+  list-style-type: disc;
+  white-space: normal;
+}
+
+.doc .oneline {
+  display: block;
+  padding: 10px 0 10px 100px;
+  text-indent: 0;
+}
+
+.doc .title {
+  color: #000000;
+  font-weight: 800;
+  padding: 0 5px;
+  font-size: 20px;
+  vertical-align: middle;
+  font-family: cursive;
+}
+
+.doc .warn {
+  font-size: 14px;
+  color: #000000;
+  font-weight: 800;
+  padding: 0 3px;
+  line-height: 1.6em;
+}
+
+.doc .link::after {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url("../images/link.svg");
+  content: " ";
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  left: 0;
+  bottom: 0;
+}
+
+.doc .btn {
+  color: #0286b6;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.doc .btn:hover {
+  text-decoration: underline;
+}
+
+.doc .tips {
+  padding: 12px 24px 12px 20px;
+  margin: 2em 0;
+  border-left-width: 4px;
+  border-left-style: solid;
+  background-color: #fbfbfb;
+  position: relative;
+  left: 0;
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
+  border-left-color: #673ab7;
+  font-size: 14px;
+  color: #673ab7;
+  line-height: 1.6em;
+}
+
+.doc .tips::before {
+  position: absolute;
+  top: 14px;
+  left: -12px;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 20px;
+  font-weight: bold;
+  font-family: "Dosis", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  content: "#";
+  background-color: #673ab7;
+  text-indent: 0;
+}
+
+.doc .gray {
+  color: #454545;
+  font-weight: 800;
+}
+
+.doc .important {
+  color: rgb(255, 0, 0);
+  font-weight: 800;
+  padding: 0 3px;
+  width: fit-content;
+  text-indent: 0;
+}
+
+.doc .special {
+  font-weight: 800;
+  text-decoration: underline;
+  padding: 0 5px;
+}
+
+.doc .tips-info {
+  display: block;
+  border-top: 1px solid rgba(193, 190, 190, 0.3);
+  font-size: 12px;
+  color: #0c5cbc;
+  margin: 0 20px;
+  text-indent: 1em;
+}
+
+.doc .click {
+  text-decoration: underline;
+  color: #2196f3;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.doc .click:hover {
+  font-weight: 800;
+}
+
+.doc>table {
+  max-width: 100%;
+  line-height: 20px;
+  font-size: 14px;
+}
+
+.doc>table>tbody>tr>* {
+  border-width: 0 1px 1px 0;
+  border-style: solid;
+  border-color: #c1bcbc;
+}
+
+.doc>table td,
+.doc>table th {
+  padding: 0.5em 1em;
+}
+
+.doc>table>tbody>tr>*:first-child {
+  border-width: 0 1px 1px 1px;
+}
+
+.doc>table>tbody>tr:nth-child(2n) {
+  background-color: #f5f5f5;
+}
+
+.doc>table>tbody>tr:nth-child(2n + 1) {
+  background-color: #fff;
+}
+
+.doc>table>thead>tr {
+  background-color: #294e80;
+  border: 1px solid #c1bcbc;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.doc>button[tag] {
+  margin: 10px 30px;
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.doc .pip-block {
+  font-size: 12px;
+  margin: 5px;
+  padding: 3px 5px;
+  background-color: rgb(38, 34, 34);
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  white-space: nowrap;
+  display: inline-block;
+  text-indent: 0;
+}
+
+.doc .toRight {
+  float: right;
+}
+
+pre {
+  position: relative;
+}
+
+pre>.copy-icon {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-image: url("../images/copy.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+.copy-icon[copied] {
+  outline: 1px solid #343848;
+  border-radius: 0 4px 4px 0;
+}
+
+.copy-icon[copied="no"] {
+  outline: 1px solid #ff0000;
+}
+
+.copy-icon[copied]:before {
+  position: absolute;
+  left: -64px;
+  display: block;
+  border-radius: 4px 0 0 4px;
+  width: 64px;
+  height: 32px;
+  line-height: 32px;
+  top: -1px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #343848;
+  white-space: nowrap;
+  content: attr(data-before);
+}
+
+.copy-icon[copied="no"]:before {
+  background-color: #ff0000;
+}

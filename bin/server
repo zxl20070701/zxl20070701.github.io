@@ -1,0 +1,90 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'pkg-server';
+process.env.NODE_ENV = 'development';
+
+const http = require('http');
+const fs = require('fs');
+
+const { log, error } = require('../nodejs/log');
+const { fullPath } = require('../nodejs/path');
+const responseFileList = require('./responseFileList');
+
+// 获取命令行参数
+const parsed = require('../nodejs/option')({}, process.argv);
+
+// 获取配置文件
+let config = require('./config')(parsed.config[0]);
+
+const globalScript = require('./global')(config);
+
+let index = 0;
+let server = http.createServer(function (request, response) {
+    let url = decodeURIComponent(request.url);
+
+    try {
+        log("[" + index++ + "]" + url);
+
+        url = url.split("?")[0];
+
+        // 入口
+        if (url == '/') url = "/index.html";
+
+        // 特殊处理：toolbox/index.html
+        if (url == '/toolbox/index.html') {
+            let template = fs.readFileSync(fullPath('./src/index.html', process.cwd()));
+
+            response.writeHead(200, {
+                'content-type': "text/html;charset=utf-8"
+            });
+            response.write(
+                (template + "")
+                    .replace(
+                        '<!-- built files will be auto injected -->',
+                        globalScript + '<script defer="defer" src="' + config.entry + '" type="module"></script>' +
+                        (config.devServer.hot ? '<script defer="defer" src="./bin/client/static.js"></script>' : '')
+                    )
+            );
+        }
+
+        // 其余就是普通文件
+        else {
+
+            let result = config.$readFileSync("." + url);
+            response.writeHead(200, {
+                'content-type': result.type + ";charset=utf-8"
+            });
+            response.write(result.content);
+
+        }
+
+    } catch (e) {
+
+        // 打印错误并返回404页面
+        error(e);
+
+        let filePath = fullPath(url.replace(/^\//, ""), process.cwd());
+
+        response.writeHead(404, {
+            'content-type': "text/html;charset=utf-8"
+        });
+        response.write(responseFileList(filePath));
+    }
+
+    response.end();
+});
+
+// npm run dev
+// 或自定义端口号：
+// npm run dev 20000
+let port = parsed.config[1] || config.devServer.port;
+server.listen(port);
+log('Server running on port:' + port);
+
+if (config.devServer.hot) {
+
+    // 启动ws服务器
+    require('./WebSocket/index')();
+}

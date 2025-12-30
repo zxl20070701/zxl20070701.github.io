@@ -1,0 +1,100 @@
+/* 导航 */
+.f12>.nav {
+    background-color: #cadcea;
+    color: #424648;
+    padding: 0 10px;
+}
+
+.f12>.nav>li {
+    display: inline-block;
+    line-height: 30px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.f12>.nav>li.active {
+    color: #2196F3;
+    font-weight: 800;
+    border-bottom: 2px solid #2196F3;
+}
+
+/* 控制台 */
+ul#f12-console {
+    overflow: auto;
+    font-size: 12px;
+    font-weight: 200;
+    background-color: white;
+    height: calc(100% - 35px);
+}
+
+ul#f12-console>li {
+    border-bottom: 1px solid #e2e1e1;
+    padding: 5px;
+}
+
+ul#f12-console>li.blank:first-child:last-child {
+    display: block;
+}
+
+ul#f12-console>li.blank {
+    display: none;
+    border-bottom: none;
+    text-align: center;
+    padding-top: 100px;
+    font-size: 26px;
+    font-family: monospace;
+    color: #9e9e9e;
+    font-weight: 200;
+}
+
+ul#f12-console>li [isopen] {
+    position: relative;
+}
+
+ul#f12-console>li [isopen]:before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: -15px;
+    top: 4px;
+}
+
+ul#f12-console>li [isopen='no']>div {
+    display: none;
+}
+
+ul#f12-console>li [isopen='no']:before {
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 10px solid #9e9e9e;
+}
+
+ul#f12-console>li [isopen='yes']:before {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid #9e9e9e;
+}
+
+ul#f12-console>li [defType='showobject'] span {
+    display: block;
+    margin-top: 5px;
+}
+
+ul#f12-console>li [defType='showobject'] .item {
+    margin-left: 20px;
+}
+
+ul#f12-console>li [defType='showobject'] i {
+    font-style: normal;
+    cursor: pointer;
+}
+
+ul#f12-console>li .item {
+    white-space: nowrap;
+}
+
+ul#f12-console>li>.item {
+    margin-left: 15px;
+}

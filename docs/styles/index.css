@@ -1,0 +1,176 @@
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: fantasy, cursive;
+    padding-bottom: 100px;
+    min-width: 1000px;
+}
+
+.section-item {
+    position: relative;
+}
+
+.section-item::before {
+    position: absolute;
+    content: "";
+    width: 1000px;
+    height: 6px;
+    background-color: #447ba7;
+    left: 0;
+    top: -40px;
+    border-radius: 3px;
+}
+
+body a:hover {
+    text-decoration: underline;
+}
+
+body>header {
+    line-height: 40px;
+    font-family: cursive;
+    position: relative;
+    background-color: #1e2933;
+    border-bottom: 1px solid #1f3b47;
+    color: white;
+}
+
+body>header>h2 {
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: top;
+    background-image: url("../images/index.png");
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: auto 90%;
+    padding-left: 35px;
+}
+
+body>header a {
+    color: #ffffff;
+    display: inline-block;
+    font-weight: 800;
+}
+
+body>header>a.nav-item {
+    margin-left: 10px;
+}
+
+body>header>.right {
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+
+body>.homepage {
+    background-color: #2b5b84;
+    background-image: linear-gradient(#1e415e 10%, #2b5b84 90%);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.03), inset 0 0 20px rgba(0, 0, 0, 0.03);
+    text-align: center;
+    padding: 50px 0;
+    color: #dcdcdc;
+}
+
+body>.homepage>h1 {
+    font-size: 50px;
+}
+
+body>.homepage>p {
+    padding: 20px 0;
+    margin-top: 10x;
+}
+
+body>.homepage>.btn {
+    color: rgb(229, 237, 245);
+    width: 120px;
+    line-height: 40px;
+    border: 1px solid rgb(229, 237, 245);
+    padding: 0 10px;
+    font-family: fangsong;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+body>.organizations {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 60px;
+    width: 1000px;
+}
+
+body>.organizations>.item {
+    display: inline-block;
+    width: 120px;
+    margin: 0 30px;
+    color: inherit;
+    vertical-align: top;
+}
+
+body>.organizations>.item>.icon {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+body>.organizations>.item>.icon.oi-contrib {
+    background-image: url("../images/oi-contrib.png");
+}
+
+body>.organizations>.item>.icon.handless-ui {
+    background-image: url("../images/handlessUI.png");
+}
+
+body>.organizations>.item>.icon.rapid-start {
+    background-image: url("../images/rapid-start.png");
+}
+
+body>.organizations>.item>.icon.ll-store {
+    background-image: url("../images/LL-Store.png");
+}
+
+body>.organizations>.item>.icon.nn-studio {
+    background-image: url("../images/NN-Studio.png");
+}
+
+body>.organizations>.item>h2 {
+    text-align: left;
+    font-size: 20px;
+    margin-top: 20px;
+    font-family: sans-serif;
+}
+
+body>.organizations>.item>p {
+    text-align: left;
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 1.4em;
+}
+
+body>footer {
+    font-family: monospace;
+    background-color: #fafafa;
+    border-top: 1px solid #d3d0d0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+}
+
+body>footer>.copyright {
+    text-align: center;
+    line-height: 50px;
+    height: 50px;
+    font-size: 15px;
+}
+
+body>footer>.copyright>.btn {
+    text-decoration: underline;
+    color: #2b5b84;
+    font-weight: 400;
+}
+
+body>footer>.copyright>.btn:hover {
+    font-weight: 800;
+}

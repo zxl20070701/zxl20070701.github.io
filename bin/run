@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'run script';
+
+const fs = require('fs');
+
+const { fullPath } = require('../nodejs/path');
+const { deleteSync } = require('../nodejs/file');
+const { log, error } = require('../nodejs/log');
+
+// 获取命令行参数
+const parsed = require('../nodejs/option')({
+    "-d": '--delete'
+}, process.argv);
+
+// 删除
+if (Array.isArray(parsed.delete) && parsed.delete.length > 0) {
+    // 获取绝对路径
+    let targetPath = fullPath(parsed.delete[0]);
+
+    // 判断文件是否存在
+    if (fs.existsSync(targetPath)) {
+
+        try {
+
+            // 操作并打印日志
+            deleteSync(targetPath);
+            log('【delete】' + targetPath + '\n');
+
+        } catch (e) {
+            error(e);
+        }
+
+    }
+}
