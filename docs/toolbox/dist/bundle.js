@@ -75,41 +75,41 @@ __pkg__scope_args__=window.__pkg__getBundle('2');
 var useTemplate =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('25');
+__pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('26');
+__pkg__scope_args__=window.__pkg__getBundle('31');
 var isString =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('27');
+__pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunctin =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('28');
+__pkg__scope_args__=window.__pkg__getBundle('33');
 var remove =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('29');
+__pkg__scope_args__=window.__pkg__getBundle('34');
 var lazyLoad =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('34');
+__pkg__scope_args__=window.__pkg__getBundle('39');
 var lazyDialogs =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('37');
+__pkg__scope_args__=window.__pkg__getBundle('42');
 
 
 // 浏览器兼容文件
-__pkg__scope_args__=window.__pkg__getBundle('38');
+__pkg__scope_args__=window.__pkg__getBundle('43');
 
 
 // 调试后台
-__pkg__scope_args__=window.__pkg__getBundle('39');
+__pkg__scope_args__=window.__pkg__getBundle('44');
 var runDebug =__pkg__scope_args__.default;
 
 runDebug();
 
 // 系统相关
-__pkg__scope_args__=window.__pkg__getBundle('48');
+__pkg__scope_args__=window.__pkg__getBundle('53');
 
 
 // 桌面壁纸
@@ -518,6 +518,9 @@ var uiOn =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('21');
 var uiDragdrop =__pkg__scope_args__.default;
 
+__pkg__scope_args__=window.__pkg__getBundle('25');
+var uiRightMenu =__pkg__scope_args__.default;
+
 
 __pkg__scope_bundle__.default= function useTemplate(el, pagefactory, props) {
     var key;
@@ -628,6 +631,7 @@ __pkg__scope_bundle__.default= function useTemplate(el, pagefactory, props) {
     pageinfo.directives['ui-model'] = uiModel;
     pageinfo.directives['ui-on'] = uiOn;
     pageinfo.directives['ui-dragdrop'] = uiDragdrop;
+    pageinfo.directives['ui-right-menu'] = uiRightMenu;
 
     if ("render" in pageinfo) {
 
@@ -2050,9 +2054,107 @@ __pkg__scope_bundle__.default= function (dom, name) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/urlFormat
+// Original file:./src/directives/ui-right-menu
 /*****************************************************************/
 window.__pkg__bundleSrc__['25']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('26');
+var lazyContextmenus =__pkg__scope_args__.default;
+
+
+var rootEl = document.getElementById('contextmenu-root');
+
+document.getElementsByTagName('body')[0].addEventListener('click', function () {
+    rootEl.style.display = 'none';
+    rootEl.innerHTML = "";
+});
+
+__pkg__scope_bundle__.default= {
+    inserted: function (el, binding) {
+
+        // 注册鼠标右键
+        el.addEventListener("contextmenu", function (event) {
+
+            // 取消默认事件
+            event.preventDefault();
+
+            // 取消冒泡事件
+            event.stopPropagation();
+
+            lazyContextmenus[binding.type]().then(function (data) {
+                rootEl.innerHTML = "";
+                rootEl.style.display = "";
+
+                var contextmenuInstance = binding.useTemplate(rootEl, data.default, {
+                    event: event,
+                    target: el,
+                    exp: binding.exp,
+                    value: binding.value,
+                    instance: binding.target
+                });
+                rootEl.setAttribute('contextmenu-view', contextmenuInstance._name || "");
+
+                var lf = event.clientX;
+                var tp = event.clientY;
+
+                var dist = 10; // 间隙
+
+                if (lf < 0) // 左越界
+                    rootEl.style.left = dist + "px";
+                else if (lf + rootEl.clientWidth + dist * 2 > window.innerWidth) // 右越界
+                    rootEl.style.left = (lf - dist - rootEl.clientWidth) + "px";
+                else // 水平无越界
+                    rootEl.style.left = (lf + dist) + "px";
+
+                if (tp < 0) // 上越界
+                    rootEl.style.top = dist + "px";
+                else if (tp + rootEl.clientHeight + dist * 2 > window.innerHeight) // 下越界
+                    rootEl.style.top = (tp - dist - rootEl.clientHeight) + "px";
+                else // 垂直无越界
+                    rootEl.style.top = (tp + dist) + "px";
+            });
+
+        });
+
+    }
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/contextmenus/lazy-load
+/*****************************************************************/
+window.__pkg__bundleSrc__['26']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= {
+
+    // 系统右键
+    system: function () {
+        return window.__pkg__getLazyBundle('./dist/bundle1.js','27')
+    },
+
+    // 桌面右键
+    "desktop-line": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle2.js','28')
+    },
+
+    // 应用右键
+    "app": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle3.js','29')
+    }
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/urlFormat
+/*****************************************************************/
+window.__pkg__bundleSrc__['30']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -2090,7 +2192,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isString
 /*****************************************************************/
-window.__pkg__bundleSrc__['26']=function(){
+window.__pkg__bundleSrc__['31']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('5');
@@ -2115,7 +2217,7 @@ __pkg__scope_bundle__.default= function (value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isFunction
 /*****************************************************************/
-window.__pkg__bundleSrc__['27']=function(){
+window.__pkg__bundleSrc__['32']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('5');
@@ -2148,7 +2250,7 @@ __pkg__scope_bundle__.default= function (value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/remove
 /*****************************************************************/
-window.__pkg__bundleSrc__['28']=function(){
+window.__pkg__bundleSrc__['33']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 删除节点
@@ -2162,29 +2264,29 @@ __pkg__scope_bundle__.default= function (el) {
 /*************************** [bundle] ****************************/
 // Original file:./src/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['29']=function(){
+window.__pkg__bundleSrc__['34']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // PC
     "pcDesktop": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle1.js','30')
+        return window.__pkg__getLazyBundle('./dist/bundle4.js','35')
     },
 
     // Mobile
     "mobileDesktop": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle2.js','31')
+        return window.__pkg__getLazyBundle('./dist/bundle5.js','36')
     },
 
     // PC应用列表
     "pcPages": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle3.js','32')
+        return window.__pkg__getLazyBundle('./dist/bundle6.js','37')
     },
 
     // Mobile应用列表
     "mobilePages": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle4.js','33')
+        return window.__pkg__getLazyBundle('./dist/bundle7.js','38')
     }
 
 };
@@ -2195,19 +2297,19 @@ window.__pkg__bundleSrc__['29']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['34']=function(){
+window.__pkg__bundleSrc__['39']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 调试
     debugger: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle5.js','35')
+        return window.__pkg__getLazyBundle('./dist/bundle8.js','40')
     },
 
     // 项目介绍
     what: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle6.js','36')
+        return window.__pkg__getLazyBundle('./dist/bundle9.js','41')
     }
 
 };
@@ -2218,7 +2320,7 @@ window.__pkg__bundleSrc__['34']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/common.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['37']=function(){
+window.__pkg__bundleSrc__['42']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -2232,7 +2334,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/polyfill/Promise
 /*****************************************************************/
-window.__pkg__bundleSrc__['38']=function(){
+window.__pkg__bundleSrc__['43']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var isObject = function (value) {
@@ -2669,10 +2771,10 @@ if (!('Promise' in window)) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/debugger/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['39']=function(){
+window.__pkg__bundleSrc__['44']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('40');
+    __pkg__scope_args__=window.__pkg__getBundle('45');
 var showData =__pkg__scope_args__.default;
 
 
@@ -2810,28 +2912,28 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/debugger/showData
 /*****************************************************************/
-window.__pkg__bundleSrc__['40']=function(){
+window.__pkg__bundleSrc__['45']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('41');
+    __pkg__scope_args__=window.__pkg__getBundle('46');
 var appendTo =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
 var bind =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('26');
+__pkg__scope_args__=window.__pkg__getBundle('31');
 var isString =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('27');
+__pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunction =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('44');
+__pkg__scope_args__=window.__pkg__getBundle('49');
 var isNumber =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('45');
+__pkg__scope_args__=window.__pkg__getBundle('50');
 var isBoolean =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('46');
+__pkg__scope_args__=window.__pkg__getBundle('51');
 var toString =__pkg__scope_args__.default;
 
 
@@ -2906,13 +3008,13 @@ __pkg__scope_bundle__.default= function (target, msg) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/appendTo
 /*****************************************************************/
-window.__pkg__bundleSrc__['41']=function(){
+window.__pkg__bundleSrc__['46']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('42');
+    __pkg__scope_args__=window.__pkg__getBundle('47');
 var isElement =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('43');
+__pkg__scope_args__=window.__pkg__getBundle('48');
 var toNode =__pkg__scope_args__.default;
 
 
@@ -2929,7 +3031,7 @@ __pkg__scope_bundle__.default= function (el, template) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isElement
 /*****************************************************************/
-window.__pkg__bundleSrc__['42']=function(){
+window.__pkg__bundleSrc__['47']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (dom) {
@@ -2943,10 +3045,10 @@ window.__pkg__bundleSrc__['42']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/toNode
 /*****************************************************************/
-window.__pkg__bundleSrc__['43']=function(){
+window.__pkg__bundleSrc__['48']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('42');
+    __pkg__scope_args__=window.__pkg__getBundle('47');
 var isElement =__pkg__scope_args__.default;
 
 
@@ -2986,7 +3088,7 @@ __pkg__scope_bundle__.default= function (template) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isNumber
 /*****************************************************************/
-window.__pkg__bundleSrc__['44']=function(){
+window.__pkg__bundleSrc__['49']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('5');
@@ -3013,7 +3115,7 @@ __pkg__scope_bundle__.default= function (value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isBoolean
 /*****************************************************************/
-window.__pkg__bundleSrc__['45']=function(){
+window.__pkg__bundleSrc__['50']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('5');
@@ -3038,10 +3140,10 @@ __pkg__scope_bundle__.default= function (value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/debugger/toString
 /*****************************************************************/
-window.__pkg__bundleSrc__['46']=function(){
+window.__pkg__bundleSrc__['51']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('47');
+    __pkg__scope_args__=window.__pkg__getBundle('52');
 var isPlainObject =__pkg__scope_args__.default;
 
 
@@ -3072,7 +3174,7 @@ __pkg__scope_bundle__.default= function (val) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isPlainObject
 /*****************************************************************/
-window.__pkg__bundleSrc__['47']=function(){
+window.__pkg__bundleSrc__['52']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('5');
@@ -3111,7 +3213,7 @@ __pkg__scope_bundle__.default= function (value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/system/keep-time
 /*****************************************************************/
-window.__pkg__bundleSrc__['48']=function(){
+window.__pkg__bundleSrc__['53']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 如果time不是空，说明当前打开前，已经有这个页面打开了，无需更新打开时间

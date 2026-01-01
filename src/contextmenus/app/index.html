@@ -1,0 +1,39 @@
+<ul>
+    <li class="btn" ui-on:click="openApp">
+        打开
+    </li>
+    <li class="line"></li>
+    <li ui-bind:class="'btn '+(type=='view'?'':'gray')" ui-on:click="copyURL">
+        以URL方式分享
+    </li>
+    <li class="line"></li>
+    <li ui-bind:notshow="from=='desktop'?'yes':'no'" class="btn gray">
+        创建桌面快捷方式
+    </li>
+    <li class="btn gray">
+        锁定到任务栏
+    </li>
+    <!-- <li class="btn gray">
+        从任务栏脱离
+    </li> -->
+    <!-- <li class="btn gray">
+        附到「开始 」菜单
+    </li> -->
+    <li class="btn gray">
+        从「开始 」菜单解锁
+    </li>
+    <li ui-bind:notshow="from=='application'?'yes':'no'" class="line"></li>
+    <li ui-bind:notshow="from=='application'?'yes':'no'" class="btn gray">
+        复制
+    </li>
+    <li ui-bind:notshow="from=='application'?'yes':'no'" class="btn gray">
+        剪切
+    </li>
+    <li ui-bind:notshow="from=='application'?'yes':'no'" class="btn gray">
+        重命名
+    </li>
+    <li class="line"></li>
+    <li class="btn gray">
+        属性
+    </li>
+</ul>

@@ -14,6 +14,7 @@ import uiBind from "../directives/ui-bind.js";
 import uiModel from "../directives/ui-model.js";
 import uiOn from "../directives/ui-on.js";
 import uiDragdrop from "../directives/ui-dragdrop.js";
+import uiRightMenu from "../directives/ui-right-menu";
 
 export default function useTemplate(el, pagefactory, props) {
     var key;
@@ -124,6 +125,7 @@ export default function useTemplate(el, pagefactory, props) {
     pageinfo.directives['ui-model'] = uiModel;
     pageinfo.directives['ui-on'] = uiOn;
     pageinfo.directives['ui-dragdrop'] = uiDragdrop;
+    pageinfo.directives['ui-right-menu'] = uiRightMenu;
 
     if ("render" in pageinfo) {
 
