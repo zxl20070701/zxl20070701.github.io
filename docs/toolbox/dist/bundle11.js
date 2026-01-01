@@ -1,15 +1,14 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/index.js
+// Original file:./src/mobile/npm-download/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['57']=function(){
+window.__pkg__bundleSrc__['58']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('89');
+    __pkg__scope_args__=window.__pkg__getBundle('105');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('90');
-
+__pkg__scope_args__=window.__pkg__getBundle('106');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('91');
@@ -72,18 +71,21 @@ __pkg__scope_bundle__.default= function (obj) {
                     // 获取画笔
                     var painter = canvasRender(_this._refs.mycanvas.value);
 
+                    var width = +_this._refs.mycanvas.value.getAttribute('width');
+                    var height = +_this._refs.mycanvas.value.getAttribute('height');
+
                     // 求解刻度尺
-                    var rulerData = ruler(max, 0, 10);
+                    var rulerData = ruler(max, 0, 5);
                     var colors = getLoopColors(len);
 
                     // 绘制刻度尺
                     drawRuler(painter, {
-                        x: 100,
-                        y: 450,
+                        x: 20,
+                        y: 50,
                         value: rulerData,
-                        direction: 'BT',
+                        direction: 'LR',
                         "mark-direction": 'left',
-                        length: 400
+                        length: width - 70
                     });
 
                     for (var pkgName in npmData) {
@@ -91,10 +93,11 @@ __pkg__scope_bundle__.default= function (obj) {
                             strokeStyle: colors.shift()
                         }).beginPath();
                         for (var index = 0; index < npmData[pkgName].value.length; index++) {
-                            painter.lineTo(100 + (index / (npmData[pkgName].value.length - 1)) * 750, 450 - (npmData[pkgName].value[index] / max) * 400);
+                            painter.lineTo(20 + (npmData[pkgName].value[index] / max) * (width - 70), 50 + (index / (npmData[pkgName].value.length - 1)) * (height - 70));
                         }
                         painter.stroke();
                     }
+
 
                 });
 
@@ -107,25 +110,25 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/index.html
+// Original file:./src/mobile/npm-download/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['89']=function(){
+window.__pkg__bundleSrc__['105']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"Npm Download","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[8]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[4]},{"type":"text","content":"Npm Download","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[8]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/index.scss
+// Original file:./src/mobile/npm-download/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['90']=function(){
+window.__pkg__bundleSrc__['106']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"npm-download\"]{\n\nwidth: 900px;\n\nleft: calc(50vw - 450px);\n\ntop: 50px;\n\nfont-size: 0;\n\n}\n\n [page-view=\"npm-download\"][focus=\"no\"]>header{\n\nbackground-color: #bb3939;\n\n}\n\n [page-view=\"npm-download\"]>header{\n\nheight: 50px;\n\nbackground-color: #e10404;\n\n}\n\n [page-view=\"npm-download\"]>header>h2{\n\nwidth: 100px;\n\nheight: 100%;\n\nbackground-image: url(\"./npm.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 160%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"npm-download\"]>canvas{\n\nwidth: 100%;\n\nheight: 500px;\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"npm-download\"]>canvas{\n\nwidth: 100%;\n\nheight: calc(100% - 45px);\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

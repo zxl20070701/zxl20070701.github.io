@@ -3,6 +3,61 @@
   background-color: transparent;
   position: static;
 
+  &>ul {
+    &.content {
+      width: 100vw;
+      height: calc(100vh - 35px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      align-content: flex-start;
+      padding: 20px 0;
+
+      &>li {
+        width: 70px;
+        padding-top: 60px;
+        margin: 0 5px;
+        font-size: 12px;
+        color: white;
+        background-size: 45px auto;
+        background-repeat: no-repeat;
+        background-position: center 10px;
+        text-align: center;
+        line-height: 1.6em;
+        height: 100px;
+        vertical-align: top;
+        cursor: pointer;
+        position: relative;
+
+        &:hover {
+          filter: drop-shadow(0px -1px 9px #f9f9f94a);
+          background-size: 47px auto;
+        }
+
+        &.link {
+          &::before {
+            content: " ";
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            background-image: url("./rt.jpeg");
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: center center;
+            left: 12px;
+            top: 38px;
+          }
+        }
+
+        &[select="yes"] {
+          background-color: rgba(228, 228, 228, 0.294);
+        }
+      }
+    }
+  }
+
   &>div {
     &.taskline {
       position: fixed;
@@ -206,4 +261,8 @@
 
 [tag="npm-download"] {
   background-image: url("./npm.png");
+}
+
+[tag="regexper-visualization"] {
+  background-image: url("./regexper-visualization.png");
 }

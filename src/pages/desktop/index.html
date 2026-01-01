@@ -1,5 +1,8 @@
 <ul class="content" ui-on:click="doSelect" tag="">
-
+    <li class="link" ui-bind:select="select=='regexper-visualization'?'yes':'no'" ui-on:click.stop="doSelect"
+        title="输入一个正则表达式后可以把其变成可视化的图表来快速读懂意义" tag="regexper-visualization" ui-on:dblclick="goto">
+        正则表达式可视化
+    </li>
 </ul>
 <div class="taskline">
     <span class="begin" title="快速开始" tag="begin" ui-on:click.stop="toggleWin"></span>

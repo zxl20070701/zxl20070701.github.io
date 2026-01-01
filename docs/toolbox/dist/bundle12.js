@@ -1,14 +1,14 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/index.js
+// Original file:./src/mobile/regexper-visualization/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['56']=function(){
+window.__pkg__bundleSrc__['59']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('73');
+    __pkg__scope_args__=window.__pkg__getBundle('107');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('74');
+__pkg__scope_args__=window.__pkg__getBundle('108');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('75');
@@ -31,7 +31,7 @@ __pkg__scope_bundle__.default= function (obj) {
         name: "regexper-visualization",
         render: template,
         data: {
-            expressVal: obj.ref(decodeURIComponent(urlObj.params.express || "") || "\\w{1,5}[a-e0-8]|4(534)5(35{3}|d)d(?=123)\\1"),
+            expressVal: obj.ref(decodeURIComponent(urlObj.params.express || "") || "\\w{1,5}[a-e0-8]|4(534)5(35{3}|d)"),
             isString: obj.ref(urlObj.params.isString || "no"),
             uniqueHash: new Date().valueOf()
         },
@@ -62,11 +62,13 @@ __pkg__scope_bundle__.default= function (obj) {
                 // 求解绘制需要的信息
                 var imageData = regexpToJson(this.expressVal, this.isString == 'yes', this._refs.help.value);
 
-                // 画布
+                // 设置画布大小
                 var canvas = this._refs.mycanvas.value;
+                canvas.setAttribute('width', imageData.width + 60);
+                canvas.setAttribute('height', imageData.height + 20);
 
                 // 获取画笔并进行初始化
-                var painter = canvasRender(canvas, imageData.width + 60, imageData.height + 20, {}, true).config({
+                var painter = canvasRender(canvas).config({
                     textAlign: "center",
                     "fontFamily": "sans-serif"
                 });
@@ -85,7 +87,6 @@ __pkg__scope_bundle__.default= function (obj) {
 
             }
         }
-
     };
 };
 
@@ -93,25 +94,25 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/index.html
+// Original file:./src/mobile/regexper-visualization/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['73']=function(){
+window.__pkg__bundleSrc__['107']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,10,11,13,19,20]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5,7]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[6]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"help-hidden","ref":"help"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"expressVal"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDisplay"},"childNodes":[12]},{"type":"text","content":"显示","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"isString"},"childNodes":[14,15,16,17,18]},{"type":"tag","name":"input","attrs":{"type":"radio","ui-bind:name":"\"isString\"+uniqueHash","ref":"is-string-yes","ui-on:click":"doIsString","tag":"yes"},"childNodes":[]},{"type":"text","content":"是字符串","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"radio","ui-bind:name":"\"isString\"+uniqueHash","ref":"is-string-no","ui-on:click":"doIsString","tag":"no"},"childNodes":[]},{"type":"text","content":"不是字符串","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[21]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,10,11,13,19,20]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"help-hidden","ref":"help"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"expressVal"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDisplay"},"childNodes":[12]},{"type":"text","content":"显示","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"isString"},"childNodes":[14,15,16,17,18]},{"type":"tag","name":"input","attrs":{"type":"radio","ui-bind:name":"\"isString\"+uniqueHash","ref":"is-string-yes","ui-on:click":"doIsString","tag":"yes"},"childNodes":[]},{"type":"text","content":"是字符串","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"radio","ui-bind:name":"\"isString\"+uniqueHash","ref":"is-string-no","ui-on:click":"doIsString","tag":"no"},"childNodes":[]},{"type":"text","content":"不是字符串","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"canvas"},"childNodes":[21]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[22]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/index.scss
+// Original file:./src/mobile/regexper-visualization/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['74']=function(){
+window.__pkg__bundleSrc__['108']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"regexper-visualization\"]{\n\npadding-bottom: 20px;\n\nwidth: 800px;\n\nleft: calc(50vw - 400px);\n\ntop: 50px;\n\n}\n\n [page-view=\"regexper-visualization\"][focus=\"no\"]>header{\n\nbackground-color: #646125;\n\n}\n\n [page-view=\"regexper-visualization\"]>header{\n\ntext-align: left;\n\nline-height: 50px;\n\nbackground-color: #595616;\n\nmargin-bottom: 30px;\n\n}\n\n [page-view=\"regexper-visualization\"]>header>h2{\n\ncolor: #98932e;\n\nfont-size: 20px;\n\npadding-left: 50px;\n\nbackground-image: url(\"./regexper-visualization.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 60%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"regexper-visualization\"]>div.help-hidden{\n\nposition: fixed;\n\nfont-size: 12px;\n\nfont-family: sans-serif;\n\npadding: 0;\n\nborder: none;\n\nbottom: -100px;\n\n}\n\n [page-view=\"regexper-visualization\"]{\n\ntext-align: center;\n\n}\n\n [page-view=\"regexper-visualization\"] input[type=\"text\"]{\n\nwidth: 700px;\n\nheight: 30px;\n\npadding: 0 10px;\n\n}\n\n [page-view=\"regexper-visualization\"]>button{\n\nheight: 30px;\n\nmargin-left: 10px;\n\nbackground-color: #97932e;\n\ncolor: #fefefe;\n\ncursor: pointer;\n\n}\n\n [page-view=\"regexper-visualization\"] canvas{\n\nbackground-color: white;\n\n}\n\n [page-view=\"regexper-visualization\"] hr{\n\nmargin: 20px 0;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString{\n\nmargin-top: 10px;\n\nfont-size: 12px;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString input{\n\nvertical-align: sub;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString span{\n\ndisplay: inline-block;\n\nwidth: 20px;\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"regexper-visualization\"]{\n\npadding-top: 30px;\n\nfont-size: 0;\n\n}\n\n [page-view=\"regexper-visualization\"]>div.help-hidden{\n\nposition: fixed;\n\nfont-size: 12px;\n\nfont-family: sans-serif;\n\npadding: 0;\n\nborder: none;\n\nbottom: -100px;\n\n}\n\n [page-view=\"regexper-visualization\"]>div.canvas{\n\nwidth: 100vw;\n\nheight: calc(var(--height) - 173px);\n\noverflow: auto;\n\npadding: 10px;\n\n}\n\n [page-view=\"regexper-visualization\"]>div.canvas canvas{\n\nbackground-color: white;\n\n}\n\n [page-view=\"regexper-visualization\"]{\n\ntext-align: center;\n\n}\n\n [page-view=\"regexper-visualization\"] input[type=\"text\"]{\n\nwidth: calc(100vw - 70px);\n\nheight: 30px;\n\npadding: 0 10px;\n\n}\n\n [page-view=\"regexper-visualization\"]>button{\n\nheight: 30px;\n\nmargin-left: 10px;\n\nbackground-color: #97932e;\n\ncolor: #fefefe;\n\ncursor: pointer;\n\n}\n\n [page-view=\"regexper-visualization\"] hr{\n\nmargin: 20px 0;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString{\n\nmargin-top: 10px;\n\nfont-size: 12px;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString input{\n\nvertical-align: sub;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString span{\n\ndisplay: inline-block;\n\nwidth: 20px;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

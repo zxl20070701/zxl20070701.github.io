@@ -9,7 +9,12 @@ window.__pkg__bundleSrc__['33']=function(){
 
     // npm包下载统计
     "npm-download": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle10.js','57')
+        return window.__pkg__getLazyBundle('./dist/bundle11.js','58')
+    },
+
+    // 正则表达式可视化
+    "regexper-visualization": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle12.js','59')
     },
 
 };

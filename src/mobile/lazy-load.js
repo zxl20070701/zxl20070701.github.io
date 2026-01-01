@@ -5,4 +5,9 @@ export default {
         return import('./npm-download/index.js')
     },
 
+    // 正则表达式可视化
+    "regexper-visualization": function () {
+        return import('./regexper-visualization/index.js')
+    },
+
 };
