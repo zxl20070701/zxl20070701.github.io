@@ -1,0 +1,55 @@
+[page-view="recorder-screen"] {
+    left: 80px;
+    top: 10px;
+    font-size: 0;
+
+    &[focus="no"] {
+        &>header {
+            background-color: #e8eaed;
+        }
+    }
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        background-color: #ffffff;
+        border-bottom: 1px solid black;
+
+        &>h2 {
+            color: #49b4f1;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./recorder-screen.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            font-family: cursive;
+            display: inline-block;
+        }
+
+        &>button {
+            float: right;
+            height: 30px;
+            padding: 0 30px;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+            border-radius: 15px;
+            margin-right: 200px;
+
+            &[active='no'] {
+                background-color: rgb(239, 139, 139);
+                cursor: not-allowed;
+            }
+
+        }
+    }
+
+    &>video {
+        width: calc(100vw - 160px);
+        height: calc(100vh - 105px);
+        background-color: black;
+    }
+}

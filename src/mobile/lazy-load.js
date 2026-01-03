@@ -5,6 +5,11 @@ export default {
         return import('./npm-download/index.js')
     },
 
+    // 录屏软件
+    "recorder-screen": function () {
+        return import('./recorder-screen/index.js')
+    },
+
     // 正则表达式可视化
     "regexper-visualization": function () {
         return import('./regexper-visualization/index.js')

@@ -17,6 +17,11 @@ window.__pkg__bundleSrc__['37']=function(){
         return window.__pkg__getLazyBundle('./dist/bundle13.js','69')
     },
 
+    // 录屏软件
+    "recorder-screen": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle14.js','70')
+    },
+
 };
 
     return __pkg__scope_bundle__;

@@ -1,28 +1,28 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/recorder-screen/index.js
+// Original file:./src/mobile/recorder-screen/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['70']=function(){
+window.__pkg__bundleSrc__['72']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('119');
+    __pkg__scope_args__=window.__pkg__getBundle('123');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('120');
+__pkg__scope_args__=window.__pkg__getBundle('124');
 
 
 __pkg__scope_bundle__.default= function (obj) {
     var mediaRecorder;
-    
+
     return {
         name: "recorder-screen",
         render: template,
+        data: {
+            isRun: obj.ref(false)
+        },
         beforeFocus: function () {
             document.getElementsByTagName('title')[0].innerText = "录屏软件" + window.systeName;
             document.getElementById('icon-logo').setAttribute('href', './recorder-screen.png');
-        },
-        data: {
-            isRun: obj.ref(false)
         },
         methods: {
 
@@ -98,25 +98,25 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/recorder-screen/index.html
+// Original file:./src/mobile/recorder-screen/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['119']=function(){
+window.__pkg__bundleSrc__['123']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,11]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,6]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"startRecorder","ui-bind:active":"isRun?'no':'yes'"},"childNodes":[5]},{"type":"text","content":"启动","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[7,9]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[8]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[10]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"video","attrs":{"ref":"video"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,11]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"startRecorder","ui-bind:active":"isRun?'no':'yes'"},"childNodes":[10]},{"type":"text","content":"启动","childNodes":[]},{"type":"tag","name":"video","attrs":{"ref":"video"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/recorder-screen/index.scss
+// Original file:./src/mobile/recorder-screen/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['120']=function(){
+window.__pkg__bundleSrc__['124']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"recorder-screen\"]{\n\nleft: 80px;\n\ntop: 10px;\n\nfont-size: 0;\n\n}\n\n [page-view=\"recorder-screen\"][focus=\"no\"]>header{\n\nbackground-color: #e8eaed;\n\n}\n\n [page-view=\"recorder-screen\"]>header{\n\ntext-align: left;\n\nline-height: 50px;\n\nbackground-color: #ffffff;\n\nborder-bottom: 1px solid black;\n\n}\n\n [page-view=\"recorder-screen\"]>header>h2{\n\ncolor: #49b4f1;\n\nfont-size: 20px;\n\npadding-left: 50px;\n\nbackground-image: url(\"./recorder-screen.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 60%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"recorder-screen\"]>header>button{\n\nfloat: right;\n\nheight: 30px;\n\npadding: 0 30px;\n\nborder: none;\n\nmargin-top: 10px;\n\ncursor: pointer;\n\nbackground-color: red;\n\ncolor: white;\n\nborder-radius: 15px;\n\nmargin-right: 200px;\n\n}\n\n [page-view=\"recorder-screen\"]>header>button[active='no']{\n\nbackground-color: rgb(239, 139, 139);\n\ncursor: not-allowed;\n\n}\n\n [page-view=\"recorder-screen\"]>video{\n\nwidth: calc(100vw - 160px);\n\nheight: calc(100vh - 105px);\n\nbackground-color: black;\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"recorder-screen\"]{\n\nfont-size: 0;\n\n}\n\n [page-view=\"recorder-screen\"]>button{\n\nposition: absolute;\n\nheight: 30px;\n\nline-height: 30px;\n\npadding: 0 10px;\n\nborder: none;\n\ncursor: pointer;\n\nbackground-color: red;\n\ncolor: white;\n\nborder-radius: 15px;\n\ntop: 7.5px;\n\nright: 45px;\n\nfont-size: 13px;\n\n}\n\n [page-view=\"recorder-screen\"]>button[active='no']{\n\nbackground-color: rgb(239, 139, 139);\n\ncursor: not-allowed;\n\n}\n\n [page-view=\"recorder-screen\"]>video{\n\nwidth: 100vw;\n\nheight: calc(var(--height) - 45px);\n\nbackground-color: black;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

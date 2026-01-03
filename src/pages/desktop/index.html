@@ -3,6 +3,10 @@
         title="输入一个正则表达式后可以把其变成可视化的图表来快速读懂意义" tag="regexper-visualization" ui-on:dblclick="goto" ui-right-menu:app>
         正则表达式可视化
     </li>
+    <li class="link" ui-bind:select="select=='recorder-screen'?'yes':'no'" ui-on:click.stop="doSelect"
+        title="一个H5版本的电脑屏幕录制软件" tag="recorder-screen" ui-on:dblclick="goto" ui-right-menu:app>
+        录屏软件
+    </li>
 </ul>
 <div class="taskline" ui-right-menu:desktop-line>
     <span class="begin" title="快速开始" tag="begin" ui-on:click.stop="toggleWin"></span>

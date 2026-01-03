@@ -1,0 +1,30 @@
+[page-view="recorder-screen"] {
+    font-size: 0;
+
+    &>button {
+        position: absolute;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        border: none;
+        cursor: pointer;
+        background-color: red;
+        color: white;
+        border-radius: 15px;
+        top: 7.5px;
+        right: 45px;
+        font-size: 13px;
+
+        &[active='no'] {
+            background-color: rgb(239, 139, 139);
+            cursor: not-allowed;
+        }
+
+    }
+
+    &>video {
+        width: 100vw;
+        height: calc(var(--height) - 45px);
+        background-color: black;
+    }
+}
