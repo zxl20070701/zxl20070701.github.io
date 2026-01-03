@@ -1,0 +1,25 @@
+<h2 ui-dragdrop="dragdropPadding">
+    工具箱
+</h2>
+<ul class="list">
+    <li title="移动工具" class="move" ui-on:click="changeTool" name="move" ui-bind:active="active=='move'?'yes':'no'">
+    </li>
+    <li title="橡皮擦" class="eraser" ui-on:click="changeTool" name="eraser" ui-bind:active="active=='eraser'?'yes':'no'">
+    </li>
+    <!-- <li title="背景橡皮擦" class="eraser-bg" ui-on:click="changeTool" name="eraser-bg"
+        ui-bind:active="active=='eraser-bg'?'yes':'no'"></li> -->
+    <!-- <li title="抓手工具" class="drap" ui-on:click="changeTool" name="drap" ui-bind:active="active=='drap'?'yes':'no'"></li> -->
+    <li title="画笔" class="painter" ui-on:click="changeTool" name="painter"
+        ui-bind:active="active=='painter'?'yes':'no'"></li>
+    <!-- <li title="缩放工具" class="resize" ui-on:click="changeTool" name="resize" ui-bind:active="active=='resize'?'yes':'no'">
+    </li> -->
+    <!-- <li title="文字" class="text" ui-on:click="changeTool" name="text" ui-bind:active="active=='text'?'yes':'no'">
+    </li> -->
+    <!-- <li title="几何绘制" class="geometry" ui-on:click="changeTool" name="geometry"
+        ui-bind:active="active=='geometry'?'yes':'no'">
+    </li> -->
+</ul>
+<div class="color">
+    <span tag="backcolor" ui-on:click="selectColor" title="背景色" style="background-color: black;"></span>
+    <span tag="forecolor" ui-on:click="selectColor" title="前景色" style="background-color: red;"></span>
+</div>

@@ -15,4 +15,8 @@ export default {
         return import('./recorder-screen/index.js')
     },
 
+    // 图片编辑器
+    "image-editor": function () {
+        return import('./image-editor/index.js')
+    },
 };

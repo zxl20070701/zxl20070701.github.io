@@ -1,0 +1,191 @@
+<div class="no-view">
+
+    <!-- 选择图片 -->
+    <input type="file" ref="imgFile1" flag="import" ui-on:change="openImage" accept="image/*" />
+    <input type="file" ref="imgFile2" flag="append" ui-on:change="openImage" accept="image/*" multiple />
+
+</div>
+
+<!-- 菜单 -->
+<div class="menu" ui-dragdrop:desktop>
+    <h2>图片编辑器</h2>
+    <ul>
+        <li>
+            <label>
+                文件
+            </label>
+            <ul>
+                <li>
+                    <label tag="imgFile1" ui-on:click="triggleBtn">
+                        打开
+                    </label>
+                </li>
+                <li>
+                    <label ui-on:click="saveImage">
+                        保存
+                    </label>
+                </li>
+                <li>
+                    <label tag="imgFile2" ui-on:click="triggleBtn">
+                        置入
+                    </label>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <label>
+                图像
+            </label>
+            <ul>
+                <li>
+                    <label ui-on:click="editCanvasSize">
+                        画布大小
+                    </label>
+                </li>
+                <li>
+                    <label ui-on:click="editImageSize">
+                        图像大小
+                    </label>
+                </li>
+            </ul>
+        </li>
+        <!-- <li>
+            <label>
+                选择
+            </label>
+            <ul>
+                <li>
+                    <label>
+                        取消选择
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        反选
+                    </label>
+                </li>
+                <li class="split-line"></li>
+                <li>
+                    <label>
+                        色彩范围
+                    </label>
+                </li>
+            </ul>
+        </li> -->
+        <li>
+            <label>
+                窗口
+            </label>
+            <ul>
+                <li>
+                    <label ui-on:click="toggleWin" tag="layer" ui-bind:active="isMenuOpen.layer?'yes':'no'">
+                        图层
+                    </label>
+                </li>
+                <li>
+                    <label ui-on:click="toggleWin" tag="tool" ui-bind:active="isMenuOpen.tool?'yes':'no'">
+                        工具箱
+                    </label>
+                </li>
+                <!-- <li>
+                    <label>
+                        通道
+                    </label>
+                </li> -->
+                <!-- <li>
+                    <label>
+                        画笔
+                    </label>
+                </li> -->
+            </ul>
+        </li>
+    </ul>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+</div>
+
+<!-- 工具配置 -->
+<div class="tool-config">
+
+    <!-- 移动 -->
+    <ul ui-bind:active="activeTool=='move'?'yes':'no'">
+        <li>
+            移动距离：
+            <input type="text" ui-model="move_size">
+        </li>
+    </ul>
+
+    <!-- 橡皮擦 -->
+    <ul ui-bind:active="activeTool=='eraser'?'yes':'no'">
+        <li>
+            半径：
+            <input type="text" ui-model="eraser_size">
+        </li>
+    </ul>
+
+    <!-- 背景橡皮擦 -->
+    <ul ui-bind:active="activeTool=='eraser-bg'?'yes':'no'">
+        <li>
+            半径：
+            <input type="text" ui-model="eraser_bg_size">
+        </li>
+    </ul>
+
+    <!-- 抓手工具 -->
+    <ul ui-bind:active="activeTool=='drap'?'yes':'no'">
+        <li>
+            移动距离：
+            <input type="text" ui-model="drap_size">
+        </li>
+    </ul>
+
+    <!-- 画笔 -->
+    <ul ui-bind:active="activeTool=='painter'?'yes':'no'">
+        <li>
+            半径：
+            <input type="text" ui-model="painter_size">
+        </li>
+    </ul>
+
+    <!-- 缩放工具 -->
+    <ul ui-bind:active="activeTool=='resize'?'yes':'no'">
+        <li>
+            方向：
+            <input ui-model="resize_direction" type="radio" name="resize_direction" value="amplify">放大
+            <input ui-model="resize_direction" type="radio" name="resize_direction" value="reduce">缩小
+        </li>
+        <li>
+            速度：
+            <input type="text" ui-model="resize_velocity">
+        </li>
+        <li>
+            <button ui-on:click="resetSize">恢复尺寸</button>
+        </li>
+    </ul>
+
+    <!-- 文字 -->
+    <ul ui-bind:active="activeTool=='text'?'yes':'no'">
+        <li>
+            文字大小：
+            <input type="text" ui-model="text_size">
+        </li>
+    </ul>
+
+    <!-- 几何绘制 -->
+    <ul ui-bind:active="activeTool=='geometry'?'yes':'no'">
+
+    </ul>
+
+</div>
+
+<!-- 画布 -->
+<div class="image" ref="editorView">
+    <canvas ref="mycanvas"
+        ui-bind:style="'transform:scale('+scale+');left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+height+'px;'">
+    </canvas>
+    <canvas ref="mycursor"
+        ui-bind:style="'pointer-events:none;transform:scale('+scale+');left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+height+'px;'">
+    </canvas>
+</div>

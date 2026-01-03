@@ -1,0 +1,126 @@
+[dialog-view='color-picker'] {
+    box-shadow: rgb(147, 147, 160) 0px 0px 7px 1px;
+    border-radius: 5px;
+    font-size: 0px;
+    user-select: none;
+    left: calc(50vw - 150px);
+    top: calc(50vh - 150px);
+
+    &>header {
+        font-size: 16px;
+        text-align: center;
+        border-radius: 5px 5px 0 0;
+        line-height: 30px;
+        background-color: #ffffff;
+        color: #252020;
+    }
+
+    &>div {
+        &.canvas {
+            position: relative;
+            overflow: hidden;
+
+            &>canvas,
+            &>span {
+                pointer-events: none;
+            }
+
+            &>canvas {
+                width: 300px;
+                height: 160px;
+            }
+
+            &>span {
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                right: -6px;
+                top: -6px;
+                box-shadow: 0 0 5px 3px #75757e;
+                cursor: pointer;
+            }
+        }
+
+        &.drap {
+            text-align: center;
+            margin: 20px 0;
+
+            &>div {
+                &.left {
+                    display: inline-block;
+                    width: 40px;
+                    height: 40px;
+                    box-shadow: rgb(117 117 126) 0px 0px 9px 0px;
+                    border-radius: 50%;
+                    margin-right: 25px;
+                    cursor: crosshair;
+                }
+
+                &.right {
+                    display: inline-block;
+
+                    &>div {
+                        position: relative;
+
+                        &>div,
+                        &>span {
+                            pointer-events: none;
+                        }
+
+                        &.color {
+                            &>div {
+                                background-image: linear-gradient(to right, #f00, #f0f, #00f, #0ff, #0f0, #ff0, #f00);
+                            }
+                        }
+
+                        &.alpha {
+                            margin-top: 10px;
+                        }
+
+                        &>div {
+                            width: 200px;
+                            height: 16px;
+                        }
+
+                        &>span {
+                            position: absolute;
+                            width: 22px;
+                            height: 22px;
+                            display: inline-block;
+                            border-radius: 50%;
+                            top: -3.5px;
+                            cursor: pointer;
+                            box-shadow: grey 0px 0px 2px 0px;
+                            background: rgb(250, 248, 248);
+                        }
+                    }
+                }
+            }
+        }
+
+        &.btns {
+            text-align: center;
+            padding: 10px;
+
+            &>button {
+                width: 90px;
+                border-radius: 5px;
+                cursor: pointer;
+                border: none;
+                line-height: 26px;
+
+                &.cancel {
+                    margin-right: 30px;
+                    background-color: #e0e0e0;
+                }
+
+                &.submit {
+                    background-color: #449cf6;
+                    color: white;
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,27 @@
+<header ui-dragdrop ui-bind="title"></header>
+<div class="canvas" ui-on:click="selectColor" ui-on:mousemove="selectColor">
+    <canvas id="color-picker-canvas"></canvas>
+    <span></span>
+</div>
+<div class="drap">
+    <div class="left"
+        ui-bind:style="'background-color:rgba(' + color[0] + ',' + color[1] + ',' + color[2] + ',' + color[3] + ')'"
+        ui-on:click="absorbColor">
+    </div>
+    <div class="right">
+        <div class="color" ui-on:click="updateColor" ui-on:mousemove="updateColor">
+            <div ui-on:click="updateColor"></div>
+            <span id="color-cursor-id"></span>
+        </div>
+        <div class="alpha" ui-on:click="updateAlpha" ui-on:mousemove="updateAlpha">
+            <div ui-on:click="updateAlpha"
+                ui-bind:style="'background-image:linear-gradient(to right, #f000, rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')'">
+            </div>
+            <span ui-bind:style="'left:'+(color[3]*200-6)+'px;'"></span>
+        </div>
+    </div>
+</div>
+<div class="btns">
+    <button class="cancel" ui-on:click="doClose">取消</button>
+    <button class="submit" ui-on:click="doSubmit">确定</button>
+</div>

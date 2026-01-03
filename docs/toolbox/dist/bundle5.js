@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['36']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('66');
+    __pkg__scope_args__=window.__pkg__getBundle('67');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('67');
+__pkg__scope_args__=window.__pkg__getBundle('68');
 
 
 __pkg__scope_bundle__.default= function (obj) {
@@ -63,7 +63,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/desktop/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['66']=function(){
+window.__pkg__bundleSrc__['67']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7,9,17]},{"type":"tag","name":"div","attrs":{"class":"desktop"},"childNodes":[2]},{"type":"tag","name":"ul","attrs":{"class":"application","ref":"desktopApplication"},"childNodes":[3,5]},{"type":"tag","name":"li","attrs":{"tag":"regexper-visualization","ui-on:click":"goto"},"childNodes":[4]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"recorder-screen","ui-on:click":"goto"},"childNodes":[6]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"taskline"},"childNodes":[8]},{"type":"tag","name":"ul","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"handler"},"childNodes":[10,11]},{"type":"tag","name":"div","attrs":{"class":"drap","ui-dragdrop":"","ui-bind:active":"view?'no':'yes'","ui-on:click.stop":"toggleView"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"view","ui-bind:active":"view?'yes':'no'","ui-on:click.stop":"toggleView"},"childNodes":[12]},{"type":"tag","name":"div","attrs":{},"childNodes":[13,15]},{"type":"tag","name":"span","attrs":{"tag":"debugger","ui-on:click":"openDialog"},"childNodes":[14]},{"type":"text","content":"调试工具","childNodes":[]},{"type":"tag","name":"span","attrs":{"tag":"what","ui-on:click":"openDialog"},"childNodes":[16]},{"type":"text","content":"说明","childNodes":[]},{"type":"tag","name":"span","attrs":{"id":"wins-line-id"},"childNodes":[]}]
@@ -74,7 +74,7 @@ window.__pkg__bundleSrc__['66']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/desktop/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['67']=function(){
+window.__pkg__bundleSrc__['68']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

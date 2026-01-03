@@ -7,6 +7,10 @@
         title="一个H5版本的电脑屏幕录制软件" tag="recorder-screen" ui-on:dblclick="goto" ui-right-menu:app>
         录屏软件
     </li>
+    <li class="link" ui-bind:select="select=='image-editor'?'yes':'no'" ui-on:click.stop="doSelect"
+        title="可以对图片进行编辑，包括合并、修改大小、美化等" tag="image-editor" ui-on:dblclick="goto" ui-right-menu:app>
+        图片编辑器
+    </li>
 </ul>
 <div class="taskline" ui-right-menu:desktop-line>
     <span class="begin" title="快速开始" tag="begin" ui-on:click.stop="toggleWin"></span>

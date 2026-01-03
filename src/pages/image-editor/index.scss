@@ -1,0 +1,180 @@
+[page-view="image-editor"] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 70px);
+    left: 80px;
+    top: 20px;
+
+    .no-view {
+        display: none;
+    }
+
+    &[focus="no"] {
+        &>div {
+            &.menu {
+                background-color: #afbabe;
+            }
+        }
+    }
+
+    &>div {
+        &.menu {
+            background-color: #cad6db;
+            border-bottom: 1px solid gray;
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            &>h2,
+            ul {
+                vertical-align: top;
+            }
+
+            &>h2 {
+                font-size: 12px;
+                display: inline-block;
+                height: 30px;
+                line-height: 30px;
+                background-image: url('./image-editor.png');
+                background-size: auto 70%;
+                background-repeat: no-repeat;
+                background-position: 5px center;
+                padding-left: 30px;
+                padding-right: 10px;
+                border-right: 1px solid #cccccc;
+            }
+
+            &>ul {
+                display: inline-block;
+                line-height: 30px;
+                font-size: 12px;
+
+                label {
+                    cursor: pointer;
+                    padding: 0 5px;
+                    display: block;
+
+                    &>span {
+                        float: right;
+                    }
+                }
+
+                ul {
+                    label {
+                        padding-left: 20px;
+                        background-repeat: no-repeat;
+                        background-position: left center;
+
+                        &[active='yes'] {
+                            background-image: url('./right.png');
+                        }
+                    }
+                }
+
+                li {
+                    &:hover {
+                        background-color: #cfd3d5;
+
+                        &>ul {
+                            display: block;
+                        }
+                    }
+
+                    &.split-line {
+                        background-color: #ebedee;
+                        height: 1px;
+                        margin: 2px 0;
+                    }
+                }
+
+                ul {
+                    display: none;
+                }
+
+                &>li {
+                    display: inline-block;
+                    margin-left: 10px;
+                    position: relative;
+
+                    &>ul {
+                        position: absolute;
+                        border: 1px solid gray;
+                        border-radius: 5px;
+                        width: 100px;
+                        top: 25px;
+                        left: -5px;
+                        background-color: white;
+                        padding: 5px 0;
+                        z-index: 1;
+                    }
+                }
+
+            }
+        }
+
+        &.tool-config {
+            border-bottom: 1px solid #ccc;
+            height: 50px;
+            line-height: 50px;
+            position: relative;
+            top: 0;
+            width: 100%;
+            font-size: 12px;
+
+            &>ul {
+                display: none;
+
+                &[active='yes'] {
+                    display: block;
+                }
+
+                &>li {
+                    padding-left: 20px;
+                    display: inline-block;
+
+                    &>input {
+                        &[type="text"] {
+                            width: 50px;
+                            border-radius: 5px;
+                            padding:3px 5px;
+                        }
+
+                        &[type='radio'] {
+                            vertical-align: sub;
+                            margin-left: 10px;
+                        }
+                    }
+
+                    &>button {
+                        outline: none;
+                        border: none;
+                        background-color: black;
+                        color: white;
+                        font-size: 12px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        &.image {
+            width: 100%;
+            height: calc(100% - 80px);
+            overflow: auto;
+            position: relative;
+            top: 0;
+
+            &>canvas {
+                position: absolute;
+                outline: 1px solid #ccc;
+                cursor: none;
+
+                &:first-child {
+                    background-image: url('./mosaic.png');
+                }
+            }
+        }
+    }
+
+}
