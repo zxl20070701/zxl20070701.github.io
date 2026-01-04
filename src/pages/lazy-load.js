@@ -19,4 +19,9 @@ export default {
     "image-editor": function () {
         return import('./image-editor/index.js')
     },
+
+    // 代码编辑器
+    "code-editor": function () {
+        return import('./code-editor/index.js')
+    },
 };

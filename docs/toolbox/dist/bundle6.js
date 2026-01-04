@@ -26,6 +26,11 @@ window.__pkg__bundleSrc__['37']=function(){
     "image-editor": function () {
         return window.__pkg__getLazyBundle('./dist/bundle16.js','72')
     },
+
+    // 代码编辑器
+    "code-editor": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle17.js','73')
+    },
 };
 
     return __pkg__scope_bundle__;

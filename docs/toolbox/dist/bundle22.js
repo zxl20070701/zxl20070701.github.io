@@ -1,44 +1,50 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/image-editor/wins/tool/index.js
+// Original file:./src/pages/image-editor/dialogs/save/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['137']=function(){
+window.__pkg__bundleSrc__['136']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('151');
+    __pkg__scope_args__=window.__pkg__getBundle('174');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('152');
+__pkg__scope_args__=window.__pkg__getBundle('175');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
+
+    var width = props.width < 218 ? props.width : 218;
+    var height = width / props.width * props.height;
+
+    if (height > 300) {
+        height = 300;
+        width = 300 / props.height * props.width;
+    }
+
     return {
-        name: "tool",
+        name: "save",
         render: template,
         data: {
-            active: obj.ref('move'),
-            dragdropPadding: [30, 0, 0, 0]
+            name: obj.ref(props.name),
+            base64: obj.ref(props.painter.toDataURL()),
+            height: height,
+            width: width
         },
         methods: {
 
-            // 选择工具
-            changeTool: function (event, target) {
-                this.active = target.getAttribute('name');
-                this.callback('activeTool', this.active);
+            // 确定
+            doSubmit: function () {
+                var formatEl = this._refs.format.value;
+
+                this.$closeDialog({
+                    name: this.name,
+                    format: [formatEl.value, formatEl.value.replace("image\/", "")]
+                });
             },
 
-            // 选择颜色
-            selectColor: function (event, target) {
-                var _this = this;
-
-                this.$openDialog('color-picker', {
-                    title: target.getAttribute('title'),
-                    color: target.style.backgroundColor
-                }).then(function (data) {
-                    target.style.backgroundColor = data;
-                    _this.callback(target.getAttribute('tag'), data);
-                });
-
+            // 取消
+            doClose: function () {
+                this.$closeDialog();
             }
         }
     };
@@ -48,25 +54,25 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/image-editor/wins/tool/index.html
+// Original file:./src/pages/image-editor/dialogs/save/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['151']=function(){
+window.__pkg__bundleSrc__['174']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3,7]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"工具箱","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"list"},"childNodes":[4,5,6]},{"type":"tag","name":"li","attrs":{"title":"移动工具","class":"move","ui-on:click":"changeTool","name":"move","ui-bind:active":"active=='move'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"橡皮擦","class":"eraser","ui-on:click":"changeTool","name":"eraser","ui-bind:active":"active=='eraser'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"画笔","class":"painter","ui-on:click":"changeTool","name":"painter","ui-bind:active":"active=='painter'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"color"},"childNodes":[8,9]},{"type":"tag","name":"span","attrs":{"tag":"backcolor","ui-on:click":"selectColor","title":"背景色","style":"background-color: black;"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"tag":"forecolor","ui-on:click":"selectColor","title":"前景色","style":"background-color: red;"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":""},"childNodes":[2]},{"type":"text","content":"保存","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right-btn"},"childNodes":[4,23]},{"type":"tag","name":"div","attrs":{},"childNodes":[5,21]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[6,8]},{"type":"tag","name":"legend","attrs":{},"childNodes":[7]},{"type":"text","content":"基础","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[9,13]},{"type":"tag","name":"li","attrs":{},"childNodes":[10,12]},{"type":"tag","name":"label","attrs":{},"childNodes":[11]},{"type":"text","content":"名称：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"name"},"childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[14,16]},{"type":"tag","name":"label","attrs":{},"childNodes":[15]},{"type":"text","content":"格式：","childNodes":[]},{"type":"tag","name":"select","attrs":{"ref":"format"},"childNodes":[17,19]},{"type":"tag","name":"option","attrs":{"value":"image/png"},"childNodes":[18]},{"type":"text","content":"png","childNodes":[]},{"type":"tag","name":"option","attrs":{"value":"image/jpeg"},"childNodes":[20]},{"type":"text","content":"jpeg","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"review","title":"预览","ui-bind:style":"'width:'+width+'px;height:'+height+'px;'"},"childNodes":[22]},{"type":"tag","name":"span","attrs":{"ui-bind:style":"'background-image:url('+base64+');'"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[24,26]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[25]},{"type":"text","content":"确定","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose"},"childNodes":[27]},{"type":"text","content":"取消","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/image-editor/wins/tool/index.scss
+// Original file:./src/pages/image-editor/dialogs/save/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['152']=function(){
+window.__pkg__bundleSrc__['175']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [win-view='tool']{\n\nwidth: 82px;\n\nright: 220px;\n\ntop: 140px;\n\nborder: 1px solid gray;\n\nmin-height: 400px;\n\nbackground-color: white;\n\n}\n\n [win-view='tool']>h2{\n\nfont-size: 12px;\n\npadding-left: 30px;\n\nbackground-image: url('./image-editor.png');\n\nbackground-size: auto 80%;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 3px center;\n\nborder-bottom: 1px solid gray;\n\nline-height: 30px;\n\nheight: 30px;\n\nuser-select: none;\n\n}\n\n [win-view='tool']>.list>li{\n\ndisplay: inline-block;\n\nwidth: 30px;\n\nheight: 30px;\n\nmargin: 5px;\n\noutline: 1px solid rgb(185, 182, 182);\n\nfont-size: 0;\n\nvertical-align: top;\n\nbackground-size: contain;\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\ncursor: pointer;\n\n}\n\n [win-view='tool']>.list>li[active='yes']{\n\nbackground-color: #e6e1e1;\n\n}\n\n [win-view='tool']>.list>li.move{\n\nbackground-image: url('./move.png');\n\n}\n\n [win-view='tool']>.list>li.eraser{\n\nbackground-image: url('./eraser.png');\n\n}\n\n [win-view='tool']>.list>li.eraser-bg{\n\nbackground-image: url('./eraser-bg.png');\n\n}\n\n [win-view='tool']>.list>li.drap{\n\nbackground-image: url('./drap.png');\n\n}\n\n [win-view='tool']>.list>li.painter{\n\nbackground-image: url('./painter.png');\n\n}\n\n [win-view='tool']>.list>li.resize{\n\nbackground-image: url('./resize.png');\n\n}\n\n [win-view='tool']>.list>li.text{\n\nbackground-image: url('./text.png');\n\n}\n\n [win-view='tool']>.list>li.geometry{\n\nbackground-image: url('./geometry.png');\n\n}\n\n [win-view='tool']>.color{\n\nheight: 40px;\n\nposition: absolute;\n\nbottom: 5px;\n\nleft: 0;\n\n}\n\n [win-view='tool']>.color>span{\n\nposition: absolute;\n\ndisplay: inline-block;\n\noutline: 1px solid rgb(201, 201, 202);\n\nwidth: 30px;\n\nheight: 30px;\n\ncursor: pointer;\n\n}\n\n [win-view='tool']>.color>span[tag='forecolor']{\n\nleft: 15px;\n\ntop: 0;\n\n}\n\n [win-view='tool']>.color>span[tag='backcolor']{\n\nleft: 35px;\n\ntop: 10px;\n\n}\n";
+styleElement.innerHTML = "\n [dialog-view='save']{\n\nleft: calc(50vw - 150px);\n\ntop: 100px;\n\nborder: 1px solid gray;\n\nmin-height: 300px;\n\nwidth: 300px;\n\nbackground-color: white;\n\n}\n\n [dialog-view='save']>h2{\n\nfont-size: 12px;\n\npadding-left: 30px;\n\nbackground-image: url('./image-editor.png');\n\nbackground-size: auto 80%;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 3px center;\n\nborder-bottom: 1px solid gray;\n\nline-height: 30px;\n\nheight: 30px;\n\nuser-select: none;\n\n}\n\n [dialog-view='save']>div.right-btn{\n\ndisplay: flex;\n\n}\n\n [dialog-view='save']>div.right-btn>div:first-child{\n\nflex-grow: 1;\n\npadding: 10px 0 10px 10px;\n\n}\n\n [dialog-view='save']>div.right-btn>div:last-child{\n\ntext-align: center;\n\nflex-grow: 0;\n\nflex-shrink: 0;\n\nflex-basis: 70px;\n\n}\n\n [dialog-view='save']>div.right-btn>div:last-child>button{\n\nheight: 30px;\n\nborder-radius: 15px;\n\nwidth: 50px;\n\nmargin-top: 10px;\n\n}\n\n [dialog-view='save']>div.right-btn>div:last-child>button:hover{\n\nbackground-color: rgb(127, 131, 131);\n\ncursor: pointer;\n\n}\n\n [dialog-view='save'] fieldset{\n\nmargin-top: 10px;\n\nfont-size: 12px;\n\n}\n\n [dialog-view='save'] ul>li{\n\nline-height: 2em;\n\nmargin-top: 5px;\n\nwhite-space: nowrap;\n\n}\n\n [dialog-view='save'] ul>li>label{\n\nwidth: 40px;\n\ndisplay: inline-block;\n\ntext-align: right;\n\n}\n\n [dialog-view='save'] ul>li>input, [dialog-view='save'] ul>li select{\n\nwidth: 150px;\n\nmargin-right: 5px;\n\n}\n\n [dialog-view='save'] .review{\n\nmargin: 9px auto;\n\noutline: 1px solid gray;\n\nposition: relative;\n\n}\n\n [dialog-view='save'] .review::before{\n\nwidth: 100%;\n\nheight: 100%;\n\ndisplay: inline-block;\n\nbackground-image: url(./mosaic.png);\n\nbackground-size: 10px auto;\n\ncontent: \" \";\n\nposition: absolute;\n\nleft: 0;\n\ntop: 0;\n\n}\n\n [dialog-view='save'] .review>span{\n\ndisplay: inline-block;\n\nwidth: 100%;\n\nheight: 100%;\n\nbackground-position: center center;\n\nbackground-size: contain;\n\nbackground-repeat: no-repeat;\n\nposition: relative;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

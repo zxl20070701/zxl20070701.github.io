@@ -1,0 +1,479 @@
+[page-view="code-editor"] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 70px);
+    left: 80px;
+    top: 20px;
+    border-radius: 5px;
+
+    [file-type] {
+        background-image: url('./editor@icon.png');
+    }
+
+    [file-type='html'] {
+        background-image: url('./file-icons/HTML.png');
+    }
+
+    [file-type='vue'] {
+        background-image: url('./file-icons/Vue.png');
+    }
+
+    [file-type='css'] {
+        background-image: url('./file-icons/CSS.png');
+    }
+
+    [file-type='js'] {
+        background-image: url('./file-icons/JavaScript.png');
+    }
+
+    [file-type='ts'] {
+        background-image: url('./file-icons/TypeScript.png');
+    }
+
+    [file-type='jsx'] {
+        background-image: url('./file-icons/React.png');
+    }
+
+    [file-type='tsx'] {
+        background-image: url('./file-icons/React.png');
+    }
+
+    [file-type='json'] {
+        background-image: url('./file-icons/JSON.png');
+    }
+
+    [file-type='sass'] {
+        background-image: url('./file-icons/SASS.png');
+    }
+
+    [file-type='scss'] {
+        background-image: url('./file-icons/SASS.png');
+    }
+
+    [file-type='image'] {
+        background-image: url('./file-icons/Image.png');
+    }
+
+    /* 滚动条 */
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    &[focus="no"] {
+        &>header {
+            background-color: #e6e2ec;
+        }
+    }
+
+    &>header {
+        height: 30px;
+        line-height: 30px;
+        background-color: #d1c8df;
+        background-image: url('./code-editor.png');
+        background-size: auto 90%;
+        padding-left: 40px;
+        background-repeat: no-repeat;
+        background-position: 10px center;
+
+        &>ul {
+            &>li {
+                display: inline-block;
+                vertical-align: top;
+                position: relative;
+                padding: 0 10px;
+                font-size: 12px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(186, 190, 194);
+
+                    &>ul {
+                        display: block;
+
+                        &>li:hover>ul {
+                            display: block;
+                        }
+                    }
+                }
+
+                ul {
+                    background-color: rgb(237, 239, 241);
+                    border: 1px solid rgb(230, 216, 216);
+                    width: 260px;
+                    box-shadow: 0px 1px 3px #c5c5c7;
+                    display: none;
+
+                    li {
+                        line-height: 26px;
+                        margin-top: 5px;
+                        padding: 0 20px;
+                        position: relative;
+
+                        &>em {
+                            position: absolute;
+                            right: 20px;
+                            font-style: normal;
+
+                            &.more {
+                                width: 20px;
+                                height: 100%;
+                                background-image: url(./toRight.png);
+                                background-repeat: no-repeat;
+                                background-position: center center;
+                            }
+                        }
+
+                        &:last-child {
+                            margin-bottom: 5px;
+                        }
+
+                        &:hover:not(.line) {
+                            background-color: rgb(205, 218, 186);
+                        }
+
+                        &.line {
+                            height: 1px;
+                            width: 240px;
+                            margin-left: 10px;
+                            background-color: #c5c5c7;
+                        }
+                    }
+                }
+
+                &>ul {
+                    position: absolute;
+                    left: -1px;
+                    z-index: 1;
+
+                    &>li {
+
+                        &>ul {
+                            position: absolute;
+                            top: 0;
+                            left: 258px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &>div {
+        &.content {
+            height: calc(100% - 60px);
+            white-space: nowrap;
+            font-size: 12px;
+
+            &>div {
+                height: 100%;
+                vertical-align: top;
+                white-space: normal;
+                display: inline-block;
+
+                &.nav {
+                    background-color: #ededf5;
+                    width: 50px;
+                    padding-top: 20px;
+                    position: relative;
+
+                    &>span {
+                        display: inline-block;
+                        height: 50px;
+                        width: 100%;
+                        background-image: url('./editor@switch.png');
+                        cursor: pointer;
+
+                        &[tag='folder'] {
+                            background-position-y: 0px;
+                        }
+
+                        &[tag='search'] {
+                            background-position-y: -63px;
+                        }
+
+                        &[tag='plug'] {
+                            background-position-y: -134px;
+                        }
+
+                        &[tag='set'] {
+                            background-position-y: -196px;
+                            position: absolute;
+                            left: 0;
+                            bottom: 0;
+                        }
+
+                        &[active='yes'] {
+                            border-left: 2px solid #9d91af;
+                            background-color: #cecbd238;
+                            background-image: url('./editor@switch_hover.png');
+                        }
+
+                        &:hover {
+                            background-image: url('./editor@switch_hover.png');
+                        }
+                    }
+                }
+
+                &.platform {
+                    background-color: #f2f2f2;
+                    width: 240px;
+                    overflow: auto;
+
+                    &>div {
+                        display: none;
+
+                        &[active='yes'] {
+                            display: block;
+                        }
+
+                        &.folder {
+
+                            // 无文件时
+                            .noFolder {
+                                padding: 20px;
+
+                                &>p {
+                                    line-height: 2em;
+                                    margin-top: 20px;
+                                    color: #747179;
+
+                                    &>a {
+                                        font-size: 14px;
+                                        font-family: cursive;
+                                        text-decoration: underline;
+                                        margin: 0 5px;
+                                    }
+                                }
+
+                                &>input[type='button'] {
+                                    line-height: 26px;
+                                    width: 100%;
+                                    margin-top: 10px;
+                                    color: white;
+                                    font-size: 12px;
+                                    cursor: pointer;
+                                    border: none;
+                                    outline: none;
+                                    background-color: #816e9e;
+
+                                    &:hover {
+                                        background-color: #705697;
+                                    }
+                                }
+                            }
+
+                            // 菜单目录
+                            &>ul {
+                                ul {
+                                    margin-left: 1em;
+                                }
+                            }
+
+                            ul {
+
+                                div {
+                                    background-repeat: no-repeat;
+                                    padding-left: 25px;
+                                    line-height: 2em;
+                                    color: #828181;
+                                    cursor: pointer;
+
+                                    &[is-directory='no'] {
+                                        background-position-y: 5px;
+                                    }
+
+                                    &[is-directory='yes'] {
+                                        &[open='yes'] {
+                                            background-position-y: -80px;
+                                        }
+
+                                        &[open='no'] {
+                                            background-position-y: -40px;
+
+                                            &+ul {
+                                                display: none;
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.view {
+                    background-color: #f5f5f5;
+                    width: calc(100% - 290px);
+
+                    &>ul {
+                        &.nav {
+                            line-height: 34px;
+                            height: 34px;
+                            background-color: #f0f0f1;
+                            width: calc(100% + 5px);
+                            margin-left: -5px;
+                            overflow-x: auto;
+                            overflow-y: hidden;
+                            white-space: nowrap;
+
+                            &>li {
+                                display: inline-block;
+                                padding: 0 30px;
+                                position: relative;
+                                cursor: pointer;
+                                background-color: #e6e6e6;
+                                background-position: 5px center;
+                                background-repeat: no-repeat;
+
+                                &[file-type="plain"] {
+                                    background-position-y: 10px;
+                                }
+
+                                &:not(:first-child) {
+                                    border-left: 1px solid #f5f5f5;
+                                }
+
+                                &>em,
+                                &>span {
+                                    font-style: normal;
+                                    position: absolute;
+                                    display: none;
+                                    width: 30px;
+                                    right: 0;
+                                    text-align: center;
+                                }
+
+                                &>span {
+                                    font-size: 12px;
+                                }
+
+                                &:hover>em {
+                                    display: inline-block;
+                                }
+
+                                // 当前活动
+                                &[active='yes'] {
+                                    background-color: #f5f5f5;
+
+                                    &>em {
+                                        display: inline-block;
+                                    }
+
+                                    &>span {
+                                        display: none;
+                                    }
+                                }
+
+                                // 有改动未保存
+                                &[modify='yes'] {
+                                    &>em {
+                                        display: none;
+                                    }
+
+                                    &>span {
+                                        display: inline-block;
+                                    }
+
+                                    &:hover {
+                                        &>em {
+                                            display: inline-block;
+                                        }
+
+                                        &>span {
+                                            display: none;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.editor {
+                            position: relative;
+                            height: calc(100% - 34px);
+
+                            &>li {
+                                left: 0;
+                                top: 0;
+                                overflow: auto;
+                                position: absolute;
+                                width: 100%;
+                                height: calc(100vh - 164px);
+
+                                &.welcome {
+                                    display: none;
+                                    background: #f5f5f5;
+                                    top: -34px;
+                                    height: calc(100vh - 130px);
+                                    line-height: calc(100vh - 130px);
+                                    text-align: center;
+
+                                    &:first-child:last-child {
+                                        display: inline-block;
+                                    }
+
+                                    &>div {
+                                        line-height: 1em;
+                                        vertical-align: middle;
+                                        display: inline-block;
+
+                                        &>p {
+                                            &.logo {
+                                                height: 300px;
+                                                background-image: url('./code-editor@welcome.png');
+                                                background-repeat: no-repeat;
+                                                background-position: center center;
+                                                background-size: auto 90%;
+                                            }
+
+                                            &.cmd {
+                                                white-space: nowrap;
+
+                                                &>span {
+                                                    display: inline-block;
+                                                    width: 200px;
+                                                    font-size: 14px;
+                                                    line-height: 2em;
+                                                    color: rgb(128, 123, 123);
+
+                                                    &:first-child {
+                                                        text-align: right;
+                                                        padding-right: 10px;
+                                                    }
+
+                                                    &:last-child {
+                                                        text-align: left;
+                                                        padding-left: 10px;
+
+                                                        &>em {
+                                                            font-style: normal;
+                                                            background-color: #eae7e7;
+                                                            color: #2d2b2b;
+                                                            padding: 0 5px;
+                                                            font-size: 12px;
+                                                            margin: 0 10px;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                &.image {
+                                    background-position: center;
+                                    background-repeat: no-repeat;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &>footer {
+        height: 30px;
+        background-color: #9c86bd;
+    }
+}

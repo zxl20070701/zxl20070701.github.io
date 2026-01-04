@@ -11,6 +11,10 @@
         title="可以对图片进行编辑，包括合并、修改大小、美化等" tag="image-editor" ui-on:dblclick="goto" ui-right-menu:app>
         图片编辑器
     </li>
+    <li class="link" ui-bind:select="select=='code-editor'?'yes':'no'" ui-on:click.stop="doSelect"
+        title="支持图片、代码等查看和编辑，支持文件或目录打开、编辑、新建和保存" tag="code-editor" ui-on:dblclick="goto" ui-right-menu:app>
+        代码编辑器
+    </li>
 </ul>
 <div class="taskline" ui-right-menu:desktop-line>
     <span class="begin" title="快速开始" tag="begin" ui-on:click.stop="toggleWin"></span>
