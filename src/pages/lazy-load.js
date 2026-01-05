@@ -24,4 +24,9 @@ export default {
     "code-editor": function () {
         return import('./code-editor/index.js')
     },
+
+    // 贪吃蛇
+    "snake-eating": function () {
+        return import('./snake-eating/index.js')
+    },
 };

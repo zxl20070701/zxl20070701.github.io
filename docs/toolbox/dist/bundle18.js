@@ -1,106 +1,206 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/npm-download/index.js
+// Original file:./src/pages/snake-eating/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['74']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('166');
+    __pkg__scope_args__=window.__pkg__getBundle('167');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('167');
+__pkg__scope_args__=window.__pkg__getBundle('168');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('116');
+__pkg__scope_args__=window.__pkg__getBundle('111');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('30');
-var urlFormat =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('118');
-var getValue =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('121');
-var toValue =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('122');
-var ruler =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('123');
-var getLoopColors =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('124');
-var drawRuler =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('142');
+var getKeyCode =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj) {
+    var painter;
 
     return {
-        name: "npm-download",
+        name: "snake-eating",
         render: template,
+        data: {
+
+            // 提示内容
+            tips: obj.ref("温馨提示：点击「开始游戏」启动运行！"),
+
+            // 记录是否游戏中
+            isRuning: obj.ref(false),
+
+            // 食物
+            foodBlock: [],
+
+            // 记录小蛇
+            blocks: [],
+
+            // 下一步走法
+            mulpD: ""
+
+        },
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "Npm Download" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './npm.png');
+            document.getElementsByTagName('title')[0].innerText = "贪吃蛇" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './snake-eating.png');
         },
         mounted: function () {
+            var canvas = this._refs.mycanvas.value;
+
+            // 获取画笔
+            painter = canvasRender(canvas, canvas.clientWidth, canvas.clientHeight, {}, true);
+
+            this.updateView();
+
+            // 启动键盘监听
             var _this = this;
-
-            var urlObj = urlFormat();
-            if (!urlObj.params.packages || !urlObj.params.interval) {
-                alert("参数错误");
-                return;
-            } else {
-
-                getValue(urlObj.params.packages).then(function (npmOralData) {
-
-                    // 对npm数据解析
-                    var npmData = {}, max = 0, len = 0;
-                    for (var pkgName in npmOralData) {
-                        if (npmOralData[pkgName]) {
-                            npmData[pkgName] = toValue(npmOralData[pkgName].downloads, +urlObj.params.interval);
-
-                            if (max < npmData[pkgName].max) max = npmData[pkgName].max;
-                            len += 1;
-                        }
+            getKeyCode(function (keyCode) {
+                switch (keyCode) {
+                    case 'up': {
+                        _this.mulpD = [0, -1];
+                        break;
                     }
+                    case 'down': {
+                        _this.mulpD = [0, 1];
+                        break;
+                    }
+                    case 'left': {
+                        _this.mulpD = [-1, 0];
+                        break;
+                    }
+                    case 'right': {
+                        _this.mulpD = [1, 0];
+                        break;
+                    }
+                }
+            });
+        },
+        methods: {
 
-                    if (len <= 0) {
+            // 刷新视图
+            updateView: function () {
+                var i;
+
+                painter.clearRect(0, 0, 500, 500);
+
+                // 先绘制格子
+                painter.config({
+                    strokeStyle: "white"
+                });
+                for (i = 0; i < 25; i++) {
+                    painter
+
+                        // 横线条
+                        .beginPath().moveTo(0, i * 20).lineTo(500, i * 20).stroke()
+
+                        // 纵线条
+                        .beginPath().moveTo(i * 20, 0).lineTo(i * 20, 500).stroke();
+
+                }
+
+                //  然后绘制小格子
+                for (i = 0; i < this.blocks.length; i++) {
+                    painter.config({
+                        fillStyle: i == 0 ? "#aaaaaa" : "white"
+                    }).fillRect(this.blocks[i][0] * 20, this.blocks[i][1] * 20, 20, 20);
+                }
+
+                // 最后绘制食物
+                painter.config('fillStyle', 'red').fillRect(this.foodBlock[0] * 20, this.foodBlock[1] * 20, 20, 20);
+
+            },
+
+            // 开始游戏
+            beginGame: function () {
+
+                // 初始化参数
+                this.isRuning = true;
+                this.mulpD = [0, -1];
+                this.foodBlock = [20, 20];
+                this.blocks = [
+                    [10, 10],
+                    [10, 11],
+                    [10, 12],
+                    [10, 13],
+                    [11, 13],
+                    [12, 13],
+                    [13, 13],
+                    [14, 13]
+                ];
+
+                this.updateView();
+
+                // 轮询修改数据
+                var _this = this;
+                var interval = setInterval(function () {
+
+                    var newBlock = [
+                        _this.blocks[0][0] + _this.mulpD[0],
+                        _this.blocks[0][1] + _this.mulpD[1]
+                    ];
+
+                    // 判断是否合法
+                    if (!_this.isValidBlock(newBlock)) {
+
+                        _this.isRuning = false;
+                        clearInterval(interval);
+                        _this.tips = "[分数：" + (_this.blocks.length - 8) + "]小蛇出界或者撞到自己了。";
+
                         return;
                     }
 
-                    // 获取画笔
-                    var painter = canvasRender(_this._refs.mycanvas.value);
+                    _this.blocks.unshift(newBlock);
 
-                    var width = +_this._refs.mycanvas.value.getAttribute('width');
-                    var height = +_this._refs.mycanvas.value.getAttribute('height');
-
-                    // 求解刻度尺
-                    var rulerData = ruler(max, 0, 5);
-                    var colors = getLoopColors(len);
-
-                    // 绘制刻度尺
-                    drawRuler(painter, {
-                        x: 20,
-                        y: 50,
-                        value: rulerData,
-                        direction: 'LR',
-                        "mark-direction": 'left',
-                        length: width - 70
-                    });
-
-                    for (var pkgName in npmData) {
-                        painter.config({
-                            strokeStyle: colors.shift()
-                        }).beginPath();
-                        for (var index = 0; index < npmData[pkgName].value.length; index++) {
-                            painter.lineTo(20 + (npmData[pkgName].value[index] / max) * (width - 70), 50 + (index / (npmData[pkgName].value.length - 1)) * (height - 70));
-                        }
-                        painter.stroke();
+                    // 判断是否吃到食物了
+                    if (
+                        newBlock[0] == _this.foodBlock[0] &&
+                        newBlock[1] == _this.foodBlock[1]
+                    ) {
+                        _this.foodBlock = _this.newFood();
+                    } else {
+                        _this.blocks.pop();
                     }
 
+                    _this.updateView();
+                }, 200);
 
-                });
+            },
 
+            // 判断是否合法
+            isValidBlock: function (block) {
+
+                // 如果越界了
+                if (block[0] < 0 || block[0] >= 25 || block[1] < 0 || block[1] >= 25) return false;
+
+                for (var i = 0; i < this.blocks.length; i++) {
+
+                    // 如果撞到自己了
+                    if (this.blocks[i][0] == block[0] && this.blocks[i][1] == block[1]) return false;
+                }
+
+                return true;
+            },
+
+            // 产生新的事物
+            newFood: function () {
+                var newFood, tryNum = 1;
+                do {
+
+                    if (tryNum >= 10000) {
+                        this.isRuning = false;
+                        this.tips = '意外终止，系统内部错误。';
+                    }
+
+                    newFood = [
+                        +(Math.random() * 24).toFixed(0),
+                        +(Math.random() * 24).toFixed(0)
+                    ];
+                    tryNum += 1;
+                } while (!this.isValidBlock(newFood));
+
+                return newFood;
             }
         }
     };
@@ -110,147 +210,26 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/npm-download/index.html
-/*****************************************************************/
-window.__pkg__bundleSrc__['166']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[4]},{"type":"text","content":"Npm Download","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[8]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/mobile/npm-download/index.scss
+// Original file:./src/pages/snake-eating/index.html
 /*****************************************************************/
 window.__pkg__bundleSrc__['167']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    var styleElement = document.createElement('style');
-var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"npm-download\"]>canvas{\n\nwidth: 100%;\n\nheight: calc(100% - 45px);\n\n}\n";
-styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,8,9]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,3]},{"type":"text","content":"贪吃蛇","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[4,6]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[5]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[7]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:active":"isRuning?'no':'yes'"},"childNodes":[10,11]},{"type":"tag","name":"span","attrs":{"ui-bind":"tips"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"beginGame"},"childNodes":[12]},{"type":"text","content":"开始游戏","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/region
+// Original file:./src/pages/snake-eating/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['116']=function(){
+window.__pkg__bundleSrc__['168']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('110');
-var canvasRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('117');
-var assemble =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
-
-    // 初始化尺寸
-    width = width || canvas.clientWidth;
-    height = height || canvas.clientHeight;
-
-    // 获取绘制画笔
-    var drawPainter = canvasRender(canvas, width, height, {}, isScale);
-
-    // 获取区域画笔
-    var regionPainter = canvasRender(document.createElement('canvas'), width, height, {
-
-        // https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
-        willReadFrequently: true
-    });
-
-    var regions = {}; //区域映射表
-    var regionAssemble = assemble(0, 255, 10, 3);
-
-    var drawRegion = false;
-
-    var instance = {
-
-        // 配置画笔
-        config: function () {
-            if (arguments.length === 1) {
-                if (typeof arguments[0] !== "object") return drawPainter.config([arguments[0]]);
-                for (var key in arguments[0]) {
-                    if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(key, arguments[0][key]);
-                    drawPainter.config(key, arguments[0][key]);
-                }
-            } else if (arguments.length === 2) {
-                if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(arguments[0], arguments[1]);
-                drawPainter.config(arguments[0], arguments[1]);
-            }
-            return instance;
-        },
-
-        // 设置当前绘制区域名称
-        setRegion: function (regionName) {
-            if (regionName === false) {
-                drawRegion = false;
-            } else {
-                drawRegion = true;
-
-                if (regions[regionName] == undefined) {
-                    var tempColor = regionAssemble();
-                    regions[regionName] = "rgb(" + tempColor[0] + "," + tempColor[1] + "," + tempColor[2] + ")";
-                }
-
-                regionPainter.config({
-                    fillStyle: regions[regionName],
-                    strokeStyle: regions[regionName]
-                });
-            }
-
-            return instance;
-        },
-
-        // 获取当前事件触发的区域名称
-        getRegion: function (event) {
-
-            // 获取点击点的颜色
-            var currentRGBA = regionPainter.painter.getImageData(event.offsetX - 0.5, event.offsetY - 0.5, 1, 1).data;
-
-            // 查找当前点击的区域
-            for (var key in regions) {
-                if ("rgb(" + currentRGBA[0] + "," + currentRGBA[1] + "," + currentRGBA[2] + ")" == regions[key]) {
-                    return key;
-                }
-            }
-
-            return false;
-        }
-
-    };
-
-    for (var key in drawPainter) {
-        (function (key) {
-
-            // 如果是获取原生画笔
-            if ('painter' == key) {
-                instance.painter = function () {
-                    return {
-                        draw: drawPainter.painter,
-                        region: regionPainter.painter
-                    };
-                };
-            }
-
-            // 特殊的过滤掉
-            else if (['config'].indexOf(key) < 0) {
-                instance[key] = function () {
-                    if (drawRegion) regionPainter[key].apply(regionPainter, arguments);
-                    var result = drawPainter[key].apply(drawPainter, arguments);
-                    return result.__only__painter__ ? instance : result;
-                };
-
-            }
-        })(key);
-    }
-
-    return instance;
-};
+    var styleElement = document.createElement('style');
+var head = document.head || document.getElementsByTagName('head')[0];
+styleElement.innerHTML = "\n [page-view=\"snake-eating\"]{\n\nwidth: 500px;\n\nleft: calc(50vw - 250px);\n\ntop: 50px;\n\nfont-size: 0;\n\n}\n\n [page-view=\"snake-eating\"][focus=\"no\"]>h2{\n\nbackground-color: #817e22;\n\n}\n\n [page-view=\"snake-eating\"]>h2{\n\nfont-size: 18px;\n\nbackground-color: #98942e;\n\nline-height: 50px;\n\nbackground-image: url(\"./snake-eating.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 80%;\n\nbackground-position: 5px center;\n\npadding-left: 51px;\n\nfont-weight: 200;\n\n}\n\n [page-view=\"snake-eating\"]>canvas{\n\nbackground-color: #d3d0d0;\n\nheight: 500px;\n\nwidth: 500px;\n\n}\n\n [page-view=\"snake-eating\"]>div{\n\nposition: absolute;\n\nleft: 0;\n\ntop: 50px;\n\nwidth: 500px;\n\nheight: 500px;\n\nbackground-color: rgba(0, 0, 0, 0.36);\n\n}\n\n [page-view=\"snake-eating\"]>div[active='no']{\n\ndisplay: none;\n\n}\n\n [page-view=\"snake-eating\"]>div>span{\n\ndisplay: inline-block;\n\nposition: absolute;\n\nleft: 20px;\n\ntop: 20px;\n\nfont-weight: 200;\n\ncolor: white;\n\nfont-size: 12px;\n\n}\n\n [page-view=\"snake-eating\"]>div>button{\n\nmargin: auto;\n\ndisplay: block;\n\nbackground-color: red;\n\ncolor: white;\n\nwidth: 70px;\n\nheight: 30px;\n\nmargin-top: 235px;\n\noutline: none;\n\nborder: none;\n\ncursor: pointer;\n\n}\n";
+styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
 }
@@ -258,20 +237,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['110']=function(){
+window.__pkg__bundleSrc__['111']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('111');
+    __pkg__scope_args__=window.__pkg__getBundle('112');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('113');
+__pkg__scope_args__=window.__pkg__getBundle('114');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('111');
+__pkg__scope_args__=window.__pkg__getBundle('112');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -558,10 +537,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['111']=function(){
+window.__pkg__bundleSrc__['112']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('112');
+    __pkg__scope_args__=window.__pkg__getBundle('113');
 var arc =__pkg__scope_args__.default;
 
 
@@ -680,7 +659,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['112']=function(){
+window.__pkg__bundleSrc__['113']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -741,7 +720,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['113']=function(){
+window.__pkg__bundleSrc__['114']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -779,705 +758,205 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/assemble
+// Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['117']=function(){
+window.__pkg__bundleSrc__['142']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (begin, end, step, count) {
-    var val = [];
-    for (var index = 0; index < count; index++) val[index] = begin;
+    // 字典表
+var dictionary = {
 
-    // 非常类似进制数，每次调用都+1
-    return function () {
-        for (var i = 0; i < count; i++) {
+    // 数字
+    48: [0, ')'],
+    49: [1, '!'],
+    50: [2, '@'],
+    51: [3, '#'],
+    52: [4, '$'],
+    53: [5, '%'],
+    54: [6, '^'],
+    55: [7, '&'],
+    56: [8, '*'],
+    57: [9, '('],
+    96: [0, 0],
+    97: 1,
+    98: 2,
+    99: 3,
+    100: 4,
+    101: 5,
+    102: 6,
+    103: 7,
+    104: 8,
+    105: 9,
+    106: "*",
+    107: "+",
+    109: "-",
+    110: ".",
+    111: "/",
 
-            // 如果当前位可以进1
-            if (val[i] + step < end) {
-                val[i] = +(val[i] + step).toFixed(7);
-                break;
-            }
+    // 字母
+    65: ["a", "A"],
+    66: ["b", "B"],
+    67: ["c", "C"],
+    68: ["d", "D"],
+    69: ["e", "E"],
+    70: ["f", "F"],
+    71: ["g", "G"],
+    72: ["h", "H"],
+    73: ["i", "I"],
+    74: ["j", "J"],
+    75: ["k", "K"],
+    76: ["l", "L"],
+    77: ["m", "M"],
+    78: ["n", "N"],
+    79: ["o", "O"],
+    80: ["p", "P"],
+    81: ["q", "Q"],
+    82: ["r", "R"],
+    83: ["s", "S"],
+    84: ["t", "T"],
+    85: ["u", "U"],
+    86: ["v", "V"],
+    87: ["w", "W"],
+    88: ["x", "X"],
+    89: ["y", "Y"],
+    90: ["z", "Z"],
 
-            // 如果当前位不可以，那当前位归0，尝试下一位
-            else if (i < count - 1) {
-                val[i] = begin;
-            }
-        }
+    // 方向
+    37: "left",
+    38: "up",
+    39: "right",
+    40: "down",
+    33: "page up",
+    34: "page down",
+    35: "end",
+    36: "home",
 
-        return val;
-    }
-};
+    // 控制键
+    16: "shift",
+    17: "ctrl",
+    18: "alt",
+    91: "command",
+    92: "command",
+    93: "command",
+    224: "command",
+    9: "tab",
+    20: "caps lock",
+    32: "spacebar",
+    8: "backspace",
+    13: "enter",
+    27: "esc",
+    46: "delete",
+    45: "insert",
+    144: "number lock",
+    145: "scroll lock",
+    12: "clear",
+    19: "pause",
 
-    return __pkg__scope_bundle__;
-}
+    // 功能键
+    112: "f1",
+    113: "f2",
+    114: "f3",
+    115: "f4",
+    116: "f5",
+    117: "f6",
+    118: "f7",
+    119: "f8",
+    120: "f9",
+    121: "f10",
+    122: "f11",
+    123: "f12",
 
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/getValue
-/*****************************************************************/
-window.__pkg__bundleSrc__['118']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('119');
-var xhr =__pkg__scope_args__.default;
-
-
-var date = new Date();
-var year = date.getFullYear();
-var month_day = "-" + (date.getMonth() - (-1)) + "-" + date.getDate();
-
-__pkg__scope_bundle__.default= function (packages) {
-
-    var pkgNames = packages.split(',');
-
-    var promises = []
-    for (var pkgName of pkgNames) {
-        (function (pkgName) {
-            promises.push(new Promise(function (resolve) {
-
-                if (sessionStorage.getItem(pkgName)) {
-                    resolve([pkgName, JSON.parse(sessionStorage.getItem(pkgName))])
-                } else {
-
-                    xhr({
-                        method: "GET",
-                        url: "https://api.npmjs.org/downloads/range/" + (year - 1) + month_day + ":" + year + month_day + "/" + pkgName,
-                    }, function (data) {
-                        if (data.status == 200) {
-                            sessionStorage.setItem(pkgName, data.data);
-                            var npmOralData = JSON.parse(data.data);
-                            resolve([pkgName, npmOralData]);
-                        }
-                    });
-                }
-
-            }));
-        })(pkgName);
-    }
-
-    return new Promise(function (resolve) {
-        Promise.all(promises).then(function (data) {
-            var npmOralData = {};
-            for (var index = 0; index < data.length; index++) {
-                npmOralData[data[index][0]] = data[index][1];
-            }
-            resolve(npmOralData);
-        });
-    });
-}
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['119']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('120');
-var toString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (settings, callback, errorback) {
-
-    var xmlhttp;
-
-    // 如果外部定义了
-    if (isFunction(settings.xhr)) {
-        xmlhttp = settings.xhr();
-    }
-
-    // 否则就内部创建
-    else {
-        xmlhttp = new XMLHttpRequest();
-    }
-
-    // 请求完成回调
-    xmlhttp.onload = function () {
-
-        if (xmlhttp.readyState == 4) {
-
-            callback({
-
-                // 状态码
-                status: xmlhttp.status,
-
-                // 数据
-                data: xmlhttp.responseText
-
-            });
-
-        }
-    };
-
-    // 请求超时回调
-    xmlhttp.ontimeout = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: "请求超时了"
-        });
-    };
-
-    // 请求错误回调
-    xmlhttp.onerror = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: xmlhttp.responseText
-        });
-    };
-
-    xmlhttp.open(settings.method, settings.url, true);
-
-    // 设置请求头
-    for (var key in settings.header) {
-        xmlhttp.setRequestHeader(key, settings.header[key]);
-    }
-
-    // 设置超时时间
-    xmlhttp.timeout = 'timeout' in settings ? settings.timeout : 6000;
-
-    xmlhttp.send(toString(settings.data));
+    // 余下键
+    189: ["-", "_"],
+    187: ["=", "+"],
+    219: ["[", "{"],
+    221: ["]", "}"],
+    220: ["\\", "|"],
+    186: [";", ":"],
+    222: ["'", '"'],
+    188: [",", "<"],
+    190: [".", ">"],
+    191: ["/", "?"],
+    192: ["`", "~"]
 
 };
 
-    return __pkg__scope_bundle__;
-}
+// 非独立键字典
+var help_key = ["shift", "ctrl", "alt"];
 
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/toString
-/*****************************************************************/
-window.__pkg__bundleSrc__['120']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('53');
-var isPlainObject =__pkg__scope_args__.default;
+// 返回键盘此时按下的键的组合结果
+var keyCode = function (event) {
+    event = event || window.event;
 
-__pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
+    var keycode = event.keyCode || event.which;
+    var key = dictionary[keycode] || keycode;
+    if (!key) return;
+    if (key.constructor !== Array) key = [key, key];
 
+    var _key = key[0];
 
-__pkg__scope_bundle__.default= function (data) {
+    var shift = event.shiftKey ? "shift+" : "",
+        alt = event.altKey ? "alt+" : "",
+        ctrl = event.ctrlKey ? "ctrl+" : "";
 
-    // 如果是字符串
-    if (isString(data)) {
-        return data;
+    var resultKey = "",
+        preKey = ctrl + shift + alt;
+
+    if (help_key.indexOf(key[0]) >= 0) {
+        key[0] = key[1] = "";
     }
 
-    // 如果是JSON数据
-    else if (isPlainObject(data)) {
-        return JSON.stringify(data);
+    // 判断是否按下了caps lock
+    var lockPress = event.code == "Key" + event.key && !shift;
+
+    // 只有字母（且没有按下功能Ctrl、shift或alt）区分大小写
+    resultKey = (preKey + ((preKey == '' && lockPress) ? key[1] : key[0]));
+
+    if (key[0] == "") {
+        resultKey = resultKey.replace(/\+$/, '');
     }
 
-    // 如果为空
-    else if (data === undefined) {
-        return "";
-    }
-
-    // 否则
-    else {
-        return data;
-    }
-
+    return resultKey == '' ? _key : resultKey;
 };
 
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/toValue
-/*****************************************************************/
-window.__pkg__bundleSrc__['121']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (oralValue, interval) {
-
-    var value = [], time = [], max = 0;
-
-    for (var i = oralValue.length - 1; i >= interval - 1; i -= interval) {
-
-        var temp = 0;
-        for (var j = 0; j < interval; j++) {
-            temp += oralValue[i - j].downloads;
-        }
-
-        if (max < temp) max = temp;
-
-        // 数据
-        value.unshift(temp);
-
-        // 日期
-        time.unshift(oralValue[i - interval + 1].day + "至" + (i == i - interval + 1 ? oralValue[i].day : oralValue[i].day));
-
-    }
-
-    return {
-        value: value,
-        time: time,
-        max: max
-    };
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/ruler
-/*****************************************************************/
-window.__pkg__bundleSrc__['122']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 刻度尺刻度求解
-
-// 需要注意的是，实际的间距个数可能是 num-1 或 num 或 num+1 或 1
-__pkg__scope_bundle__.default= function (maxValue, minValue, num) {
-
-    // 如果最大值最小值反了
-    if (maxValue < minValue) {
-        var temp = minValue;
-        minValue = maxValue;
-        maxValue = temp;
-    }
-
-    // 如果相等
-    else if (maxValue == minValue) {
-        return [maxValue];
-    }
-
-    // 为了变成 -100 ~ 100 需要放大或者缩小的倍数
-    var times100 =
-
-        (function (_value) {
-
-            // 先确定基调，是放大还是缩小
-            var _times100_base = (_value < 100 && _value > -100) ? 10 : 0.1;
-
-            // 记录当前缩放倍数
-            var _times100 = -1, _tiemsValue = _value;
-
-            while (_times100_base == 10 ?
-                // 如果是放大，超过 -100 ~ 100 就应该停止
-                (_tiemsValue >= -100 && _tiemsValue <= 100)
-                :
-                // 如果是缩小，进入 -100 ~ 100 就应该停止
-                (_tiemsValue <= -100 || _tiemsValue >= 100)
-            ) {
-
-                _times100 += 1;
-                _tiemsValue *= _times100_base;
-
-            }
-
-            if (_times100_base == 10) {
-                return Math.pow(10, _times100);
-            } else {
-
-                // 解决类似 0.1 * 0.1 = 0.010000000000000002 浮点运算不准确问题
-                var temp = "0.", i;
-                for (i = 1; i < _times100; i++) {
-                    temp += "0";
-                }
-                return +(temp + "1");
-            }
-        })
-
-            // 根据差值来缩放
-            (maxValue - minValue);
-
-
-    // 求解出 -100 ~ 100 的最佳间距值 后直接转换原来的倍数
-    var distance100 = Math.ceil((maxValue - minValue) * times100 / num);
-
-    // 校对一下
-    distance100 = {
-        3: 2,
-        4: 5,
-        6: 5,
-        7: 5,
-        8: 10,
-        9: 10,
-        11: 10,
-        12: 10,
-        13: 15,
-        14: 15,
-        16: 15,
-        17: 15,
-        18: 20,
-        19: 20,
-        21: 20,
-        22: 20,
-        23: 25,
-        24: 25,
-        26: 25,
-        27: 25
-    }[distance100] || distance100;
-
-    var distance = distance100 / times100;
-
-    // 最小值，也就是起点
-    var begin = Math.floor(minValue / distance) * distance;
-
-    var rulerArray = [], index;
-    // 获取最终的刻度尺数组
-    rulerArray.push(begin);
-    for (index = 1; rulerArray[rulerArray.length - 1] < maxValue; index++) {
-        rulerArray.push(begin + distance * index);
-    }
-
-    return rulerArray;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/getLoopColors
-/*****************************************************************/
-window.__pkg__bundleSrc__['123']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 获取一组循环色彩
-__pkg__scope_bundle__.default= function (num, alpha) {
-    if (!(alpha && alpha >= 0 && alpha <= 1)) alpha = 1;
-    // 颜色集合
-    var colorList = [
-        'rgba(84,112,198,' + alpha + ")", 'rgba(145,204,117,' + alpha + ")",
-        'rgba(250,200,88,' + alpha + ")", 'rgba(238,102,102,' + alpha + ")",
-        'rgba(115,192,222,' + alpha + ")", 'rgba(59,162,114,' + alpha + ")",
-        'rgba(252,132,82,' + alpha + ")", 'rgba(154,96,180,' + alpha + ")",
-        'rgba(234,124,204,' + alpha + ")"
-    ];
-
-    var colors = [];
-
-    // 根据情况返回颜色数组
-    if (num <= colorList.length) {
-        // 这种情况就不需要任何处理
-        return colorList;
-    } else {
-        // 如果正好是集合长度的倍数
-        if (num % colorList.length == 0) {
-            // 将颜色数组循环加入后再返回
-            for (var i = 0; i < (num / colorList.length); i++) {
-                colors = colors.concat(colorList);
-            }
-        } else {
-            for (var j = 1; j < (num / colorList.length); j++) {
-                colors = colors.concat(colorList);
-            }
-            // 防止最后一个颜色和第一个颜色重复
-            if (num % colorList.length == 1) {
-                colors = colors.concat(colorList[4]);
-            } else {
-                for (var k = 0; k < num % colorList.length; k++) {
-                    colors = colors.concat(colorList[k]);
-                }
-            }
-        }
-    }
-
-    // 返回结果
-    return colors;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/extend/ruler
-/*****************************************************************/
-window.__pkg__bundleSrc__['124']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('125');
-var dotRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('126');
-var initConfig=__pkg__scope_args__.initConfig;
-
+__pkg__scope_bundle__.getKeyString = keyCode;
 
 /**
- * attr = {
- *    x,y 刻度尺的起点位置
- *    direction 刻度尺的方向：LR|RL|TB|BT
- *    length 刻度尺的长度
- *    mark-direction 刻度尺小刻度在前进方向的位置：right|left
- *    value-position 刻度尺刻度文字的位置：mark|between
- *    color 刻度尺颜色
- *    value 值
- *    font-size 刻度文字大小
- *    deg 文字旋转度数
- * }
+ * 获取键盘此时按下的键的组合结果
+ * @param {Function} callback 回调，键盘有键被按下的时候触发
+ * @return {Function} 返回一个函数，执行此函数可以取消键盘监听
+ * @examples
+ *  keyCode(function (data) {
+ *      console.log(data);
+ *  });
  */
-__pkg__scope_bundle__.default= function (painter, attr) {
-    var i, markPosition;
+__pkg__scope_bundle__.default= function (callback) {
 
-    var value = attr.value;
+    // 记录MacOS的command是否被按下
+    var macCommand = false;
 
-    attr = initConfig({
-        "direction": "LR",
-        "mark-direction": "right",
-        "value-position": "mark",
-        "color": 'black',
-        "font-size": 12,
-        deg: 0
-    }, attr);
+    var doKeydown = function (event) {
+        var keyStringCode = keyCode(event);
+        if (/command/.test(keyStringCode)) macCommand = true;
 
-    painter.config({
-        'lineWidth': 1,
-        'fillStyle': attr.color,
-        'strokeStyle': attr.color,
-        'fontSize': attr["font-size"],
-        'textAlign': (attr.direction == 'LR' || attr.direction == 'RL') ? 'center' : (
-            (
-                (attr.direction == 'BT' && attr["mark-direction"] == 'right') ||
-                (attr.direction == 'TB' && attr["mark-direction"] == 'left')
-            ) ? 'left' : 'right'
-        ),
-        "lineDash": [],
-        'textBaseline': 'middle'
-    });
-
-
-
-    // 刻度尺终点坐标
-    var endPosition;
-
-    // 记录小刻度如何计算
-    var dxy;
-
-    if (attr.direction == 'LR') {
-        endPosition = {
-            x: attr.x + attr.length,
-            y: attr.y
-        };
-        dxy = attr["mark-direction"] == 'right' ? [0, 1] : [0, -1];
-    } else if (attr.direction == 'RL') {
-        endPosition = {
-            x: attr.x - attr.length,
-            y: attr.y
-        };
-        dxy = attr["mark-direction"] == 'right' ? [0, -1] : [0, 1];
-    } else if (attr.direction == 'TB') {
-        endPosition = {
-            x: attr.x,
-            y: attr.y + attr.length
-        };
-        dxy = attr["mark-direction"] == 'right' ? [-1, 0] : [1, 0];
-    } else if (attr.direction == 'BT') {
-        endPosition = {
-            x: attr.x,
-            y: attr.y - attr.length
-        };
-        dxy = attr["mark-direction"] == 'right' ? [1, 0] : [-1, 0];
-    } else {
-
-        // 错误提示
-        throw new Error('Type error!');
-    }
-
-    // 绘制主轴
-    painter.beginPath().moveTo(attr.x, attr.y).lineTo(endPosition.x, endPosition.y).stroke();
-
-    var markNumber = attr["value-position"] == "mark" ? value.length : value.length + 1;
-
-    // 绘制刻度
-    var distanceLength = attr.length / (markNumber - 1);
-
-    var dot = dotRender({
-        d: [
-            endPosition.x - attr.x,
-            endPosition.y - attr.y
-        ],
-        p: [
-            attr.x,
-            attr.y
-        ]
-    });
-
-    for (i = 0; i < markNumber; i++) {
-
-        // 刻度
-        markPosition = dot.value();
-        painter.beginPath().moveTo(markPosition[0], markPosition[1]).lineTo(
-            markPosition[0] + dxy[0] * 5,
-            markPosition[1] + dxy[1] * 5
-        ).stroke();
-
-        dot.move(distanceLength);
-    }
-
-    // 绘制刻度上的读数
-    dot = dotRender({
-        d: [
-            endPosition.x - attr.x,
-            endPosition.y - attr.y
-        ],
-        p: [
-            attr.x,
-            attr.y
-        ]
-    });
-
-    if (attr["value-position"] == "between") dot.move(distanceLength * 0.5);
-
-    for (i = 0; i < value.length; i++) {
-        markPosition = dot.value();
-        painter.fillText(value[i], markPosition[0] + dxy[0] * 15, markPosition[1] + dxy[1] * 15, attr.deg);
-        dot.move(distanceLength);
-    }
-
-    return painter;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/dot
-/*****************************************************************/
-window.__pkg__bundleSrc__['125']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('126');
-var initConfig=__pkg__scope_args__.initConfig;
-
-__pkg__scope_args__=window.__pkg__getBundle('127');
-var move =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('128');
-var rotate =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('129');
-var scale =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (config) {
-
-    config = initConfig({
-        // 前进方向
-        d: [1, 1],
-        // 中心坐标
-        c: [0, 0],
-        // 当前位置
-        p: [0, 0]
-    }, config);
-
-    var dotObj = {
-
-        // 前进方向以当前位置为中心，旋转deg度
-        "rotate": function (deg) {
-            var dPx = config.d[0] + config.p[0], dPy = config.d[1] + config.p[1];
-            var dP = rotate(config.p[0], config.p[1], deg, dPx, dPy);
-            config.d = [
-                dP[0] - config.p[0],
-                dP[1] - config.p[1]
-            ];
-            return dotObj;
-        },
-
-        // 沿着当前前进方向前进d
-        "move": function (d) {
-            config.p = move(config.d[0], config.d[1], d, config.p[0], config.p[1]);
-            return dotObj;
-        },
-
-        // 围绕中心坐标缩放
-        "scale": function (times) {
-            config.p = scale(config.c[0], config.c[1], times, config.p[0], config.p[1]);
-            return dotObj;
-        },
-
-        // 当前位置
-        "value": function () {
-            return config.p;
-        }
-
+        if (macCommand && !/command/.test(keyStringCode) && !/ctrl/.test(keyStringCode)) keyStringCode = "ctrl+" + keyStringCode;
+        callback(keyStringCode.replace(/command/g, 'ctrl').replace('ctrl+ctrl', 'ctrl'), event);
     };
 
-    return dotObj;
-};
+    var doKeyup = function (event) {
+        var keyStringCode = keyCode(event);
+        if (/command/.test(keyStringCode)) macCommand = false;
+    };
 
-    return __pkg__scope_bundle__;
-}
+    // 在body上注册
+    document.body.addEventListener('keydown', doKeydown, false);
+    document.body.addEventListener('keyup', doKeyup, false);
 
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/config
-/*****************************************************************/
-window.__pkg__bundleSrc__['126']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 初始化配置文件
-
-__pkg__scope_bundle__.initConfig = function (init, data) {
-    var key;
-    for (key in data)
-        try {
-            init[key] = data[key];
-        } catch (e) {
-            throw new Error("Illegal property value！");
-        }
-    return init;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/move
-/*****************************************************************/
-window.__pkg__bundleSrc__['127']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）沿着向量（ax,ay）方向移动距离d
-__pkg__scope_bundle__.default= function (ax, ay, d, x, y) {
-    var sqrt = Math.sqrt(ax * ax + ay * ay);
-    return [
-        +(ax * d / sqrt + x).toFixed(7),
-        +(ay * d / sqrt + y).toFixed(7)
-    ];
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/rotate
-/*****************************************************************/
-window.__pkg__bundleSrc__['128']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）围绕中心（cx,cy）旋转deg度
-__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
-    var cos = Math.cos(deg), sin = Math.sin(deg);
-    return [
-        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
-        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
-    ];
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/scale
-/*****************************************************************/
-window.__pkg__bundleSrc__['129']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）围绕中心（cx,cy）缩放times倍
-__pkg__scope_bundle__.default= function (cx, cy, times, x, y) {
-    return [
-        +(times * (x - cx) + cx).toFixed(7),
-        +(times * (y - cy) + cy).toFixed(7)
-    ];
+    // 返回取消监听函数
+    return function () {
+        document.body.removeEventListener('keydown', doKeydown, false);
+        document.body.removeEventListener('keyup', doKeyup, false);
+    }
 };
 
     return __pkg__scope_bundle__;

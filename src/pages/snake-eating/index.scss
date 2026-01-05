@@ -1,0 +1,66 @@
+[page-view="snake-eating"] {
+    width: 500px;
+    left: calc(50vw - 250px);
+    top: 50px;
+    font-size: 0;
+
+    &[focus="no"] {
+        &>h2 {
+            background-color: #817e22;
+        }
+    }
+
+    &>h2 {
+        font-size: 18px;
+        background-color: #98942e;
+        line-height: 50px;
+        background-image: url("./snake-eating.png");
+        background-repeat: no-repeat;
+        background-size: auto 80%;
+        background-position: 5px center;
+        padding-left: 51px;
+        font-weight: 200;
+    }
+
+    &>canvas {
+        background-color: #d3d0d0;
+        height: 500px;
+        width: 500px;
+    }
+
+    &>div {
+        position: absolute;
+        left: 0;
+        top: 50px;
+        width: 500px;
+        height: 500px;
+        background-color: rgba(0, 0, 0, 0.36);
+
+        &[active='no'] {
+            display: none;
+        }
+
+        &>span {
+            display: inline-block;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            font-weight: 200;
+            color: white;
+            font-size: 12px;
+        }
+
+        &>button {
+            margin: auto;
+            display: block;
+            background-color: red;
+            color: white;
+            width: 70px;
+            height: 30px;
+            margin-top: 235px;
+            outline: none;
+            border: none;
+            cursor: pointer;
+        }
+    }
+}
