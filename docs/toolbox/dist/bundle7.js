@@ -7,19 +7,39 @@ window.__pkg__bundleSrc__['38']=function(){
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
+    // 文件管理器
+    "file-manager": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle20.js','76')
+    },
+
+    // 浏览器
+    "browser": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle21.js','77')
+    },
+
+    // 记事本
+    "notepad": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle22.js','78')
+    },
+
+    // 设置
+    "setting": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle23.js','79')
+    },
+
     // npm包下载统计
     "npm-download": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle20.js','76')
+        return window.__pkg__getLazyBundle('./dist/bundle24.js','80')
     },
 
     // 录屏软件
     "recorder-screen": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle21.js','77')
+        return window.__pkg__getLazyBundle('./dist/bundle25.js','81')
     },
 
     // 正则表达式可视化
     "regexper-visualization": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle22.js','78')
+        return window.__pkg__getLazyBundle('./dist/bundle26.js','82')
     },
 
 };
