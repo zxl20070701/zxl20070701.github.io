@@ -29,4 +29,9 @@ export default {
     "snake-eating": function () {
         return import('./snake-eating/index.js')
     },
+
+    // 截图工具
+    "snipping-tool": function () {
+        return import('./snipping-tool/index.js')
+    },
 };

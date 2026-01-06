@@ -36,6 +36,11 @@ window.__pkg__bundleSrc__['37']=function(){
     "snake-eating": function () {
         return window.__pkg__getLazyBundle('./dist/bundle18.js','74')
     },
+
+    // 截图工具
+    "snipping-tool": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle19.js','75')
+    },
 };
 
     return __pkg__scope_bundle__;

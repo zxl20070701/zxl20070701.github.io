@@ -9,17 +9,17 @@ window.__pkg__bundleSrc__['38']=function(){
 
     // npm包下载统计
     "npm-download": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle19.js','75')
+        return window.__pkg__getLazyBundle('./dist/bundle20.js','76')
     },
 
     // 录屏软件
     "recorder-screen": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle20.js','76')
+        return window.__pkg__getLazyBundle('./dist/bundle21.js','77')
     },
 
     // 正则表达式可视化
     "regexper-visualization": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle21.js','77')
+        return window.__pkg__getLazyBundle('./dist/bundle22.js','78')
     },
 
 };

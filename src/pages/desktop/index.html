@@ -19,6 +19,10 @@
         tag="snake-eating" ui-on:dblclick="goto" ui-right-menu:app>
         贪吃蛇
     </li>
+    <li class="link" ui-bind:select="select=='snipping-tool'?'yes':'no'" ui-on:click.stop="doSelect" title="一个H5版本的截图工具"
+        tag="snipping-tool" ui-on:dblclick="goto" ui-right-menu:app>
+        截图工具
+    </li>
 </ul>
 <div class="taskline" ui-right-menu:desktop-line>
     <span class="begin" title="快速开始" tag="begin" ui-on:click.stop="toggleWin"></span>

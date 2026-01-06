@@ -5,16 +5,16 @@
 window.__pkg__bundleSrc__['65']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('90');
+    __pkg__scope_args__=window.__pkg__getBundle('91');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('91');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('92');
-var animation =__pkg__scope_args__.default;
+
 
 __pkg__scope_args__=window.__pkg__getBundle('93');
+var animation =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('94');
 var cardinal =__pkg__scope_args__.default;
 
 
@@ -80,7 +80,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/desktop/wins/begin/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['90']=function(){
+window.__pkg__bundleSrc__['91']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2,4,6]},{"type":"tag","name":"div","attrs":{"class":"application","ref":"application"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"search"},"childNodes":[3]},{"type":"tag","name":"input","attrs":{"type":"text","placeholder":"搜索功能维护中..."},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"user"},"childNodes":[5]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"quick"},"childNodes":[7,9,10,12,14,15]},{"type":"tag","name":"a","attrs":{"target":"_blank","ui-bind:href":"project.author.url"},"childNodes":[8]},{"type":"tag","name":"span","attrs":{"ui-bind":"project.author.name"},"childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-on:click":"openDialog","tag":"debugger"},"childNodes":[11]},{"type":"text","content":"调试工具","childNodes":[]},{"type":"tag","name":"a","attrs":{"target":"_blank","ui-bind:href":"project.bugs"},"childNodes":[13]},{"type":"text","content":"提建议","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"a","attrs":{"target":"_blank","href":"../notebook/index.html"},"childNodes":[16]},{"type":"text","content":"文档笔记","childNodes":[]}]
@@ -91,7 +91,7 @@ window.__pkg__bundleSrc__['90']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/desktop/wins/begin/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['91']=function(){
+window.__pkg__bundleSrc__['92']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -105,7 +105,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['92']=function(){
+window.__pkg__bundleSrc__['93']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈
@@ -220,7 +220,7 @@ __pkg__scope_bundle__.default= function (doback, duration, callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/interpolation/cardinal
 /*****************************************************************/
-window.__pkg__bundleSrc__['93']=function(){
+window.__pkg__bundleSrc__['94']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -234,7 +234,7 @@ window.__pkg__bundleSrc__['93']=function(){
  * 第二个点的斜率由第一个点和第二个点的后一个点的斜率确定
  */
 
-__pkg__scope_args__=window.__pkg__getBundle('94');
+__pkg__scope_args__=window.__pkg__getBundle('95');
 var hermite =__pkg__scope_args__.default;
 
 
@@ -325,7 +325,7 @@ __pkg__scope_bundle__.default= function (t) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/interpolation/hermite
 /*****************************************************************/
-window.__pkg__bundleSrc__['94']=function(){
+window.__pkg__bundleSrc__['95']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (u) {

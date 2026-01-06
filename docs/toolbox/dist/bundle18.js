@@ -5,16 +5,16 @@
 window.__pkg__bundleSrc__['74']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('167');
+    __pkg__scope_args__=window.__pkg__getBundle('168');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('168');
+__pkg__scope_args__=window.__pkg__getBundle('169');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('111');
+__pkg__scope_args__=window.__pkg__getBundle('112');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('142');
+__pkg__scope_args__=window.__pkg__getBundle('143');
 var getKeyCode =__pkg__scope_args__.default;
 
 
@@ -212,7 +212,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/snake-eating/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['167']=function(){
+window.__pkg__bundleSrc__['168']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,8,9]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,3]},{"type":"text","content":"贪吃蛇","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[4,6]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[5]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[7]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:active":"isRuning?'no':'yes'"},"childNodes":[10,11]},{"type":"tag","name":"span","attrs":{"ui-bind":"tips"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"beginGame"},"childNodes":[12]},{"type":"text","content":"开始游戏","childNodes":[]}]
@@ -223,7 +223,7 @@ window.__pkg__bundleSrc__['167']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/snake-eating/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['168']=function(){
+window.__pkg__bundleSrc__['169']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -237,20 +237,20 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['111']=function(){
+window.__pkg__bundleSrc__['112']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('112');
+    __pkg__scope_args__=window.__pkg__getBundle('113');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('114');
+__pkg__scope_args__=window.__pkg__getBundle('115');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('112');
+__pkg__scope_args__=window.__pkg__getBundle('113');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -537,10 +537,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['112']=function(){
+window.__pkg__bundleSrc__['113']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('113');
+    __pkg__scope_args__=window.__pkg__getBundle('114');
 var arc =__pkg__scope_args__.default;
 
 
@@ -659,7 +659,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['113']=function(){
+window.__pkg__bundleSrc__['114']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -720,7 +720,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['114']=function(){
+window.__pkg__bundleSrc__['115']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -760,7 +760,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['142']=function(){
+window.__pkg__bundleSrc__['143']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
