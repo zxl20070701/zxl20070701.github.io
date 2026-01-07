@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['42']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('95');
+    __pkg__scope_args__=window.__pkg__getBundle('96');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('96');
+__pkg__scope_args__=window.__pkg__getBundle('97');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -38,7 +38,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/what/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['95']=function(){
+window.__pkg__bundleSrc__['96']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1]},{"type":"tag","name":"div","attrs":{"ui-dragdrop":""},"childNodes":[2,3,7,9,13,15,26]},{"type":"tag","name":"div","attrs":{"class":"logo"},"childNodes":[]},{"type":"tag","name":"header","attrs":{},"childNodes":[4,5]},{"type":"tag","name":"span","attrs":{"ui-bind":"project.name"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[6]},{"type":"text","content":"(内部版本)","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tips"},"childNodes":[8]},{"type":"text","content":"使用电脑或手机浏览器访问会获得不一样的界面~","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"system-btn"},"childNodes":[10,11]},{"type":"tag","name":"button","attrs":{"ui-bind":"systemBtn","ui-on:click":"changeSystem"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"resetSystem"},"childNodes":[12]},{"type":"text","content":"重置","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"current-tips"},"childNodes":[14]},{"type":"text","content":"由于时间问题，部分功能处于完善中，敬请理解","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[16,20,24]},{"type":"tag","name":"div","attrs":{},"childNodes":[17,19]},{"type":"tag","name":"h2","attrs":{},"childNodes":[18]},{"type":"text","content":"介绍","childNodes":[]},{"type":"text","content":"：本项目内置自定义的小型打包工具和前端框架，完全基于原生HTML、CSS和JavaScript开发。","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[21,23]},{"type":"tag","name":"h2","attrs":{},"childNodes":[22]},{"type":"text","content":"初衷","childNodes":[]},{"type":"text","content":"：致力于尝试各种前端基础技术的探索和积累。","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[25]},{"type":"text","content":"欢迎任何人加入我们！","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btn-list"},"childNodes":[27,29]},{"type":"tag","name":"a","attrs":{"href":"javascript:void(0)","ui-on:click":"$closeDialog"},"childNodes":[28]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"project.repository","target":"_blank"},"childNodes":[30]},{"type":"text","content":"访问源码","childNodes":[]}]
@@ -49,7 +49,7 @@ window.__pkg__bundleSrc__['95']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/what/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['96']=function(){
+window.__pkg__bundleSrc__['97']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

@@ -1,0 +1,29 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        音频编辑器
+    </h2>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+</header>
+<div>
+    <div class="source-view">
+        <button ui-on:click="doImport">导入+</button>
+        <ul ref="sourceList"></ul>
+    </div>
+    <div class="mulp-view">
+        <div class="play-view">
+            <audio src="" controls="controls" ref="playAudio"></audio>
+        </div>
+        <div class="editor-view" ref="editorView"></div>
+        <div class="btns-view">
+            <button ui-on:click="doPlay">
+                播放
+            </button>
+            <button ui-on:click="doDownload">
+                下载
+            </button>
+        </div>
+    </div>
+</div>

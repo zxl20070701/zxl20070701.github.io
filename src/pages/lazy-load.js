@@ -5,6 +5,11 @@ export default {
         return import('./regexper-visualization/index.js')
     },
 
+    // 音频编辑器
+    "audio-editor": function () {
+        return import('./audio-editor/index.js')
+    },
+
     // npm包下载统计
     "npm-download": function () {
         return import('./npm-download/index.js')

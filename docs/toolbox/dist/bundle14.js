@@ -1,103 +1,387 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/index.js
+// Original file:./src/pages/audio-editor/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['70']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('122');
+    __pkg__scope_args__=window.__pkg__getBundle('123');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('123');
-
-
-
 __pkg__scope_args__=window.__pkg__getBundle('124');
-var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('30');
-var urlFormat =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('126');
-var getValue =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('125');
+var newFile =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('127');
+var audiobufferToWav =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('128');
+var formatTime =__pkg__scope_args__.default;
+
 
 __pkg__scope_args__=window.__pkg__getBundle('129');
-var toValue =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('130');
-var ruler =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('131');
-var getLoopColors =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('132');
-var drawRuler =__pkg__scope_args__.default;
+var lazyDialogs =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj) {
-
     return {
-        name: "npm-download",
+        name: "audio-editor",
         render: template,
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "Npm Download" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './npm.png');
+            document.getElementsByTagName('title')[0].innerText = "音频编辑器" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './audio-editor.png');
         },
-        mounted: function () {
-            var _this = this;
+        methods: {
 
-            var urlObj = urlFormat();
-            if (!urlObj.params.packages || !urlObj.params.interval) {
-                alert("参数错误");
-                return;
-            } else {
+            // 下载按钮
+            doDownload: function () {
+                var audioBuffer = this.mergeAudio();
 
-                getValue(urlObj.params.packages).then(function (npmOralData) {
+                if (audioBuffer)
+                    this.downloadFile(audioBuffer);
+            },
 
-                    // 对npm数据解析
-                    var npmData = {}, max = 0, len = 0;
-                    for (var pkgName in npmOralData) {
-                        if (npmOralData[pkgName]) {
-                            npmData[pkgName] = toValue(npmOralData[pkgName].downloads, +urlObj.params.interval);
+            // 播放按钮
+            doPlay: function () {
+                var audioBuffer = this.mergeAudio();
 
-                            if (max < npmData[pkgName].max) max = npmData[pkgName].max;
-                            len += 1;
-                        }
+                if (audioBuffer)
+                    this.play(audioBuffer);
+            },
+
+            // 下载文件
+            downloadFile: function (audioBuffer) {
+
+                // 需要下载的AudioBuffer变成ArrayBuffer
+                var buffer = audiobufferToWav(audioBuffer);
+
+                var btnEl = document.createElement('a');
+                btnEl.setAttribute('href', URL.createObjectURL(new Blob([buffer])));
+                btnEl.setAttribute('download', 'audio.wav');
+                btnEl.click();
+            },
+
+            // 合并音频
+            mergeAudio: function () {
+                var items = this._refs.editorView.value.children;
+                var index, audios = [];
+                for (index = 0; index < items.length; index++) {
+                    if (items[index]._data.checked) {
+                        audios.push(this.mergePice(items[index]._data));
+                    }
+                }
+
+                // 没有选中的
+                if (audios.length <= 0) {
+                    alert("非常抱歉，没有可以操作的资源~");
+                    return;
+                }
+
+                // 如果就一首
+                else if (audios.length == 1) {
+                    return audios[0];
+                }
+
+                // 多于一首就要合并
+                else {
+
+                    var rate = audios[0].sampleRate;
+                    var channels = audios[0].numberOfChannels;
+
+                    // 先计算总时长
+                    var timeCount = 0;
+                    for (index = 0; index < audios.length; index++) {
+                        timeCount += audios[index].duration;
                     }
 
-                    if (len <= 0) {
-                        return;
+                    // 总帧数
+                    var frameCount = timeCount * rate;
+
+                    // 空的AudioBuffer
+                    var newAudioBuffer = new AudioContext().createBuffer(channels, frameCount, rate);
+
+                    var targetOffset = 0, anotherArray, channel;
+                    for (index = 0; index < audios.length; index++) {
+                        anotherArray = new Float32Array(audios[index].duration * rate);
+                        for (channel = 0; channel < channels; channel++) {
+                            audios[index].copyFromChannel(anotherArray, channel, 0);
+                            newAudioBuffer.copyToChannel(anotherArray, channel, targetOffset);
+                        }
+
+                        // 校对目标偏移量
+                        targetOffset += audios[index].duration * rate;
                     }
 
-                    // 获取画笔
-                    var painter = canvasRender(_this._refs.mycanvas.value);
+                    return newAudioBuffer;
+                }
+            },
 
-                    // 求解刻度尺
-                    var rulerData = ruler(max, 0, 10);
-                    var colors = getLoopColors(len);
+            // 合并片段
+            mergePice: function (oralData) {
+                var index, count = {}, loopCount = +oralData.repeat;
 
-                    // 绘制刻度尺
-                    drawRuler(painter, {
-                        x: 100,
-                        y: 450,
-                        value: rulerData,
-                        direction: 'BT',
-                        "mark-direction": 'left',
-                        length: 400
-                    });
+                // 先计算时长
+                var timeCount = 0;
+                for (index = 0; index < oralData.pice.value.length; index++) {
+                    count[index] = oralData.pice.split[index + 1] - oralData.pice.split[index];
 
-                    for (var pkgName in npmData) {
-                        painter.config({
-                            strokeStyle: colors.shift()
-                        }).beginPath();
-                        for (var index = 0; index < npmData[pkgName].value.length; index++) {
-                            painter.lineTo(100 + (index / (npmData[pkgName].value.length - 1)) * 750, 450 - (npmData[pkgName].value[index] / max) * 400);
+                    // 需要复制的时长叠加
+                    if (oralData.pice.value[index]) {
+                        timeCount += count[index];
+                    }
+
+                    // 变成帧数给后面用
+                    count[index] *= oralData.audio.content.sampleRate;
+                }
+
+                // 总帧数
+                var frameCount = timeCount * oralData.audio.content.sampleRate * loopCount;
+
+                // 空的AudioBuffer
+                var newAudioBuffer = new AudioContext().createBuffer(oralData.audio.content.numberOfChannels, frameCount, oralData.audio.content.sampleRate);
+
+                var sourceOffset, targetOffset = 0, anotherArray, channel, loop;
+                for (loop = 0; loop < loopCount; loop++) {
+                    sourceOffset = 0;
+                    for (index = 0; index < oralData.pice.value.length; index++) {
+                        if (oralData.pice.value[index]) {
+                            anotherArray = new Float32Array(count[index]);
+                            for (channel = 0; channel < oralData.audio.content.numberOfChannels; channel++) {
+                                oralData.audio.content.copyFromChannel(anotherArray, channel, sourceOffset);
+                                newAudioBuffer.copyToChannel(anotherArray, channel, targetOffset);
+                            }
+
+                            // 校对目标偏移量
+                            targetOffset += count[index];
                         }
-                        painter.stroke();
+
+                        // 校对源偏移量
+                        sourceOffset += count[index];
+
+                    }
+                }
+
+                return newAudioBuffer;
+            },
+
+            // 播放
+            play: function (audioBuffer) {
+                var audioEl = this._refs.playAudio.value;
+
+                // 把AudioBuffer变成ArrayBuffer
+                var buffer = audiobufferToWav(audioBuffer);
+                audioEl.src = URL.createObjectURL(new Blob([buffer]));
+
+                audioEl.play();
+            },
+
+            // 导入文件
+            doImport: function () {
+                var _this = this;
+                newFile().then(function (data) {
+                    var ulEl = _this._refs.sourceList.value;
+
+                    var index;
+                    for (index = 0; index < data.length; index++) {
+                        (function (index) {
+
+                            var liEl = document.createElement('li');
+                            ulEl.appendChild(liEl);
+
+                            // icon
+                            var iEl = document.createElement('i');
+                            liEl.appendChild(iEl);
+
+                            // 标题
+                            var spanEl = document.createElement('span');
+                            spanEl.innerText = data[index].name;
+                            liEl.appendChild(spanEl);
+
+                            // 播放按钮
+                            var playEl = document.createElement('button');
+                            playEl.setAttribute('class', 'play');
+                            liEl.appendChild(playEl);
+
+                            playEl.addEventListener('click', function () {
+                                _this.play(data[index].content);
+                            });
+
+                            // 追加按钮
+                            var addEl = document.createElement('button');
+                            addEl.setAttribute('class', 'add');
+                            liEl.appendChild(addEl);
+
+                            addEl.addEventListener('click', function () {
+
+                                var editorEl = _this._refs.editorView.value;
+                                var contentEl;
+
+                                // 条目
+                                var itemEl = document.createElement('div');
+                                editorEl.appendChild(itemEl);
+                                itemEl.setAttribute('class', 'item');
+
+                                itemEl._data = {
+
+                                    // 是否选中
+                                    checked: true,
+
+                                    // 片段
+                                    pice: {
+                                        split: [0, data[index].content.duration], // 切割点
+                                        value: [true] // 每段是否需要
+                                    },
+
+                                    // 重复
+                                    repeat: 1,
+
+                                    // 音频数据
+                                    audio: data[index]
+
+                                };
+
+                                // 标题
+                                var titleEl = document.createElement('div');
+                                itemEl.appendChild(titleEl);
+                                titleEl.setAttribute('class', 'title');
+
+                                var titleEl_checkbox = document.createElement('input');
+                                titleEl.appendChild(titleEl_checkbox);
+
+                                titleEl_checkbox.setAttribute('type', 'checkbox');
+
+                                if (itemEl._data.checked)
+                                    titleEl_checkbox.setAttribute('checked', "");
+
+                                titleEl_checkbox.addEventListener('click', function () {
+                                    itemEl._data.checked = !itemEl._data.checked;
+
+                                    if (itemEl._data.checked)
+                                        titleEl_checkbox.setAttribute('checked', "");
+                                    else {
+                                        titleEl_checkbox.removeAttribute('checked');
+                                    }
+
+                                });
+
+                                var titleEl_span = document.createElement('span');
+                                titleEl.appendChild(titleEl_span);
+
+                                titleEl_span.innerText = data[index].name;
+
+                                // 按钮组
+                                var btnsEl = document.createElement('div');
+                                itemEl.appendChild(btnsEl);
+                                btnsEl.setAttribute('class', 'btns');
+
+                                var btn_toUpEl = document.createElement('button');
+                                btnsEl.appendChild(btn_toUpEl);
+                                btn_toUpEl.innerText = '上移';
+                                btn_toUpEl.addEventListener('click', function () {
+
+                                    if (!itemEl.previousElementSibling) {
+                                        alert('已经是第一个了，无法再上移');
+                                    } else {
+                                        itemEl.parentNode.insertBefore(itemEl, itemEl.previousElementSibling);
+                                    }
+
+                                });
+
+                                var btn_toDownEl = document.createElement('button');
+                                btnsEl.appendChild(btn_toDownEl);
+                                btn_toDownEl.innerText = '下移';
+                                btn_toDownEl.addEventListener('click', function () {
+
+                                    if (!itemEl.nextElementSibling) {
+                                        alert('已经是最后一个了，无法再下移');
+                                    } else {
+                                        itemEl.parentNode.insertBefore(itemEl, itemEl.nextElementSibling.nextSibling);
+                                    }
+
+                                });
+
+                                var btn_piceEl = document.createElement('button');
+                                btnsEl.appendChild(btn_piceEl);
+                                btn_piceEl.innerText = '片段';
+                                btn_piceEl.addEventListener('click', function () {
+
+                                    // 打开片段编辑弹框
+                                    _this.$openDialog(lazyDialogs.pice, {
+                                        piceData: itemEl._data.pice,
+                                        duration: itemEl._data.audio.content.duration
+                                    }).then(function (piceData) {
+                                        itemEl._data.pice = piceData;
+
+                                        // 修改进度显示
+                                        var template = "", piceIndex, piceColor, piceLen, piceHover;
+                                        for (piceIndex = 0; piceIndex < piceData.value.length; piceIndex++) {
+
+                                            // 背景色
+                                            piceColor = piceData.value[piceIndex] ? "" : "background-color:red";
+
+                                            // 长度
+                                            piceLen = piceData.split[piceIndex + 1] - piceData.split[piceIndex];
+
+                                            // 悬浮提示
+                                            piceHover = formatTime(piceData.split[piceIndex]) + " ~ " + formatTime(piceData.split[piceIndex + 1])
+
+                                            template += "<span " +
+                                                "style='width:" + piceLen + "px;" + piceColor + "' title='" + piceHover + "'></span>";
+                                        }
+
+                                        contentEl.innerHTML = template;
+
+                                    });
+
+                                });
+
+                                var btn_playEl = document.createElement('button');
+                                btnsEl.appendChild(btn_playEl);
+                                btn_playEl.innerText = '播放';
+                                btn_playEl.addEventListener('click', function () {
+                                    _this.play(_this.mergePice(itemEl._data));
+                                });
+
+                                var btn_downloadEl = document.createElement('button');
+                                btnsEl.appendChild(btn_downloadEl);
+                                btn_downloadEl.innerText = '下载';
+                                btn_downloadEl.addEventListener('click', function () {
+                                    _this.downloadFile(_this.mergePice(itemEl._data));
+                                });
+
+                                // 内容轨道
+                                contentEl = document.createElement('div');
+                                itemEl.appendChild(contentEl);
+                                contentEl.setAttribute('class', 'content');
+
+                                contentEl.innerHTML = '<span style="width:' + data[index].content.duration + 'px"></span>';
+
+                                // 重复次数
+                                var repeatEl = document.createElement('div');
+                                itemEl.appendChild(repeatEl);
+                                repeatEl.setAttribute('class', 'repeat');
+
+                                var repeatEl_span = document.createElement('span');
+                                repeatEl_span.innerHTML = '重复次数：';
+
+                                repeatEl.appendChild(repeatEl_span);
+
+                                var repeatEl_input = document.createElement('input');
+                                repeatEl.appendChild(repeatEl_input);
+
+                                repeatEl_input.setAttribute('value', itemEl._data.repeat);
+                                repeatEl_input.addEventListener('input', function () {
+                                    itemEl._data.repeat = repeatEl_input.value;
+                                });
+
+                            });
+
+                        })(index);
                     }
 
                 });
-
             }
         }
     };
@@ -107,1374 +391,247 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/index.html
+// Original file:./src/pages/audio-editor/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['122']=function(){
+window.__pkg__bundleSrc__['123']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"Npm Download","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[8]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"音频编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5,7]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[6]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[10,14]},{"type":"tag","name":"div","attrs":{"class":"source-view"},"childNodes":[11,13]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doImport"},"childNodes":[12]},{"type":"text","content":"导入+","childNodes":[]},{"type":"tag","name":"ul","attrs":{"ref":"sourceList"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"mulp-view"},"childNodes":[15,17,18]},{"type":"tag","name":"div","attrs":{"class":"play-view"},"childNodes":[16]},{"type":"tag","name":"audio","attrs":{"src":"","controls":"controls","ref":"playAudio"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"editor-view","ref":"editorView"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btns-view"},"childNodes":[19,21]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doPlay"},"childNodes":[20]},{"type":"text","content":"播放","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDownload"},"childNodes":[22]},{"type":"text","content":"下载","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/index.scss
+// Original file:./src/pages/audio-editor/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['123']=function(){
+window.__pkg__bundleSrc__['124']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"npm-download\"]{\n\nwidth: 900px;\n\nleft: calc(50vw - 450px);\n\ntop: 50px;\n\nfont-size: 0;\n\n}\n\n [page-view=\"npm-download\"][focus=\"no\"]>header{\n\nbackground-color: #bb3939;\n\n}\n\n [page-view=\"npm-download\"]>header{\n\nheight: 50px;\n\nbackground-color: #e10404;\n\n}\n\n [page-view=\"npm-download\"]>header>h2{\n\nwidth: 100px;\n\nheight: 100%;\n\nbackground-image: url(\"./npm.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 160%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"npm-download\"]>canvas{\n\nwidth: 100%;\n\nheight: 500px;\n\n}\n";
+styleElement.innerHTML = "\n [page-view='audio-editor']{\n\nleft: 80px;\n\ntop: 20px;\n\nfont-size: 12px;\n\noverflow: hidden;\n\n}\n\n [page-view='audio-editor'][focus=\"no\"]>header{\n\nbackground-color: #e8eaed;\n\n}\n\n [page-view='audio-editor']>header{\n\ntext-align: left;\n\nline-height: 40px;\n\nbox-shadow: rgb(213, 221, 225) 0px 4px 6px;\n\nbackground-color: #dee1e7;\n\n}\n\n [page-view='audio-editor']>header>h2{\n\ncolor: #000000;\n\nfont-size: 14px;\n\npadding-left: 35px;\n\nbackground-image: url(\"./audio-editor.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 60%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view='audio-editor']>div{\n\ndisplay: flex;\n\nwidth: calc(100vw - 160px);\n\nheight: calc(100vh - 110px);\n\n}\n\n [page-view='audio-editor']>div>div{\n\nflex-grow: 1;\n\nheight: 100%;\n\n}\n\n [page-view='audio-editor']>div>div.source-view{\n\nflex-grow: 0;\n\nflex-shrink: 0;\n\nflex-basis: 200px;\n\nborder-right: 1px solid #d8d8d8;\n\npadding: 10px;\n\n}\n\n [page-view='audio-editor']>div>div.source-view>button{\n\nwidth: 60px;\n\nline-height: 20px;\n\nbackground-color: #939393;\n\ncolor: white;\n\nborder: none;\n\noutline: none;\n\ncursor: pointer;\n\n}\n\n [page-view='audio-editor']>div>div.source-view>ul{\n\nmargin: 10px 0;\n\n}\n\n [page-view='audio-editor']>div>div.source-view>ul>li{\n\nline-height: 20px;\n\npadding: 5px 0;\n\n}\n\n [page-view='audio-editor']>div>div.source-view>ul>li:not(:last-child){\n\nborder-bottom: 1px solid rgb(191, 190, 190);\n\n}\n\n [page-view='audio-editor']>div>div.source-view>ul>li>i{\n\ndisplay: inline-block;\n\nwidth: 24px;\n\nheight: 24px;\n\nbackground-image: url('./audio-icon.png');\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 100%;\n\nvertical-align: top;\n\n}\n\n [page-view='audio-editor']>div>div.source-view>ul>li>span{\n\nwhite-space: nowrap;\n\nwidth: 90px;\n\noverflow: hidden;\n\ntext-overflow: ellipsis;\n\ndisplay: inline-block;\n\n}\n\n [page-view='audio-editor']>div>div.source-view>ul>li>button{\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 100%;\n\nwidth: 24px;\n\nheight: 24px;\n\nfloat: right;\n\nborder: none;\n\noutline: none;\n\ncursor: pointer;\n\nbackground-color: transparent;\n\n}\n\n [page-view='audio-editor']>div>div.source-view>ul>li>button.play{\n\nbackground-image: url('./start.png');\n\n}\n\n [page-view='audio-editor']>div>div.source-view>ul>li>button.add{\n\nbackground-image: url('./add.png');\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view{\n\ndisplay: flex;\n\nflex-direction: column;\n\nposition: relative;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.play-view{\n\nflex-basis: 100px;\n\nline-height: 100px;\n\nbackground-color: #f1f3f4;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.play-view>audio{\n\nwidth: 100%;\n\nvertical-align: middle;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.editor-view{\n\nflex-grow: 1;\n\nbackground-color: #e4e4e4;\n\noverflow: auto;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.editor-view>div.item{\n\nbackground-color: #f2f2f2;\n\npadding: 10px;\n\nmargin: 10px;\n\noverflow: auto;\n\nwidth: calc(100vw - 380px);\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.editor-view>div.item>div.title{\n\nfont-size: 12px;\n\npadding-left: 10px;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.editor-view>div.item>div.btns>button{\n\nheight: 24px;\n\nwidth: 50px;\n\nmargin: 8px 0 0 8px;\n\ncursor: pointer;\n\nbackground-color: #9e9e9e;\n\ncolor: white;\n\nborder: none;\n\nfont-size: 12px;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.editor-view>div.item>div.content{\n\npadding: 5px 10px;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.editor-view>div.item>div.content>span{\n\ndisplay: inline-block;\n\nmargin-left: 1px;\n\nbackground-color: #8bc34a;\n\nheight: 5px;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.editor-view>div.item>div.repeat{\n\npadding: 0 10px;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.editor-view>div.item>div.repeat>input{\n\nwidth: 50px;\n\noutline: none;\n\npadding: 2px 5px;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.btns-view{\n\nflex-basis: 40px;\n\nbackground-color: #f2f2f2;\n\nborder-top: 1px solid #d8d8d8;\n\n}\n\n [page-view='audio-editor']>div>div.mulp-view>div.btns-view>button{\n\nheight: 24px;\n\nwidth: 70px;\n\nmargin: 8px 0 0 8px;\n\ncursor: pointer;\n\nbackground: #2196f3;\n\ncolor: white;\n\nborder: none;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/region
-/*****************************************************************/
-window.__pkg__bundleSrc__['124']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('118');
-var canvasRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('125');
-var assemble =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
-
-    // 初始化尺寸
-    width = width || canvas.clientWidth;
-    height = height || canvas.clientHeight;
-
-    // 获取绘制画笔
-    var drawPainter = canvasRender(canvas, width, height, {}, isScale);
-
-    // 获取区域画笔
-    var regionPainter = canvasRender(document.createElement('canvas'), width, height, {
-
-        // https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
-        willReadFrequently: true
-    });
-
-    var regions = {}; //区域映射表
-    var regionAssemble = assemble(0, 255, 10, 3);
-
-    var drawRegion = false;
-
-    var instance = {
-
-        // 配置画笔
-        config: function () {
-            if (arguments.length === 1) {
-                if (typeof arguments[0] !== "object") return drawPainter.config([arguments[0]]);
-                for (var key in arguments[0]) {
-                    if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(key, arguments[0][key]);
-                    drawPainter.config(key, arguments[0][key]);
-                }
-            } else if (arguments.length === 2) {
-                if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(arguments[0], arguments[1]);
-                drawPainter.config(arguments[0], arguments[1]);
-            }
-            return instance;
-        },
-
-        // 设置当前绘制区域名称
-        setRegion: function (regionName) {
-            if (regionName === false) {
-                drawRegion = false;
-            } else {
-                drawRegion = true;
-
-                if (regions[regionName] == undefined) {
-                    var tempColor = regionAssemble();
-                    regions[regionName] = "rgb(" + tempColor[0] + "," + tempColor[1] + "," + tempColor[2] + ")";
-                }
-
-                regionPainter.config({
-                    fillStyle: regions[regionName],
-                    strokeStyle: regions[regionName]
-                });
-            }
-
-            return instance;
-        },
-
-        // 获取当前事件触发的区域名称
-        getRegion: function (event) {
-
-            // 获取点击点的颜色
-            var currentRGBA = regionPainter.painter.getImageData(event.offsetX - 0.5, event.offsetY - 0.5, 1, 1).data;
-
-            // 查找当前点击的区域
-            for (var key in regions) {
-                if ("rgb(" + currentRGBA[0] + "," + currentRGBA[1] + "," + currentRGBA[2] + ")" == regions[key]) {
-                    return key;
-                }
-            }
-
-            return false;
-        }
-
-    };
-
-    for (var key in drawPainter) {
-        (function (key) {
-
-            // 如果是获取原生画笔
-            if ('painter' == key) {
-                instance.painter = function () {
-                    return {
-                        draw: drawPainter.painter,
-                        region: regionPainter.painter
-                    };
-                };
-            }
-
-            // 特殊的过滤掉
-            else if (['config'].indexOf(key) < 0) {
-                instance[key] = function () {
-                    if (drawRegion) regionPainter[key].apply(regionPainter, arguments);
-                    var result = drawPainter[key].apply(drawPainter, arguments);
-                    return result.__only__painter__ ? instance : result;
-                };
-
-            }
-        })(key);
-    }
-
-    return instance;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['118']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('119');
-var initText=__pkg__scope_args__.initText;
-var initArc=__pkg__scope_args__.initArc;
-var initCircle=__pkg__scope_args__.initCircle;
-var initRect=__pkg__scope_args__.initRect;
-
-__pkg__scope_args__=window.__pkg__getBundle('121');
-var linearGradient=__pkg__scope_args__.linearGradient;
-var radialGradient=__pkg__scope_args__.radialGradient;
-
-__pkg__scope_args__=window.__pkg__getBundle('119');
-var initPainterConfig=__pkg__scope_args__.initPainterConfig;
-
-
-// 画笔对象
-
-__pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
-
-    // 设置宽
-    if (width) {
-        canvas.style.width = width + "px";
-        canvas.setAttribute('width', (isScale ? 2 : 1) * width);
-    }
-
-    // 设置高
-    if (height) {
-        canvas.style.height = height + "px";
-        canvas.setAttribute('height', (isScale ? 2 : 1) * height);
-    }
-
-    var painter = canvas.getContext("2d", opts || {});
-    if (isScale) painter.scale(2, 2);
-
-    // 默认配置canvas2D对象已经存在的属性
-    painter.textBaseline = 'middle';
-    painter.textAlign = 'left';
-
-    // 用于记录配置
-    // 因为部分配置的设置比较特殊，只先记录意图
-    var config = {
-
-        // 文字大小
-        "fontSize": 16,
-
-        // 字体
-        "fontFamily": "sans-serif",
-
-        // 字重
-        "fontWeight": 400,
-
-        // 字类型
-        "fontStyle": "normal",
-
-        // 圆弧开始端闭合方式（"butt"直线闭合、"round"圆帽闭合）
-        "arcStartCap": 'butt',
-
-        // 圆弧结束端闭合方式，和上一个类似
-        "arcWndCap": 'butt',
-    };
-
-    // 配置生效方法
-    var useConfig = function (key, value) {
-
-        /**
-         * -----------------------------
-         * 特殊的设置开始
-         * -----------------------------
-         */
-
-        if (key == 'lineDash') {
-            if (painter.setLineDash) painter.setLineDash(value);
-        }
-
-        /**
-         * -----------------------------
-         * 常规的配置开始
-         * -----------------------------
-         */
-
-        // 如果已经存在默认配置中，说明只需要缓存起来即可
-        else if (key in config) {
-            config[key] = value;
-        }
-
-        // 其它情况直接生效即可
-        else if (key in initPainterConfig) {
-            painter[key] = value;
-        }
-
-        // 如果属性未被定义
-        else {
-            throw new Error('Illegal configuration item of painter : ' + key + " !");
-        }
-    };
-
-    // 画笔
-    var enhancePainter = {
-        __only__painter__: true,
-
-        // 原生画笔
-        painter: painter,
-
-        // 属性设置或获取
-        "config": function () {
-            if (arguments.length === 1) {
-                if (typeof arguments[0] !== 'object') {
-
-                    // 暂存的
-                    if (arguments[0] in config) return config[arguments[0]];
-
-                    // lineDash
-                    if ('lineDash' == arguments[0]) return painter.getLineDash();
-
-                    // 普通的
-                    return painter[arguments[0]];
-                }
-                for (var key in arguments[0]) {
-                    useConfig(key, arguments[0][key]);
-                }
-            } else if (arguments.length === 2) {
-                useConfig(arguments[0], arguments[1]);
-            }
-            return enhancePainter;
-        },
-
-        // 文字
-        "fillText": function (text, x, y, deg) {
-            painter.save();
-            initText(painter, config, x, y, deg || 0).fillText(text, 0, 0);
-            painter.restore();
-            return enhancePainter;
-        },
-        "strokeText": function (text, x, y, deg) {
-            painter.save();
-            initText(painter, config, x, y, deg || 0).strokeText(text, 0, 0);
-            painter.restore();
-            return enhancePainter;
-        },
-        "fullText": function (text, x, y, deg) {
-            painter.save();
-            initText(painter, config, x, y, deg || 0);
-            painter.fillText(text, 0, 0);
-            painter.strokeText(text, 0, 0);
-            painter.restore();
-            return enhancePainter;
-        },
-
-        // 路径
-        "beginPath": function () { painter.beginPath(); return enhancePainter; },
-        "closePath": function () { painter.closePath(); return enhancePainter; },
-        "moveTo": function (x, y) {
-
-            // 解决1px模糊问题，别的地方类似原因
-            painter.moveTo(Math.round(x) + 0.5, Math.round(y) + 0.5);
-            return enhancePainter;
-        },
-        "lineTo": function (x, y) { painter.lineTo(Math.round(x) + 0.5, Math.round(y) + 0.5); return enhancePainter; },
-        "arc": function (x, y, r, beginDeg, deg) {
-            painter.arc(x, y, r, beginDeg, beginDeg + deg, deg < 0);
-            return enhancePainter;
-        },
-        "fill": function () { painter.fill(); return enhancePainter; },
-        "stroke": function () { painter.stroke(); return enhancePainter; },
-        "full": function () { painter.fill(); painter.stroke(); return enhancePainter; },
-
-        "save": function () { painter.save(); return enhancePainter; },
-        "restore": function () { painter.restore(); return enhancePainter; },
-
-        // 路径 - 贝塞尔曲线
-        "quadraticCurveTo": function (cpx, cpy, x, y) {
-            painter.quadraticCurveTo(cpx, cpy, x, y); return enhancePainter;
-        },
-        "bezierCurveTo": function (cp1x, cp1y, cp2x, cp2y, x, y) {
-            painter.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y); return enhancePainter;
-        },
-
-        // 擦除画面
-        "clearRect": function (x, y, w, h) { painter.clearRect(x, y, w, h); return enhancePainter; },
-        "clearCircle": function (cx, cy, r) {
-            painter.beginPath();
-            painter.globalCompositeOperation = "destination-out";
-            painter.arc(cx, cy, r, 0, Math.PI * 2); // 绘制圆形
-            painter.fill(); // 填充圆形，这将会清除这个圆形区域
-            painter.globalCompositeOperation = "source-over";
-            painter.closePath();
-            return enhancePainter;
-        },
-
-        // 弧
-        "fillArc": function (cx, cy, r1, r2, beginDeg, deg) {
-            initArc(painter, config, cx, cy, r1, r2, beginDeg, deg).fill(); return enhancePainter;
-        },
-        "strokeArc": function (cx, cy, r1, r2, beginDeg, deg) {
-            initArc(painter, config, cx, cy, r1, r2, beginDeg, deg).stroke(); return enhancePainter;
-        },
-        "fullArc": function (cx, cy, r1, r2, beginDeg, deg) {
-            initArc(painter, config, cx, cy, r1, r2, beginDeg, deg);
-            painter.fill();
-            painter.stroke();
-            return enhancePainter;
-        },
-
-        // 圆形
-        "fillCircle": function (cx, cy, r) {
-            initCircle(painter, cx, cy, r).fill(); return enhancePainter;
-        },
-        "strokeCircle": function (cx, cy, r) {
-            initCircle(painter, cx, cy, r).stroke(); return enhancePainter;
-        },
-        "fullCircle": function (cx, cy, r) {
-            initCircle(painter, cx, cy, r);
-            painter.fill();
-            painter.stroke();
-            return enhancePainter;
-        },
-
-        // 矩形
-        "fillRect": function (x, y, width, height) {
-            initRect(painter, x, y, width, height).fill(); return enhancePainter;
-        },
-        "strokeRect": function (x, y, width, height) {
-            initRect(painter, x, y, width, height).stroke(); return enhancePainter;
-        },
-        "fullRect": function (x, y, width, height) {
-            initRect(painter, x, y, width, height);
-            painter.fill();
-            painter.stroke();
-            return enhancePainter;
-        },
-
-        // base64
-        "toDataURL": function (type) {
-            type = type || 'image/png';
-            return canvas.toDataURL(type);
-        },
-
-        // 获取指定位置颜色
-        "getColor": function (x, y) {
-            var currentRGBA = painter.getImageData(x - 0.5, y - 0.5, 1, 1).data;
-            return "rgba(" + currentRGBA[0] + "," + currentRGBA[1] + "," + currentRGBA[2] + "," + currentRGBA[3] + ")";
-        },
-
-        // image
-        "drawImage": function (img, sx, sy, sw, sh, x, y, w, h) {
-            sx = sx || 0;
-            sy = sy || 0;
-            x = x || 0;
-            y = y || 0;
-            w = w ? w : canvas.getAttribute('width');
-            h = h ? h : canvas.getAttribute('height');
-
-            if (img.nodeName == 'CANVAS') {
-                sw = sw ? sw : canvas.getAttribute('width');
-                sh = sh ? sh : canvas.getAttribute('height');
-            } else {
-                // 默认类型是图片
-                sw = sw || img.width;
-                sh = sh || img.height;
-            }
-
-            painter.drawImage(img, sx, sy, sw, sh, x, y, w, h);
-            return enhancePainter;
-        },
-
-        /**
-        * 渐变
-        * -------------
-        */
-
-        //  线性渐变
-        "createLinearGradient": function (x0, y0, x1, y1) {
-            return linearGradient(painter, x0, y0, x1, y1);
-        },
-
-        // 环形渐变
-        "createRadialGradient": function (cx, cy, r1, r2) {
-            if (arguments.length < 4) {
-                return radialGradient(painter, cx, cy, 0, r1);
-            } else {
-                return radialGradient(painter, cx, cy, r1, r2);
-            }
-
-        }
-
-    };
-
-    return enhancePainter;
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/config
-/*****************************************************************/
-window.__pkg__bundleSrc__['119']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('120');
-var arc =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.initPainterConfig = {
-
-    // 填充色或图案
-    "fillStyle": 'black',
-
-    // 轮廓色或图案
-    "strokeStyle": 'black',
-
-    // 线的端点类型，（"butt"平直边缘、"round"半圆和"square"矩形）
-    "lineCap": "butt",
-
-    // 线的拐角连接方式，（"miter"连接处边缘延长相接、"bevel"对角线斜角和"round"圆）
-    "lineJoin": "miter",
-
-    // 线条宽度(单位px，下同)
-    "lineWidth": 1,
-
-    // 设置线条虚线，应该是一个数组[number,...]
-    "lineDash": [],
-
-    // 文字水平对齐方式（"left"左对齐、"center"居中和"right"右对齐）
-    "textAlign": 'left',
-
-    // 文字垂直对齐方式（"middle"垂直居中、"top"上对齐和"bottom"下对齐）
-    "textBaseline": 'middle',
-
-    // 阴影的模糊系数，默认0，也就是无阴影
-    "shadowBlur": 0,
-
-    // 阴影的颜色
-    "shadowColor": "black"
-
-};
-
-// 文字统一设置方法
-__pkg__scope_bundle__.initText = function (painter, config, x, y, deg) {
-
-    painter.beginPath();
-    painter.translate(x, y);
-    painter.rotate(deg);
-    painter.font = config.fontStyle + " " + config.fontWeight + " " + config.fontSize + "px " + config.fontFamily;
-    return painter;
-};
-
-// 画弧统一设置方法
-__pkg__scope_bundle__.initArc = function (painter, config, cx, cy, r1, r2, beginDeg, deg) {
-
-    if (r1 > r2) {
-        var temp = r1;
-        r1 = r2;
-        r2 = temp;
-    }
-
-    beginDeg = beginDeg % (Math.PI * 2);
-
-    // 当|deg|>=2π的时候都认为是一个圆环
-    // 为什么不取2π比较，是怕部分浏览器浮点不精确
-    if (deg >= Math.PI * 1.999999 || deg <= -Math.PI * 1.999999) {
-        deg = Math.PI * 2;
-    } else {
-        deg = deg % (Math.PI * 2);
-    }
-
-    arc(beginDeg, deg, cx, cy, r1, r2, function (
-        beginA, endA,
-        begInnerX, begInnerY,
-        begOuterX, begOuterY,
-        endInnerX, endInnerY,
-        endOuterX, endOuterY,
-        r
-    ) {
-        if (r < 0) r = -r;
-        painter.beginPath();
-        painter.moveTo(begInnerX, begInnerY);
-        painter.arc(
-            // (圆心x，圆心y，半径，开始角度，结束角度，true逆时针/false顺时针)
-            cx, cy, r1, beginA, endA, false);
-        // 结尾
-        if (config.arcEndCap != 'round')
-            painter.lineTo(endOuterX, endOuterY);
-        else
-            painter.arc((endInnerX + endOuterX) * 0.5, (endInnerY + endOuterY) * 0.5, r, endA - Math.PI, endA, true);
-        painter.arc(cx, cy, r2, endA, beginA, true);
-        // 开头
-        if (config.arcStartCap != 'round')
-            painter.lineTo(begInnerX, begInnerY);
-        else
-            painter.arc((begInnerX + begOuterX) * 0.5, (begInnerY + begOuterY) * 0.5, r, beginA, beginA - Math.PI, true);
-    });
-    if (config.arcStartCap == 'butt') painter.closePath();
-    return painter;
-};
-
-// 画圆统一设置方法
-__pkg__scope_bundle__.initCircle = function (painter, cx, cy, r) {
-    painter.beginPath();
-    painter.moveTo(cx + r, cy);
-    painter.arc(cx, cy, r, 0, Math.PI * 2);
-    return painter;
-};
-
-// 画矩形统一设置方法
-__pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
-    painter.beginPath();
-    painter.rect(x, y, width, height);
-    return painter;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/arc
-/*****************************************************************/
-window.__pkg__bundleSrc__['120']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 点（x,y）围绕中心（cx,cy）旋转deg度
-
-var rotate = function (cx, cy, deg, x, y) {
-    var cos = Math.cos(deg), sin = Math.sin(deg);
-    return [
-        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
-        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
-    ];
-};
-
-// r1和r2，内半径和外半径
-// beginA起点弧度，rotateA旋转弧度式
-
-__pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback) {
-
-    // 保证逆时针也是可以的
-    if (rotateA < 0) {
-        beginA += rotateA;
-        rotateA *= -1;
-    }
-
-    var temp = [], p;
-
-    // 内部
-    p = rotate(0, 0, beginA, r1, 0);
-    temp[0] = p[0];
-    temp[1] = p[1];
-    p = rotate(0, 0, rotateA, p[0], p[1]);
-    temp[2] = p[0];
-    temp[3] = p[1];
-
-    // 外部
-    p = rotate(0, 0, beginA, r2, 0);
-    temp[4] = p[0];
-    temp[5] = p[1];
-    p = rotate(0, 0, rotateA, p[0], p[1]);
-    temp[6] = p[0];
-    temp[7] = p[1];
-
-    doback(
-        beginA, beginA + rotateA,
-        temp[0] + cx, temp[1] + cy,
-        temp[4] + cx, temp[5] + cy,
-        temp[2] + cx, temp[3] + cy,
-        temp[6] + cx, temp[7] + cy,
-        (r2 - r1) * 0.5
-    );
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/Gradient
-/*****************************************************************/
-window.__pkg__bundleSrc__['121']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 线性渐变
-__pkg__scope_bundle__.linearGradient = function (painter, x0, y0, x1, y1) {
-    var gradient = painter.createLinearGradient(x0, y0, x1, y1);
-    var enhanceGradient = {
-        "value": function () {
-            return gradient;
-        },
-        "addColorStop": function (stop, color) {
-            gradient.addColorStop(stop, color);
-            return enhanceGradient;
-        }
-    };
-    return enhanceGradient;
-};
-
-// 环形渐变
-__pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
-    var gradient = painter.createRadialGradient(cx, cy, r1, cx, cy, r2);
-    var enhanceGradient = {
-        "value": function () {
-            return gradient;
-        },
-        "addColorStop": function (stop, color) {
-            gradient.addColorStop(stop, color);
-            return enhanceGradient;
-        }
-    };
-    return enhanceGradient;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/assemble
+// Original file:./src/tool/audio/newFile
 /*****************************************************************/
 window.__pkg__bundleSrc__['125']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (begin, end, step, count) {
-    var val = [];
-    for (var index = 0; index < count; index++) val[index] = begin;
+    __pkg__scope_args__=window.__pkg__getBundle('126');
+var AudioContext =__pkg__scope_args__.default;
 
-    // 非常类似进制数，每次调用都+1
-    return function () {
-        for (var i = 0; i < count; i++) {
 
-            // 如果当前位可以进1
-            if (val[i] + step < end) {
-                val[i] = +(val[i] + step).toFixed(7);
-                break;
-            }
+var inputEl = document.createElement('input');
 
-            // 如果当前位不可以，那当前位归0，尝试下一位
-            else if (i < count - 1) {
-                val[i] = begin;
-            }
+inputEl.setAttribute('type', 'file');
+inputEl.setAttribute('multiple', 'multiple'); // 可以多选
+inputEl.setAttribute('accept', 'audio/*'); // 只能选中音频文件
+
+var doit;
+inputEl.addEventListener('change', function (event) {
+    if (doit) {
+        var files = inputEl.files;
+        var datas = [];
+
+        var index;
+        for (index = 0; index < files.length; index++) {
+            (function (index) {
+                var reader = new FileReader();
+                reader.onload = function () {
+
+                    var arrayBuffer = reader.result;
+
+                    // 创建一个audio上下文
+                    var context = new AudioContext();
+
+                    // 把arrayBuffer变成audioBuffer
+                    context.decodeAudioData(arrayBuffer, function (audioBuffer) {
+
+                        /**
+                        * AudioBuffer对象是一个音频专用Buffer对象，包含很多音频信息，包括：
+                        * 
+                        * 音频时长 duration
+                        * 声道数量 numberOfChannels
+                        * 采样率 sampleRate
+                        * 等。
+                        * 
+                        * 包括一些音频声道数据处理方法，例如：
+                        * 获取通道数据 getChannelData()
+                        * 复制通道数据 copyFromChannel()
+                        * 写入通道数据 copyToChannel()
+                        * 
+                        * 文档见这里：https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
+                        */
+
+                        datas.push({
+                            name: files[index].name, // 文件名
+                            content: audioBuffer // 内容
+                        });
+
+                        // 如果解析完毕
+                        if (datas.length == files.length) {
+                            doit(datas);
+                        }
+
+                    });
+
+
+                };
+                reader.readAsArrayBuffer(files[index]);
+            })(index);
         }
 
-        return val;
     }
-};
+});
+
+__pkg__scope_bundle__.default= function () {
+    return new Promise(function (resolve, reject) {
+
+        // 重置处理文件回调
+        doit = function (datas) {
+            resolve(datas);
+        };
+
+        // 触发打开文件
+        inputEl.click();
+    });
+}
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/getValue
+// Original file:./src/tool/audio/AudioContext
 /*****************************************************************/
 window.__pkg__bundleSrc__['126']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('127');
-var xhr =__pkg__scope_args__.default;
-
-
-var date = new Date();
-var year = date.getFullYear();
-var month_day = "-" + (date.getMonth() - (-1)) + "-" + date.getDate();
-
-__pkg__scope_bundle__.default= function (packages) {
-
-    var pkgNames = packages.split(',');
-
-    var promises = []
-    for (var pkgName of pkgNames) {
-        (function (pkgName) {
-            promises.push(new Promise(function (resolve) {
-
-                if (sessionStorage.getItem(pkgName)) {
-                    resolve([pkgName, JSON.parse(sessionStorage.getItem(pkgName))])
-                } else {
-
-                    xhr({
-                        method: "GET",
-                        url: "https://api.npmjs.org/downloads/range/" + (year - 1) + month_day + ":" + year + month_day + "/" + pkgName,
-                    }, function (data) {
-                        if (data.status == 200) {
-                            sessionStorage.setItem(pkgName, data.data);
-                            var npmOralData = JSON.parse(data.data);
-                            resolve([pkgName, npmOralData]);
-                        }
-                    });
-                }
-
-            }));
-        })(pkgName);
-    }
-
-    return new Promise(function (resolve) {
-        Promise.all(promises).then(function (data) {
-            var npmOralData = {};
-            for (var index = 0; index < data.length; index++) {
-                npmOralData[data[index][0]] = data[index][1];
-            }
-            resolve(npmOralData);
-        });
-    });
-}
+    __pkg__scope_bundle__.default=
+    window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/index
+// Original file:./src/tool/audio/AudioBuffer-To-Wav
 /*****************************************************************/
 window.__pkg__bundleSrc__['127']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
+    __pkg__scope_bundle__.default= function (buffer, opt) {
+  opt = opt || {};
 
-__pkg__scope_args__=window.__pkg__getBundle('128');
-var toString =__pkg__scope_args__.default;
+  var numChannels = buffer.numberOfChannels;
+  var sampleRate = opt.sampleRate || buffer.sampleRate;
+  var format = opt.float32 ? 3 : 1;
+  var bitDepth = format === 3 ? 32 : 16;
+  var result;
+  if (numChannels === 2) {
+    result = interleave(buffer.getChannelData(0), buffer.getChannelData(1));
+  } else {
+    result = buffer.getChannelData(0);
+  }
 
+  return encodeWAV(result, format, sampleRate, numChannels, bitDepth);
+}
 
-__pkg__scope_bundle__.default= function (settings, callback, errorback) {
+function encodeWAV(samples, format, sampleRate, numChannels, bitDepth) {
+  var bytesPerSample = bitDepth / 8;
+  var blockAlign = numChannels * bytesPerSample;
 
-    var xmlhttp;
+  var buffer = new ArrayBuffer(44 + samples.length * bytesPerSample);
+  var view = new DataView(buffer);
 
-    // 如果外部定义了
-    if (isFunction(settings.xhr)) {
-        xmlhttp = settings.xhr();
-    }
+  writeString(view, 0, "RIFF");
+  view.setUint32(4, 36 + samples.length * bytesPerSample, true);
+  writeString(view, 8, "WAVE");
+  writeString(view, 12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, format, true);
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * blockAlign, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, bitDepth, true);
+  writeString(view, 36, "data");
+  view.setUint32(40, samples.length * bytesPerSample, true);
+  if (format === 1) {
+    floatTo16BitPCM(view, 44, samples);
+  } else {
+    writeFloat32(view, 44, samples);
+  }
 
-    // 否则就内部创建
-    else {
-        xmlhttp = new XMLHttpRequest();
-    }
+  return buffer;
+}
 
-    // 请求完成回调
-    xmlhttp.onload = function () {
+function interleave(inputL, inputR) {
+  var length = inputL.length + inputR.length;
+  var result = new Float32Array(length);
 
-        if (xmlhttp.readyState == 4) {
+  var index = 0;
+  var inputIndex = 0;
 
-            callback({
+  while (index < length) {
+    result[index++] = inputL[inputIndex];
+    result[index++] = inputR[inputIndex];
+    inputIndex++;
+  }
+  return result;
+}
 
-                // 状态码
-                status: xmlhttp.status,
+function writeFloat32(output, offset, input) {
+  for (var i = 0; i < input.length; i++, offset += 4) {
+    output.setFloat32(offset, input[i], true);
+  }
+}
 
-                // 数据
-                data: xmlhttp.responseText
+function floatTo16BitPCM(output, offset, input) {
+  for (var i = 0; i < input.length; i++, offset += 2) {
+    var s = Math.max(-1, Math.min(1, input[i]));
+    output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+  }
+}
 
-            });
-
-        }
-    };
-
-    // 请求超时回调
-    xmlhttp.ontimeout = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: "请求超时了"
-        });
-    };
-
-    // 请求错误回调
-    xmlhttp.onerror = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: xmlhttp.responseText
-        });
-    };
-
-    xmlhttp.open(settings.method, settings.url, true);
-
-    // 设置请求头
-    for (var key in settings.header) {
-        xmlhttp.setRequestHeader(key, settings.header[key]);
-    }
-
-    // 设置超时时间
-    xmlhttp.timeout = 'timeout' in settings ? settings.timeout : 6000;
-
-    xmlhttp.send(toString(settings.data));
-
-};
+function writeString(view, offset, string) {
+  for (var i = 0; i < string.length; i++) {
+    view.setUint8(offset + i, string.charCodeAt(i));
+  }
+}
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/toString
+// Original file:./src/tool/formatTime
 /*****************************************************************/
 window.__pkg__bundleSrc__['128']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('53');
-var isPlainObject =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (data) {
-
-    // 如果是字符串
-    if (isString(data)) {
-        return data;
-    }
-
-    // 如果是JSON数据
-    else if (isPlainObject(data)) {
-        return JSON.stringify(data);
-    }
-
-    // 如果为空
-    else if (data === undefined) {
-        return "";
-    }
-
-    // 否则
-    else {
-        return data;
-    }
-
+    // 把秒值变成更可读的格式
+__pkg__scope_bundle__.default= function(time) {
+    return (Math.floor(time / 60)) + ":" + (Math.floor(time % 60)) + "." + ((time % 1).toFixed(3) + "").replace(/^.{0,}\./, '')
 };
-
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/npm-download/toValue
+// Original file:./src/pages/audio-editor/dialogs/lazy-load
 /*****************************************************************/
 window.__pkg__bundleSrc__['129']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (oralValue, interval) {
+    __pkg__scope_bundle__.default= {
 
-    var value = [], time = [], max = 0;
-
-    for (var i = oralValue.length - 1; i >= interval - 1; i -= interval) {
-
-        var temp = 0;
-        for (var j = 0; j < interval; j++) {
-            temp += oralValue[i - j].downloads;
-        }
-
-        if (max < temp) max = temp;
-
-        // 数据
-        value.unshift(temp);
-
-        // 日期
-        time.unshift(oralValue[i - interval + 1].day + "至" + (i == i - interval + 1 ? oralValue[i].day : oralValue[i].day));
-
+    // 编辑切割点
+    pice: function () {
+        return window.__pkg__getLazyBundle('./dist/bundle30.js','130')
     }
 
-    return {
-        value: value,
-        time: time,
-        max: max
-    };
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/ruler
-/*****************************************************************/
-window.__pkg__bundleSrc__['130']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 刻度尺刻度求解
-
-// 需要注意的是，实际的间距个数可能是 num-1 或 num 或 num+1 或 1
-__pkg__scope_bundle__.default= function (maxValue, minValue, num) {
-
-    // 如果最大值最小值反了
-    if (maxValue < minValue) {
-        var temp = minValue;
-        minValue = maxValue;
-        maxValue = temp;
-    }
-
-    // 如果相等
-    else if (maxValue == minValue) {
-        return [maxValue];
-    }
-
-    // 为了变成 -100 ~ 100 需要放大或者缩小的倍数
-    var times100 =
-
-        (function (_value) {
-
-            // 先确定基调，是放大还是缩小
-            var _times100_base = (_value < 100 && _value > -100) ? 10 : 0.1;
-
-            // 记录当前缩放倍数
-            var _times100 = -1, _tiemsValue = _value;
-
-            while (_times100_base == 10 ?
-                // 如果是放大，超过 -100 ~ 100 就应该停止
-                (_tiemsValue >= -100 && _tiemsValue <= 100)
-                :
-                // 如果是缩小，进入 -100 ~ 100 就应该停止
-                (_tiemsValue <= -100 || _tiemsValue >= 100)
-            ) {
-
-                _times100 += 1;
-                _tiemsValue *= _times100_base;
-
-            }
-
-            if (_times100_base == 10) {
-                return Math.pow(10, _times100);
-            } else {
-
-                // 解决类似 0.1 * 0.1 = 0.010000000000000002 浮点运算不准确问题
-                var temp = "0.", i;
-                for (i = 1; i < _times100; i++) {
-                    temp += "0";
-                }
-                return +(temp + "1");
-            }
-        })
-
-            // 根据差值来缩放
-            (maxValue - minValue);
-
-
-    // 求解出 -100 ~ 100 的最佳间距值 后直接转换原来的倍数
-    var distance100 = Math.ceil((maxValue - minValue) * times100 / num);
-
-    // 校对一下
-    distance100 = {
-        3: 2,
-        4: 5,
-        6: 5,
-        7: 5,
-        8: 10,
-        9: 10,
-        11: 10,
-        12: 10,
-        13: 15,
-        14: 15,
-        16: 15,
-        17: 15,
-        18: 20,
-        19: 20,
-        21: 20,
-        22: 20,
-        23: 25,
-        24: 25,
-        26: 25,
-        27: 25
-    }[distance100] || distance100;
-
-    var distance = distance100 / times100;
-
-    // 最小值，也就是起点
-    var begin = Math.floor(minValue / distance) * distance;
-
-    var rulerArray = [], index;
-    // 获取最终的刻度尺数组
-    rulerArray.push(begin);
-    for (index = 1; rulerArray[rulerArray.length - 1] < maxValue; index++) {
-        rulerArray.push(begin + distance * index);
-    }
-
-    return rulerArray;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/getLoopColors
-/*****************************************************************/
-window.__pkg__bundleSrc__['131']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 获取一组循环色彩
-__pkg__scope_bundle__.default= function (num, alpha) {
-    if (!(alpha && alpha >= 0 && alpha <= 1)) alpha = 1;
-    // 颜色集合
-    var colorList = [
-        'rgba(84,112,198,' + alpha + ")", 'rgba(145,204,117,' + alpha + ")",
-        'rgba(250,200,88,' + alpha + ")", 'rgba(238,102,102,' + alpha + ")",
-        'rgba(115,192,222,' + alpha + ")", 'rgba(59,162,114,' + alpha + ")",
-        'rgba(252,132,82,' + alpha + ")", 'rgba(154,96,180,' + alpha + ")",
-        'rgba(234,124,204,' + alpha + ")"
-    ];
-
-    var colors = [];
-
-    // 根据情况返回颜色数组
-    if (num <= colorList.length) {
-        // 这种情况就不需要任何处理
-        return colorList;
-    } else {
-        // 如果正好是集合长度的倍数
-        if (num % colorList.length == 0) {
-            // 将颜色数组循环加入后再返回
-            for (var i = 0; i < (num / colorList.length); i++) {
-                colors = colors.concat(colorList);
-            }
-        } else {
-            for (var j = 1; j < (num / colorList.length); j++) {
-                colors = colors.concat(colorList);
-            }
-            // 防止最后一个颜色和第一个颜色重复
-            if (num % colorList.length == 1) {
-                colors = colors.concat(colorList[4]);
-            } else {
-                for (var k = 0; k < num % colorList.length; k++) {
-                    colors = colors.concat(colorList[k]);
-                }
-            }
-        }
-    }
-
-    // 返回结果
-    return colors;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/extend/ruler
-/*****************************************************************/
-window.__pkg__bundleSrc__['132']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('133');
-var dotRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('134');
-var initConfig=__pkg__scope_args__.initConfig;
-
-
-/**
- * attr = {
- *    x,y 刻度尺的起点位置
- *    direction 刻度尺的方向：LR|RL|TB|BT
- *    length 刻度尺的长度
- *    mark-direction 刻度尺小刻度在前进方向的位置：right|left
- *    value-position 刻度尺刻度文字的位置：mark|between
- *    color 刻度尺颜色
- *    value 值
- *    font-size 刻度文字大小
- *    deg 文字旋转度数
- * }
- */
-__pkg__scope_bundle__.default= function (painter, attr) {
-    var i, markPosition;
-
-    var value = attr.value;
-
-    attr = initConfig({
-        "direction": "LR",
-        "mark-direction": "right",
-        "value-position": "mark",
-        "color": 'black',
-        "font-size": 12,
-        deg: 0
-    }, attr);
-
-    painter.config({
-        'lineWidth': 1,
-        'fillStyle': attr.color,
-        'strokeStyle': attr.color,
-        'fontSize': attr["font-size"],
-        'textAlign': (attr.direction == 'LR' || attr.direction == 'RL') ? 'center' : (
-            (
-                (attr.direction == 'BT' && attr["mark-direction"] == 'right') ||
-                (attr.direction == 'TB' && attr["mark-direction"] == 'left')
-            ) ? 'left' : 'right'
-        ),
-        "lineDash": [],
-        'textBaseline': 'middle'
-    });
-
-
-
-    // 刻度尺终点坐标
-    var endPosition;
-
-    // 记录小刻度如何计算
-    var dxy;
-
-    if (attr.direction == 'LR') {
-        endPosition = {
-            x: attr.x + attr.length,
-            y: attr.y
-        };
-        dxy = attr["mark-direction"] == 'right' ? [0, 1] : [0, -1];
-    } else if (attr.direction == 'RL') {
-        endPosition = {
-            x: attr.x - attr.length,
-            y: attr.y
-        };
-        dxy = attr["mark-direction"] == 'right' ? [0, -1] : [0, 1];
-    } else if (attr.direction == 'TB') {
-        endPosition = {
-            x: attr.x,
-            y: attr.y + attr.length
-        };
-        dxy = attr["mark-direction"] == 'right' ? [-1, 0] : [1, 0];
-    } else if (attr.direction == 'BT') {
-        endPosition = {
-            x: attr.x,
-            y: attr.y - attr.length
-        };
-        dxy = attr["mark-direction"] == 'right' ? [1, 0] : [-1, 0];
-    } else {
-
-        // 错误提示
-        throw new Error('Type error!');
-    }
-
-    // 绘制主轴
-    painter.beginPath().moveTo(attr.x, attr.y).lineTo(endPosition.x, endPosition.y).stroke();
-
-    var markNumber = attr["value-position"] == "mark" ? value.length : value.length + 1;
-
-    // 绘制刻度
-    var distanceLength = attr.length / (markNumber - 1);
-
-    var dot = dotRender({
-        d: [
-            endPosition.x - attr.x,
-            endPosition.y - attr.y
-        ],
-        p: [
-            attr.x,
-            attr.y
-        ]
-    });
-
-    for (i = 0; i < markNumber; i++) {
-
-        // 刻度
-        markPosition = dot.value();
-        painter.beginPath().moveTo(markPosition[0], markPosition[1]).lineTo(
-            markPosition[0] + dxy[0] * 5,
-            markPosition[1] + dxy[1] * 5
-        ).stroke();
-
-        dot.move(distanceLength);
-    }
-
-    // 绘制刻度上的读数
-    dot = dotRender({
-        d: [
-            endPosition.x - attr.x,
-            endPosition.y - attr.y
-        ],
-        p: [
-            attr.x,
-            attr.y
-        ]
-    });
-
-    if (attr["value-position"] == "between") dot.move(distanceLength * 0.5);
-
-    for (i = 0; i < value.length; i++) {
-        markPosition = dot.value();
-        painter.fillText(value[i], markPosition[0] + dxy[0] * 15, markPosition[1] + dxy[1] * 15, attr.deg);
-        dot.move(distanceLength);
-    }
-
-    return painter;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/dot
-/*****************************************************************/
-window.__pkg__bundleSrc__['133']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('134');
-var initConfig=__pkg__scope_args__.initConfig;
-
-__pkg__scope_args__=window.__pkg__getBundle('135');
-var move =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('136');
-var rotate =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('137');
-var scale =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (config) {
-
-    config = initConfig({
-        // 前进方向
-        d: [1, 1],
-        // 中心坐标
-        c: [0, 0],
-        // 当前位置
-        p: [0, 0]
-    }, config);
-
-    var dotObj = {
-
-        // 前进方向以当前位置为中心，旋转deg度
-        "rotate": function (deg) {
-            var dPx = config.d[0] + config.p[0], dPy = config.d[1] + config.p[1];
-            var dP = rotate(config.p[0], config.p[1], deg, dPx, dPy);
-            config.d = [
-                dP[0] - config.p[0],
-                dP[1] - config.p[1]
-            ];
-            return dotObj;
-        },
-
-        // 沿着当前前进方向前进d
-        "move": function (d) {
-            config.p = move(config.d[0], config.d[1], d, config.p[0], config.p[1]);
-            return dotObj;
-        },
-
-        // 围绕中心坐标缩放
-        "scale": function (times) {
-            config.p = scale(config.c[0], config.c[1], times, config.p[0], config.p[1]);
-            return dotObj;
-        },
-
-        // 当前位置
-        "value": function () {
-            return config.p;
-        }
-
-    };
-
-    return dotObj;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/config
-/*****************************************************************/
-window.__pkg__bundleSrc__['134']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 初始化配置文件
-
-__pkg__scope_bundle__.initConfig = function (init, data) {
-    var key;
-    for (key in data)
-        try {
-            init[key] = data[key];
-        } catch (e) {
-            throw new Error("Illegal property value！");
-        }
-    return init;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/move
-/*****************************************************************/
-window.__pkg__bundleSrc__['135']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）沿着向量（ax,ay）方向移动距离d
-__pkg__scope_bundle__.default= function (ax, ay, d, x, y) {
-    var sqrt = Math.sqrt(ax * ax + ay * ay);
-    return [
-        +(ax * d / sqrt + x).toFixed(7),
-        +(ay * d / sqrt + y).toFixed(7)
-    ];
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/rotate
-/*****************************************************************/
-window.__pkg__bundleSrc__['136']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）围绕中心（cx,cy）旋转deg度
-__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
-    var cos = Math.cos(deg), sin = Math.sin(deg);
-    return [
-        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
-        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
-    ];
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/scale
-/*****************************************************************/
-window.__pkg__bundleSrc__['137']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）围绕中心（cx,cy）缩放times倍
-__pkg__scope_bundle__.default= function (cx, cy, times, x, y) {
-    return [
-        +(times * (x - cx) + cx).toFixed(7),
-        +(times * (y - cy) + cy).toFixed(7)
-    ];
 };
 
     return __pkg__scope_bundle__;

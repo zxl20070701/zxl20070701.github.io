@@ -23,6 +23,10 @@
         tag="snipping-tool" ui-on:dblclick="goto" ui-right-menu:app>
         截图工具
     </li>
+    <li class="link" ui-bind:select="select=='audio-editor'?'yes':'no'" ui-on:click.stop="doSelect"
+        title="可以对音频文件进行切割、合并等操作，支持多种格式" tag="audio-editor" ui-on:dblclick="goto" ui-right-menu:app>
+        音频编辑器
+    </li>
 </ul>
 <div class="taskline" ui-right-menu:desktop-line>
     <span class="begin" title="快速开始" tag="begin" ui-on:click.stop="toggleWin"></span>
