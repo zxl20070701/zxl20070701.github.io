@@ -1,23 +1,26 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/browser/index.js
+// Original file:./src/mobile/file-manager/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['77']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('180');
+    __pkg__scope_args__=window.__pkg__getBundle('200');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('181');
+__pkg__scope_args__=window.__pkg__getBundle('201');
 
 
 __pkg__scope_bundle__.default= function (obj) {
     return {
-        name: "browser",
+        name: "file-manager",
         render: template,
+        data: {
+
+        },
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "浏览器" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './safari.png');
+            document.getElementsByTagName('title')[0].innerText = "资源管理器" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './file-manager.png');
         }
     };
 };
@@ -26,20 +29,20 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/browser/index.html
+// Original file:./src/mobile/file-manager/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['180']=function(){
+window.__pkg__bundleSrc__['200']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"浏览器","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"资源管理器","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/browser/index.scss
+// Original file:./src/mobile/file-manager/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['181']=function(){
+window.__pkg__bundleSrc__['201']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

@@ -1,0 +1,50 @@
+[dialog-view='echarts-example']>div.pie-simple {
+    position: relative;
+
+    .tooltip {
+        position: absolute;
+        transition-duration: 300ms;
+        transition-timing-function: linear;
+        transition-property: left top;
+        pointer-events: none;
+
+        &>div {
+            box-shadow: rgb(0 0 0 / 20%) 1px 2px 10px;
+            border-style: solid;
+            background-color: rgb(255, 255, 255);
+            border-width: 1px;
+            border-radius: 4px;
+            color: rgb(102, 102, 102);
+            font: 14px / 21px sans-serif;
+            padding: 10px;
+            text-align: left;
+
+            &>h6 {
+                font-size: 14px;
+                color: #666;
+                font-weight: 400;
+                line-height: 1;
+            }
+
+            &>i {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                vertical-align: middle;
+                margin: 0 5px;
+            }
+
+            &>span {
+                font-size: 14px;
+                color: #666;
+                font-weight: 400;
+
+                &:last-child {
+                    padding-left: 30px;
+                    font-weight: 900;
+                }
+            }
+        }
+    }
+}

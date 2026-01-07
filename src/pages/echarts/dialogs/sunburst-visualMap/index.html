@@ -1,0 +1,18 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        旭日图使用视觉编码
+    </h2>
+    <div class="src-url">
+        查看源码：
+        <a ui-bind:href="srcUrl" ui-bind="srcUrl" target="_blank"></a>
+    </div>
+    <div class="win-btns">
+        <button class="close" ui-on:click.stop="$closeDialog">关闭</button>
+    </div>
+</header>
+<div class="content" ref="mycontent">
+
+    <!-- 绘制图表 -->
+    <canvas ref="mycanvas"></canvas>
+
+</div>

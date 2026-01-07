@@ -1,0 +1,262 @@
+[page-view="echarts"] {
+  width: calc(100vw - 160px);
+  height: calc(100vh - 70px);
+  left: 80px;
+  top: 20px;
+  background-color: #f3f4fa;
+
+  &[focus="no"] {
+    & > header {
+      background-color: rgba(244, 242, 242, 0.85);
+    }
+  }
+
+  & > header {
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 6px 0px grey;
+    position: relative;
+
+    & > h2 {
+      font-size: 20px;
+      line-height: 50px;
+      padding-left: 60px;
+      background-image: url("./echarts/logo.png");
+      background-repeat: no-repeat;
+      background-position: 10px center;
+      background-size: auto 80%;
+      font-family: cursive;
+    }
+  }
+
+  & > div {
+    &.content {
+      display: flex;
+      height: calc(100% - 50px);
+
+      & > div {
+        overflow: auto;
+
+        &.nav {
+          flex-basis: 200px;
+          flex-shrink: 0;
+          background-color: white;
+          padding: 10px 0;
+
+          & > h4 {
+            line-height: 45px;
+            height: 45px;
+            color: rgb(110, 112, 121);
+            padding-left: 50px;
+            font-weight: 200;
+            background-size: 20px auto;
+            background-repeat: no-repeat;
+            background-position: 20px center;
+            cursor: pointer;
+
+            &:hover {
+              border-left: 3px solid rgb(84, 112, 198);
+              background-color: rgba(193, 191, 191, 0.33);
+            }
+
+            &.line {
+              background-image: url("./echarts/line.svg");
+            }
+
+            &.bar {
+              background-image: url("./echarts/bar.svg");
+            }
+
+            &.pie {
+              background-image: url("./echarts/pie.svg");
+            }
+
+            &.scatter {
+              background-image: url("./echarts/scatter.svg");
+            }
+
+            &.map {
+              background-image: url("./echarts/map.svg");
+            }
+
+            &.candlestick {
+              background-image: url("./echarts/candlestick.svg");
+            }
+
+            &.radar {
+              background-image: url("./echarts/radar.svg");
+            }
+
+            &.graph {
+              background-image: url("./echarts/graph.svg");
+            }
+
+            &.tree {
+              background-image: url("./echarts/tree.svg");
+            }
+
+            &.treemap {
+              background-image: url("./echarts/treemap.svg");
+            }
+
+            &.sunburst {
+              background-image: url("./echarts/sunburst.svg");
+            }
+
+            &.parallel {
+              background-image: url("./echarts/parallel.svg");
+            }
+
+            &.sankey {
+              background-image: url("./echarts/sankey.svg");
+            }
+
+            &.funnel {
+              background-image: url("./echarts/funnel.svg");
+            }
+
+            &.gauge {
+              background-image: url("./echarts/gauge.svg");
+            }
+
+            &.dataZoom {
+              background-image: url("./echarts/dataZoom.svg");
+            }
+
+            &.custom {
+              background-image: url("./echarts/custom.svg");
+            }
+
+            &.WebGL {
+              background-image: url("./echarts/webgl.svg");
+            }
+          }
+        }
+
+        &.menu {
+          flex-grow: 1;
+          padding: 30px;
+
+          & > h4 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            font-weight: normal;
+            color: rgb(70, 70, 70);
+            font-size: 20px;
+            border-bottom: 1px solid rgb(225, 229, 242);
+
+            & > span {
+              font-size: 16px;
+              padding-left: 5px;
+              color: rgb(148, 156, 177);
+              font-weight: 200;
+            }
+          }
+
+          & > ul {
+            & > li {
+              display: inline-block;
+              margin-bottom: 10px;
+              padding: 0 10px;
+
+              &:hover {
+                text-decoration: underline;
+
+                & > div {
+                  background-size: 110% auto;
+                }
+
+                & > h6 {
+                  font-weight: 400;
+                }
+              }
+
+              & > div {
+                width: 175px;
+                height: 133px;
+                background-position: center center;
+                background-size: 100% auto;
+                background-repeat: no-repeat;
+                cursor: pointer;
+                transition: 0.3s ease-in-out;
+                border-radius: 5px;
+                box-shadow: 0 0 20px rgb(0 0 0 / 5%);
+                background-color: white;
+
+                &.pie-simple {
+                  background-image: url("./echarts/examples/pie-simple.webp");
+                }
+
+                &.line-multiple-x-axis {
+                  background-image: url("./echarts/examples/line-multiple-x-axis.webp");
+                }
+
+                &.bar-polar-real-estate {
+                  background-image: url("./echarts/examples/bar-polar-real-estate.webp");
+                }
+
+                &.scatter-bubble-gradient {
+                  background-image: url("./echarts/examples/scatter-bubble-gradient.webp");
+                }
+
+                &.candlestick-simple {
+                  background-image: url("./echarts/examples/candlestick-simple.webp");
+                }
+
+                &.gauge-barometer {
+                  background-image: url("./echarts/examples/gauge-barometer.webp");
+                }
+
+                &.sunburst-visualMap {
+                  background-image: url("./echarts/examples/sunburst-visualMap.webp");
+                }
+
+                &.parallel-simple {
+                  background-image: url("./echarts/examples/parallel-simple.webp");
+                }
+
+                &.money-schedule {
+                  background-image: url("./echarts/examples/money-schedule.jpeg");
+                }
+
+                &.h2o {
+                  background-image: url("./echarts/examples/h2o.jpeg");
+                }
+
+                &.zoom-line {
+                  background-image: url("./echarts/examples/zoom-line.jpeg");
+                }
+
+                &.tree-layout-lr {
+                  background-image: url("./echarts/examples/tree-layout-lr.jpeg");
+                }
+
+                &.sankey-nodeAlign-left {
+                  background-image: url("./echarts/examples/sankey-nodeAlign-left.jpeg");
+                }
+
+                &.tree-radial {
+                  background-image: url("./echarts/examples/tree-radial.jpeg");
+                }
+
+                &.single-wave {
+                  background-image: url("./echarts/examples/single-wave.jpeg");
+                }
+
+                &.css-tree-topleft {
+                  background-image: url("./echarts/examples/css-tree-topleft.jpeg");
+                }
+              }
+
+              & > h6 {
+                text-align: center;
+                line-height: 40px;
+                font-size: 14px;
+                font-weight: 200;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

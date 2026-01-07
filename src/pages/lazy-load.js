@@ -34,4 +34,9 @@ export default {
     "snipping-tool": function () {
         return import('./snipping-tool/index.js')
     },
+
+    // 可视化图表
+    "echarts": function () {
+        return import('./echarts/index.js')
+    },
 };

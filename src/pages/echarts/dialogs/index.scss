@@ -1,0 +1,54 @@
+[dialog-view='echarts-example'] {
+    left: 20px;
+    top: 20px;
+    user-select: none;
+    width: calc(100vw - 40px);
+    height: calc(100vh - 40px);
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        background-color: #ffffff;
+        border-bottom: 1px solid rgb(187, 184, 184);
+        white-space: nowrap;
+        overflow: hidden;
+
+        &>h2 {
+            color: #000000;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./echarts/logo.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            display: inline-block;
+            font-family: sans-serif;
+        }
+
+        &>div {
+            &.src-url {
+                line-height: 17px;
+                font-size: 12px;
+                display: inline-block;
+                padding-left: 50px;
+                padding-top: 8px;
+                vertical-align: top;
+
+                &>a {
+                    display: block;
+                    text-decoration: underline;
+                    color: rgb(3, 136, 230);
+                }
+            }
+        }
+    }
+
+    &>div {
+        &.content {
+            height: calc(100% - 50px);
+            text-align: center;
+            background-color: white;
+            overflow: hidden;
+        }
+    }
+}

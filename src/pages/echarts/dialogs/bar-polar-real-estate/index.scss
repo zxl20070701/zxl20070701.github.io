@@ -1,0 +1,23 @@
+[dialog-view='echarts-example']>div.bar-polar-real-estate {
+    position: relative;
+
+    .tooltip {
+        position: absolute;
+        transition-duration: 100ms;
+        transition-timing-function: linear;
+        transition-property: left top;
+        pointer-events: none;
+
+        &>div {
+            box-shadow: rgb(0 0 0 / 20%) 1px 2px 10px;
+            border-style: solid;
+            background-color: rgb(255, 255, 255);
+            border-width: 1px;
+            border-radius: 4px;
+            color: rgb(102, 102, 102);
+            font: 14px / 21px sans-serif;
+            padding: 10px;
+            text-align: left;
+        }
+    }
+}

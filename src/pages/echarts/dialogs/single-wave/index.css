@@ -1,0 +1,35 @@
+.circle {
+  width: 400px;
+  height: 400px;
+  background-color: aliceblue;
+  margin: 100px auto;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  left: calc(50% - 400px);
+  width: 800px;
+  height: 800px;
+  background-color: aqua;
+  border-radius: 300px;
+  top: calc(300px);
+  animation: rotate_animation 10s infinite;
+}
+
+.value {
+  line-height: 400px;
+  font-size: 60px;
+}
+
+@keyframes rotate_animation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

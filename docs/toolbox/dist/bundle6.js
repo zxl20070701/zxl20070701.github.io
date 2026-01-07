@@ -41,6 +41,11 @@ window.__pkg__bundleSrc__['37']=function(){
     "snipping-tool": function () {
         return window.__pkg__getLazyBundle('./dist/bundle19.js','75')
     },
+
+    // 可视化图表
+    "echarts": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle20.js','76')
+    },
 };
 
     return __pkg__scope_bundle__;

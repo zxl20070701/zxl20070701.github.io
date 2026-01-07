@@ -5,26 +5,26 @@
 window.__pkg__bundleSrc__['72']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('138');
+    __pkg__scope_args__=window.__pkg__getBundle('140');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('139');
+__pkg__scope_args__=window.__pkg__getBundle('141');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('140');
+__pkg__scope_args__=window.__pkg__getBundle('142');
 var lazyDialogs =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('143');
+__pkg__scope_args__=window.__pkg__getBundle('145');
 var lazyWins =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('146');
+__pkg__scope_args__=window.__pkg__getBundle('148');
 var imageToCanvas =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('116');
+__pkg__scope_args__=window.__pkg__getBundle('118');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('147');
+__pkg__scope_args__=window.__pkg__getBundle('149');
 var getKeyCode =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
@@ -36,7 +36,7 @@ var remove =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('31');
 var isString =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('90');
+__pkg__scope_args__=window.__pkg__getBundle('92');
 var mousePosition =__pkg__scope_args__.default;
 
 
@@ -665,7 +665,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['138']=function(){
+window.__pkg__bundleSrc__['140']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,4,46,85]},{"type":"tag","name":"div","attrs":{"class":"no-view"},"childNodes":[2,3]},{"type":"tag","name":"input","attrs":{"type":"file","ref":"imgFile1","flag":"import","ui-on:change":"openImage","accept":"image/*"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"file","ref":"imgFile2","flag":"append","ui-on:change":"openImage","accept":"image/*","multiple":""},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"menu","ui-dragdrop:desktop":""},"childNodes":[5,7,41]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"图片编辑器","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[8,21,31]},{"type":"tag","name":"li","attrs":{},"childNodes":[9,11]},{"type":"tag","name":"label","attrs":{},"childNodes":[10]},{"type":"text","content":"文件","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[12,15,18]},{"type":"tag","name":"li","attrs":{},"childNodes":[13]},{"type":"tag","name":"label","attrs":{"tag":"imgFile1","ui-on:click":"triggleBtn"},"childNodes":[14]},{"type":"text","content":"打开","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[16]},{"type":"tag","name":"label","attrs":{"ui-on:click":"saveImage"},"childNodes":[17]},{"type":"text","content":"保存","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[19]},{"type":"tag","name":"label","attrs":{"tag":"imgFile2","ui-on:click":"triggleBtn"},"childNodes":[20]},{"type":"text","content":"置入","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[22,24]},{"type":"tag","name":"label","attrs":{},"childNodes":[23]},{"type":"text","content":"图像","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[25,28]},{"type":"tag","name":"li","attrs":{},"childNodes":[26]},{"type":"tag","name":"label","attrs":{"ui-on:click":"editCanvasSize"},"childNodes":[27]},{"type":"text","content":"画布大小","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[29]},{"type":"tag","name":"label","attrs":{"ui-on:click":"editImageSize"},"childNodes":[30]},{"type":"text","content":"图像大小","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[32,34]},{"type":"tag","name":"label","attrs":{},"childNodes":[33]},{"type":"text","content":"窗口","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[35,38]},{"type":"tag","name":"li","attrs":{},"childNodes":[36]},{"type":"tag","name":"label","attrs":{"ui-on:click":"toggleWin","tag":"layer","ui-bind:active":"isMenuOpen.layer?'yes':'no'"},"childNodes":[37]},{"type":"text","content":"图层","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[39]},{"type":"tag","name":"label","attrs":{"ui-on:click":"toggleWin","tag":"tool","ui-bind:active":"isMenuOpen.tool?'yes':'no'"},"childNodes":[40]},{"type":"text","content":"工具箱","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[42,44]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[43]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[45]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tool-config"},"childNodes":[47,51,55,59,63,67,80,84]},{"type":"tag","name":"ul","attrs":{"ui-bind:active":"activeTool=='move'?'yes':'no'"},"childNodes":[48]},{"type":"tag","name":"li","attrs":{},"childNodes":[49,50]},{"type":"text","content":"移动距离：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"move_size"},"childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:active":"activeTool=='eraser'?'yes':'no'"},"childNodes":[52]},{"type":"tag","name":"li","attrs":{},"childNodes":[53,54]},{"type":"text","content":"半径：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"eraser_size"},"childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:active":"activeTool=='eraser-bg'?'yes':'no'"},"childNodes":[56]},{"type":"tag","name":"li","attrs":{},"childNodes":[57,58]},{"type":"text","content":"半径：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"eraser_bg_size"},"childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:active":"activeTool=='drap'?'yes':'no'"},"childNodes":[60]},{"type":"tag","name":"li","attrs":{},"childNodes":[61,62]},{"type":"text","content":"移动距离：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"drap_size"},"childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:active":"activeTool=='painter'?'yes':'no'"},"childNodes":[64]},{"type":"tag","name":"li","attrs":{},"childNodes":[65,66]},{"type":"text","content":"半径：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"painter_size"},"childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:active":"activeTool=='resize'?'yes':'no'"},"childNodes":[68,74,77]},{"type":"tag","name":"li","attrs":{},"childNodes":[69,70,71,72,73]},{"type":"text","content":"方向：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"resize_direction","type":"radio","name":"resize_direction","value":"amplify"},"childNodes":[]},{"type":"text","content":"放大","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"resize_direction","type":"radio","name":"resize_direction","value":"reduce"},"childNodes":[]},{"type":"text","content":"缩小","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[75,76]},{"type":"text","content":"速度：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"resize_velocity"},"childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[78]},{"type":"tag","name":"button","attrs":{"ui-on:click":"resetSize"},"childNodes":[79]},{"type":"text","content":"恢复尺寸","childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:active":"activeTool=='text'?'yes':'no'"},"childNodes":[81]},{"type":"tag","name":"li","attrs":{},"childNodes":[82,83]},{"type":"text","content":"文字大小：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"text_size"},"childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:active":"activeTool=='geometry'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"image","ref":"editorView"},"childNodes":[86,87]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas","ui-bind:style":"'transform:scale('+scale+');left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+height+'px;'"},"childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycursor","ui-bind:style":"'pointer-events:none;transform:scale('+scale+');left:'+left+'px;top:'+top+'px;width:'+width+'px;height:'+height+'px;'"},"childNodes":[]}]
@@ -676,7 +676,7 @@ window.__pkg__bundleSrc__['138']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['139']=function(){
+window.__pkg__bundleSrc__['141']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -690,19 +690,19 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['140']=function(){
+window.__pkg__bundleSrc__['142']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 画布或图像大小
     size: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle27.js','141')
+        return window.__pkg__getLazyBundle('./dist/bundle29.js','143')
     },
 
     // 保存
     save: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle28.js','142')
+        return window.__pkg__getLazyBundle('./dist/bundle30.js','144')
     }
 
 };
@@ -713,19 +713,19 @@ window.__pkg__bundleSrc__['140']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['143']=function(){
+window.__pkg__bundleSrc__['145']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 工具箱
     tool: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle29.js','144')
+        return window.__pkg__getLazyBundle('./dist/bundle31.js','146')
     },
 
     // 图层
     layer: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle30.js','145')
+        return window.__pkg__getLazyBundle('./dist/bundle32.js','147')
     }
 
 };
@@ -736,7 +736,7 @@ window.__pkg__bundleSrc__['143']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/imageToCanvas
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['148']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (image, left, top, width, height) {
@@ -765,20 +765,20 @@ window.__pkg__bundleSrc__['146']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['116']=function(){
+window.__pkg__bundleSrc__['118']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('117');
+    __pkg__scope_args__=window.__pkg__getBundle('119');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('119');
+__pkg__scope_args__=window.__pkg__getBundle('121');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('117');
+__pkg__scope_args__=window.__pkg__getBundle('119');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -1065,10 +1065,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['117']=function(){
+window.__pkg__bundleSrc__['119']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('118');
+    __pkg__scope_args__=window.__pkg__getBundle('120');
 var arc =__pkg__scope_args__.default;
 
 
@@ -1187,7 +1187,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['118']=function(){
+window.__pkg__bundleSrc__['120']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1248,7 +1248,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['119']=function(){
+window.__pkg__bundleSrc__['121']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -1288,7 +1288,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
+window.__pkg__bundleSrc__['149']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
@@ -1493,7 +1493,7 @@ __pkg__scope_bundle__.default= function (callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/mousePosition
 /*****************************************************************/
-window.__pkg__bundleSrc__['90']=function(){
+window.__pkg__bundleSrc__['92']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取鼠标相对特定元素左上角位置

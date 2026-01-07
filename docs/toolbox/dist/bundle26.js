@@ -1,89 +1,105 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/regexper-visualization/index.js
+// Original file:./src/mobile/npm-download/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['82']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('190');
+    __pkg__scope_args__=window.__pkg__getBundle('214');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('191');
+__pkg__scope_args__=window.__pkg__getBundle('215');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('106');
-var regexpToJson =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('113');
-var drawImage =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('116');
+__pkg__scope_args__=window.__pkg__getBundle('124');
 var canvasRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
+__pkg__scope_args__=window.__pkg__getBundle('126');
+var getValue =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('129');
+var toValue =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('130');
+var ruler =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('131');
+var getLoopColors =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('132');
+var drawRuler =__pkg__scope_args__.default;
+
 
 __pkg__scope_bundle__.default= function (obj) {
-    var urlObj = urlFormat();
 
     return {
-        name: "regexper-visualization",
+        name: "npm-download",
         render: template,
-        data: {
-            expressVal: obj.ref(decodeURIComponent(urlObj.params.express || "") || "\\w{1,5}[a-e0-8]|4(534)5(35{3}|d)"),
-            isString: obj.ref(urlObj.params.isString || "no"),
-            uniqueHash: new Date().valueOf()
-        },
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "正则表达式可视化" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './regexper-visualization.png');
+            document.getElementsByTagName('title')[0].innerText = "Npm Download" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './npm.png');
         },
         mounted: function () {
+            var _this = this;
 
-            // 调用显示
-            this.doDisplay("load");
+            var urlObj = urlFormat();
+            if (!urlObj.params.packages || !urlObj.params.interval) {
+                alert("参数错误");
+                return;
+            } else {
 
-            this._refs['is-string-' + this.isString].value.setAttribute('checked', 'checked');
+                getValue(urlObj.params.packages).then(function (npmOralData) {
 
-        },
-        methods: {
-            doIsString: function (event, target) {
-                this.isString = target.getAttribute('tag');
-                this.doDisplay();
-            },
-            doDisplay: function (flag) {
+                    // 对npm数据解析
+                    var npmData = {}, max = 0, len = 0;
+                    for (var pkgName in npmOralData) {
+                        if (npmOralData[pkgName]) {
+                            npmData[pkgName] = toValue(npmOralData[pkgName].downloads, +urlObj.params.interval);
 
-                // 如果不是初始化打开时候触发的，需要更新地址进行记录
-                if (flag != 'load') {
-                    window.location.href = "#/regexper-visualization?express=" + encodeURIComponent(this.expressVal) + "&isString=" + this.isString;
-                }
+                            if (max < npmData[pkgName].max) max = npmData[pkgName].max;
+                            len += 1;
+                        }
+                    }
 
-                // 求解绘制需要的信息
-                var imageData = regexpToJson(this.expressVal, this.isString == 'yes', this._refs.help.value);
+                    if (len <= 0) {
+                        return;
+                    }
 
-                // 设置画布大小
-                var canvas = this._refs.mycanvas.value;
-                canvas.setAttribute('width', imageData.width + 60);
-                canvas.setAttribute('height', imageData.height + 20);
+                    // 获取画笔
+                    var painter = canvasRender(_this._refs.mycanvas.value);
 
-                // 获取画笔并进行初始化
-                var painter = canvasRender(canvas).config({
-                    textAlign: "center",
-                    "fontFamily": "sans-serif"
+                    var width = +_this._refs.mycanvas.value.getAttribute('width');
+                    var height = +_this._refs.mycanvas.value.getAttribute('height');
+
+                    // 求解刻度尺
+                    var rulerData = ruler(max, 0, 5);
+                    var colors = getLoopColors(len);
+
+                    // 绘制刻度尺
+                    drawRuler(painter, {
+                        x: 20,
+                        y: 50,
+                        value: rulerData,
+                        direction: 'LR',
+                        "mark-direction": 'left',
+                        length: width - 70
+                    });
+
+                    for (var pkgName in npmData) {
+                        painter.config({
+                            strokeStyle: colors.shift()
+                        }).beginPath();
+                        for (var index = 0; index < npmData[pkgName].value.length; index++) {
+                            painter.lineTo(20 + (npmData[pkgName].value[index] / max) * (width - 70), 50 + (index / (npmData[pkgName].value.length - 1)) * (height - 70));
+                        }
+                        painter.stroke();
+                    }
+
+
                 });
-
-                // 绘制
-                window.group_index = 1;
-                drawImage(painter, imageData, 30, 10);
-
-                // 绘制开头和结尾
-
-                painter.beginPath().moveTo(20, imageData.height * 0.5 + 10).lineTo(30, imageData.height * 0.5 + 10).stroke();
-                painter.beginPath().moveTo(imageData.width + 40, imageData.height * 0.5 + 10).lineTo(imageData.width + 30, imageData.height * 0.5 + 10).stroke();
-
-                painter.fillCircle(15, imageData.height * 0.5 + 10, 5);
-                painter.fillCircle(imageData.width + 45, imageData.height * 0.5 + 10, 5);
 
             }
         }
@@ -94,899 +110,147 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/regexper-visualization/index.html
+// Original file:./src/mobile/npm-download/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['190']=function(){
+window.__pkg__bundleSrc__['214']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,10,11,13,19,20]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"help-hidden","ref":"help"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"expressVal"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDisplay"},"childNodes":[12]},{"type":"text","content":"显示","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"isString"},"childNodes":[14,15,16,17,18]},{"type":"tag","name":"input","attrs":{"type":"radio","ui-bind:name":"\"isString\"+uniqueHash","ref":"is-string-yes","ui-on:click":"doIsString","tag":"yes"},"childNodes":[]},{"type":"text","content":"是字符串","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"radio","ui-bind:name":"\"isString\"+uniqueHash","ref":"is-string-no","ui-on:click":"doIsString","tag":"no"},"childNodes":[]},{"type":"text","content":"不是字符串","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"canvas"},"childNodes":[21]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[22]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[4]},{"type":"text","content":"Npm Download","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[8]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/regexper-visualization/index.scss
+// Original file:./src/mobile/npm-download/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['191']=function(){
+window.__pkg__bundleSrc__['215']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"regexper-visualization\"]{\n\npadding-top: 30px;\n\nfont-size: 0;\n\n}\n\n [page-view=\"regexper-visualization\"]>div.help-hidden{\n\nposition: fixed;\n\nfont-size: 12px;\n\nfont-family: sans-serif;\n\npadding: 0;\n\nborder: none;\n\nbottom: -100px;\n\n}\n\n [page-view=\"regexper-visualization\"]>div.canvas{\n\nwidth: 100vw;\n\nheight: calc(var(--height) - 173px);\n\noverflow: auto;\n\npadding: 10px;\n\n}\n\n [page-view=\"regexper-visualization\"]>div.canvas canvas{\n\nbackground-color: white;\n\n}\n\n [page-view=\"regexper-visualization\"]{\n\ntext-align: center;\n\n}\n\n [page-view=\"regexper-visualization\"] input[type=\"text\"]{\n\nwidth: calc(100vw - 70px);\n\nheight: 30px;\n\npadding: 0 10px;\n\n}\n\n [page-view=\"regexper-visualization\"]>button{\n\nheight: 30px;\n\nmargin-left: 10px;\n\nbackground-color: #97932e;\n\ncolor: #fefefe;\n\ncursor: pointer;\n\n}\n\n [page-view=\"regexper-visualization\"] hr{\n\nmargin: 20px 0;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString{\n\nmargin-top: 10px;\n\nfont-size: 12px;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString input{\n\nvertical-align: sub;\n\n}\n\n [page-view=\"regexper-visualization\"] .isString span{\n\ndisplay: inline-block;\n\nwidth: 20px;\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"npm-download\"]>canvas{\n\nwidth: 100%;\n\nheight: calc(100% - 45px);\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/regexpToJson/index
+// Original file:./src/tool/canvas/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['106']=function(){
+window.__pkg__bundleSrc__['124']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('107');
-var pretreatment =__pkg__scope_args__.default;
+    __pkg__scope_args__=window.__pkg__getBundle('118');
+var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('108');
-var analyseExpress =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('125');
+var assemble =__pkg__scope_args__.default;
 
 
-__pkg__scope_bundle__.default= function (express, _isString, helpEl) {
+__pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 
-    // 预处理
-    express = pretreatment(express, _isString);
+    // 初始化尺寸
+    width = width || canvas.clientWidth;
+    height = height || canvas.clientHeight;
 
-    // 单词分析
-    var expressArray = analyseExpress(express.trim(), helpEl);
+    // 获取绘制画笔
+    var drawPainter = canvasRender(canvas, width, height, {}, isScale);
 
-    // 补充辅助括号
-    expressArray.unshift(["?@"]);
-    expressArray.unshift('(');
-    expressArray.push(')');
+    // 获取区域画笔
+    var regionPainter = canvasRender(document.createElement('canvas'), width, height, {
 
-    /**
-     * 接下来，我们将进行结构分析，
-     * 获取完整的尺寸大小和结点之间的关系
-     */
-    return (function calcImageData(index) {
+        // https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+        willReadFrequently: true
+    });
 
-        var imageData = {
-            width: 0,
-            height: 0,
+    var regions = {}; //区域映射表
+    var regionAssemble = assemble(0, 255, 10, 3);
 
-            // 考虑到有的分组需要捕获，有的不记录等，对每个分组添加说明
-            // no-group  非分组
-            // group 匹配,并捕获文本到自动命名的组里
-            // ?: 匹配,不捕获匹配的文本，也不给此分组分配组号
-            // ?= 零宽断言，匹配目标的后面是
-            // ?! 零宽断言，匹配目标的后面不是
-            // ?@ 辅助组
-            flag: "no-group",
+    var drawRegion = false;
 
-            // 标记当前组循环次数
-            max: 1, min: 1,
+    var instance = {
 
-            type: "组",
-
-            // 记录并列的一列列内容
-            contents: []
-        };
-
-        // 判断分组标志
-        if (expressArray[index] == '(') {
-            imageData.flag = 'group';
-            index += 1;
-        }
-
-        // 表示一行（一个组可以有并列的多行）
-        var rowObject = {
-            contents: [],
-            width: 0,
-            height: 0
-        }, i;
-
-        for (i = index; i < expressArray.length; i++) {
-
-            // 说明开始一个新的匹配分组
-            if (expressArray[i] == '(') {
-                var _imageData = calcImageData(i);
-                rowObject.contents.push(_imageData[0]);
-
-                // 更新大小
-                rowObject.width += _imageData[0].width;
-                if (rowObject.height < _imageData[0].height) rowObject.height = _imageData[0].height;
-
-                i = _imageData[1];
+        // 配置画笔
+        config: function () {
+            if (arguments.length === 1) {
+                if (typeof arguments[0] !== "object") return drawPainter.config([arguments[0]]);
+                for (var key in arguments[0]) {
+                    if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(key, arguments[0][key]);
+                    drawPainter.config(key, arguments[0][key]);
+                }
+            } else if (arguments.length === 2) {
+                if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(arguments[0], arguments[1]);
+                drawPainter.config(arguments[0], arguments[1]);
             }
+            return instance;
+        },
 
-            // 分组匹配结束，返回
-            else if (expressArray[i] == ')') {
+        // 设置当前绘制区域名称
+        setRegion: function (regionName) {
+            if (regionName === false) {
+                drawRegion = false;
+            } else {
+                drawRegion = true;
 
-                if (expressArray[i + 1] && expressArray[i + 1].type == "分组循环") {
-                    imageData.max = expressArray[i + 1].max;
-                    imageData.min = expressArray[i + 1].min;
-                    i++;
+                if (regions[regionName] == undefined) {
+                    var tempColor = regionAssemble();
+                    regions[regionName] = "rgb(" + tempColor[0] + "," + tempColor[1] + "," + tempColor[2] + ")";
                 }
 
-                break;
+                regionPainter.config({
+                    fillStyle: regions[regionName],
+                    strokeStyle: regions[regionName]
+                });
             }
 
-            // 需要换行（新的行）
-            else if (expressArray[i] == '|') {
-                imageData.contents.push(rowObject);
+            return instance;
+        },
 
-                // 更新大小
-                if (rowObject.width > imageData.width) imageData.width = rowObject.width;
-                imageData.height += rowObject.height;
+        // 获取当前事件触发的区域名称
+        getRegion: function (event) {
 
-                //  重置数据
-                rowObject = {
-                    contents: [],
-                    width: 0,
-                    height: 0
+            // 获取点击点的颜色
+            var currentRGBA = regionPainter.painter.getImageData(event.offsetX - 0.5, event.offsetY - 0.5, 1, 1).data;
+
+            // 查找当前点击的区域
+            for (var key in regions) {
+                if ("rgb(" + currentRGBA[0] + "," + currentRGBA[1] + "," + currentRGBA[2] + ")" == regions[key]) {
+                    return key;
+                }
+            }
+
+            return false;
+        }
+
+    };
+
+    for (var key in drawPainter) {
+        (function (key) {
+
+            // 如果是获取原生画笔
+            if ('painter' == key) {
+                instance.painter = function () {
+                    return {
+                        draw: drawPainter.painter,
+                        region: regionPainter.painter
+                    };
+                };
+            }
+
+            // 特殊的过滤掉
+            else if (['config'].indexOf(key) < 0) {
+                instance[key] = function () {
+                    if (drawRegion) regionPainter[key].apply(regionPainter, arguments);
+                    var result = drawPainter[key].apply(drawPainter, arguments);
+                    return result.__only__painter__ ? instance : result;
                 };
 
             }
-
-            else {
-
-                for (var j = 0; j < expressArray[i].length; j++) {
-
-                    // 如果是分组标记
-                    if (j == 0 && ['?=', '?!', '?:', '?@'].indexOf(expressArray[i][0]) > -1) {
-                        imageData.flag = expressArray[i][0];
-                    }
-
-                    // 否则就是普通的条目
-                    else {
-
-                        rowObject.contents.push(expressArray[i][j]);
-
-                        // 更新大小
-                        rowObject.width += expressArray[i][j].width;
-                        if (rowObject.height < expressArray[i][j].height) rowObject.height = expressArray[i][j].height;
-                    }
-                }
-
-            }
-
-        }
-
-        if (rowObject.contents.length > 0) imageData.contents.push(rowObject);
-
-        // 更新大小
-        if (rowObject.width > imageData.width) imageData.width = rowObject.width;
-        imageData.height += rowObject.height;
-
-        return [imageData, i];
-    })(0)[0];
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/regexpToJson/pretreatment
-/*****************************************************************/
-window.__pkg__bundleSrc__['107']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 预处理的任务就是把不同可能的输入统一成一样的格式，
-// 这样的好处是后续判断的时候可以在一个比较小的集合里面考虑
-
-__pkg__scope_bundle__.default= function (express, _isString) {
-
-    if (_isString) {
-        var _express = "";
-        for (var i = 0; i < express.length; i++) {
-            if (express[i] == '\\') {
-                if (i + 1 < express.length) _express += express[i + 1];
-                i += 1;
-            } else {
-                _express += express[i];
-            }
-        }
-        express = _express;
-    } else {
-
-        if (/^\//.test(express) && /\/$/.test(express)) {
-            express = express.replace(/^\//, '').replace(/\/$/, '');
-        }
+        })(key);
     }
 
-    return express;
+    return instance;
 };
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/regexpToJson/analyseExpress
-/*****************************************************************/
-window.__pkg__bundleSrc__['108']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('109');
-var ReadString =__pkg__scope_args__.default;
-
-
-// 特殊字符处理
-__pkg__scope_args__=window.__pkg__getBundle('110');
-var specialWord =__pkg__scope_args__.default;
-
-
-// 范围分析
-__pkg__scope_args__=window.__pkg__getBundle('111');
-var analysePurview =__pkg__scope_args__.default;
-
-
-// 用于辅助计算内容宽
-__pkg__scope_args__=window.__pkg__getBundle('112');
-var calcWidth =__pkg__scope_args__.default;
-
-
-// 对表达式进行结构分析
-
-__pkg__scope_bundle__.default= function (express, helpEl) {
-
-    // 生成字符串分析辅助对象
-    var reader = ReadString(express);
-
-    // 读取第一个字符后准备分析
-    reader.readNext();
-
-    var expressArray = [], temp;
-
-    while (true) {
-
-        // 如果还有字符，分析继续
-        if (reader.index >= express.length) break;
-
-        // 如果遇到边界字符，截断
-        if (reader.currentChar == ')' || reader.currentChar == '(' || reader.currentChar == '|') {
-            expressArray.push(reader.currentChar);
-            reader.readNext();
-        }
-
-        // 否则就是一段内容
-        else {
-
-            // 内容按照最小单元分割
-            var subExpressArray = [];
-            var tempContent = "";
-
-            var pushContentItem = function (isSpecialFlag) {
-                if (tempContent != "") {
-
-                    var tempContentArray;
-                    if (isSpecialFlag && tempContent.length > 1) {
-                        tempContentArray = [
-                            tempContent.substring(0, tempContent.length - 1),
-                            tempContent[tempContent.length - 1]
-                        ];
-                    } else {
-                        tempContentArray = [tempContent];
-                    }
-
-                    for (var _index = 0; _index < tempContentArray.length; _index++) {
-                        subExpressArray.push({
-                            content: tempContentArray[_index],
-                            type: '内容',
-                            max: 1,
-                            min: 1,
-                            height: 44,
-                            width: calcWidth(tempContentArray[_index], helpEl) + 30
-                        });
-                    }
-
-                    tempContent = "";
-                }
-            };
-
-            while (reader.index < express.length) {
-
-                // 如果遇到边界字符，当前段内容分析完毕
-                if (reader.currentChar == ')' || reader.currentChar == '(' || reader.currentChar == '|') {
-                    pushContentItem();
-                    break;
-                } else {
-
-                    // 转义
-                    if (reader.currentChar == '\\') {
-                        pushContentItem();
-
-                        if (reader.getNextN(2) == '\\x') {
-                            temp = specialWord(reader.getNextN(4));
-                            reader.readNext(); reader.readNext(); reader.readNext(); reader.readNext();
-                        } else {
-                            temp = specialWord(reader.getNextN(2));
-                            reader.readNext(); reader.readNext();
-                        }
-
-                        subExpressArray.push({
-                            content: temp[0],
-                            type: temp[1],
-                            max: 1,
-                            min: 1,
-                            width: calcWidth(temp[0], helpEl) + 30,
-                            height: 44
-                        });
-                    }
-
-                    // 备选
-                    else if (reader.currentChar == '[') {
-                        pushContentItem();
-                        temp = "";
-                        while (reader.currentChar != ']') {
-                            temp += reader.currentChar;
-                            reader.readNext();
-                        }
-                        temp = analysePurview(temp.replace(/^\[/, ''), helpEl);
-                        subExpressArray.push({
-                            content: temp[0],
-                            type: "范围",
-                            max: 1,
-                            min: 1,
-                            width: temp[1] + 20, // 5+X+4+4+4+X+5  +20
-                            height: temp[0].length * 28 + 26 // 5+24+4+24+4+...+5  +20
-                        });
-                        reader.readNext();
-                    }
-
-                    // 如果是分组的特殊说明符号
-                    else if (
-                        reader.currentChar == '?' &&
-                        ['?=', '?!', '?:'].indexOf(reader.getNextN(2)) > -1 &&
-                        expressArray[expressArray.length - 1] == '(' &&
-                        subExpressArray.length == 0
-                    ) {
-                        pushContentItem();
-                        subExpressArray.push(reader.getNextN(2));
-                        reader.readNext(); reader.readNext();
-                    }
-
-                    // 范围
-                    // 对于范围而言，它应该是和前面一个内容单元为一组
-                    else if (['{', '*', '?', '+'].indexOf(reader.currentChar) > -1) {
-                        pushContentItem(true);
-
-                        temp = [];
-
-                        // {}
-                        if (reader.currentChar == '{') {
-
-                            while (reader.currentChar != '}') {
-                                temp += reader.currentChar;
-                                reader.readNext();
-                            }
-
-                            temp = temp.replace(/^\{/, '').split(',');
-
-                            // 最小值
-                            if (temp[0].trim() == '') {
-                                temp[0] = -1;
-                            } else {
-                                temp[0] = +temp[0];
-                            }
-
-                            // 最大值
-                            if (temp.length <= 1) {
-                                temp[1] = temp[0];
-                            } else if (temp[1].trim() == '') {
-                                temp[1] = -1;
-                            } else {
-                                temp[1] = +temp[1];
-                            }
-
-                        }
-
-                        //  + * ？
-                        else {
-
-                            temp = {
-                                "+": [1, -1],
-                                "*": [0, -1],
-                                "?": [0, 1]
-                            }[reader.currentChar];
-
-                        }
-
-                        // 如果是标记分组循环次数的
-                        if (subExpressArray.length == 0) {
-                            expressArray.push({
-                                type: "分组循环",
-                                max: temp[1],
-                                min: temp[0]
-                            });
-                        }
-
-                        // 否则就是普通的
-                        else {
-                            subExpressArray[subExpressArray.length - 1].min = temp[0];
-                            subExpressArray[subExpressArray.length - 1].max = temp[1];
-                        }
-
-                        reader.readNext();
-
-                    }
-
-                    // 否则就是普通的常量了
-                    else {
-
-                        if (reader.currentChar == '.') {
-                            pushContentItem();
-                            subExpressArray.push({
-                                content: "任意字符",
-                                type: '描述',
-                                max: 1,
-                                min: 1,
-                                height: 44,
-                                width: calcWidth('任意字符', helpEl) + 30
-                            });
-                        } else {
-                            tempContent += reader.currentChar;
-                        }
-
-                        reader.readNext();
-                    }
-                }
-
-            }
-            pushContentItem();
-            expressArray.push(subExpressArray);
-
-        }
-
-    }
-
-    return expressArray;
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/ReadString
-/*****************************************************************/
-window.__pkg__bundleSrc__['109']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (express) {
-
-    var reader = {
-        index: -1,
-        currentChar: null
-    };
-
-    // 读取下一个字符
-    reader.readNext = function () {
-        reader.currentChar = reader.index++ < express.length - 1 ? express[reader.index] : null;
-        return reader.currentChar;
-    };
-
-    // 获取往后num个值
-    reader.getNextN = function (num) {
-        return express.substring(reader.index, num + reader.index > express.length ? express.length : num + reader.index);
-    };
-
-    return reader;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/regexpToJson/specialWord
-/*****************************************************************/
-window.__pkg__bundleSrc__['110']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (word) {
-
-    var specialWords = {
-        "\\w": "单词",
-        "\\W": "非单词",
-        "\\d": "数字",
-        "\\D": "非数字",
-        "\\s": "空白",
-        "\\S": "非空白",
-        "\\b": "单词边界",
-        "\\B": "非单词边界",
-        "\\0": "null",
-        "\\n": "换行",
-        "\\f": "换页",
-        "\\t": "tab缩进",
-        "\\r": "回车",
-        "\\x20": "空格"
-    };
-
-    if (word in specialWords) {
-        return [specialWords[word], '描述'];
-    } else {
-
-        // 还有那种 \1 捕获分组的（考虑到分组个数有限，目前就规定做多9）
-        if (/\\[1-9]/.test(word)) {
-            return ['分组' + word.replace(/\\/, ''), '描述'];
-        }
-
-        // 否则就是普通内容
-        return [word.replace(/^\\/, ''), '内容'];
-    }
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/regexpToJson/analysePurview
-/*****************************************************************/
-window.__pkg__bundleSrc__['111']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-__pkg__scope_args__=window.__pkg__getBundle('110');
-var specialWord =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('112');
-var calcWidth =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (_express, helpEl) {
-
-    var express = [];
-    for (var i = 0; i < _express.length; i++) {
-        if (_express[i] == '\\') {
-            if (_express[i + 1] == 'x') {
-                express.push("\\x" + _express[i + 2] + _express[i + 3]);
-                i += 3;
-            } else {
-                express.push("\\" + _express[i + 1]);
-                i += 1;
-            }
-        } else {
-            express.push(_express[i]);
-        }
-    }
-
-    var purviews = [], width = 0;
-    for (var i = 0; i < express.length; i++) {
-        if (express[i + 1] == '-') {
-
-            var temp1 = specialWord(express[i]);
-            var temp2 = specialWord(express[i + 2]);
-
-            var width1 = calcWidth(temp1[0], helpEl) + 10;
-            var width2 = calcWidth(temp2[0], helpEl) + 10;
-
-            purviews.push([
-
-                {
-                    content: temp1[0],
-                    type: temp1[1],
-                    max: 1,
-                    min: 1,
-                    width: width1,
-                    height: 24
-                },
-                {
-                    content: temp2[0],
-                    type: temp2[1],
-                    max: 1,
-                    min: 1,
-                    width: width2,
-                    height: 24
-                }
-            ]);
-            i += 2;
-
-            var width3 = width1 > width2 ? width1 : width2;
-
-            if (12 + width3 * 2 > width) width = 12 + width3 * 2;
-
-        } else {
-
-            var temp1 = specialWord(express[i]);
-
-            var width1 = calcWidth(temp1[0], helpEl) + 10;
-
-            purviews.push({
-                content: temp1[0],
-                type: temp1[1],
-                max: 1,
-                min: 1,
-                width: width1,
-                height: 24
-            });
-
-            if (width1 > width) width = width1;
-        }
-    }
-
-    return [purviews, width + 10];
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/regexpToJson/calcWidth
-/*****************************************************************/
-window.__pkg__bundleSrc__['112']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 主要用于计算文字的宽
-
-__pkg__scope_bundle__.default= function (texts, helpEl) {
-    helpEl.innerText = texts;
-    var width = helpEl.clientWidth;
-    return width < 14 ? 14 : width;
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/drawImage/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['113']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('114');
-var drawNode =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('115');
-var toLoopText =__pkg__scope_args__.default;
-
-
-var normalConfig = {
-    'strokeStyle': '#000000',
-    'lineDash': [],
-    'lineWidth': 2,
-    "fontSize": 12
-};
-
-__pkg__scope_bundle__.default= function drawImage(painter, imageData, left, top) {
-
-    // 绘制组标记
-    if (imageData.flag != "no-group" && imageData.flag != '?@') {
-
-        painter.config({
-            'strokeStyle': 'red',
-            'lineDash': [2],
-            'lineWidth': 1,
-            'fontSize': 10
-        })
-            .strokeRect(left + 5, top + 5, imageData.width - 10, imageData.height - 10)
-
-            // 提示文字
-            .fillText({
-                "?:": "仅匹配",
-                "?!": "匹配否",
-                "?=": "匹配是",
-                "group": "#" + (window.group_index++)
-            }[imageData.flag], left + imageData.width * 0.5, top);
-
-        // 绘制循环次数
-        if (imageData.min != 1 || imageData.max != 1) {
-
-            painter.fillText(
-                toLoopText(imageData.min, imageData.max),
-                left + imageData.width * 0.5, top + imageData.height
-            );
-
-        }
-    }
-
-    // 统一配置画笔
-    painter.config(normalConfig);
-
-    if (imageData.contents.length > 1) {
-
-        // 绘制并列行的前后连线
-
-        painter
-            .config({
-                lineWidth: 2
-            })
-            .beginPath()
-            .moveTo(left, top + imageData.contents[0].height * 0.5)
-            .lineTo(left, top + imageData.contents[0].height * 0.5 + imageData.height - imageData.contents[imageData.contents.length - 1].height * 0.5 - imageData.contents[0].height * 0.5)
-            .stroke()
-            .beginPath()
-            .moveTo(left + imageData.width, top + imageData.contents[0].height * 0.5)
-            .lineTo(left + imageData.width, top + imageData.contents[0].height * 0.5 + imageData.height - imageData.contents[imageData.contents.length - 1].height * 0.5 - imageData.contents[0].height * 0.5)
-            .stroke();
-    }
-
-    // 绘制一行行的
-    var _top = top;
-    for (var rowNum = 0; rowNum < imageData.contents.length; rowNum++) {
-
-        var _helpWidth = (imageData.width - imageData.contents[rowNum].width) * 0.5;
-
-        // 绘制一列列的
-        var _left = left;
-        for (var colNum = 0; colNum < imageData.contents[rowNum].contents.length; colNum++) {
-
-            var colItem = imageData.contents[rowNum].contents[colNum];
-            var _helpHeight = (imageData.contents[rowNum].height - colItem.height) * 0.5;
-
-            // 绘制开头和结尾的
-
-            var _helpDist = (colItem.type == '组' && colItem.contents.length != 1) ? 0 : 10;
-
-            painter
-                .config({
-                    lineWidth: 2
-                })
-                .beginPath()
-                .moveTo(
-                    colNum == 0 ?
-                        _left
-                        :
-                        _left + _helpWidth, _top + _helpHeight + colItem.height * 0.5)
-                .lineTo(_left + _helpWidth + _helpDist, _top + _helpHeight + colItem.height * 0.5)
-                .stroke()
-                .beginPath()
-                .moveTo(
-                    colNum == imageData.contents[rowNum].contents.length - 1 ?
-                        left + imageData.width
-                        :
-                        _left + _helpWidth + colItem.width, _top + _helpHeight + colItem.height * 0.5)
-                .lineTo(_left + _helpWidth + colItem.width - _helpDist, _top + _helpHeight + colItem.height * 0.5)
-                .stroke();
-
-
-            // 组
-            if (colItem.type == '组') {
-                drawImage(painter, colItem, _left + _helpWidth, _top + _helpHeight);
-            }
-
-            // 否则就是需要进行实际绘制的了
-            else {
-
-                // 绘制循环次数
-                if (colItem.min != 1 || colItem.max != 1) {
-
-                    var purview = toLoopText(colItem.min, colItem.max);
-
-                    painter.config({
-                        'fillStyle': 'gray',
-                        'fontSize': 10
-                    })
-                        // 提示文字
-                        .fillText(purview, _left + _helpWidth + colItem.width * 0.5, _top + colItem.height + _helpHeight - 5);
-
-                    // 统一配置画笔
-                    painter.config(normalConfig);
-                }
-
-                if (colItem.type == '内容') {
-
-                    drawNode(painter, _left + 10 + _helpWidth, _top + 10 + _helpHeight, colItem.width - 20, colItem.height - 20, '#dae9e5', colItem.content);
-
-                } else if (colItem.type == '描述') {
-
-                    drawNode(painter, _left + 10 + _helpWidth, _top + 10 + _helpHeight, colItem.width - 20, colItem.height - 20, '#bada55', colItem.content);
-
-                } else if (colItem.type == '范围') {
-
-                    // 先绘制最后的背景
-                    painter
-                        .config('fillStyle', '#cbcbba')
-                        .fillRect(_left + 10 + _helpWidth, _top + 10 + _helpHeight, colItem.width - 20, colItem.height - 20);
-
-                    for (var k = 0; k < colItem.content.length; k++) {
-                        if (Array.isArray(colItem.content[k])) {
-
-                            drawNode(painter, _left + colItem.width * 0.5 + _helpWidth - 6 - colItem.content[k][0].width, _top + 15 + 28 * k + _helpHeight, colItem.content[k][0].width, 24, {
-                                "内容": '#dae9e5',
-                                "描述": "#bada55"
-                            }[colItem.content[k][0].type], colItem.content[k][0].content);
-                            drawNode(painter, _left + colItem.width * 0.5 + 6 + _helpWidth, _top + 15 + 28 * k + _helpHeight, colItem.content[k][1].width, 24, {
-                                "内容": '#dae9e5',
-                                "描述": "#bada55"
-                            }[colItem.content[k][1].type], colItem.content[k][1].content);
-
-                            // 画线条
-                            painter
-                                .beginPath()
-                                .moveTo(_left + colItem.width * 0.5 - 2 + _helpWidth, _top + 27 + 28 * k + _helpHeight)
-                                .lineTo(_left + colItem.width * 0.5 + 2 + _helpWidth, _top + 27 + 28 * k + _helpHeight)
-                                .stroke();
-
-                        } else {
-
-                            if (k == 0 && colItem.content[0].content == '^') {
-
-                                drawNode(painter, _left + _helpWidth + colItem.width * 0.5 - colItem.content[k].width * 0.5, _top + 15 + 28 * k + _helpHeight, colItem.content[k].width, 24, "#cbcbba", "非下列", 'white');
-
-                            } else {
-
-                                drawNode(painter, _left + _helpWidth + colItem.width * 0.5 - colItem.content[k].width * 0.5, _top + 15 + 28 * k + _helpHeight, colItem.content[k].width, 24, {
-                                    "内容": '#dae9e5',
-                                    "描述": "#bada55"
-                                }[colItem.content[k].type], colItem.content[k].content);
-
-                            }
-
-                        }
-                    }
-
-                } else {
-                    throw new Error('发生了未期待的情况\n' + JSON.stringify(colItem, null, 4));
-                }
-
-            }
-
-
-            // 右移
-            _left += colItem.width;
-
-        }
-
-        // 换行
-        _top += imageData.contents[rowNum].height;
-    }
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/drawImage/drawNode
-/*****************************************************************/
-window.__pkg__bundleSrc__['114']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (painter, x, y, width, height, color, content, textColor) {
-
-    // 先绘制背景
-    painter
-        .config('fillStyle', color)
-        .fillRect(x, y, width, height)
-
-        // 再绘制内容
-        .config('fillStyle', textColor || '#000')
-        .fillText(content, x + width * 0.5, y + height * 0.5);
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/regexper-visualization/drawImage/toLoopText
-/*****************************************************************/
-window.__pkg__bundleSrc__['115']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (min, max) {
-
-    var purview = "";
-    if (min == -1) purview = '<=' + max;
-    else if (max == -1) purview = '>=' + min;
-    else if (min == max) purview = min + "次";
-    else purview = min + " ~ " + max;
-
-    return purview;
-};
-
 
     return __pkg__scope_bundle__;
 }
@@ -994,20 +258,20 @@ window.__pkg__bundleSrc__['115']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['116']=function(){
+window.__pkg__bundleSrc__['118']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('117');
+    __pkg__scope_args__=window.__pkg__getBundle('119');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('119');
+__pkg__scope_args__=window.__pkg__getBundle('121');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('117');
+__pkg__scope_args__=window.__pkg__getBundle('119');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -1294,10 +558,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['117']=function(){
+window.__pkg__bundleSrc__['119']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('118');
+    __pkg__scope_args__=window.__pkg__getBundle('120');
 var arc =__pkg__scope_args__.default;
 
 
@@ -1416,7 +680,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['118']=function(){
+window.__pkg__bundleSrc__['120']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1477,7 +741,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['119']=function(){
+window.__pkg__bundleSrc__['121']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -1510,6 +774,711 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
     return enhanceGradient;
 };
 
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/assemble
+/*****************************************************************/
+window.__pkg__bundleSrc__['125']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (begin, end, step, count) {
+    var val = [];
+    for (var index = 0; index < count; index++) val[index] = begin;
+
+    // 非常类似进制数，每次调用都+1
+    return function () {
+        for (var i = 0; i < count; i++) {
+
+            // 如果当前位可以进1
+            if (val[i] + step < end) {
+                val[i] = +(val[i] + step).toFixed(7);
+                break;
+            }
+
+            // 如果当前位不可以，那当前位归0，尝试下一位
+            else if (i < count - 1) {
+                val[i] = begin;
+            }
+        }
+
+        return val;
+    }
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/npm-download/getValue
+/*****************************************************************/
+window.__pkg__bundleSrc__['126']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('127');
+var xhr =__pkg__scope_args__.default;
+
+
+var date = new Date();
+var year = date.getFullYear();
+var month_day = "-" + (date.getMonth() - (-1)) + "-" + date.getDate();
+
+__pkg__scope_bundle__.default= function (packages) {
+
+    var pkgNames = packages.split(',');
+
+    var promises = []
+    for (var pkgName of pkgNames) {
+        (function (pkgName) {
+            promises.push(new Promise(function (resolve) {
+
+                if (sessionStorage.getItem(pkgName)) {
+                    resolve([pkgName, JSON.parse(sessionStorage.getItem(pkgName))])
+                } else {
+
+                    xhr({
+                        method: "GET",
+                        url: "https://api.npmjs.org/downloads/range/" + (year - 1) + month_day + ":" + year + month_day + "/" + pkgName,
+                    }, function (data) {
+                        if (data.status == 200) {
+                            sessionStorage.setItem(pkgName, data.data);
+                            var npmOralData = JSON.parse(data.data);
+                            resolve([pkgName, npmOralData]);
+                        }
+                    });
+                }
+
+            }));
+        })(pkgName);
+    }
+
+    return new Promise(function (resolve) {
+        Promise.all(promises).then(function (data) {
+            var npmOralData = {};
+            for (var index = 0; index < data.length; index++) {
+                npmOralData[data[index][0]] = data[index][1];
+            }
+            resolve(npmOralData);
+        });
+    });
+}
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhr/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['127']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('32');
+var isFunction =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('128');
+var toString =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (settings, callback, errorback) {
+
+    var xmlhttp;
+
+    // 如果外部定义了
+    if (isFunction(settings.xhr)) {
+        xmlhttp = settings.xhr();
+    }
+
+    // 否则就内部创建
+    else {
+        xmlhttp = new XMLHttpRequest();
+    }
+
+    // 请求完成回调
+    xmlhttp.onload = function () {
+
+        if (xmlhttp.readyState == 4) {
+
+            callback({
+
+                // 状态码
+                status: xmlhttp.status,
+
+                // 数据
+                data: xmlhttp.responseText
+
+            });
+
+        }
+    };
+
+    // 请求超时回调
+    xmlhttp.ontimeout = function () {
+        errorback({
+            status: xmlhttp.status,
+            data: "请求超时了"
+        });
+    };
+
+    // 请求错误回调
+    xmlhttp.onerror = function () {
+        errorback({
+            status: xmlhttp.status,
+            data: xmlhttp.responseText
+        });
+    };
+
+    xmlhttp.open(settings.method, settings.url, true);
+
+    // 设置请求头
+    for (var key in settings.header) {
+        xmlhttp.setRequestHeader(key, settings.header[key]);
+    }
+
+    // 设置超时时间
+    xmlhttp.timeout = 'timeout' in settings ? settings.timeout : 6000;
+
+    xmlhttp.send(toString(settings.data));
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhr/toString
+/*****************************************************************/
+window.__pkg__bundleSrc__['128']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('53');
+var isPlainObject =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('31');
+var isString =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (data) {
+
+    // 如果是字符串
+    if (isString(data)) {
+        return data;
+    }
+
+    // 如果是JSON数据
+    else if (isPlainObject(data)) {
+        return JSON.stringify(data);
+    }
+
+    // 如果为空
+    else if (data === undefined) {
+        return "";
+    }
+
+    // 否则
+    else {
+        return data;
+    }
+
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/npm-download/toValue
+/*****************************************************************/
+window.__pkg__bundleSrc__['129']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (oralValue, interval) {
+
+    var value = [], time = [], max = 0;
+
+    for (var i = oralValue.length - 1; i >= interval - 1; i -= interval) {
+
+        var temp = 0;
+        for (var j = 0; j < interval; j++) {
+            temp += oralValue[i - j].downloads;
+        }
+
+        if (max < temp) max = temp;
+
+        // 数据
+        value.unshift(temp);
+
+        // 日期
+        time.unshift(oralValue[i - interval + 1].day + "至" + (i == i - interval + 1 ? oralValue[i].day : oralValue[i].day));
+
+    }
+
+    return {
+        value: value,
+        time: time,
+        max: max
+    };
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/ruler
+/*****************************************************************/
+window.__pkg__bundleSrc__['130']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 刻度尺刻度求解
+
+// 需要注意的是，实际的间距个数可能是 num-1 或 num 或 num+1 或 1
+__pkg__scope_bundle__.default= function (maxValue, minValue, num) {
+
+    // 如果最大值最小值反了
+    if (maxValue < minValue) {
+        var temp = minValue;
+        minValue = maxValue;
+        maxValue = temp;
+    }
+
+    // 如果相等
+    else if (maxValue == minValue) {
+        return [maxValue];
+    }
+
+    // 为了变成 -100 ~ 100 需要放大或者缩小的倍数
+    var times100 =
+
+        (function (_value) {
+
+            // 先确定基调，是放大还是缩小
+            var _times100_base = (_value < 100 && _value > -100) ? 10 : 0.1;
+
+            // 记录当前缩放倍数
+            var _times100 = -1, _tiemsValue = _value;
+
+            while (_times100_base == 10 ?
+                // 如果是放大，超过 -100 ~ 100 就应该停止
+                (_tiemsValue >= -100 && _tiemsValue <= 100)
+                :
+                // 如果是缩小，进入 -100 ~ 100 就应该停止
+                (_tiemsValue <= -100 || _tiemsValue >= 100)
+            ) {
+
+                _times100 += 1;
+                _tiemsValue *= _times100_base;
+
+            }
+
+            if (_times100_base == 10) {
+                return Math.pow(10, _times100);
+            } else {
+
+                // 解决类似 0.1 * 0.1 = 0.010000000000000002 浮点运算不准确问题
+                var temp = "0.", i;
+                for (i = 1; i < _times100; i++) {
+                    temp += "0";
+                }
+                return +(temp + "1");
+            }
+        })
+
+            // 根据差值来缩放
+            (maxValue - minValue);
+
+
+    // 求解出 -100 ~ 100 的最佳间距值 后直接转换原来的倍数
+    var distance100 = Math.ceil((maxValue - minValue) * times100 / num);
+
+    // 校对一下
+    distance100 = {
+        3: 2,
+        4: 5,
+        6: 5,
+        7: 5,
+        8: 10,
+        9: 10,
+        11: 10,
+        12: 10,
+        13: 15,
+        14: 15,
+        16: 15,
+        17: 15,
+        18: 20,
+        19: 20,
+        21: 20,
+        22: 20,
+        23: 25,
+        24: 25,
+        26: 25,
+        27: 25
+    }[distance100] || distance100;
+
+    var distance = distance100 / times100;
+
+    // 最小值，也就是起点
+    var begin = Math.floor(minValue / distance) * distance;
+
+    var rulerArray = [], index;
+    // 获取最终的刻度尺数组
+    rulerArray.push(begin);
+    for (index = 1; rulerArray[rulerArray.length - 1] < maxValue; index++) {
+        rulerArray.push(begin + distance * index);
+    }
+
+    return rulerArray;
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/getLoopColors
+/*****************************************************************/
+window.__pkg__bundleSrc__['131']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 获取一组循环色彩
+__pkg__scope_bundle__.default= function (num, alpha) {
+    if (!(alpha && alpha >= 0 && alpha <= 1)) alpha = 1;
+    // 颜色集合
+    var colorList = [
+        'rgba(84,112,198,' + alpha + ")", 'rgba(145,204,117,' + alpha + ")",
+        'rgba(250,200,88,' + alpha + ")", 'rgba(238,102,102,' + alpha + ")",
+        'rgba(115,192,222,' + alpha + ")", 'rgba(59,162,114,' + alpha + ")",
+        'rgba(252,132,82,' + alpha + ")", 'rgba(154,96,180,' + alpha + ")",
+        'rgba(234,124,204,' + alpha + ")"
+    ];
+
+    var colors = [];
+
+    // 根据情况返回颜色数组
+    if (num <= colorList.length) {
+        // 这种情况就不需要任何处理
+        return colorList;
+    } else {
+        // 如果正好是集合长度的倍数
+        if (num % colorList.length == 0) {
+            // 将颜色数组循环加入后再返回
+            for (var i = 0; i < (num / colorList.length); i++) {
+                colors = colors.concat(colorList);
+            }
+        } else {
+            for (var j = 1; j < (num / colorList.length); j++) {
+                colors = colors.concat(colorList);
+            }
+            // 防止最后一个颜色和第一个颜色重复
+            if (num % colorList.length == 1) {
+                colors = colors.concat(colorList[4]);
+            } else {
+                for (var k = 0; k < num % colorList.length; k++) {
+                    colors = colors.concat(colorList[k]);
+                }
+            }
+        }
+    }
+
+    // 返回结果
+    return colors;
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/canvas/extend/ruler
+/*****************************************************************/
+window.__pkg__bundleSrc__['132']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('133');
+var dotRender =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('134');
+var initConfig=__pkg__scope_args__.initConfig;
+
+
+/**
+ * attr = {
+ *    x,y 刻度尺的起点位置
+ *    direction 刻度尺的方向：LR|RL|TB|BT
+ *    length 刻度尺的长度
+ *    mark-direction 刻度尺小刻度在前进方向的位置：right|left
+ *    value-position 刻度尺刻度文字的位置：mark|between
+ *    color 刻度尺颜色
+ *    value 值
+ *    font-size 刻度文字大小
+ *    deg 文字旋转度数
+ * }
+ */
+__pkg__scope_bundle__.default= function (painter, attr) {
+    var i, markPosition;
+
+    var value = attr.value;
+
+    attr = initConfig({
+        "direction": "LR",
+        "mark-direction": "right",
+        "value-position": "mark",
+        "color": 'black',
+        "font-size": 12,
+        deg: 0
+    }, attr);
+
+    painter.config({
+        'lineWidth': 1,
+        'fillStyle': attr.color,
+        'strokeStyle': attr.color,
+        'fontSize': attr["font-size"],
+        'textAlign': (attr.direction == 'LR' || attr.direction == 'RL') ? 'center' : (
+            (
+                (attr.direction == 'BT' && attr["mark-direction"] == 'right') ||
+                (attr.direction == 'TB' && attr["mark-direction"] == 'left')
+            ) ? 'left' : 'right'
+        ),
+        "lineDash": [],
+        'textBaseline': 'middle'
+    });
+
+
+
+    // 刻度尺终点坐标
+    var endPosition;
+
+    // 记录小刻度如何计算
+    var dxy;
+
+    if (attr.direction == 'LR') {
+        endPosition = {
+            x: attr.x + attr.length,
+            y: attr.y
+        };
+        dxy = attr["mark-direction"] == 'right' ? [0, 1] : [0, -1];
+    } else if (attr.direction == 'RL') {
+        endPosition = {
+            x: attr.x - attr.length,
+            y: attr.y
+        };
+        dxy = attr["mark-direction"] == 'right' ? [0, -1] : [0, 1];
+    } else if (attr.direction == 'TB') {
+        endPosition = {
+            x: attr.x,
+            y: attr.y + attr.length
+        };
+        dxy = attr["mark-direction"] == 'right' ? [-1, 0] : [1, 0];
+    } else if (attr.direction == 'BT') {
+        endPosition = {
+            x: attr.x,
+            y: attr.y - attr.length
+        };
+        dxy = attr["mark-direction"] == 'right' ? [1, 0] : [-1, 0];
+    } else {
+
+        // 错误提示
+        throw new Error('Type error!');
+    }
+
+    // 绘制主轴
+    painter.beginPath().moveTo(attr.x, attr.y).lineTo(endPosition.x, endPosition.y).stroke();
+
+    var markNumber = attr["value-position"] == "mark" ? value.length : value.length + 1;
+
+    // 绘制刻度
+    var distanceLength = attr.length / (markNumber - 1);
+
+    var dot = dotRender({
+        d: [
+            endPosition.x - attr.x,
+            endPosition.y - attr.y
+        ],
+        p: [
+            attr.x,
+            attr.y
+        ]
+    });
+
+    for (i = 0; i < markNumber; i++) {
+
+        // 刻度
+        markPosition = dot.value();
+        painter.beginPath().moveTo(markPosition[0], markPosition[1]).lineTo(
+            markPosition[0] + dxy[0] * 5,
+            markPosition[1] + dxy[1] * 5
+        ).stroke();
+
+        dot.move(distanceLength);
+    }
+
+    // 绘制刻度上的读数
+    dot = dotRender({
+        d: [
+            endPosition.x - attr.x,
+            endPosition.y - attr.y
+        ],
+        p: [
+            attr.x,
+            attr.y
+        ]
+    });
+
+    if (attr["value-position"] == "between") dot.move(distanceLength * 0.5);
+
+    for (i = 0; i < value.length; i++) {
+        markPosition = dot.value();
+        painter.fillText(value[i], markPosition[0] + dxy[0] * 15, markPosition[1] + dxy[1] * 15, attr.deg);
+        dot.move(distanceLength);
+    }
+
+    return painter;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/transform/dot
+/*****************************************************************/
+window.__pkg__bundleSrc__['133']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('134');
+var initConfig=__pkg__scope_args__.initConfig;
+
+__pkg__scope_args__=window.__pkg__getBundle('135');
+var move =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('136');
+var rotate =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('137');
+var scale =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (config) {
+
+    config = initConfig({
+        // 前进方向
+        d: [1, 1],
+        // 中心坐标
+        c: [0, 0],
+        // 当前位置
+        p: [0, 0]
+    }, config);
+
+    var dotObj = {
+
+        // 前进方向以当前位置为中心，旋转deg度
+        "rotate": function (deg) {
+            var dPx = config.d[0] + config.p[0], dPy = config.d[1] + config.p[1];
+            var dP = rotate(config.p[0], config.p[1], deg, dPx, dPy);
+            config.d = [
+                dP[0] - config.p[0],
+                dP[1] - config.p[1]
+            ];
+            return dotObj;
+        },
+
+        // 沿着当前前进方向前进d
+        "move": function (d) {
+            config.p = move(config.d[0], config.d[1], d, config.p[0], config.p[1]);
+            return dotObj;
+        },
+
+        // 围绕中心坐标缩放
+        "scale": function (times) {
+            config.p = scale(config.c[0], config.c[1], times, config.p[0], config.p[1]);
+            return dotObj;
+        },
+
+        // 当前位置
+        "value": function () {
+            return config.p;
+        }
+
+    };
+
+    return dotObj;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/config
+/*****************************************************************/
+window.__pkg__bundleSrc__['134']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    
+// 初始化配置文件
+
+__pkg__scope_bundle__.initConfig = function (init, data) {
+    var key;
+    for (key in data)
+        try {
+            init[key] = data[key];
+        } catch (e) {
+            throw new Error("Illegal property value！");
+        }
+    return init;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/transform/move
+/*****************************************************************/
+window.__pkg__bundleSrc__['135']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 点（x,y）沿着向量（ax,ay）方向移动距离d
+__pkg__scope_bundle__.default= function (ax, ay, d, x, y) {
+    var sqrt = Math.sqrt(ax * ax + ay * ay);
+    return [
+        +(ax * d / sqrt + x).toFixed(7),
+        +(ay * d / sqrt + y).toFixed(7)
+    ];
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/transform/rotate
+/*****************************************************************/
+window.__pkg__bundleSrc__['136']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 点（x,y）围绕中心（cx,cy）旋转deg度
+__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
+    var cos = Math.cos(deg), sin = Math.sin(deg);
+    return [
+        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
+        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
+    ];
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/transform/scale
+/*****************************************************************/
+window.__pkg__bundleSrc__['137']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 点（x,y）围绕中心（cx,cy）缩放times倍
+__pkg__scope_bundle__.default= function (cx, cy, times, x, y) {
+    return [
+        +(times * (x - cx) + cx).toFixed(7),
+        +(times * (y - cy) + cy).toFixed(7)
+    ];
+};
 
     return __pkg__scope_bundle__;
 }

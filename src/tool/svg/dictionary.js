@@ -1,0 +1,1 @@
+export var XLINK_ATTRIBUTE = ["href", "title", "show", "type", "role", "actuate"];

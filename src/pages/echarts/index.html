@@ -1,0 +1,215 @@
+<header ui-dragdrop:desktop>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+    <h2>
+        可视化图表
+    </h2>
+</header>
+<div class="content">
+    <div class="nav" ref="mynav"></div>
+    <div class="menu" ref="mymenu">
+        <h4>
+            折线图<span>line</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="line-multiple-x-axis">
+                <div class="line-multiple-x-axis"></div>
+                <h6>
+                    多X轴折线图
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            柱状图<span>bar</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="bar-polar-real-estate">
+                <div class="bar-polar-real-estate"></div>
+                <h6>
+                    极坐标下的柱状图
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            饼图<span>pie</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="pie-simple">
+                <div class="pie-simple"></div>
+                <h6>
+                    简单的饼图
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            散点图<span>scatter</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="scatter-bubble-gradient">
+                <div class="scatter-bubble-gradient"></div>
+                <h6>
+                    渐变气泡图
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            地理坐标/地图<span>map</span>
+        </h4>
+        <ul>
+            <li>
+
+            </li>
+        </ul>
+        <h4>
+            K线图<span>candlestick</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="candlestick-simple">
+                <div class="candlestick-simple"></div>
+                <h6>
+                    基础K线图
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            雷达图<span>radar</span>
+        </h4>
+        <ul>
+            <li>
+
+            </li>
+        </ul>
+        <h4>
+            关系图<span>graph</span>
+        </h4>
+        <ul>
+            <li>
+
+            </li>
+        </ul>
+        <h4>
+            树图<span>tree</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="tree-layout-lr">
+                <div class="tree-layout-lr"></div>
+                <h6>
+                    从左到右树状图
+                </h6>
+            </li>
+            <li ui-on:click="openExamples" tag="tree-radial">
+                <div class="tree-radial"></div>
+                <h6>
+                    径向树状图
+                </h6>
+            </li>
+            <li ui-on:click="openExamples" tag="css-tree-topleft">
+                <div class="css-tree-topleft"></div>
+                <h6>
+                    水平向下向左树
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            矩形树图<span>treemap</span>
+        </h4>
+        <ul>
+            <li>
+
+            </li>
+        </ul>
+        <h4>
+            旭日图<span>sunburst</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="sunburst-visualMap">
+                <div class="sunburst-visualMap"></div>
+                <h6>
+                    旭日图使用视觉编码
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            平行坐标系<span>parallel</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="parallel-simple">
+                <div class="parallel-simple"></div>
+                <h6>
+                    基础平行坐标
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            桑基图<span>sankey</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="sankey-nodeAlign-left">
+                <div class="sankey-nodeAlign-left"></div>
+                <h6>
+                    桑基图左对齐布局
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            漏斗图<span>funnel</span>
+        </h4>
+        <ul>
+            <li>
+
+            </li>
+        </ul>
+        <h4>
+            仪表盘<span>gauge</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="gauge-barometer">
+                <div class="gauge-barometer"></div>
+                <h6>
+                    气压表
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            数据区域缩放<span>dataZoom</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="zoom-line">
+                <div class="zoom-line"></div>
+                <h6>
+                    可缩放折线图
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            自定义系列<span>custom</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="money-schedule">
+                <div class="money-schedule"></div>
+                <h6>
+                    金额波浪球
+                </h6>
+            </li>
+            <li ui-on:click="openExamples" tag="single-wave">
+                <div class="single-wave"></div>
+                <h6>
+                    单波进度球
+                </h6>
+            </li>
+        </ul>
+        <h4>
+            三维图形<span>WebGL</span>
+        </h4>
+        <ul>
+            <li ui-on:click="openExamples" tag="h2o">
+                <div class="h2o"></div>
+                <h6>
+                    水分子式H2O
+                </h6>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -20,6 +20,11 @@ export default {
         return import('./setting/index.js')
     },
 
+    // 可视化图表
+    "echarts": function () {
+        return import('./echarts/index.js')
+    },
+
     // npm包下载统计
     "npm-download": function () {
         return import('./npm-download/index.js')

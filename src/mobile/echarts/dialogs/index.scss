@@ -1,0 +1,38 @@
+[dialog-view='echarts-example'] {
+    left: 20px;
+    top: 20px;
+    user-select: none;
+    width: calc(100vw - 40px);
+    height: calc(100% - 40px);
+    background-color: white;
+
+    &>header {
+        &>h2 {
+            font-size: 20px;
+            font-weight: 200;
+            text-align: center;
+            line-height: 45px;
+        }
+
+        &>button {
+            background-image: url(./close.png);
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 45px;
+            height: 45px;
+            outline: none;
+            border: none;
+            background-color: transparent;
+            font-size: 0;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+    }
+
+    &>div {
+        &.content {
+            height: calc(100% - 45px);
+        }
+    }
+}

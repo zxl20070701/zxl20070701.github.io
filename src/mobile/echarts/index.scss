@@ -1,0 +1,71 @@
+[page-view="echarts"] {
+    &>div {
+        &.content {
+            display: flex;
+            height: calc(100% - 50px);
+
+            &>div {
+                overflow: auto;
+
+                &.menu {
+                    flex-grow: 1;
+                    padding: 30px 0;
+
+                    &>h4 {
+                        margin: 5px 10px;
+                        padding-bottom: 10px;
+                        font-weight: normal;
+                        color: rgb(70, 70, 70);
+                        font-size: 14px;
+                        border-bottom: 1px solid rgb(225, 229, 242);
+
+                        &>span {
+                            font-size: 13px;
+                            padding-left: 5px;
+                            color: rgb(148, 156, 177);
+                            font-weight: 200;
+                        }
+                    }
+
+                    &>ul {
+                        padding-left: 10px;
+
+                        &>li {
+                            margin-bottom: 10px;
+                            padding: 0 5px;
+                            display: inline-block;
+
+                            &>div {
+                                width: calc(50vw - 20px);
+                                height: 133px;
+                                background-position: center center;
+                                background-size: 100% auto;
+                                background-repeat: no-repeat;
+                                cursor: pointer;
+                                transition: 0.3s ease-in-out;
+                                border-radius: 5px;
+                                box-shadow: 0 0 20px rgb(0 0 0 / 5%);
+
+                                &.line-multiple-x-axis {
+                                    background-image: url("./echarts/examples/line-multiple-x-axis.webp");
+                                }
+
+                                &.gauge-barometer {
+                                    background-image: url("./echarts/examples/gauge-barometer.webp");
+                                }
+
+                            }
+
+                            &>h6 {
+                                text-align: center;
+                                line-height: 40px;
+                                font-size: 14px;
+                                font-weight: 200;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

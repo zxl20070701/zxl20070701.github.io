@@ -1,0 +1,21 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        极坐标下的柱状图
+    </h2>
+    <div class="src-url">
+        查看源码：
+        <a ui-bind:href="srcUrl" ui-bind="srcUrl" target="_blank"></a>
+    </div>
+    <div class="win-btns">
+        <button class="close" ui-on:click.stop="$closeDialog">关闭</button>
+    </div>
+</header>
+<div class="content bar-polar-real-estate" ref="mycontent">
+
+    <!-- 绘制图表 -->
+    <canvas ref="mycanvas"></canvas>
+
+    <!-- 悬浮提示 -->
+    <div class="tooltip" ref="mytooltip"></div>
+
+</div>
