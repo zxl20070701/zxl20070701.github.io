@@ -1,0 +1,53 @@
+[dialog-view='type-practice'] {
+    left: calc(50vw - 450px);
+    top: calc(50vh - 300px);
+    user-select: none;
+    width: 900px;
+    height: 550px;
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        background: linear-gradient(45deg, #6fb5ec, #d2e4f2, #0b71c1);
+        white-space: nowrap;
+        box-shadow: -3px 3px 20px #5f5f62;
+        position: relative;
+
+        &>h2 {
+            color: #000000;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./type-practice/logo.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            display: inline-block;
+            font-family: cursive;
+        }
+
+        &>div {
+            &.src-url {
+                line-height: 17px;
+                font-size: 12px;
+                display: inline-block;
+                padding-left: 50px;
+                padding-top: 8px;
+                vertical-align: top;
+
+                &>a {
+                    display: block;
+                    text-decoration: underline;
+                    color: rgb(3, 136, 230);
+                }
+            }
+        }
+    }
+
+    &>div {
+        &.content {
+            height: calc(100% - 50px);
+            text-align: center;
+            background-color: #fafafa;
+        }
+    }
+}

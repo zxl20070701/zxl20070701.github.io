@@ -23,6 +23,10 @@
         tag="snipping-tool" ui-on:dblclick="goto" ui-right-menu:app>
         截图工具
     </li>
+    <li class="link" ui-bind:select="select=='type-practice'?'yes':'no'" ui-on:click.stop="doSelect" title="一个打字练习软件"
+        tag="type-practice" ui-on:dblclick="goto" ui-right-menu:app>
+        金山打字通
+    </li>
     <li class="link" ui-bind:select="select=='audio-editor'?'yes':'no'" ui-on:click.stop="doSelect"
         title="可以对音频文件进行切割、合并等操作，支持多种格式" tag="audio-editor" ui-on:dblclick="goto" ui-right-menu:app>
         音频编辑器

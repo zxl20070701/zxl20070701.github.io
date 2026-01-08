@@ -51,6 +51,12 @@ window.__pkg__bundleSrc__['37']=function(){
     "echarts": function () {
         return window.__pkg__getLazyBundle('./dist/bundle21.js','77')
     },
+    
+    // 金山打字通
+    "type-practice": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle22.js','78')
+    },
+
 };
 
     return __pkg__scope_bundle__;

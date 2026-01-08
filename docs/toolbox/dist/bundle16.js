@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['72']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('147');
+    __pkg__scope_args__=window.__pkg__getBundle('148');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('148');
+__pkg__scope_args__=window.__pkg__getBundle('149');
 
 
 __pkg__scope_bundle__.default= function (obj) {
@@ -100,7 +100,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/recorder-screen/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
+window.__pkg__bundleSrc__['148']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,11]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,6]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"startRecorder","ui-bind:active":"isRun?'no':'yes'"},"childNodes":[5]},{"type":"text","content":"启动","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[7,9]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[8]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[10]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"video","attrs":{"ref":"video"},"childNodes":[]}]
@@ -111,7 +111,7 @@ window.__pkg__bundleSrc__['147']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/recorder-screen/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['148']=function(){
+window.__pkg__bundleSrc__['149']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

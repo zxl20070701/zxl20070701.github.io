@@ -1,0 +1,14 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        金山打字通
+    </h2>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+</header>
+<div class="content">
+    <span class="keyboard btn" ui-on:click="openPage" tag="keyboard">键盘练习</span>
+    <!-- <span class="english btn" ui-on:click="openPage" tag="english">英文打字</span> -->
+    <!-- <span class="pinyin btn" ui-on:click="openPage" tag="pinyin">拼音打字</span> -->
+</div>

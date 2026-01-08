@@ -1,0 +1,31 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        键盘练习
+    </h2>
+    <div class="win-btns">
+        <button class="close" ui-on:click.stop="$closeDialog">关闭</button>
+    </div>
+</header>
+<div class="content">
+
+    <!-- 待输入内容 -->
+    <div ref="willlist" ui-bind:active="flag=='end'?'no':'yes'" class="willlist topview"></div>
+
+    <!-- 结束提示 -->
+    <div class="endinfo topview" ui-bind:active="flag=='end'?'yes':'no'">
+        🎉恭喜你，键盘完成练习，你可以
+        <button ui-on:click="reopen">再来一次</button>
+        哦～
+    </div>
+
+    <!-- 绘制键盘 -->
+    <div ref="mykeyboard" class="mykeyboard"></div>
+
+    <div class="info">
+        <span>时间<i ui-bind='time'></i></span>
+        <span>速度<i ui-bind='speed'></i></span>
+        <span>进度<i ui-bind='process'></i></span>
+        <span>正确率<i ui-bind='rate'></i></span>
+    </div>
+
+</div>

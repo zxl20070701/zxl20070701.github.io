@@ -5,23 +5,23 @@
 window.__pkg__bundleSrc__['70']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('123');
+    __pkg__scope_args__=window.__pkg__getBundle('124');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('124');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('125');
+
+
+__pkg__scope_args__=window.__pkg__getBundle('126');
 var newFile =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('127');
+__pkg__scope_args__=window.__pkg__getBundle('128');
 var audiobufferToWav =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('128');
+__pkg__scope_args__=window.__pkg__getBundle('129');
 var formatTime =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('129');
+__pkg__scope_args__=window.__pkg__getBundle('130');
 var lazyDialogs =__pkg__scope_args__.default;
 
 
@@ -393,7 +393,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['123']=function(){
+window.__pkg__bundleSrc__['124']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"音频编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5,7]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[6]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[10,14]},{"type":"tag","name":"div","attrs":{"class":"source-view"},"childNodes":[11,13]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doImport"},"childNodes":[12]},{"type":"text","content":"导入+","childNodes":[]},{"type":"tag","name":"ul","attrs":{"ref":"sourceList"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"mulp-view"},"childNodes":[15,17,18]},{"type":"tag","name":"div","attrs":{"class":"play-view"},"childNodes":[16]},{"type":"tag","name":"audio","attrs":{"src":"","controls":"controls","ref":"playAudio"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"editor-view","ref":"editorView"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btns-view"},"childNodes":[19,21]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doPlay"},"childNodes":[20]},{"type":"text","content":"播放","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDownload"},"childNodes":[22]},{"type":"text","content":"下载","childNodes":[]}]
@@ -404,7 +404,7 @@ window.__pkg__bundleSrc__['123']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['124']=function(){
+window.__pkg__bundleSrc__['125']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -418,10 +418,10 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/newFile
 /*****************************************************************/
-window.__pkg__bundleSrc__['125']=function(){
+window.__pkg__bundleSrc__['126']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('126');
+    __pkg__scope_args__=window.__pkg__getBundle('127');
 var AudioContext =__pkg__scope_args__.default;
 
 
@@ -507,7 +507,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/AudioContext
 /*****************************************************************/
-window.__pkg__bundleSrc__['126']=function(){
+window.__pkg__bundleSrc__['127']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default=
@@ -519,7 +519,7 @@ window.__pkg__bundleSrc__['126']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/audio/AudioBuffer-To-Wav
 /*****************************************************************/
-window.__pkg__bundleSrc__['127']=function(){
+window.__pkg__bundleSrc__['128']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (buffer, opt) {
@@ -608,7 +608,7 @@ function writeString(view, offset, string) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/formatTime
 /*****************************************************************/
-window.__pkg__bundleSrc__['128']=function(){
+window.__pkg__bundleSrc__['129']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 把秒值变成更可读的格式
@@ -622,14 +622,14 @@ __pkg__scope_bundle__.default= function(time) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/audio-editor/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['129']=function(){
+window.__pkg__bundleSrc__['130']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 编辑切割点
     pice: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle30.js','130')
+        return window.__pkg__getLazyBundle('./dist/bundle31.js','131')
     }
 
 };

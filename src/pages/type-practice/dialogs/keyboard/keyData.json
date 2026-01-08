@@ -1,0 +1,315 @@
+[
+    [
+        {
+            "level": "1",
+            "text": [
+                "~",
+                "`"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "!",
+                "1"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "@",
+                "2"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "#",
+                "3"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "$",
+                "4"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "%",
+                "5"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "^",
+                "6"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "&",
+                "7"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "*",
+                "8"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "(",
+                "9"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                ")",
+                "0"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "_",
+                "-"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "+",
+                "="
+            ]
+        },
+        {
+            "level": "2",
+            "text": "delete"
+        }
+    ],
+    [
+        {
+            "level": "2",
+            "text": "Tab"
+        },
+        {
+            "level": "1",
+            "text": "Q"
+        },
+        {
+            "level": "1",
+            "text": "W"
+        },
+        {
+            "level": "1",
+            "text": "E"
+        },
+        {
+            "level": "1",
+            "text": "R"
+        },
+        {
+            "level": "1",
+            "text": "T"
+        },
+        {
+            "level": "1",
+            "text": "Y"
+        },
+        {
+            "level": "1",
+            "text": "U"
+        },
+        {
+            "level": "1",
+            "text": "I"
+        },
+        {
+            "level": "1",
+            "text": "O"
+        },
+        {
+            "level": "1",
+            "text": "P"
+        },
+        {
+            "level": "1",
+            "text": [
+                "{",
+                "["
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "}",
+                "]"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "|",
+                "\\"
+            ]
+        }
+    ],
+    [
+        {
+            "level": "3",
+            "text": "Caps"
+        },
+        {
+            "level": "1",
+            "text": "A"
+        },
+        {
+            "level": "1",
+            "text": "S"
+        },
+        {
+            "level": "1",
+            "text": "D"
+        },
+        {
+            "level": "1",
+            "text": "F"
+        },
+        {
+            "level": "1",
+            "text": "G"
+        },
+        {
+            "level": "1",
+            "text": "H"
+        },
+        {
+            "level": "1",
+            "text": "J"
+        },
+        {
+            "level": "1",
+            "text": "K"
+        },
+        {
+            "level": "1",
+            "text": "L"
+        },
+        {
+            "level": "1",
+            "text": [
+                ":",
+                ";"
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "\"",
+                "'"
+            ]
+        },
+        {
+            "level": "3",
+            "text": "Enter"
+        }
+    ],
+    [
+        {
+            "level": "4",
+            "text": "Shift"
+        },
+        {
+            "level": "1",
+            "text": "Z"
+        },
+        {
+            "level": "1",
+            "text": "X"
+        },
+        {
+            "level": "1",
+            "text": "C"
+        },
+        {
+            "level": "1",
+            "text": "V"
+        },
+        {
+            "level": "1",
+            "text": "B"
+        },
+        {
+            "level": "1",
+            "text": "N"
+        },
+        {
+            "level": "1",
+            "text": "M"
+        },
+        {
+            "level": "1",
+            "text": [
+                "<",
+                ","
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                ">",
+                "."
+            ]
+        },
+        {
+            "level": "1",
+            "text": [
+                "?",
+                "/"
+            ]
+        },
+        {
+            "level": "4",
+            "text": "Shift"
+        }
+    ],
+    [
+        {
+            "level": "2",
+            "text": "Ctrl"
+        },
+        {
+            "level": "2",
+            "text": "Win"
+        },
+        {
+            "level": "2",
+            "text": "Alt"
+        },
+        {
+            "level": "5",
+            "text": "Blank Space"
+        },
+        {
+            "level": "2",
+            "text": "Alt"
+        },
+        {
+            "level": "2",
+            "text": "Win"
+        },
+        {
+            "level": "2",
+            "text": "Ctrl"
+        }
+    ]
+]

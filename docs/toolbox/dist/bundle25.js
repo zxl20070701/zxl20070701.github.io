@@ -1,26 +1,26 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/setting/index.js
+// Original file:./src/mobile/notepad/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['81']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('215');
+    __pkg__scope_args__=window.__pkg__getBundle('221');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('216');
+__pkg__scope_args__=window.__pkg__getBundle('222');
 
 
 __pkg__scope_bundle__.default= function (obj) {
     return {
-        name: "setting",
+        name: "notepad",
         render: template,
         data: {
 
         },
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "设置" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './setting.png');
+            document.getElementsByTagName('title')[0].innerText = "记事本" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './note.png');
         }
     };
 };
@@ -29,20 +29,20 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/setting/index.html
+// Original file:./src/mobile/notepad/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['215']=function(){
+window.__pkg__bundleSrc__['221']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"设置","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"记事本","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/mobile/setting/index.scss
+// Original file:./src/mobile/notepad/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['216']=function(){
+window.__pkg__bundleSrc__['222']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

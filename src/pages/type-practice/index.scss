@@ -1,0 +1,71 @@
+[page-view="type-practice"] {
+    padding-bottom: 20px;
+    width: 800px;
+    left: calc(50vw - 400px);
+    top: calc(50vh - 200px);
+
+    &[focus="no"] {
+        &>header {
+            background-color: #fafafa;
+        }
+    }
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        background-color: #ffffff;
+        margin-bottom: 30px;
+        box-shadow: -3px 3px 20px #d2d2db;
+
+        &>h2 {
+            color: #000000;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./type-practice/logo.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            font-family: cursive;
+            display: inline-block;
+        }
+    }
+
+    &>div {
+        &.content {
+            text-align: center;
+            padding: 50px 0;
+
+            &>span {
+                &.btn {
+                    display: inline-block;
+                    width: 100px;
+                    height: 100px;
+                    box-shadow: -3px 3px 20px #d2d2db;
+                    margin: 50px;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    padding-top: 100px;
+                    line-height: 2em;
+                    cursor: pointer;
+
+                    &:hover {
+                        outline: 1px solid white;
+                        text-decoration: underline;
+                    }
+
+                    &.keyboard {
+                        background-image: url('./type-practice/keyboard.png');
+                    }
+
+                    &.english {
+                        background-image: url('./type-practice/english.png');
+                    }
+
+                    &.pinyin {
+                        background-image: url('./type-practice/pinyin.png');
+                    }
+                }
+            }
+        }
+    }
+}
