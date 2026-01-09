@@ -51,7 +51,7 @@ window.__pkg__bundleSrc__['37']=function(){
     "echarts": function () {
         return window.__pkg__getLazyBundle('./dist/bundle21.js','77')
     },
-    
+
     // 金山打字通
     "type-practice": function () {
         return window.__pkg__getLazyBundle('./dist/bundle22.js','78')
@@ -60,6 +60,11 @@ window.__pkg__bundleSrc__['37']=function(){
     // Excel 表格
     "excel": function () {
         return window.__pkg__getLazyBundle('./dist/bundle23.js','79')
+    },
+
+    // 浏览器
+    "browser": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle24.js','80')
     },
 
 };

@@ -44,7 +44,7 @@ export default {
     "echarts": function () {
         return import('./echarts/index.js')
     },
-    
+
     // 金山打字通
     "type-practice": function () {
         return import('./type-practice/index.js')
@@ -53,6 +53,11 @@ export default {
     // Excel 表格
     "excel": function () {
         return import('./excel/index.js')
+    },
+
+    // 浏览器
+    "browser": function () {
+        return import('./browser/index.js')
     },
 
 };

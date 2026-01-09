@@ -1,0 +1,18 @@
+<header ui-dragdrop:desktop>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+</header>
+<div class="top">
+    <div class="content">
+        <span class="logo"></span>
+        <input spellcheck="false" type="text" ref="urlInput" ui-on:keydown.enter="doRefresh">
+        <button ui-on:click="doRefresh">刷新</button>
+    </div>
+
+    <!-- 一个个页签 -->
+    <div class="navs" ref="navRoot">
+        <button ui-on:click="newNav" ref="addBtn">＋</button>
+    </div>
+</div>

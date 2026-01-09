@@ -5,19 +5,19 @@
 window.__pkg__bundleSrc__['78']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('211');
+    __pkg__scope_args__=window.__pkg__getBundle('212');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('212');
+__pkg__scope_args__=window.__pkg__getBundle('213');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('213');
-
 __pkg__scope_args__=window.__pkg__getBundle('214');
+
+__pkg__scope_args__=window.__pkg__getBundle('215');
 var lazyDialogs =__pkg__scope_args__.default;
 
 
@@ -63,7 +63,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['211']=function(){
+window.__pkg__bundleSrc__['212']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"金山打字通","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5,7]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[6]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[10]},{"type":"tag","name":"span","attrs":{"class":"keyboard btn","ui-on:click":"openPage","tag":"keyboard"},"childNodes":[11]},{"type":"text","content":"键盘练习","childNodes":[]}]
@@ -74,7 +74,7 @@ window.__pkg__bundleSrc__['211']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['212']=function(){
+window.__pkg__bundleSrc__['213']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -88,7 +88,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/dialogs/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['213']=function(){
+window.__pkg__bundleSrc__['214']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -102,24 +102,24 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['214']=function(){
+window.__pkg__bundleSrc__['215']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 键盘练习
     "keyboard": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle53.js','215')
+        return window.__pkg__getLazyBundle('./dist/bundle54.js','216')
     },
 
     // 英文打字
     "english": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle54.js','216')
+        return window.__pkg__getLazyBundle('./dist/bundle55.js','217')
     },
 
     // 拼音打字
     "pinyin": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle55.js','217')
+        return window.__pkg__getLazyBundle('./dist/bundle56.js','218')
     }
 };
 

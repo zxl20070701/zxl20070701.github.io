@@ -5,13 +5,13 @@
 window.__pkg__bundleSrc__['76']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('187');
+    __pkg__scope_args__=window.__pkg__getBundle('188');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('188');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('189');
+
+
+__pkg__scope_args__=window.__pkg__getBundle('190');
 var snipping =__pkg__scope_args__.default;
 
 
@@ -108,7 +108,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/snipping-tool/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['187']=function(){
+window.__pkg__bundleSrc__['188']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,14,16]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"截图工具","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5,7]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[6]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btns"},"childNodes":[10,12]},{"type":"tag","name":"button","attrs":{"ui-on:click":"snippingWebsite","title":"点击我可以截取本网站内的内容"},"childNodes":[11]},{"type":"text","content":"本系统截图","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"snippingComputer","title":"点击我可以截取电脑（真机）屏幕内容"},"childNodes":[13]},{"type":"text","content":"真机截图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"canvas"},"childNodes":[15]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btns right"},"childNodes":[17,19]},{"type":"tag","name":"button","attrs":{"class":"link","ui-on:click":"goImageEditor"},"childNodes":[18]},{"type":"text","content":"导入图片编辑器进一步编辑？","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"download","ui-on:click":"download"},"childNodes":[20]},{"type":"text","content":"下载","childNodes":[]}]
@@ -119,7 +119,7 @@ window.__pkg__bundleSrc__['187']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/snipping-tool/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['188']=function(){
+window.__pkg__bundleSrc__['189']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -133,10 +133,10 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/snipping/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['189']=function(){
+window.__pkg__bundleSrc__['190']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('190');
+    __pkg__scope_args__=window.__pkg__getBundle('191');
 var elToTemplate =__pkg__scope_args__.default;
 
 
@@ -181,7 +181,7 @@ __pkg__scope_bundle__.default= function (el) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/snipping/elToTemplate
 /*****************************************************************/
-window.__pkg__bundleSrc__['190']=function(){
+window.__pkg__bundleSrc__['191']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('24');
