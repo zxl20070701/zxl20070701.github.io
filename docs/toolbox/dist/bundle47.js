@@ -1,25 +1,34 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/tree-layout-lr/index.js
+// Original file:./src/pages/echarts/dialogs/zoom-line/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['205']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('301');
+    __pkg__scope_args__=window.__pkg__getBundle('318');
 var template =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('249');
+__pkg__scope_args__=window.__pkg__getBundle('274');
 var ResizeObserver =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('137');
-var xhr =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('319');
+var data =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('302');
-var TreeLayout =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('134');
+__pkg__scope_args__=window.__pkg__getBundle('121');
 var canvasRender =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('141');
+var ruler =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('320');
+var throttle =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('321');
+var PointIn =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('22');
+var bindEvent =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -31,106 +40,293 @@ __pkg__scope_bundle__.default= function (obj, props) {
             srcUrl: props.srcUrl
         },
         mounted: function () {
-            var _this = this;
 
-            xhr({
-                method: "GET",
-                url: "../data/flare.json"
-            }, function (data) {
-                if (data.status == 200) {
+            var mycontent = this._refs.mycontent.value;
+            var mycanvas = this._refs.mycanvas.value;
 
-                    var mycontent = _this._refs.mycontent.value;
-                    var mycanvas = _this._refs.mycanvas.value;
+            var color = "#e94782";
+            var gradient = ['rgb(255, 158, 68)', 'rgb(255, 70, 131)'];
 
-                    var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight), pid, dist;
+            var boxWidth, boxHeight;
 
-                    var treeLayout = new TreeLayout({
-                        "id": function (treedata) {
-                            return treedata.name
-                        }
-                    }).setOption({
-                        type: "rect",
-                        direction: "LR",
-                        x: 50,
-                        y: mycontent.clientHeight * 0.5,
-                        width: mycontent.clientWidth - 200,
-                        height: mycontent.clientHeight - 60
-                    }).bind(JSON.parse(data.data), function (tree) {
-                        painter.config({
-                            fontSize: 9
-                        }).clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
+            var grid = {
+                left: 55,
+                top: 20,
+                right: 55,
+                bottom: 30
+            };
 
-                        // 绘制连线
-                        painter.setRegion("").config({
-                            strokeStyle: '#cccccc'
-                        });
-                        for (var key in tree.node) {
-                            if (tree.node[key].show && key != tree.root) {
-                                pid = tree.node[key].pid
+            var zoom = {
+                x: 0,
+                y: 0,
+                height: 26,
+                width: 0,
+                bottom: 10,
+                beginIndex: Math.round((data.length - 1) * 0.3),
+                endIndex: Math.round((data.length - 1) * 0.7)
+            };
 
-                                dist = (tree.node[key].left - tree.node[pid].left) * 0.5
+            var min = data[0].value, max = data[0].value;
+            for (var item of data) {
+                if (item.value > max) max = item.value;
+                if (item.value < min) min = item.value;
+            }
 
-                                painter
-                                    .beginPath()
-                                    .moveTo(tree.node[key].left, tree.node[key].top)
-                                    .bezierCurveTo(
-                                        tree.node[key].left - dist, tree.node[key].top,
-                                        tree.node[pid].left + dist, tree.node[pid].top,
-                                        tree.node[pid].left, tree.node[pid].top
-                                    ).stroke()
-                            }
-                        }
+            var pointIn = new PointIn(), zoomPosition = 0, zoomHandler = "", handler1x = 0, handler2x = 0, zoomIndexOne = 0, zoomValueOne = 0, updateView = null;
 
-                        // 绘制节点和文字
-                        painter.config({
-                            strokeStyle: '#b0c4de'
-                        });
-                        for (var key in tree.node) {
-                            if (tree.node[key].show) {
-                                if (!tree.node[key].isOpen && tree.node[key].children.length > 0) {
-                                    painter.config({
-                                        fillStyle: "#b0c4de"
-                                    });
-                                } else {
-                                    painter.config({
-                                        fillStyle: "#ffffff"
-                                    });
-                                }
-                                painter.setRegion(key).fullCircle(tree.node[key].left, tree.node[key].top, 4)
+            var helpCache = { beginIndex: 0, endIndex: 0 };
 
-                                painter.setRegion("").config({
-                                    fillStyle: "black"
-                                }).fillText(key.replace(/\-\d+$/, ''), tree.node[key].left + 10, tree.node[key].top)
-                            }
-                        }
+            bindEvent(mycontent, "mousedown", function (event) {
+                if (!updateView) return;
+                pointIn.setPoint(event.offsetX, event.offsetY);
 
-                    }, {
-                        analytics: true,
-                        animate: true,
-                        physics: true,
-                        scale: true,
-                        util: true,
-                        vis: true
-                    });
-
-                    ResizeObserver(mycontent, function () {
-                        painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight);
-
-                        treeLayout.setOption({
-                            y: mycontent.clientHeight * 0.5,
-                            width: mycontent.clientWidth - 200,
-                            height: mycontent.clientHeight - 60
-                        }).doUpdate();
-                    });
-
-                    mycontent.addEventListener('click', function (event) {
-                        var regionName = painter.getRegion(event);
-                        if (regionName) {
-                            treeLayout.toggleNode(regionName);
-                        }
-                    });
+                if (pointIn.rect(handler1x - 3, zoom.y, 6, zoom.height)) zoomHandler = "beginIndex";
+                else if (pointIn.rect(handler2x - 3, zoom.y, 6, zoom.height)) zoomHandler = "endIndex";
+                else if (pointIn.rect(handler1x, zoom.y - 7, handler2x - handler1x, 7)) {
+                    zoomPosition = event.offsetX;
+                    helpCache.beginIndex = zoom.beginIndex;
+                    helpCache.endIndex = zoom.endIndex;
                 }
             });
+
+            bindEvent(mycontent, "mousemove", function (event) {
+                // 修改边界
+                if (zoomHandler) {
+                    var x;
+                    if (event.offsetX <= zoom.x) x = 0;
+                    else if (event.offsetX >= zoom.x + zoom.width) x = zoom.width;
+                    else x = event.offsetX - zoom.x;
+
+                    var index = Math.round(x / zoomIndexOne);
+
+                    if (zoom[zoomHandler] != index) {
+                        zoom[zoomHandler] = index
+
+                        if (zoom.beginIndex > zoom.endIndex) {
+                            var temp = zoom.beginIndex;
+                            zoom.beginIndex = zoom.endIndex;
+                            zoom.endIndex = temp;
+                            zoomHandler = zoomHandler == "beginIndex" ? "endIndex" : "beginIndex";
+                        }
+                        updateView(true);
+                    }
+                }
+
+                // 移动
+                else if (zoomPosition) {
+                    var indexChange = Math.round((event.offsetX - zoomPosition) / zoomIndexOne);
+                    if (helpCache.beginIndex + indexChange < 0) indexChange = -helpCache.beginIndex;
+                    else if (helpCache.endIndex + indexChange >= data.length) indexChange = data.length - helpCache.endIndex - 1;
+
+                    zoom.beginIndex = helpCache.beginIndex + indexChange;
+                    zoom.endIndex = helpCache.endIndex + indexChange;
+                    updateView(true);
+                }
+            });
+
+            bindEvent(mycontent, "mouseup", function (event) {
+                if (zoomHandler || zoomPosition) {
+                    zoomHandler = "";
+                    zoomPosition = 0;
+                    updateView(false);
+                }
+            });
+
+            var zoomCache = null;
+            var getZoomBackground = function (painter) {
+                return new Promise(function (resolve) {
+                    if (zoomCache) resolve(zoomCache)
+                    else {
+
+                        // 轮廓
+                        painter.config({
+                            strokeStyle: "#e8ecf6"
+                        }).strokeRect(zoom.x, zoom.y, zoom.width, zoom.height);
+
+                        // 内容
+                        painter.config({
+                            fillStyle: "#ebeff8",
+                            lineWidth: 2,
+                            lineJoin: "round"
+                        }).beginPath();
+                        for (var index = 0; index < data.length; index++) {
+                            var item = data[index];
+                            painter.lineTo(zoom.x + index * zoomIndexOne, zoom.y + zoom.height - zoomValueOne * (item.value - min));
+                        }
+                        painter.stroke().lineTo(zoom.x + zoom.width, zoom.y + zoom.height).lineTo(zoom.x, zoom.y + zoom.height).fill();
+
+                        var imgInstance = new Image()
+                        imgInstance.onload = function () {
+                            zoomCache = imgInstance;
+                            resolve(zoomCache);
+                        }
+                        imgInstance.src = painter.toDataURL();
+
+                    }
+                });
+            };
+
+            var painter = null;
+
+            updateView = throttle(function (isMoving) {
+                painter.config({
+                    fillStyle: "white"
+                }).fillRect(0, 0, boxWidth, boxHeight);
+
+                getZoomBackground(painter).then(function (zoomBackground) {
+
+                    /**
+                     * 绘制zoom
+                     */
+                    handler1x = zoom.x + zoom.beginIndex * zoomIndexOne;
+                    handler2x = zoom.x + zoom.endIndex * zoomIndexOne;
+
+                    painter.drawImage(zoomBackground, 0, 0, boxWidth, boxHeight);
+
+                    // 选中区域
+                    painter.config({
+                        fillStyle: "rgba(33,150,240,0.2)"
+                    }).fillRect(handler1x, zoom.y, handler2x - handler1x, zoom.height);
+
+                    // 控制移动区域
+                    var hdist = handler2x - handler1x;
+                    if (hdist > 20) {
+                        painter.config({
+                            fillStyle: "#dfe5f3"
+                        }).fillRect(handler1x, zoom.y, hdist, -7)
+                            .config({
+                                fillStyle: "white"
+                            }).fillRect(handler1x + hdist * 0.5 - 5, zoom.y - 2, 10, -3);
+                    }
+
+                    // 2个把柄
+                    painter.config({
+                        strokeStyle: "#bbc8e3",
+                        fillStyle: "white"
+                    })
+                        .beginPath().moveTo(handler1x, zoom.y).lineTo(handler1x, zoom.y + zoom.height).stroke()
+                        .beginPath().moveTo(handler2x, zoom.y).lineTo(handler2x, zoom.y + zoom.height).stroke()
+                        .fullRect(handler1x - 3, zoom.y + 5, 6, zoom.height - 10)
+                        .fullRect(handler2x - 3, zoom.y + 5, 6, zoom.height - 10);
+
+                    // 边界文字
+                    if (isMoving) {
+                        painter.config({
+                            fillStyle: "#aaa",
+                            textAlign: "right",
+                            textBaseline: "middle",
+                            fontSize: 10
+                        })
+                            .fillText(data[zoom.beginIndex].name, handler1x - 5, zoom.y + zoom.height * 0.5)
+                            .config({
+                                textAlign: "left"
+                            })
+                            .fillText(data[zoom.endIndex].name, handler2x + 5, zoom.y + zoom.height * 0.5);
+                    }
+
+                    /**
+                     * 绘制折线图
+                     */
+
+                    var _min = data[zoom.beginIndex].value, _max = data[zoom.beginIndex].value;
+                    for (var index = zoom.beginIndex + 1; index <= zoom.endIndex; index++) {
+                        var item = data[index];
+                        if (item.value > _max) _max = item.value;
+                        if (item.value < _min) _min = item.value;
+                    }
+
+                    if (gradient) {
+                        if (_min > 0) _min = 0;
+                        if (_max < 0) _max = 0;
+                    }
+
+                    var rulerData = ruler(_max, _min, 5);
+                    _min = rulerData[0];
+                    _max = rulerData[rulerData.length - 1];
+
+                    var bootomPosition = boxHeight - grid.bottom - zoom.bottom - zoom.height;
+
+                    var getYByValue = function (value) {
+                        return bootomPosition - (value - _min) / (_max - _min) * (bootomPosition - grid.top);
+                    };
+
+                    var getXByIndex = function (index) {
+                        return grid.left + (boxWidth - grid.left - grid.right) * (index - zoom.beginIndex) / (zoom.endIndex - zoom.beginIndex);
+                    };
+
+                    // 绘制Y刻度尺
+                    painter.config({
+                        fillStyle: "#75777f",
+                        strokeStyle: "#e0e6f1",
+                        textAlign: "right",
+                        textBaseline: "middle",
+                        fontSize: 10,
+                        lineWidth: 0.5
+                    });
+                    for (var rulerValue of rulerData) {
+                        var y = getYByValue(rulerValue);
+                        painter.fillText(rulerValue, grid.left - 2, y)
+                            .beginPath().moveTo(grid.left, y).lineTo(boxWidth - grid.right, y).stroke();
+                    }
+
+                    // 绘制X刻度尺
+                    painter.config({
+                        textBaseline: "top"
+                    }).fillText(data[zoom.endIndex].name, boxWidth - grid.right, bootomPosition + 5)
+                        .config({
+                            textAlign: "left"
+                        }).fillText(data[zoom.beginIndex].name, grid.left, bootomPosition + 5);
+
+                    if (gradient) {
+
+                        // 绘制填充区域
+                        var zeroY = getYByValue(0);
+                        var deep = (zeroY - grid.top) / (bootomPosition - grid.top);
+                        painter.beginPath();
+                        for (var index = zoom.beginIndex; index <= zoom.endIndex; index++) {
+                            painter.lineTo(getXByIndex(index), getYByValue(data[index].value));
+                        }
+                        painter.config({
+                            fillStyle: painter.createLinearGradient(0, grid.top, 0, bootomPosition)
+                                .addColorStop(0, gradient[0])
+                                .addColorStop(deep, gradient[1])
+                                .addColorStop(1, gradient[0])
+                                .value()
+                        }).lineTo(boxWidth - grid.right, zeroY)
+                            .lineTo(grid.left, zeroY).fill();
+                    }
+
+                    // 绘制线条
+                    painter.config({
+                        lineWidth: 2,
+                        strokeStyle: color
+                    }).beginPath();
+                    for (var index = zoom.beginIndex; index <= zoom.endIndex; index++) {
+                        painter.lineTo(getXByIndex(index), getYByValue(data[index].value));
+                    }
+                    painter.stroke();
+
+                });
+            }, {
+                time: 50
+            });
+
+            ResizeObserver(mycontent, function () {
+                boxWidth = mycontent.clientWidth, boxHeight = mycontent.clientHeight;
+                zoomCache = null;
+
+                zoom.x = grid.left;
+                zoom.y = boxHeight - zoom.height - zoom.bottom;
+                zoom.width = boxWidth - grid.left - grid.right;
+
+                zoomIndexOne = zoom.width / (data.length - 1);
+                zoomValueOne = zoom.height / (max - min);
+
+                painter = canvasRender(mycanvas, boxWidth, boxHeight, {}, true);
+
+                updateView();
+            });
+
         }
     };
 };
@@ -139,12 +335,12 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/tree-layout-lr/index.html
+// Original file:./src/pages/echarts/dialogs/zoom-line/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['301']=function(){
+window.__pkg__bundleSrc__['318']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"从左到右树状图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"可缩放折线图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -152,7 +348,7 @@ window.__pkg__bundleSrc__['301']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['249']=function(){
+window.__pkg__bundleSrc__['274']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -233,850 +429,26 @@ __pkg__scope_bundle__.default= function (el, doback) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/index
+// Original file:./src/pages/echarts/dialogs/zoom-line/data
 /*****************************************************************/
-window.__pkg__bundleSrc__['137']=function(){
+window.__pkg__bundleSrc__['319']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('138');
-var toString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (settings, callback, errorback) {
-
-    var xmlhttp;
-
-    // 如果外部定义了
-    if (isFunction(settings.xhr)) {
-        xmlhttp = settings.xhr();
-    }
-
-    // 否则就内部创建
-    else {
-        xmlhttp = new XMLHttpRequest();
-    }
-
-    // 请求完成回调
-    xmlhttp.onload = function () {
-
-        if (xmlhttp.readyState == 4) {
-
-            callback({
-
-                // 状态码
-                status: xmlhttp.status,
-
-                // 数据
-                data: xmlhttp.responseText
-
-            });
-
-        }
-    };
-
-    // 请求超时回调
-    xmlhttp.ontimeout = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: "请求超时了"
-        });
-    };
-
-    // 请求错误回调
-    xmlhttp.onerror = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: xmlhttp.responseText
-        });
-    };
-
-    xmlhttp.open(settings.method, settings.url, true);
-
-    // 设置请求头
-    for (var key in settings.header) {
-        xmlhttp.setRequestHeader(key, settings.header[key]);
-    }
-
-    // 设置超时时间
-    xmlhttp.timeout = 'timeout' in settings ? settings.timeout : 6000;
-
-    xmlhttp.send(toString(settings.data));
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/toString
-/*****************************************************************/
-window.__pkg__bundleSrc__['138']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('53');
-var isPlainObject =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (data) {
-
-    // 如果是字符串
-    if (isString(data)) {
-        return data;
-    }
-
-    // 如果是JSON数据
-    else if (isPlainObject(data)) {
-        return JSON.stringify(data);
-    }
-
-    // 如果为空
-    else if (data === undefined) {
-        return "";
-    }
-
-    // 否则
-    else {
-        return data;
-    }
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/treeLayout/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['302']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('303');
-var Tree =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('144');
-var initConfig=__pkg__scope_args__.initConfig;
-
-__pkg__scope_args__=window.__pkg__getBundle('101');
-var animation =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('146');
-var rotate =__pkg__scope_args__.default;
-
-
-function TreeLayout(config) {
-
-    this.__option = {
-        offsetX: 0,
-        offsetY: 0,
-        duration: 500,
-        type: "plain",
-        direction: "LR",
-        x: 100,
-        y: 100,
-        width: 100,
-        height: 100,
-        radius: 100
-    };
-
-    this.__rback = null;
-    this.__oralTree = null;
-    this.__preTree = null;
-
-    this.__noOpens = {};
-
-    this.__Tree = new Tree(config);
-
-    return this;
-}
-
-TreeLayout.prototype.setOption = function (option) {
-    initConfig(this.__option, option);
-    return this;
-};
-
-TreeLayout.prototype.use = function (initTree, noOpens) {
-    noOpens = noOpens || {};
-
-    var tree = this.__Tree.use(initTree, noOpens);
-
-    // 校对偏差
-    if (this.__option.offsetX != 0 || this.__option.offsetY != 0) {
-        for (var key in tree.node) {
-            if (!tree.node[key].show) {
-
-                var deep = 0, pid = key;
-                do {
-                    pid = tree.node[pid].pid;
-                    deep++;
-                } while (!tree.node[pid].show);
-
-                tree.node[key].left += this.__option.offsetX * deep;
-                tree.node[key].top += this.__option.offsetY * deep;
-            }
-        }
-    }
-
-    if (this.__option.type == 'rect') {
-        if (this.__option.direction == 'LR' || this.__option.direction == "RL") {
-
-            var perW = this.__option.height / tree.size
-            var perD = this.__option.width / (tree.deep - 1)
-
-            var balanceW = this.__option.y - this.__option.height * 0.5
-            var flag = this.__option.direction == 'LR' ? 1 : -1
-
-            for (var key in tree.node) {
-                if (tree.deep == 1) {
-                    tree.node[key].left = this.__option.x + this.__option.width * 0.5 * flag
-                    tree.node[key].top = this.__option.y
-                } else {
-                    tree.node[key].left = this.__option.x + (tree.node[key].left - 0.5) * perD * flag
-                    tree.node[key].top = tree.node[key].top * perW + balanceW
-                }
-            }
-        } else if (this.__option.direction == 'TB' || this.__option.direction == "BT") {
-
-            var perW = this.__option.width / tree.size;
-            var perD = this.__option.height / (tree.deep - 1);
-
-            var balanceW = this.__option.x - this.__option.width * 0.5;
-            var flag = this.__option.direction == 'TB' ? 1 : -1;
-
-            for (var key in tree.node) {
-                tree.node[key].deg = this.__option.direction == 'TB' ? Math.PI * 0.5 : Math.PI * -0.5;
-
-                if (tree.deep == 1) {
-                    tree.node[key].left = this.__option.x;
-                    tree.node[key].top = this.__option.y + this.__option.height * 0.5 * flag;
-                } else {
-                    var left = tree.node[key].left;
-
-                    tree.node[key].left = tree.node[key].top * perW + balanceW;
-                    tree.node[key].top = this.__option.y + (left - 0.5) * perD * flag;
-                }
-            }
-
-        }
-
-    } else if (this.__option.type == 'circle') {
-        var cx = this.__option.x, cy = this.__option.y;
-        var deg = Math.PI * 2 / tree.size;
-        var per = this.__option.radius / (tree.deep - 1);
-
-        for (var key in tree.node) {
-            if (tree.node[key].left == 0.5) {
-                tree.node[key].left = cx;
-                tree.node[key].top = cy;
-            } else {
-                var position = rotate(cx, cy, deg * tree.node[key].top, cx + (tree.node[key].left - 0.5) * per, cy);
-
-                tree.node[key].deg = deg * tree.node[key].top;
-                tree.node[key].left = position[0];
-                tree.node[key].top = position[1];
-            }
-        }
-    }
-
-    return tree;
-};
-
-TreeLayout.prototype.bind = function (initTree, renderBack, noOpens) {
-    noOpens = noOpens || {};
-
-    this.__rback = renderBack;
-    this.__oralTree = initTree;
-    this.__noOpens = noOpens;
-
-    this.__preTree = this.use(this.__oralTree, this.__noOpens);
-    this.__rback(this.__preTree);
-
-    return this;
-};
-
-TreeLayout.prototype.unbind = function () {
-    this.__rback = function () { return null };
-    this.__oralTree = null;
-    this.__preTree = null;
-    this.__noOpens = {};
-    return this;
-};
-
-TreeLayout.prototype.doUpdate = function () {
-    var newTree = this.use(this.__oralTree, this.__noOpens);
-
-    var cacheTree = JSON.parse(JSON.stringify(newTree));
-
-    var _this=this;
-    animation(function (deep) {
-
-        if (_this.__preTree) {
-            for (var key in cacheTree.node) {
-                if (newTree.node[key].show || _this.__preTree.node[key].show) {
-                    cacheTree.node[key].show = true;
-
-                    cacheTree.node[key].left = _this.__preTree.node[key].left + (newTree.node[key].left - _this.__preTree.node[key].left) * deep;
-                    cacheTree.node[key].top = _this.__preTree.node[key].top + (newTree.node[key].top - _this.__preTree.node[key].top) * deep;
-                }
-            }
-        }
-        _this.__rback(cacheTree);
-
-
-    }, this.__option.duration, function () {
-        _this.__preTree = newTree;
-        _this.__rback(_this.__preTree);
-    })
-};
-
-TreeLayout.prototype.closeNode = function (id) {
-    if (!this.__preTree) return this;
-    this.__noOpens[id] = true;
-
-    this.doUpdate();
-    return this;
-};
-
-TreeLayout.prototype.openNode = function (id) {
-    if (!this.__preTree) return this;
-    this.__noOpens[id] = false;
-
-    this.doUpdate();
-    return this;
-};
-
-TreeLayout.prototype.toggleNode = function (id) {
-    if (!this.__preTree) return this;
-    this.__noOpens[id] = !this.__noOpens[id];
-
-    this.doUpdate();
-    return this;
-};
-
-__pkg__scope_bundle__.default= TreeLayout;
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/treeLayout/Tree
-/*****************************************************************/
-window.__pkg__bundleSrc__['303']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('304');
-var toPlainTree =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('144');
-var initConfig=__pkg__scope_args__.initConfig;
-
-
-function Tree(config) {
-    this.__config = initConfig({
-        root: (initTree) => initTree,
-        children: (parentTree) => parentTree.children,
-        id: (treedata) => treedata.name
-    }, config || {});
-    return this;
-}
-
-Tree.prototype.use = function (initTree, noOpens) {
-    return toPlainTree(initTree, this.__config, noOpens);
-};
-
-__pkg__scope_bundle__.default= Tree;
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/treeLayout/toPlainTree
-/*****************************************************************/
-window.__pkg__bundleSrc__['304']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('305');
-var toInnerTree =__pkg__scope_args__.default;
-
-
-// 可以传递任意格式的树原始数据
-// 只要配置对应的解析方法即可
-__pkg__scope_bundle__.default= function (initTree, config, noOpens) {
-    noOpens = noOpens || {};
-
-    var treeData = toInnerTree(initTree, config);
-    var alltreedata = treeData.value; // 维护的树
-    var rootid = treeData.rid; // 根结点ID
-
-    if (treeData.num == 1) {
-        alltreedata[rootid].left = 0.5;
-        alltreedata[rootid].top = 0.5;
-        alltreedata[rootid].show = true;
-        return {
-            deep: 1,
-            node: alltreedata,
-            root: rootid,
-            size: 1
-        };
-    } else {
-
-        var beforeDis = [], size = 0, maxDeep = 0;
-
-        if (noOpens[rootid]) {
-            alltreedata[rootid].left = 0.5;
-            alltreedata[rootid].top = 0.5;
-            alltreedata[rootid].show = true;
-
-            size = 1;
-        } else {
-            (function positionCalc(pNode, deep) {
-
-                if (deep > maxDeep) maxDeep = deep;
-
-                var flag = 0;
-                if (!noOpens[pNode.id]) {
-
-                    for (flag = 0; flag < pNode.children.length; flag++)
-
-                        // 因为全部的子结点的位置确定了，父结点的y位置就是子结点的中间位置
-                        // 因此有子结点的，先计算子结点
-                        positionCalc(alltreedata[pNode.children[flag]], deep + 1);
-
-                }
-
-                // left的位置比较简单，deep从0开始编号
-                // 比如deep=0，第一层，left=0+0.5=0.5，也就是根结点
-                alltreedata[pNode.id].left = deep + 0.5;
-                if (flag == 0) {
-
-                    // beforeDis是一个数组，用以记录每一层此刻top下边缘（每一层是从上到下）
-                    // 比如一层的第一个，top值最小可以取top=0.5
-                    // 为了方便计算，beforeDis[deep] == undefined的时候表示现在准备计算的是这层的第一个结点
-                    // 因此设置最低上边缘为-0.5
-                    if (beforeDis[deep] == void 0) beforeDis[deep] = -0.5;
-                    // 父边缘同意的进行初始化
-                    if (beforeDis[deep - 1] == void 0) beforeDis[deep - 1] = -0.5;
-
-                    // 添加的新结点top值第一种求法：本层上边缘+1（比如上边缘是-0.5，那么top最小是top=-0.5+1=0.5）
-                    alltreedata[pNode.id].top = beforeDis[deep] + 1;
-
-                    var pTop = beforeDis[deep] + 1 + (alltreedata[pNode.pid].children.length - 1) * 0.5;
-                    // 计算的原则是：如果第一种可行，选择第一种，否则必须选择第二种
-                    // 判断第一种是否可行的方法就是：如果第一种计算后确定的孩子上边缘不对导致孩子和孩子的前兄弟重合就是可行的
-                    if (pTop - 1 < beforeDis[deep - 1])
-                        // 必须保证父亲结点和父亲的前一个兄弟保存1的距离，至少
-                        // 添加的新结点top值的第二种求法：根据孩子取孩子结点的中心top
-                        alltreedata[pNode.id].top = beforeDis[deep - 1] + 1 - (alltreedata[pNode.pid].children.length - 1) * 0.5;
-
-                } else {
-
-                    // 此刻flag!=0
-                    // 意味着结点有孩子，那么问题就解决了，直接取孩子的中间即可
-                    // 其实，flag==0的分支计算的就是孩子，是没有孩子的叶结点，那是关键
-                    alltreedata[pNode.id].top = (alltreedata[pNode.children[0]].top + alltreedata[pNode.children[flag - 1]].top) * 0.5;
-                }
-
-                // 因为计算孩子的时候
-                // 无法掌握父辈兄弟的情况
-                // 可能会出现父亲和兄弟重叠问题
-                if (alltreedata[pNode.id].top <= beforeDis[deep]) {
-                    var needUp = beforeDis[deep] + 1 - alltreedata[pNode.id].top;
-                    (function doUp(_pid, _deep) {
-                        alltreedata[_pid].top += needUp;
-                        if (beforeDis[_deep] < alltreedata[_pid].top) beforeDis[_deep] = alltreedata[_pid].top;
-
-                        for (var _flag = 0; _flag < alltreedata[_pid].children.length; _flag++) {
-                            doUp(alltreedata[_pid].children[_flag], _deep + 1);
-                        }
-                    })(pNode.id, deep);
-                }
-
-                // 计算好一个结点后，需要更新此刻该层的上边缘
-                beforeDis[deep] = alltreedata[pNode.id].top;
-
-                // size在每次计算一个结点后更新，是为了最终绘图的时候知道树有多宽（此处应该叫高）
-                if (alltreedata[pNode.id].top + 0.5 > size) size = alltreedata[pNode.id].top + 0.5;
-
-            })(alltreedata[rootid], 0);
-
-        }
-        // 对于不显示的，需要标记一下
-        for (var key in noOpens) {
-            if (noOpens[key]) {
-                alltreedata[key].isOpen = false;
-                (function updateHidden(pid, left, top) {
-                    for (var index = 0; index < alltreedata[pid].children.length; index++) {
-                        alltreedata[alltreedata[pid].children[index]].left = left;
-                        alltreedata[alltreedata[pid].children[index]].top = top;
-                        alltreedata[alltreedata[pid].children[index]].show = false;
-
-                        updateHidden(alltreedata[pid].children[index], left, top);
-                    }
-                })(key, alltreedata[key].left, alltreedata[key].top);
-            }
-        }
-
-        // 传递的参数分别表示：记录了位置信息的树结点集合、根结点ID和树的宽
-        return {
-            "node": alltreedata,
-            "root": rootid,
-            "size": size,
-            "deep": maxDeep + 1
-        };
-
-    }
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/treeLayout/toInnerTree
-/*****************************************************************/
-window.__pkg__bundleSrc__['305']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 根据配置的层次关系（配置的id,child,root）把原始数据变成内部结构，方便后期位置计算
- *
- * tempTree[id] = {
- *  "data": 原始数据,
- *  "pid": 父亲ID,
- *  "id": 唯一标识ID,
- *  "show": boolean,
- *  "isOpen": boolean,
- *  "children": [cid1、cid2、...]
- * }
- */
-__pkg__scope_bundle__.default= (initTree, config) => {
-    var tempTree = {};
-
-    // 根结点
-    var temp = (config.root)(initTree);
-    var id, rid;
-    id = rid = (config.id)(temp);
-    tempTree[id] = {
-        "data": temp,
-        "pid": null,
-        "id": id,
-        "isOpen": true,
-        "show": true,
-        "deg": 0,
-        "children": []
-    };
-
-    var num = 1;
-
-    // 根据传递的原始数据，生成内部统一结构
-    (function createTree(pdata, pid) {
-        var children = (config.children)(pdata, initTree);
-        num += children ? children.length : 0;
-        for (var flag = 0; children && flag < children.length; flag++) {
-            id = (config.id)(children[flag]);
-            tempTree[pid].children.push(id);
-            tempTree[id] = {
-                "data": children[flag],
-                "pid": pid,
-                "id": id,
-                "isOpen": true,
-                "show": true,
-                "deg": 0,
-                "children": []
-            };
-            createTree(children[flag], id);
-        }
-    })(temp, id);
-
-    return {
-        rid,
-        value: tempTree,
-        num
-    };
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/config
-/*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 初始化配置文件
-
-__pkg__scope_bundle__.initConfig = function (init, data) {
-    var key;
-    for (key in data)
-        try {
-            init[key] = data[key];
-        } catch (e) {
-            throw new Error("Illegal property value！");
-        }
-    return init;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/animation
-/*****************************************************************/
-window.__pkg__bundleSrc__['101']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    //当前正在运动的动画的tick函数堆栈
-var $timers = [];
-//唯一定时器的定时间隔
-var $interval = 13;
-//指定了动画时长duration默认值
-var $speeds = 400;
-//定时器ID
-var $timerId = null;
-
-/**
- * 动画轮播
- * @param {function} doback 轮询函数，有一个形参deep，0-1，表示执行进度
- * @param {number} duration 动画时长，可选
- * @param {function} callback 动画结束回调，可选，有一个形参deep，0-1，表示执行进度
- *
- * @returns {function} 返回一个函数，调用该函数，可以提前结束动画
- */
-__pkg__scope_bundle__.default= function (doback, duration, callback) {
-
-    // 如果没有传递时间，使用内置默认值
-    if (arguments.length < 2) duration = $speeds;
-
-    var clock = {
-        //把tick函数推入堆栈
-        "timer": function (tick, duration, callback) {
-            if (!tick) {
-                throw new Error('Tick is required!');
-            }
-            var id = new Date().valueOf() + "_" + (Math.random() * 1000).toFixed(0);
-            $timers.push({
-                "id": id,
-                "createTime": new Date(),
-                "tick": tick,
-                "duration": duration,
-                "callback": callback
-            });
-            clock.start();
-            return id;
-        },
-
-        //开启唯一的定时器timerId
-        "start": function () {
-            if (!$timerId) {
-                $timerId = setInterval(clock.tick, $interval);
-            }
-        },
-
-        //被定时器调用，遍历timers堆栈
-        "tick": function () {
-            var createTime, flag, tick, callback, timer, duration, passTime,
-                timers = $timers;
-            $timers = [];
-            $timers.length = 0;
-            for (flag = 0; flag < timers.length; flag++) {
-                //初始化数据
-                timer = timers[flag];
-                createTime = timer.createTime;
-                tick = timer.tick;
-                duration = timer.duration;
-                callback = timer.callback;
-
-                //执行
-                passTime = (+new Date() - createTime) / duration;
-                passTime = passTime > 1 ? 1 : passTime;
-                tick(passTime);
-                if (passTime < 1 && timer.id) {
-                    //动画没有结束再添加
-                    $timers.push(timer);
-                } else if (callback) {
-                    callback(passTime);
-                }
-            }
-            if ($timers.length <= 0) {
-                clock.stop();
-            }
-        },
-
-        //停止定时器，重置timerId=null
-        "stop": function () {
-            if ($timerId) {
-                clearInterval($timerId);
-                $timerId = null;
-            }
-        }
-    };
-
-    var id = clock.timer(function (deep) {
-        //其中deep为0-1，表示改变的程度
-        doback(deep);
-    }, duration, callback);
-
-    // 返回一个函数
-    // 用于在动画结束前结束动画
-    return function () {
-        var i;
-        for (i in $timers) {
-            if ($timers[i].id == id) {
-                $timers[i].id = undefined;
-                return;
-            }
-        }
-    };
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/rotate
-/*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）围绕中心（cx,cy）旋转deg度
-__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
-    var cos = Math.cos(deg), sin = Math.sin(deg);
-    return [
-        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
-        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
-    ];
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/region
-/*****************************************************************/
-window.__pkg__bundleSrc__['134']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('120');
-var canvasRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('135');
-var assemble =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
-
-    // 初始化尺寸
-    width = width || canvas.clientWidth;
-    height = height || canvas.clientHeight;
-
-    // 获取绘制画笔
-    var drawPainter = canvasRender(canvas, width, height, {}, isScale);
-
-    // 获取区域画笔
-    var regionPainter = canvasRender(document.createElement('canvas'), width, height, {
-
-        // https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
-        willReadFrequently: true
+    let base = +new Date(1968, 9, 3);
+let oneDay = 24 * 3600 * 1000;
+let data = [{
+    name: "1968/9/3",
+    value: Math.round(Math.random() * 100)
+}];
+for (let i = 1; i < 20000; i++) {
+    var now = new Date((base += oneDay));
+    data.push({
+        name: [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+        value: Math.round((Math.random() - 0.5) * 20 + data[i - 1].value)
     });
+}
 
-    var regions = {}; //区域映射表
-    var regionAssemble = assemble(0, 255, 10, 3);
-
-    var drawRegion = false;
-
-    var instance = {
-
-        // 配置画笔
-        config: function () {
-            if (arguments.length === 1) {
-                if (typeof arguments[0] !== "object") return drawPainter.config([arguments[0]]);
-                for (var key in arguments[0]) {
-                    if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(key, arguments[0][key]);
-                    drawPainter.config(key, arguments[0][key]);
-                }
-            } else if (arguments.length === 2) {
-                if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(arguments[0], arguments[1]);
-                drawPainter.config(arguments[0], arguments[1]);
-            }
-            return instance;
-        },
-
-        // 设置当前绘制区域名称
-        setRegion: function (regionName) {
-            if (regionName === false) {
-                drawRegion = false;
-            } else {
-                drawRegion = true;
-
-                if (regions[regionName] == undefined) {
-                    var tempColor = regionAssemble();
-                    regions[regionName] = "rgb(" + tempColor[0] + "," + tempColor[1] + "," + tempColor[2] + ")";
-                }
-
-                regionPainter.config({
-                    fillStyle: regions[regionName],
-                    strokeStyle: regions[regionName]
-                });
-            }
-
-            return instance;
-        },
-
-        // 获取当前事件触发的区域名称
-        getRegion: function (event) {
-
-            // 获取点击点的颜色
-            var currentRGBA = regionPainter.painter.getImageData(event.offsetX - 0.5, event.offsetY - 0.5, 1, 1).data;
-
-            // 查找当前点击的区域
-            for (var key in regions) {
-                if ("rgb(" + currentRGBA[0] + "," + currentRGBA[1] + "," + currentRGBA[2] + ")" == regions[key]) {
-                    return key;
-                }
-            }
-
-            return false;
-        }
-
-    };
-
-    for (var key in drawPainter) {
-        (function (key) {
-
-            // 如果是获取原生画笔
-            if ('painter' == key) {
-                instance.painter = function () {
-                    return {
-                        draw: drawPainter.painter,
-                        region: regionPainter.painter
-                    };
-                };
-            }
-
-            // 特殊的过滤掉
-            else if (['config'].indexOf(key) < 0) {
-                instance[key] = function () {
-                    if (drawRegion) regionPainter[key].apply(regionPainter, arguments);
-                    var result = drawPainter[key].apply(drawPainter, arguments);
-                    return result.__only__painter__ ? instance : result;
-                };
-
-            }
-        })(key);
-    }
-
-    return instance;
-};
+__pkg__scope_bundle__.default= data;
 
     return __pkg__scope_bundle__;
 }
@@ -1084,20 +456,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['120']=function(){
+window.__pkg__bundleSrc__['121']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('121');
+    __pkg__scope_args__=window.__pkg__getBundle('122');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('123');
+__pkg__scope_args__=window.__pkg__getBundle('124');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('121');
+__pkg__scope_args__=window.__pkg__getBundle('122');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -1384,10 +756,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['121']=function(){
+window.__pkg__bundleSrc__['122']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('122');
+    __pkg__scope_args__=window.__pkg__getBundle('123');
 var arc =__pkg__scope_args__.default;
 
 
@@ -1506,7 +878,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['122']=function(){
+window.__pkg__bundleSrc__['123']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1567,7 +939,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['123']=function(){
+window.__pkg__bundleSrc__['124']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -1605,33 +977,387 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/assemble
+// Original file:./src/tool/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['135']=function(){
+window.__pkg__bundleSrc__['141']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (begin, end, step, count) {
-    var val = [];
-    for (var index = 0; index < count; index++) val[index] = begin;
+    // 刻度尺刻度求解
 
-    // 非常类似进制数，每次调用都+1
+// 需要注意的是，实际的间距个数可能是 num-1 或 num 或 num+1 或 1
+__pkg__scope_bundle__.default= function (maxValue, minValue, num) {
+
+    // 如果最大值最小值反了
+    if (maxValue < minValue) {
+        var temp = minValue;
+        minValue = maxValue;
+        maxValue = temp;
+    }
+
+    // 如果相等
+    else if (maxValue == minValue) {
+        return [maxValue];
+    }
+
+    // 为了变成 -100 ~ 100 需要放大或者缩小的倍数
+    var times100 =
+
+        (function (_value) {
+
+            // 先确定基调，是放大还是缩小
+            var _times100_base = (_value < 100 && _value > -100) ? 10 : 0.1;
+
+            // 记录当前缩放倍数
+            var _times100 = -1, _tiemsValue = _value;
+
+            while (_times100_base == 10 ?
+                // 如果是放大，超过 -100 ~ 100 就应该停止
+                (_tiemsValue >= -100 && _tiemsValue <= 100)
+                :
+                // 如果是缩小，进入 -100 ~ 100 就应该停止
+                (_tiemsValue <= -100 || _tiemsValue >= 100)
+            ) {
+
+                _times100 += 1;
+                _tiemsValue *= _times100_base;
+
+            }
+
+            if (_times100_base == 10) {
+                return Math.pow(10, _times100);
+            } else {
+
+                // 解决类似 0.1 * 0.1 = 0.010000000000000002 浮点运算不准确问题
+                var temp = "0.", i;
+                for (i = 1; i < _times100; i++) {
+                    temp += "0";
+                }
+                return +(temp + "1");
+            }
+        })
+
+            // 根据差值来缩放
+            (maxValue - minValue);
+
+
+    // 求解出 -100 ~ 100 的最佳间距值 后直接转换原来的倍数
+    var distance100 = Math.ceil((maxValue - minValue) * times100 / num);
+
+    // 校对一下
+    distance100 = {
+        3: 2,
+        4: 5,
+        6: 5,
+        7: 5,
+        8: 10,
+        9: 10,
+        11: 10,
+        12: 10,
+        13: 15,
+        14: 15,
+        16: 15,
+        17: 15,
+        18: 20,
+        19: 20,
+        21: 20,
+        22: 20,
+        23: 25,
+        24: 25,
+        26: 25,
+        27: 25
+    }[distance100] || distance100;
+
+    var distance = distance100 / times100;
+
+    // 最小值，也就是起点
+    var begin = Math.floor(minValue / distance) * distance;
+
+    var rulerArray = [], index;
+    // 获取最终的刻度尺数组
+    rulerArray.push(begin);
+    for (index = 1; rulerArray[rulerArray.length - 1] < maxValue; index++) {
+        rulerArray.push(begin + distance * index);
+    }
+
+    return rulerArray;
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/throttle
+/*****************************************************************/
+window.__pkg__bundleSrc__['320']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function throttle(callback, _option) {
+
+    // 缺省值
+    var option = {
+        time: 200,
+        keep: false,
+        opportunity: "end"
+    };
+
+    // 校对
+    if (_option) {
+        for (var key in _option) {
+            option[key] = _option[key];
+        }
+    }
+
+    var hadInterval = false, hadClick = false, oneClick = false, arg;
     return function () {
-        for (var i = 0; i < count; i++) {
+        const _this = this;
+        arg = arguments;
 
-            // 如果当前位可以进1
-            if (val[i] + step < end) {
-                val[i] = +(val[i] + step).toFixed(7);
-                break;
+        // 如果前置任务都完成了
+        if (!hadInterval) {
+            if (option.opportunity != 'end') {
+                callback.apply(_this, arg);
             }
+            hadInterval = true;
 
-            // 如果当前位不可以，那当前位归0，尝试下一位
-            else if (i < count - 1) {
-                val[i] = begin;
-            }
+            var interval = setInterval(() => {
+                if (hadClick) {
+                    if (!option.keep) {
+                        callback.apply(_this, arg);
+                    }
+                } else {
+                    if (option.opportunity != 'begin') {
+                        if (oneClick || option.opportunity == 'end') callback.apply(_this, arg);
+                    }
+                    hadInterval = false;
+                    oneClick = false;
+                    clearInterval(interval);
+                }
+                hadClick = false;
+            }, option.time);
+        } else {
+            hadClick = true;
+            oneClick = true;
         }
 
-        return val;
+    };
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/pointin/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['321']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('322');
+var arc =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('323');
+var circle =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('324');
+var polygon =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('325');
+var rect =__pkg__scope_args__.default;
+
+
+var PointIn = function (x, y) {
+    this.x = x || 0;
+    this.y = y || 0;
+};
+
+PointIn.prototype.setPoint = function (x, y) {
+    this.x = x;
+    this.y = y;
+    return this;
+};
+
+PointIn.prototype.arc = arc;
+PointIn.prototype.circle = circle;
+PointIn.prototype.polygon = polygon;
+PointIn.prototype.rect = rect;
+
+__pkg__scope_bundle__.default= PointIn;
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/pointin/arc
+/*****************************************************************/
+window.__pkg__bundleSrc__['322']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 判断第二个弧度是否大于第一个
+// 范围：[0,2PI)
+var compareDeg = function (sin1, cos1, sin2, cos2) {
+
+    // 先根据sin值把弧度分为0～PI和PI～2PI区间，如果不在一个区间，大小可以立刻判断
+    if (sin2 > 0 && sin1 < 0) return false;
+    else if (sin2 < 0 && sin1 > 0) return true;
+
+    // 如果都在0～PI区间，根据cos，cos谁大谁小
+    else if (sin2 > 0 && sin1 > 0) {
+        return cos2 < cos1;
     }
+
+    // 如果都在PI～2PI区间，根据cos，cos谁大谁大
+    else if (sin2 < 0 && sin1 < 0) {
+        return cos2 > cos1;
+    }
+
+    // sin2和sin1都不为0的情况判断了，接下来看看为0的情况
+
+    // 都为0时，根据cos，cos谁大谁小
+    else if (sin2 == 0 && sin1 == 0) {
+        return cos2 < cos1;
+    }
+
+    // 只有sin2为0时，如果sin1<0则false，否则根据cos，cos谁大谁小
+    else if (sin2 == 0) {
+        if (sin1 < 0) return false;
+        else {
+            return cos2 < cos1;
+        }
+    }
+
+    // 余下就是sin1为0时，如果sin2<0则true，否则根据cos，cos谁大谁小
+    else {
+        if (sin2 < 0) return true;
+        else {
+            return cos2 < cos1;
+        }
+    }
+};
+
+__pkg__scope_bundle__.default= function (cx, cy, r1, r2, beginDeg, deg) {
+    if (r1 > r2) {
+        var r = r1;
+        r1 = r2;
+        r2 = r;
+    }
+
+    // 如果在小圈中，或者不在大圈中，肯定不在弧中
+    if (this.circle(cx, cy, r1) || !this.circle(cx, cy, r2)) return false;
+
+    var deg1, deg2;
+    if (deg >= 0) {
+        deg1 = beginDeg;
+        deg2 = beginDeg + deg;
+    } else {
+        deg2 = beginDeg;
+        deg1 = beginDeg + deg;
+    }
+
+    deg1 %= (Math.PI * 2);
+    deg2 %= (Math.PI * 2);
+
+    if (deg1 < 0) deg1 += Math.PI * 2;
+    if (deg2 < 0) deg2 += Math.PI * 2;
+
+    var d = Math.sqrt((cx - this.x) * (cx - this.x) + (cy - this.y) * (cy - this.y));
+    var sin = (this.y - cy) / d, cos = (this.x - cx) / d;
+
+    if (deg1 < deg2) {
+        return compareDeg(Math.sin(deg1), Math.cos(deg1), sin, cos) && compareDeg(sin, cos, Math.sin(deg2), Math.cos(deg2));
+    } else {
+        return !(compareDeg(Math.sin(deg2), Math.cos(deg2), sin, cos) && compareDeg(sin, cos, Math.sin(deg1), Math.cos(deg1)));
+    }
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/pointin/circle
+/*****************************************************************/
+window.__pkg__bundleSrc__['323']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (cx, cy, r) {
+
+    // 特殊情况提前判断，加速计算
+    if (this.x < cx - r || this.x > cx + r || this.y < cy - r || this.y > cy + r) return false;
+
+    var d2 = (cx - this.x) * (cx - this.x) + (cy - this.y) * (cy - this.y), r2 = r * r;
+    return d2 <= r2;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/pointin/polygon
+/*****************************************************************/
+window.__pkg__bundleSrc__['324']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (points) {
+    points.push(points[0]);
+
+    // 环绕数法
+    // 以某一点做水平向右的射线，
+    // 如果多边形的某条边的从下往上穿过该射线，则环绕数加一；
+    // 如果多边形的某条边的从上往下穿过该射线，则环绕数减一；
+    // 最终的环绕数如果不为 0 则该点在多边形内部，否则在多边形的外部。
+
+    var count = 0;
+    for (var index = 0; index < points.length - 1; index++) {
+
+        var A = points[index], B = points[index + 1];
+
+        // 重合的点可以忽略
+        if (A[0] == B[0] && A[1] == B[1]) continue;
+
+        // 先判断是否和当前线段相交（如果不相交，忽略）
+        // 相交的第一步是，P点在垂直方向上位于AB之间
+        if ((A[1] - this.y) * (B[1] - this.y) < 0) {
+
+            // AB和P射线的焦点记为C(x,y)
+            // 由AB和AC平行，且C的y值和P一样可以得到
+            var C = [
+                A[0] + (B[0] - A[0]) * (this.y - A[1]) / (B[1] - A[1]),
+                this.y
+            ];
+
+            // 如果相交
+            if (C[0] > this.x) {
+
+                // 现在可以确定，这个P这个射线一定被线段击中了，接下来，需要确定击中的方向
+
+                // 如果是从下往上穿
+                if (A[1] < B[1]) {
+                    count += 1;
+                }
+
+                // 否则就是从上往下穿
+                else {
+                    count -= 1;
+                }
+
+            }
+
+        }
+    }
+
+    return count != 0;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/pointin/rect
+/*****************************************************************/
+window.__pkg__bundleSrc__['325']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (x, y, width, height) {
+    return this.x >= x && this.x <= x + width && this.y >= y && this.y <= y + height;
 };
 
     return __pkg__scope_bundle__;

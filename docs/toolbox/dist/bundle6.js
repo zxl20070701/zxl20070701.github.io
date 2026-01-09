@@ -57,6 +57,11 @@ window.__pkg__bundleSrc__['37']=function(){
         return window.__pkg__getLazyBundle('./dist/bundle22.js','78')
     },
 
+    // Excel 表格
+    "excel": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle23.js','79')
+    },
+
 };
 
     return __pkg__scope_bundle__;

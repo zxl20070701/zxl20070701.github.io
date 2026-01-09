@@ -1,37 +1,25 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/h2o/index.js
+// Original file:./src/pages/echarts/dialogs/money-schedule/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['203']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('268');
+    __pkg__scope_args__=window.__pkg__getBundle('285');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('269');
-
-
-// 着色器
-__pkg__scope_args__=window.__pkg__getBundle('270');
-var vertexShader =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('271');
-var fragmentShader =__pkg__scope_args__.default;
-
-
-__pkg__scope_args__=window.__pkg__getBundle('272');
-var webglRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('278');
-var cylinderFactory =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('286');
-var sphereFactory =__pkg__scope_args__.default;
+var svgRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('288');
-var Matrix4 =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('102');
+var animation =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('147');
+var rotate =__pkg__scope_args__.default;
 
 
+var stop = function () { };
 __pkg__scope_bundle__.default= function (obj, props) {
 
     return {
@@ -41,999 +29,786 @@ __pkg__scope_bundle__.default= function (obj, props) {
             srcUrl: props.srcUrl
         },
         mounted: function () {
-            var webgl = webglRender(this._refs.mycanvas.value);
-            webgl.shader(vertexShader, fragmentShader);
+            var _this = this;
 
-            var sphere = sphereFactory(), cylinder = cylinderFactory();
+            var painter = svgRender(this._refs.mysvg.value);
 
-            // 氢原子
-            var H1_Geometry = sphere(-0.7, 0, 0, 0.36);
-            var H2_Geometry = sphere(0.7, 0, 0, 0.36);
+            // 进度条
+            var rate = 0.73;
 
-            // 氧原子
-            var O_Geometry = sphere(0, 0.7, 0, 0.5);
+            painter
 
-            // 化学键（左）
-            var L_left_Geometry = cylinder(-0.7, 0, 0, 0.16, 0, 0.7, 0);
+                // 绘制三个背景圆
+                .config({
+                    'fillStyle': '#fff7e9'
+                }).appendEl("circle").fillCircle(250, 250, 250)
+                .config({
+                    'fillStyle': '#ffe1b1'
+                }).appendEl("circle").fillCircle(250, 250, 220)
+                .config({
+                    'fillStyle': '#ffffff'
+                }).appendEl("circle").fillCircle(250, 250, 180);
 
-            // 化学键（右）
-            var L_right_Geometry = cylinder(0.7, 0, 0, 0.16, 0, 0.7, 0);
+            // 准备好用来绘制动画wave的两个标签和进度弧
+            var innerWave = svgRender(this._refs.mysvg.value).appendEl('path');
+            var outerWave = svgRender(this._refs.mysvg.value).appendEl('path');
+            var arcNode = svgRender(this._refs.mysvg.value).appendEl('path');
 
-            var globalMatrix4 = Matrix4();
+            // 绘制三行文字
+            painter.config({
+                'fontSize': 40,
+                'fillStyle': '#272727',
+                'textAlign': 'center'
+            })
+                .appendEl("text").fillText('￥100,000', 250, 210)
+                .config({
+                    'fontSize': 30,
+                    'fillStyle': '#595757'
+                })
+                .appendEl("text").fillText('可借', 250, 160)
+                .config({
+                    'fontSize': 24,
+                    'fillStyle': '#a4a1a1'
+                })
+                .appendEl("text").fillText('总额度150,000', 250, 260);
 
-            var buffer = webgl.buffer();
-            var painter = webgl.painter().openDeep();
+            // 配置进度条
+            arcNode.config({
+                'arcStartCap': 'round',
+                'arcEndCap': 'round',
+                'fillStyle': '#ff7f08'
+            });
 
-            var drawGeometry = function (geometryData) {
-                for (var index = 0; index < geometryData.length; index++) {
-                    buffer.write(new Float32Array(geometryData[index].points)).use("a_position", 3, 3, 0);
-                    painter[geometryData[index].method](0, geometryData[index].length);
+            // 启动动画并绘制进度条
+            animation(function (deep) {
+
+                // 根据当前进度deep更新弧形进度
+                arcNode.fillArc(250, 250, 180, 200, -90, -360 * (1 - rate) * deep);
+
+                // 初始化wave
+                _this.fullWave(rate * deep, deep, innerWave, outerWave);
+
+            }, 2000, function () {
+
+                // 初始化显示完毕以后，启动wave动画
+                _this.renderWave(rate, innerWave, outerWave);
+            });
+
+        },
+
+        beforeDestory: function () {
+            stop();
+        },
+
+        methods: {
+
+            /**
+            * 绘制波浪（完整的两条）
+            * @param {number} rate 比率
+            * @param {number} deep 动画进度
+            * @param {node} innerWave 内wave结点
+            * @param {node} outerWave 外wave结点
+            */
+            fullWave: function (rate, deep, innerWave, outerWave) {
+                var help = 1;
+
+                if (deep > 0.5) {
+                    deep = deep - 0.5;
+                    help = -1;
                 }
-            };
+                deep *= 2;
 
-            function freshView() {
+                // 绘制内弧
+                this.drawerWave(innerWave.config({
+                    'fillStyle': '#ff7f08'
+                }), rate, deep, help);
 
-                // 首先，每次围绕x轴旋转一点点
-                webgl.setUniformMatrix4fv("u_matrix", globalMatrix4.rotate(0.05, -1, 0.2, 0, 1, 0.2, 0).value());
-
-                // 设置为绘制氧原子颜色
-                webgl.setUniform4f("u_color", 1, 0.2, 0.2, 1.0);
-
-                // 绘制氧原子
-                drawGeometry(O_Geometry);
-
-                // 设置为绘制氢原子颜色
-                webgl.setUniform4f("u_color", 0.6, 0.6, 0.6, 1.0);
-
-                // 绘制氢原子（左）
-                drawGeometry(H1_Geometry);
-
-                // 绘制氢原子（右）
-                drawGeometry(H2_Geometry);
-
-                // 设置为绘制化学键颜色
-                webgl.setUniform4f("u_color", 0.2, 0.3, 0.1, 0.4);
-
-                // 绘制化学键（左）
-                drawGeometry(L_left_Geometry);
-
-                // 绘制化学键（右）
-                drawGeometry(L_right_Geometry);
-            }
-
-            setInterval(function () {
-                freshView();
-            }, 14);
-        }
-    };
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/h2o/index.html
-/*****************************************************************/
-window.__pkg__bundleSrc__['268']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"水分子式H2O","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content h2o","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas","class":"canvas","width":"500","height":"500"},"childNodes":[]}]
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/h2o/index.scss
-/*****************************************************************/
-window.__pkg__bundleSrc__['269']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    var styleElement = document.createElement('style');
-var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [dialog-view='echarts-example']>div.h2o .canvas{\n\nwidth: 500px;\n\nheight: 500px;\n\nmargin: 50px auto;\n\n}\n";
-styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/h2o/shader-vertex.c
-/*****************************************************************/
-window.__pkg__bundleSrc__['270']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= "attribute vec4 a_position;\r\nuniform mat4 u_matrix;\r\n\r\nvoid main()\r\n{\r\n    vec4 temp = u_matrix * a_position;\r\n    \r\n    // 表示眼睛距离vec4(0.0,0.0,1.0)的距离\r\n    float dist = 3.0;\r\n\r\n    // 使用投影直接计算\r\n    // 为保证纹理和相对位置正确\r\n    // x、y、z的改变满足线性变换\r\n    gl_Position = vec4((dist + 1.0) * temp.x, (dist + 1.0) * temp.y, dist * (dist + temp.z) + 1.0 - dist * dist, temp.w * 2.0 * (dist + temp.z));\r\n}"
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/h2o/shader-fragment.c
-/*****************************************************************/
-window.__pkg__bundleSrc__['271']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= "precision mediump float;\r\n\r\nuniform vec4 u_color;\r\n\r\nvoid main()\r\n{\r\n    gl_FragColor = u_color;\r\n}"
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/webgl/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['272']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('273');
-var useShader=__pkg__scope_args__.useShader;
-
-__pkg__scope_args__=window.__pkg__getBundle('274');
-var newBuffer=__pkg__scope_args__.newBuffer;
-var writeBuffer=__pkg__scope_args__.writeBuffer;
-var useBuffer=__pkg__scope_args__.useBuffer;
-
-__pkg__scope_args__=window.__pkg__getBundle('275');
-var initTexture=__pkg__scope_args__.initTexture;
-var linkImage=__pkg__scope_args__.linkImage;
-var linkCube=__pkg__scope_args__.linkCube;
-
-__pkg__scope_args__=window.__pkg__getBundle('276');
-var value =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('277');
-var painter =__pkg__scope_args__.default;
-
-
-// 获取webgl上下文
-var getCanvasWebgl = function (node, opts) {
-    var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"],
-        context = null, i;
-    for (i = 0; i < names.length; i++) {
-        try {
-            context = node.getContext(names[i], opts);
-        } catch (e) { }
-        if (context) break;
-    }
-    if (!context) throw new Error('Non canvas or browser does not support webgl.');
-    return context;
-}
-
-// 绘图核心对象
-__pkg__scope_bundle__.default= function (node, opts) {
-    var gl = getCanvasWebgl(node, opts),
-        glObj = {
-
-            "_gl_": gl,
-
-            // 画笔
-            "painter": function () {
-                return painter(gl);
+                // 绘制外弧
+                this.drawerWave(outerWave.config({
+                    'fillStyle': '#fead2e'
+                }), rate, deep, -help);
             },
 
-            // 启用着色器
-            "shader": function (vshaderSource, fshaderSource) {
-                gl.program = useShader(gl, vshaderSource, fshaderSource);
-                return glObj;
+            /**
+            * 启动wave动画
+            * @param {number} rate 比率
+            * @param {number} deep 动画进度
+            * @param {node} innerWave 内wave结点
+            * @param {node} outerWave 外wave结点
+            */
+            renderWave: function (rate, innerWave, outerWave) {
+                var _this = this;
+
+                stop = animation(function (deep) {
+                    _this.fullWave(rate, deep, innerWave, outerWave);
+                }, 2000, function () {
+                    _this.renderWave(rate, innerWave, outerWave);
+                });
             },
 
-            // 缓冲区
-            "buffer": function (isElement) {
-                // 创建缓冲区
-                newBuffer(gl, isElement);
-                var bufferData,
-                    bufferObj = {
-                        // 写入数据
-                        "write": function (data, usage) {
-                            usage = usage || gl.STATIC_DRAW;
-                            writeBuffer(gl, data, usage, isElement);
-                            bufferData = data;
-                            return bufferObj;
-                        },
-                        // 分配使用
-                        "use": function (location, size, stride, offset, type, normalized) {
-                            var fsize = bufferData.BYTES_PER_ELEMENT;
-                            if (typeof location == 'string') location = gl.getAttribLocation(gl.program, location);
-                            stride = stride || 0;
-                            offset = offset || 0;
-                            type = type || gl.FLOAT;
-                            useBuffer(gl, location, size, type, stride * fsize, offset * fsize, normalized);
-                            return bufferObj;
-                        }
-                    };
-                return bufferObj;
-            },
+            /**
+            * 绘制具体的一条wave
+            * @param {painter} painter 画笔
+            * @param {number} rate 比率
+            * @param {number} deep 动画进度
+            * @param {number} help wave类型，去1或-1，分两种：开始上波和开始下波
+            */
+            drawerWave: function (painter, rate, deep, help) {
 
-            // 纹理
-            "texture": function (_type_, unit) {
-                var type = {
-                    "2d": gl.TEXTURE_2D,/*二维纹理*/
-                    "cube": gl.TEXTURE_CUBE_MAP/*立方体纹理*/
-                }[_type_];
+                // wave的起点和终点
+                var beginPoint = rotate(250, 250, (0.5 - rate) * Math.PI, 410, 250);
+                var endPoint = rotate(250, 250, (1.5 - rate) * Math.PI, 410, 250);
 
-                // 创建纹理
-                var texture = initTexture(gl, type, unit, _type_);
+                // wave由下半圆和波浪组成
+                painter
+                    .beginPath()
+                    .moveTo(beginPoint[0], beginPoint[1])
 
-                // 配置纹理
-                gl.texParameteri(type, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-                gl.texParameteri(type, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-                gl.texParameteri(type, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                gl.texParameteri(type, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                    // 绘制半圆部分
+                    .arc(250, 250, 160, (0.5 - rate) * 180, 2 * rate * 180)
 
-                var textureObj = {
-                    // 链接图片资源
-                    "useImage": function (image, level, format, textureType) {
-                        linkImage(gl, type, level, format, textureType, image);
-                        return textureObj;
-                    },
-                    // 链接多张图片
-                    "useCube": function (images, width, height, level, format, textureType) {
-                        linkCube(gl, type, level, format, textureType, images, width, height, texture);
-                        return textureObj;
-                    }
-                };
-                return textureObj;
-            },
+                    // 绘制波浪部分
+                    .bezierCurveTo(
 
-            // 视图窗口缩放设置
-            "updateScale": function (value) {
+                        // rate > 0.5 ? 1 - rate : rate是用来控制波动大小的，为了好看，0-0.5和0.5-1取对称
+                        endPoint[0] + (beginPoint[0] - endPoint[0]) * 0.5 * deep, beginPoint[1] + 200 * deep * help * (rate > 0.5 ? 1 - rate : rate),
+                        endPoint[0] + (beginPoint[0] - endPoint[0]) * 0.5 * (1 + deep), beginPoint[1] - 200 * (1 - deep) * help * (rate > 0.5 ? 1 - rate : rate),
 
-                var viewWidth = gl.canvas.width * value;
-                var viewHeight = gl.canvas.height * value;
+                        // 上面是第一和第二个看着点，最后这个是终点，加上画笔开始位置作为起点
+                        beginPoint[0], beginPoint[1]
+                    )
 
-                var elWidth = gl.canvas.width;
-                var elHeight = gl.canvas.height;
+                    // 填充
+                    .fill();
 
-                gl.viewport((elWidth - viewWidth) * 0.5, (elHeight - viewHeight) * 0.5, viewWidth, viewHeight);
-
-                return glObj;
             }
-
-        };
-
-    // attribue和uniform数据设置
-    var valueMethods = value(gl);
-    for (var key in valueMethods) {
-        glObj[key] = valueMethods[key];
-    }
-
-    /**
-     * gl.viewport告诉WebGL如何将裁剪空间（-1 到 +1）中的点转换到像素空间
-     * 当你第一次创建WebGL上下文的时候WebGL会设置视域大小和画布大小匹配
-     * 但是在那之后就需要你自己设置（当你改变画布大小就需要告诉WebGL新的视域设置）
-     * 为了避免麻烦，我们每次都主动调用一下
-     */
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-    // https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/depthFunc
-    gl.depthFunc(gl.LEQUAL);
-
-    return glObj;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/webgl/shader
-/*****************************************************************/
-window.__pkg__bundleSrc__['273']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 着色器一些公共的方法
- * --------------------------------------------
- * 主要是和生成特定着色器无关的方法
- * 着色器分为两类：顶点着色器 + 片段着色器
- * 前者用于定义一个点的特性，比如位置，大小，颜色等
- * 后者用于针对每个片段（可以理解为像素）进行处理
- *
- * 着色器采用的语言是：GLSL ES语言
- */
-
-// 把着色器字符串加载成着色器对象
-var _loadShader = function (gl, type, source) {
-    // 创建着色器对象
-    var shader = gl.createShader(type);
-    if (shader == null) throw new Error('Unable to create shader!');
-    // 绑定资源
-    gl.shaderSource(shader, source);
-    // 编译着色器
-    gl.compileShader(shader);
-    // 检测着色器编译是否成功
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-        throw new Error('Failed to compile shader:' + gl.getShaderInfoLog(shader));
-    return shader;
-};
-
-// 初始化着色器
-var _useShader = function (gl, vshaderSource, fshaderSource) {
-    // 分别加载顶点着色器对象和片段着色器对象
-    var vertexShader = _loadShader(gl, gl.VERTEX_SHADER, vshaderSource),
-        fragmentShader = _loadShader(gl, gl.FRAGMENT_SHADER, fshaderSource);
-    // 创建一个着色器程序
-    var glProgram = gl.createProgram();
-    // 把前面创建的两个着色器对象添加到着色器程序中
-    gl.attachShader(glProgram, vertexShader);
-    gl.attachShader(glProgram, fragmentShader);
-    // 把着色器程序链接成一个完整的程序
-    gl.linkProgram(glProgram);
-    // 检测着色器程序链接是否成功
-    if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS))
-        throw new Error('Failed to link program: ' + gl.getProgramInfoLog(glProgram));
-    // 使用这个完整的程序
-    gl.useProgram(glProgram);
-    return glProgram;
-};
-
-__pkg__scope_bundle__.loadShader = _loadShader;
-__pkg__scope_bundle__.useShader = _useShader;
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/webgl/buffer
-/*****************************************************************/
-window.__pkg__bundleSrc__['274']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 缓冲区核心方法
- * --------------------------------------------
- * 缓冲区分为两种：
- *  1.缓冲区中保存了包含顶点的数据
- *  2.缓冲区保存了包含顶点的索引值
- *
- */
-
-// 获取一个新的缓冲区
-// isElement默认false，创建第一种缓冲区，为true创建第二种
-__pkg__scope_bundle__.newBuffer = function (gl, isElement) {
-    var buffer = gl.createBuffer(),
-        TYPE = isElement ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
-    // 把缓冲区对象绑定到目标
-    gl.bindBuffer(TYPE, buffer);
-    return buffer;
-};
-
-// 数据写入缓冲区
-// data是一个类型化数组，表示写入的数据
-// usage表示程序如何使用存储在缓冲区的数据
-__pkg__scope_bundle__.writeBuffer = function (gl, data, usage, isElement) {
-    var TYPE = isElement ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
-    gl.bufferData(TYPE, data, usage);
-};
-
-// 使用缓冲区数据
-// location指定待分配的attribute变量的存储位置
-// size每个分量个数
-// type数据类型，应该是以下的某个：
-//      gl.UNSIGNED_BYTE    Uint8Array
-//      gl.SHORT            Int16Array
-//      gl.UNSIGNED_SHORT   Uint16Array
-//      gl.INT              Int32Array
-//      gl.UNSIGNED_INT     Uint32Array
-//      gl.FLOAT            Float32Array
-// stride相邻两个数据项的字节数
-// offset数据的起点字节位置
-// normalized是否把非浮点型的数据归一化到[0,1]或[-1,1]区间
-__pkg__scope_bundle__.useBuffer = function (gl, location, size, type, stride, offset, normalized) {
-    // 把缓冲区对象分配给目标变量
-    gl.vertexAttribPointer(location, size, type, normalized || false, stride || 0, offset || 0);
-    // 连接目标对象和缓冲区对象
-    gl.enableVertexAttribArray(location);
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/webgl/texture
-/*****************************************************************/
-window.__pkg__bundleSrc__['275']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 纹理方法
- * --------------------------------------------
- * 在绘制的多边形上贴图
- * 丰富效果
- */
-
-// 初始化一个纹理对象
-// type有gl.TEXTURE_2D代表二维纹理，gl.TEXTURE_CUBE_MAP 立方体纹理等
-__pkg__scope_bundle__.initTexture = function (gl, type, unit, _type_) {
-    // 创建纹理对象
-    var texture = gl.createTexture();
-
-    unit = unit || 0;
-    // 开启纹理单元，unit表示开启的编号
-    gl.activeTexture(gl['TEXTURE' + unit]);
-
-    // 绑定纹理对象到目标上
-    gl.bindTexture(type, texture);
-    return texture;
-};
-
-// 链接资源图片
-// level默认传入0即可，和金字塔纹理有关
-// format表示图像的内部格式：
-//      gl.RGB(红绿蓝)
-//      gl.RGBA(红绿蓝透明度)
-//      gl.ALPHA(0.0,0.0,0.0,透明度)
-//      gl.LUMINANCE(L、L、L、1L:流明)
-//      gl.LUMINANCE_ALPHA(L、L、L,透明度)
-// textureType表示纹理数据的格式：
-//      gl.UNSIGNED_BYTE: 表示无符号整形，每一个颜色分量占据1字节
-//      gl.UNSIGNED_SHORT_5_6_5: 表示RGB，每一个分量分别占据占据5, 6, 5比特
-//      gl.UNSIGNED_SHORT_4_4_4_4: 表示RGBA，每一个分量分别占据占据4, 4, 4, 4比特
-//      gl.UNSIGNED_SHORT_5_5_5_1: 表示RGBA，每一个分量分别占据占据5比特，A分量占据1比特
-__pkg__scope_bundle__.linkImage = function (gl, type, level, format, textureType, image) {
-    format = {
-        "rgb": gl.RGB,
-        "rgba": gl.RGBA,
-        "alpha": gl.ALPHA
-    }[format] || gl.RGBA;
-
-    gl.texImage2D(type, level || 0, format, format, {
-
-        // 目前一律采用默认值，先不对外提供修改权限
-
-    }[textureType] || gl.UNSIGNED_BYTE, image);
-};
-
-__pkg__scope_bundle__.linkCube = function (gl, type, level, format, textureType, images, width, height, texture) {
-    format = {
-        "rgb": gl.RGB,
-        "rgba": gl.RGBA,
-        "alpha": gl.ALPHA
-    }[format] || gl.RGBA;
-
-    level = level || 0;
-
-    textureType = {
-
-        // 目前一律采用默认值，先不对外提供修改权限
-
-    }[textureType] || gl.UNSIGNED_BYTE;
-
-    var types = [
-        gl.TEXTURE_CUBE_MAP_POSITIVE_X,//右
-        gl.TEXTURE_CUBE_MAP_NEGATIVE_X,//左
-        gl.TEXTURE_CUBE_MAP_POSITIVE_Y,//上
-        gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,//下
-        gl.TEXTURE_CUBE_MAP_POSITIVE_Z,//后
-        gl.TEXTURE_CUBE_MAP_NEGATIVE_Z//前
-    ], i, target;
-
-    for (i = 0; i < types.length; i++) {
-        target = types[i];
-        gl.texImage2D(target, level, format, width, height, 0, format, textureType, null);
-        gl.bindTexture(type, texture);
-        gl.texImage2D(target, level, format, format, textureType, images[i]);
-    }
-
-    gl.generateMipmap(type);
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/webgl/value
-/*****************************************************************/
-window.__pkg__bundleSrc__['276']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (gl) {
-    return {
-
-        /**
-         * attribue
-         * ----------------------------------------
-         */
-
-        // 浮点数
-        setAttribute1f: function (name, v0) {
-            // 获取存储位置
-            var location = gl.getAttribLocation(gl.program, name);
-            // 传递数据给变量
-            gl.vertexAttrib1f(location, v0);
-        },
-        setAttribute2f: function (name, v0, v1) {
-            var location = gl.getAttribLocation(gl.program, name);
-            gl.vertexAttrib2f(location, v0, v1);
-        },
-        setAttribute3f: function (name, v0, v1, v2) {
-            var location = gl.getAttribLocation(gl.program, name);
-            gl.vertexAttrib3f(location, v0, v1, v2);
-        },
-        setAttribute4f: function (name, v0, v1, v2, v3) {
-            var location = gl.getAttribLocation(gl.program, name);
-            gl.vertexAttrib4f(location, v0, v1, v2, v3);
-        },
-
-        // 整数
-        setAttribute1i: function (name, v0) {
-            // 获取存储位置
-            var location = gl.getAttribLocation(gl.program, name);
-            // 传递数据给变量
-            gl.vertexAttrib1i(location, v0);
-        },
-        setAttribute2i: function (name, v0, v1) {
-            var location = gl.getAttribLocation(gl.program, name);
-            gl.vertexAttrib2i(location, v0, v1);
-        },
-        setAttribute3i: function (name, v0, v1, v2) {
-            var location = gl.getAttribLocation(gl.program, name);
-            gl.vertexAttrib3i(location, v0, v1, v2);
-        },
-        setAttribute4i: function (name, v0, v1, v2, v3) {
-            var location = gl.getAttribLocation(gl.program, name);
-            gl.vertexAttrib4i(location, v0, v1, v2, v3);
-        },
-
-        /**
-        * uniform
-        * ----------------------------------------
-        */
-
-        // 浮点数
-        setUniform1f: function (name, v0) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniform1f(location, v0);
-        },
-        setUniform2f: function (name, v0, v1) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniform2f(location, v0, v1);
-        },
-        setUniform3f: function (name, v0, v1, v2) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniform3f(location, v0, v1, v2);
-        },
-        setUniform4f: function (name, v0, v1, v2, v3) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniform4f(location, v0, v1, v2, v3);
-        },
-
-        // 整数
-        setUniform1i: function (name, v0) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniform1i(location, v0);
-        },
-        setUniform2i: function (name, v0, v1) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniform2i(location, v0, v1);
-        },
-        setUniform3i: function (name, v0, v1, v2) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniform3i(location, v0, v1, v2);
-        },
-        setUniform4i: function (name, v0, v1, v2, v3) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniform4i(location, v0, v1, v2, v3);
-        },
-
-        // 矩阵
-        setUniformMatrix2fv: function (name, value) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniformMatrix2fv(location, false, value);
-        },
-        setUniformMatrix3fv: function (name, value) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniformMatrix3fv(location, false, value);
-        },
-        setUniformMatrix4fv: function (name, value) {
-            var location = gl.getUniformLocation(gl.program, name);
-            gl.uniformMatrix4fv(location, false, value);
-        },
-    };
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/webgl/painter
-/*****************************************************************/
-window.__pkg__bundleSrc__['277']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (gl) {
-
-    var typeMap = {
-        "byte": gl.UNSIGNED_BYTE,
-        "short": gl.UNSIGNED_SHORT
-    };
-
-    return {
-
-        // 开启深度计算
-        openDeep:function() {
-            gl.enable(gl.DEPTH_TEST);
-            return this;
-        },
-
-        // 绘制点
-        points:function(first, count, type) {
-            if (type) {
-                gl.drawElements(gl.POINTS, count, typeMap[type], first);
-            } else {
-                gl.drawArrays(gl.POINTS, first, count);
-            }
-            return this;
-        },
-
-        // 绘制直线
-        lines:function(first, count, type) {
-            if (type) {
-                gl.drawElements(gl.LINES, count, typeMap[type], first);
-            } else {
-                gl.drawArrays(gl.LINES, first, count);
-            }
-            return this;
-        },
-
-        // 绘制连续直线
-        stripLines:function(first, count, type) {
-            if (type) {
-                gl.drawElements(gl.LINE_STRIP, count, typeMap[type], first);
-            } else {
-                gl.drawArrays(gl.LINE_STRIP, first, count);
-            }
-            return this;
-        },
-
-        // 绘制闭合直线
-        loopLines:function(first, count, type) {
-            if (type) {
-                gl.drawElements(gl.LINE_LOOP, count, typeMap[type], first);
-            } else {
-                gl.drawArrays(gl.LINE_LOOP, first, count);
-            }
-            return this;
-        },
-
-        // 绘制三角形
-        triangles:function(first, count, type) {
-            if (type) {
-                gl.drawElements(gl.TRIANGLES, count, typeMap[type], first);
-            } else {
-                gl.drawArrays(gl.TRIANGLES, first, count);
-            }
-            return this;
-        },
-
-        // 绘制共有边三角形
-        stripTriangles:function(first, count, type) {
-            if (type) {
-                gl.drawElements(gl.TRIANGLE_STRIP, count, typeMap[type], first);
-            } else {
-                gl.drawArrays(gl.TRIANGLE_STRIP, first, count);
-            }
-            return this;
-        },
-
-        // 绘制旋转围绕三角形
-        fanTriangles:function(first, count, type) {
-            if (type) {
-                gl.drawElements(gl.TRIANGLE_FAN, count, typeMap[type], first);
-            } else {
-                gl.drawArrays(gl.TRIANGLE_FAN, first, count);
-            }
-            return this;
-        }
-    };
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/cylinder
-/*****************************************************************/
-window.__pkg__bundleSrc__['278']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('279');
-var getOption =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('280');
-var splitNum=__pkg__scope_args__.splitNum;
-
-__pkg__scope_args__=window.__pkg__getBundle('281');
-var prism =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (option) {
-    var __option = getOption(option);
-
-    // 圆柱体
-    return function (x, y, z, radius, x2, y2, z2) {
-        // 求解出需要切割多少份比较合理
-        var num = splitNum(__option.precision, radius);
-
-        if (arguments.length == 5) {
-            return prism(option)(x, y, z, radius, x2, num);
-        } else {
-            return prism(option)(x, y, z, radius, x2, y2, z2, num);
-        }
-    };
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/option
-/*****************************************************************/
-window.__pkg__bundleSrc__['279']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('144');
-var initConfig=__pkg__scope_args__.initConfig;
-
-
-__pkg__scope_bundle__.default= function (option) {
-    return initConfig({
-        precision: 0.1, // 精度
-        normal: false, // 是否需要法向量
-    }, option || {});
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/config
-/*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 初始化配置文件
-
-__pkg__scope_bundle__.initConfig = function (init, data) {
-    var key;
-    for (key in data)
-        try {
-            init[key] = data[key];
-        } catch (e) {
-            throw new Error("Illegal property value！");
-        }
-    return init;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/tool/circle
-/*****************************************************************/
-window.__pkg__bundleSrc__['280']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 计算切割份数
-__pkg__scope_bundle__.splitNum = function (precision, radius) {
-
-    // 根据切割弧度得出切割块数目
-    var num = Math.ceil(Math.PI * 2 /
-
-        // 为了满足最小精度而得出的切割弧度
-        Math.asin(precision / radius) * 2);
-
-    return (isNaN(num) || num < 12) ? 12 : num;
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/prism
-/*****************************************************************/
-window.__pkg__bundleSrc__['281']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('279');
-var getOption =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('282');
-var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
-
-__pkg__scope_args__=window.__pkg__getBundle('283');
-var rotateLineFactory =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('284');
-var prismHorizontal =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('285');
-var prismVertical =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (option) {
-    var __option = getOption(option);
-
-    // 棱柱体
-    return function (x, y, z, radius, x2, y2, z2, num) {
-        var height, rotateLine = null;
-
-        if (arguments.length == 6) {
-            height = x2;
-            num = y2;
-        } else {
-            height = (y > y2 ? -1 : 1) * Math.sqrt((x2 - x) * (x2 - x) + (y2 - y) * (y2 - y) + (z2 - z) * (z2 - z));
-            rotateLine = rotateLineFactory(x, y, z, x2, y2, z2);
         }
 
-        var result = [{
-            name: "bottom",
-            points: [],
-            length: 0,
-            method: "triangles"
-        }, {
-            name: "top",
-            points: [],
-            length: 0,
-            method: "triangles"
-        }, {
-            name: "side",
-            points: [],
-            length: 0,
-            method: "triangles"
-        }];
-
-        // 绘制底部的盖子
-        mergeArrayTo(result[0].points, prismHorizontal(__option.normal, x, y, z, radius, num, height > 0 ? -1 : 1));
-
-        // 绘制顶部的盖子
-        mergeArrayTo(result[1].points, prismHorizontal(__option.normal, x, y + height, z, radius, num, height > 0 ? 1 : -1));
-
-        // 绘制侧边部分
-        mergeArrayTo(result[2].points, prismVertical(__option.normal, x, y, z, radius, height, num));
-
-        for (var i = 0; i < result.length; i++) {
-            if (rotateLine) {
-
-                var points = [];
-                var isNormal = false;
-                for (var index = 0; index < result[i].points.length; index += 3) {
-                    mergeArrayTo(points, rotateLine(result[i].points[index], result[i].points[index + 1], result[i].points[index + 2], (__option.normal) && isNormal));
-                    isNormal = !isNormal;
-                }
-                result[i].points = points;
-            }
-            result[i].length = result[i].points.length / (__option.normal ? 6 : 3);
-        }
-
-        return result;
-
     };
+
 };
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/Array
+// Original file:./src/pages/echarts/dialogs/money-schedule/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['282']=function(){
+window.__pkg__bundleSrc__['285']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 合并数组到第一个
-__pkg__scope_bundle__.mergeArrayTo = function (targetArray) {
-    var sourceArray;
-    for (var i = 1; i < arguments.length; i++) {
-        sourceArray = arguments[i];
-        if (Array.isArray(sourceArray)) {
-            for (var j = 0; j < sourceArray.length; j++) {
-                targetArray.push(sourceArray[j]);
-            }
-        } else {
-            targetArray.push(sourceArray);
-        }
-    }
-};
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"金额波浪球","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","style":"padding-top:50px"},"childNodes":[11]},{"type":"tag","name":"svg","attrs":{"ref":"mysvg","viewBox":"0 0 500 500","width":"400","height":"400"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/tool/rotateLine
+// Original file:./src/tool/svg/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['283']=function(){
+window.__pkg__bundleSrc__['286']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (x, y, z, x2, y2, z2) {
-    return function (x0, y0, z0, isNormal) {
-        if (x == x2 && z == z2) return [x0, y0, z0];
+    __pkg__scope_args__=window.__pkg__getBundle('287');
+var initText=__pkg__scope_args__.initText;
+var initCircle=__pkg__scope_args__.initCircle;
+var initPath=__pkg__scope_args__.initPath;
+var initRect=__pkg__scope_args__.initRect;
+var initArc=__pkg__scope_args__.initArc;
 
-        var sin, cos, temp;
+__pkg__scope_args__=window.__pkg__getBundle('8');
+var isString =__pkg__scope_args__.default;
 
-        // 第一步：归零化
-        var _x0 = x0 - (isNormal ? 0 : x), _y0 = y0 - (isNormal ? 0 : y), _z0 = z0 - (isNormal ? 0 : z);  // 法向量起点本来就是原点
-        var _x2 = x2 - x, _y2 = y2 - y, _z2 = z2 - z;
+__pkg__scope_args__=window.__pkg__getBundle('288');
+var toNode=__pkg__scope_args__.toNode;
+var setAttribute=__pkg__scope_args__.setAttribute;
+var getAttribute=__pkg__scope_args__.getAttribute;
+var full=__pkg__scope_args__.full;
+var fill=__pkg__scope_args__.fill;
+var stroke=__pkg__scope_args__.stroke;
 
-        // 第二步：围绕OZ轴旋转
-
-        var __d = Math.sqrt(_x2 * _x2 + _z2 * _z2);
-        cos = _x2 / __d;
-        sin = _z2 / __d;
-
-        var _x2N = _z2 * sin + _x2 * cos;
-
-        var d = Math.sqrt(_y2 * _y2 + _x2N * _x2N);
-        cos = _y2 / d;
-        sin = _x2N / d;
-
-        temp = [_y0, _x0];
-        _y0 = temp[0] * cos - temp[1] * sin;
-        _x0 = temp[0] * sin + temp[1] * cos;
-
-        // 第三步：围绕0Y轴旋转
-        cos = _x2 / __d;
-        sin = _z2 / __d;
-
-        temp = [_x0, _z0];
-        _x0 = temp[0] * cos - temp[1] * sin;
-        _z0 = temp[0] * sin + temp[1] * cos;
-
-        // 第四步：去零化（直接返回）
-        return [_x0 + (isNormal ? 0 : x), _y0 + (isNormal ? 0 : y), _z0 + (isNormal ? 0 : z)];
-    };
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/tool/prism-horizontal
-/*****************************************************************/
-window.__pkg__bundleSrc__['284']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('146');
+__pkg__scope_args__=window.__pkg__getBundle('147');
 var rotate =__pkg__scope_args__.default;
 
 
-// 棱柱水平部分
+__pkg__scope_bundle__.default= function (svg) {
 
-__pkg__scope_bundle__.default= function (normal, x, y, z, radius, num, d) {
+    // 用于记录配置
+    var config = {
 
-    var beginX, beginZ;
-    if (num == 4) {
-        var temp = radius / 1.414;
-        beginX = x + temp;
-        beginZ = z + temp;
+        // 基本设置
+        "fillStyle": "#000",
+        "strokeStyle": "#000",
+        "lineWidth": 1,
 
+        // 文字对齐方式
+        "textAlign": "left",
+        "textBaseline": "middle",
+
+        // 文字设置
+        "fontSize": 16,
+        "fontFamily": "sans-serif",
+
+        // arc二端闭合方式['butt':直线闭合,'round':圆帽闭合]
+        "arcStartCap": "butt",
+        "arcEndCap": "butt",
+
+        // 虚线设置
+        "lineDash": []
+
+    };
+
+    // 作用的节点
+    var useEl;
+
+    // 路径(和canvas2D的类似)
+    var path = "", currentPosition = [];
+
+    // 画笔
+    var enhancePainter = {
+
+        // 属性设置或获取
+        config: function (params) {
+            if (typeof params !== 'object') {
+                return config[params];
+            } else {
+                for (var key in params) {
+                    config[key] = params[key];
+                }
+            }
+            return enhancePainter;
+        },
+
+        /**
+        * 基础方法
+        * ---------------------------------
+        */
+
+        // 标记应用节点
+        // 也就是后续操作都会作用在此节点
+        useEl: function (el) {
+            useEl = el;
+            return enhancePainter;
+        },
+
+        // 获取当前应用的节点
+        getEl: function () {
+            return useEl;
+        },
+
+        // 追加节点
+        // el可以是结点或字符串，字符串的话表述节点名称
+        // context可选，表示追加位置，可选，默认根svg
+        // 此外，和appendBoard等操作一样，执行后新加入的结点会自动变成应用节点
+        appendEl: function (el, context) {
+            context = context || svg;
+
+            if (isString(el)) el = toNode(el);
+            context.appendChild(el);
+
+            useEl = el;
+            return enhancePainter;
+        },
+
+        // 追加绘制板
+        // 参数和appendEl类似，只是el如果是字符串的话，表示需要绘制对应什么内容，
+        // 比如el = “arc”，表示画弧（不是路径arc），那么我们会创建path节点，因为我们是使用path实现的
+        appendBoard: function (el, context) {
+            var _el = el;
+
+            if (isString(el)) _el = {
+                text: "text",
+                path: "path",
+                arc: "path",
+                circle: "circle",
+                rect: "rect"
+            }[el];
+
+            if (!_el) throw new Error("Unsupported drawing method:" + el);
+            return this.appendEl(_el, context);
+        },
+
+        // 删除当前维护的节点
+        remove: function () {
+            if (!useEl) throw new Error("Currently, no node can be deleted.");
+
+            useEl.parentNode.removeChild(useEl);
+            return enhancePainter;
+        },
+
+        // 设置或获取节点属性
+        attr: function (params) {
+            if (!useEl) throw new Error("Currently, no node can be modified or viewed.");
+
+            if (typeof params !== 'object') {
+                return getAttribute(useEl, params);
+            } else {
+                for (var key in params) {
+                    setAttribute(useEl, key, params[key]);
+                }
+            }
+        },
+
+        /**
+         * 绘制方法
+         * ---------------------------------
+         */
+
+        // 文字
+        // deg表示文字旋转角度，是角度值，不是弧度
+        fillText: function (text, x, y, deg) {
+            initText(useEl, config, x, y, deg);
+            useEl.textContent = text;
+            fill(useEl, config);
+            return enhancePainter;
+        },
+        strokeText: function (text, x, y, deg) {
+            initText(useEl, config, x, y, deg);
+            useEl.textContent = text;
+            stroke(useEl, config);
+            return enhancePainter;
+        },
+        fullText: function (text, x, y, deg) {
+            initText(useEl, config, x, y, deg);
+            useEl.textContent = text;
+            full(useEl, config);
+            return enhancePainter;
+        },
+
+        // 弧
+        fillArc: function (cx, cy, r1, r2, beginDeg, deg) {
+            initArc(useEl, config, cx, cy, r1, r2, beginDeg, deg);
+            fill(useEl, config);
+            return enhancePainter;
+        },
+        strokeArc: function (cx, cy, r1, r2, beginDeg, deg) {
+            initArc(useEl, config, cx, cy, r1, r2, beginDeg, deg);
+            stroke(useEl, config);
+            return enhancePainter;
+        },
+        fullArc: function (cx, cy, r1, r2, beginDeg, deg) {
+            initArc(useEl, config, cx, cy, r1, r2, beginDeg, deg);
+            full(useEl, config);
+            return enhancePainter;
+        },
+
+        // 圆形
+        fillCircle: function (cx, cy, r) {
+            initCircle(useEl, cx, cy, r);
+            fill(useEl, config);
+            return enhancePainter;
+        },
+        strokeCircle: function (cx, cy, r) {
+            initCircle(useEl, cx, cy, r);
+            stroke(useEl, config);
+            return enhancePainter;
+        },
+        fullCircle: function (cx, cy, r) {
+            initCircle(useEl, cx, cy, r);
+            full(useEl, config);
+            return enhancePainter;
+        },
+
+        // 矩形
+        fillRect: function (x, y, width, height) {
+            initRect(useEl, x, y, width, height);
+            fill(useEl, config);
+            return enhancePainter;
+        },
+        strokeRect: function (x, y, width, height) {
+            initRect(useEl, x, y, width, height);
+            stroke(useEl, config);
+            return enhancePainter;
+        },
+        fullRect: function (x, y, width, height) {
+            initRect(useEl, x, y, width, height);
+            full(useEl, config);
+            return enhancePainter;
+        },
+
+        // 路径
+        beginPath: function () {
+            currentPosition = [];
+
+            path = "";
+            return enhancePainter;
+        },
+        closePath: function () {
+            path += "Z";
+            return enhancePainter;
+        },
+        moveTo: function (x, y) {
+            currentPosition = [x, y];
+
+            path += "M" + x + " " + y;
+            return enhancePainter;
+        },
+        lineTo: function (x, y) {
+            currentPosition = [x, y];
+
+            path += (path == "" ? "M" : "L") + x + " " + y;
+            return enhancePainter;
+        },
+        fill: function () {
+            initPath(useEl, path);
+            fill(useEl, config);
+            return enhancePainter;
+        },
+        stroke: function () {
+            initPath(useEl, path);
+            stroke(useEl, config);
+            return enhancePainter;
+        },
+        full: function () {
+            initPath(useEl, path);
+            full(useEl, config);
+            return enhancePainter;
+        },
+
+        arc: function (x, y, r, beginDeg, deg) {
+            var begPosition = rotate(x, y, beginDeg / 180 * Math.PI, x + r, y);
+            var endPosition = rotate(x, y, (beginDeg + deg) / 180 * Math.PI, x + r, y);
+            // 如果当前没有路径，说明是开始的，就移动到正确位置
+            if (path == '') {
+                path += "M" + begPosition[0] + "," + begPosition[1];
+            }
+            // 如果当前有路径，位置不正确，应该画到正确位置（和canvas保持一致）
+            else if (begPosition[0] != currentPosition[0] || begPosition[1] != currentPosition[1]) {
+                path += "L" + begPosition[0] + "," + begPosition[1];
+            }
+            path += "A" + r + "," + r + " 0 " + ((deg > 180 || deg < -180) ? 1 : 0) + "," + (deg > 0 ? 1 : 0) + " " + endPosition[0] + "," + endPosition[1];
+            return enhancePainter;
+        },
+
+        // 路径 - 贝塞尔曲线
+        quadraticCurveTo: function (cpx, cpy, x, y) {
+            path += "Q" + cpx + " " + cpy + "," + x + " " + y;
+            return enhancePainter;
+        },
+        bezierCurveTo: function (cp1x, cp1y, cp2x, cp2y, x, y) {
+            path += "C" + cp1x + " " + cp1y + "," + cp2x + " " + cp2y + "," + x + " " + y;
+            return enhancePainter;
+        }
+    };
+
+    return enhancePainter;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/svg/config.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['287']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('288');
+var setAttribute=__pkg__scope_args__.setAttribute;
+
+__pkg__scope_args__=window.__pkg__getBundle('290');
+var setStyle =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('291');
+var isNumber =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('292');
+var arc =__pkg__scope_args__.default;
+
+
+// 文字统一设置方法
+__pkg__scope_bundle__.initText = function (el, config, x, y, deg) {
+    if (el.nodeName.toLowerCase() !== 'text') throw new Error('Need a <text> !');
+
+    // 垂直对齐采用dy实现
+    setAttribute(el, "dy", {
+        "top": config.fontSize * 0.5,
+        "middle": 0,
+        "bottom": -config.fontSize * 0.5,
+    }[config.textBaseline]);
+
+    setStyle(el, {
+
+        // 文字对齐方式
+        "text-anchor": {
+            "left": "start",
+            "right": "end",
+            "center": "middle"
+        }[config.textAlign],
+        "dominant-baseline": "central",
+
+        // 文字大小和字体设置
+        "font-size": config.fontSize + "px",
+        "font-family": config.fontFamily
+    });
+
+    // 位置
+    setAttribute(el, "x", x);
+    setAttribute(el, "y", y);
+
+    // 旋转
+    if (isNumber(deg)) {
+        deg = deg % 360;
+        setAttribute(el, "transform", "rotate(" + deg + "," + x + "," + y + ")");
+    }
+};
+
+// 画圆统一设置方法
+__pkg__scope_bundle__.initCircle = function (el, cx, cy, r) {
+    if (el.nodeName.toLowerCase() !== 'circle') throw new Error('Need a <circle> !');
+    setAttribute(el, 'cx', cx);
+    setAttribute(el, 'cy', cy);
+    setAttribute(el, 'r', r);
+};
+
+// 路径统一设置方法
+__pkg__scope_bundle__.initPath = function (el, path) {
+    if (el.nodeName.toLowerCase() !== 'path') throw new Error('Need a <path> !');
+    setAttribute(el, 'd', path);
+};
+
+// 画矩形统一设置方法
+__pkg__scope_bundle__.initRect = function (el, x, y, width, height) {
+    if (el.nodeName.toLowerCase() !== 'rect') throw new Error('Need a <rect> !');
+
+    // 由于高和宽不可以是负数，校对一下
+    if (height < 0) { height *= -1; y -= height; }
+    if (width < 0) { width *= -1; x -= width; }
+
+    setAttribute(el, 'x', x);
+    setAttribute(el, 'y', y);
+    setAttribute(el, 'width', width);
+    setAttribute(el, 'height', height);
+};
+
+// 画弧统一设置方法
+__pkg__scope_bundle__.initArc = function (el, config, cx, cy, r1, r2, beginDeg, deg) {
+
+    if (el.nodeName.toLowerCase() !== 'path') throw new Error('Need a <path> !');
+
+    beginDeg = (beginDeg / 180) * Math.PI;
+    deg = (deg / 180) * Math.PI;
+
+    beginDeg = beginDeg % (Math.PI * 2);
+
+    if (r1 > r2) {
+        var temp = r1;
+        r1 = r2;
+        r2 = temp;
+    }
+
+    // 当|deg|>=2π的时候都认为是一个圆环
+    if (deg >= Math.PI * 1.999999 || deg <= -Math.PI * 1.999999) {
+        deg = Math.PI * 1.999999;
     } else {
-        beginX = x + radius;
-        beginZ = z;
+        deg = deg % (Math.PI * 2);
     }
 
-    var point = [beginX, beginZ];
-    var points = [];
-    var deg = Math.PI * 2 / num;
-    for (var i = 0; i < num; i++) {
+    arc(beginDeg, deg, cx, cy, r1, r2, function (
+        beginA, endA,
+        begInnerX, begInnerY,
+        begOuterX, begOuterY,
+        endInnerX, endInnerY,
+        endOuterX, endOuterY,
+        r
+    ) {
 
-        points.push(x, y, z);
-        if (normal) points.push(0, d, 0);
+        var f = (endA - beginA) > Math.PI ? 1 : 0,
+            d = "M" + begInnerX + " " + begInnerY;
+        if (r < 0) r = -r;
+        d +=
+            // 横半径 竖半径 x轴偏移角度 0小弧/1大弧 0逆时针/1顺时针 终点x 终点y
+            "A" + r1 + " " + r1 + " 0 " + f + " 1 " + endInnerX + " " + endInnerY;
 
-        points.push(point[0], y, point[1]);
-        if (normal) points.push(0, d, 0);
+        // 结尾
+        if (config.arcEndCap == 'round')
+            d += "A" + r + " " + r + " " + " 0 1 0 " + endOuterX + " " + endOuterY;
+        else if (config.arcEndCap == '-round')
+            d += "A" + r + " " + r + " " + " 0 1 1 " + endOuterX + " " + endOuterY;
+        else
+            d += "L" + endOuterX + " " + endOuterY;
+        d += "A" + r2 + " " + r2 + " 0 " + f + " 0 " + begOuterX + " " + begOuterY;
 
-        point = rotate(x, z, deg * (i + 1), beginX, beginZ);
-        points.push(point[0], y, point[1]);
-        if (normal) points.push(0, d, 0);
+        // 开头
+        if (config.arcStartCap == 'round')
+            d += "A" + r + " " + r + " " + " 0 1 0 " + begInnerX + " " + begInnerY;
+        else if (config.arcStartCap == '-round')
+            d += "A" + r + " " + r + " " + " 0 1 1 " + begInnerX + " " + begInnerY;
+        else
+            d += "L" + begInnerX + " " + begInnerY;
+
+        if (config.arcStartCap == 'butt') d += "Z";
+
+        setAttribute(el, 'd', d);
+    });
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/svg/tool.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['288']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('289');
+var XLINK_ATTRIBUTE=__pkg__scope_args__.XLINK_ATTRIBUTE;
+
+
+// 新建节点
+__pkg__scope_bundle__.toNode=function(tagname) {
+    return document.createElementNS('http://www.w3.org/2000/svg', tagname);
+};
+
+// 设置属性
+var _setAttribute = function (el, key, value) {
+
+    // 需要使用xlink命名空间的xml属性
+    if (XLINK_ATTRIBUTE.indexOf(key) > -1) {
+        el.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:' + key, value);
     }
 
-    return points;
+    // 否则
+    else {
+        el.setAttribute(key, value);
+    }
+};
+__pkg__scope_bundle__.setAttribute = _setAttribute;
+
+// 获取属性
+__pkg__scope_bundle__.getAttribute=function(el, key) {
+    if (XLINK_ATTRIBUTE.indexOf(key) > -1) key = 'xlink:' + key;
+    return el.getAttribute(key);
+};
+
+__pkg__scope_bundle__.full=function(el, config) {
+    _setAttribute(el, "stroke", config.strokeStyle);
+    _setAttribute(el, "fill", config.fillStyle);
+    _setAttribute(el, "stroke-dasharray", config.lineDash.join(','));
+};
+
+__pkg__scope_bundle__.fill=function(el, config) {
+    _setAttribute(el, "fill", config.fillStyle);
+};
+
+__pkg__scope_bundle__.stroke=function(el, config) {
+    _setAttribute(el, "stroke", config.strokeStyle);
+    _setAttribute(el, "fill", "none");
+    _setAttribute(el, "stroke-dasharray", config.lineDash.join(','));
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/svg/dictionary.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['289']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.XLINK_ATTRIBUTE = ["href", "title", "show", "type", "role", "actuate"];
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/setStyle.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['290']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 修改样式
+__pkg__scope_bundle__.default= function (el, styles) {
+    for (var key in styles) {
+        el.style[key] = styles[key];
+    }
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/type/isNumber.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['291']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('5');
+var getType =__pkg__scope_args__.default;
+
+
+/**
+ * 判断一个值是不是number。
+ *
+ * @param {*} value 需要判断类型的值
+ * @returns {boolean} 如果是number返回true，否则返回false
+ */
+__pkg__scope_bundle__.default= function (value) {
+    return typeof value === 'number' || (
+        value !== null && typeof value === 'object' &&
+        getType(value) === '[object Number]'
+    );
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/canvas/arc.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['292']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    
+// 点（x,y）围绕中心（cx,cy）旋转deg度
+
+var rotate = function (cx, cy, deg, x, y) {
+    var cos = Math.cos(deg), sin = Math.sin(deg);
+    return [
+        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
+        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
+    ];
+};
+
+// r1和r2，内半径和外半径
+// beginA起点弧度，rotateA旋转弧度式
+
+__pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback) {
+
+    // 保证逆时针也是可以的
+    if (rotateA < 0) {
+        beginA += rotateA;
+        rotateA *= -1;
+    }
+
+    var temp = [], p;
+
+    // 内部
+    p = rotate(0, 0, beginA, r1, 0);
+    temp[0] = p[0];
+    temp[1] = p[1];
+    p = rotate(0, 0, rotateA, p[0], p[1]);
+    temp[2] = p[0];
+    temp[3] = p[1];
+
+    // 外部
+    p = rotate(0, 0, beginA, r2, 0);
+    temp[4] = p[0];
+    temp[5] = p[1];
+    p = rotate(0, 0, rotateA, p[0], p[1]);
+    temp[6] = p[0];
+    temp[7] = p[1];
+
+    doback(
+        beginA, beginA + rotateA,
+        temp[0] + cx, temp[1] + cy,
+        temp[4] + cx, temp[5] + cy,
+        temp[2] + cx, temp[3] + cy,
+        temp[6] + cx, temp[7] + cy,
+        (r2 - r1) * 0.5
+    );
+
 };
 
 
@@ -1043,7 +818,7 @@ __pkg__scope_bundle__.default= function (normal, x, y, z, radius, num, d) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['147']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）旋转deg度
@@ -1059,395 +834,114 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/tool/prism-vertical
+// Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['285']=function(){
+window.__pkg__bundleSrc__['102']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('146');
-var rotate =__pkg__scope_args__.default;
+    //当前正在运动的动画的tick函数堆栈
+var $timers = [];
+//唯一定时器的定时间隔
+var $interval = 13;
+//指定了动画时长duration默认值
+var $speeds = 400;
+//定时器ID
+var $timerId = null;
 
-__pkg__scope_args__=window.__pkg__getBundle('282');
-var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
+/**
+ * 动画轮播
+ * @param {function} doback 轮询函数，有一个形参deep，0-1，表示执行进度
+ * @param {number} duration 动画时长，可选
+ * @param {function} callback 动画结束回调，可选，有一个形参deep，0-1，表示执行进度
+ *
+ * @returns {function} 返回一个函数，调用该函数，可以提前结束动画
+ */
+__pkg__scope_bundle__.default= function (doback, duration, callback) {
 
+    // 如果没有传递时间，使用内置默认值
+    if (arguments.length < 2) duration = $speeds;
 
-// 棱柱垂直部分
+    var clock = {
+        //把tick函数推入堆栈
+        "timer": function (tick, duration, callback) {
+            if (!tick) {
+                throw new Error('Tick is required!');
+            }
+            var id = new Date().valueOf() + "_" + (Math.random() * 1000).toFixed(0);
+            $timers.push({
+                "id": id,
+                "createTime": new Date(),
+                "tick": tick,
+                "duration": duration,
+                "callback": callback
+            });
+            clock.start();
+            return id;
+        },
 
-__pkg__scope_bundle__.default= function (normal, x, y, z, radius, height, num) {
-    var points = [], beginPosition;
+        //开启唯一的定时器timerId
+        "start": function () {
+            if (!$timerId) {
+                $timerId = setInterval(clock.tick, $interval);
+            }
+        },
 
-    if (num == 4) {
-        beginPosition = rotate(x, z, Math.PI * 0.25, x - radius, z);
-    } else {
-        beginPosition = [x + radius, z];
-    }
+        //被定时器调用，遍历timers堆栈
+        "tick": function () {
+            var createTime, flag, tick, callback, timer, duration, passTime,
+                timers = $timers;
+            $timers = [];
+            $timers.length = 0;
+            for (flag = 0; flag < timers.length; flag++) {
+                //初始化数据
+                timer = timers[flag];
+                createTime = timer.createTime;
+                tick = timer.tick;
+                duration = timer.duration;
+                callback = timer.callback;
 
-    var deg = Math.PI * 2 / num, degHalf = Math.PI * 2 / (num * 2);
+                //执行
+                passTime = (+new Date() - createTime) / duration;
+                passTime = passTime > 1 ? 1 : passTime;
+                tick(passTime);
+                if (passTime < 1 && timer.id) {
+                    //动画没有结束再添加
+                    $timers.push(timer);
+                } else if (callback) {
+                    callback(passTime);
+                }
+            }
+            if ($timers.length <= 0) {
+                clock.stop();
+            }
+        },
 
-    var endPosition, normalPosition = [];
-    for (var i = 0; i < num; i++) {
-
-        endPosition = rotate(x, z, deg, beginPosition[0], beginPosition[1]);
-
-        if (normal) {
-            var halfPosition = rotate(x, z, degHalf, beginPosition[0], beginPosition[1]);
-            normalPosition = [halfPosition[0], 0, halfPosition[1]];
+        //停止定时器，重置timerId=null
+        "stop": function () {
+            if ($timerId) {
+                clearInterval($timerId);
+                $timerId = null;
+            }
         }
-
-        mergeArrayTo(points, beginPosition[0], y, beginPosition[1], normalPosition)
-        mergeArrayTo(points, beginPosition[0], y + height, beginPosition[1], normalPosition);
-        mergeArrayTo(points, endPosition[0], y + height, endPosition[1], normalPosition);
-
-        mergeArrayTo(points, beginPosition[0], y, beginPosition[1], normalPosition);
-        mergeArrayTo(points, endPosition[0], y, endPosition[1], normalPosition);
-        mergeArrayTo(points, endPosition[0], y + height, endPosition[1], normalPosition);
-
-        beginPosition = endPosition;
-    }
-
-    return points;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/sphere
-/*****************************************************************/
-window.__pkg__bundleSrc__['286']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('279');
-var getOption =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('282');
-var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
-
-__pkg__scope_args__=window.__pkg__getBundle('287');
-var sphereFragment =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('280');
-var splitNum=__pkg__scope_args__.splitNum;
-
-
-__pkg__scope_bundle__.default= function (option) {
-    var __option = getOption(option);
-
-    // 球体
-    return function (cx, cy, cz, radius) {
-
-        // 求解出需要切割多少份比较合理
-        var num = splitNum(__option.precision, radius);
-
-        // 然后一瓣瓣的绘制
-        var result = [{
-            name: "surface",
-            points: [],
-            length: 0,
-            method: "triangles"
-        }];
-        for (var i = 0; i < num; i++) {
-            mergeArrayTo(result[0].points, sphereFragment(__option.normal, cx, cy, cz, radius, num, i));
-        }
-
-        result[0].length = result[0].points.length / (__option.normal ? 6 : 3);
-        return result;
-    };
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/geometry/tool/sphere-fragment
-/*****************************************************************/
-window.__pkg__bundleSrc__['287']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('146');
-var rotate =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('282');
-var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
-
-
-// 球体中的一瓣子
-
-__pkg__scope_bundle__.default= function (normal, cx, cy, cz, radius, num, index) {
-    var points = [cx, cy + radius, cz], deg = Math.PI * 2 / num, point;
-
-    if (normal) points.push(0, radius, 0);
-
-    var copy2 = function () {
-        mergeArrayTo(points, points.slice(points.length - (normal ? 12 : 6)));
-    }
-
-    for (var i = 1; i < num * 0.5; i++) {
-        point = rotate(cx, cy, deg * i, cx, cy + radius);
-
-        if (i > 1) copy2();
-
-        // 第一个点
-        var point1 = rotate(cx, cz, deg * index, point[0], cz);
-        points.push(point1[0], point[1], point1[1]);
-
-        if (normal) points.push(point1[0] - cx, point[1] - cy, point1[1] - cz);
-
-        if (i > 1) copy2();
-
-        // 下一个点
-        var point2 = rotate(cx, cz, deg * (index + 1), point[0], cz);
-        points.push(point2[0], point[1], point2[1]);
-
-        if (normal) points.push(point2[0] - cx, point2[1] - cy, point2[1] - cz);
-    }
-    copy2();
-    points.push(cx, cy - radius, cz);
-
-    if (normal) points.push(0, - radius, 0);
-
-    return points;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/Matrix4/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['288']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 两个4x4矩阵相乘
-// 或矩阵和齐次坐标相乘
-var _multiply = function (matrix4, param) {
-    var newParam = [];
-    for (var i = 0; i < 4; i++)
-        for (var j = 0; j < param.length / 4; j++)
-            newParam[j * 4 + i] =
-                matrix4[i] * param[j * 4] +
-                matrix4[i + 4] * param[j * 4 + 1] +
-                matrix4[i + 8] * param[j * 4 + 2] +
-                matrix4[i + 12] * param[j * 4 + 3];
-    return newParam;
-};
-
-__pkg__scope_args__=window.__pkg__getBundle('289');
-var _move =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('290');
-var _rotate =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('291');
-var _scale =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('292');
-var _transform =__pkg__scope_args__.default;
-
-
-// 列主序存储的4x4矩阵
-
-__pkg__scope_bundle__.default= function (initMatrix4) {
-
-    var matrix4 = initMatrix4 || [
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-    ];
-
-    var matrix4Obj = {
-
-        // 移动
-        "move": function (dis, a, b, c) {
-            matrix4 = _multiply(_move(dis, a, b, c), matrix4);
-            return matrix4Obj;
-        },
-
-        // 旋转
-        "rotate": function (deg, a1, b1, c1, a2, b2, c2) {
-            var matrix4s = _transform(a1, b1, c1, a2, b2, c2);
-            matrix4 = _multiply(_multiply(_multiply(matrix4s[1], _rotate(deg)), matrix4s[0]), matrix4);
-            return matrix4Obj;
-        },
-
-        // 缩放
-        "scale": function (xTimes, yTimes, zTimes, cx, cy, cz) {
-            matrix4 = _multiply(_scale(xTimes, yTimes, zTimes, cx, cy, cz), matrix4);
-            return matrix4Obj;
-        },
-
-        // 乘法
-        // 可以传入一个矩阵(matrix4,flag)
-        "multiply": function (newMatrix4, flag) {
-            matrix4 = flag ? _multiply(matrix4, newMatrix4) : _multiply(newMatrix4, matrix4);
-            return matrix4Obj;
-        },
-
-        // 对一个坐标应用变换
-        // 齐次坐标(x,y,z,w)
-        "use": function (x, y, z, w) {
-            // w为0表示点位于无穷远处，忽略
-            z = z || 0; w = w || 1;
-            var temp = _multiply(matrix4, [x, y, z, w]);
-            temp[0] = +temp[0].toFixed(7);
-            temp[1] = +temp[1].toFixed(7);
-            temp[2] = +temp[2].toFixed(7);
-            temp[3] = +temp[3].toFixed(7);
-            return temp;
-        },
-
-        // 矩阵的值
-        "value": function () {
-            return matrix4;
-        }
-
     };
 
-    return matrix4Obj;
+    var id = clock.timer(function (deep) {
+        //其中deep为0-1，表示改变的程度
+        doback(deep);
+    }, duration, callback);
 
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/Matrix4/move
-/*****************************************************************/
-window.__pkg__bundleSrc__['289']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 在(a,b,c)方向位移d
- */
-__pkg__scope_bundle__.default= function (d, a, b, c) {
-    c = c || 0;
-    var sqrt = Math.sqrt(a * a + b * b + c * c);
-    return [
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        a * d / sqrt, b * d / sqrt, c * d / sqrt, 1
-    ];
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/Matrix4/rotate
-/*****************************************************************/
-window.__pkg__bundleSrc__['290']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 围绕0Z轴旋转
- * 其它的旋转可以借助transform实现
- * 旋转角度单位采用弧度制
- */
-__pkg__scope_bundle__.default= function (deg) {
-    var sin = Math.sin(deg),
-        cos = Math.cos(deg);
-    return [
-        cos, sin, 0, 0,
-        -sin, cos, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-    ];
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/Matrix4/scale
-/*****************************************************************/
-window.__pkg__bundleSrc__['291']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 围绕圆心x、y和z分别缩放xTimes, yTimes和zTimes倍
- */
-__pkg__scope_bundle__.default= function (xTimes, yTimes, zTimes, cx, cy, cz) {
-    cx = cx || 0; cy = cy || 0; cz = cz || 0;
-    return [
-        xTimes, 0, 0, 0,
-        0, yTimes, 0, 0,
-        0, 0, zTimes, 0,
-        cx - cx * xTimes, cy - cy * yTimes, cz - cz * zTimes, 1
-    ];
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/Matrix4/transform
-/*****************************************************************/
-window.__pkg__bundleSrc__['292']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 针对任意射线(a1,b1,c1)->(a2,b2,c2)
- * 计算出两个变换矩阵
- * 分别为：任意射线变成OZ轴变换矩阵 + OZ轴变回原来的射线的变换矩阵
- */
-__pkg__scope_bundle__.default= function (a1, b1, c1, a2, b2, c2) {
-
-    if (typeof a1 === 'number' && typeof b1 === 'number') {
-
-        // 如果设置两个点
-        // 表示二维上围绕某个点旋转
-        if (typeof c1 !== 'number') {
-            c1 = 0; a2 = a1; b2 = b1; c2 = 1;
+    // 返回一个函数
+    // 用于在动画结束前结束动画
+    return function () {
+        var i;
+        for (i in $timers) {
+            if ($timers[i].id == id) {
+                $timers[i].id = undefined;
+                return;
+            }
         }
-        // 只设置三个点(设置不足六个点都认为只设置了三个点)
-        // 表示围绕从原点出发的射线旋转
-        else if (typeof a2 !== 'number' || typeof b2 !== 'number' || typeof c2 !== 'number') {
-            a2 = a1; b2 = b1; c2 = c1; a1 = 0; b1 = 0; c1 = 0;
-        }
+    };
 
-        if (a1 == a2 && b1 == b2 && c1 == c2) throw new Error('It\'s not a legitimate ray!');
-
-        var sqrt1 = Math.sqrt((a2 - a1) * (a2 - a1) + (b2 - b1) * (b2 - b1)),
-            cos1 = sqrt1 != 0 ? (b2 - b1) / sqrt1 : 1,
-            sin1 = sqrt1 != 0 ? (a2 - a1) / sqrt1 : 0,
-
-            b = (a2 - a1) * sin1 + (b2 - b1) * cos1,
-            c = c2 - c1,
-
-            sqrt2 = Math.sqrt(b * b + c * c),
-            cos2 = sqrt2 != 0 ? c / sqrt2 : 1,
-            sin2 = sqrt2 != 0 ? b / sqrt2 : 0;
-
-        return [
-
-            // 任意射线变成OZ轴变换矩阵
-            [
-                cos1, cos2 * sin1, sin1 * sin2, 0,
-                -sin1, cos1 * cos2, cos1 * sin2, 0,
-                0, -sin2, cos2, 0,
-                b1 * sin1 - a1 * cos1, c1 * sin2 - a1 * sin1 * cos2 - b1 * cos1 * cos2, -a1 * sin1 * sin2 - b1 * cos1 * sin2 - c1 * cos2, 1
-            ],
-
-            // OZ轴变回原来的射线的变换矩阵
-            [
-                cos1, -sin1, 0, 0,
-                cos2 * sin1, cos2 * cos1, -sin2, 0,
-                sin1 * sin2, cos1 * sin2, cos2, 0,
-                a1, b1, c1, 1
-            ]
-
-        ];
-    } else {
-        throw new Error('a1 and b1 is required!');
-    }
 };
 
 

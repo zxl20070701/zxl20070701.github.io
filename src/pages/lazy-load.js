@@ -50,4 +50,9 @@ export default {
         return import('./type-practice/index.js')
     },
 
+    // Excel 表格
+    "excel": function () {
+        return import('./excel/index.js')
+    },
+
 };

@@ -1,0 +1,36 @@
+[page-view="excel"] {
+    width: calc(100vw - 100px);
+    left: 50px;
+    top: 20px;
+
+    &[focus="no"] {
+        &>header {
+            background-color: #fafafa;
+        }
+    }
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        background-color: #ffffff;
+        box-shadow: -3px 3px 20px #d2d2db;
+
+        &>h2 {
+            color: #000000;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./excel.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            font-family: cursive;
+            display: inline-block;
+        }
+    }
+
+    &>div {
+        &.content {
+            height: calc(100vh - 120px);
+        }
+    }
+}
