@@ -40,4 +40,9 @@ export default {
         return import('./regexper-visualization/index.js')
     },
 
+    // scss转css
+    "scss": function () {
+        return import('./scss/index.js')
+    },
+
 };

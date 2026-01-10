@@ -5,60 +5,60 @@
 window.__pkg__bundleSrc__['81']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('246');
+    __pkg__scope_args__=window.__pkg__getBundle('248');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('247');
+__pkg__scope_args__=window.__pkg__getBundle('249');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('248');
+__pkg__scope_args__=window.__pkg__getBundle('250');
 var lazyDialogs =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('251');
+__pkg__scope_args__=window.__pkg__getBundle('253');
 var lazyWins =__pkg__scope_args__.default;
 
 
 __pkg__scope_args__=window.__pkg__getBundle('33');
 var remove =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('254');
+__pkg__scope_args__=window.__pkg__getBundle('256');
 var doResize =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('255');
+__pkg__scope_args__=window.__pkg__getBundle('257');
 var webglRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('261');
+__pkg__scope_args__=window.__pkg__getBundle('263');
 var Matrix4 =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('266');
+__pkg__scope_args__=window.__pkg__getBundle('268');
 var viewHandler =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('267');
+__pkg__scope_args__=window.__pkg__getBundle('269');
 var downloadJSON=__pkg__scope_args__.downloadJSON;
 
-__pkg__scope_args__=window.__pkg__getBundle('138');
+__pkg__scope_args__=window.__pkg__getBundle('140');
 var assemble =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('268');
+__pkg__scope_args__=window.__pkg__getBundle('270');
 var getColorFactory =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('269');
+__pkg__scope_args__=window.__pkg__getBundle('271');
 var mainView=__pkg__scope_args__.mainView;
 var axios=__pkg__scope_args__.axios;
 
-__pkg__scope_args__=window.__pkg__getBundle('280');
+__pkg__scope_args__=window.__pkg__getBundle('282');
 var UpToDown=__pkg__scope_args__.UpToDown;
 var DownToUp=__pkg__scope_args__.DownToUp;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('270');
+__pkg__scope_args__=window.__pkg__getBundle('272');
 var cylinderFactory =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('278');
+__pkg__scope_args__=window.__pkg__getBundle('280');
 var sphereFactory =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('273');
+__pkg__scope_args__=window.__pkg__getBundle('275');
 var prismFactory =__pkg__scope_args__.default;
 
 
@@ -69,10 +69,10 @@ var geometry = {
 };
 
 // 着色器
-__pkg__scope_args__=window.__pkg__getBundle('281');
+__pkg__scope_args__=window.__pkg__getBundle('283');
 var vertexShader =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('282');
+__pkg__scope_args__=window.__pkg__getBundle('284');
 var fragmentShader =__pkg__scope_args__.default;
 
 
@@ -548,7 +548,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['246']=function(){
+window.__pkg__bundleSrc__['248']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,19,22,24]},{"type":"tag","name":"div","attrs":{"class":"menu","ui-dragdrop:desktop":""},"childNodes":[2,4,6,12,14]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"3D模型编辑器","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"resetEditor"},"childNodes":[5]},{"type":"text","content":"新建","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"more"},"childNodes":[7,8]},{"type":"text","content":"导入","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[9]},{"type":"tag","name":"span","attrs":{},"childNodes":[10]},{"type":"tag","name":"label","attrs":{"ui-on:click":"triggleFile"},"childNodes":[11]},{"type":"text","content":"本地选择","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"exportFile"},"childNodes":[13]},{"type":"text","content":"导出","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[15,17]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[16]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[18]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mainViewRoot","ui-on:mousedown":"doClick"},"childNodes":[20,21]},{"type":"tag","name":"canvas","attrs":{"ui-bind:width":"width","ui-bind:height":"height","ref":"mainView_region","class":"region"},"childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ui-bind:width":"width","ui-bind:height":"height","ref":"mainView"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"axis"},"childNodes":[23]},{"type":"tag","name":"canvas","attrs":{"width":"100","height":"100","ref":"axios"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"no-view"},"childNodes":[25]},{"type":"tag","name":"input","attrs":{"type":"file","ref":"file","multiple":"","ui-on:change":"inputLocalFile","accept":".json"},"childNodes":[]}]
@@ -559,7 +559,7 @@ window.__pkg__bundleSrc__['246']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['247']=function(){
+window.__pkg__bundleSrc__['249']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -573,19 +573,19 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['248']=function(){
+window.__pkg__bundleSrc__['250']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 保存
     save: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle58.js','249')
+        return window.__pkg__getLazyBundle('./dist/bundle60.js','251')
     },
 
     // 立方体
     geometry: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle59.js','250')
+        return window.__pkg__getLazyBundle('./dist/bundle61.js','252')
     }
 
 };
@@ -596,19 +596,19 @@ window.__pkg__bundleSrc__['248']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/wins/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['251']=function(){
+window.__pkg__bundleSrc__['253']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 立方体
     geometry: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle60.js','252')
+        return window.__pkg__getLazyBundle('./dist/bundle62.js','254')
     },
 
     // 修改器
     modify: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle61.js','253')
+        return window.__pkg__getLazyBundle('./dist/bundle63.js','255')
     }
 
 };
@@ -619,7 +619,7 @@ window.__pkg__bundleSrc__['251']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['254']=function(){
+window.__pkg__bundleSrc__['256']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -702,26 +702,26 @@ __pkg__scope_bundle__.default= function (el, doback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['255']=function(){
+window.__pkg__bundleSrc__['257']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('256');
+    __pkg__scope_args__=window.__pkg__getBundle('258');
 var useShader=__pkg__scope_args__.useShader;
 
-__pkg__scope_args__=window.__pkg__getBundle('257');
+__pkg__scope_args__=window.__pkg__getBundle('259');
 var newBuffer=__pkg__scope_args__.newBuffer;
 var writeBuffer=__pkg__scope_args__.writeBuffer;
 var useBuffer=__pkg__scope_args__.useBuffer;
 
-__pkg__scope_args__=window.__pkg__getBundle('258');
+__pkg__scope_args__=window.__pkg__getBundle('260');
 var initTexture=__pkg__scope_args__.initTexture;
 var linkImage=__pkg__scope_args__.linkImage;
 var linkCube=__pkg__scope_args__.linkCube;
 
-__pkg__scope_args__=window.__pkg__getBundle('259');
+__pkg__scope_args__=window.__pkg__getBundle('261');
 var value =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('260');
+__pkg__scope_args__=window.__pkg__getBundle('262');
 var painter =__pkg__scope_args__.default;
 
 
@@ -858,7 +858,7 @@ __pkg__scope_bundle__.default= function (node, opts) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/shader
 /*****************************************************************/
-window.__pkg__bundleSrc__['256']=function(){
+window.__pkg__bundleSrc__['258']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -916,7 +916,7 @@ __pkg__scope_bundle__.useShader = _useShader;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/buffer
 /*****************************************************************/
-window.__pkg__bundleSrc__['257']=function(){
+window.__pkg__bundleSrc__['259']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -973,7 +973,7 @@ __pkg__scope_bundle__.useBuffer = function (gl, location, size, type, stride, of
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/texture
 /*****************************************************************/
-window.__pkg__bundleSrc__['258']=function(){
+window.__pkg__bundleSrc__['260']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1067,7 +1067,7 @@ __pkg__scope_bundle__.linkCube = function (gl, type, level, format, textureType,
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/value
 /*****************************************************************/
-window.__pkg__bundleSrc__['259']=function(){
+window.__pkg__bundleSrc__['261']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (gl) {
@@ -1182,7 +1182,7 @@ window.__pkg__bundleSrc__['259']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/painter
 /*****************************************************************/
-window.__pkg__bundleSrc__['260']=function(){
+window.__pkg__bundleSrc__['262']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (gl) {
@@ -1279,7 +1279,7 @@ window.__pkg__bundleSrc__['260']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['261']=function(){
+window.__pkg__bundleSrc__['263']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 两个4x4矩阵相乘
@@ -1296,16 +1296,16 @@ var _multiply = function (matrix4, param) {
     return newParam;
 };
 
-__pkg__scope_args__=window.__pkg__getBundle('262');
+__pkg__scope_args__=window.__pkg__getBundle('264');
 var _move =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('263');
+__pkg__scope_args__=window.__pkg__getBundle('265');
 var _rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('264');
+__pkg__scope_args__=window.__pkg__getBundle('266');
 var _scale =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('265');
+__pkg__scope_args__=window.__pkg__getBundle('267');
 var _transform =__pkg__scope_args__.default;
 
 
@@ -1379,7 +1379,7 @@ __pkg__scope_bundle__.default= function (initMatrix4) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['262']=function(){
+window.__pkg__bundleSrc__['264']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1403,7 +1403,7 @@ __pkg__scope_bundle__.default= function (d, a, b, c) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['263']=function(){
+window.__pkg__bundleSrc__['265']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1429,7 +1429,7 @@ __pkg__scope_bundle__.default= function (deg) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/scale
 /*****************************************************************/
-window.__pkg__bundleSrc__['264']=function(){
+window.__pkg__bundleSrc__['266']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1452,7 +1452,7 @@ __pkg__scope_bundle__.default= function (xTimes, yTimes, zTimes, cx, cy, cz) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Matrix4/transform
 /*****************************************************************/
-window.__pkg__bundleSrc__['265']=function(){
+window.__pkg__bundleSrc__['267']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1519,18 +1519,18 @@ __pkg__scope_bundle__.default= function (a1, b1, c1, a2, b2, c2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/viewHandler
 /*****************************************************************/
-window.__pkg__bundleSrc__['266']=function(){
+window.__pkg__bundleSrc__['268']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 屏幕3D控制信息捕获
 
-__pkg__scope_args__=window.__pkg__getBundle('97');
+__pkg__scope_args__=window.__pkg__getBundle('99');
 var mousePosition =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
 var bind =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('162');
+__pkg__scope_args__=window.__pkg__getBundle('164');
 var getKeyCode =__pkg__scope_args__.default;
 
 
@@ -1632,7 +1632,7 @@ __pkg__scope_bundle__.default= function (callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/mousePosition
 /*****************************************************************/
-window.__pkg__bundleSrc__['97']=function(){
+window.__pkg__bundleSrc__['99']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取鼠标相对特定元素左上角位置
@@ -1661,7 +1661,7 @@ __pkg__scope_bundle__.default= function (el, event) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['162']=function(){
+window.__pkg__bundleSrc__['164']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
@@ -1866,7 +1866,7 @@ __pkg__scope_bundle__.default= function (callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/download
 /*****************************************************************/
-window.__pkg__bundleSrc__['267']=function(){
+window.__pkg__bundleSrc__['269']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.downloadJSON = function (name, json) {
@@ -1885,7 +1885,7 @@ window.__pkg__bundleSrc__['267']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/assemble
 /*****************************************************************/
-window.__pkg__bundleSrc__['138']=function(){
+window.__pkg__bundleSrc__['140']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (begin, end, step, count) {
@@ -1918,7 +1918,7 @@ window.__pkg__bundleSrc__['138']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/webgl/getColorFactory
 /*****************************************************************/
-window.__pkg__bundleSrc__['268']=function(){
+window.__pkg__bundleSrc__['270']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (painter) {
@@ -1955,20 +1955,20 @@ window.__pkg__bundleSrc__['268']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/initModelValue
 /*****************************************************************/
-window.__pkg__bundleSrc__['269']=function(){
+window.__pkg__bundleSrc__['271']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('261');
+    __pkg__scope_args__=window.__pkg__getBundle('263');
 var Matrix4 =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('270');
+__pkg__scope_args__=window.__pkg__getBundle('272');
 var cylinderFactory =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('278');
+__pkg__scope_args__=window.__pkg__getBundle('280');
 var sphereFactory =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('280');
+__pkg__scope_args__=window.__pkg__getBundle('282');
 var DownToUp=__pkg__scope_args__.DownToUp;
 
 
@@ -2179,16 +2179,16 @@ __pkg__scope_bundle__.axios = function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/cylinder
 /*****************************************************************/
-window.__pkg__bundleSrc__['270']=function(){
+window.__pkg__bundleSrc__['272']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('271');
+    __pkg__scope_args__=window.__pkg__getBundle('273');
 var getOption =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('272');
+__pkg__scope_args__=window.__pkg__getBundle('274');
 var splitNum=__pkg__scope_args__.splitNum;
 
-__pkg__scope_args__=window.__pkg__getBundle('273');
+__pkg__scope_args__=window.__pkg__getBundle('275');
 var prism =__pkg__scope_args__.default;
 
 
@@ -2214,10 +2214,10 @@ __pkg__scope_bundle__.default= function (option) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/option
 /*****************************************************************/
-window.__pkg__bundleSrc__['271']=function(){
+window.__pkg__bundleSrc__['273']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('147');
+    __pkg__scope_args__=window.__pkg__getBundle('149');
 var initConfig=__pkg__scope_args__.initConfig;
 
 
@@ -2234,7 +2234,7 @@ __pkg__scope_bundle__.default= function (option) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
+window.__pkg__bundleSrc__['149']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -2257,7 +2257,7 @@ __pkg__scope_bundle__.initConfig = function (init, data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/tool/circle
 /*****************************************************************/
-window.__pkg__bundleSrc__['272']=function(){
+window.__pkg__bundleSrc__['274']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 计算切割份数
@@ -2279,22 +2279,22 @@ __pkg__scope_bundle__.splitNum = function (precision, radius) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/prism
 /*****************************************************************/
-window.__pkg__bundleSrc__['273']=function(){
+window.__pkg__bundleSrc__['275']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('271');
+    __pkg__scope_args__=window.__pkg__getBundle('273');
 var getOption =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('274');
+__pkg__scope_args__=window.__pkg__getBundle('276');
 var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
 
-__pkg__scope_args__=window.__pkg__getBundle('275');
+__pkg__scope_args__=window.__pkg__getBundle('277');
 var rotateLineFactory =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('276');
+__pkg__scope_args__=window.__pkg__getBundle('278');
 var prismHorizontal =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('277');
+__pkg__scope_args__=window.__pkg__getBundle('279');
 var prismVertical =__pkg__scope_args__.default;
 
 
@@ -2364,7 +2364,7 @@ __pkg__scope_bundle__.default= function (option) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/Array
 /*****************************************************************/
-window.__pkg__bundleSrc__['274']=function(){
+window.__pkg__bundleSrc__['276']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 合并数组到第一个
@@ -2388,7 +2388,7 @@ __pkg__scope_bundle__.mergeArrayTo = function (targetArray) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/tool/rotateLine
 /*****************************************************************/
-window.__pkg__bundleSrc__['275']=function(){
+window.__pkg__bundleSrc__['277']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (x, y, z, x2, y2, z2) {
@@ -2436,10 +2436,10 @@ window.__pkg__bundleSrc__['275']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/tool/prism-horizontal
 /*****************************************************************/
-window.__pkg__bundleSrc__['276']=function(){
+window.__pkg__bundleSrc__['278']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('149');
+    __pkg__scope_args__=window.__pkg__getBundle('151');
 var rotate =__pkg__scope_args__.default;
 
 
@@ -2484,7 +2484,7 @@ __pkg__scope_bundle__.default= function (normal, x, y, z, radius, num, d) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['149']=function(){
+window.__pkg__bundleSrc__['151']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）旋转deg度
@@ -2502,13 +2502,13 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/tool/prism-vertical
 /*****************************************************************/
-window.__pkg__bundleSrc__['277']=function(){
+window.__pkg__bundleSrc__['279']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('149');
+    __pkg__scope_args__=window.__pkg__getBundle('151');
 var rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('274');
+__pkg__scope_args__=window.__pkg__getBundle('276');
 var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
 
 
@@ -2556,19 +2556,19 @@ __pkg__scope_bundle__.default= function (normal, x, y, z, radius, height, num) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/sphere
 /*****************************************************************/
-window.__pkg__bundleSrc__['278']=function(){
+window.__pkg__bundleSrc__['280']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('271');
+    __pkg__scope_args__=window.__pkg__getBundle('273');
 var getOption =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('274');
+__pkg__scope_args__=window.__pkg__getBundle('276');
 var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
 
-__pkg__scope_args__=window.__pkg__getBundle('279');
+__pkg__scope_args__=window.__pkg__getBundle('281');
 var sphereFragment =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('272');
+__pkg__scope_args__=window.__pkg__getBundle('274');
 var splitNum=__pkg__scope_args__.splitNum;
 
 
@@ -2603,13 +2603,13 @@ __pkg__scope_bundle__.default= function (option) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/geometry/tool/sphere-fragment
 /*****************************************************************/
-window.__pkg__bundleSrc__['279']=function(){
+window.__pkg__bundleSrc__['281']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('149');
+    __pkg__scope_args__=window.__pkg__getBundle('151');
 var rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('274');
+__pkg__scope_args__=window.__pkg__getBundle('276');
 var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
 
 
@@ -2658,7 +2658,7 @@ __pkg__scope_bundle__.default= function (normal, cx, cy, cz, radius, num, index)
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/methodChange
 /*****************************************************************/
-window.__pkg__bundleSrc__['280']=function(){
+window.__pkg__bundleSrc__['282']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.UpToDown = {
@@ -2685,7 +2685,7 @@ __pkg__scope_bundle__.DownToUp = {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/shader-vertex.c
 /*****************************************************************/
-window.__pkg__bundleSrc__['281']=function(){
+window.__pkg__bundleSrc__['283']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= "attribute vec4 a_position;\r\nuniform mat4 u_camera;\r\nuniform mat4 u_matrix;\r\n\r\nvoid main()\r\n{\r\n    vec4 temp = u_camera * u_matrix * a_position;\r\n\r\n    // 表示眼睛距离vec4(0.0,0.0,1.0)的距离\r\n    float dist = 2.0;\r\n\r\n    // 使用投影直接计算\r\n    // 为保证纹理和相对位置正确\r\n    // x、y、z的改变满足线性变换\r\n    gl_Position = vec4((dist + 1.0) * temp.x, (dist + 1.0) * temp.y, dist * (dist + temp.z) + 1.0 - dist * dist, temp.w * 2.0 * (dist + temp.z));\r\n}"
@@ -2696,7 +2696,7 @@ window.__pkg__bundleSrc__['281']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/shader-fragment.c
 /*****************************************************************/
-window.__pkg__bundleSrc__['282']=function(){
+window.__pkg__bundleSrc__['284']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= "precision mediump float;\r\nuniform vec4 u_color;\r\n\r\nvoid main()\r\n{\r\n    gl_FragColor = u_color;\r\n}\r\n"

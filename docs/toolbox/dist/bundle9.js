@@ -5,28 +5,28 @@
 window.__pkg__bundleSrc__['41']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('92');
+    __pkg__scope_args__=window.__pkg__getBundle('94');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('93');
-
-
-__pkg__scope_args__=window.__pkg__getBundle('94');
-var formatColor=__pkg__scope_args__.formatColor;
-
 __pkg__scope_args__=window.__pkg__getBundle('95');
-var drawColorCanvas =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('97');
-var mousePosition =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('96');
-var getColorByPosition =__pkg__scope_args__.default;
+var formatColor=__pkg__scope_args__.formatColor;
 
-__pkg__scope_args__=window.__pkg__getBundle('98');
-var getColorByDeep =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('97');
+var drawColorCanvas =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('99');
+var mousePosition =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('98');
+var getColorByPosition =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('100');
+var getColorByDeep =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('101');
 var calcDeepWidthColor =__pkg__scope_args__.default;
 
 
@@ -149,7 +149,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/color-picker/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['92']=function(){
+window.__pkg__bundleSrc__['94']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2,5,14]},{"type":"tag","name":"header","attrs":{"ui-dragdrop":"","ui-bind":"title"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"canvas","ui-on:click":"selectColor","ui-on:mousemove":"selectColor"},"childNodes":[3,4]},{"type":"tag","name":"canvas","attrs":{"id":"color-picker-canvas"},"childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"drap"},"childNodes":[6,7]},{"type":"tag","name":"div","attrs":{"class":"left","ui-bind:style":"'background-color:rgba(' + color[0] + ',' + color[1] + ',' + color[2] + ',' + color[3] + ')'","ui-on:click":"absorbColor"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right"},"childNodes":[8,11]},{"type":"tag","name":"div","attrs":{"class":"color","ui-on:click":"updateColor","ui-on:mousemove":"updateColor"},"childNodes":[9,10]},{"type":"tag","name":"div","attrs":{"ui-on:click":"updateColor"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"id":"color-cursor-id"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"alpha","ui-on:click":"updateAlpha","ui-on:mousemove":"updateAlpha"},"childNodes":[12,13]},{"type":"tag","name":"div","attrs":{"ui-on:click":"updateAlpha","ui-bind:style":"'background-image:linear-gradient(to right, #f000, rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')'"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-bind:style":"'left:'+(color[3]*200-6)+'px;'"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"btns"},"childNodes":[15,17]},{"type":"tag","name":"button","attrs":{"class":"cancel","ui-on:click":"doClose"},"childNodes":[16]},{"type":"text","content":"取消","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"submit","ui-on:click":"doSubmit"},"childNodes":[18]},{"type":"text","content":"确定","childNodes":[]}]
@@ -160,7 +160,7 @@ window.__pkg__bundleSrc__['92']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/color-picker/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['93']=function(){
+window.__pkg__bundleSrc__['95']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -174,7 +174,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/formatColor
 /*****************************************************************/
-window.__pkg__bundleSrc__['94']=function(){
+window.__pkg__bundleSrc__['96']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('24');
@@ -210,10 +210,10 @@ __pkg__scope_bundle__.format3DColor = function (color) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/color-picker/drawColorCanvas
 /*****************************************************************/
-window.__pkg__bundleSrc__['95']=function(){
+window.__pkg__bundleSrc__['97']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('96');
+    __pkg__scope_args__=window.__pkg__getBundle('98');
 var getColorByPosition =__pkg__scope_args__.default;
 
 
@@ -240,7 +240,7 @@ __pkg__scope_bundle__.default= function (painter, r, g, b) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/color-picker/getColorByPosition
 /*****************************************************************/
-window.__pkg__bundleSrc__['96']=function(){
+window.__pkg__bundleSrc__['98']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (r, g, b, x, y) {
@@ -267,7 +267,7 @@ window.__pkg__bundleSrc__['96']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/mousePosition
 /*****************************************************************/
-window.__pkg__bundleSrc__['97']=function(){
+window.__pkg__bundleSrc__['99']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取鼠标相对特定元素左上角位置
@@ -296,7 +296,7 @@ __pkg__scope_bundle__.default= function (el, event) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/color-picker/getColorByDeep
 /*****************************************************************/
-window.__pkg__bundleSrc__['98']=function(){
+window.__pkg__bundleSrc__['100']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (deep) {
@@ -352,7 +352,7 @@ window.__pkg__bundleSrc__['98']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/color-picker/calcDeepWidthColor
 /*****************************************************************/
-window.__pkg__bundleSrc__['99']=function(){
+window.__pkg__bundleSrc__['101']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (r, g, b) {

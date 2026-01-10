@@ -64,4 +64,9 @@ export default {
     "model-editor": function () {
         return import('./model-editor/index.js')
     },
+
+    // scss转css
+    "scss": function () {
+        return import('./scss/index.js')
+    },
 };

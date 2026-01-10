@@ -1,206 +1,149 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.js
+// Original file:./src/mobile/echarts/dialogs/gauge-barometer/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['75']=function(){
+window.__pkg__bundleSrc__['301']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('189');
+    __pkg__scope_args__=window.__pkg__getBundle('380');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('190');
 
+__pkg__scope_args__=window.__pkg__getBundle('106');
+var animation =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('125');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('164');
-var getKeyCode =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('329');
+var drawPolarRuler =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('151');
+var rotate =__pkg__scope_args__.default;
 
 
+var interval, stop = function () { };
 __pkg__scope_bundle__.default= function (obj) {
-    var painter;
 
     return {
-        name: "snake-eating",
+        name: "echarts-example",
         render: template,
-        data: {
-
-            // 提示内容
-            tips: obj.ref("温馨提示：点击「开始游戏」启动运行！"),
-
-            // 记录是否游戏中
-            isRuning: obj.ref(false),
-
-            // 食物
-            foodBlock: [],
-
-            // 记录小蛇
-            blocks: [],
-
-            // 下一步走法
-            mulpD: ""
-
-        },
-        beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "贪吃蛇" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './snake-eating.png');
-        },
         mounted: function () {
-            var canvas = this._refs.mycanvas.value;
+            var p0, p1, p2, p3, p4, pDeg;
 
-            // 获取画笔
-            painter = canvasRender(canvas, canvas.clientWidth, canvas.clientHeight, {}, true);
+            var mycontent = this._refs.mycontent.value;
+            var mycanvas = this._refs.mycanvas.value;
 
-            this.updateView();
+            var cx, cy, radius;
 
-            // 启动键盘监听
-            var _this = this;
-            getKeyCode(function (keyCode) {
-                switch (keyCode) {
-                    case 'up': {
-                        _this.mulpD = [0, -1];
-                        break;
-                    }
-                    case 'down': {
-                        _this.mulpD = [0, 1];
-                        break;
-                    }
-                    case 'left': {
-                        _this.mulpD = [-1, 0];
-                        break;
-                    }
-                    case 'right': {
-                        _this.mulpD = [1, 0];
-                        break;
-                    }
-                }
-            });
-        },
-        methods: {
+            var beginDeg = Math.PI * 3 / 4, deg = Math.PI * 1.5;
 
-            // 刷新视图
-            updateView: function () {
-                var i;
+            // 监听画布大小改变
+            var currentValue = 58.06, value;
 
-                painter.clearRect(0, 0, 500, 500);
+            var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight);
 
-                // 先绘制格子
-                painter.config({
-                    strokeStyle: "white"
+            // 圆心和半径
+            cx = mycontent.clientWidth * 0.5;
+            cy = mycontent.clientHeight * 0.5;
+            radius = Math.max(Math.min(cx, cy) - 50, 0);
+
+            var updateView = function (value) {
+                painter.clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
+
+                pDeg = beginDeg + Math.PI * 1.5 * value * 0.01;
+
+                // 外刻度尺
+                drawPolarRuler(painter, {
+                    cx: cx,
+                    cy: cy,
+                    radius: radius + 10,
+                    value: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    begin: beginDeg,
+                    deg: deg,
+                    "font-size": 14,
+                    color: "#e93f33",
+                    "font-rotate": false,
+                    "font-weight": 800,
+                    "small-mark": true
                 });
-                for (i = 0; i < 25; i++) {
-                    painter
 
-                        // 横线条
-                        .beginPath().moveTo(0, i * 20).lineTo(500, i * 20).stroke()
+                // 内刻度尺
+                drawPolarRuler(painter, {
+                    cx: cx,
+                    cy: cy,
+                    radius: radius - 10,
+                    value: [0, 10, 20, 30, 40, 50, 60],
+                    begin: beginDeg,
+                    deg: deg,
+                    color: "#000000",
+                    "font-size": 14,
+                    "mark-direction": "inner",
+                    "font-rotate": false,
+                    "font-weight": 800,
+                    "small-mark": true
+                });
 
-                        // 纵线条
-                        .beginPath().moveTo(i * 20, 0).lineTo(i * 20, 500).stroke();
+                p0 = rotate(cx, cy, pDeg, cx + radius + 20, cy - 1);
+                p1 = rotate(cx, cy, pDeg, cx + radius + 20, cy + 1);
+                p2 = rotate(cx, cy, pDeg, cx - 20, cy + 4);
+                p3 = rotate(cx, cy, pDeg, cx - 30, cy);
+                p4 = rotate(cx, cy, pDeg, cx - 20, cy - 4);
 
-                }
+                // 表盘文字
+                painter.config({
+                    "fontSize": 10,
+                    "fontWeight": 200,
+                    "fillStyle": "black",
+                    "textAlign": "center",
+                    "textBaseline": "middle"
+                }).fillText("PLP", cx, cy - radius * 0.5)
 
-                //  然后绘制小格子
-                for (i = 0; i < this.blocks.length; i++) {
-                    painter.config({
-                        fillStyle: i == 0 ? "#aaaaaa" : "white"
-                    }).fillRect(this.blocks[i][0] * 20, this.blocks[i][1] * 20, 20, 20);
-                }
+                    // 指针
+                    .fillCircle(cx, cy, 7).config({
+                        "lineWidth": 2
+                    }).strokeCircle(cx, cy, 11)
+                    .beginPath()
+                    .moveTo(p0[0], p0[1])
+                    .lineTo(p1[0], p1[1])
+                    .lineTo(p2[0], p2[1])
+                    .lineTo(p3[0], p3[1])
+                    .lineTo(p4[0], p4[1])
+                    .fill()
 
-                // 最后绘制食物
-                painter.config('fillStyle', 'red').fillRect(this.foodBlock[0] * 20, this.foodBlock[1] * 20, 20, 20);
+                    // 值文字
+                    .config({
+                        "fontSize": 30,
+                        "fontWeight": 800,
+                        "fillStyle": "#555555"
+                    })
+                    .fillText(value, cx, cy + radius * 0.4);
 
-            },
+            };
 
-            // 开始游戏
-            beginGame: function () {
+            updateView(currentValue.toFixed(2));
 
-                // 初始化参数
-                this.isRuning = true;
-                this.mulpD = [0, -1];
-                this.foodBlock = [20, 20];
-                this.blocks = [
-                    [10, 10],
-                    [10, 11],
-                    [10, 12],
-                    [10, 13],
-                    [11, 13],
-                    [12, 13],
-                    [13, 13],
-                    [14, 13]
-                ];
+            // 定时模拟修改
+            interval = setInterval(function () {
 
-                this.updateView();
+                value = Math.random() * 100;
+                stop = animation(function (deep) {
 
-                // 轮询修改数据
-                var _this = this;
-                var interval = setInterval(function () {
+                    if (updateView)
+                        updateView(+((currentValue + (value - currentValue) * deep).toFixed(2)));
 
-                    var newBlock = [
-                        _this.blocks[0][0] + _this.mulpD[0],
-                        _this.blocks[0][1] + _this.mulpD[1]
-                    ];
+                }, 300, function () {
+                    currentValue = value;
+                });
 
-                    // 判断是否合法
-                    if (!_this.isValidBlock(newBlock)) {
+            }, 1000);
+        },
+        beforeDestory: function () {
+            if (interval) {
 
-                        _this.isRuning = false;
-                        clearInterval(interval);
-                        _this.tips = "[分数：" + (_this.blocks.length - 8) + "]小蛇出界或者撞到自己了。";
-
-                        return;
-                    }
-
-                    _this.blocks.unshift(newBlock);
-
-                    // 判断是否吃到食物了
-                    if (
-                        newBlock[0] == _this.foodBlock[0] &&
-                        newBlock[1] == _this.foodBlock[1]
-                    ) {
-                        _this.foodBlock = _this.newFood();
-                    } else {
-                        _this.blocks.pop();
-                    }
-
-                    _this.updateView();
-                }, 200);
-
-            },
-
-            // 判断是否合法
-            isValidBlock: function (block) {
-
-                // 如果越界了
-                if (block[0] < 0 || block[0] >= 25 || block[1] < 0 || block[1] >= 25) return false;
-
-                for (var i = 0; i < this.blocks.length; i++) {
-
-                    // 如果撞到自己了
-                    if (this.blocks[i][0] == block[0] && this.blocks[i][1] == block[1]) return false;
-                }
-
-                return true;
-            },
-
-            // 产生新的事物
-            newFood: function () {
-                var newFood, tryNum = 1;
-                do {
-
-                    if (tryNum >= 10000) {
-                        this.isRuning = false;
-                        this.tips = '意外终止，系统内部错误。';
-                    }
-
-                    newFood = [
-                        +(Math.random() * 24).toFixed(0),
-                        +(Math.random() * 24).toFixed(0)
-                    ];
-                    tryNum += 1;
-                } while (!this.isValidBlock(newFood));
-
-                return newFood;
+                // 关闭页面的时候需要关闭定时任务
+                clearInterval(interval);
+                stop();
             }
         }
     };
@@ -210,26 +153,127 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.html
+// Original file:./src/mobile/echarts/dialogs/gauge-barometer/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['189']=function(){
+window.__pkg__bundleSrc__['380']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,8,9]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,3]},{"type":"text","content":"贪吃蛇","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[4,6]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[5]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[7]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:active":"isRuning?'no':'yes'"},"childNodes":[10,11]},{"type":"tag","name":"span","attrs":{"ui-bind":"tips"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"beginGame"},"childNodes":[12]},{"type":"text","content":"开始游戏","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,6]},{"type":"tag","name":"header","attrs":{"class":"dialog-title"},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"气压表","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[5]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[7]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/snake-eating/index.scss
+// Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['190']=function(){
+window.__pkg__bundleSrc__['106']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    var styleElement = document.createElement('style');
-var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"snake-eating\"]{\n\nwidth: 500px;\n\nleft: calc(50vw - 250px);\n\ntop: 50px;\n\nfont-size: 0;\n\n}\n\n [page-view=\"snake-eating\"][focus=\"no\"]>h2{\n\nbackground-color: #817e22;\n\n}\n\n [page-view=\"snake-eating\"]>h2{\n\nfont-size: 18px;\n\nbackground-color: #98942e;\n\nline-height: 50px;\n\nbackground-image: url(\"./snake-eating.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 80%;\n\nbackground-position: 5px center;\n\npadding-left: 51px;\n\nfont-weight: 200;\n\n}\n\n [page-view=\"snake-eating\"]>canvas{\n\nbackground-color: #d3d0d0;\n\nheight: 500px;\n\nwidth: 500px;\n\n}\n\n [page-view=\"snake-eating\"]>div{\n\nposition: absolute;\n\nleft: 0;\n\ntop: 50px;\n\nwidth: 500px;\n\nheight: 500px;\n\nbackground-color: rgba(0, 0, 0, 0.36);\n\n}\n\n [page-view=\"snake-eating\"]>div[active='no']{\n\ndisplay: none;\n\n}\n\n [page-view=\"snake-eating\"]>div>span{\n\ndisplay: inline-block;\n\nposition: absolute;\n\nleft: 20px;\n\ntop: 20px;\n\nfont-weight: 200;\n\ncolor: white;\n\nfont-size: 12px;\n\n}\n\n [page-view=\"snake-eating\"]>div>button{\n\nmargin: auto;\n\ndisplay: block;\n\nbackground-color: red;\n\ncolor: white;\n\nwidth: 70px;\n\nheight: 30px;\n\nmargin-top: 235px;\n\noutline: none;\n\nborder: none;\n\ncursor: pointer;\n\n}\n";
-styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
+    //当前正在运动的动画的tick函数堆栈
+var $timers = [];
+//唯一定时器的定时间隔
+var $interval = 13;
+//指定了动画时长duration默认值
+var $speeds = 400;
+//定时器ID
+var $timerId = null;
+
+/**
+ * 动画轮播
+ * @param {function} doback 轮询函数，有一个形参deep，0-1，表示执行进度
+ * @param {number} duration 动画时长，可选
+ * @param {function} callback 动画结束回调，可选，有一个形参deep，0-1，表示执行进度
+ *
+ * @returns {function} 返回一个函数，调用该函数，可以提前结束动画
+ */
+__pkg__scope_bundle__.default= function (doback, duration, callback) {
+
+    // 如果没有传递时间，使用内置默认值
+    if (arguments.length < 2) duration = $speeds;
+
+    var clock = {
+        //把tick函数推入堆栈
+        "timer": function (tick, duration, callback) {
+            if (!tick) {
+                throw new Error('Tick is required!');
+            }
+            var id = new Date().valueOf() + "_" + (Math.random() * 1000).toFixed(0);
+            $timers.push({
+                "id": id,
+                "createTime": new Date(),
+                "tick": tick,
+                "duration": duration,
+                "callback": callback
+            });
+            clock.start();
+            return id;
+        },
+
+        //开启唯一的定时器timerId
+        "start": function () {
+            if (!$timerId) {
+                $timerId = setInterval(clock.tick, $interval);
+            }
+        },
+
+        //被定时器调用，遍历timers堆栈
+        "tick": function () {
+            var createTime, flag, tick, callback, timer, duration, passTime,
+                timers = $timers;
+            $timers = [];
+            $timers.length = 0;
+            for (flag = 0; flag < timers.length; flag++) {
+                //初始化数据
+                timer = timers[flag];
+                createTime = timer.createTime;
+                tick = timer.tick;
+                duration = timer.duration;
+                callback = timer.callback;
+
+                //执行
+                passTime = (+new Date() - createTime) / duration;
+                passTime = passTime > 1 ? 1 : passTime;
+                tick(passTime);
+                if (passTime < 1 && timer.id) {
+                    //动画没有结束再添加
+                    $timers.push(timer);
+                } else if (callback) {
+                    callback(passTime);
+                }
+            }
+            if ($timers.length <= 0) {
+                clock.stop();
+            }
+        },
+
+        //停止定时器，重置timerId=null
+        "stop": function () {
+            if ($timerId) {
+                clearInterval($timerId);
+                $timerId = null;
+            }
+        }
+    };
+
+    var id = clock.timer(function (deep) {
+        //其中deep为0-1，表示改变的程度
+        doback(deep);
+    }, duration, callback);
+
+    // 返回一个函数
+    // 用于在动画结束前结束动画
+    return function () {
+        var i;
+        for (i in $timers) {
+            if ($timers[i].id == id) {
+                $timers[i].id = undefined;
+                return;
+            }
+        }
+    };
+
+};
+
 
     return __pkg__scope_bundle__;
 }
@@ -758,205 +802,177 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/keyCode
+// Original file:./src/tool/canvas/extend/polar-ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['164']=function(){
+window.__pkg__bundleSrc__['329']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 字典表
-var dictionary = {
+    __pkg__scope_args__=window.__pkg__getBundle('149');
+var initConfig=__pkg__scope_args__.initConfig;
 
-    // 数字
-    48: [0, ')'],
-    49: [1, '!'],
-    50: [2, '@'],
-    51: [3, '#'],
-    52: [4, '$'],
-    53: [5, '%'],
-    54: [6, '^'],
-    55: [7, '&'],
-    56: [8, '*'],
-    57: [9, '('],
-    96: [0, 0],
-    97: 1,
-    98: 2,
-    99: 3,
-    100: 4,
-    101: 5,
-    102: 6,
-    103: 7,
-    104: 8,
-    105: 9,
-    106: "*",
-    107: "+",
-    109: "-",
-    110: ".",
-    111: "/",
+__pkg__scope_args__=window.__pkg__getBundle('151');
+var rotate =__pkg__scope_args__.default;
 
-    // 字母
-    65: ["a", "A"],
-    66: ["b", "B"],
-    67: ["c", "C"],
-    68: ["d", "D"],
-    69: ["e", "E"],
-    70: ["f", "F"],
-    71: ["g", "G"],
-    72: ["h", "H"],
-    73: ["i", "I"],
-    74: ["j", "J"],
-    75: ["k", "K"],
-    76: ["l", "L"],
-    77: ["m", "M"],
-    78: ["n", "N"],
-    79: ["o", "O"],
-    80: ["p", "P"],
-    81: ["q", "Q"],
-    82: ["r", "R"],
-    83: ["s", "S"],
-    84: ["t", "T"],
-    85: ["u", "U"],
-    86: ["v", "V"],
-    87: ["w", "W"],
-    88: ["x", "X"],
-    89: ["y", "Y"],
-    90: ["z", "Z"],
-
-    // 方向
-    37: "left",
-    38: "up",
-    39: "right",
-    40: "down",
-    33: "page up",
-    34: "page down",
-    35: "end",
-    36: "home",
-
-    // 控制键
-    16: "shift",
-    17: "ctrl",
-    18: "alt",
-    91: "command",
-    92: "command",
-    93: "command",
-    224: "command",
-    9: "tab",
-    20: "caps lock",
-    32: "spacebar",
-    8: "backspace",
-    13: "enter",
-    27: "esc",
-    46: "delete",
-    45: "insert",
-    144: "number lock",
-    145: "scroll lock",
-    12: "clear",
-    19: "pause",
-
-    // 功能键
-    112: "f1",
-    113: "f2",
-    114: "f3",
-    115: "f4",
-    116: "f5",
-    117: "f6",
-    118: "f7",
-    119: "f8",
-    120: "f9",
-    121: "f10",
-    122: "f11",
-    123: "f12",
-
-    // 余下键
-    189: ["-", "_"],
-    187: ["=", "+"],
-    219: ["[", "{"],
-    221: ["]", "}"],
-    220: ["\\", "|"],
-    186: [";", ":"],
-    222: ["'", '"'],
-    188: [",", "<"],
-    190: [".", ">"],
-    191: ["/", "?"],
-    192: ["`", "~"]
-
-};
-
-// 非独立键字典
-var help_key = ["shift", "ctrl", "alt"];
-
-// 返回键盘此时按下的键的组合结果
-var keyCode = function (event) {
-    event = event || window.event;
-
-    var keycode = event.keyCode || event.which;
-    var key = dictionary[keycode] || keycode;
-    if (!key) return;
-    if (key.constructor !== Array) key = [key, key];
-
-    var _key = key[0];
-
-    var shift = event.shiftKey ? "shift+" : "",
-        alt = event.altKey ? "alt+" : "",
-        ctrl = event.ctrlKey ? "ctrl+" : "";
-
-    var resultKey = "",
-        preKey = ctrl + shift + alt;
-
-    if (help_key.indexOf(key[0]) >= 0) {
-        key[0] = key[1] = "";
-    }
-
-    // 判断是否按下了caps lock
-    var lockPress = event.code == "Key" + event.key && !shift;
-
-    // 只有字母（且没有按下功能Ctrl、shift或alt）区分大小写
-    resultKey = (preKey + ((preKey == '' && lockPress) ? key[1] : key[0]));
-
-    if (key[0] == "") {
-        resultKey = resultKey.replace(/\+$/, '');
-    }
-
-    return resultKey == '' ? _key : resultKey;
-};
-
-__pkg__scope_bundle__.getKeyString = keyCode;
 
 /**
- * 获取键盘此时按下的键的组合结果
- * @param {Function} callback 回调，键盘有键被按下的时候触发
- * @return {Function} 返回一个函数，执行此函数可以取消键盘监听
- * @examples
- *  keyCode(function (data) {
- *      console.log(data);
- *  });
+ * attr = {
+ *    cx,cy 刻度尺圆心
+ *    begin,deg 刻度尺开始角度和总度数
+ *    radius 刻度尺半径
+ *    mark-direction 刻度尺小刻度的位置：outer|inner
+ *    value-position 刻度尺刻度文字的位置：mark|between
+ *    color 刻度尺颜色
+ *    value 值
+ *    font-size 刻度文字大小
+ *    font-rotate 文字是否旋转
+ *    font-weight 字重
+ *    small-mark 是否需要小刻度
+ * }
  */
-__pkg__scope_bundle__.default= function (callback) {
+__pkg__scope_bundle__.default= function (painter, attr) {
+    var i, j, curDeg, textHelpDeg, p1, p2;
 
-    // 记录MacOS的command是否被按下
-    var macCommand = false;
+    attr = initConfig({
+        "mark-direction": "outer",
+        "value-position": "mark",
+        "color": 'black',
+        "begin": 0,
+        "deg": Math.PI * 2,
+        "font-size": 12,
+        "font-weight": 400,
+        "font-rotate": true,
+        "small-mark": false
+    }, attr);
 
-    var doKeydown = function (event) {
-        var keyStringCode = keyCode(event);
-        if (/command/.test(keyStringCode)) macCommand = true;
+    var value = attr.value;
 
-        if (macCommand && !/command/.test(keyStringCode) && !/ctrl/.test(keyStringCode)) keyStringCode = "ctrl+" + keyStringCode;
-        callback(keyStringCode.replace(/command/g, 'ctrl').replace('ctrl+ctrl', 'ctrl'), event);
-    };
+    painter.config({
+        'lineWidth': 1,
+        'fillStyle': attr.color,
+        'strokeStyle': attr.color,
+        'fontSize': attr["font-size"],
+        "fontWeight": attr["font-weight"],
+        'textAlign': 'center',
+        'textBaseline': 'middle',
+        "lineDash": []
+    });
 
-    var doKeyup = function (event) {
-        var keyStringCode = keyCode(event);
-        if (/command/.test(keyStringCode)) macCommand = false;
-    };
+    // 先绘制弧度
+    painter.beginPath().arc(attr.cx, attr.cy, attr.radius, attr.begin, attr.deg).stroke();
 
-    // 在body上注册
-    document.body.addEventListener('keydown', doKeydown, false);
-    document.body.addEventListener('keyup', doKeyup, false);
+    var markNumber = attr["value-position"] == "mark" ? value.length : value.length + 1;
 
-    // 返回取消监听函数
-    return function () {
-        document.body.removeEventListener('keydown', doKeydown, false);
-        document.body.removeEventListener('keyup', doKeyup, false);
+    // 绘制刻度
+    var distanceDeg = attr.deg / (markNumber - 1);
+
+    // 绘制刻度
+    for (i = 0; i < markNumber; i++) {
+
+        p1 = rotate(
+            attr.cx, attr.cy,
+            attr.begin + i * distanceDeg,
+            attr.cx + attr.radius, attr.cy
+        );
+
+        p2 = rotate(
+            attr.cx, attr.cy,
+            attr.begin + i * distanceDeg,
+            attr.cx + attr.radius + (attr['small-mark'] ? 10 : 4) * (attr["mark-direction"] == 'inner' ? -1 : 1), attr.cy
+        );
+
+        painter.config({
+            "lineWidth": attr['small-mark'] ? 2 : 1
+        }).beginPath().moveTo(p1[0], p1[1]).lineTo(p2[0], p2[1]).stroke();
+
+        // 绘制小刻度
+        painter.config({
+            "lineWidth": 1
+        });
+        if (attr['small-mark'] && i < markNumber - 1) {
+
+            for (j = 1; j <= 4; j++) {
+                p1 = rotate(
+                    attr.cx, attr.cy,
+                    attr.begin + (i + j * 0.2) * distanceDeg,
+                    attr.cx + attr.radius, attr.cy
+                );
+
+                p2 = rotate(
+                    attr.cx, attr.cy,
+                    attr.begin + (i + j * 0.2) * distanceDeg,
+                    attr.cx + attr.radius + 4 * (attr["mark-direction"] == 'inner' ? -1 : 1), attr.cy
+                );
+
+                painter.beginPath().moveTo(p1[0], p1[1]).lineTo(p2[0], p2[1]).stroke();
+            }
+
+        }
     }
+
+    // 绘制刻度上的读数
+    for (i = 0; i < value.length; i++) {
+        curDeg = attr.begin + distanceDeg * (i + (attr["value-position"] == 'mark' ? 0 : 0.5));
+        textHelpDeg = curDeg % (Math.PI * 2);
+
+        p1 = rotate(
+            attr.cx, attr.cy,
+            curDeg,
+            attr.cx + attr.radius + (attr["font-rotate"] && !attr['small-mark'] ? 15 : 25) * (attr["mark-direction"] == 'inner' ? -1 : 1), attr.cy
+        );
+
+        if (attr["font-rotate"]) {
+            painter.fillText(value[i], p1[0], p1[1], curDeg + ((
+                textHelpDeg > 0 && textHelpDeg < Math.PI ||
+                textHelpDeg > -2 * Math.PI && textHelpDeg < -Math.PI
+            ) ? -Math.PI * 0.5 : Math.PI * 0.5));
+        } else {
+            painter.fillText(value[i], p1[0], p1[1]);
+        }
+
+    }
+
+    return painter;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/config
+/*****************************************************************/
+window.__pkg__bundleSrc__['149']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    
+// 初始化配置文件
+
+__pkg__scope_bundle__.initConfig = function (init, data) {
+    var key;
+    for (key in data)
+        try {
+            init[key] = data[key];
+        } catch (e) {
+            throw new Error("Illegal property value！");
+        }
+    return init;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/transform/rotate
+/*****************************************************************/
+window.__pkg__bundleSrc__['151']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 点（x,y）围绕中心（cx,cy）旋转deg度
+__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
+    var cos = Math.cos(deg), sin = Math.sin(deg);
+    return [
+        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
+        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
+    ];
 };
 
     return __pkg__scope_bundle__;

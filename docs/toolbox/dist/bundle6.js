@@ -71,6 +71,11 @@ window.__pkg__bundleSrc__['37']=function(){
     "model-editor": function () {
         return window.__pkg__getLazyBundle('./dist/bundle25.js','81')
     },
+
+    // scss转css
+    "scss": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle26.js','82')
+    },
 };
 
     return __pkg__scope_bundle__;
