@@ -1,0 +1,57 @@
+[win-view='geometry'] {
+    left: 30px;
+    top: 60px;
+    height: 500px;
+    width: 100px;
+    background-color: white;
+
+    &>h2 {
+        font-size: 12px;
+        padding-left: 30px;
+        background-image: url('./model-editor.png');
+        background-size: auto 80%;
+        background-repeat: no-repeat;
+        background-position: 3px center;
+        line-height: 30px;
+        height: 30px;
+        user-select: none;
+        background-color: #cad6db;
+    }
+
+    &>.list {
+        padding: 5px 0;
+
+        &>li {
+            display: inline-block;
+            width: 55px;
+            line-height: 30px;
+            margin: 5px 10px;
+            text-align: center;
+            outline: 1px solid rgb(185, 182, 182);
+            vertical-align: top;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            cursor: move;
+            position: relative;
+            font-size: 12px;
+
+            &:hover {
+                background-color: #f2f5f6;
+            }
+
+            &>.add {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                position: absolute;
+                right: -30px;
+                background-image: url("./add.png");
+                background-repeat: no-repeat;
+                background-size: 100% auto;
+                background-position: center center;
+                cursor: pointer;
+            }
+        }
+    }
+}

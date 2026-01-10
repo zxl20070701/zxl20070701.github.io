@@ -1,0 +1,20 @@
+<h2 ui-dragdrop>保存</h2>
+<div class="right-btn">
+    <div>
+        <fieldset>
+            <legend>
+                基础
+            </legend>
+            <ul>
+                <li>
+                    <label>名称：</label>
+                    <input ui-model="name">
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+    <div>
+        <button ui-on:click="doSubmit">确定</button>
+        <button ui-on:click="doClose">取消</button>
+    </div>
+</div>

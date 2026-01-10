@@ -1,0 +1,44 @@
+<h2 ui-dragdrop>
+    添加
+    <span ui-bind="kindName"></span>
+</h2>
+<div class="right-btn">
+    <div>
+        <fieldset>
+            <legend>
+                基础
+            </legend>
+            <ul>
+                <li>
+                    <label>名称：</label>
+                    <input ui-model="name">
+                </li>
+                <li>
+                    <label ui-bind:active="kind=='sphere'?'yes':'no'">球心：</label>
+                    <label ui-bind:active="kind=='prism'||kind=='cylinder'?'yes':'no'">起点：</label>
+                    <input ui-model="x" class="slice">
+                    <input ui-model="y" class="slice">
+                    <input ui-model="z" class="slice">
+                </li>
+                <li ui-bind:active="kind=='prism'||kind=='cylinder'?'yes':'no'">
+                    <label>终点：</label>
+                    <input ui-model="x2" class="slice">
+                    <input ui-model="y2" class="slice">
+                    <input ui-model="z2" class="slice">
+                </li>
+                <li ui-bind:active="kind=='sphere'||kind=='prism'||kind=='cylinder'?'yes':'no'">
+                    <label>半径：</label>
+                    <input ui-model="radius" class="slice">
+                </li>
+                <li ui-bind:active="kind=='prism'?'yes':'no'">
+                    <label>棱数：</label>
+                    <input ui-model="count" class="slice">
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+    <div>
+        <button ui-on:click="doSubmit">确定</button>
+        <button ui-on:click="doClose">取消</button>
+    </div>
+</div>

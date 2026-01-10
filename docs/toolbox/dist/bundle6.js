@@ -67,6 +67,10 @@ window.__pkg__bundleSrc__['37']=function(){
         return window.__pkg__getLazyBundle('./dist/bundle24.js','80')
     },
 
+    // 模型编辑器
+    "model-editor": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle25.js','81')
+    },
 };
 
     return __pkg__scope_bundle__;

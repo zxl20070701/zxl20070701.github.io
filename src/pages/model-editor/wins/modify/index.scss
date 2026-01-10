@@ -1,0 +1,99 @@
+[win-view='modify'] {
+    right: 30px;
+    top: 140px;
+    height: 400px;
+    width: 300px;
+    background-color: white;
+
+    &>h2 {
+        font-size: 12px;
+        padding-left: 30px;
+        background-image: url('./model-editor.png');
+        background-size: auto 80%;
+        background-repeat: no-repeat;
+        background-position: 3px center;
+        line-height: 30px;
+        height: 30px;
+        user-select: none;
+        background-color: #cad6db;
+    }
+
+    &>div.right-btn {
+        display: flex;
+
+        &>div {
+
+            &:first-child {
+                flex-grow: 1;
+                padding: 10px 0 10px 10px;
+            }
+
+            &:last-child {
+                text-align: center;
+                flex-grow: 0;
+                flex-shrink: 0;
+                flex-basis: 70px;
+
+                &>button {
+                    height: 30px;
+                    border-radius: 15px;
+                    width: 50px;
+                    margin-top: 10px;
+
+                    &:hover {
+                        background-color: rgb(127, 131, 131);
+                        cursor: pointer;
+                    }
+
+                    &.delete {
+                        background-color: red;
+                        color: white;
+                        border: none;
+
+                        &:hover {
+                            background-color: #c72115;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    fieldset {
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    ul {
+        &>li {
+            line-height: 2em;
+            margin-top: 5px;
+            white-space: nowrap;
+
+            &>label {
+                width: 40px;
+                display: inline-block;
+                text-align: right;
+            }
+
+            &>input,
+            select {
+                width: 150px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    &>div.empty {
+        padding-top: 100px;
+        text-align: center;
+        font-size: 20px;
+        font-family: cursive;
+        color: #9E9E9E;
+    }
+
+    &>div[active='no'] {
+        display: none;
+    }
+}

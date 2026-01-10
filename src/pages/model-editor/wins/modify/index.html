@@ -1,0 +1,26 @@
+<h2 ui-dragdrop="dragdropPadding">
+    　修改器
+</h2>
+<div class="right-btn" ui-bind:active="!isEmpty?'yes':'no'">
+    <div>
+        <fieldset>
+            <legend>
+                基础
+            </legend>
+            <ul>
+                <li>
+                    <label>名称：</label>
+                    <input ui-model="name">
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+    <div>
+        <button ui-on:click="doSave">保存</button>
+        <button ui-on:click="doReset">重置</button>
+        <button class="delete" ui-on:click="doDelete">删除</button>
+    </div>
+</div>
+<div class="empty" ui-bind:active="isEmpty?'yes':'no'">
+    未选中物体
+</div>

@@ -60,4 +60,8 @@ export default {
         return import('./browser/index.js')
     },
 
+    // 模型编辑器
+    "model-editor": function () {
+        return import('./model-editor/index.js')
+    },
 };

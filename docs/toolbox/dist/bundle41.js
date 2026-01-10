@@ -1,28 +1,33 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/scatter-bubble-gradient/index.js
+// Original file:./src/pages/echarts/dialogs/bar-polar-real-estate/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['199']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('282');
+    __pkg__scope_args__=window.__pkg__getBundle('317');
 var template =__pkg__scope_args__.default;
 
+__pkg__scope_args__=window.__pkg__getBundle('318');
 
-__pkg__scope_args__=window.__pkg__getBundle('277');
+
+__pkg__scope_args__=window.__pkg__getBundle('254');
 var ResizeObserver =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('103');
-var animation =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('136');
+__pkg__scope_args__=window.__pkg__getBundle('137');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('142');
+__pkg__scope_args__=window.__pkg__getBundle('143');
 var ruler =__pkg__scope_args__.default;
 
+__pkg__scope_args__=window.__pkg__getBundle('149');
+var rotate =__pkg__scope_args__.default;
+
 __pkg__scope_args__=window.__pkg__getBundle('144');
-var drawRuler =__pkg__scope_args__.default;
+var getLoopColors =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('315');
+var drawRectRadius =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -34,307 +39,192 @@ __pkg__scope_bundle__.default= function (obj, props) {
             srcUrl: props.srcUrl
         },
         mounted: function () {
-            var i, j, k, x, y, radius, gradient, scale, color;
+            var i, y, p1, p2, indexs;
 
             var data = [
-                [
-                    // GDP、寿命、人口、国家、年
-                    [28604, 77, 17096869, 'Australia', 1990],
-                    [31163, 77.4, 27662440, 'Canada', 1990],
-                    [1516, 68, 1154605773, 'China', 1990],
-                    [13670, 74.7, 10582082, 'Cuba', 1990],
-                    [28599, 75, 4986705, 'Finland', 1990],
-                    [29476, 77.1, 56943299, 'France', 1990],
-                    [31476, 75.4, 78958237, 'Germany', 1990],
-                    [28666, 78.1, 254830, 'Iceland', 1990],
-                    [1777, 57.7, 870601776, 'India', 1990],
-                    [29550, 79.1, 122249285, 'Japan', 1990],
-                    [2076, 67.9, 20194354, 'North Korea', 1990],
-                    [12087, 72, 42972254, 'South Korea', 1990],
-                    [24021, 75.4, 3397534, 'New Zealand', 1990],
-                    [43296, 76.8, 4240375, 'Norway', 1990],
-                    [10088, 70.8, 38195258, 'Poland', 1990],
-                    [19349, 69.6, 147568552, 'Russia', 1990],
-                    [10670, 67.3, 53994605, 'Turkey', 1990],
-                    [26424, 75.7, 57110117, 'United Kingdom', 1990],
-                    [37062, 75.4, 252847810, 'United States', 1990]
-                ],
-                [
-                    [44056, 81.8, 23968973, 'Australia', 2015],
-                    [43294, 81.7, 35939927, 'Canada', 2015],
-                    [13334, 76.9, 1376048943, 'China', 2015],
-                    [21291, 78.5, 11389562, 'Cuba', 2015],
-                    [38923, 80.8, 5503457, 'Finland', 2015],
-                    [37599, 81.9, 64395345, 'France', 2015],
-                    [44053, 81.1, 80688545, 'Germany', 2015],
-                    [42182, 82.8, 329425, 'Iceland', 2015],
-                    [5903, 66.8, 1311050527, 'India', 2015],
-                    [36162, 83.5, 126573481, 'Japan', 2015],
-                    [1390, 71.4, 25155317, 'North Korea', 2015],
-                    [34644, 80.7, 50293439, 'South Korea', 2015],
-                    [34186, 80.6, 4528526, 'New Zealand', 2015],
-                    [64304, 81.6, 5210967, 'Norway', 2015],
-                    [24787, 77.3, 38611794, 'Poland', 2015],
-                    [23038, 73.13, 143456918, 'Russia', 2015],
-                    [19360, 76.5, 78665830, 'Turkey', 2015],
-                    [38225, 81.4, 64715810, 'United Kingdom', 2015],
-                    [53354, 79.1, 321773631, 'United States', 2015]
-                ]
+
+                // 最低、最高、平均
+                ["北京", 5000, 10000, 6785.71],
+                ["上海", 4000, 10000, 6825],
+                ["深圳", 3000, 6500, 4463.33],
+                ["广州", 2500, 5600, 3793.83],
+                ["苏州", 2000, 4000, 3060],
+                ["杭州", 2000, 4000, 3222.33],
+                ["南京", 2500, 4000, 3133.33],
+                ["福州", 1800, 4000, 3100],
+                ["青岛", 2000, 3500, 2750],
+                ["济南", 2000, 3000, 2500],
+                ["长春", 1800, 3000, 2433.33],
+                ["大连", 2000, 2700, 2375],
+                ["温州", 1500, 2800, 2150],
+                ["郑州", 1500, 2300, 2100],
+                ["武汉", 1600, 3500, 2057.14],
+                ["成都", 1500, 2600, 2037.5],
+                ["东莞", 1500, 2417.54, 1905.85],
+                ["沈阳", 1500, 2000, 1775],
+                ["烟台", 1500, 1800, 1650]
             ];
+
+            var colors = getLoopColors(2);
 
             var mycontent = this._refs.mycontent.value;
             var mycanvas = this._refs.mycanvas.value;
+            var mytooltip = this._refs.mytooltip.value;
 
-            var painter, updateView, width, height, maxValue = 0, minValue = 100;
+            var painter;
 
-            // 求解寿命最大最小值
+            var beginDeg, deg = Math.PI * 2 / data.length, maxValue = 0, cx, cy, radius, distV;
+
+            // 求解最大值
             for (i = 0; i < data.length; i++) {
-                for (j = 0; j < data[i].length; j++) {
-                    if (maxValue < data[i][j][1]) maxValue = data[i][j][1];
-                    if (minValue > data[i][j][1]) minValue = data[i][j][1];
+                if (maxValue < data[i][2]) {
+                    maxValue = data[i][2];
                 }
             }
 
-            // 求解垂直刻度尺
-            var yRulerData = ruler(maxValue, minValue, 6);
-
-            // 水平刻度尺
-            var xRulerData = [0, 10000, 20000, 30000, 40000, 50000, 60000, 70000];
-
-            // 留白大小
-            var grid = {
-                left: 70,
-                top: 80,
-                right: 90,
-                bottom: 70
-            };
-
-            // 小球的颜色
-            var colors = [{
-                shadowColor: "rgba(120, 36, 50, 0.5)",
-                gradient: ["rgb(251, 118, 123)", "rgb(204, 46, 72)"]
-            }, {
-                shadowColor: "rgba(25, 100, 150, 0.5)",
-                gradient: ["rgb(129, 227, 238)", "rgb(25, 183, 207)"]
-            }];
+            // 刻度尺
+            var rulerData = ruler(maxValue, 0, 5);
 
             // 监听画布大小改变
             ResizeObserver(mycontent, function () {
-                width = mycontent.clientWidth;
-                height = mycontent.clientHeight;
+                painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight, true);
 
-                painter = canvasRender(mycanvas, width, height, true);
+                // 圆心和半径
+                cx = mycontent.clientWidth * 0.5;
+                cy = mycontent.clientHeight * 0.5;
+                radius = Math.max(Math.min(cx, cy) * 0.75, 0);
 
-                // 计算球数据
-                var bubbles = [], legends = [];
-                for (i = 0; i < data.length; i++) {
-                    var bubble = [];
-                    for (j = 0; j < data[i].length; j++) {
+                distV = radius / rulerData[rulerData.length - 1];
 
-                        // 位置
-                        x = data[i][j][0] / 70000 * (width - grid.left - grid.right) + grid.left;
-                        y = (1 - (data[i][j][1] - yRulerData[0]) / (yRulerData[yRulerData.length - 1] - yRulerData[0])) * (height - grid.bottom - grid.top) + grid.top;
+                if (radius <= 0) return;
 
-                        // 大小
-                        radius = Math.sqrt(data[i][j][2]) * 0.001;
+                painter.clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
 
-                        bubble.push({
-                            x: x,
-                            y: y,
-                            radius: radius,
-                            color: painter.createRadialGradient(x, y, radius).addColorStop(0, colors[i].gradient[0]).addColorStop(1, colors[i].gradient[1]).value()
-                        });
-                    }
+                beginDeg = Math.PI * -0.5;
 
-                    bubbles.push(bubble);
+                // 左上文字
+                painter.config({
+                    "fontSize": 18,
+                    "fontWeight": 800
+                }).fillText("How expensive is it to rent an apartment in China?", 20, 20)
+                    .config({
+                        "fontSize": 12,
+                        "fontWeight": 400,
+                        "fillStyle": "#70727b"
+                    }).fillText("Data from https://www.numbeo.com", 20, 45);
 
-                    x = width - 300 + 70 * i, y = 50, radius = 7;
-                    legends.push({
-                        text: data[i][0][4],
-                        x: x,
-                        y: y,
-                        radius: radius,
-                        color: painter.createRadialGradient(x, y, radius).addColorStop(0, colors[i].gradient[0]).addColorStop(1, colors[i].gradient[1]).value()
-                    });
+                // 绘制垂直刻度尺和圆
+                painter.config({
+                    'textAlign': "right"
+                });
+                for (i = 0; i < rulerData.length; i++) {
+                    y = cy - radius / (rulerData.length - 1) * i;
+
+                    // 圆
+                    painter.config({
+                        "strokeStyle": i == rulerData.length - 1 ? "#70727b" : "#edf1f7"
+                    }).strokeCircle(cx, cy, radius / (rulerData.length - 1) * i);
+
+                    // 刻度
+                    painter.config({
+                        "fillStyle": "#6e7079",
+                        "strokeStyle": "#6e7079"
+                    }).fillText(rulerData[i], cx - 7, y)
+                        .beginPath().moveTo(cx, y).lineTo(cx - 5, y).stroke();
                 }
 
-                /**
-                 * hover可能是如下值：
-                 * normal 所有数据有效，但都不特殊标记
-                 * [i] 第i组数据有效且全部特殊标记
-                 * [i,j] 第i组j条数据有效，但第i组数据特色标记
-                 */
-                updateView = function (deep, hover) {
-                    painter.clearRect(0, 0, width, height);
+                // 垂直线
+                painter.beginPath().moveTo(cx, cy).lineTo(cx, cy - radius).stroke();
 
+                // 图例
+
+                painter.config({
+                    "fillStyle": colors[0]
+                });
+                drawRectRadius(painter, cx - 85, mycontent.clientHeight - 30, 30, 16, 5).fill()
+                    .config({
+                        "fillStyle": "black",
+                        "textAlign": "left"
+                    }).fillText("Range", cx - 50, mycontent.clientHeight - 22);
+
+                painter.config({
+                    "fillStyle": colors[1]
+                });
+                drawRectRadius(painter, cx + 5, mycontent.clientHeight - 30, 30, 16, 5).fill()
+                    .config({
+                        "fillStyle": "black"
+                    }).fillText("Average", cx + 40, mycontent.clientHeight - 22);
+
+                // 绘制圆刻度尺和内容
+                painter.config({
+                    "textAlign": "center"
+                });
+                for (i = 0; i < data.length; i++) {
                     painter.setRegion("");
 
-                    gradient = painter.createRadialGradient(width * 0.3, height * 0.3, Math.max(width, height) * 0.4)
-                        .addColorStop(0, "#f7f8fa")
-                        .addColorStop(1, "#cdd0d5");
+                    p1 = rotate(cx, cy, beginDeg + deg * 0.5, cx + radius + 20, cy);
 
-                    // 绘制背景
+                    // 刻度值
                     painter.config({
-                        "fillStyle": gradient.value()
-                    }).fillRect(0, 0, width, height);
+                        "fillStyle": "#6e7079"
+                    }).fillText(data[i][0], p1[0], p1[1]);
 
-                    // 绘制标题
-                    painter.config({
-                        "fillStyle": "black",
-                        "fontSize": 18,
-                        "fontWeight": 800,
-                        "textAlign": "left"
-                    }).fillText("Life Expectancy and GDP by Country", 40, 30);
+                    p1 = rotate(cx, cy, beginDeg + deg, cx + radius, cy);
+                    p2 = rotate(cx, cy, beginDeg + deg, cx + radius + 5, cy);
 
-                    // 垂直刻度尺
-                    drawRuler(painter, {
-                        value: yRulerData,
-                        x: grid.left,
-                        y: height - grid.bottom,
-                        length: height - grid.top - grid.bottom,
-                        direction: "BT",
-                        "mark-direction": "left",
-                        color: "#6e7079"
-                    });
+                    // 刻度线
+                    painter.beginPath().moveTo(p1[0], p1[1]).lineTo(p2[0], p2[1]).stroke();
 
-                    // 水平刻度尺
-                    drawRuler(painter, {
-                        value: xRulerData,
-                        x: grid.left,
-                        y: height - grid.bottom,
-                        length: width - grid.left - grid.right,
-                        color: "#6e7079"
-                    });
+                    // 绘制最高最低
+                    painter.setRegion("0-" + i).config({
+                        "fillStyle": colors[0]
+                    }).fillArc(cx, cy, distV * data[i][1], distV * data[i][2], beginDeg + deg * 0.1, deg * 0.8);
 
-                    var _i = [1, 0];
-                    if (hover && Array.isArray(hover) && hover[0] == 1) {
-                        _i = [0, 1];
-                    }
+                    // 绘制平均
+                    painter.setRegion("1-" + i).config({
+                        "fillStyle": colors[1]
+                    }).fillArc(cx, cy, distV * data[i][3] - 1, distV * data[i][3] + 1, beginDeg + deg * 0.1, deg * 0.8);
 
-                    // 绘制球
-                    for (k = 0; k < data.length; k++) {
-                        i = _i[k];
-
-                        for (j = 0; j < data[i].length; j++) {
-
-                            scale = 1, color = bubbles[i][j].color;
-                            if (hover && hover !== 'normal') {
-                                if (hover[0] == i) {
-                                    if ((hover.length < 2 || hover[1] == j)) {
-                                        scale = 1 + deep * 0.2;
-                                    }
-                                } else {
-                                    color = "rgba(" + ["251, 118, 123", "129, 227, 238"][i] + "," + (0.8 - deep * 0.2) + ")";
-                                }
-                            } else if (hover == 'normal') {
-                                scale = deep;
-                            }
-
-                            painter.setRegion(i + "-" + j).config({
-                                fillStyle: color,
-                                shadowBlur: 10,
-                                shadowColor: colors[i].shadowColor
-                            }).fillCircle(bubbles[i][j].x, bubbles[i][j].y, bubbles[i][j].radius * scale);
-
-                        }
-                    }
-
-                    // 文字
-                    painter.config({
-                        "textAlign": "center",
-                        "fillStyle": "black",
-                        shadowBlur: 0,
-                        "fontWeight": 200
-                    });
-                    if (hover && Array.isArray(hover)) {
-
-                        if (hover.length == 1) {
-                            for (j = 0; j < data[0].length; j++) {
-                                painter.fillText(data[hover[0]][j][3], bubbles[hover[0]][j].x, bubbles[hover[0]][j].y - bubbles[hover[0]][j].radius * (1 + deep * 0.2) - 10);
-                            }
-                        } else {
-                            painter.fillText(data[hover[0]][hover[1]][3], bubbles[hover[0]][hover[1]].x, bubbles[hover[0]][hover[1]].y - bubbles[hover[0]][hover[1]].radius * (1 + deep * 0.2) - 10);
-                        }
-
-                    }
-
-                    // 绘制图例
-                    for (i = 0; i < legends.length; i++) {
-
-                        painter.setRegion(i + "").config({
-                            "textAlign": "left",
-                            "fontWeight": 800,
-                            "fillStyle": "black"
-                        })
-
-                            // 文字
-                            .fillText(legends[i].text, legends[i].x, legends[i].y)
-
-                            .config({
-                                "fillStyle": legends[i].color
-                            })
-
-                            // 球
-                            .fillCircle(legends[i].x - 10, legends[i].y, legends[i].radius);
-
-                    }
-
-                };
-
-                animation(function (deep) {
-                    updateView(deep, "normal");
-                }, 300);
-
-                // 当前被悬浮的区域
-                var currentRegion;
-
-                // 注册鼠标悬浮事件
-                var stop = function () { };
-                mycanvas.addEventListener('mousemove', function (event) {
-                    if (painter) {
-                        var regionName = painter.getRegion(event);
-
-                        if (regionName) {
-                            mycanvas.style.cursor = 'pointer';
-
-                            // 如果悬浮区域改变了
-                            if (regionName != currentRegion) {
-                                stop();
-
-                                currentRegion = regionName;
-                                var _currentRegion = currentRegion.split("-");
-
-                                stop = animation(function (deep) {
-                                    updateView((deep * 0.3) + 0.7, _currentRegion);
-                                }, 400);
-                            }
-
-                        } else {
-                            mycanvas.style.cursor = 'default';
-
-                            // 如果离开悬浮区域
-                            if (currentRegion) {
-                                stop();
-
-                                var _currentRegion = currentRegion.split("-");
-                                currentRegion = "";
-
-                                stop = animation(function (deep) {
-                                    updateView(1 - (deep * 0.3), _currentRegion);
-                                }, 400, function () {
-                                    updateView(1, "normal");
-                                });
-                            }
-
-                        }
-
-                    }
-
-                });
+                    beginDeg += deg;
+                }
 
             });
 
+            var currentRegion = false;
+            mycanvas.addEventListener('mousemove', function (event) {
+                if (painter) {
+                    var regionName = painter.getRegion(event);
+                    if (regionName) {
+
+                        if (regionName != currentRegion) {
+                            mytooltip.style.display = '';
+
+                            indexs = regionName.split('-');
+
+                            // 修改悬浮框内容
+                            mytooltip.innerHTML = "<div style='border-color:" + colors[indexs[0]] + "'><h6>" + data[indexs[1]][0] + "</h6>" +
+                                "<div>Lowest：" + data[indexs[1]][1] + "</div>" +
+                                "<div>Highest：" + data[indexs[1]][2] + "</div>" +
+                                "<div>Average：" + data[indexs[1]][3] + "</div></div>";
+
+                            currentRegion = regionName;
+                        }
+
+                        // 修改悬浮框位置
+                        mytooltip.style.left = (event.offsetX + 20) + "px";
+                        mytooltip.style.top = (event.offsetY + 20) + "px";
+
+                    }
+
+                    // 隐藏悬浮框
+                    else if (currentRegion) {
+                        currentRegion = false;
+                        mytooltip.style.display = 'none';
+                    }
+                }
+            });
         }
+
     };
 };
 
@@ -342,12 +232,26 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/scatter-bubble-gradient/index.html
+// Original file:./src/pages/echarts/dialogs/bar-polar-real-estate/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['282']=function(){
+window.__pkg__bundleSrc__['317']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"渐变气泡图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"极坐标下的柱状图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content bar-polar-real-estate","ref":"mycontent"},"childNodes":[11,12]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tooltip","ref":"mytooltip"},"childNodes":[]}]
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/echarts/dialogs/bar-polar-real-estate/index.scss
+/*****************************************************************/
+window.__pkg__bundleSrc__['318']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    var styleElement = document.createElement('style');
+var head = document.head || document.getElementsByTagName('head')[0];
+styleElement.innerHTML = "\n [dialog-view='echarts-example']>div.bar-polar-real-estate{\n\nposition: relative;\n\n}\n\n [dialog-view='echarts-example']>div.bar-polar-real-estate .tooltip{\n\nposition: absolute;\n\ntransition-duration: 100ms;\n\ntransition-timing-function: linear;\n\ntransition-property: left top;\n\npointer-events: none;\n\n}\n\n [dialog-view='echarts-example']>div.bar-polar-real-estate .tooltip>div{\n\nbox-shadow: rgb(0 0 0 / 20%) 1px 2px 10px;\n\nborder-style: solid;\n\nbackground-color: rgb(255, 255, 255);\n\nborder-width: 1px;\n\nborder-radius: 4px;\n\ncolor: rgb(102, 102, 102);\n\nfont: 14px / 21px sans-serif;\n\npadding: 10px;\n\ntext-align: left;\n\n}\n";
+styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
 }
@@ -355,7 +259,7 @@ window.__pkg__bundleSrc__['282']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['277']=function(){
+window.__pkg__bundleSrc__['254']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -436,130 +340,15 @@ __pkg__scope_bundle__.default= function (el, doback) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/animation
-/*****************************************************************/
-window.__pkg__bundleSrc__['103']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    //当前正在运动的动画的tick函数堆栈
-var $timers = [];
-//唯一定时器的定时间隔
-var $interval = 13;
-//指定了动画时长duration默认值
-var $speeds = 400;
-//定时器ID
-var $timerId = null;
-
-/**
- * 动画轮播
- * @param {function} doback 轮询函数，有一个形参deep，0-1，表示执行进度
- * @param {number} duration 动画时长，可选
- * @param {function} callback 动画结束回调，可选，有一个形参deep，0-1，表示执行进度
- *
- * @returns {function} 返回一个函数，调用该函数，可以提前结束动画
- */
-__pkg__scope_bundle__.default= function (doback, duration, callback) {
-
-    // 如果没有传递时间，使用内置默认值
-    if (arguments.length < 2) duration = $speeds;
-
-    var clock = {
-        //把tick函数推入堆栈
-        "timer": function (tick, duration, callback) {
-            if (!tick) {
-                throw new Error('Tick is required!');
-            }
-            var id = new Date().valueOf() + "_" + (Math.random() * 1000).toFixed(0);
-            $timers.push({
-                "id": id,
-                "createTime": new Date(),
-                "tick": tick,
-                "duration": duration,
-                "callback": callback
-            });
-            clock.start();
-            return id;
-        },
-
-        //开启唯一的定时器timerId
-        "start": function () {
-            if (!$timerId) {
-                $timerId = setInterval(clock.tick, $interval);
-            }
-        },
-
-        //被定时器调用，遍历timers堆栈
-        "tick": function () {
-            var createTime, flag, tick, callback, timer, duration, passTime,
-                timers = $timers;
-            $timers = [];
-            $timers.length = 0;
-            for (flag = 0; flag < timers.length; flag++) {
-                //初始化数据
-                timer = timers[flag];
-                createTime = timer.createTime;
-                tick = timer.tick;
-                duration = timer.duration;
-                callback = timer.callback;
-
-                //执行
-                passTime = (+new Date() - createTime) / duration;
-                passTime = passTime > 1 ? 1 : passTime;
-                tick(passTime);
-                if (passTime < 1 && timer.id) {
-                    //动画没有结束再添加
-                    $timers.push(timer);
-                } else if (callback) {
-                    callback(passTime);
-                }
-            }
-            if ($timers.length <= 0) {
-                clock.stop();
-            }
-        },
-
-        //停止定时器，重置timerId=null
-        "stop": function () {
-            if ($timerId) {
-                clearInterval($timerId);
-                $timerId = null;
-            }
-        }
-    };
-
-    var id = clock.timer(function (deep) {
-        //其中deep为0-1，表示改变的程度
-        doback(deep);
-    }, duration, callback);
-
-    // 返回一个函数
-    // 用于在动画结束前结束动画
-    return function () {
-        var i;
-        for (i in $timers) {
-            if ($timers[i].id == id) {
-                $timers[i].id = undefined;
-                return;
-            }
-        }
-    };
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['136']=function(){
+window.__pkg__bundleSrc__['137']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('122');
+    __pkg__scope_args__=window.__pkg__getBundle('123');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('137');
+__pkg__scope_args__=window.__pkg__getBundle('138');
 var assemble =__pkg__scope_args__.default;
 
 
@@ -674,20 +463,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['122']=function(){
+window.__pkg__bundleSrc__['123']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('123');
+    __pkg__scope_args__=window.__pkg__getBundle('124');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('125');
+__pkg__scope_args__=window.__pkg__getBundle('126');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('123');
+__pkg__scope_args__=window.__pkg__getBundle('124');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -974,10 +763,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['123']=function(){
+window.__pkg__bundleSrc__['124']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('124');
+    __pkg__scope_args__=window.__pkg__getBundle('125');
 var arc =__pkg__scope_args__.default;
 
 
@@ -1096,7 +885,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['124']=function(){
+window.__pkg__bundleSrc__['125']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1157,7 +946,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['125']=function(){
+window.__pkg__bundleSrc__['126']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -1197,7 +986,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/assemble
 /*****************************************************************/
-window.__pkg__bundleSrc__['137']=function(){
+window.__pkg__bundleSrc__['138']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (begin, end, step, count) {
@@ -1230,7 +1019,7 @@ window.__pkg__bundleSrc__['137']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['142']=function(){
+window.__pkg__bundleSrc__['143']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 刻度尺刻度求解
@@ -1338,268 +1127,9 @@ __pkg__scope_bundle__.default= function (maxValue, minValue, num) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/extend/ruler
-/*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('145');
-var dotRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('146');
-var initConfig=__pkg__scope_args__.initConfig;
-
-
-/**
- * attr = {
- *    x,y 刻度尺的起点位置
- *    direction 刻度尺的方向：LR|RL|TB|BT
- *    length 刻度尺的长度
- *    mark-direction 刻度尺小刻度在前进方向的位置：right|left
- *    value-position 刻度尺刻度文字的位置：mark|between
- *    color 刻度尺颜色
- *    value 值
- *    font-size 刻度文字大小
- *    deg 文字旋转度数
- * }
- */
-__pkg__scope_bundle__.default= function (painter, attr) {
-    var i, markPosition;
-
-    var value = attr.value;
-
-    attr = initConfig({
-        "direction": "LR",
-        "mark-direction": "right",
-        "value-position": "mark",
-        "color": 'black',
-        "font-size": 12,
-        deg: 0
-    }, attr);
-
-    painter.config({
-        'lineWidth': 1,
-        'fillStyle': attr.color,
-        'strokeStyle': attr.color,
-        'fontSize': attr["font-size"],
-        'textAlign': (attr.direction == 'LR' || attr.direction == 'RL') ? 'center' : (
-            (
-                (attr.direction == 'BT' && attr["mark-direction"] == 'right') ||
-                (attr.direction == 'TB' && attr["mark-direction"] == 'left')
-            ) ? 'left' : 'right'
-        ),
-        "lineDash": [],
-        'textBaseline': 'middle'
-    });
-
-
-
-    // 刻度尺终点坐标
-    var endPosition;
-
-    // 记录小刻度如何计算
-    var dxy;
-
-    if (attr.direction == 'LR') {
-        endPosition = {
-            x: attr.x + attr.length,
-            y: attr.y
-        };
-        dxy = attr["mark-direction"] == 'right' ? [0, 1] : [0, -1];
-    } else if (attr.direction == 'RL') {
-        endPosition = {
-            x: attr.x - attr.length,
-            y: attr.y
-        };
-        dxy = attr["mark-direction"] == 'right' ? [0, -1] : [0, 1];
-    } else if (attr.direction == 'TB') {
-        endPosition = {
-            x: attr.x,
-            y: attr.y + attr.length
-        };
-        dxy = attr["mark-direction"] == 'right' ? [-1, 0] : [1, 0];
-    } else if (attr.direction == 'BT') {
-        endPosition = {
-            x: attr.x,
-            y: attr.y - attr.length
-        };
-        dxy = attr["mark-direction"] == 'right' ? [1, 0] : [-1, 0];
-    } else {
-
-        // 错误提示
-        throw new Error('Type error!');
-    }
-
-    // 绘制主轴
-    painter.beginPath().moveTo(attr.x, attr.y).lineTo(endPosition.x, endPosition.y).stroke();
-
-    var markNumber = attr["value-position"] == "mark" ? value.length : value.length + 1;
-
-    // 绘制刻度
-    var distanceLength = attr.length / (markNumber - 1);
-
-    var dot = dotRender({
-        d: [
-            endPosition.x - attr.x,
-            endPosition.y - attr.y
-        ],
-        p: [
-            attr.x,
-            attr.y
-        ]
-    });
-
-    for (i = 0; i < markNumber; i++) {
-
-        // 刻度
-        markPosition = dot.value();
-        painter.beginPath().moveTo(markPosition[0], markPosition[1]).lineTo(
-            markPosition[0] + dxy[0] * 5,
-            markPosition[1] + dxy[1] * 5
-        ).stroke();
-
-        dot.move(distanceLength);
-    }
-
-    // 绘制刻度上的读数
-    dot = dotRender({
-        d: [
-            endPosition.x - attr.x,
-            endPosition.y - attr.y
-        ],
-        p: [
-            attr.x,
-            attr.y
-        ]
-    });
-
-    if (attr["value-position"] == "between") dot.move(distanceLength * 0.5);
-
-    for (i = 0; i < value.length; i++) {
-        markPosition = dot.value();
-        painter.fillText(value[i], markPosition[0] + dxy[0] * 15, markPosition[1] + dxy[1] * 15, attr.deg);
-        dot.move(distanceLength);
-    }
-
-    return painter;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/dot
-/*****************************************************************/
-window.__pkg__bundleSrc__['145']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('146');
-var initConfig=__pkg__scope_args__.initConfig;
-
-__pkg__scope_args__=window.__pkg__getBundle('147');
-var move =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('148');
-var rotate =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('149');
-var scale =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (config) {
-
-    config = initConfig({
-        // 前进方向
-        d: [1, 1],
-        // 中心坐标
-        c: [0, 0],
-        // 当前位置
-        p: [0, 0]
-    }, config);
-
-    var dotObj = {
-
-        // 前进方向以当前位置为中心，旋转deg度
-        "rotate": function (deg) {
-            var dPx = config.d[0] + config.p[0], dPy = config.d[1] + config.p[1];
-            var dP = rotate(config.p[0], config.p[1], deg, dPx, dPy);
-            config.d = [
-                dP[0] - config.p[0],
-                dP[1] - config.p[1]
-            ];
-            return dotObj;
-        },
-
-        // 沿着当前前进方向前进d
-        "move": function (d) {
-            config.p = move(config.d[0], config.d[1], d, config.p[0], config.p[1]);
-            return dotObj;
-        },
-
-        // 围绕中心坐标缩放
-        "scale": function (times) {
-            config.p = scale(config.c[0], config.c[1], times, config.p[0], config.p[1]);
-            return dotObj;
-        },
-
-        // 当前位置
-        "value": function () {
-            return config.p;
-        }
-
-    };
-
-    return dotObj;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/config
-/*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 初始化配置文件
-
-__pkg__scope_bundle__.initConfig = function (init, data) {
-    var key;
-    for (key in data)
-        try {
-            init[key] = data[key];
-        } catch (e) {
-            throw new Error("Illegal property value！");
-        }
-    return init;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/move
-/*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）沿着向量（ax,ay）方向移动距离d
-__pkg__scope_bundle__.default= function (ax, ay, d, x, y) {
-    var sqrt = Math.sqrt(ax * ax + ay * ay);
-    return [
-        +(ax * d / sqrt + x).toFixed(7),
-        +(ay * d / sqrt + y).toFixed(7)
-    ];
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['148']=function(){
+window.__pkg__bundleSrc__['149']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）旋转deg度
@@ -1615,17 +1145,86 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/scale
+// Original file:./src/tool/getLoopColors
 /*****************************************************************/
-window.__pkg__bundleSrc__['149']=function(){
+window.__pkg__bundleSrc__['144']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 点（x,y）围绕中心（cx,cy）缩放times倍
-__pkg__scope_bundle__.default= function (cx, cy, times, x, y) {
-    return [
-        +(times * (x - cx) + cx).toFixed(7),
-        +(times * (y - cy) + cy).toFixed(7)
+    // 获取一组循环色彩
+__pkg__scope_bundle__.default= function (num, alpha) {
+    if (!(alpha && alpha >= 0 && alpha <= 1)) alpha = 1;
+    // 颜色集合
+    var colorList = [
+        'rgba(84,112,198,' + alpha + ")", 'rgba(145,204,117,' + alpha + ")",
+        'rgba(250,200,88,' + alpha + ")", 'rgba(238,102,102,' + alpha + ")",
+        'rgba(115,192,222,' + alpha + ")", 'rgba(59,162,114,' + alpha + ")",
+        'rgba(252,132,82,' + alpha + ")", 'rgba(154,96,180,' + alpha + ")",
+        'rgba(234,124,204,' + alpha + ")"
     ];
+
+    var colors = [];
+
+    // 根据情况返回颜色数组
+    if (num <= colorList.length) {
+        // 这种情况就不需要任何处理
+        return colorList;
+    } else {
+        // 如果正好是集合长度的倍数
+        if (num % colorList.length == 0) {
+            // 将颜色数组循环加入后再返回
+            for (var i = 0; i < (num / colorList.length); i++) {
+                colors = colors.concat(colorList);
+            }
+        } else {
+            for (var j = 1; j < (num / colorList.length); j++) {
+                colors = colors.concat(colorList);
+            }
+            // 防止最后一个颜色和第一个颜色重复
+            if (num % colorList.length == 1) {
+                colors = colors.concat(colorList[4]);
+            } else {
+                for (var k = 0; k < num % colorList.length; k++) {
+                    colors = colors.concat(colorList[k]);
+                }
+            }
+        }
+    }
+
+    // 返回结果
+    return colors;
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/canvas/extend/rectRadius
+/*****************************************************************/
+window.__pkg__bundleSrc__['315']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    /**
+ * 绘制圆角矩形
+ * @param {Painter} painter 
+ * @param {number} x 
+ * @param {number} y 
+ * @param {number} width 
+ * @param {number} height 
+ * @param {number} radius 
+ * @returns Painter
+ */
+__pkg__scope_bundle__.default= function (painter, x, y, width, height, radius) {
+
+    var _width = width, _height = height, _borderRadius = radius, _x = x + width, _y = y + height;
+
+    return painter
+        .beginPath()
+        .arc(_x - _borderRadius, _y - _borderRadius, _borderRadius, Math.PI * 0.5, -Math.PI * 0.5)
+        .arc(_x - _borderRadius, _y - _height + _borderRadius, _borderRadius, 0, -0.5 * Math.PI)
+        .arc(_x - _width + _borderRadius, _y - _height + _borderRadius, _borderRadius, Math.PI * 1.5, -0.5 * Math.PI)
+        .arc(_x - _width + _borderRadius, _y - _borderRadius, _borderRadius, Math.PI, -0.5 * Math.PI)
+        .closePath();
 };
 
     return __pkg__scope_bundle__;
