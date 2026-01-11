@@ -76,6 +76,11 @@ window.__pkg__bundleSrc__['37']=function(){
     "scss": function () {
         return window.__pkg__getLazyBundle('./dist/bundle26.js','82')
     },
+
+    // 格式化JSON字符串
+    "format-json": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle27.js','83')
+    },
 };
 
     return __pkg__scope_bundle__;

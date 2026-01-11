@@ -5,13 +5,13 @@
 window.__pkg__bundleSrc__['79']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('222');
+    __pkg__scope_args__=window.__pkg__getBundle('224');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('223');
+__pkg__scope_args__=window.__pkg__getBundle('225');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('224');
+__pkg__scope_args__=window.__pkg__getBundle('226');
 var Excel =__pkg__scope_args__.default;
 
 
@@ -115,7 +115,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/excel/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['222']=function(){
+window.__pkg__bundleSrc__['224']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"Excel 表格","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"excel"},"childNodes":[]}]
@@ -126,7 +126,7 @@ window.__pkg__bundleSrc__['222']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/excel/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['223']=function(){
+window.__pkg__bundleSrc__['225']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -140,7 +140,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['224']=function(){
+window.__pkg__bundleSrc__['226']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('48');
@@ -152,7 +152,7 @@ var bind =__pkg__scope_args__.default;
 
 // 核心方法和工具方法
 
-__pkg__scope_args__=window.__pkg__getBundle('225');
+__pkg__scope_args__=window.__pkg__getBundle('227');
 var initDom=__pkg__scope_args__.initDom;
 var initView=__pkg__scope_args__.initView;
 var initTableView=__pkg__scope_args__.initTableView;
@@ -160,7 +160,7 @@ var itemClickHandler=__pkg__scope_args__.itemClickHandler;
 var itemInputHandler=__pkg__scope_args__.itemInputHandler;
 var itemMoveHandler=__pkg__scope_args__.itemMoveHandler;
 
-__pkg__scope_args__=window.__pkg__getBundle('231');
+__pkg__scope_args__=window.__pkg__getBundle('233');
 var formatContent=__pkg__scope_args__.formatContent;
 var calcColName=__pkg__scope_args__.calcColName;
 var styleToString=__pkg__scope_args__.styleToString;
@@ -168,17 +168,17 @@ var newItemData=__pkg__scope_args__.newItemData;
 var getLeftTop=__pkg__scope_args__.getLeftTop;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('232');
+__pkg__scope_args__=window.__pkg__getBundle('234');
 var style =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('233');
+__pkg__scope_args__=window.__pkg__getBundle('235');
 var moveCursorTo=__pkg__scope_args__.moveCursorTo;
 
-__pkg__scope_args__=window.__pkg__getBundle('234');
+__pkg__scope_args__=window.__pkg__getBundle('236');
 var setItemStyle=__pkg__scope_args__.setItemStyle;
 
-__pkg__scope_args__=window.__pkg__getBundle('235');
+__pkg__scope_args__=window.__pkg__getBundle('237');
 var calcRegionInfo=__pkg__scope_args__.calcRegionInfo;
 var showRegion=__pkg__scope_args__.showRegion;
 var cancelRegion=__pkg__scope_args__.cancelRegion;
@@ -186,36 +186,36 @@ var cancelRegion=__pkg__scope_args__.cancelRegion;
 
 // 键盘交互总控
 
-__pkg__scope_args__=window.__pkg__getBundle('236');
+__pkg__scope_args__=window.__pkg__getBundle('238');
 var renderKeyboard =__pkg__scope_args__.default;
 
 
 // 挂载顶部菜单
 
-__pkg__scope_args__=window.__pkg__getBundle('237');
+__pkg__scope_args__=window.__pkg__getBundle('239');
 var menu =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('239');
+__pkg__scope_args__=window.__pkg__getBundle('241');
 var updateMenu =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('241');
+__pkg__scope_args__=window.__pkg__getBundle('243');
 var menuHandler =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('242');
+__pkg__scope_args__=window.__pkg__getBundle('244');
 var insertUp=__pkg__scope_args__.insertUp;
 var insertDown=__pkg__scope_args__.insertDown;
 var insertLeft=__pkg__scope_args__.insertLeft;
 var insertRight=__pkg__scope_args__.insertRight;
 
-__pkg__scope_args__=window.__pkg__getBundle('244');
+__pkg__scope_args__=window.__pkg__getBundle('246');
 var deleteRow=__pkg__scope_args__.deleteRow;
 var deleteCol=__pkg__scope_args__.deleteCol;
 
 
 // 挂载右键菜单
 
-__pkg__scope_args__=window.__pkg__getBundle('245');
+__pkg__scope_args__=window.__pkg__getBundle('247');
 var rightMenu =__pkg__scope_args__.default;
 
 
@@ -368,19 +368,19 @@ __pkg__scope_bundle__.default= Excel;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/excel-view/init
 /*****************************************************************/
-window.__pkg__bundleSrc__['225']=function(){
+window.__pkg__bundleSrc__['227']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('226');
+    __pkg__scope_args__=window.__pkg__getBundle('228');
 var find =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('173');
+__pkg__scope_args__=window.__pkg__getBundle('175');
 var setStyle =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('227');
+__pkg__scope_args__=window.__pkg__getBundle('229');
 var removeClass =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('228');
+__pkg__scope_args__=window.__pkg__getBundle('230');
 var hasClass =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
@@ -389,10 +389,10 @@ var bind =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('47');
 var appendTo =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('229');
+__pkg__scope_args__=window.__pkg__getBundle('231');
 var getTargetNode=__pkg__scope_args__.getTargetNode;
 
-__pkg__scope_args__=window.__pkg__getBundle('230');
+__pkg__scope_args__=window.__pkg__getBundle('232');
 var defaultStyle=__pkg__scope_args__.defaultStyle;
 
 
@@ -770,7 +770,7 @@ __pkg__scope_bundle__.initView=function() {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/find
 /*****************************************************************/
-window.__pkg__bundleSrc__['226']=function(){
+window.__pkg__bundleSrc__['228']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('48');
@@ -796,7 +796,7 @@ __pkg__scope_bundle__.default= function (context, selectFun, tagName) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/setStyle
 /*****************************************************************/
-window.__pkg__bundleSrc__['173']=function(){
+window.__pkg__bundleSrc__['175']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 修改样式
@@ -812,7 +812,7 @@ __pkg__scope_bundle__.default= function (el, styles) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/removeClass
 /*****************************************************************/
-window.__pkg__bundleSrc__['227']=function(){
+window.__pkg__bundleSrc__['229']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 删除指定class
@@ -828,7 +828,7 @@ __pkg__scope_bundle__.default= function (dom, clazz) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/hasClass
 /*****************************************************************/
-window.__pkg__bundleSrc__['228']=function(){
+window.__pkg__bundleSrc__['230']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 判断结点是否有指定class
@@ -854,7 +854,7 @@ __pkg__scope_bundle__.default= function (dom, clazzs, notStrict) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/tool/polyfill
 /*****************************************************************/
-window.__pkg__bundleSrc__['229']=function(){
+window.__pkg__bundleSrc__['231']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.getTargetNode=function(event) {
@@ -868,7 +868,7 @@ window.__pkg__bundleSrc__['229']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['230']=function(){
+window.__pkg__bundleSrc__['232']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.defaultStyle = function () {
@@ -891,13 +891,13 @@ window.__pkg__bundleSrc__['230']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/excel-view/tool
 /*****************************************************************/
-window.__pkg__bundleSrc__['231']=function(){
+window.__pkg__bundleSrc__['233']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('50');
 var isNumber =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('230');
+__pkg__scope_args__=window.__pkg__getBundle('232');
 var defaultStyle=__pkg__scope_args__.defaultStyle;
 
 
@@ -1016,7 +1016,7 @@ __pkg__scope_bundle__.getLeftTop=function(rowIndex, colIndex) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/tool/style
 /*****************************************************************/
-window.__pkg__bundleSrc__['232']=function(){
+window.__pkg__bundleSrc__['234']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1094,7 +1094,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/excel-view/cursor
 /*****************************************************************/
-window.__pkg__bundleSrc__['233']=function(){
+window.__pkg__bundleSrc__['235']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('48');
@@ -1160,7 +1160,7 @@ __pkg__scope_bundle__.moveCursorTo=function(target, rowNum, colNum) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/excel-view/modify
 /*****************************************************************/
-window.__pkg__bundleSrc__['234']=function(){
+window.__pkg__bundleSrc__['236']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1185,7 +1185,7 @@ __pkg__scope_bundle__.setItemStyle=function(key, value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/excel-view/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['235']=function(){
+window.__pkg__bundleSrc__['237']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1281,12 +1281,12 @@ __pkg__scope_bundle__.cancelRegion=function() {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/Keyboard
 /*****************************************************************/
-window.__pkg__bundleSrc__['236']=function(){
+window.__pkg__bundleSrc__['238']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 键盘总控
 
-__pkg__scope_args__=window.__pkg__getBundle('164');
+__pkg__scope_args__=window.__pkg__getBundle('166');
 var getKeyString=__pkg__scope_args__.getKeyString;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
@@ -1330,7 +1330,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['164']=function(){
+window.__pkg__bundleSrc__['166']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
@@ -1535,10 +1535,10 @@ __pkg__scope_bundle__.default= function (callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/menu/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['237']=function(){
+window.__pkg__bundleSrc__['239']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('226');
+    __pkg__scope_args__=window.__pkg__getBundle('228');
 var find =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('47');
@@ -1547,13 +1547,13 @@ var appendTo =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('22');
 var bind =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('228');
+__pkg__scope_args__=window.__pkg__getBundle('230');
 var hasClass =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('238');
+__pkg__scope_args__=window.__pkg__getBundle('240');
 var colorTemplate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('229');
+__pkg__scope_args__=window.__pkg__getBundle('231');
 var getTargetNode=__pkg__scope_args__.getTargetNode;
 
 
@@ -1911,7 +1911,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/menu/color-template
 /*****************************************************************/
-window.__pkg__bundleSrc__['238']=function(){
+window.__pkg__bundleSrc__['240']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var colors = [
@@ -1977,16 +1977,16 @@ __pkg__scope_bundle__.default= template;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/menu/update
 /*****************************************************************/
-window.__pkg__bundleSrc__['239']=function(){
+window.__pkg__bundleSrc__['241']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('226');
+    __pkg__scope_args__=window.__pkg__getBundle('228');
 var find =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('240');
+__pkg__scope_args__=window.__pkg__getBundle('242');
 var addClass =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('227');
+__pkg__scope_args__=window.__pkg__getBundle('229');
 var removeClass =__pkg__scope_args__.default;
 
 
@@ -2119,10 +2119,10 @@ __pkg__scope_bundle__.default= function (style) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/addClass
 /*****************************************************************/
-window.__pkg__bundleSrc__['240']=function(){
+window.__pkg__bundleSrc__['242']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('228');
+    __pkg__scope_args__=window.__pkg__getBundle('230');
 var hasClass =__pkg__scope_args__.default;
 
 
@@ -2139,16 +2139,16 @@ __pkg__scope_bundle__.default= function (dom, clazz) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/menu/menu-handler
 /*****************************************************************/
-window.__pkg__bundleSrc__['241']=function(){
+window.__pkg__bundleSrc__['243']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('228');
+    __pkg__scope_args__=window.__pkg__getBundle('230');
 var hasClass =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('226');
+__pkg__scope_args__=window.__pkg__getBundle('228');
 var find =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('240');
+__pkg__scope_args__=window.__pkg__getBundle('242');
 var addClass =__pkg__scope_args__.default;
 
 
@@ -2314,13 +2314,13 @@ __pkg__scope_bundle__.default= function (defType, node) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/menu/insert
 /*****************************************************************/
-window.__pkg__bundleSrc__['242']=function(){
+window.__pkg__bundleSrc__['244']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('226');
+    __pkg__scope_args__=window.__pkg__getBundle('228');
 var find =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('243');
+__pkg__scope_args__=window.__pkg__getBundle('245');
 var before =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
@@ -2329,7 +2329,7 @@ var bind =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('47');
 var appendTo =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('179');
+__pkg__scope_args__=window.__pkg__getBundle('181');
 var after =__pkg__scope_args__.default;
 
 
@@ -2750,7 +2750,7 @@ __pkg__scope_bundle__.insertRight=function() {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/before
 /*****************************************************************/
-window.__pkg__bundleSrc__['243']=function(){
+window.__pkg__bundleSrc__['245']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('48');
@@ -2773,7 +2773,7 @@ __pkg__scope_bundle__.default= function (el, template) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/after
 /*****************************************************************/
-window.__pkg__bundleSrc__['179']=function(){
+window.__pkg__bundleSrc__['181']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('48');
@@ -2797,10 +2797,10 @@ __pkg__scope_bundle__.default= function (el, template) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/menu/delete
 /*****************************************************************/
-window.__pkg__bundleSrc__['244']=function(){
+window.__pkg__bundleSrc__['246']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('226');
+    __pkg__scope_args__=window.__pkg__getBundle('228');
 var find =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('33');
@@ -2975,22 +2975,22 @@ __pkg__scope_bundle__.deleteCol=function() {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/excel/right-menu/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['245']=function(){
+window.__pkg__bundleSrc__['247']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('47');
 var appendTo =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('226');
+__pkg__scope_args__=window.__pkg__getBundle('228');
 var find =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
 var bind =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('174');
+__pkg__scope_args__=window.__pkg__getBundle('176');
 var stopPropagation =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('229');
+__pkg__scope_args__=window.__pkg__getBundle('231');
 var getTargetNode=__pkg__scope_args__.getTargetNode;
 
 
@@ -3071,7 +3071,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/stopPropagation
 /*****************************************************************/
-window.__pkg__bundleSrc__['174']=function(){
+window.__pkg__bundleSrc__['176']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 阻止冒泡

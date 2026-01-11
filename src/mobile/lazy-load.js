@@ -45,4 +45,9 @@ export default {
         return import('./scss/index.js')
     },
 
+    // 格式化JSON字符串
+    "format-json": function () {
+        return import('./format-json/index.js')
+    },
+
 };

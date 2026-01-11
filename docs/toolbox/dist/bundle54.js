@@ -1,28 +1,25 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/tree-radial/index.js
+// Original file:./src/pages/echarts/dialogs/tree-layout-lr/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['212']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('359');
+    __pkg__scope_args__=window.__pkg__getBundle('361');
 var template =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('256');
+__pkg__scope_args__=window.__pkg__getBundle('258');
 var ResizeObserver =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('142');
+__pkg__scope_args__=window.__pkg__getBundle('144');
 var xhr =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('353');
+__pkg__scope_args__=window.__pkg__getBundle('362');
 var TreeLayout =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('139');
+__pkg__scope_args__=window.__pkg__getBundle('141');
 var canvasRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('150');
-var move =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -45,19 +42,19 @@ __pkg__scope_bundle__.default= function (obj, props) {
                     var mycontent = _this._refs.mycontent.value;
                     var mycanvas = _this._refs.mycanvas.value;
 
-                    var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight), pid;
-
-                    var cx = mycontent.clientWidth * 0.5, cy = mycontent.clientHeight * 0.5;
+                    var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight), pid, dist;
 
                     var treeLayout = new TreeLayout({
                         "id": function (treedata) {
                             return treedata.name
                         }
                     }).setOption({
-                        type: "circle",
-                        x: cx,
-                        y: cy,
-                        radius: Math.min(mycontent.clientWidth, mycontent.clientHeight) * 0.5 - 100
+                        type: "rect",
+                        direction: "LR",
+                        x: 50,
+                        y: mycontent.clientHeight * 0.5,
+                        width: mycontent.clientWidth - 200,
+                        height: mycontent.clientHeight - 60
                     }).bind(JSON.parse(data.data), function (tree) {
                         painter.config({
                             fontSize: 9
@@ -71,27 +68,16 @@ __pkg__scope_bundle__.default= function (obj, props) {
                             if (tree.node[key].show && key != tree.root) {
                                 pid = tree.node[key].pid
 
-                                let x1 = tree.node[key].left, y1 = tree.node[key].top;
-                                let x2 = tree.node[pid].left, y2 = tree.node[pid].top;
-                                if (pid == tree.root) {
-                                    painter
-                                        .beginPath()
-                                        .moveTo(x1, y1)
-                                        .bezierCurveTo(
-                                            ...move(cx - 30 - x1, cy - 30 - y1, 30, x1, y1),
-                                            ...move(x2 - cx + 30, y2 - cy + 30, 30, x2, y2),
-                                            x2, y2
-                                        ).stroke();
-                                } else {
-                                    painter
-                                        .beginPath()
-                                        .moveTo(x1, y1)
-                                        .bezierCurveTo(
-                                            ...move(cx - x1, cy - y1, 30, x1, y1),
-                                            ...move(x2 - cx, y2 - cy, 30, x2, y2),
-                                            x2, y2
-                                        ).stroke();
-                                }
+                                dist = (tree.node[key].left - tree.node[pid].left) * 0.5
+
+                                painter
+                                    .beginPath()
+                                    .moveTo(tree.node[key].left, tree.node[key].top)
+                                    .bezierCurveTo(
+                                        tree.node[key].left - dist, tree.node[key].top,
+                                        tree.node[pid].left + dist, tree.node[pid].top,
+                                        tree.node[pid].left, tree.node[pid].top
+                                    ).stroke()
                             }
                         }
 
@@ -114,21 +100,26 @@ __pkg__scope_bundle__.default= function (obj, props) {
 
                                 painter.setRegion("").config({
                                     fillStyle: "black"
-                                }).fillText("   " + key.replace(/\-\d+$/, ''), tree.node[key].left, tree.node[key].top, tree.node[key].deg);
+                                }).fillText(key.replace(/\-\d+$/, ''), tree.node[key].left + 10, tree.node[key].top)
                             }
                         }
 
+                    }, {
+                        analytics: true,
+                        animate: true,
+                        physics: true,
+                        scale: true,
+                        util: true,
+                        vis: true
                     });
 
                     ResizeObserver(mycontent, function () {
-                        cx = mycontent.clientWidth * 0.5;
-                        cy = mycontent.clientHeight * 0.5;
                         painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight);
 
                         treeLayout.setOption({
-                            x: cx,
-                            y: cy,
-                            radius: Math.min(mycontent.clientWidth, mycontent.clientHeight) * 0.5 - 100
+                            y: mycontent.clientHeight * 0.5,
+                            width: mycontent.clientWidth - 200,
+                            height: mycontent.clientHeight - 60
                         }).doUpdate();
                     });
 
@@ -148,12 +139,12 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/tree-radial/index.html
+// Original file:./src/pages/echarts/dialogs/tree-layout-lr/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['359']=function(){
+window.__pkg__bundleSrc__['361']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"径向树状图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"从左到右树状图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -161,7 +152,7 @@ window.__pkg__bundleSrc__['359']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['256']=function(){
+window.__pkg__bundleSrc__['258']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -244,13 +235,13 @@ __pkg__scope_bundle__.default= function (el, doback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhr/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['142']=function(){
+window.__pkg__bundleSrc__['144']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunction =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('143');
+__pkg__scope_args__=window.__pkg__getBundle('145');
 var toString =__pkg__scope_args__.default;
 
 
@@ -322,7 +313,7 @@ __pkg__scope_bundle__.default= function (settings, callback, errorback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhr/toString
 /*****************************************************************/
-window.__pkg__bundleSrc__['143']=function(){
+window.__pkg__bundleSrc__['145']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('53');
@@ -363,19 +354,19 @@ __pkg__scope_bundle__.default= function (data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/treeLayout/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['353']=function(){
+window.__pkg__bundleSrc__['362']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('354');
+    __pkg__scope_args__=window.__pkg__getBundle('363');
 var Tree =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('149');
+__pkg__scope_args__=window.__pkg__getBundle('151');
 var initConfig=__pkg__scope_args__.initConfig;
 
-__pkg__scope_args__=window.__pkg__getBundle('106');
+__pkg__scope_args__=window.__pkg__getBundle('108');
 var animation =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('151');
+__pkg__scope_args__=window.__pkg__getBundle('153');
 var rotate =__pkg__scope_args__.default;
 
 
@@ -576,13 +567,13 @@ __pkg__scope_bundle__.default= TreeLayout;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/treeLayout/Tree
 /*****************************************************************/
-window.__pkg__bundleSrc__['354']=function(){
+window.__pkg__bundleSrc__['363']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('355');
+    __pkg__scope_args__=window.__pkg__getBundle('364');
 var toPlainTree =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('149');
+__pkg__scope_args__=window.__pkg__getBundle('151');
 var initConfig=__pkg__scope_args__.initConfig;
 
 
@@ -607,10 +598,10 @@ __pkg__scope_bundle__.default= Tree;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/treeLayout/toPlainTree
 /*****************************************************************/
-window.__pkg__bundleSrc__['355']=function(){
+window.__pkg__bundleSrc__['364']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('356');
+    __pkg__scope_args__=window.__pkg__getBundle('365');
 var toInnerTree =__pkg__scope_args__.default;
 
 
@@ -748,7 +739,7 @@ __pkg__scope_bundle__.default= function (initTree, config, noOpens) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/treeLayout/toInnerTree
 /*****************************************************************/
-window.__pkg__bundleSrc__['356']=function(){
+window.__pkg__bundleSrc__['365']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -816,7 +807,7 @@ __pkg__scope_bundle__.default= (initTree, config) => {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['149']=function(){
+window.__pkg__bundleSrc__['151']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -839,7 +830,7 @@ __pkg__scope_bundle__.initConfig = function (init, data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['106']=function(){
+window.__pkg__bundleSrc__['108']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈
@@ -954,7 +945,7 @@ __pkg__scope_bundle__.default= function (doback, duration, callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['151']=function(){
+window.__pkg__bundleSrc__['153']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）旋转deg度
@@ -972,13 +963,13 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['139']=function(){
+window.__pkg__bundleSrc__['141']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('125');
+    __pkg__scope_args__=window.__pkg__getBundle('127');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('140');
+__pkg__scope_args__=window.__pkg__getBundle('142');
 var assemble =__pkg__scope_args__.default;
 
 
@@ -1093,20 +1084,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['125']=function(){
+window.__pkg__bundleSrc__['127']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('126');
+    __pkg__scope_args__=window.__pkg__getBundle('128');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('128');
+__pkg__scope_args__=window.__pkg__getBundle('130');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('126');
+__pkg__scope_args__=window.__pkg__getBundle('128');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -1393,10 +1384,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['126']=function(){
+window.__pkg__bundleSrc__['128']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('127');
+    __pkg__scope_args__=window.__pkg__getBundle('129');
 var arc =__pkg__scope_args__.default;
 
 
@@ -1515,7 +1506,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['127']=function(){
+window.__pkg__bundleSrc__['129']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1576,7 +1567,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['128']=function(){
+window.__pkg__bundleSrc__['130']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -1616,7 +1607,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/assemble
 /*****************************************************************/
-window.__pkg__bundleSrc__['140']=function(){
+window.__pkg__bundleSrc__['142']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (begin, end, step, count) {
@@ -1641,24 +1632,6 @@ window.__pkg__bundleSrc__['140']=function(){
 
         return val;
     }
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/move
-/*****************************************************************/
-window.__pkg__bundleSrc__['150']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）沿着向量（ax,ay）方向移动距离d
-__pkg__scope_bundle__.default= function (ax, ay, d, x, y) {
-    var sqrt = Math.sqrt(ax * ax + ay * ay);
-    return [
-        +(ax * d / sqrt + x).toFixed(7),
-        +(ay * d / sqrt + y).toFixed(7)
-    ];
 };
 
     return __pkg__scope_bundle__;

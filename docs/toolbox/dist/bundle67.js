@@ -1,16 +1,13 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/gauge-barometer/index.js
+// Original file:./src/mobile/echarts/dialogs/gauge-barometer/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['206']=function(){
+window.__pkg__bundleSrc__['308']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('337');
+    __pkg__scope_args__=window.__pkg__getBundle('389');
 var template =__pkg__scope_args__.default;
 
-
-__pkg__scope_args__=window.__pkg__getBundle('258');
-var ResizeObserver =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('108');
 var animation =__pkg__scope_args__.default;
@@ -26,111 +23,105 @@ var rotate =__pkg__scope_args__.default;
 
 
 var interval, stop = function () { };
-__pkg__scope_bundle__.default= function (obj, props) {
+__pkg__scope_bundle__.default= function (obj) {
 
     return {
         name: "echarts-example",
         render: template,
-        data: {
-            srcUrl: props.srcUrl
-        },
         mounted: function () {
             var p0, p1, p2, p3, p4, pDeg;
 
             var mycontent = this._refs.mycontent.value;
             var mycanvas = this._refs.mycanvas.value;
 
-            var painter, cx, cy, radius, updateView;
+            var cx, cy, radius;
 
             var beginDeg = Math.PI * 3 / 4, deg = Math.PI * 1.5;
 
             // 监听画布大小改变
             var currentValue = 58.06, value;
-            ResizeObserver(mycontent, function () {
-                painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight, {}, true);
 
-                // 圆心和半径
-                cx = mycontent.clientWidth * 0.5;
-                cy = mycontent.clientHeight * 0.5;
-                radius = Math.max(Math.min(cx, cy) - 100, 0);
+            var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight);
 
-                if (radius <= 0) return;
+            // 圆心和半径
+            cx = mycontent.clientWidth * 0.5;
+            cy = mycontent.clientHeight * 0.5;
+            radius = Math.max(Math.min(cx, cy) - 50, 0);
 
-                updateView = function (value) {
-                    painter.clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
+            var updateView = function (value) {
+                painter.clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
 
-                    pDeg = beginDeg + Math.PI * 1.5 * value * 0.01;
+                pDeg = beginDeg + Math.PI * 1.5 * value * 0.01;
 
-                    // 外刻度尺
-                    drawPolarRuler(painter, {
-                        cx: cx,
-                        cy: cy,
-                        radius: radius + 10,
-                        value: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-                        begin: beginDeg,
-                        deg: deg,
-                        "font-size": 20,
-                        color: "#e93f33",
-                        "font-rotate": false,
-                        "font-weight": 800,
-                        "small-mark": true
-                    });
+                // 外刻度尺
+                drawPolarRuler(painter, {
+                    cx: cx,
+                    cy: cy,
+                    radius: radius + 10,
+                    value: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    begin: beginDeg,
+                    deg: deg,
+                    "font-size": 14,
+                    color: "#e93f33",
+                    "font-rotate": false,
+                    "font-weight": 800,
+                    "small-mark": true
+                });
 
-                    // 内刻度尺
-                    drawPolarRuler(painter, {
-                        cx: cx,
-                        cy: cy,
-                        radius: radius - 10,
-                        value: [0, 10, 20, 30, 40, 50, 60],
-                        begin: beginDeg,
-                        deg: deg,
-                        color: "#000000",
-                        "font-size": 20,
-                        "mark-direction": "inner",
-                        "font-rotate": false,
-                        "font-weight": 800,
-                        "small-mark": true
-                    });
+                // 内刻度尺
+                drawPolarRuler(painter, {
+                    cx: cx,
+                    cy: cy,
+                    radius: radius - 10,
+                    value: [0, 10, 20, 30, 40, 50, 60],
+                    begin: beginDeg,
+                    deg: deg,
+                    color: "#000000",
+                    "font-size": 14,
+                    "mark-direction": "inner",
+                    "font-rotate": false,
+                    "font-weight": 800,
+                    "small-mark": true
+                });
 
-                    p0 = rotate(cx, cy, pDeg, cx + radius + 20, cy - 1);
-                    p1 = rotate(cx, cy, pDeg, cx + radius + 20, cy + 1);
-                    p2 = rotate(cx, cy, pDeg, cx - 20, cy + 4);
-                    p3 = rotate(cx, cy, pDeg, cx - 30, cy);
-                    p4 = rotate(cx, cy, pDeg, cx - 20, cy - 4);
+                p0 = rotate(cx, cy, pDeg, cx + radius + 20, cy - 1);
+                p1 = rotate(cx, cy, pDeg, cx + radius + 20, cy + 1);
+                p2 = rotate(cx, cy, pDeg, cx - 20, cy + 4);
+                p3 = rotate(cx, cy, pDeg, cx - 30, cy);
+                p4 = rotate(cx, cy, pDeg, cx - 20, cy - 4);
 
-                    // 表盘文字
-                    painter.config({
-                        "fontSize": 14,
-                        "fontWeight": 200,
-                        "fillStyle": "black",
-                        "textAlign": "center",
-                        "textBaseline": "middle"
-                    }).fillText("PLP", cx, cy - radius * 0.6)
+                // 表盘文字
+                painter.config({
+                    "fontSize": 10,
+                    "fontWeight": 200,
+                    "fillStyle": "black",
+                    "textAlign": "center",
+                    "textBaseline": "middle"
+                }).fillText("PLP", cx, cy - radius * 0.5)
 
-                        // 指针
-                        .fillCircle(cx, cy, 7).config({
-                            "lineWidth": 2
-                        }).strokeCircle(cx, cy, 11)
-                        .beginPath()
-                        .moveTo(p0[0], p0[1])
-                        .lineTo(p1[0], p1[1])
-                        .lineTo(p2[0], p2[1])
-                        .lineTo(p3[0], p3[1])
-                        .lineTo(p4[0], p4[1])
-                        .fill()
+                    // 指针
+                    .fillCircle(cx, cy, 7).config({
+                        "lineWidth": 2
+                    }).strokeCircle(cx, cy, 11)
+                    .beginPath()
+                    .moveTo(p0[0], p0[1])
+                    .lineTo(p1[0], p1[1])
+                    .lineTo(p2[0], p2[1])
+                    .lineTo(p3[0], p3[1])
+                    .lineTo(p4[0], p4[1])
+                    .fill()
 
-                        // 值文字
-                        .config({
-                            "fontSize": 34,
-                            "fontWeight": 800,
-                            "fillStyle": "#555555"
-                        })
-                        .fillText(value, cx, cy + radius * 0.4);
+                    // 值文字
+                    .config({
+                        "fontSize": 30,
+                        "fontWeight": 800,
+                        "fillStyle": "#555555"
+                    })
+                    .fillText(value, cx, cy + radius * 0.4);
 
-                };
+            };
 
-                updateView(currentValue.toFixed(2));
-            });
+            updateView(currentValue.toFixed(2));
 
             // 定时模拟修改
             interval = setInterval(function () {
@@ -146,10 +137,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
                 });
 
             }, 1000);
-
-
         },
-
         beforeDestory: function () {
             if (interval) {
 
@@ -158,104 +146,19 @@ __pkg__scope_bundle__.default= function (obj, props) {
                 stop();
             }
         }
-
     };
-
 };
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/gauge-barometer/index.html
+// Original file:./src/mobile/echarts/dialogs/gauge-barometer/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['337']=function(){
+window.__pkg__bundleSrc__['389']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"气压表","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/ResizeObserver
-/*****************************************************************/
-window.__pkg__bundleSrc__['258']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    var _support_ = true;
-
-__pkg__scope_bundle__.default= function (el, doback) {
-
-    var observer = null;
-    var _hadWilldo_ = false;
-    var _hadNouse_ = false;
-
-    var doit = function () {
-
-        // 如果前置任务都完成了
-        if (!_hadWilldo_) {
-            _hadWilldo_ = true;
-
-            // 既然前置任务已经没有了，那么就可以更新了？
-            // 不是的，可能非常短的时间里，后续有改变
-            // 因此延迟一点点来看看后续有没有改变
-            // 如果改变了，就再延迟看看
-            var interval = window.setInterval(function () {
-
-                // 判断当前是否可以立刻更新
-                if (!_hadNouse_) {
-                    window.clearInterval(interval);
-
-                    _hadWilldo_ = false;
-                    doback();
-
-                }
-
-                _hadNouse_ = false;
-            }, 100);
-
-        } else {
-            _hadNouse_ = true;
-        }
-    }
-
-    try {
-
-
-        observer = new ResizeObserver(doit);
-        observer.observe(el);
-
-    } catch (e) {
-
-        // 如果浏览器不支持此接口
-
-        if (_support_) {
-            console.error('ResizeObserver undefined!');
-
-            // 不支持的话，提示一次就可以了
-            _support_ = false;
-        }
-
-        // 使用resize进行退化支持
-        doit();
-        window.addEventListener('resize', doit, false);
-
-    }
-
-    return function () {
-        if (observer) {
-
-            // 解除对画布大小改变的监听
-            observer.disconnect();
-
-        } else {
-            window.removeEventListener('resize', doit);
-        }
-    };
-
-};
-
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,6]},{"type":"tag","name":"header","attrs":{"class":"dialog-title"},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"气压表","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[5]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[7]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
