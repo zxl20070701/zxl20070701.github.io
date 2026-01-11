@@ -1,0 +1,67 @@
+[page-view="geo-json"] {
+    left: calc(50vw - 400px);
+    top: 20px;
+    font-size: 0;
+
+    &[focus="no"] {
+        &>header {
+            background-color: #e8eaed;
+        }
+    }
+
+    &>header {
+        text-align: left;
+        line-height: 50px;
+        background-color: #ffffff;
+        border-bottom: 1px solid rgb(187, 184, 184);
+
+        &>h2 {
+            color: #49b4f1;
+            font-size: 20px;
+            padding-left: 50px;
+            background-image: url("./geoJSON.png");
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: auto 60%;
+            font-family: cursive;
+            display: inline-block;
+        }
+
+        &>button {
+            float: right;
+            height: 30px;
+            padding: 0 10px;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+            margin-right: 200px;
+            border-radius: 15px;
+        }
+    }
+
+    &>canvas {
+        width: 800px;
+        height: 600px;
+    }
+
+    &>div {
+        &.help-url {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+
+            &>a {
+                font-size: 12px;
+                color: #000000;
+                text-decoration: underline;
+            }
+        }
+
+        &.no-view {
+            display: none;
+        }
+    }
+
+}

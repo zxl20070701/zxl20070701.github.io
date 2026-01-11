@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['80']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('248');
+    __pkg__scope_args__=window.__pkg__getBundle('249');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('249');
+__pkg__scope_args__=window.__pkg__getBundle('250');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('33');
@@ -162,7 +162,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/browser/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['248']=function(){
+window.__pkg__bundleSrc__['249']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"top"},"childNodes":[8,13]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[9,10,11]},{"type":"tag","name":"span","attrs":{"class":"logo"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"spellcheck":"false","type":"text","ref":"urlInput","ui-on:keydown.enter":"doRefresh"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doRefresh"},"childNodes":[12]},{"type":"text","content":"刷新","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"navs","ref":"navRoot"},"childNodes":[14]},{"type":"tag","name":"button","attrs":{"ui-on:click":"newNav","ref":"addBtn"},"childNodes":[15]},{"type":"text","content":"＋","childNodes":[]}]
@@ -173,7 +173,7 @@ window.__pkg__bundleSrc__['248']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/browser/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['249']=function(){
+window.__pkg__bundleSrc__['250']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

@@ -81,6 +81,11 @@ window.__pkg__bundleSrc__['37']=function(){
     "format-json": function () {
         return window.__pkg__getLazyBundle('./dist/bundle27.js','83')
     },
+
+    // geoJSON查看器
+    "geo-json": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle28.js','84')
+    },
 };
 
     return __pkg__scope_bundle__;

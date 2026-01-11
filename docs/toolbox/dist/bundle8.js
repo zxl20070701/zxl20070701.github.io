@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['40']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('94');
+    __pkg__scope_args__=window.__pkg__getBundle('95');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('95');
+__pkg__scope_args__=window.__pkg__getBundle('96');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -32,7 +32,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['94']=function(){
+window.__pkg__bundleSrc__['95']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,5,8]},{"type":"tag","name":"header","attrs":{"ui-dragdrop":""},"childNodes":[2,3]},{"type":"text","content":"调试工具","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"$closeDialog"},"childNodes":[4]},{"type":"text","content":"X","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"nav"},"childNodes":[6]},{"type":"tag","name":"li","attrs":{"active":"yes"},"childNodes":[7]},{"type":"text","content":"Console","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"content","id":"console-el"},"childNodes":[9]},{"type":"tag","name":"li","attrs":{"class":"blank"},"childNodes":[10]},{"type":"text","content":"无打印信息～","childNodes":[]}]
@@ -43,7 +43,7 @@ window.__pkg__bundleSrc__['94']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/debugger/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['95']=function(){
+window.__pkg__bundleSrc__['96']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

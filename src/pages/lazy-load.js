@@ -74,4 +74,9 @@ export default {
     "format-json": function () {
         return import('./format-json/index.js')
     },
+
+    // geoJSON查看器
+    "geo-json": function () {
+        return import('./geo-json/index.js')
+    },
 };
