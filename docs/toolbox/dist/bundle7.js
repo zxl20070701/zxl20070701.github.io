@@ -57,6 +57,11 @@ window.__pkg__bundleSrc__['38']=function(){
         return window.__pkg__getLazyBundle('./dist/bundle38.js','94')
     },
 
+    // 视频播放器
+    "video-play": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle39.js','95')
+    }
+
 };
 
     return __pkg__scope_bundle__;

@@ -1,0 +1,32 @@
+[page-view="video-play"] {
+
+    &>label {
+        position: absolute;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        border: none;
+        cursor: pointer;
+        background-color: red;
+        color: white;
+        border-radius: 15px;
+        top: 7.5px;
+        right: 45px;
+        font-size: 13px;
+    }
+
+    &>div {
+        &.no-view {
+            display: none;
+        }
+
+        &[active="no"] {
+            display: none;
+        }
+
+        &>video {
+            width: 100vw;
+            height: calc(var(--height) - 45px);
+        }
+    }
+}

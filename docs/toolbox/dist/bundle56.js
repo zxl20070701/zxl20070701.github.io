@@ -1,28 +1,25 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/sankey-nodeAlign-left/index.js
+// Original file:./src/pages/echarts/dialogs/tree-layout-lr/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['214']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('373');
+    __pkg__scope_args__=window.__pkg__getBundle('371');
 var template =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('259');
+__pkg__scope_args__=window.__pkg__getBundle('260');
 var ResizeObserver =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('128');
-var canvasRender =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('145');
+__pkg__scope_args__=window.__pkg__getBundle('146');
 var xhr =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('374');
-var toSankeyImageData =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('372');
+var TreeLayout =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('149');
-var getLoopColors =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('143');
+var canvasRender =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -34,76 +31,106 @@ __pkg__scope_bundle__.default= function (obj, props) {
             srcUrl: props.srcUrl
         },
         mounted: function () {
-
-            var mycontent = this._refs.mycontent.value;
-            var mycanvas = this._refs.mycanvas.value;
+            var _this = this;
 
             xhr({
                 method: "GET",
-                url: "../data/energy.json"
+                url: "../data/flare.json"
             }, function (data) {
                 if (data.status == 200) {
-                    data = JSON.parse(data.data);
 
-                    var updateView = function () {
-                        var sankeyData = toSankeyImageData(data, mycontent.clientWidth - 50, mycontent.clientHeight - 60, 0, 30);
-                        var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight, {}, true);
+                    var mycontent = _this._refs.mycontent.value;
+                    var mycanvas = _this._refs.mycanvas.value;
 
-                        // 获取颜色
-                        var nodeColors = getLoopColors(data.nodes.length);
-                        var lineColors = getLoopColors(data.nodes.length, 0.2);
+                    var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight), pid, dist;
 
+                    var treeLayout = new TreeLayout({
+                        "id": function (treedata) {
+                            return treedata.name
+                        }
+                    }).setOption({
+                        type: "rect",
+                        direction: "LR",
+                        x: 50,
+                        y: mycontent.clientHeight * 0.5,
+                        width: mycontent.clientWidth - 200,
+                        height: mycontent.clientHeight - 60
+                    }).bind(JSON.parse(data.data), function (tree) {
                         painter.config({
-                            "fontSize": 10
+                            fontSize: 9
+                        }).clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
+
+                        // 绘制连线
+                        painter.setRegion("").config({
+                            strokeStyle: '#cccccc'
                         });
+                        for (var key in tree.node) {
+                            if (tree.node[key].show && key != tree.root) {
+                                pid = tree.node[key].pid
 
-                        // 先绘制连线
-                        var key, node, tNode, i, _helpDis;
-                        for (key in sankeyData) {
-                            node = sankeyData[key];
-
-                            painter.config({
-                                fillStyle: lineColors.pop()
-                            });
-                            // 连线
-                            for (i = 0; i < node.nexts.length; i++) {
-                                tNode = sankeyData[node.nexts[i].name];
-
-                                _helpDis = (tNode.left - (node.left + node.width)) * 0.5;
+                                dist = (tree.node[key].left - tree.node[pid].left) * 0.5
 
                                 painter
                                     .beginPath()
-                                    .moveTo(node.left + node.width, node.nextTops[i])
-                                    .bezierCurveTo(node.left + node.width + _helpDis, node.nextTops[i], tNode.left - _helpDis, tNode.preTops[0], tNode.left, tNode.preTops[0])
-                                    .lineTo(tNode.left, tNode.preTops[1])
-                                    .bezierCurveTo(tNode.left - _helpDis, tNode.preTops[1], node.left + node.width + _helpDis, node.nextTops[i + 1], node.left + node.width, node.nextTops[i + 1])
-                                    .fill();
-                                tNode.preTops.shift();
+                                    .moveTo(tree.node[key].left, tree.node[key].top)
+                                    .bezierCurveTo(
+                                        tree.node[key].left - dist, tree.node[key].top,
+                                        tree.node[pid].left + dist, tree.node[pid].top,
+                                        tree.node[pid].left, tree.node[pid].top
+                                    ).stroke()
                             }
-
                         }
 
-                        // 再绘制别的
-                        for (key in sankeyData) {
-                            node = sankeyData[key];
+                        // 绘制节点和文字
+                        painter.config({
+                            strokeStyle: '#b0c4de'
+                        });
+                        for (var key in tree.node) {
+                            if (tree.node[key].show) {
+                                if (!tree.node[key].isOpen && tree.node[key].children.length > 0) {
+                                    painter.config({
+                                        fillStyle: "#b0c4de"
+                                    });
+                                } else {
+                                    painter.config({
+                                        fillStyle: "#ffffff"
+                                    });
+                                }
+                                painter.setRegion(key).fullCircle(tree.node[key].left, tree.node[key].top, 4)
 
-                            // 结点
-                            painter.config({
-                                fillStyle: nodeColors.pop()
-                            }).fillRect(node.left, node.top, node.width, node.height);
-
-                            // 文字
-                            painter.config({
-                                fillStyle: '#555555'
-                            }).fillText(key, node.left + node.width, node.top + node.height * 0.5);
-
+                                painter.setRegion("").config({
+                                    fillStyle: "black"
+                                }).fillText(key.replace(/\-\d+$/, ''), tree.node[key].left + 10, tree.node[key].top)
+                            }
                         }
-                    };
 
-                    ResizeObserver(mycontent, updateView);
+                    }, {
+                        analytics: true,
+                        animate: true,
+                        physics: true,
+                        scale: true,
+                        util: true,
+                        vis: true
+                    });
+
+                    ResizeObserver(mycontent, function () {
+                        painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight);
+
+                        treeLayout.setOption({
+                            y: mycontent.clientHeight * 0.5,
+                            width: mycontent.clientWidth - 200,
+                            height: mycontent.clientHeight - 60
+                        }).doUpdate();
+                    });
+
+                    mycontent.addEventListener('click', function (event) {
+                        var regionName = painter.getRegion(event);
+                        if (regionName) {
+                            treeLayout.toggleNode(regionName);
+                        }
+                    });
                 }
             });
-
         }
     };
 };
@@ -112,12 +139,12 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/sankey-nodeAlign-left/index.html
+// Original file:./src/pages/echarts/dialogs/tree-layout-lr/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['373']=function(){
+window.__pkg__bundleSrc__['371']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"桑基图左对齐布局","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"从左到右树状图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -125,7 +152,7 @@ window.__pkg__bundleSrc__['373']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['259']=function(){
+window.__pkg__bundleSrc__['260']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -206,22 +233,871 @@ __pkg__scope_bundle__.default= function (el, doback) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/index
+// Original file:./src/tool/xhr/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['128']=function(){
+window.__pkg__bundleSrc__['146']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('32');
+var isFunction =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('147');
+var toString =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (settings, callback, errorback) {
+
+    var xmlhttp;
+
+    // 如果外部定义了
+    if (isFunction(settings.xhr)) {
+        xmlhttp = settings.xhr();
+    }
+
+    // 否则就内部创建
+    else {
+        xmlhttp = new XMLHttpRequest();
+    }
+
+    // 请求完成回调
+    xmlhttp.onload = function () {
+
+        if (xmlhttp.readyState == 4) {
+
+            callback({
+
+                // 状态码
+                status: xmlhttp.status,
+
+                // 数据
+                data: xmlhttp.responseText
+
+            });
+
+        }
+    };
+
+    // 请求超时回调
+    xmlhttp.ontimeout = function () {
+        errorback({
+            status: xmlhttp.status,
+            data: "请求超时了"
+        });
+    };
+
+    // 请求错误回调
+    xmlhttp.onerror = function () {
+        errorback({
+            status: xmlhttp.status,
+            data: xmlhttp.responseText
+        });
+    };
+
+    xmlhttp.open(settings.method, settings.url, true);
+
+    // 设置请求头
+    for (var key in settings.header) {
+        xmlhttp.setRequestHeader(key, settings.header[key]);
+    }
+
+    // 设置超时时间
+    xmlhttp.timeout = 'timeout' in settings ? settings.timeout : 6000;
+
+    xmlhttp.send(toString(settings.data));
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhr/toString
+/*****************************************************************/
+window.__pkg__bundleSrc__['147']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('53');
+var isPlainObject =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('31');
+var isString =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (data) {
+
+    // 如果是字符串
+    if (isString(data)) {
+        return data;
+    }
+
+    // 如果是JSON数据
+    else if (isPlainObject(data)) {
+        return JSON.stringify(data);
+    }
+
+    // 如果为空
+    else if (data === undefined) {
+        return "";
+    }
+
+    // 否则
+    else {
+        return data;
+    }
+
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/treeLayout/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['372']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('373');
+var Tree =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('153');
+var initConfig=__pkg__scope_args__.initConfig;
+
+__pkg__scope_args__=window.__pkg__getBundle('110');
+var animation =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('155');
+var rotate =__pkg__scope_args__.default;
+
+
+function TreeLayout(config) {
+
+    this.__option = {
+        offsetX: 0,
+        offsetY: 0,
+        duration: 500,
+        type: "plain",
+        direction: "LR",
+        x: 100,
+        y: 100,
+        width: 100,
+        height: 100,
+        radius: 100
+    };
+
+    this.__rback = null;
+    this.__oralTree = null;
+    this.__preTree = null;
+
+    this.__noOpens = {};
+
+    this.__Tree = new Tree(config);
+
+    return this;
+}
+
+TreeLayout.prototype.setOption = function (option) {
+    initConfig(this.__option, option);
+    return this;
+};
+
+TreeLayout.prototype.use = function (initTree, noOpens) {
+    noOpens = noOpens || {};
+
+    var tree = this.__Tree.use(initTree, noOpens);
+
+    // 校对偏差
+    if (this.__option.offsetX != 0 || this.__option.offsetY != 0) {
+        for (var key in tree.node) {
+            if (!tree.node[key].show) {
+
+                var deep = 0, pid = key;
+                do {
+                    pid = tree.node[pid].pid;
+                    deep++;
+                } while (!tree.node[pid].show);
+
+                tree.node[key].left += this.__option.offsetX * deep;
+                tree.node[key].top += this.__option.offsetY * deep;
+            }
+        }
+    }
+
+    if (this.__option.type == 'rect') {
+        if (this.__option.direction == 'LR' || this.__option.direction == "RL") {
+
+            var perW = this.__option.height / tree.size
+            var perD = this.__option.width / (tree.deep - 1)
+
+            var balanceW = this.__option.y - this.__option.height * 0.5
+            var flag = this.__option.direction == 'LR' ? 1 : -1
+
+            for (var key in tree.node) {
+                if (tree.deep == 1) {
+                    tree.node[key].left = this.__option.x + this.__option.width * 0.5 * flag
+                    tree.node[key].top = this.__option.y
+                } else {
+                    tree.node[key].left = this.__option.x + (tree.node[key].left - 0.5) * perD * flag
+                    tree.node[key].top = tree.node[key].top * perW + balanceW
+                }
+            }
+        } else if (this.__option.direction == 'TB' || this.__option.direction == "BT") {
+
+            var perW = this.__option.width / tree.size;
+            var perD = this.__option.height / (tree.deep - 1);
+
+            var balanceW = this.__option.x - this.__option.width * 0.5;
+            var flag = this.__option.direction == 'TB' ? 1 : -1;
+
+            for (var key in tree.node) {
+                tree.node[key].deg = this.__option.direction == 'TB' ? Math.PI * 0.5 : Math.PI * -0.5;
+
+                if (tree.deep == 1) {
+                    tree.node[key].left = this.__option.x;
+                    tree.node[key].top = this.__option.y + this.__option.height * 0.5 * flag;
+                } else {
+                    var left = tree.node[key].left;
+
+                    tree.node[key].left = tree.node[key].top * perW + balanceW;
+                    tree.node[key].top = this.__option.y + (left - 0.5) * perD * flag;
+                }
+            }
+
+        }
+
+    } else if (this.__option.type == 'circle') {
+        var cx = this.__option.x, cy = this.__option.y;
+        var deg = Math.PI * 2 / tree.size;
+        var per = this.__option.radius / (tree.deep - 1);
+
+        for (var key in tree.node) {
+            if (tree.node[key].left == 0.5) {
+                tree.node[key].left = cx;
+                tree.node[key].top = cy;
+            } else {
+                var position = rotate(cx, cy, deg * tree.node[key].top, cx + (tree.node[key].left - 0.5) * per, cy);
+
+                tree.node[key].deg = deg * tree.node[key].top;
+                tree.node[key].left = position[0];
+                tree.node[key].top = position[1];
+            }
+        }
+    }
+
+    return tree;
+};
+
+TreeLayout.prototype.bind = function (initTree, renderBack, noOpens) {
+    noOpens = noOpens || {};
+
+    this.__rback = renderBack;
+    this.__oralTree = initTree;
+    this.__noOpens = noOpens;
+
+    this.__preTree = this.use(this.__oralTree, this.__noOpens);
+    this.__rback(this.__preTree);
+
+    return this;
+};
+
+TreeLayout.prototype.unbind = function () {
+    this.__rback = function () { return null };
+    this.__oralTree = null;
+    this.__preTree = null;
+    this.__noOpens = {};
+    return this;
+};
+
+TreeLayout.prototype.doUpdate = function () {
+    var newTree = this.use(this.__oralTree, this.__noOpens);
+
+    var cacheTree = JSON.parse(JSON.stringify(newTree));
+
+    var _this=this;
+    animation(function (deep) {
+
+        if (_this.__preTree) {
+            for (var key in cacheTree.node) {
+                if (newTree.node[key].show || _this.__preTree.node[key].show) {
+                    cacheTree.node[key].show = true;
+
+                    cacheTree.node[key].left = _this.__preTree.node[key].left + (newTree.node[key].left - _this.__preTree.node[key].left) * deep;
+                    cacheTree.node[key].top = _this.__preTree.node[key].top + (newTree.node[key].top - _this.__preTree.node[key].top) * deep;
+                }
+            }
+        }
+        _this.__rback(cacheTree);
+
+
+    }, this.__option.duration, function () {
+        _this.__preTree = newTree;
+        _this.__rback(_this.__preTree);
+    })
+};
+
+TreeLayout.prototype.closeNode = function (id) {
+    if (!this.__preTree) return this;
+    this.__noOpens[id] = true;
+
+    this.doUpdate();
+    return this;
+};
+
+TreeLayout.prototype.openNode = function (id) {
+    if (!this.__preTree) return this;
+    this.__noOpens[id] = false;
+
+    this.doUpdate();
+    return this;
+};
+
+TreeLayout.prototype.toggleNode = function (id) {
+    if (!this.__preTree) return this;
+    this.__noOpens[id] = !this.__noOpens[id];
+
+    this.doUpdate();
+    return this;
+};
+
+__pkg__scope_bundle__.default= TreeLayout;
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/treeLayout/Tree
+/*****************************************************************/
+window.__pkg__bundleSrc__['373']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('374');
+var toPlainTree =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('153');
+var initConfig=__pkg__scope_args__.initConfig;
+
+
+function Tree(config) {
+    this.__config = initConfig({
+        root: (initTree) => initTree,
+        children: (parentTree) => parentTree.children,
+        id: (treedata) => treedata.name
+    }, config || {});
+    return this;
+}
+
+Tree.prototype.use = function (initTree, noOpens) {
+    return toPlainTree(initTree, this.__config, noOpens);
+};
+
+__pkg__scope_bundle__.default= Tree;
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/treeLayout/toPlainTree
+/*****************************************************************/
+window.__pkg__bundleSrc__['374']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('375');
+var toInnerTree =__pkg__scope_args__.default;
+
+
+// 可以传递任意格式的树原始数据
+// 只要配置对应的解析方法即可
+__pkg__scope_bundle__.default= function (initTree, config, noOpens) {
+    noOpens = noOpens || {};
+
+    var treeData = toInnerTree(initTree, config);
+    var alltreedata = treeData.value; // 维护的树
+    var rootid = treeData.rid; // 根结点ID
+
+    if (treeData.num == 1) {
+        alltreedata[rootid].left = 0.5;
+        alltreedata[rootid].top = 0.5;
+        alltreedata[rootid].show = true;
+        return {
+            deep: 1,
+            node: alltreedata,
+            root: rootid,
+            size: 1
+        };
+    } else {
+
+        var beforeDis = [], size = 0, maxDeep = 0;
+
+        if (noOpens[rootid]) {
+            alltreedata[rootid].left = 0.5;
+            alltreedata[rootid].top = 0.5;
+            alltreedata[rootid].show = true;
+
+            size = 1;
+        } else {
+            (function positionCalc(pNode, deep) {
+
+                if (deep > maxDeep) maxDeep = deep;
+
+                var flag = 0;
+                if (!noOpens[pNode.id]) {
+
+                    for (flag = 0; flag < pNode.children.length; flag++)
+
+                        // 因为全部的子结点的位置确定了，父结点的y位置就是子结点的中间位置
+                        // 因此有子结点的，先计算子结点
+                        positionCalc(alltreedata[pNode.children[flag]], deep + 1);
+
+                }
+
+                // left的位置比较简单，deep从0开始编号
+                // 比如deep=0，第一层，left=0+0.5=0.5，也就是根结点
+                alltreedata[pNode.id].left = deep + 0.5;
+                if (flag == 0) {
+
+                    // beforeDis是一个数组，用以记录每一层此刻top下边缘（每一层是从上到下）
+                    // 比如一层的第一个，top值最小可以取top=0.5
+                    // 为了方便计算，beforeDis[deep] == undefined的时候表示现在准备计算的是这层的第一个结点
+                    // 因此设置最低上边缘为-0.5
+                    if (beforeDis[deep] == void 0) beforeDis[deep] = -0.5;
+                    // 父边缘同意的进行初始化
+                    if (beforeDis[deep - 1] == void 0) beforeDis[deep - 1] = -0.5;
+
+                    // 添加的新结点top值第一种求法：本层上边缘+1（比如上边缘是-0.5，那么top最小是top=-0.5+1=0.5）
+                    alltreedata[pNode.id].top = beforeDis[deep] + 1;
+
+                    var pTop = beforeDis[deep] + 1 + (alltreedata[pNode.pid].children.length - 1) * 0.5;
+                    // 计算的原则是：如果第一种可行，选择第一种，否则必须选择第二种
+                    // 判断第一种是否可行的方法就是：如果第一种计算后确定的孩子上边缘不对导致孩子和孩子的前兄弟重合就是可行的
+                    if (pTop - 1 < beforeDis[deep - 1])
+                        // 必须保证父亲结点和父亲的前一个兄弟保存1的距离，至少
+                        // 添加的新结点top值的第二种求法：根据孩子取孩子结点的中心top
+                        alltreedata[pNode.id].top = beforeDis[deep - 1] + 1 - (alltreedata[pNode.pid].children.length - 1) * 0.5;
+
+                } else {
+
+                    // 此刻flag!=0
+                    // 意味着结点有孩子，那么问题就解决了，直接取孩子的中间即可
+                    // 其实，flag==0的分支计算的就是孩子，是没有孩子的叶结点，那是关键
+                    alltreedata[pNode.id].top = (alltreedata[pNode.children[0]].top + alltreedata[pNode.children[flag - 1]].top) * 0.5;
+                }
+
+                // 因为计算孩子的时候
+                // 无法掌握父辈兄弟的情况
+                // 可能会出现父亲和兄弟重叠问题
+                if (alltreedata[pNode.id].top <= beforeDis[deep]) {
+                    var needUp = beforeDis[deep] + 1 - alltreedata[pNode.id].top;
+                    (function doUp(_pid, _deep) {
+                        alltreedata[_pid].top += needUp;
+                        if (beforeDis[_deep] < alltreedata[_pid].top) beforeDis[_deep] = alltreedata[_pid].top;
+
+                        for (var _flag = 0; _flag < alltreedata[_pid].children.length; _flag++) {
+                            doUp(alltreedata[_pid].children[_flag], _deep + 1);
+                        }
+                    })(pNode.id, deep);
+                }
+
+                // 计算好一个结点后，需要更新此刻该层的上边缘
+                beforeDis[deep] = alltreedata[pNode.id].top;
+
+                // size在每次计算一个结点后更新，是为了最终绘图的时候知道树有多宽（此处应该叫高）
+                if (alltreedata[pNode.id].top + 0.5 > size) size = alltreedata[pNode.id].top + 0.5;
+
+            })(alltreedata[rootid], 0);
+
+        }
+        // 对于不显示的，需要标记一下
+        for (var key in noOpens) {
+            if (noOpens[key]) {
+                alltreedata[key].isOpen = false;
+                (function updateHidden(pid, left, top) {
+                    for (var index = 0; index < alltreedata[pid].children.length; index++) {
+                        alltreedata[alltreedata[pid].children[index]].left = left;
+                        alltreedata[alltreedata[pid].children[index]].top = top;
+                        alltreedata[alltreedata[pid].children[index]].show = false;
+
+                        updateHidden(alltreedata[pid].children[index], left, top);
+                    }
+                })(key, alltreedata[key].left, alltreedata[key].top);
+            }
+        }
+
+        // 传递的参数分别表示：记录了位置信息的树结点集合、根结点ID和树的宽
+        return {
+            "node": alltreedata,
+            "root": rootid,
+            "size": size,
+            "deep": maxDeep + 1
+        };
+
+    }
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/treeLayout/toInnerTree
+/*****************************************************************/
+window.__pkg__bundleSrc__['375']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    /**
+ * 根据配置的层次关系（配置的id,child,root）把原始数据变成内部结构，方便后期位置计算
+ *
+ * tempTree[id] = {
+ *  "data": 原始数据,
+ *  "pid": 父亲ID,
+ *  "id": 唯一标识ID,
+ *  "show": boolean,
+ *  "isOpen": boolean,
+ *  "children": [cid1、cid2、...]
+ * }
+ */
+__pkg__scope_bundle__.default= (initTree, config) => {
+    var tempTree = {};
+
+    // 根结点
+    var temp = (config.root)(initTree);
+    var id, rid;
+    id = rid = (config.id)(temp);
+    tempTree[id] = {
+        "data": temp,
+        "pid": null,
+        "id": id,
+        "isOpen": true,
+        "show": true,
+        "deg": 0,
+        "children": []
+    };
+
+    var num = 1;
+
+    // 根据传递的原始数据，生成内部统一结构
+    (function createTree(pdata, pid) {
+        var children = (config.children)(pdata, initTree);
+        num += children ? children.length : 0;
+        for (var flag = 0; children && flag < children.length; flag++) {
+            id = (config.id)(children[flag]);
+            tempTree[pid].children.push(id);
+            tempTree[id] = {
+                "data": children[flag],
+                "pid": pid,
+                "id": id,
+                "isOpen": true,
+                "show": true,
+                "deg": 0,
+                "children": []
+            };
+            createTree(children[flag], id);
+        }
+    })(temp, id);
+
+    return {
+        rid,
+        value: tempTree,
+        num
+    };
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/config
+/*****************************************************************/
+window.__pkg__bundleSrc__['153']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    
+// 初始化配置文件
+
+__pkg__scope_bundle__.initConfig = function (init, data) {
+    var key;
+    for (key in data)
+        try {
+            init[key] = data[key];
+        } catch (e) {
+            throw new Error("Illegal property value！");
+        }
+    return init;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/animation
+/*****************************************************************/
+window.__pkg__bundleSrc__['110']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    //当前正在运动的动画的tick函数堆栈
+var $timers = [];
+//唯一定时器的定时间隔
+var $interval = 13;
+//指定了动画时长duration默认值
+var $speeds = 400;
+//定时器ID
+var $timerId = null;
+
+/**
+ * 动画轮播
+ * @param {function} doback 轮询函数，有一个形参deep，0-1，表示执行进度
+ * @param {number} duration 动画时长，可选
+ * @param {function} callback 动画结束回调，可选，有一个形参deep，0-1，表示执行进度
+ *
+ * @returns {function} 返回一个函数，调用该函数，可以提前结束动画
+ */
+__pkg__scope_bundle__.default= function (doback, duration, callback) {
+
+    // 如果没有传递时间，使用内置默认值
+    if (arguments.length < 2) duration = $speeds;
+
+    var clock = {
+        //把tick函数推入堆栈
+        "timer": function (tick, duration, callback) {
+            if (!tick) {
+                throw new Error('Tick is required!');
+            }
+            var id = new Date().valueOf() + "_" + (Math.random() * 1000).toFixed(0);
+            $timers.push({
+                "id": id,
+                "createTime": new Date(),
+                "tick": tick,
+                "duration": duration,
+                "callback": callback
+            });
+            clock.start();
+            return id;
+        },
+
+        //开启唯一的定时器timerId
+        "start": function () {
+            if (!$timerId) {
+                $timerId = setInterval(clock.tick, $interval);
+            }
+        },
+
+        //被定时器调用，遍历timers堆栈
+        "tick": function () {
+            var createTime, flag, tick, callback, timer, duration, passTime,
+                timers = $timers;
+            $timers = [];
+            $timers.length = 0;
+            for (flag = 0; flag < timers.length; flag++) {
+                //初始化数据
+                timer = timers[flag];
+                createTime = timer.createTime;
+                tick = timer.tick;
+                duration = timer.duration;
+                callback = timer.callback;
+
+                //执行
+                passTime = (+new Date() - createTime) / duration;
+                passTime = passTime > 1 ? 1 : passTime;
+                tick(passTime);
+                if (passTime < 1 && timer.id) {
+                    //动画没有结束再添加
+                    $timers.push(timer);
+                } else if (callback) {
+                    callback(passTime);
+                }
+            }
+            if ($timers.length <= 0) {
+                clock.stop();
+            }
+        },
+
+        //停止定时器，重置timerId=null
+        "stop": function () {
+            if ($timerId) {
+                clearInterval($timerId);
+                $timerId = null;
+            }
+        }
+    };
+
+    var id = clock.timer(function (deep) {
+        //其中deep为0-1，表示改变的程度
+        doback(deep);
+    }, duration, callback);
+
+    // 返回一个函数
+    // 用于在动画结束前结束动画
+    return function () {
+        var i;
+        for (i in $timers) {
+            if ($timers[i].id == id) {
+                $timers[i].id = undefined;
+                return;
+            }
+        }
+    };
+
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/transform/rotate
+/*****************************************************************/
+window.__pkg__bundleSrc__['155']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 点（x,y）围绕中心（cx,cy）旋转deg度
+__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
+    var cos = Math.cos(deg), sin = Math.sin(deg);
+    return [
+        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
+        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
+    ];
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/canvas/region
+/*****************************************************************/
+window.__pkg__bundleSrc__['143']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('129');
+var canvasRender =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('144');
+var assemble =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
+
+    // 初始化尺寸
+    width = width || canvas.clientWidth;
+    height = height || canvas.clientHeight;
+
+    // 获取绘制画笔
+    var drawPainter = canvasRender(canvas, width, height, {}, isScale);
+
+    // 获取区域画笔
+    var regionPainter = canvasRender(document.createElement('canvas'), width, height, {
+
+        // https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+        willReadFrequently: true
+    });
+
+    var regions = {}; //区域映射表
+    var regionAssemble = assemble(0, 255, 10, 3);
+
+    var drawRegion = false;
+
+    var instance = {
+
+        // 配置画笔
+        config: function () {
+            if (arguments.length === 1) {
+                if (typeof arguments[0] !== "object") return drawPainter.config([arguments[0]]);
+                for (var key in arguments[0]) {
+                    if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(key, arguments[0][key]);
+                    drawPainter.config(key, arguments[0][key]);
+                }
+            } else if (arguments.length === 2) {
+                if (['fillStyle', 'strokeStyle', 'shadowBlur', 'shadowColor'].indexOf(key) < 0) regionPainter.config(arguments[0], arguments[1]);
+                drawPainter.config(arguments[0], arguments[1]);
+            }
+            return instance;
+        },
+
+        // 设置当前绘制区域名称
+        setRegion: function (regionName) {
+            if (regionName === false) {
+                drawRegion = false;
+            } else {
+                drawRegion = true;
+
+                if (regions[regionName] == undefined) {
+                    var tempColor = regionAssemble();
+                    regions[regionName] = "rgb(" + tempColor[0] + "," + tempColor[1] + "," + tempColor[2] + ")";
+                }
+
+                regionPainter.config({
+                    fillStyle: regions[regionName],
+                    strokeStyle: regions[regionName]
+                });
+            }
+
+            return instance;
+        },
+
+        // 获取当前事件触发的区域名称
+        getRegion: function (event) {
+
+            // 获取点击点的颜色
+            var currentRGBA = regionPainter.painter.getImageData(event.offsetX - 0.5, event.offsetY - 0.5, 1, 1).data;
+
+            // 查找当前点击的区域
+            for (var key in regions) {
+                if ("rgb(" + currentRGBA[0] + "," + currentRGBA[1] + "," + currentRGBA[2] + ")" == regions[key]) {
+                    return key;
+                }
+            }
+
+            return false;
+        }
+
+    };
+
+    for (var key in drawPainter) {
+        (function (key) {
+
+            // 如果是获取原生画笔
+            if ('painter' == key) {
+                instance.painter = function () {
+                    return {
+                        draw: drawPainter.painter,
+                        region: regionPainter.painter
+                    };
+                };
+            }
+
+            // 特殊的过滤掉
+            else if (['config'].indexOf(key) < 0) {
+                instance[key] = function () {
+                    if (drawRegion) regionPainter[key].apply(regionPainter, arguments);
+                    var result = drawPainter[key].apply(drawPainter, arguments);
+                    return result.__only__painter__ ? instance : result;
+                };
+
+            }
+        })(key);
+    }
+
+    return instance;
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/canvas/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['129']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('130');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('131');
+__pkg__scope_args__=window.__pkg__getBundle('132');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('129');
+__pkg__scope_args__=window.__pkg__getBundle('130');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -508,10 +1384,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['129']=function(){
+window.__pkg__bundleSrc__['130']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('130');
+    __pkg__scope_args__=window.__pkg__getBundle('131');
 var arc =__pkg__scope_args__.default;
 
 
@@ -630,7 +1506,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['130']=function(){
+window.__pkg__bundleSrc__['131']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -691,7 +1567,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['131']=function(){
+window.__pkg__bundleSrc__['132']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -729,326 +1605,34 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/index
+// Original file:./src/tool/assemble
 /*****************************************************************/
-window.__pkg__bundleSrc__['145']=function(){
+window.__pkg__bundleSrc__['144']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('146');
-var toString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (settings, callback, errorback) {
-
-    var xmlhttp;
-
-    // 如果外部定义了
-    if (isFunction(settings.xhr)) {
-        xmlhttp = settings.xhr();
-    }
-
-    // 否则就内部创建
-    else {
-        xmlhttp = new XMLHttpRequest();
-    }
-
-    // 请求完成回调
-    xmlhttp.onload = function () {
-
-        if (xmlhttp.readyState == 4) {
-
-            callback({
-
-                // 状态码
-                status: xmlhttp.status,
-
-                // 数据
-                data: xmlhttp.responseText
-
-            });
-
-        }
-    };
-
-    // 请求超时回调
-    xmlhttp.ontimeout = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: "请求超时了"
-        });
-    };
-
-    // 请求错误回调
-    xmlhttp.onerror = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: xmlhttp.responseText
-        });
-    };
-
-    xmlhttp.open(settings.method, settings.url, true);
-
-    // 设置请求头
-    for (var key in settings.header) {
-        xmlhttp.setRequestHeader(key, settings.header[key]);
-    }
-
-    // 设置超时时间
-    xmlhttp.timeout = 'timeout' in settings ? settings.timeout : 6000;
-
-    xmlhttp.send(toString(settings.data));
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/toString
-/*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('53');
-var isPlainObject =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (data) {
-
-    // 如果是字符串
-    if (isString(data)) {
-        return data;
-    }
-
-    // 如果是JSON数据
-    else if (isPlainObject(data)) {
-        return JSON.stringify(data);
-    }
-
-    // 如果为空
-    else if (data === undefined) {
-        return "";
-    }
-
-    // 否则
-    else {
-        return data;
-    }
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/tool/toSankeyImageData
-/*****************************************************************/
-window.__pkg__bundleSrc__['374']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 把数据变成容易绘制桑基图的格式
-
-__pkg__scope_bundle__.default= function (data, width, height, x, y) {
-
-    // 每个结点的格式如下
-    /**
-     * {
-     *  // 记录前序结点
-     *  pres:[
-     *          {name:"",value:""},...
-     *      ],
-     *
-     *  // 记录后续结点
-     *  nexts:[
-     *          {name:"",value:""},...
-     *      ],
-     *
-     *  // 记录当前结点的层次
-     *  deep:"",
-     *
-     *  // 值
-     *  value:"",
-     *
-     *  // 位置和大小
-     *  left,top,width,height,
-     *
-     *  值位置
-     *  preTops:[],
-     *  nextTops:[]
-     * }
-     */
-    var nodes = {}, i, j, link, disDeep;
-    for (i = 0; i < data.nodes.length; i++) {
-        nodes[data.nodes[i].name] = {
-            pres: [],
-            nexts: [],
-            deep: 0,
-            _sValue: 0,
-            _tValue: 0,
-            preTops: [],
-            nextTops: []
-        };
-    }
-
-    // 根据连接信息不断更新结点信息
-
-    for (i = 0; i < data.links.length; i++) {
-
-        link = data.links[i];
-
-        // 首先更新起点和终点结点的连接记录
-
-        nodes[link.source].nexts.push({
-            name: link.target,
-            value: link.value
-        });
-        nodes[link.source]._sValue += link.value;
-
-        nodes[link.target].pres.push({
-            name: link.source,
-            value: link.value
-        });
-        nodes[link.target]._tValue += link.value;
-
-        // 然后校对deep
-
-        if (nodes[link.source].deep >= nodes[link.target].deep) {
-
-            disDeep = nodes[link.source].deep + 1 - nodes[link.target].deep;
-
-            // 修改target的deep
-            nodes[link.target].deep += disDeep;
-
-            // 然后对于target和其所有nexts同步提升deep
-            (function reCalcDeep(name, deep) {
-
-                if (nodes[name].deep < deep) {
-                    nodes[name].deep = deep;
-
-                    var _nexts = nodes[name].nexts, j;
-
-                    for (j = 0; j < _nexts.length; j++) {
-                        reCalcDeep(_nexts[j].name, nodes[name].deep + 1);
-                    }
-                }
-
-            })(link.target, nodes[link.target].deep + 1);
-
-        }
-
-    }
-
-    // 计算第一层的总值（用于计算每个点的位置）
-    var values = [];
-    for (i in nodes) {
-        if (values[nodes[i].deep] == undefined) values[nodes[i].deep] = 0;
-        nodes[i].value = nodes[i]._sValue > nodes[i]._tValue ? nodes[i]._sValue : nodes[i]._tValue;
-
-        values[nodes[i].deep] += nodes[i].value;
-
-    }
-
-    // 辅助过会计算位置
-    var topPreDis = [];
-
-    // 求解最大值
-    var maxValue = 0;
-    for (i = 0; i < values.length; i++) {
-        if (maxValue < values[i]) maxValue = values[i];
-        topPreDis.push(0);
-    }
-
-    var _width = width / values.length;
-    var _itemWidth = _width / 3;
-    var _heightDis;
-
-    // 然后，计算出每个结点的位置，大小
-    for (i in nodes) {
-        _heightDis = nodes[i].value / values[nodes[i].deep] * height;
-
-        nodes[i].width = _itemWidth;
-        nodes[i].height = nodes[i].value / maxValue * height * 0.9;
-        nodes[i].left = _width * (nodes[i].deep + 1 / 3) + x;
-        nodes[i].top = topPreDis[nodes[i].deep] + (_heightDis - nodes[i].height) * 0.5 + y;
-
-        nodes[i].preTops.push(nodes[i].top);
-        for (j = 0; j < nodes[i].pres.length; j++) {
-            nodes[i].preTops[j + 1] = nodes[i].preTops[j] + nodes[i].pres[j].value / nodes[i].value * nodes[i].height;
-        }
-
-        nodes[i].nextTops.push(nodes[i].top);
-        for (j = 0; j < nodes[i].nexts.length; j++) {
-            nodes[i].nextTops[j + 1] = nodes[i].nextTops[j] + nodes[i].nexts[j].value / nodes[i].value * nodes[i].height;
-        }
-
-        topPreDis[nodes[i].deep] += _heightDis;
-    }
-
-    return nodes;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/getLoopColors
-/*****************************************************************/
-window.__pkg__bundleSrc__['149']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 获取一组循环色彩
-__pkg__scope_bundle__.default= function (num, alpha) {
-    if (!(alpha && alpha >= 0 && alpha <= 1)) alpha = 1;
-    // 颜色集合
-    var colorList = [
-        'rgba(84,112,198,' + alpha + ")", 'rgba(145,204,117,' + alpha + ")",
-        'rgba(250,200,88,' + alpha + ")", 'rgba(238,102,102,' + alpha + ")",
-        'rgba(115,192,222,' + alpha + ")", 'rgba(59,162,114,' + alpha + ")",
-        'rgba(252,132,82,' + alpha + ")", 'rgba(154,96,180,' + alpha + ")",
-        'rgba(234,124,204,' + alpha + ")"
-    ];
-
-    var colors = [];
-
-    // 根据情况返回颜色数组
-    if (num <= colorList.length) {
-        // 这种情况就不需要任何处理
-        return colorList;
-    } else {
-        // 如果正好是集合长度的倍数
-        if (num % colorList.length == 0) {
-            // 将颜色数组循环加入后再返回
-            for (var i = 0; i < (num / colorList.length); i++) {
-                colors = colors.concat(colorList);
+    __pkg__scope_bundle__.default= function (begin, end, step, count) {
+    var val = [];
+    for (var index = 0; index < count; index++) val[index] = begin;
+
+    // 非常类似进制数，每次调用都+1
+    return function () {
+        for (var i = 0; i < count; i++) {
+
+            // 如果当前位可以进1
+            if (val[i] + step < end) {
+                val[i] = +(val[i] + step).toFixed(7);
+                break;
             }
-        } else {
-            for (var j = 1; j < (num / colorList.length); j++) {
-                colors = colors.concat(colorList);
-            }
-            // 防止最后一个颜色和第一个颜色重复
-            if (num % colorList.length == 1) {
-                colors = colors.concat(colorList[4]);
-            } else {
-                for (var k = 0; k < num % colorList.length; k++) {
-                    colors = colors.concat(colorList[k]);
-                }
+
+            // 如果当前位不可以，那当前位归0，尝试下一位
+            else if (i < count - 1) {
+                val[i] = begin;
             }
         }
+
+        return val;
     }
-
-    // 返回结果
-    return colors;
 };
-
 
     return __pkg__scope_bundle__;
 }

@@ -5,22 +5,22 @@
 window.__pkg__bundleSrc__['77']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('198');
+    __pkg__scope_args__=window.__pkg__getBundle('199');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('199');
+__pkg__scope_args__=window.__pkg__getBundle('200');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('109');
+__pkg__scope_args__=window.__pkg__getBundle('110');
 var animation =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('200');
-
 __pkg__scope_args__=window.__pkg__getBundle('201');
+
+__pkg__scope_args__=window.__pkg__getBundle('202');
 var lazyDialogs =__pkg__scope_args__.default;
 
 
@@ -100,7 +100,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['198']=function(){
+window.__pkg__bundleSrc__['199']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"可视化图表","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[10,11]},{"type":"tag","name":"div","attrs":{"class":"nav","ref":"mynav"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"menu","ref":"mymenu"},"childNodes":[12,16,21,25,30,34,39,43,48,52,54,58,63,67,69,73,75,79,92,96,98,102,107,111,116,120,125,129,131,135,140,144,149,153,162,166]},{"type":"tag","name":"h4","attrs":{},"childNodes":[13,14]},{"type":"text","content":"折线图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[15]},{"type":"text","content":"line","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[17]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"line-multiple-x-axis"},"childNodes":[18,19]},{"type":"tag","name":"div","attrs":{"class":"line-multiple-x-axis"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[20]},{"type":"text","content":"多X轴折线图","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[22,23]},{"type":"text","content":"柱状图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[24]},{"type":"text","content":"bar","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[26]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"bar-polar-real-estate"},"childNodes":[27,28]},{"type":"tag","name":"div","attrs":{"class":"bar-polar-real-estate"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[29]},{"type":"text","content":"极坐标下的柱状图","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[31,32]},{"type":"text","content":"饼图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[33]},{"type":"text","content":"pie","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[35]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"pie-simple"},"childNodes":[36,37]},{"type":"tag","name":"div","attrs":{"class":"pie-simple"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[38]},{"type":"text","content":"简单的饼图","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[40,41]},{"type":"text","content":"散点图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[42]},{"type":"text","content":"scatter","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[44]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"scatter-bubble-gradient"},"childNodes":[45,46]},{"type":"tag","name":"div","attrs":{"class":"scatter-bubble-gradient"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[47]},{"type":"text","content":"渐变气泡图","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[49,50]},{"type":"text","content":"地理坐标/地图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[51]},{"type":"text","content":"map","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[53]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[55,56]},{"type":"text","content":"K线图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[57]},{"type":"text","content":"candlestick","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[59]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"candlestick-simple"},"childNodes":[60,61]},{"type":"tag","name":"div","attrs":{"class":"candlestick-simple"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[62]},{"type":"text","content":"基础K线图","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[64,65]},{"type":"text","content":"雷达图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[66]},{"type":"text","content":"radar","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[68]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[70,71]},{"type":"text","content":"关系图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[72]},{"type":"text","content":"graph","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[74]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[76,77]},{"type":"text","content":"树图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[78]},{"type":"text","content":"tree","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[80,84,88]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"tree-layout-lr"},"childNodes":[81,82]},{"type":"tag","name":"div","attrs":{"class":"tree-layout-lr"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[83]},{"type":"text","content":"从左到右树状图","childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"tree-radial"},"childNodes":[85,86]},{"type":"tag","name":"div","attrs":{"class":"tree-radial"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[87]},{"type":"text","content":"径向树状图","childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"css-tree-topleft"},"childNodes":[89,90]},{"type":"tag","name":"div","attrs":{"class":"css-tree-topleft"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[91]},{"type":"text","content":"水平向下向左树","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[93,94]},{"type":"text","content":"矩形树图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[95]},{"type":"text","content":"treemap","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[97]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[99,100]},{"type":"text","content":"旭日图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[101]},{"type":"text","content":"sunburst","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[103]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"sunburst-visualMap"},"childNodes":[104,105]},{"type":"tag","name":"div","attrs":{"class":"sunburst-visualMap"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[106]},{"type":"text","content":"旭日图使用视觉编码","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[108,109]},{"type":"text","content":"平行坐标系","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[110]},{"type":"text","content":"parallel","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[112]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"parallel-simple"},"childNodes":[113,114]},{"type":"tag","name":"div","attrs":{"class":"parallel-simple"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[115]},{"type":"text","content":"基础平行坐标","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[117,118]},{"type":"text","content":"桑基图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[119]},{"type":"text","content":"sankey","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[121]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"sankey-nodeAlign-left"},"childNodes":[122,123]},{"type":"tag","name":"div","attrs":{"class":"sankey-nodeAlign-left"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[124]},{"type":"text","content":"桑基图左对齐布局","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[126,127]},{"type":"text","content":"漏斗图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[128]},{"type":"text","content":"funnel","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[130]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[132,133]},{"type":"text","content":"仪表盘","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[134]},{"type":"text","content":"gauge","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[136]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"gauge-barometer"},"childNodes":[137,138]},{"type":"tag","name":"div","attrs":{"class":"gauge-barometer"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[139]},{"type":"text","content":"气压表","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[141,142]},{"type":"text","content":"数据区域缩放","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[143]},{"type":"text","content":"dataZoom","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[145]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"zoom-line"},"childNodes":[146,147]},{"type":"tag","name":"div","attrs":{"class":"zoom-line"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[148]},{"type":"text","content":"可缩放折线图","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[150,151]},{"type":"text","content":"自定义系列","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[152]},{"type":"text","content":"custom","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[154,158]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"money-schedule"},"childNodes":[155,156]},{"type":"tag","name":"div","attrs":{"class":"money-schedule"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[157]},{"type":"text","content":"金额波浪球","childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"single-wave"},"childNodes":[159,160]},{"type":"tag","name":"div","attrs":{"class":"single-wave"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[161]},{"type":"text","content":"单波进度球","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[163,164]},{"type":"text","content":"三维图形","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[165]},{"type":"text","content":"WebGL","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[167]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"h2o"},"childNodes":[168,169]},{"type":"tag","name":"div","attrs":{"class":"h2o"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[170]},{"type":"text","content":"水分子式H2O","childNodes":[]}]
@@ -111,7 +111,7 @@ window.__pkg__bundleSrc__['198']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['199']=function(){
+window.__pkg__bundleSrc__['200']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -125,7 +125,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['109']=function(){
+window.__pkg__bundleSrc__['110']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈
@@ -240,7 +240,7 @@ __pkg__scope_bundle__.default= function (doback, duration, callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['200']=function(){
+window.__pkg__bundleSrc__['201']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -254,89 +254,89 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['201']=function(){
+window.__pkg__bundleSrc__['202']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 简单的饼图
     "pie-simple": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle44.js','202')
+        return window.__pkg__getLazyBundle('./dist/bundle45.js','203')
     },
 
     // 多X轴折线图
     "line-multiple-x-axis": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle45.js','203')
+        return window.__pkg__getLazyBundle('./dist/bundle46.js','204')
     },
 
     // 极坐标下的柱状图
     "bar-polar-real-estate": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle46.js','204')
+        return window.__pkg__getLazyBundle('./dist/bundle47.js','205')
     },
 
     // 渐变气泡图
     "scatter-bubble-gradient": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle47.js','205')
+        return window.__pkg__getLazyBundle('./dist/bundle48.js','206')
     },
 
     // 基础K线图
     "candlestick-simple": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle48.js','206')
+        return window.__pkg__getLazyBundle('./dist/bundle49.js','207')
     },
 
     // 气压表
     "gauge-barometer": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle49.js','207')
+        return window.__pkg__getLazyBundle('./dist/bundle50.js','208')
     },
 
     // 旭日图使用视觉编码
     "sunburst-visualMap": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle50.js','208')
+        return window.__pkg__getLazyBundle('./dist/bundle51.js','209')
     },
 
     // 基础平行坐标
     "parallel-simple": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle51.js','209')
+        return window.__pkg__getLazyBundle('./dist/bundle52.js','210')
     },
 
     // 金额波浪球
     "money-schedule": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle52.js','210')
+        return window.__pkg__getLazyBundle('./dist/bundle53.js','211')
     },
 
     // 水分子式H2O
     "h2o": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle53.js','211')
+        return window.__pkg__getLazyBundle('./dist/bundle54.js','212')
     },
 
     // 可缩放折线图
     "zoom-line": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle54.js','212')
+        return window.__pkg__getLazyBundle('./dist/bundle55.js','213')
     },
 
     // 从左到右树状图
     "tree-layout-lr": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle55.js','213')
+        return window.__pkg__getLazyBundle('./dist/bundle56.js','214')
     },
 
     // 桑基图左对齐布局
     "sankey-nodeAlign-left": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle56.js','214')
+        return window.__pkg__getLazyBundle('./dist/bundle57.js','215')
     },
 
     // 径向树状图
     "tree-radial": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle57.js','215')
+        return window.__pkg__getLazyBundle('./dist/bundle58.js','216')
     },
 
     // 单波进度球
     "single-wave": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle58.js','216')
+        return window.__pkg__getLazyBundle('./dist/bundle59.js','217')
     },
 
     // 水平向下向左树
     "css-tree-topleft": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle59.js','217')
+        return window.__pkg__getLazyBundle('./dist/bundle60.js','218')
     }
 };
 

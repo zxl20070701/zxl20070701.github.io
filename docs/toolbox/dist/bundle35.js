@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['91']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('318');
+    __pkg__scope_args__=window.__pkg__getBundle('319');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('319');
+__pkg__scope_args__=window.__pkg__getBundle('320');
 
 
 __pkg__scope_bundle__.default= function (obj) {
@@ -100,7 +100,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/recorder-screen/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['318']=function(){
+window.__pkg__bundleSrc__['319']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,11]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"startRecorder","ui-bind:active":"isRun?'no':'yes'"},"childNodes":[10]},{"type":"text","content":"启动","childNodes":[]},{"type":"tag","name":"video","attrs":{"ref":"video"},"childNodes":[]}]
@@ -111,7 +111,7 @@ window.__pkg__bundleSrc__['318']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/recorder-screen/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['319']=function(){
+window.__pkg__bundleSrc__['320']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

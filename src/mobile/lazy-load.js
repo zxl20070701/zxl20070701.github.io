@@ -50,4 +50,9 @@ export default {
         return import('./format-json/index.js')
     },
 
+    // 视频播放器
+    "video-play": function () {
+        return import('./video-play/index.js')
+    }
+
 };

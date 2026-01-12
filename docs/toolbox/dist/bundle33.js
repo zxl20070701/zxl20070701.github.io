@@ -5,19 +5,19 @@
 window.__pkg__bundleSrc__['89']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('310');
+    __pkg__scope_args__=window.__pkg__getBundle('311');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('311');
+__pkg__scope_args__=window.__pkg__getBundle('312');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('312');
-
 __pkg__scope_args__=window.__pkg__getBundle('313');
+
+__pkg__scope_args__=window.__pkg__getBundle('314');
 var lazyDialogs =__pkg__scope_args__.default;
 
 
@@ -62,7 +62,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/echarts/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['310']=function(){
+window.__pkg__bundleSrc__['311']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"可视化图表","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[10]},{"type":"tag","name":"div","attrs":{"class":"menu","ref":"mymenu"},"childNodes":[11,15,20,24,26,30,32,36,38,42,44,48,50,54,56,60,62,66,68,72,74,78,80,84,86,90,92,96,98,102,107,111,113,117,119,123]},{"type":"tag","name":"h4","attrs":{},"childNodes":[12,13]},{"type":"text","content":"折线图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[14]},{"type":"text","content":"line","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[16]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"line-multiple-x-axis"},"childNodes":[17,18]},{"type":"tag","name":"div","attrs":{"class":"line-multiple-x-axis"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[19]},{"type":"text","content":"多X轴折线图","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[21,22]},{"type":"text","content":"柱状图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[23]},{"type":"text","content":"bar","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[25]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[27,28]},{"type":"text","content":"饼图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[29]},{"type":"text","content":"pie","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[31]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[33,34]},{"type":"text","content":"散点图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[35]},{"type":"text","content":"scatter","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[37]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[39,40]},{"type":"text","content":"地理坐标/地图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[41]},{"type":"text","content":"map","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[43]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[45,46]},{"type":"text","content":"K线图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[47]},{"type":"text","content":"candlestick","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[49]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[51,52]},{"type":"text","content":"雷达图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[53]},{"type":"text","content":"radar","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[55]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[57,58]},{"type":"text","content":"关系图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[59]},{"type":"text","content":"graph","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[61]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[63,64]},{"type":"text","content":"树图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[65]},{"type":"text","content":"tree","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[67]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[69,70]},{"type":"text","content":"矩形树图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[71]},{"type":"text","content":"treemap","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[73]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[75,76]},{"type":"text","content":"旭日图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[77]},{"type":"text","content":"sunburst","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[79]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[81,82]},{"type":"text","content":"平行坐标系","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[83]},{"type":"text","content":"parallel","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[85]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[87,88]},{"type":"text","content":"桑基图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[89]},{"type":"text","content":"sankey","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[91]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[93,94]},{"type":"text","content":"漏斗图","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[95]},{"type":"text","content":"funnel","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[97]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[99,100]},{"type":"text","content":"仪表盘","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[101]},{"type":"text","content":"gauge","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[103]},{"type":"tag","name":"li","attrs":{"ui-on:click":"openExamples","tag":"gauge-barometer"},"childNodes":[104,105]},{"type":"tag","name":"div","attrs":{"class":"gauge-barometer"},"childNodes":[]},{"type":"tag","name":"h6","attrs":{},"childNodes":[106]},{"type":"text","content":"气压表","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[108,109]},{"type":"text","content":"数据区域缩放","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[110]},{"type":"text","content":"dataZoom","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[112]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[114,115]},{"type":"text","content":"自定义系列","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[116]},{"type":"text","content":"custom","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[118]},{"type":"tag","name":"li","attrs":{},"childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[120,121]},{"type":"text","content":"三维图形","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[122]},{"type":"text","content":"WebGL","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[124]},{"type":"tag","name":"li","attrs":{},"childNodes":[]}]
@@ -73,7 +73,7 @@ window.__pkg__bundleSrc__['310']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/echarts/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['311']=function(){
+window.__pkg__bundleSrc__['312']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -87,7 +87,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/echarts/dialogs/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['312']=function(){
+window.__pkg__bundleSrc__['313']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -101,19 +101,19 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/echarts/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['313']=function(){
+window.__pkg__bundleSrc__['314']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 多X轴折线图
     "line-multiple-x-axis": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle67.js','314')
+        return window.__pkg__getLazyBundle('./dist/bundle68.js','315')
     },
 
     // 气压表
     "gauge-barometer": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle68.js','315')
+        return window.__pkg__getLazyBundle('./dist/bundle69.js','316')
     }
 
 };

@@ -1,0 +1,16 @@
+<header class="top-title">
+    <div>
+        <button class="goback" ui-on:click.stop="$minView">返回</button>
+        <h2>视频播放器</h2>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+</header>
+<label for="videoFile">
+    选择文件
+</label>
+<div ui-bind:active="videoSrc?'yes':'no'">
+    <video ui-bind:src="videoSrc" controls></video>
+</div>
+<div class="no-view">
+    <input id="videoFile" type="file" accept="video/*" ui-on:change="openVideo">
+</div>

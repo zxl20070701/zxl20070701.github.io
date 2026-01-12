@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['86']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('304');
+    __pkg__scope_args__=window.__pkg__getBundle('305');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('305');
+__pkg__scope_args__=window.__pkg__getBundle('306');
 
 
 __pkg__scope_bundle__.default= function (obj) {
@@ -28,7 +28,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/browser/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['304']=function(){
+window.__pkg__bundleSrc__['305']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"浏览器","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]}]
@@ -39,7 +39,7 @@ window.__pkg__bundleSrc__['304']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/browser/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['305']=function(){
+window.__pkg__bundleSrc__['306']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
