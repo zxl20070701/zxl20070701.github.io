@@ -19,6 +19,7 @@
         <span ui-bind="project.author.name"></span>
     </a>
     <hr />
+    <div ui-on:click="openDialog" tag="api">开发文档</div>
     <div ui-on:click="openDialog" tag="debugger">调试工具</div>
     <a target="_blank" ui-bind:href="project.bugs">提建议</a>
     <hr />

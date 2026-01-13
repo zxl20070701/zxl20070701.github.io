@@ -1,0 +1,37 @@
+<header ui-dragdrop>
+    <h2>开发文档</h2>
+    <i ui-on:click="$closeDialog" id="api-close">×</i>
+</header>
+<div class="tips">
+    温馨提示：此文档提供的所有功能都是内置的，只能在本项目中使用。
+</div>
+<div class="content">
+    <div class="menu">
+        <div>
+            <h1 tag="framework" ui-on:click="loadApiPage" id="init-api-el">内置框架</h1>
+            <div></div>
+        </div>
+        <div>
+            <h1 tag="editor" ui-on:click="loadApiPage">代码编辑器</h1>
+            <div></div>
+        </div>
+        <div>
+            <h1 tag="webgl" ui-on:click="loadApiPage">3D绘图 WebGL</h1>
+            <div></div>
+        </div>
+        <div>
+            <h1 tag="canvas" ui-on:click="loadApiPage">位图画笔 Canvas</h1>
+            <div></div>
+        </div>
+        <div>
+            <h1 tag="color-picker" ui-on:click="loadApiPage">颜色选择器</h1>
+            <div></div>
+        </div>
+        <div>
+            <h1 tag="svg" ui-on:click="loadApiPage">矢图画笔 SVG</h1>
+            <div></div>
+        </div>
+    </div>
+    <div class="content" id="api-content">
+    </div>
+</div>

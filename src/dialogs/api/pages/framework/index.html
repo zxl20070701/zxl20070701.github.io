@@ -1,0 +1,124 @@
+<header>
+    内置框架
+</header>
+<p>
+    为了更好的维护本网站，我们提供了一个极小的“框架”用于协调资源和代码，主要包括两个方面：打包工具 + 前端框架。
+</p>
+<h2>
+    打包工具
+</h2>
+<p>
+    工具的入口分为开发dev和生产build，分别位于：
+    <span class="important">./bin/pkg/server</span>
+    和 <span class="important">./bin/pkg/builder</span> 处。
+    此外，用于解析各种类型的文件的代码存放在：<span class="important">./bin/loader</span> 下。
+</p>
+<h2>
+    前端框架
+</h2>
+<p>
+    其实就是一些零碎的方法，用于给html页面赋予有用的功能。
+</p>
+<h3>
+    useTemplate
+</h3>
+<pre>
+import useTemplate from "./src/framework/useTemplate";
+var instance = useTemplate(el, pageFunction, props);
+</pre>
+<p>
+    返回的实例instance表示新的内容对象，而传递的pageFunction是一个函数，包含了意图。
+</p>
+<h4>
+    pageFunction
+</h4>
+<pre>
+function (obj, props) {
+    return {
+
+        render: template, // 模板
+        data: {}, // 数据
+
+        /*
+         * 生命周期
+         *
+         * 视图、窗口、弹框等不一定都实现了下面的钩子，
+         * 只不过，如果实现了，都会按照规范下面起名
+         *
+         * 部分钩子可以设计返回一个布尔值控制默认操作是否执行
+         */
+        beforeMount: function () {}, // 挂载前
+        mounted: function () {}, // 挂载后
+        beforeUpdate: function () {}, // 数据改变前
+        updated: function () {}, // 数据改变后
+        beforeDestory: function () {}, // 组件销毁前
+        destoryed: function () {}, // 组件销毁后
+        minimize: function () {}, // 组件最小化前
+        reshow: function () {}, // 组件恢复显示后
+        beforeFocus: function () {}, // 组件聚焦显示前
+        focused: function () {}, // 组件聚焦显示后
+        beforeUnfocus: function () {}, // 组件失去聚焦前
+        unfocused: function () {}, // 组件失去聚焦后
+        show: function () {}, // 组件显示
+        hidden: function () {}, // 组件隐藏
+
+        methods: {} // 方法
+    };
+};
+</pre>
+<p>
+    可以看出来，这个函数有一个形参数obj，其中有一些有用的方法。
+</p>
+<h4>
+    obj.ref
+</h4>
+<pre>
+    data:{
+        param:obj.ref(initValue)
+    }
+</pre>
+<p>
+    如此定义的数据，就可以在方法、钩子等中通过 this.param 使用了，而通过指令等，也可以在页面使用，可以实现视图和数据等绑定。
+</p>
+<h4>
+    obj.reactive
+</h4>
+<pre>
+    data:{
+        param:obj.reactive(initValue)
+    }
+</pre>
+<p>
+    和 ref 类似，唯一不同的是，前者不支持数据改变的深度监听。
+</p>
+<h3>
+    指令
+</h3>
+<p>
+    全局指令都存放在 ./src/directives 中，定义一个指令的语法非常简单：
+</p>
+<pre>
+export default {
+    inserted: function (el, binding) { 
+        // 初始化插入页面触发
+    },
+    update: function (el, binding) { 
+        // 数据改变触发
+    }
+};
+</pre>
+<h3>
+    ref
+</h3>
+<p>
+    如果你希望获取页面中一个节点，可以提前使用下面的方法标记一下：
+</p>
+<pre>
+    <canvas ref="mycanvas"></canvas>
+</pre>
+<p>
+    然后使用的时候就可以通过ref语法获取：
+</p>
+<pre>
+    var canvas = this._refs.mycanvas.value;
+</pre>

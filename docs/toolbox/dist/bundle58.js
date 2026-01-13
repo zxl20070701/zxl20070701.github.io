@@ -1,28 +1,25 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/tree-radial/index.js
+// Original file:./src/pages/echarts/dialogs/sunburst-visualMap/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['216']=function(){
+window.__pkg__bundleSrc__['219']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('378');
+    __pkg__scope_args__=window.__pkg__getBundle('365');
 var template =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('260');
+__pkg__scope_args__=window.__pkg__getBundle('270');
 var ResizeObserver =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('146');
-var xhr =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('116');
+var animation =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('372');
-var TreeLayout =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('143');
+__pkg__scope_args__=window.__pkg__getBundle('153');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('154');
-var move =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('165');
+var rotate =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -34,112 +31,225 @@ __pkg__scope_bundle__.default= function (obj, props) {
             srcUrl: props.srcUrl
         },
         mounted: function () {
-            var _this = this;
 
-            xhr({
-                method: "GET",
-                url: "../data/flare.json"
-            }, function (data) {
-                if (data.status == 200) {
+            var data = {
+                value: 39,
+                children: [
+                    {
+                        name: 'Grandpa',
+                        value: 29,
+                        children: [
+                            {
+                                name: 'Uncle Leo',
+                                value: 15,
+                                children: [
+                                    {
+                                        name: 'Cousin Mary',
+                                        value: 5,
+                                        children: [
+                                            {
+                                                name: 'Jackson',
+                                                value: 2
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Cousin Ben',
+                                        value: 4
+                                    },
+                                    {
+                                        name: 'Cousin Jack',
+                                        value: 2
+                                    }
+                                ]
+                            },
+                            {
+                                name: 'Father',
+                                value: 10,
+                                children: [
+                                    {
+                                        name: 'Me',
+                                        value: 5
+                                    },
+                                    {
+                                        name: 'Brother Peter',
+                                        value: 1
+                                    }
+                                ]
+                            },
+                            {
+                                name: 'Aunt Jane',
+                                value: 4,
+                                children: [
+                                    {
+                                        name: 'Cousin Kate',
+                                        value: 4
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Mike',
+                        value: 7,
+                        children: [
+                            {
+                                name: 'Uncle Dan',
+                                value: 7,
+                                children: [
+                                    {
+                                        name: 'Cousin Luck',
+                                        value: 4,
+                                        children: [
+                                            {
+                                                name: 'Nephew',
+                                                value: 2
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Cousin Lucy',
+                                        value: 3
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Nancy',
+                        value: 3,
+                        children: [
+                            {
+                                name: 'Uncle Nike',
+                                value: 3,
+                                children: [
+                                    {
+                                        name: 'Cousin Jenny',
+                                        value: 2
+                                    },
+                                    {
+                                        name: 'Cousin Betty',
+                                        value: 1
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            };
 
-                    var mycontent = _this._refs.mycontent.value;
-                    var mycanvas = _this._refs.mycanvas.value;
+            var mycontent = this._refs.mycontent.value;
+            var mycanvas = this._refs.mycanvas.value;
 
-                    var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight), pid;
+            var painter, cx, cy, radius, updateView, legendColor, x, y, w, h, beginDeg = -Math.PI * 0.5;
 
-                    var cx = mycontent.clientWidth * 0.5, cy = mycontent.clientHeight * 0.5;
+            // 色彩
+            var colors = ['#2F93C8', '#AEC48F', '#FFDB5C', '#F98862'];
 
-                    var treeLayout = new TreeLayout({
-                        "id": function (treedata) {
-                            return treedata.name
-                        }
-                    }).setOption({
-                        type: "circle",
-                        x: cx,
-                        y: cy,
-                        radius: Math.min(mycontent.clientWidth, mycontent.clientHeight) * 0.5 - 100
-                    }).bind(JSON.parse(data.data), function (tree) {
-                        painter.config({
-                            fontSize: 9
-                        }).clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
+            ResizeObserver(mycontent, function () {
 
-                        // 绘制连线
-                        painter.setRegion("").config({
-                            strokeStyle: '#cccccc'
-                        });
-                        for (var key in tree.node) {
-                            if (tree.node[key].show && key != tree.root) {
-                                pid = tree.node[key].pid
+                painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight);
 
-                                let x1 = tree.node[key].left, y1 = tree.node[key].top;
-                                let x2 = tree.node[pid].left, y2 = tree.node[pid].top;
-                                if (pid == tree.root) {
-                                    painter
-                                        .beginPath()
-                                        .moveTo(x1, y1)
-                                        .bezierCurveTo(
-                                            ...move(cx - 30 - x1, cy - 30 - y1, 30, x1, y1),
-                                            ...move(x2 - cx + 30, y2 - cy + 30, 30, x2, y2),
-                                            x2, y2
-                                        ).stroke();
-                                } else {
-                                    painter
-                                        .beginPath()
-                                        .moveTo(x1, y1)
-                                        .bezierCurveTo(
-                                            ...move(cx - x1, cy - y1, 30, x1, y1),
-                                            ...move(x2 - cx, y2 - cy, 30, x2, y2),
-                                            x2, y2
-                                        ).stroke();
+                x = 20, y = mycontent.clientHeight - 175, w = 20, h = 160;
+                legendColor = painter.createLinearGradient(x, y + h, x, y)
+                    .addColorStop(0, colors[0])
+                    .addColorStop(0.33, colors[1])
+                    .addColorStop(0.66, colors[2])
+                    .addColorStop(1, colors[3])
+                    .value();
+
+                // 圆心和半径
+                cx = mycontent.clientWidth * 0.5;
+                cy = mycontent.clientHeight * 0.5;
+                radius = Math.max(Math.min(cx, cy) - 50, 0) * 0.25;
+
+                if (radius <= 0) return;
+
+                updateView = function (deep, hover) {
+                    painter.clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight).setRegion("");
+
+                    // 颜色矩形
+                    painter.config({
+                        "fillStyle": legendColor
+                    }).fillRect(x, y, w, h);
+
+                    painter.config({
+                        "strokeStyle": "white",
+                        "textAlign": "center",
+                        "fontWeight": 200,
+                        "fontSize": 12
+                    });
+                    (function doit(data, beginDeg, deg, radiusNum, isSelect) {
+                        if (data.children) {
+                            for (var i = 0; i < data.children.length; i++) {
+                                var curDeg = deg * data.children[i].value / data.value;
+                                var colorVal = data.children[i].value >= 10 ? 9.9 : data.children[i].value;
+                                var colorX = x + w * 0.5, colorY = y + (10 - colorVal) * 0.1 * h;
+
+                                var _isSelect = isSelect;
+                                var curColor = painter.getColor(colorX, colorY);
+
+                                if (hover == data.children[i].name) {
+                                    _isSelect = true;
+
+                                    // 绘制吸管圈
+                                    painter.config({
+                                        "fillStyle": curColor,
+                                        "strokeStyle": "white"
+                                    }).fullCircle(colorX, colorY, 5)
+
+                                        .config({
+                                            "fillStyle": "black"
+                                        })
+
+                                        // 值文字
+                                        .fillText(data.children[i].value, colorX + 20, colorY);
+
                                 }
+
+                                painter.config({
+
+                                    // 吸取指定数据的颜色
+                                    "fillStyle": curColor
+                                }).setRegion(data.children[i].name).fullArc(cx, cy, radiusNum * radius, (radiusNum + deep) * radius, beginDeg, curDeg);
+
+                                if (hover && !_isSelect) {
+                                    painter.config({
+                                        "fillStyle": "rgba(255,255,255,0.5)"
+                                    }).fullArc(cx, cy, radiusNum * radius, (radiusNum + deep) * radius, beginDeg, curDeg);
+                                }
+
+                                var textP = rotate(cx, cy, beginDeg + curDeg * 0.5, cx + (radiusNum + 0.5) * radius, cy);
+
+                                // 绘制文字
+                                painter.config({
+                                    "fillStyle": "rgba(0,0,0," + deep + ")"
+                                }).fillText(data.children[i].name, textP[0], textP[1], (beginDeg + curDeg * 0.5 > Math.PI * 0.5 && beginDeg + curDeg * 0.5 < Math.PI * 1.5) ? Math.PI + beginDeg + curDeg * 0.5 : beginDeg + curDeg * 0.5);
+
+                                doit(data.children[i], beginDeg, curDeg, radiusNum + 1, _isSelect);
+                                beginDeg += curDeg;
                             }
                         }
+                    })(data, beginDeg, Math.PI * 2, 0);
 
-                        // 绘制节点和文字
-                        painter.config({
-                            strokeStyle: '#b0c4de'
-                        });
-                        for (var key in tree.node) {
-                            if (tree.node[key].show) {
-                                if (!tree.node[key].isOpen && tree.node[key].children.length > 0) {
-                                    painter.config({
-                                        fillStyle: "#b0c4de"
-                                    });
-                                } else {
-                                    painter.config({
-                                        fillStyle: "#ffffff"
-                                    });
-                                }
-                                painter.setRegion(key).fullCircle(tree.node[key].left, tree.node[key].top, 4)
+                };
 
-                                painter.setRegion("").config({
-                                    fillStyle: "black"
-                                }).fillText("   " + key.replace(/\-\d+$/, ''), tree.node[key].left, tree.node[key].top, tree.node[key].deg);
-                            }
-                        }
+                animation(function (deep) {
+                    updateView(deep);
+                }, 300);
 
-                    });
+            });
 
-                    ResizeObserver(mycontent, function () {
-                        cx = mycontent.clientWidth * 0.5;
-                        cy = mycontent.clientHeight * 0.5;
-                        painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight);
+            mycanvas.addEventListener('mousemove', function (event) {
+                if (painter) {
+                    var regionName = painter.getRegion(event);
 
-                        treeLayout.setOption({
-                            x: cx,
-                            y: cy,
-                            radius: Math.min(mycontent.clientWidth, mycontent.clientHeight) * 0.5 - 100
-                        }).doUpdate();
-                    });
+                    updateView(1, regionName)
+                    mycanvas.style.cursor = regionName ? 'pointer' : 'default';
 
-                    mycontent.addEventListener('click', function (event) {
-                        var regionName = painter.getRegion(event);
-                        if (regionName) {
-                            treeLayout.toggleNode(regionName);
-                        }
-                    });
                 }
             });
+
         }
     };
 };
@@ -148,12 +258,12 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/tree-radial/index.html
+// Original file:./src/pages/echarts/dialogs/sunburst-visualMap/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['378']=function(){
+window.__pkg__bundleSrc__['365']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"径向树状图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"旭日图使用视觉编码","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -161,7 +271,7 @@ window.__pkg__bundleSrc__['378']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['260']=function(){
+window.__pkg__bundleSrc__['270']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -242,604 +352,9 @@ __pkg__scope_bundle__.default= function (el, doback) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('147');
-var toString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (settings, callback, errorback) {
-
-    var xmlhttp;
-
-    // 如果外部定义了
-    if (isFunction(settings.xhr)) {
-        xmlhttp = settings.xhr();
-    }
-
-    // 否则就内部创建
-    else {
-        xmlhttp = new XMLHttpRequest();
-    }
-
-    // 请求完成回调
-    xmlhttp.onload = function () {
-
-        if (xmlhttp.readyState == 4) {
-
-            callback({
-
-                // 状态码
-                status: xmlhttp.status,
-
-                // 数据
-                data: xmlhttp.responseText
-
-            });
-
-        }
-    };
-
-    // 请求超时回调
-    xmlhttp.ontimeout = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: "请求超时了"
-        });
-    };
-
-    // 请求错误回调
-    xmlhttp.onerror = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: xmlhttp.responseText
-        });
-    };
-
-    xmlhttp.open(settings.method, settings.url, true);
-
-    // 设置请求头
-    for (var key in settings.header) {
-        xmlhttp.setRequestHeader(key, settings.header[key]);
-    }
-
-    // 设置超时时间
-    xmlhttp.timeout = 'timeout' in settings ? settings.timeout : 6000;
-
-    xmlhttp.send(toString(settings.data));
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/toString
-/*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('53');
-var isPlainObject =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (data) {
-
-    // 如果是字符串
-    if (isString(data)) {
-        return data;
-    }
-
-    // 如果是JSON数据
-    else if (isPlainObject(data)) {
-        return JSON.stringify(data);
-    }
-
-    // 如果为空
-    else if (data === undefined) {
-        return "";
-    }
-
-    // 否则
-    else {
-        return data;
-    }
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/treeLayout/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['372']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('373');
-var Tree =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('153');
-var initConfig=__pkg__scope_args__.initConfig;
-
-__pkg__scope_args__=window.__pkg__getBundle('110');
-var animation =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('155');
-var rotate =__pkg__scope_args__.default;
-
-
-function TreeLayout(config) {
-
-    this.__option = {
-        offsetX: 0,
-        offsetY: 0,
-        duration: 500,
-        type: "plain",
-        direction: "LR",
-        x: 100,
-        y: 100,
-        width: 100,
-        height: 100,
-        radius: 100
-    };
-
-    this.__rback = null;
-    this.__oralTree = null;
-    this.__preTree = null;
-
-    this.__noOpens = {};
-
-    this.__Tree = new Tree(config);
-
-    return this;
-}
-
-TreeLayout.prototype.setOption = function (option) {
-    initConfig(this.__option, option);
-    return this;
-};
-
-TreeLayout.prototype.use = function (initTree, noOpens) {
-    noOpens = noOpens || {};
-
-    var tree = this.__Tree.use(initTree, noOpens);
-
-    // 校对偏差
-    if (this.__option.offsetX != 0 || this.__option.offsetY != 0) {
-        for (var key in tree.node) {
-            if (!tree.node[key].show) {
-
-                var deep = 0, pid = key;
-                do {
-                    pid = tree.node[pid].pid;
-                    deep++;
-                } while (!tree.node[pid].show);
-
-                tree.node[key].left += this.__option.offsetX * deep;
-                tree.node[key].top += this.__option.offsetY * deep;
-            }
-        }
-    }
-
-    if (this.__option.type == 'rect') {
-        if (this.__option.direction == 'LR' || this.__option.direction == "RL") {
-
-            var perW = this.__option.height / tree.size
-            var perD = this.__option.width / (tree.deep - 1)
-
-            var balanceW = this.__option.y - this.__option.height * 0.5
-            var flag = this.__option.direction == 'LR' ? 1 : -1
-
-            for (var key in tree.node) {
-                if (tree.deep == 1) {
-                    tree.node[key].left = this.__option.x + this.__option.width * 0.5 * flag
-                    tree.node[key].top = this.__option.y
-                } else {
-                    tree.node[key].left = this.__option.x + (tree.node[key].left - 0.5) * perD * flag
-                    tree.node[key].top = tree.node[key].top * perW + balanceW
-                }
-            }
-        } else if (this.__option.direction == 'TB' || this.__option.direction == "BT") {
-
-            var perW = this.__option.width / tree.size;
-            var perD = this.__option.height / (tree.deep - 1);
-
-            var balanceW = this.__option.x - this.__option.width * 0.5;
-            var flag = this.__option.direction == 'TB' ? 1 : -1;
-
-            for (var key in tree.node) {
-                tree.node[key].deg = this.__option.direction == 'TB' ? Math.PI * 0.5 : Math.PI * -0.5;
-
-                if (tree.deep == 1) {
-                    tree.node[key].left = this.__option.x;
-                    tree.node[key].top = this.__option.y + this.__option.height * 0.5 * flag;
-                } else {
-                    var left = tree.node[key].left;
-
-                    tree.node[key].left = tree.node[key].top * perW + balanceW;
-                    tree.node[key].top = this.__option.y + (left - 0.5) * perD * flag;
-                }
-            }
-
-        }
-
-    } else if (this.__option.type == 'circle') {
-        var cx = this.__option.x, cy = this.__option.y;
-        var deg = Math.PI * 2 / tree.size;
-        var per = this.__option.radius / (tree.deep - 1);
-
-        for (var key in tree.node) {
-            if (tree.node[key].left == 0.5) {
-                tree.node[key].left = cx;
-                tree.node[key].top = cy;
-            } else {
-                var position = rotate(cx, cy, deg * tree.node[key].top, cx + (tree.node[key].left - 0.5) * per, cy);
-
-                tree.node[key].deg = deg * tree.node[key].top;
-                tree.node[key].left = position[0];
-                tree.node[key].top = position[1];
-            }
-        }
-    }
-
-    return tree;
-};
-
-TreeLayout.prototype.bind = function (initTree, renderBack, noOpens) {
-    noOpens = noOpens || {};
-
-    this.__rback = renderBack;
-    this.__oralTree = initTree;
-    this.__noOpens = noOpens;
-
-    this.__preTree = this.use(this.__oralTree, this.__noOpens);
-    this.__rback(this.__preTree);
-
-    return this;
-};
-
-TreeLayout.prototype.unbind = function () {
-    this.__rback = function () { return null };
-    this.__oralTree = null;
-    this.__preTree = null;
-    this.__noOpens = {};
-    return this;
-};
-
-TreeLayout.prototype.doUpdate = function () {
-    var newTree = this.use(this.__oralTree, this.__noOpens);
-
-    var cacheTree = JSON.parse(JSON.stringify(newTree));
-
-    var _this=this;
-    animation(function (deep) {
-
-        if (_this.__preTree) {
-            for (var key in cacheTree.node) {
-                if (newTree.node[key].show || _this.__preTree.node[key].show) {
-                    cacheTree.node[key].show = true;
-
-                    cacheTree.node[key].left = _this.__preTree.node[key].left + (newTree.node[key].left - _this.__preTree.node[key].left) * deep;
-                    cacheTree.node[key].top = _this.__preTree.node[key].top + (newTree.node[key].top - _this.__preTree.node[key].top) * deep;
-                }
-            }
-        }
-        _this.__rback(cacheTree);
-
-
-    }, this.__option.duration, function () {
-        _this.__preTree = newTree;
-        _this.__rback(_this.__preTree);
-    })
-};
-
-TreeLayout.prototype.closeNode = function (id) {
-    if (!this.__preTree) return this;
-    this.__noOpens[id] = true;
-
-    this.doUpdate();
-    return this;
-};
-
-TreeLayout.prototype.openNode = function (id) {
-    if (!this.__preTree) return this;
-    this.__noOpens[id] = false;
-
-    this.doUpdate();
-    return this;
-};
-
-TreeLayout.prototype.toggleNode = function (id) {
-    if (!this.__preTree) return this;
-    this.__noOpens[id] = !this.__noOpens[id];
-
-    this.doUpdate();
-    return this;
-};
-
-__pkg__scope_bundle__.default= TreeLayout;
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/treeLayout/Tree
-/*****************************************************************/
-window.__pkg__bundleSrc__['373']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('374');
-var toPlainTree =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('153');
-var initConfig=__pkg__scope_args__.initConfig;
-
-
-function Tree(config) {
-    this.__config = initConfig({
-        root: (initTree) => initTree,
-        children: (parentTree) => parentTree.children,
-        id: (treedata) => treedata.name
-    }, config || {});
-    return this;
-}
-
-Tree.prototype.use = function (initTree, noOpens) {
-    return toPlainTree(initTree, this.__config, noOpens);
-};
-
-__pkg__scope_bundle__.default= Tree;
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/treeLayout/toPlainTree
-/*****************************************************************/
-window.__pkg__bundleSrc__['374']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('375');
-var toInnerTree =__pkg__scope_args__.default;
-
-
-// 可以传递任意格式的树原始数据
-// 只要配置对应的解析方法即可
-__pkg__scope_bundle__.default= function (initTree, config, noOpens) {
-    noOpens = noOpens || {};
-
-    var treeData = toInnerTree(initTree, config);
-    var alltreedata = treeData.value; // 维护的树
-    var rootid = treeData.rid; // 根结点ID
-
-    if (treeData.num == 1) {
-        alltreedata[rootid].left = 0.5;
-        alltreedata[rootid].top = 0.5;
-        alltreedata[rootid].show = true;
-        return {
-            deep: 1,
-            node: alltreedata,
-            root: rootid,
-            size: 1
-        };
-    } else {
-
-        var beforeDis = [], size = 0, maxDeep = 0;
-
-        if (noOpens[rootid]) {
-            alltreedata[rootid].left = 0.5;
-            alltreedata[rootid].top = 0.5;
-            alltreedata[rootid].show = true;
-
-            size = 1;
-        } else {
-            (function positionCalc(pNode, deep) {
-
-                if (deep > maxDeep) maxDeep = deep;
-
-                var flag = 0;
-                if (!noOpens[pNode.id]) {
-
-                    for (flag = 0; flag < pNode.children.length; flag++)
-
-                        // 因为全部的子结点的位置确定了，父结点的y位置就是子结点的中间位置
-                        // 因此有子结点的，先计算子结点
-                        positionCalc(alltreedata[pNode.children[flag]], deep + 1);
-
-                }
-
-                // left的位置比较简单，deep从0开始编号
-                // 比如deep=0，第一层，left=0+0.5=0.5，也就是根结点
-                alltreedata[pNode.id].left = deep + 0.5;
-                if (flag == 0) {
-
-                    // beforeDis是一个数组，用以记录每一层此刻top下边缘（每一层是从上到下）
-                    // 比如一层的第一个，top值最小可以取top=0.5
-                    // 为了方便计算，beforeDis[deep] == undefined的时候表示现在准备计算的是这层的第一个结点
-                    // 因此设置最低上边缘为-0.5
-                    if (beforeDis[deep] == void 0) beforeDis[deep] = -0.5;
-                    // 父边缘同意的进行初始化
-                    if (beforeDis[deep - 1] == void 0) beforeDis[deep - 1] = -0.5;
-
-                    // 添加的新结点top值第一种求法：本层上边缘+1（比如上边缘是-0.5，那么top最小是top=-0.5+1=0.5）
-                    alltreedata[pNode.id].top = beforeDis[deep] + 1;
-
-                    var pTop = beforeDis[deep] + 1 + (alltreedata[pNode.pid].children.length - 1) * 0.5;
-                    // 计算的原则是：如果第一种可行，选择第一种，否则必须选择第二种
-                    // 判断第一种是否可行的方法就是：如果第一种计算后确定的孩子上边缘不对导致孩子和孩子的前兄弟重合就是可行的
-                    if (pTop - 1 < beforeDis[deep - 1])
-                        // 必须保证父亲结点和父亲的前一个兄弟保存1的距离，至少
-                        // 添加的新结点top值的第二种求法：根据孩子取孩子结点的中心top
-                        alltreedata[pNode.id].top = beforeDis[deep - 1] + 1 - (alltreedata[pNode.pid].children.length - 1) * 0.5;
-
-                } else {
-
-                    // 此刻flag!=0
-                    // 意味着结点有孩子，那么问题就解决了，直接取孩子的中间即可
-                    // 其实，flag==0的分支计算的就是孩子，是没有孩子的叶结点，那是关键
-                    alltreedata[pNode.id].top = (alltreedata[pNode.children[0]].top + alltreedata[pNode.children[flag - 1]].top) * 0.5;
-                }
-
-                // 因为计算孩子的时候
-                // 无法掌握父辈兄弟的情况
-                // 可能会出现父亲和兄弟重叠问题
-                if (alltreedata[pNode.id].top <= beforeDis[deep]) {
-                    var needUp = beforeDis[deep] + 1 - alltreedata[pNode.id].top;
-                    (function doUp(_pid, _deep) {
-                        alltreedata[_pid].top += needUp;
-                        if (beforeDis[_deep] < alltreedata[_pid].top) beforeDis[_deep] = alltreedata[_pid].top;
-
-                        for (var _flag = 0; _flag < alltreedata[_pid].children.length; _flag++) {
-                            doUp(alltreedata[_pid].children[_flag], _deep + 1);
-                        }
-                    })(pNode.id, deep);
-                }
-
-                // 计算好一个结点后，需要更新此刻该层的上边缘
-                beforeDis[deep] = alltreedata[pNode.id].top;
-
-                // size在每次计算一个结点后更新，是为了最终绘图的时候知道树有多宽（此处应该叫高）
-                if (alltreedata[pNode.id].top + 0.5 > size) size = alltreedata[pNode.id].top + 0.5;
-
-            })(alltreedata[rootid], 0);
-
-        }
-        // 对于不显示的，需要标记一下
-        for (var key in noOpens) {
-            if (noOpens[key]) {
-                alltreedata[key].isOpen = false;
-                (function updateHidden(pid, left, top) {
-                    for (var index = 0; index < alltreedata[pid].children.length; index++) {
-                        alltreedata[alltreedata[pid].children[index]].left = left;
-                        alltreedata[alltreedata[pid].children[index]].top = top;
-                        alltreedata[alltreedata[pid].children[index]].show = false;
-
-                        updateHidden(alltreedata[pid].children[index], left, top);
-                    }
-                })(key, alltreedata[key].left, alltreedata[key].top);
-            }
-        }
-
-        // 传递的参数分别表示：记录了位置信息的树结点集合、根结点ID和树的宽
-        return {
-            "node": alltreedata,
-            "root": rootid,
-            "size": size,
-            "deep": maxDeep + 1
-        };
-
-    }
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/treeLayout/toInnerTree
-/*****************************************************************/
-window.__pkg__bundleSrc__['375']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 根据配置的层次关系（配置的id,child,root）把原始数据变成内部结构，方便后期位置计算
- *
- * tempTree[id] = {
- *  "data": 原始数据,
- *  "pid": 父亲ID,
- *  "id": 唯一标识ID,
- *  "show": boolean,
- *  "isOpen": boolean,
- *  "children": [cid1、cid2、...]
- * }
- */
-__pkg__scope_bundle__.default= (initTree, config) => {
-    var tempTree = {};
-
-    // 根结点
-    var temp = (config.root)(initTree);
-    var id, rid;
-    id = rid = (config.id)(temp);
-    tempTree[id] = {
-        "data": temp,
-        "pid": null,
-        "id": id,
-        "isOpen": true,
-        "show": true,
-        "deg": 0,
-        "children": []
-    };
-
-    var num = 1;
-
-    // 根据传递的原始数据，生成内部统一结构
-    (function createTree(pdata, pid) {
-        var children = (config.children)(pdata, initTree);
-        num += children ? children.length : 0;
-        for (var flag = 0; children && flag < children.length; flag++) {
-            id = (config.id)(children[flag]);
-            tempTree[pid].children.push(id);
-            tempTree[id] = {
-                "data": children[flag],
-                "pid": pid,
-                "id": id,
-                "isOpen": true,
-                "show": true,
-                "deg": 0,
-                "children": []
-            };
-            createTree(children[flag], id);
-        }
-    })(temp, id);
-
-    return {
-        rid,
-        value: tempTree,
-        num
-    };
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/config
-/*****************************************************************/
-window.__pkg__bundleSrc__['153']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 初始化配置文件
-
-__pkg__scope_bundle__.initConfig = function (init, data) {
-    var key;
-    for (key in data)
-        try {
-            init[key] = data[key];
-        } catch (e) {
-            throw new Error("Illegal property value！");
-        }
-    return init;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['110']=function(){
+window.__pkg__bundleSrc__['116']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈
@@ -952,33 +467,15 @@ __pkg__scope_bundle__.default= function (doback, duration, callback) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/rotate
-/*****************************************************************/
-window.__pkg__bundleSrc__['155']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 点（x,y）围绕中心（cx,cy）旋转deg度
-__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
-    var cos = Math.cos(deg), sin = Math.sin(deg);
-    return [
-        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
-        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
-    ];
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['143']=function(){
+window.__pkg__bundleSrc__['153']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('129');
+    __pkg__scope_args__=window.__pkg__getBundle('139');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('144');
+__pkg__scope_args__=window.__pkg__getBundle('154');
 var assemble =__pkg__scope_args__.default;
 
 
@@ -1093,20 +590,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['129']=function(){
+window.__pkg__bundleSrc__['139']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('130');
+    __pkg__scope_args__=window.__pkg__getBundle('140');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('132');
+__pkg__scope_args__=window.__pkg__getBundle('142');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('130');
+__pkg__scope_args__=window.__pkg__getBundle('140');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -1393,10 +890,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['130']=function(){
+window.__pkg__bundleSrc__['140']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('131');
+    __pkg__scope_args__=window.__pkg__getBundle('141');
 var arc =__pkg__scope_args__.default;
 
 
@@ -1515,7 +1012,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['131']=function(){
+window.__pkg__bundleSrc__['141']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1576,7 +1073,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['132']=function(){
+window.__pkg__bundleSrc__['142']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -1616,7 +1113,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/assemble
 /*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
+window.__pkg__bundleSrc__['154']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (begin, end, step, count) {
@@ -1647,17 +1144,17 @@ window.__pkg__bundleSrc__['144']=function(){
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/transform/move
+// Original file:./src/tool/transform/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['154']=function(){
+window.__pkg__bundleSrc__['165']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 点（x,y）沿着向量（ax,ay）方向移动距离d
-__pkg__scope_bundle__.default= function (ax, ay, d, x, y) {
-    var sqrt = Math.sqrt(ax * ax + ay * ay);
+    // 点（x,y）围绕中心（cx,cy）旋转deg度
+__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
+    var cos = Math.cos(deg), sin = Math.sin(deg);
     return [
-        +(ax * d / sqrt + x).toFixed(7),
-        +(ay * d / sqrt + y).toFixed(7)
+        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
+        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
     ];
 };
 

@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['36']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('67');
+    __pkg__scope_args__=window.__pkg__getBundle('68');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('68');
+__pkg__scope_args__=window.__pkg__getBundle('69');
 
 
 __pkg__scope_bundle__.default= function (obj) {
@@ -63,7 +63,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/desktop/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['67']=function(){
+window.__pkg__bundleSrc__['68']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,15,25,33]},{"type":"tag","name":"div","attrs":{"class":"desktop"},"childNodes":[2]},{"type":"tag","name":"ul","attrs":{"class":"application","ref":"desktopApplication"},"childNodes":[3,5,7,9,11,13]},{"type":"tag","name":"li","attrs":{"tag":"regexper-visualization","ui-on:click":"goto"},"childNodes":[4]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"echarts","ui-on:click":"goto"},"childNodes":[6]},{"type":"text","content":"可视化图表","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"recorder-screen","ui-on:click":"goto"},"childNodes":[8]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"scss","ui-on:click":"goto"},"childNodes":[10]},{"type":"text","content":"scss转css","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"format-json","ui-on:click":"goto"},"childNodes":[12]},{"type":"text","content":"格式化JSON字符串","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"video-play","ui-on:click":"goto"},"childNodes":[14]},{"type":"text","content":"视频播放器","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"taskline"},"childNodes":[16]},{"type":"tag","name":"ul","attrs":{},"childNodes":[17,19,21,23]},{"type":"tag","name":"li","attrs":{"tag":"file-manager","ui-on:click":"goto"},"childNodes":[18]},{"type":"text","content":"资源管理器","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"browser","ui-on:click":"goto"},"childNodes":[20]},{"type":"text","content":"浏览器","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"notepad","ui-on:click":"goto"},"childNodes":[22]},{"type":"text","content":"记事本","childNodes":[]},{"type":"tag","name":"li","attrs":{"tag":"setting","ui-on:click":"goto"},"childNodes":[24]},{"type":"text","content":"设置","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"handler"},"childNodes":[26,27]},{"type":"tag","name":"div","attrs":{"class":"drap","ui-dragdrop":"","ui-bind:active":"view?'no':'yes'","ui-on:click.stop":"toggleView"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"view","ui-bind:active":"view?'yes':'no'","ui-on:click.stop":"toggleView"},"childNodes":[28]},{"type":"tag","name":"div","attrs":{},"childNodes":[29,31]},{"type":"tag","name":"span","attrs":{"tag":"debugger","ui-on:click":"openDialog"},"childNodes":[30]},{"type":"text","content":"调试工具","childNodes":[]},{"type":"tag","name":"span","attrs":{"tag":"what","ui-on:click":"openDialog"},"childNodes":[32]},{"type":"text","content":"说明","childNodes":[]},{"type":"tag","name":"span","attrs":{"id":"wins-line-id"},"childNodes":[]}]
@@ -74,7 +74,7 @@ window.__pkg__bundleSrc__['67']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/desktop/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['68']=function(){
+window.__pkg__bundleSrc__['69']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

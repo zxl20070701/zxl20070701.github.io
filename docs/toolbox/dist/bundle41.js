@@ -1,90 +1,30 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/image-editor/dialogs/size/index.js
+// Original file:./src/dialogs/api/pages/framework/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['162']=function(){
+window.__pkg__bundleSrc__['110']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('331');
+    __pkg__scope_args__=window.__pkg__getBundle('339');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('332');
 
-
-__pkg__scope_bundle__.default= function (obj, props) {
+__pkg__scope_bundle__.default= function (obj) {
     return {
-        name: "size",
-        render: template,
-        data: {
-            title: props.title,
-            width: props.width,
-            height: props.height,
-
-            newWidth: obj.ref(props.width),
-            newHeight: obj.ref(props.height),
-
-            changeType: obj.ref('center-middle')
-        },
-        methods: {
-
-            calcHeight() {
-                if (this.title == '图像大小') {
-                    this.newHeight = +(this.newWidth * this.height / this.width).toFixed(0);
-                }
-            },
-
-            calcWidth() {
-                if (this.title == '图像大小') {
-                    this.newWidth = +(this.newHeight * this.width / this.height).toFixed(0);
-                }
-            },
-
-            doChangeType: function (event, target) {
-                this.changeType = target.getAttribute('val');
-            },
-
-            // 确定
-            doSubmit: function () {
-                this.$closeDialog({
-                    width: +this.newWidth,
-                    height: +this.newHeight,
-                    changeType: this.changeType
-                });
-            },
-
-            // 取消
-            doClose: function () {
-                this.$closeDialog();
-            }
-
-        }
-    };
+        render: template
+    }
 };
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/image-editor/dialogs/size/index.html
+// Original file:./src/dialogs/api/pages/framework/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['331']=function(){
+window.__pkg__bundleSrc__['339']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"","ui-bind":"title"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right-btn"},"childNodes":[3,45]},{"type":"tag","name":"div","attrs":{},"childNodes":[4,18]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[5,7]},{"type":"tag","name":"legend","attrs":{},"childNodes":[6]},{"type":"text","content":"当前大小","childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:lock":"title=='图像大小'?'yes':'no'"},"childNodes":[8,13]},{"type":"tag","name":"li","attrs":{},"childNodes":[9,11,12]},{"type":"tag","name":"label","attrs":{},"childNodes":[10]},{"type":"text","content":"宽度：","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-bind":"width"},"childNodes":[]},{"type":"text","content":"px","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[14,16,17]},{"type":"tag","name":"label","attrs":{},"childNodes":[15]},{"type":"text","content":"宽度：","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-bind":"height"},"childNodes":[]},{"type":"text","content":"px","childNodes":[]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[19,21]},{"type":"tag","name":"legend","attrs":{},"childNodes":[20]},{"type":"text","content":"新建大小","childNodes":[]},{"type":"tag","name":"ul","attrs":{"ui-bind:lock":"title=='图像大小'?'yes':'no'"},"childNodes":[22,27,32]},{"type":"tag","name":"li","attrs":{},"childNodes":[23,25,26]},{"type":"tag","name":"label","attrs":{},"childNodes":[24]},{"type":"text","content":"宽度(W)：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"newWidth","ui-on:input":"calcHeight"},"childNodes":[]},{"type":"text","content":"px","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[28,30,31]},{"type":"tag","name":"label","attrs":{},"childNodes":[29]},{"type":"text","content":"高度(H)：","childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"newHeight","ui-on:input":"calcWidth"},"childNodes":[]},{"type":"text","content":"px","childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:active":"title=='画布大小'?'yes':'no'"},"childNodes":[33,35]},{"type":"tag","name":"label","attrs":{},"childNodes":[34]},{"type":"text","content":"定位：","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"change-type","ui-bind:type":"changeType"},"childNodes":[36,37,38,39,40,41,42,43,44]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"left-top"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"center-top"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"right-top"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"left-middle"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"center-middle"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"right-middle"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"left-bottom"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"center-bottom"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"doChangeType","val":"right-bottom"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[46,48]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[47]},{"type":"text","content":"确定","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose"},"childNodes":[49]},{"type":"text","content":"取消","childNodes":[]}]
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/image-editor/dialogs/size/index.scss
-/*****************************************************************/
-window.__pkg__bundleSrc__['332']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    var styleElement = document.createElement('style');
-var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [dialog-view='size']{\n\nleft: calc(50vw - 150px);\n\ntop: 100px;\n\nborder: 1px solid gray;\n\nmin-height: 300px;\n\nwidth: 300px;\n\nbackground-color: white;\n\n}\n\n [dialog-view='size']>h2{\n\nfont-size: 12px;\n\npadding-left: 30px;\n\nbackground-image: url('./image-editor.png');\n\nbackground-size: auto 80%;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 3px center;\n\nborder-bottom: 1px solid gray;\n\nline-height: 30px;\n\nheight: 30px;\n\nuser-select: none;\n\n}\n\n [dialog-view='size']>div.right-btn{\n\ndisplay: flex;\n\n}\n\n [dialog-view='size']>div.right-btn>div:first-child{\n\nflex-grow: 1;\n\npadding: 10px 0 10px 10px;\n\n}\n\n [dialog-view='size']>div.right-btn>div:last-child{\n\ntext-align: center;\n\nflex-grow: 0;\n\nflex-shrink: 0;\n\nflex-basis: 70px;\n\n}\n\n [dialog-view='size']>div.right-btn>div:last-child>button{\n\nheight: 30px;\n\nborder-radius: 15px;\n\nwidth: 50px;\n\nmargin-top: 10px;\n\n}\n\n [dialog-view='size']>div.right-btn>div:last-child>button:hover{\n\nbackground-color: rgb(127, 131, 131);\n\ncursor: pointer;\n\n}\n\n [dialog-view='size'] fieldset{\n\nmargin-top: 10px;\n\nfont-size: 12px;\n\n}\n\n [dialog-view='size'] ul[lock='yes']{\n\nbackground-image: url('./lock.png');\n\nbackground-repeat: no-repeat;\n\nbackground-position: right;\n\n}\n\n [dialog-view='size'] ul>li{\n\nline-height: 2em;\n\nmargin-top: 5px;\n\n}\n\n [dialog-view='size'] ul>li[active='no']{\n\ndisplay: none;\n\n}\n\n [dialog-view='size'] ul>li>label{\n\nwidth: 70px;\n\ndisplay: inline-block;\n\ntext-align: right;\n\n}\n\n [dialog-view='size'] ul>li>input{\n\nwidth: 50px;\n\nmargin-right: 5px;\n\n}\n\n [dialog-view='size'] ul>li .change-type{\n\nfont-size: 0;\n\nwidth: 90px;\n\ndisplay: inline-block;\n\nline-height: 0;\n\nvertical-align: top;\n\nbackground-image: url('./size.png');\n\nbackground-size: 100% auto;\n\nbackground-repeat: no-repeat;\n\n}\n\n [dialog-view='size'] ul>li .change-type>span{\n\ndisplay: inline-block;\n\nwidth: 30px;\n\nheight: 30px;\n\ncursor: pointer;\n\noutline: 1px solid #dedede;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='left-top']{\n\nbackground-position: -29px -32px;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='center-top']{\n\nbackground-position: 1px -32px;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='right-top']{\n\nbackground-position: 30px -32px;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='left-middle']{\n\nbackground-position: -29px -1px;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='center-middle']{\n\nbackground-position: 1px -1px;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='right-middle']{\n\nbackground-position: 30px -1px;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='left-bottom']{\n\nbackground-position: -29px 30px;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='center-bottom']{\n\nbackground-position: 1px 30px;\n\n}\n\n [dialog-view='size'] ul>li .change-type[type='right-bottom']{\n\nbackground-position: 30px 30px;\n\n}\n";
-styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3,5,7,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60]},{"type":"tag","name":"header","attrs":{},"childNodes":[2]},{"type":"text","content":"内置框架","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[4]},{"type":"text","content":"为了更好的维护本网站，我们提供了一个极小的“框架”用于协调资源和代码，主要包括两个方面：打包工具 + 前端框架。","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"打包工具","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[8,9,11,12,14,15,17]},{"type":"text","content":"工具的入口分为开发dev和生产build，分别位于：","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"important"},"childNodes":[10]},{"type":"text","content":"./bin/pkg/server","childNodes":[]},{"type":"text","content":"和","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"important"},"childNodes":[13]},{"type":"text","content":"./bin/pkg/builder","childNodes":[]},{"type":"text","content":"处。\r\n    此外，用于解析各种类型的文件的代码存放在：","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"important"},"childNodes":[16]},{"type":"text","content":"./bin/loader","childNodes":[]},{"type":"text","content":"下。","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[19]},{"type":"text","content":"前端框架","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[21]},{"type":"text","content":"其实就是一些零碎的方法，用于给html页面赋予有用的功能。","childNodes":[]},{"type":"tag","name":"h3","attrs":{},"childNodes":[23]},{"type":"text","content":"useTemplate","childNodes":[]},{"type":"tag","name":"pre","attrs":{},"childNodes":[25]},{"type":"text","content":"import useTemplate from \"./src/framework/useTemplate\";\r\nvar instance = useTemplate(el, pageFunction, props);","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[27]},{"type":"text","content":"返回的实例instance表示新的内容对象，而传递的pageFunction是一个函数，包含了意图。","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[29]},{"type":"text","content":"pageFunction","childNodes":[]},{"type":"tag","name":"pre","attrs":{},"childNodes":[31]},{"type":"text","content":"function (obj, props) {\r\n    return {\r\n\r\n        render: template, // 模板\r\n        data: {}, // 数据\r\n\r\n        /*\r\n         * 生命周期\r\n         *\r\n         * 视图、窗口、弹框等不一定都实现了下面的钩子，\r\n         * 只不过，如果实现了，都会按照规范下面起名\r\n         *\r\n         * 部分钩子可以设计返回一个布尔值控制默认操作是否执行\r\n         */\r\n        beforeMount: function () {}, // 挂载前\r\n        mounted: function () {}, // 挂载后\r\n        beforeUpdate: function () {}, // 数据改变前\r\n        updated: function () {}, // 数据改变后\r\n        beforeDestory: function () {}, // 组件销毁前\r\n        destoryed: function () {}, // 组件销毁后\r\n        minimize: function () {}, // 组件最小化前\r\n        reshow: function () {}, // 组件恢复显示后\r\n        beforeFocus: function () {}, // 组件聚焦显示前\r\n        focused: function () {}, // 组件聚焦显示后\r\n        beforeUnfocus: function () {}, // 组件失去聚焦前\r\n        unfocused: function () {}, // 组件失去聚焦后\r\n        show: function () {}, // 组件显示\r\n        hidden: function () {}, // 组件隐藏\r\n\r\n        methods: {} // 方法\r\n    };\r\n};","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[33]},{"type":"text","content":"可以看出来，这个函数有一个形参数obj，其中有一些有用的方法。","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[35]},{"type":"text","content":"obj.ref","childNodes":[]},{"type":"tag","name":"pre","attrs":{},"childNodes":[37]},{"type":"text","content":"data:{\r\n        param:obj.ref(initValue)\r\n    }","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[39]},{"type":"text","content":"如此定义的数据，就可以在方法、钩子等中通过 this.param 使用了，而通过指令等，也可以在页面使用，可以实现视图和数据等绑定。","childNodes":[]},{"type":"tag","name":"h4","attrs":{},"childNodes":[41]},{"type":"text","content":"obj.reactive","childNodes":[]},{"type":"tag","name":"pre","attrs":{},"childNodes":[43]},{"type":"text","content":"data:{\r\n        param:obj.reactive(initValue)\r\n    }","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[45]},{"type":"text","content":"和 ref 类似，唯一不同的是，前者不支持数据改变的深度监听。","childNodes":[]},{"type":"tag","name":"h3","attrs":{},"childNodes":[47]},{"type":"text","content":"指令","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[49]},{"type":"text","content":"全局指令都存放在 ./src/directives 中，定义一个指令的语法非常简单：","childNodes":[]},{"type":"tag","name":"pre","attrs":{},"childNodes":[51]},{"type":"text","content":"export default {\r\n    inserted: function (el, binding) { \r\n        // 初始化插入页面触发\r\n    },\r\n    update: function (el, binding) { \r\n        // 数据改变触发\r\n    }\r\n};","childNodes":[]},{"type":"tag","name":"h3","attrs":{},"childNodes":[53]},{"type":"text","content":"ref","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[55]},{"type":"text","content":"如果你希望获取页面中一个节点，可以提前使用下面的方法标记一下：","childNodes":[]},{"type":"tag","name":"pre","attrs":{},"childNodes":[57]},{"type":"text","content":"<canvas ref=\"mycanvas\"></canvas>","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[59]},{"type":"text","content":"然后使用的时候就可以通过ref语法获取：","childNodes":[]},{"type":"tag","name":"pre","attrs":{},"childNodes":[61]},{"type":"text","content":"var canvas = this._refs.mycanvas.value;","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }

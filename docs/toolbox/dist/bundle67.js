@@ -1,56 +1,23 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/model-editor/wins/modify/index.js
+// Original file:./src/pages/echarts/dialogs/css-tree-topleft/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['259']=function(){
+window.__pkg__bundleSrc__['228']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('396');
+    __pkg__scope_args__=window.__pkg__getBundle('397');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('397');
+__pkg__scope_args__=window.__pkg__getBundle('398');
 
 
-var cacheData = {}, handler;
 __pkg__scope_bundle__.default= function (obj, props) {
+
     return {
-        name: "modify",
+        name: "echarts-example",
         render: template,
         data: {
-            dragdropPadding: [0, 0, 0, 0],
-            isEmpty: obj.ref(true),
-            name: obj.ref("")
-        },
-        methods: {
-            initData: function (data, _handler) {
-                if (data) {
-                    cacheData = data;
-                    this.setData();
-                } else {
-                    cacheData = {};
-                }
-                handler = _handler;
-                this.isEmpty = !data;
-            },
-            setData: function () {
-                for (var key in cacheData) {
-                    this[key] = cacheData[key];
-                }
-            },
-            doSave: function () {
-                handler.save({
-                    name: this.name
-                });
-            },
-            doReset: function () {
-                this.setData();
-            },
-            doDelete: function () {
-                if (confirm("确定删除【" + this.name + "】吗？")) {
-                    handler.delete();
-                    this.initData();
-                }
-            }
+            srcUrl: props.srcUrl
         }
     };
 };
@@ -59,25 +26,25 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/model-editor/wins/modify/index.html
+// Original file:./src/pages/echarts/dialogs/css-tree-topleft/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['396']=function(){
+window.__pkg__bundleSrc__['397']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3,20]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"修改器","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right-btn","ui-bind:active":"!isEmpty?'yes':'no'"},"childNodes":[4,13]},{"type":"tag","name":"div","attrs":{},"childNodes":[5]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[6,8]},{"type":"tag","name":"legend","attrs":{},"childNodes":[7]},{"type":"text","content":"基础","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[9]},{"type":"tag","name":"li","attrs":{},"childNodes":[10,12]},{"type":"tag","name":"label","attrs":{},"childNodes":[11]},{"type":"text","content":"名称：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"name"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[14,16,18]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSave"},"childNodes":[15]},{"type":"text","content":"保存","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doReset"},"childNodes":[17]},{"type":"text","content":"重置","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"delete","ui-on:click":"doDelete"},"childNodes":[19]},{"type":"text","content":"删除","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"empty","ui-bind:active":"isEmpty?'yes':'no'"},"childNodes":[21]},{"type":"text","content":"未选中物体","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"水平向下向左树","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content css-tree-topleft"},"childNodes":[11]},{"type":"tag","name":"ul","attrs":{},"childNodes":[12]},{"type":"tag","name":"li","attrs":{},"childNodes":[13,15]},{"type":"tag","name":"span","attrs":{},"childNodes":[14]},{"type":"text","content":"OS","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[16,26,53]},{"type":"tag","name":"li","attrs":{},"childNodes":[17,19]},{"type":"tag","name":"span","attrs":{},"childNodes":[18]},{"type":"text","content":"NOS","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[20,23]},{"type":"tag","name":"li","attrs":{},"childNodes":[21]},{"type":"tag","name":"span","attrs":{},"childNodes":[22]},{"type":"text","content":"BSD","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[24]},{"type":"tag","name":"span","attrs":{},"childNodes":[25]},{"type":"text","content":"Unix","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[27,29]},{"type":"tag","name":"span","attrs":{},"childNodes":[28]},{"type":"text","content":"DOS","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[30,37,40]},{"type":"tag","name":"li","attrs":{},"childNodes":[31,33]},{"type":"tag","name":"span","attrs":{},"childNodes":[32]},{"type":"text","content":"Unix","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[34]},{"type":"tag","name":"li","attrs":{},"childNodes":[35]},{"type":"tag","name":"span","attrs":{},"childNodes":[36]},{"type":"text","content":"Mac OS X","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[38]},{"type":"tag","name":"span","attrs":{},"childNodes":[39]},{"type":"text","content":"Windows","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[41,43]},{"type":"tag","name":"span","attrs":{},"childNodes":[42]},{"type":"text","content":"Linux","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[44,47,50]},{"type":"tag","name":"li","attrs":{},"childNodes":[45]},{"type":"tag","name":"span","attrs":{},"childNodes":[46]},{"type":"text","content":"openSUSE","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[48]},{"type":"tag","name":"span","attrs":{},"childNodes":[49]},{"type":"text","content":"Centos","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[51]},{"type":"tag","name":"span","attrs":{},"childNodes":[52]},{"type":"text","content":"Ubuntu","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[54]},{"type":"tag","name":"span","attrs":{},"childNodes":[55]},{"type":"text","content":"SOS","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/model-editor/wins/modify/index.scss
+// Original file:./src/pages/echarts/dialogs/css-tree-topleft/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['397']=function(){
+window.__pkg__bundleSrc__['398']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [win-view='modify']{\n\nright: 30px;\n\ntop: 140px;\n\nheight: 400px;\n\nwidth: 300px;\n\nbackground-color: white;\n\n}\n\n [win-view='modify']>h2{\n\nfont-size: 12px;\n\npadding-left: 30px;\n\nbackground-image: url('./model-editor.png');\n\nbackground-size: auto 80%;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 3px center;\n\nline-height: 30px;\n\nheight: 30px;\n\nuser-select: none;\n\nbackground-color: #cad6db;\n\n}\n\n [win-view='modify']>div.right-btn{\n\ndisplay: flex;\n\n}\n\n [win-view='modify']>div.right-btn>div:first-child{\n\nflex-grow: 1;\n\npadding: 10px 0 10px 10px;\n\n}\n\n [win-view='modify']>div.right-btn>div:last-child{\n\ntext-align: center;\n\nflex-grow: 0;\n\nflex-shrink: 0;\n\nflex-basis: 70px;\n\n}\n\n [win-view='modify']>div.right-btn>div:last-child>button{\n\nheight: 30px;\n\nborder-radius: 15px;\n\nwidth: 50px;\n\nmargin-top: 10px;\n\n}\n\n [win-view='modify']>div.right-btn>div:last-child>button:hover{\n\nbackground-color: rgb(127, 131, 131);\n\ncursor: pointer;\n\n}\n\n [win-view='modify']>div.right-btn>div:last-child>button.delete{\n\nbackground-color: red;\n\ncolor: white;\n\nborder: none;\n\n}\n\n [win-view='modify']>div.right-btn>div:last-child>button.delete:hover{\n\nbackground-color: #c72115;\n\n}\n\n [win-view='modify'] fieldset{\n\nmargin-top: 10px;\n\nfont-size: 12px;\n\n}\n\n [win-view='modify'] ul>li{\n\nline-height: 2em;\n\nmargin-top: 5px;\n\nwhite-space: nowrap;\n\n}\n\n [win-view='modify'] ul>li>label{\n\nwidth: 40px;\n\ndisplay: inline-block;\n\ntext-align: right;\n\n}\n\n [win-view='modify'] ul>li>input, [win-view='modify'] ul>li select{\n\nwidth: 150px;\n\nmargin-right: 5px;\n\n}\n\n [win-view='modify']>div.empty{\n\npadding-top: 100px;\n\ntext-align: center;\n\nfont-size: 20px;\n\nfont-family: cursive;\n\ncolor: #9E9E9E;\n\n}\n\n [win-view='modify']>div[active='no']{\n\ndisplay: none;\n\n}\n";
+styleElement.innerHTML = "\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft{\n\nfont-size: 12px;\n\nline-height: 1.6em;\n\npadding-right: 100px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft > ul{\n\ndisplay: inline-block;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft ul{\n\nwhite-space: nowrap;\n\ntext-align: right;\n\nmargin-top: 50px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft li{\n\ndisplay: inline-block;\n\nvertical-align: top;\n\nposition: relative;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft li:not(:last-child)::before{\n\nborder-top-left-radius: 20px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft li:last-child::before{\n\nborder-width: 0 0 0 1px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft li::before, [dialog-view=\"echarts-example\"] > div.css-tree-topleft li:not(:first-child)::after{\n\ncontent: \" \";\n\ndisplay: inline-block;\n\nposition: absolute;\n\ntop: -50px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft li::before{\n\nwidth: 50px;\n\nheight: 50px;\n\nborder-style: solid;\n\nborder-color: #c7d0cf;\n\nborder-width: 1px 0 0 1px;\n\nright: -15px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft li:not(:first-child)::after{\n\nheight: 1px;\n\nwidth: 100%;\n\nbackground-color: #c7d0cf;\n\nright: 15px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft li:not(:first-child):last-child:after{\n\nwidth: calc(100% - 30px);\n\nright: 35px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft > ul > li::before{\n\ndisplay: none;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft ul > li > span{\n\nbackground-color: #607d8b;\n\nborder-radius: 50%;\n\npadding: 10px;\n\nwidth: 50px;\n\nline-height: 50px;\n\ndisplay: inline-block;\n\ntext-align: center;\n\nposition: relative;\n\ncolor: #c7d0cf;\n\nborder: 1px solid #c7d0cf;\n\nbox-sizing: content-box;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft ul > li > span::after, [dialog-view=\"echarts-example\"] > div.css-tree-topleft ul > li > span::before{\n\ncontent: \" \";\n\ndisplay: inline-block;\n\nwidth: 1em;\n\nheight: 1em;\n\nbackground-color: #c7d0cf;\n\nborder-radius: 50%;\n\nposition: absolute;\n\nleft: 29px;\n\nz-index: 1;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft ul > li > span::after{\n\nbottom: -10px;\n\n}\n\n [dialog-view=\"echarts-example\"] > div.css-tree-topleft ul > li > span::before{\n\ntop: -10px;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

@@ -1,30 +1,31 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/sankey-nodeAlign-left/index.js
+// Original file:./src/pages/echarts/dialogs/gauge-barometer/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['215']=function(){
+window.__pkg__bundleSrc__['218']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('376');
+    __pkg__scope_args__=window.__pkg__getBundle('363');
 var template =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('260');
+__pkg__scope_args__=window.__pkg__getBundle('270');
 var ResizeObserver =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('129');
+__pkg__scope_args__=window.__pkg__getBundle('116');
+var animation =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('139');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('146');
-var xhr =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('364');
+var drawPolarRuler =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('377');
-var toSankeyImageData =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('150');
-var getLoopColors =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('165');
+var rotate =__pkg__scope_args__.default;
 
 
+var interval, stop = function () { };
 __pkg__scope_bundle__.default= function (obj, props) {
 
     return {
@@ -34,90 +35,144 @@ __pkg__scope_bundle__.default= function (obj, props) {
             srcUrl: props.srcUrl
         },
         mounted: function () {
+            var p0, p1, p2, p3, p4, pDeg;
 
             var mycontent = this._refs.mycontent.value;
             var mycanvas = this._refs.mycanvas.value;
 
-            xhr({
-                method: "GET",
-                url: "../data/energy.json"
-            }, function (data) {
-                if (data.status == 200) {
-                    data = JSON.parse(data.data);
+            var painter, cx, cy, radius, updateView;
 
-                    var updateView = function () {
-                        var sankeyData = toSankeyImageData(data, mycontent.clientWidth - 50, mycontent.clientHeight - 60, 0, 30);
-                        var painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight, {}, true);
+            var beginDeg = Math.PI * 3 / 4, deg = Math.PI * 1.5;
 
-                        // 获取颜色
-                        var nodeColors = getLoopColors(data.nodes.length);
-                        var lineColors = getLoopColors(data.nodes.length, 0.2);
+            // 监听画布大小改变
+            var currentValue = 58.06, value;
+            ResizeObserver(mycontent, function () {
+                painter = canvasRender(mycanvas, mycontent.clientWidth, mycontent.clientHeight, {}, true);
 
-                        painter.config({
-                            "fontSize": 10
-                        });
+                // 圆心和半径
+                cx = mycontent.clientWidth * 0.5;
+                cy = mycontent.clientHeight * 0.5;
+                radius = Math.max(Math.min(cx, cy) - 100, 0);
 
-                        // 先绘制连线
-                        var key, node, tNode, i, _helpDis;
-                        for (key in sankeyData) {
-                            node = sankeyData[key];
+                if (radius <= 0) return;
 
-                            painter.config({
-                                fillStyle: lineColors.pop()
-                            });
-                            // 连线
-                            for (i = 0; i < node.nexts.length; i++) {
-                                tNode = sankeyData[node.nexts[i].name];
+                updateView = function (value) {
+                    painter.clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
 
-                                _helpDis = (tNode.left - (node.left + node.width)) * 0.5;
+                    pDeg = beginDeg + Math.PI * 1.5 * value * 0.01;
 
-                                painter
-                                    .beginPath()
-                                    .moveTo(node.left + node.width, node.nextTops[i])
-                                    .bezierCurveTo(node.left + node.width + _helpDis, node.nextTops[i], tNode.left - _helpDis, tNode.preTops[0], tNode.left, tNode.preTops[0])
-                                    .lineTo(tNode.left, tNode.preTops[1])
-                                    .bezierCurveTo(tNode.left - _helpDis, tNode.preTops[1], node.left + node.width + _helpDis, node.nextTops[i + 1], node.left + node.width, node.nextTops[i + 1])
-                                    .fill();
-                                tNode.preTops.shift();
-                            }
+                    // 外刻度尺
+                    drawPolarRuler(painter, {
+                        cx: cx,
+                        cy: cy,
+                        radius: radius + 10,
+                        value: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                        begin: beginDeg,
+                        deg: deg,
+                        "font-size": 20,
+                        color: "#e93f33",
+                        "font-rotate": false,
+                        "font-weight": 800,
+                        "small-mark": true
+                    });
 
-                        }
+                    // 内刻度尺
+                    drawPolarRuler(painter, {
+                        cx: cx,
+                        cy: cy,
+                        radius: radius - 10,
+                        value: [0, 10, 20, 30, 40, 50, 60],
+                        begin: beginDeg,
+                        deg: deg,
+                        color: "#000000",
+                        "font-size": 20,
+                        "mark-direction": "inner",
+                        "font-rotate": false,
+                        "font-weight": 800,
+                        "small-mark": true
+                    });
 
-                        // 再绘制别的
-                        for (key in sankeyData) {
-                            node = sankeyData[key];
+                    p0 = rotate(cx, cy, pDeg, cx + radius + 20, cy - 1);
+                    p1 = rotate(cx, cy, pDeg, cx + radius + 20, cy + 1);
+                    p2 = rotate(cx, cy, pDeg, cx - 20, cy + 4);
+                    p3 = rotate(cx, cy, pDeg, cx - 30, cy);
+                    p4 = rotate(cx, cy, pDeg, cx - 20, cy - 4);
 
-                            // 结点
-                            painter.config({
-                                fillStyle: nodeColors.pop()
-                            }).fillRect(node.left, node.top, node.width, node.height);
+                    // 表盘文字
+                    painter.config({
+                        "fontSize": 14,
+                        "fontWeight": 200,
+                        "fillStyle": "black",
+                        "textAlign": "center",
+                        "textBaseline": "middle"
+                    }).fillText("PLP", cx, cy - radius * 0.6)
 
-                            // 文字
-                            painter.config({
-                                fillStyle: '#555555'
-                            }).fillText(key, node.left + node.width, node.top + node.height * 0.5);
+                        // 指针
+                        .fillCircle(cx, cy, 7).config({
+                            "lineWidth": 2
+                        }).strokeCircle(cx, cy, 11)
+                        .beginPath()
+                        .moveTo(p0[0], p0[1])
+                        .lineTo(p1[0], p1[1])
+                        .lineTo(p2[0], p2[1])
+                        .lineTo(p3[0], p3[1])
+                        .lineTo(p4[0], p4[1])
+                        .fill()
 
-                        }
-                    };
+                        // 值文字
+                        .config({
+                            "fontSize": 34,
+                            "fontWeight": 800,
+                            "fillStyle": "#555555"
+                        })
+                        .fillText(value, cx, cy + radius * 0.4);
 
-                    ResizeObserver(mycontent, updateView);
-                }
+                };
+
+                updateView(currentValue.toFixed(2));
             });
 
+            // 定时模拟修改
+            interval = setInterval(function () {
+
+                value = Math.random() * 100;
+                stop = animation(function (deep) {
+
+                    if (updateView)
+                        updateView(+((currentValue + (value - currentValue) * deep).toFixed(2)));
+
+                }, 300, function () {
+                    currentValue = value;
+                });
+
+            }, 1000);
+
+
+        },
+
+        beforeDestory: function () {
+            if (interval) {
+
+                // 关闭页面的时候需要关闭定时任务
+                clearInterval(interval);
+                stop();
+            }
         }
+
     };
+
 };
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/sankey-nodeAlign-left/index.html
+// Original file:./src/pages/echarts/dialogs/gauge-barometer/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['376']=function(){
+window.__pkg__bundleSrc__['363']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"桑基图左对齐布局","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"气压表","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -125,7 +180,7 @@ window.__pkg__bundleSrc__['376']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['260']=function(){
+window.__pkg__bundleSrc__['270']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -206,22 +261,137 @@ __pkg__scope_bundle__.default= function (el, doback) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/canvas/index
+// Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['129']=function(){
+window.__pkg__bundleSrc__['116']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('130');
+    //当前正在运动的动画的tick函数堆栈
+var $timers = [];
+//唯一定时器的定时间隔
+var $interval = 13;
+//指定了动画时长duration默认值
+var $speeds = 400;
+//定时器ID
+var $timerId = null;
+
+/**
+ * 动画轮播
+ * @param {function} doback 轮询函数，有一个形参deep，0-1，表示执行进度
+ * @param {number} duration 动画时长，可选
+ * @param {function} callback 动画结束回调，可选，有一个形参deep，0-1，表示执行进度
+ *
+ * @returns {function} 返回一个函数，调用该函数，可以提前结束动画
+ */
+__pkg__scope_bundle__.default= function (doback, duration, callback) {
+
+    // 如果没有传递时间，使用内置默认值
+    if (arguments.length < 2) duration = $speeds;
+
+    var clock = {
+        //把tick函数推入堆栈
+        "timer": function (tick, duration, callback) {
+            if (!tick) {
+                throw new Error('Tick is required!');
+            }
+            var id = new Date().valueOf() + "_" + (Math.random() * 1000).toFixed(0);
+            $timers.push({
+                "id": id,
+                "createTime": new Date(),
+                "tick": tick,
+                "duration": duration,
+                "callback": callback
+            });
+            clock.start();
+            return id;
+        },
+
+        //开启唯一的定时器timerId
+        "start": function () {
+            if (!$timerId) {
+                $timerId = setInterval(clock.tick, $interval);
+            }
+        },
+
+        //被定时器调用，遍历timers堆栈
+        "tick": function () {
+            var createTime, flag, tick, callback, timer, duration, passTime,
+                timers = $timers;
+            $timers = [];
+            $timers.length = 0;
+            for (flag = 0; flag < timers.length; flag++) {
+                //初始化数据
+                timer = timers[flag];
+                createTime = timer.createTime;
+                tick = timer.tick;
+                duration = timer.duration;
+                callback = timer.callback;
+
+                //执行
+                passTime = (+new Date() - createTime) / duration;
+                passTime = passTime > 1 ? 1 : passTime;
+                tick(passTime);
+                if (passTime < 1 && timer.id) {
+                    //动画没有结束再添加
+                    $timers.push(timer);
+                } else if (callback) {
+                    callback(passTime);
+                }
+            }
+            if ($timers.length <= 0) {
+                clock.stop();
+            }
+        },
+
+        //停止定时器，重置timerId=null
+        "stop": function () {
+            if ($timerId) {
+                clearInterval($timerId);
+                $timerId = null;
+            }
+        }
+    };
+
+    var id = clock.timer(function (deep) {
+        //其中deep为0-1，表示改变的程度
+        doback(deep);
+    }, duration, callback);
+
+    // 返回一个函数
+    // 用于在动画结束前结束动画
+    return function () {
+        var i;
+        for (i in $timers) {
+            if ($timers[i].id == id) {
+                $timers[i].id = undefined;
+                return;
+            }
+        }
+    };
+
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/canvas/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['139']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('140');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('132');
+__pkg__scope_args__=window.__pkg__getBundle('142');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('130');
+__pkg__scope_args__=window.__pkg__getBundle('140');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -508,10 +678,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['130']=function(){
+window.__pkg__bundleSrc__['140']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('131');
+    __pkg__scope_args__=window.__pkg__getBundle('141');
 var arc =__pkg__scope_args__.default;
 
 
@@ -630,7 +800,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['131']=function(){
+window.__pkg__bundleSrc__['141']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -691,7 +861,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['132']=function(){
+window.__pkg__bundleSrc__['142']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -729,326 +899,178 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/index
+// Original file:./src/tool/canvas/extend/polar-ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['364']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
+    __pkg__scope_args__=window.__pkg__getBundle('163');
+var initConfig=__pkg__scope_args__.initConfig;
 
-__pkg__scope_args__=window.__pkg__getBundle('147');
-var toString =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('165');
+var rotate =__pkg__scope_args__.default;
 
 
-__pkg__scope_bundle__.default= function (settings, callback, errorback) {
+/**
+ * attr = {
+ *    cx,cy 刻度尺圆心
+ *    begin,deg 刻度尺开始角度和总度数
+ *    radius 刻度尺半径
+ *    mark-direction 刻度尺小刻度的位置：outer|inner
+ *    value-position 刻度尺刻度文字的位置：mark|between
+ *    color 刻度尺颜色
+ *    value 值
+ *    font-size 刻度文字大小
+ *    font-rotate 文字是否旋转
+ *    font-weight 字重
+ *    small-mark 是否需要小刻度
+ * }
+ */
+__pkg__scope_bundle__.default= function (painter, attr) {
+    var i, j, curDeg, textHelpDeg, p1, p2;
 
-    var xmlhttp;
+    attr = initConfig({
+        "mark-direction": "outer",
+        "value-position": "mark",
+        "color": 'black',
+        "begin": 0,
+        "deg": Math.PI * 2,
+        "font-size": 12,
+        "font-weight": 400,
+        "font-rotate": true,
+        "small-mark": false
+    }, attr);
 
-    // 如果外部定义了
-    if (isFunction(settings.xhr)) {
-        xmlhttp = settings.xhr();
-    }
+    var value = attr.value;
 
-    // 否则就内部创建
-    else {
-        xmlhttp = new XMLHttpRequest();
-    }
+    painter.config({
+        'lineWidth': 1,
+        'fillStyle': attr.color,
+        'strokeStyle': attr.color,
+        'fontSize': attr["font-size"],
+        "fontWeight": attr["font-weight"],
+        'textAlign': 'center',
+        'textBaseline': 'middle',
+        "lineDash": []
+    });
 
-    // 请求完成回调
-    xmlhttp.onload = function () {
+    // 先绘制弧度
+    painter.beginPath().arc(attr.cx, attr.cy, attr.radius, attr.begin, attr.deg).stroke();
 
-        if (xmlhttp.readyState == 4) {
+    var markNumber = attr["value-position"] == "mark" ? value.length : value.length + 1;
 
-            callback({
+    // 绘制刻度
+    var distanceDeg = attr.deg / (markNumber - 1);
 
-                // 状态码
-                status: xmlhttp.status,
+    // 绘制刻度
+    for (i = 0; i < markNumber; i++) {
 
-                // 数据
-                data: xmlhttp.responseText
+        p1 = rotate(
+            attr.cx, attr.cy,
+            attr.begin + i * distanceDeg,
+            attr.cx + attr.radius, attr.cy
+        );
 
-            });
+        p2 = rotate(
+            attr.cx, attr.cy,
+            attr.begin + i * distanceDeg,
+            attr.cx + attr.radius + (attr['small-mark'] ? 10 : 4) * (attr["mark-direction"] == 'inner' ? -1 : 1), attr.cy
+        );
+
+        painter.config({
+            "lineWidth": attr['small-mark'] ? 2 : 1
+        }).beginPath().moveTo(p1[0], p1[1]).lineTo(p2[0], p2[1]).stroke();
+
+        // 绘制小刻度
+        painter.config({
+            "lineWidth": 1
+        });
+        if (attr['small-mark'] && i < markNumber - 1) {
+
+            for (j = 1; j <= 4; j++) {
+                p1 = rotate(
+                    attr.cx, attr.cy,
+                    attr.begin + (i + j * 0.2) * distanceDeg,
+                    attr.cx + attr.radius, attr.cy
+                );
+
+                p2 = rotate(
+                    attr.cx, attr.cy,
+                    attr.begin + (i + j * 0.2) * distanceDeg,
+                    attr.cx + attr.radius + 4 * (attr["mark-direction"] == 'inner' ? -1 : 1), attr.cy
+                );
+
+                painter.beginPath().moveTo(p1[0], p1[1]).lineTo(p2[0], p2[1]).stroke();
+            }
 
         }
-    };
-
-    // 请求超时回调
-    xmlhttp.ontimeout = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: "请求超时了"
-        });
-    };
-
-    // 请求错误回调
-    xmlhttp.onerror = function () {
-        errorback({
-            status: xmlhttp.status,
-            data: xmlhttp.responseText
-        });
-    };
-
-    xmlhttp.open(settings.method, settings.url, true);
-
-    // 设置请求头
-    for (var key in settings.header) {
-        xmlhttp.setRequestHeader(key, settings.header[key]);
     }
 
-    // 设置超时时间
-    xmlhttp.timeout = 'timeout' in settings ? settings.timeout : 6000;
+    // 绘制刻度上的读数
+    for (i = 0; i < value.length; i++) {
+        curDeg = attr.begin + distanceDeg * (i + (attr["value-position"] == 'mark' ? 0 : 0.5));
+        textHelpDeg = curDeg % (Math.PI * 2);
 
-    xmlhttp.send(toString(settings.data));
+        p1 = rotate(
+            attr.cx, attr.cy,
+            curDeg,
+            attr.cx + attr.radius + (attr["font-rotate"] && !attr['small-mark'] ? 15 : 25) * (attr["mark-direction"] == 'inner' ? -1 : 1), attr.cy
+        );
 
+        if (attr["font-rotate"]) {
+            painter.fillText(value[i], p1[0], p1[1], curDeg + ((
+                textHelpDeg > 0 && textHelpDeg < Math.PI ||
+                textHelpDeg > -2 * Math.PI && textHelpDeg < -Math.PI
+            ) ? -Math.PI * 0.5 : Math.PI * 0.5));
+        } else {
+            painter.fillText(value[i], p1[0], p1[1]);
+        }
+
+    }
+
+    return painter;
 };
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhr/toString
+// Original file:./src/tool/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('53');
-var isPlainObject =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (data) {
-
-    // 如果是字符串
-    if (isString(data)) {
-        return data;
-    }
-
-    // 如果是JSON数据
-    else if (isPlainObject(data)) {
-        return JSON.stringify(data);
-    }
-
-    // 如果为空
-    else if (data === undefined) {
-        return "";
-    }
-
-    // 否则
-    else {
-        return data;
-    }
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/echarts/dialogs/tool/toSankeyImageData
-/*****************************************************************/
-window.__pkg__bundleSrc__['377']=function(){
+window.__pkg__bundleSrc__['163']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
-// 把数据变成容易绘制桑基图的格式
+// 初始化配置文件
 
-__pkg__scope_bundle__.default= function (data, width, height, x, y) {
-
-    // 每个结点的格式如下
-    /**
-     * {
-     *  // 记录前序结点
-     *  pres:[
-     *          {name:"",value:""},...
-     *      ],
-     *
-     *  // 记录后续结点
-     *  nexts:[
-     *          {name:"",value:""},...
-     *      ],
-     *
-     *  // 记录当前结点的层次
-     *  deep:"",
-     *
-     *  // 值
-     *  value:"",
-     *
-     *  // 位置和大小
-     *  left,top,width,height,
-     *
-     *  值位置
-     *  preTops:[],
-     *  nextTops:[]
-     * }
-     */
-    var nodes = {}, i, j, link, disDeep;
-    for (i = 0; i < data.nodes.length; i++) {
-        nodes[data.nodes[i].name] = {
-            pres: [],
-            nexts: [],
-            deep: 0,
-            _sValue: 0,
-            _tValue: 0,
-            preTops: [],
-            nextTops: []
-        };
-    }
-
-    // 根据连接信息不断更新结点信息
-
-    for (i = 0; i < data.links.length; i++) {
-
-        link = data.links[i];
-
-        // 首先更新起点和终点结点的连接记录
-
-        nodes[link.source].nexts.push({
-            name: link.target,
-            value: link.value
-        });
-        nodes[link.source]._sValue += link.value;
-
-        nodes[link.target].pres.push({
-            name: link.source,
-            value: link.value
-        });
-        nodes[link.target]._tValue += link.value;
-
-        // 然后校对deep
-
-        if (nodes[link.source].deep >= nodes[link.target].deep) {
-
-            disDeep = nodes[link.source].deep + 1 - nodes[link.target].deep;
-
-            // 修改target的deep
-            nodes[link.target].deep += disDeep;
-
-            // 然后对于target和其所有nexts同步提升deep
-            (function reCalcDeep(name, deep) {
-
-                if (nodes[name].deep < deep) {
-                    nodes[name].deep = deep;
-
-                    var _nexts = nodes[name].nexts, j;
-
-                    for (j = 0; j < _nexts.length; j++) {
-                        reCalcDeep(_nexts[j].name, nodes[name].deep + 1);
-                    }
-                }
-
-            })(link.target, nodes[link.target].deep + 1);
-
+__pkg__scope_bundle__.initConfig = function (init, data) {
+    var key;
+    for (key in data)
+        try {
+            init[key] = data[key];
+        } catch (e) {
+            throw new Error("Illegal property value！");
         }
-
-    }
-
-    // 计算第一层的总值（用于计算每个点的位置）
-    var values = [];
-    for (i in nodes) {
-        if (values[nodes[i].deep] == undefined) values[nodes[i].deep] = 0;
-        nodes[i].value = nodes[i]._sValue > nodes[i]._tValue ? nodes[i]._sValue : nodes[i]._tValue;
-
-        values[nodes[i].deep] += nodes[i].value;
-
-    }
-
-    // 辅助过会计算位置
-    var topPreDis = [];
-
-    // 求解最大值
-    var maxValue = 0;
-    for (i = 0; i < values.length; i++) {
-        if (maxValue < values[i]) maxValue = values[i];
-        topPreDis.push(0);
-    }
-
-    var _width = width / values.length;
-    var _itemWidth = _width / 3;
-    var _heightDis;
-
-    // 然后，计算出每个结点的位置，大小
-    for (i in nodes) {
-        _heightDis = nodes[i].value / values[nodes[i].deep] * height;
-
-        nodes[i].width = _itemWidth;
-        nodes[i].height = nodes[i].value / maxValue * height * 0.9;
-        nodes[i].left = _width * (nodes[i].deep + 1 / 3) + x;
-        nodes[i].top = topPreDis[nodes[i].deep] + (_heightDis - nodes[i].height) * 0.5 + y;
-
-        nodes[i].preTops.push(nodes[i].top);
-        for (j = 0; j < nodes[i].pres.length; j++) {
-            nodes[i].preTops[j + 1] = nodes[i].preTops[j] + nodes[i].pres[j].value / nodes[i].value * nodes[i].height;
-        }
-
-        nodes[i].nextTops.push(nodes[i].top);
-        for (j = 0; j < nodes[i].nexts.length; j++) {
-            nodes[i].nextTops[j + 1] = nodes[i].nextTops[j] + nodes[i].nexts[j].value / nodes[i].value * nodes[i].height;
-        }
-
-        topPreDis[nodes[i].deep] += _heightDis;
-    }
-
-    return nodes;
+    return init;
 };
-
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/getLoopColors
+// Original file:./src/tool/transform/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['150']=function(){
+window.__pkg__bundleSrc__['165']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 获取一组循环色彩
-__pkg__scope_bundle__.default= function (num, alpha) {
-    if (!(alpha && alpha >= 0 && alpha <= 1)) alpha = 1;
-    // 颜色集合
-    var colorList = [
-        'rgba(84,112,198,' + alpha + ")", 'rgba(145,204,117,' + alpha + ")",
-        'rgba(250,200,88,' + alpha + ")", 'rgba(238,102,102,' + alpha + ")",
-        'rgba(115,192,222,' + alpha + ")", 'rgba(59,162,114,' + alpha + ")",
-        'rgba(252,132,82,' + alpha + ")", 'rgba(154,96,180,' + alpha + ")",
-        'rgba(234,124,204,' + alpha + ")"
+    // 点（x,y）围绕中心（cx,cy）旋转deg度
+__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
+    var cos = Math.cos(deg), sin = Math.sin(deg);
+    return [
+        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
+        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
     ];
-
-    var colors = [];
-
-    // 根据情况返回颜色数组
-    if (num <= colorList.length) {
-        // 这种情况就不需要任何处理
-        return colorList;
-    } else {
-        // 如果正好是集合长度的倍数
-        if (num % colorList.length == 0) {
-            // 将颜色数组循环加入后再返回
-            for (var i = 0; i < (num / colorList.length); i++) {
-                colors = colors.concat(colorList);
-            }
-        } else {
-            for (var j = 1; j < (num / colorList.length); j++) {
-                colors = colors.concat(colorList);
-            }
-            // 防止最后一个颜色和第一个颜色重复
-            if (num % colorList.length == 1) {
-                colors = colors.concat(colorList[4]);
-            } else {
-                for (var k = 0; k < num % colorList.length; k++) {
-                    colors = colors.concat(colorList[k]);
-                }
-            }
-        }
-    }
-
-    // 返回结果
-    return colors;
 };
-
 
     return __pkg__scope_bundle__;
 }

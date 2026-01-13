@@ -1,0 +1,213 @@
+[dialog-view='api'] {
+    width: calc(100vw - 160px);
+    height: calc(100vh - 40px);
+    left: 80px;
+    top: 20px;
+    border-radius: 5px;
+
+    &>header {
+        line-height: 50px;
+        height: 50px;
+        box-shadow: rgb(213 221 225) 0px 4px 6px;
+        position: relative;
+        user-select: none;
+
+        &>h2 {
+            background-image: url("./api.png");
+            padding-left: 50px;
+            background-repeat: no-repeat;
+            background-position: 10px center;
+            background-size: auto 60%;
+            font-family: cursive;
+            color: #4f94b5;
+            font-size: 20px;
+        }
+
+        &>i {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-style: normal;
+            font-family: sans-serif;
+            width: 50px;
+            line-height: 50px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 30px;
+        }
+    }
+
+    &>div {
+
+        &.tips {
+            font-size: 12px;
+            color: #ffffff;
+            background-color: #e91e63;
+            width: 500px;
+            line-height: 30px;
+            height: 30px;
+            text-align: center;
+            left: calc(50% - 250px);
+            top: 10px;
+            position: absolute;
+            user-select: none;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        &.content {
+            font-size: 0;
+            white-space: nowrap;
+
+            &>div {
+                font-size: 12px;
+                height: calc(100vh - 90px);
+                vertical-align: top;
+                white-space: normal;
+                display: inline-block;
+                line-height: 1.6em;
+                overflow: auto;
+                padding: 10px 0;
+
+                &.menu {
+                    width: 240px;
+                    background-color: rgb(240, 240, 240);
+                    padding: 20px 10px;
+
+                    h1,
+                    h2,
+                    h3,
+                    h4 {
+                        cursor: pointer;
+                        font-size: 12px;
+                        display: block;
+                        line-height: 2em;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    h2 {
+                        margin-left: 20px;
+                    }
+
+                    h3 {
+                        margin-left: 40px;
+                    }
+
+                    h4 {
+                        margin-left: 60px;
+                    }
+                }
+
+                &.content {
+                    width: calc(100vw - 400px);
+                    padding: 20px 30px;
+
+                    &>pre {
+                        background: #e8e8e8;
+                        padding: 10px;
+                    }
+
+                    &>header {
+                        font-size: 28px;
+                        padding: 20px 0;
+                        font-weight: 800;
+                    }
+
+                    &>h2 {
+                        font-size: 20px;
+                        line-height: 2em;
+                        padding: 20px 0;
+                    }
+
+                    &>h3 {
+                        font-size: 16px;
+                        line-height: 2em;
+                        padding: 15px 0;
+                    }
+
+                    &>h4 {
+                        font-size: 12px;
+                        padding: 15px 0 5px 0;
+                        text-decoration: overline;
+                    }
+
+                    &>p {
+                        line-height: 1.6em;
+                        text-indent: 2em;
+                        color: #3c3939;
+                        font-weight: 400;
+                        font-size: 14px;
+                        margin: 10px 0;
+                    }
+
+                    &>ul,
+                    &>ol {
+                        font-size: 13px;
+                        line-height: 2.4em;
+                        margin-left: 2.5em;
+                    }
+
+                    &>ol>li {
+                        list-style-type: decimal;
+                    }
+
+                    &>ul>li {
+                        list-style-type: disc;
+                    }
+
+                    .warn {
+                        font-size: 12px;
+                        color: #dac305;
+                        font-weight: 400;
+                        padding: 0 3px;
+                    }
+
+                    .important {
+                        color: rgb(255, 0, 0);
+                        font-weight: 800;
+                        padding: 0 3px;
+                    }
+
+                    &>table {
+                        width: 100%;
+                        line-height: 20px;
+                        font-size: 14px;
+
+                        &>thead>tr {
+                            background-color: #c1bcbc;
+                            border: 1px solid #c1bcbc;
+                            color: #fff;
+                        }
+
+                        &>tbody>tr {
+                            &>* {
+                                border-width: 0 1px 1px 0;
+                                border-style: solid;
+                                border-color: #c1bcbc;
+
+                                &:first-child {
+                                    border-width: 0 1px 1px 1px;
+                                }
+                            }
+
+                            &:nth-child(2n) {
+                                background-color: #F5F5F5;
+                            }
+
+                            &:nth-child(2n+1) {
+                                background-color: #fff;
+                            }
+                        }
+
+                        &>*>tr>td {
+                            padding-left: 1em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,53 +1,542 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/scss/index.js
+// Original file:./src/pages/model-editor/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['82']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('289');
+    __pkg__scope_args__=window.__pkg__getBundle('262');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('290');
+__pkg__scope_args__=window.__pkg__getBundle('263');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('291');
-var scssLoader =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('264');
+var lazyDialogs =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('173');
-var editorRender =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('267');
+var lazyWins =__pkg__scope_args__.default;
 
+
+__pkg__scope_args__=window.__pkg__getBundle('33');
+var remove =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('270');
+var doResize =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('271');
+var webglRender =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('277');
+var Matrix4 =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('282');
+var viewHandler =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('283');
+var downloadJSON=__pkg__scope_args__.downloadJSON;
+
+__pkg__scope_args__=window.__pkg__getBundle('154');
+var assemble =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('284');
+var getColorFactory =__pkg__scope_args__.default;
+
+
+__pkg__scope_args__=window.__pkg__getBundle('285');
+var mainView=__pkg__scope_args__.mainView;
+var axios=__pkg__scope_args__.axios;
+
+__pkg__scope_args__=window.__pkg__getBundle('296');
+var UpToDown=__pkg__scope_args__.UpToDown;
+var DownToUp=__pkg__scope_args__.DownToUp;
+
+
+__pkg__scope_args__=window.__pkg__getBundle('286');
+var cylinderFactory =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('294');
+var sphereFactory =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('289');
+var prismFactory =__pkg__scope_args__.default;
+
+
+var geometry = {
+    sphere: sphereFactory(),
+    cylinder: cylinderFactory(),
+    prism: prismFactory()
+};
+
+// 着色器
+__pkg__scope_args__=window.__pkg__getBundle('297');
+var vertexShader =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('298');
+var fragmentShader =__pkg__scope_args__.default;
+
+
+// 标记当前无弹框
+var noDialog = true;
 
 __pkg__scope_bundle__.default= function (obj) {
-    var sourceEditor, targetEditor;
+    var wins = {};
+
+    var object3D = []; // 记录着当前的模型几何绘制
+
+    var doDraw, stopDoResize;
+    var doDraw_region, __regionList = {}, __getColor, __regionIndex = -1, __regionNeedUpdate = false;
+
+    var isFocus = false;
 
     return {
-        name: "scss",
+        name: "model-editor",
         render: template,
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "scss转css" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './scss.png');
+            document.getElementsByTagName('title')[0].innerText = "3D模型编辑器" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './model-editor.png');
+        },
+        data: {
+            width: obj.ref(0),
+            height: obj.ref(0),
+
+            isMenuOpen: obj.reactive({}), // 菜单是否打开
         },
         mounted: function () {
-            sourceEditor = new editorRender({
-                el: this._refs.source.value,
-                shader: ['css']
-            });
+            this.resetEditor();
+            var _this = this;
 
-            targetEditor = new editorRender({
-                el: this._refs.target.value,
-                shader: ['css'],
-                readonly: true
+            Promise.all([
+                this.$openWin(lazyWins.geometry, {
+                    addGeometry: function () {
+                        _this.addGeometry.apply(_this, arguments)
+                    }
+                }),
+                this.$openWin(lazyWins.modify)
+            ]).then(function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    _this.initWin(data[i].instance._name, data[i]);
+                }
             });
         },
-        methods: {
-            scssToCss: function () {
-                try {
-                    targetEditor.valueOf(scssLoader(sourceEditor.valueOf()));
-                } catch (e) {
-                    console.error(e);
-                    alert('运行出错（' + e + '）');
+        beforeDestory: function () {
+
+            // 取消对画布大小改变的监听
+            if (stopDoResize) stopDoResize();
+
+            // 销毁所有的win窗口
+            for (var winName in wins) {
+                remove(wins[winName].el);
+            }
+            this.isMenuOpen = {};
+            wins = {};
+        },
+
+        beforeUnfocus: function () {
+            isFocus = false;
+
+            // 关闭所有的win窗口
+            for (var winName in wins) {
+                if (this.isMenuOpen[winName]) {
+                    wins[winName].el.style.display = "none";
                 }
+            }
+        },
+
+        focused: function () {
+            isFocus = true;
+
+            // 显示本来应该打开的窗口
+            for (var winName in wins) {
+                if (this.isMenuOpen[winName]) {
+                    wins[winName].el.style.display = "";
+                }
+            }
+        },
+
+        methods: {
+
+            // 新窗口初始化处理
+            initWin: function (name, data) {
+                wins[name] = data;
+                this.isMenuOpen[name] = true;
+            },
+
+            triggleFile: function () {
+                this._refs.file.value.click();
+            },
+
+            addGeometry: function (name, x, y, z) {
+                this.$openDialog(lazyDialogs.geometry, {
+                    kind: name,
+                    name: "",
+                    x: x,
+                    y: y,
+                    z: z
+                }).then(function (data) {
+                    var geometryData = geometry[name].apply(null, data.geometry);
+                    var mesh = [];
+                    for (var i = 0; i < geometryData.length; i++) {
+                        mesh.push({
+                            geometry: {
+                                attributes: {
+                                    position: {
+                                        array: geometryData[i].points,
+                                        count: geometryData[i].length,
+                                        itemSize: 3
+                                    }
+                                },
+                                type: DownToUp[geometryData[i].method]
+                            },
+                            material: {
+                                color: {
+                                    r: 0,
+                                    g: 0,
+                                    b: 0,
+                                    alpha: 1
+                                }
+                            }
+                        });
+                    }
+
+                    object3D.push({
+                        region: data.name,
+                        matrix: Matrix4(),
+                        mesh: mesh
+                    });
+
+                    doDraw();
+                });
+            },
+
+            doClick: function (event) {
+                if (doDraw_region) {
+                    if (__regionNeedUpdate) doDraw_region();
+                    var regionIndex = __regionList[__getColor(event.offsetX, event.offsetY)] || -1;
+                    if (regionIndex != __regionIndex) {
+                        __regionIndex = regionIndex;
+                        doDraw(true);
+
+                        if (__regionIndex > 0) {
+                            wins.modify.instance.initData({
+                                name: object3D[regionIndex].region
+                            }, {
+                                save: function (data) {
+                                    object3D[regionIndex].region = data.name;
+                                },
+                                delete: function () {
+                                    object3D.splice(regionIndex, 1);
+                                    __regionIndex = -1;
+                                    doDraw();
+                                }
+                            });
+                        } else {
+                            wins.modify.instance.initData();
+                        }
+
+                    }
+                }
+            },
+
+            // 导入本地文件
+            inputLocalFile: function (event) {
+                var i, files = event.target.files;
+
+                var unsupportFile = "";
+                for (i = 0; i < files.length; i++) {
+
+                    // JSON文件
+                    if (/\.json$/.test(files[i].name)) {
+                        (function (file) {
+                            var reader = new FileReader();
+                            reader.onload = function () {
+                                try {
+                                    var resultObj = JSON.parse(reader.result);
+                                    if (resultObj.type == "model-eidtor") {
+                                        var _object3D = [object3D[0]];
+                                        for (var j = 0; j < resultObj.value.length; j++) {
+                                            resultObj.value[j].matrix = Matrix4(resultObj.value[j].matrix);
+                                            _object3D.push(resultObj.value[j]);
+                                        }
+                                        object3D = _object3D;
+                                    } else {
+                                        alert("【" + files[i].name + "】不支持的JSON文件");
+                                    }
+                                    doDraw();
+                                } catch (e) {
+                                    alert("【" + files[i].name + "】文件解析出错了");
+                                    console.error(e);
+                                }
+                            };
+
+                            reader.readAsText(file, "utf-8");
+                        })(files[i]);
+                    } else {
+
+                        // 标记还没有支持的
+                        unsupportFile += files[i].name + ",";
+                    }
+                }
+
+                // 如果存在还不支持的，提示一下
+                if (unsupportFile.length > 0) {
+                    alert('部分文件由于时间问题，目前不支持打开其格式：【 ' + (unsupportFile.replace(/\,$/, '')) + '】');
+                }
+            },
+
+            // 导出
+            exportFile: function () {
+
+                noDialog = false;
+                this.$openDialog(lazyDialogs.save, {
+                    name: "model",
+                }).then(function (data) {
+
+                    var object3DArray = [];
+                    for (var i = 1; i < object3D.length; i++) {
+                        object3DArray.push({
+                            region: object3D[i].region,
+                            mesh: object3D[i].mesh,
+                            matrix: object3D[i].matrix.value()
+                        });
+                    }
+
+                    downloadJSON(data.name, {
+                        type: "model-eidtor",
+                        version: "0.1.0",
+                        value: object3DArray
+                    });
+
+                }).finally(function () {
+                    noDialog = true;
+                });
+            },
+
+            // 新建
+            resetEditor: function (event) {
+                object3D = event ? [object3D[0]] : mainView();
+
+                if (event) wins.modify.instance.initData();
+                if (stopDoResize) stopDoResize();
+
+                // 启动画布监听
+                var _this = this;
+                var el = this._refs.mainViewRoot.value;
+
+                // 绘制刻度尺的方法
+                var drawAxis = this.renderAxisView();
+
+                stopDoResize = doResize(el, function () {
+                    _this.width = el.clientWidth;
+                    _this.height = el.clientHeight;
+
+                    setTimeout(function () {
+                        _this.updateView(drawAxis);
+                    });
+
+                });
+
+                if (event) {
+                    alert("新建成功！");
+                }
+            },
+
+            // 根据模型数据进行绘制
+            updateView: function (drawAxis) {
+
+                //  当前缩放率
+                var rateScale = 5;
+
+                // 创建3d对象
+                var webgl = webglRender(this._refs.mainView.value);
+                webgl.updateScale(rateScale);
+
+                // => 区域
+                var webgl_region = webglRender(this._refs.mainView_region.value);
+                webgl_region.updateScale(rateScale);
+
+                // 启用着色器
+                webgl.shader(vertexShader, fragmentShader);
+
+                // => 区域
+                webgl_region.shader(vertexShader, fragmentShader);
+
+                // 初始化缓冲区
+                var buffer = webgl.buffer();
+
+                // => 区域
+                var buffer_region = webgl_region.buffer();
+
+                // 获取画笔并开启深度计算
+                var painter = webgl.painter().openDeep();
+
+                // => 区域
+                var painter_region = webgl_region.painter().openDeep();
+
+                // 控制矩阵
+                var matrix = Matrix4().multiply([
+                    1 / 5, 0, 0, 0,
+                    0, 1 / 5, 0, 0,
+                    0, 0, -1 / 5, 0,
+                    0, 0, 0, 1
+                ]).rotate(-0.4, 1, 0, 0);
+
+                // 为了控制不变形而提前计算的比例参数
+                var proportion = webgl._gl_.canvas.clientWidth / webgl._gl_.canvas.clientHeight;
+                var xProportion = 1, yProportion = 1;
+                if (proportion > 1) yProportion = proportion; else xProportion = 1 / proportion;
+                var zProportion = Math.min(xProportion, yProportion);
+
+                //  定义绘制方法
+                doDraw = function (regionNotUpdate) {
+                    drawAxis(matrix);
+
+                    // 区域是否需要更新
+                    __regionNeedUpdate = !regionNotUpdate;
+
+                    // 相机矩阵
+                    webgl.setUniformMatrix4fv('u_camera', Matrix4(matrix.value()).multiply([
+                        xProportion, 0, 0, 0,
+                        0, yProportion, 0, 0,
+                        0, 0, zProportion, 0,
+                        0, 0, 0, 1
+                    ]).value());
+
+                    for (var i = 0; i < object3D.length; i++) {
+
+                        // 物体矩阵
+                        webgl.setUniformMatrix4fv('u_matrix', object3D[i].matrix.value());
+
+                        // 一个个绘制
+                        for (var j = 0; j < object3D[i].mesh.length; j++) {
+
+                            var itemValue = object3D[i].mesh[j];
+
+                            // 设置颜色
+                            if (__regionIndex == i) {
+                                webgl.setUniform4f('u_color', 1, 1, 1, 1);
+                            } else {
+                                webgl.setUniform4f('u_color', itemValue.material.color.r, itemValue.material.color.g, itemValue.material.color.b, itemValue.material.color.alpha);
+                            }
+
+                            // 缓冲区写入数据并分配
+                            buffer.write(new Float32Array(itemValue.geometry.attributes.position.array)).use('a_position', 3, 3, 0);
+
+                            // 绘制
+                            painter[UpToDown[itemValue.geometry.type]](0, itemValue.geometry.attributes.position.count);
+
+                        }
+                    }
+
+                };
+
+                // => 区域
+                doDraw_region = function () {
+
+                    // 相机矩阵
+                    webgl_region.setUniformMatrix4fv('u_camera', Matrix4(matrix.value()).multiply([
+                        xProportion, 0, 0, 0,
+                        0, yProportion, 0, 0,
+                        0, 0, zProportion, 0,
+                        0, 0, 0, 1
+                    ]).value());
+
+                    var regionAssemble = assemble(0, 1, 0.2, 3);
+                    __regionList = {};
+
+                    for (var i = 1; i < object3D.length; i++) {
+
+                        // 物体矩阵
+                        webgl_region.setUniformMatrix4fv('u_matrix', object3D[i].matrix.value());
+
+                        // 设置颜色
+                        var regionColor = regionAssemble();
+
+                        __regionList["rgba(" + regionColor[0] * 255 + "," + regionColor[1] * 255 + "," + regionColor[2] * 255 + "," + 255 + ")"] = i
+                        webgl_region.setUniform4f('u_color', regionColor[0], regionColor[1], regionColor[2], 1);
+
+                        // 一个个绘制
+                        for (var j = 0; j < object3D[i].mesh.length; j++) {
+
+                            var itemValue = object3D[i].mesh[j];
+
+                            // 缓冲区写入数据并分配
+                            buffer_region.write(new Float32Array(itemValue.geometry.attributes.position.array)).use('a_position', 3, 3, 0);
+
+                            // 绘制
+                            painter_region[UpToDown[itemValue.geometry.type]](0, itemValue.geometry.attributes.position.count);
+                        }
+                    }
+
+                    __getColor = getColorFactory(webgl_region._gl_);
+                };
+
+                // 每次调整的幅度
+                var deg = 0.1;
+                viewHandler(function (data) {
+                    if (!isFocus) return;
+
+                    /*
+                     * 修改相机
+                     */
+
+                    // 键盘控制
+                    if (data.type == 'lookUp') {
+
+                    } else if (data.type == 'lookDown') {
+
+                    } else if (data.type == 'lookLeft') {
+
+                    } else if (data.type == 'lookRight') {
+
+                    }
+
+                    // 鼠标拖动或手指控制
+                    else if (data.type == 'rotate') {
+                        matrix.rotate(deg * data.dist * 0.07, data.normal[0], data.normal[1], data.normal[2]);
+                    }
+
+                    // 滚轮控制
+                    else if (data.type == 'scale') {
+                        var baseTimes = 0.98;
+                        var times = data.kind == 'enlarge' ? 2 - baseTimes : baseTimes;
+                        rateScale *= times;
+                        webgl.updateScale(rateScale);
+                    }
+
+                    doDraw();
+                });
+
+                doDraw();
+            },
+
+            // 绘制刻度尺图标
+            renderAxisView: function () {
+                var webgl = webglRender(this._refs.axios.value);
+                webgl.shader(vertexShader, fragmentShader);
+                var buffer = webgl.buffer();
+                var painter = webgl.painter().openDeep();
+
+                webgl.setUniformMatrix4fv('u_matrix', Matrix4().value());
+
+                webgl.updateScale(3);
+
+                var axisValue = axios();
+
+                // 返回绘制方法由主流程控制
+                return function (matrix) {
+                    setTimeout(function () {
+                        webgl.setUniformMatrix4fv('u_camera', matrix.value());
+                        for (var index = 0; index < axisValue.length; index++) {
+                            var itemValue = axisValue[index];
+
+                            webgl.setUniform4f('u_color', itemValue.color[0], itemValue.color[1], itemValue.color[2], itemValue.color[3]);
+                            buffer.write(new Float32Array(itemValue.points)).use('a_position', 3, 3, 0);
+                            painter[itemValue.method](0, itemValue.length);
+
+                        }
+                    });
+                };
             }
         }
     };
@@ -57,1184 +546,830 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/scss/index.html
+// Original file:./src/pages/model-editor/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['289']=function(){
+window.__pkg__bundleSrc__['262']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,15]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"scss转css","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5,7]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[6]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[10,14]},{"type":"tag","name":"h2","attrs":{},"childNodes":[11,12]},{"type":"text","content":"源代码","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"run","ui-on:click":"scssToCss"},"childNodes":[13]},{"type":"text","content":"运行","childNodes":[]},{"type":"tag","name":"div","attrs":{"ref":"source"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[16,18]},{"type":"tag","name":"h2","attrs":{},"childNodes":[17]},{"type":"text","content":"运行结果","childNodes":[]},{"type":"tag","name":"div","attrs":{"ref":"target"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,19,22,24]},{"type":"tag","name":"div","attrs":{"class":"menu","ui-dragdrop:desktop":""},"childNodes":[2,4,6,12,14]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"3D模型编辑器","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"resetEditor"},"childNodes":[5]},{"type":"text","content":"新建","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"more"},"childNodes":[7,8]},{"type":"text","content":"导入","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[9]},{"type":"tag","name":"span","attrs":{},"childNodes":[10]},{"type":"tag","name":"label","attrs":{"ui-on:click":"triggleFile"},"childNodes":[11]},{"type":"text","content":"本地选择","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-on:click":"exportFile"},"childNodes":[13]},{"type":"text","content":"导出","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[15,17]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[16]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[18]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mainViewRoot","ui-on:mousedown":"doClick"},"childNodes":[20,21]},{"type":"tag","name":"canvas","attrs":{"ui-bind:width":"width","ui-bind:height":"height","ref":"mainView_region","class":"region"},"childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ui-bind:width":"width","ui-bind:height":"height","ref":"mainView"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"axis"},"childNodes":[23]},{"type":"tag","name":"canvas","attrs":{"width":"100","height":"100","ref":"axios"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"no-view"},"childNodes":[25]},{"type":"tag","name":"input","attrs":{"type":"file","ref":"file","multiple":"","ui-on:change":"inputLocalFile","accept":".json"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/scss/index.scss
+// Original file:./src/pages/model-editor/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['290']=function(){
+window.__pkg__bundleSrc__['263']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"scss\"]{\n\nwidth: calc(100vw - 200px);\n\nheight: calc(100vh - 70px);\n\ntop: 20px;\n\nleft: 100px;\n\nfont-size: 0;\n\nwhite-space: nowrap;\n\n}\n\n [page-view=\"scss\"][focus=\"no\"]>header{\n\nbackground-color: #e8eaed;\n\n}\n\n [page-view=\"scss\"]>header{\n\ntext-align: left;\n\nline-height: 30px;\n\nheight: 30px;\n\nbackground-color: #dee1e7;\n\n}\n\n [page-view=\"scss\"]>header>h2{\n\ncolor: #000000;\n\nfont-size: 16px;\n\npadding-left: 45px;\n\nbackground-image: url(\"./scss-font.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 80%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"scss\"]>div{\n\ndisplay: inline-block;\n\nfont-size: 16px;\n\nwhite-space: normal;\n\nvertical-align: top;\n\noutline: 1px solid #8c9da5;\n\nmargin: 20px 0 0 20px;\n\n}\n\n [page-view=\"scss\"]>div>h2{\n\nborder-bottom: 1px solid #8c9da5;\n\nheight: 50px;\n\nline-height: 50px;\n\npadding: 0 20px;\n\nposition: relative;\n\nfont-family: cursive;\n\nfont-weight: 200;\n\nfont-size: 16px;\n\n}\n\n [page-view=\"scss\"]>div>h2>button{\n\nposition: absolute;\n\nright: 10px;\n\ntop: 10px;\n\nheight: 30px;\n\nline-height: 30px;\n\npadding: 0 20px;\n\nborder: none;\n\noutline: none;\n\ncolor: white;\n\ncursor: pointer;\n\n}\n\n [page-view=\"scss\"]>div>h2>button.run{\n\nbackground-color: #d05a90;\n\n}\n\n [page-view=\"scss\"]>div>div{\n\nwidth: calc(50vw - 130px);\n\nheight: calc(100vh - 190px);\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"model-editor\"]{\n\nwidth: calc(100vw - 160px);\n\nheight: calc(100vh - 55px);\n\nleft: 80px;\n\ntop: 10px;\n\n}\n\n [page-view=\"model-editor\"] .no-view{\n\ndisplay: none;\n\n}\n\n [page-view=\"model-editor\"][focus=\"no\"]>div.menu{\n\nbackground-color: #afbabe;\n\n}\n\n [page-view=\"model-editor\"]>div.menu{\n\nbackground-color: #cad6db;\n\nborder-bottom: 1px solid #cccccc;\n\nheight: 30px;\n\nheight: 30px;\n\nline-height: 30px;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>h2{\n\nbackground-image: url('./model-editor.png');\n\npadding-left: 30px;\n\npadding-right: 10px;\n\ndisplay: inline-block;\n\nvertical-align: top;\n\nbackground-size: auto 70%;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 5px center;\n\nfont-size: 12px;\n\ncolor: rgb(0, 0, 0);\n\nfont-weight: 800;\n\nborder-right: 1px solid #cccccc;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span{\n\nmargin-left: 20px;\n\ndisplay: inline-block;\n\nvertical-align: top;\n\nfont-size: 12px;\n\ncursor: pointer;\n\nwhite-space: nowrap;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span:hover{\n\ntext-decoration: underline;\n\nfont-weight: 800;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span.more{\n\nposition: relative;\n\npadding-right: 10px;\n\nz-index: 10;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span.more:hover>div{\n\ndisplay: block;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span.more::after{\n\nposition: absolute;\n\ntop: 13px;\n\nright: -3px;\n\nwidth: 0;\n\nheight: 0;\n\nborder-left: 4px solid transparent;\n\nborder-right: 4px solid transparent;\n\nborder-top: 5px solid #4f5959;\n\ncontent: \" \";\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span.more>div{\n\nposition: absolute;\n\nbackground-color: white;\n\nbox-shadow: 0 0 7px 0px #cccccc;\n\npadding: 5px 0;\n\nline-height: 1.8em;\n\ndisplay: none;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span.more>div>span{\n\ndisplay: block;\n\npadding: 0 10px;\n\nfont-weight: 400;\n\ncursor: pointer;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span.more>div>span>label{\n\ncursor: pointer;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span.more>div>span:hover{\n\ntext-decoration: underline;\n\n}\n\n [page-view=\"model-editor\"]>div.menu>span.more>div>span:not(:last-child){\n\nborder-bottom: 1px solid #cccccc;\n\n}\n\n [page-view=\"model-editor\"]>div.content{\n\nwidth: 100%;\n\nheight: calc(100% - 30px);\n\noverflow: hidden;\n\ntext-align: center;\n\nbackground-color: #9fa2a3;\n\nposition: relative;\n\n}\n\n [page-view=\"model-editor\"]>div.content>.region{\n\nposition: absolute;\n\nz-index: -1;\n\nleft: 0;\n\ntop: 0;\n\n}\n\n [page-view=\"model-editor\"]>div.axis{\n\nposition: absolute;\n\nright: 30px;\n\nbottom: 30px;\n\npointer-events: none;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./bin/loader/scss
+// Original file:./src/pages/model-editor/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['291']=function(){
+window.__pkg__bundleSrc__['264']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    
+    __pkg__scope_bundle__.default= {
 
-                var module={
-                    exports:{}
-                };
-                var exports=module.exports;
-        
-                var toSelector = function (preSelectorArray, deep) {
+    // 保存
+    save: function () {
+        return window.__pkg__getLazyBundle('./dist/bundle71.js','265')
+    },
 
-    var selectors = preSelectorArray[0], i, j, k;
-
-    // 一层层深入
-    for (i = 1; i < deep; i++) {
-
-        var temp = [];
-        // 前置循环
-        for (j = 0; j < selectors.length; j++) {
-
-            // 预选循环
-            for (k = 0; k < preSelectorArray[i].length; k++) {
-
-                temp.push(selectors[j] + preSelectorArray[i][k]);
-
-            }
-
-        }
-
-        selectors = temp;
+    // 立方体
+    geometry: function () {
+        return window.__pkg__getLazyBundle('./dist/bundle72.js','266')
     }
 
-    // 最后补充 {
-    return "\n" + (selectors.join(',')) + "{\n";
 };
-
-// 把代码变成代码块
-// 比如一个注释就是一块，无论注释的内容有多少
-var analyseBlock = function (source) {
-
-    var i = -1,
-
-        // 当前面对的字符
-        currentChar = null;
-
-    // 获取下一个字符
-    var next = function () {
-        currentChar = i++ < source.length - 1 ? source[i] : null;
-        return currentChar;
-    };
-
-    // 获取往后n个值
-    var nextNValue = function (n) {
-        return source.substring(i, n + i > source.length ? source.length : n + i);
-    };
-
-    var blocks = [];
-    var currentBlock = "";
-
-    next();
-
-    while (true) {
-
-        // 先剔除空白字符
-        // 保证正式开始的时候匹配的是有效的
-        while (new RegExp("[\\x20\\t\\r\\n\\f]").test(currentChar)) {
-            next();
-        }
-
-        // 如果匹配的字符没有了
-        if (currentChar == null) break;
-
-        // 如果是注释
-        // /* 类型一 */
-        if (nextNValue(2) == '/*') {
-
-            next(); next();
-            currentBlock = "/*";
-
-            while (nextNValue(2) != '*/' && currentChar != null) {
-                currentBlock += currentChar;
-                next();
-            }
-
-            // 对于注释 /* */
-            // 如果到结尾都没有闭合，应该提示语法错误
-            if (currentChar == null) {
-                throw new Error('The comment is not closed.');
-            }
-
-            currentBlock += "*/";
-            next(); next();
-
-            blocks.push({
-                value: currentBlock,
-                type: "comment-double"
-            });
-        }
-
-        // 如果是注释
-        // // 类型二
-        else if (nextNValue(2) == '//') {
-            currentBlock = '';
-
-            while (currentChar != '\n' && currentChar != null) {
-                currentBlock += currentChar;
-                next();
-            }
-
-            blocks.push({
-                value: currentBlock,
-                type: "comment-single"
-            });
-
-        }
-
-        // 如果是结束
-        //  }
-        else if (currentChar == '}') {
-
-            blocks.push({
-                value: "}",
-                type: "end"
-            });
-
-            next();
-
-        }
-
-        // 余下，只有两种情况：
-        // 1.如是是开始
-        //  xxx {
-        // 2.可能是一个语句
-        //  xxx : xxx ;
-        // 这两种都需要进一步匹配
-        else {
-
-            currentBlock = '';
-
-            // 目前先没有考虑下列情况：
-            // 语句 content:";"
-            while (currentChar != '{' && currentChar != ';' && currentChar != null) {
-                currentBlock += currentChar;
-                next();
-            }
-
-            if (currentChar == null) {
-                throw new Error('Statement or code block missing closure.');
-            }
-
-            blocks.push({
-                value: currentBlock + currentChar,
-                type: {
-                    '{': "begin",
-                    ';': 'statement'
-                }[currentChar]
-            });
-
-            next();
-
-        }
-
-    }
-
-    return blocks;
-};
-
-
-module.exports = function (source) {
-
-    // 分析出代码块
-
-    var blocks = analyseBlock(source);
-
-    // 根据代码块获得最终代码
-
-    var i, j, cssCode = "", preSelectorArray = [], deep = 0;
-    for (i = 0; i < blocks.length; i++) {
-
-        // 注释 double
-        if (blocks[i].type == 'comment-double') {
-
-            cssCode += blocks[i].value;
-
-        }
-
-        // 注释 single
-        else if (blocks[i].type == 'comment-single') {
-
-            cssCode += "\n/* " + blocks[i].value + " */\n";
-
-        }
-
-        // 开始
-        else if (blocks[i].type == 'begin') {
-
-            var preSplit = blocks[i].value.split(',');
-            var preSelect = [];
-            for (j = 0; j < preSplit.length; j++) {
-
-                // 去掉两端的空格
-                preSelect[j] = preSplit[j].replace(/\{$/, '').trim();
-
-                // 判断拼接方式
-                if (/^&/.test(preSelect[j])) {
-                    preSelect[j] = preSelect[j].replace(/^&/, '');
-                } else {
-                    preSelect[j] = " " + preSelect[j];
-                }
-
-            }
-
-            // 登记到前缀数组
-            preSelectorArray[deep] = preSelect;
-            deep += 1;
-        }
-
-        // 结束
-        else if (blocks[i].type == 'end') {
-
-            deep -= 1;
-
-        }
-
-        // 语句
-        else if (blocks[i].type == 'statement') {
-
-            // 如果是第一个
-            j = 1;
-            var preType = blocks[i - j].type;
-            while (['comment-double', 'comment-single'].indexOf(preType) > -1) {
-                j += 1;
-                preType = blocks[i - j].type;
-            }
-            if (['end', 'begin'].indexOf(preType) > -1) {
-                cssCode += toSelector(preSelectorArray, deep);
-            }
-
-            cssCode += "\n" + blocks[i].value + "\n";
-
-            // 如果是最后一个
-            j = 1;
-            var nextType = blocks[i + j].type;
-            while (['comment-double', 'comment-single'].indexOf(nextType) > -1) {
-                j += 1;
-                nextType = blocks[i + j].type;
-            }
-            if (['end', 'begin'].indexOf(nextType) > -1) {
-                cssCode += "\n}\n";
-            }
-
-        }
-
-    }
-
-    return cssCode;
-};
-        
-                __pkg__scope_bundle__.default= module.exports;
-        
-                
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/index
+// Original file:./src/pages/model-editor/wins/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['173']=function(){
+window.__pkg__bundleSrc__['267']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    
-__pkg__scope_args__=window.__pkg__getBundle('174');
-var trigger =__pkg__scope_args__.default;
+    __pkg__scope_bundle__.default= {
 
-__pkg__scope_args__=window.__pkg__getBundle('61');
-var copy =__pkg__scope_args__.default;
+    // 立方体
+    geometry: function () {
+        return window.__pkg__getLazyBundle('./dist/bundle73.js','268')
+    },
+
+    // 修改器
+    modify: function () {
+        return window.__pkg__getLazyBundle('./dist/bundle74.js','269')
+    }
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/ResizeObserver
+/*****************************************************************/
+window.__pkg__bundleSrc__['270']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    var _support_ = true;
+
+__pkg__scope_bundle__.default= function (el, doback) {
+
+    var observer = null;
+    var _hadWilldo_ = false;
+    var _hadNouse_ = false;
+
+    var doit = function () {
+
+        // 如果前置任务都完成了
+        if (!_hadWilldo_) {
+            _hadWilldo_ = true;
+
+            // 既然前置任务已经没有了，那么就可以更新了？
+            // 不是的，可能非常短的时间里，后续有改变
+            // 因此延迟一点点来看看后续有没有改变
+            // 如果改变了，就再延迟看看
+            var interval = window.setInterval(function () {
+
+                // 判断当前是否可以立刻更新
+                if (!_hadNouse_) {
+                    window.clearInterval(interval);
+
+                    _hadWilldo_ = false;
+                    doback();
+
+                }
+
+                _hadNouse_ = false;
+            }, 100);
+
+        } else {
+            _hadNouse_ = true;
+        }
+    }
+
+    try {
 
 
-__pkg__scope_args__=window.__pkg__getBundle('48');
-var isElement =__pkg__scope_args__.default;
+        observer = new ResizeObserver(doit);
+        observer.observe(el);
 
-__pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
+    } catch (e) {
 
-__pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
+        // 如果浏览器不支持此接口
 
+        if (_support_) {
+            console.error('ResizeObserver undefined!');
 
-// 核心方法和工具方法
+            // 不支持的话，提示一次就可以了
+            _support_ = false;
+        }
 
-__pkg__scope_args__=window.__pkg__getBundle('175');
-var textWidth=__pkg__scope_args__.textWidth;
-var bestLeftNum=__pkg__scope_args__.bestLeftNum;
-var calcCanvasXY=__pkg__scope_args__.calcCanvasXY;
-var selectIsNotBlank=__pkg__scope_args__.selectIsNotBlank;
-var toTemplate=__pkg__scope_args__.toTemplate;
+        // 使用resize进行退化支持
+        doit();
+        window.addEventListener('resize', doit, false);
 
+    }
 
-__pkg__scope_args__=window.__pkg__getBundle('176');
-var initDom=__pkg__scope_args__.initDom;
-var initView=__pkg__scope_args__.initView;
+    return function () {
+        if (observer) {
 
-__pkg__scope_args__=window.__pkg__getBundle('181');
-var updateView=__pkg__scope_args__.updateView;
-var updateSelectView=__pkg__scope_args__.updateSelectView;
-var updateCursorPosition=__pkg__scope_args__.updateCursorPosition;
-var updateCanvasSize=__pkg__scope_args__.updateCanvasSize;
-var cancelSelect=__pkg__scope_args__.cancelSelect;
-var deleteSelect=__pkg__scope_args__.deleteSelect;
+            // 解除对画布大小改变的监听
+            observer.disconnect();
 
-__pkg__scope_args__=window.__pkg__getBundle('184');
-var bindEvent =__pkg__scope_args__.default;
+        } else {
+            window.removeEventListener('resize', doit);
+        }
+    };
 
-__pkg__scope_args__=window.__pkg__getBundle('185');
-var diff =__pkg__scope_args__.default;
+};
 
 
-__pkg__scope_args__=window.__pkg__getBundle('186');
-var filterText =__pkg__scope_args__.default;
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/webgl/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['271']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('272');
+var useShader=__pkg__scope_args__.useShader;
+
+__pkg__scope_args__=window.__pkg__getBundle('273');
+var newBuffer=__pkg__scope_args__.newBuffer;
+var writeBuffer=__pkg__scope_args__.writeBuffer;
+var useBuffer=__pkg__scope_args__.useBuffer;
+
+__pkg__scope_args__=window.__pkg__getBundle('274');
+var initTexture=__pkg__scope_args__.initTexture;
+var linkImage=__pkg__scope_args__.linkImage;
+var linkCube=__pkg__scope_args__.linkCube;
+
+__pkg__scope_args__=window.__pkg__getBundle('275');
+var value =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('276');
+var painter =__pkg__scope_args__.default;
 
 
-// 内置着色器方法
+// 获取webgl上下文
+var getCanvasWebgl = function (node, opts) {
+    var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"],
+        context = null, i;
+    for (i = 0; i < names.length; i++) {
+        try {
+            context = node.getContext(names[i], opts);
+        } catch (e) { }
+        if (context) break;
+    }
+    if (!context) throw new Error('Non canvas or browser does not support webgl.');
+    return context;
+}
 
-__pkg__scope_args__=window.__pkg__getBundle('187');
-var innerShader =__pkg__scope_args__.default;
+// 绘图核心对象
+__pkg__scope_bundle__.default= function (node, opts) {
+    var gl = getCanvasWebgl(node, opts),
+        glObj = {
 
+            "_gl_": gl,
 
-var editor = function (options) {
-    var _this = this;
+            // 画笔
+            "painter": function () {
+                return painter(gl);
+            },
 
-    if (!(this instanceof editor)) {
-        throw new Error('Editor is a constructor and should be called with the `new` keyword');
+            // 启用着色器
+            "shader": function (vshaderSource, fshaderSource) {
+                gl.program = useShader(gl, vshaderSource, fshaderSource);
+                return glObj;
+            },
+
+            // 缓冲区
+            "buffer": function (isElement) {
+                // 创建缓冲区
+                newBuffer(gl, isElement);
+                var bufferData,
+                    bufferObj = {
+                        // 写入数据
+                        "write": function (data, usage) {
+                            usage = usage || gl.STATIC_DRAW;
+                            writeBuffer(gl, data, usage, isElement);
+                            bufferData = data;
+                            return bufferObj;
+                        },
+                        // 分配使用
+                        "use": function (location, size, stride, offset, type, normalized) {
+                            var fsize = bufferData.BYTES_PER_ELEMENT;
+                            if (typeof location == 'string') location = gl.getAttribLocation(gl.program, location);
+                            stride = stride || 0;
+                            offset = offset || 0;
+                            type = type || gl.FLOAT;
+                            useBuffer(gl, location, size, type, stride * fsize, offset * fsize, normalized);
+                            return bufferObj;
+                        }
+                    };
+                return bufferObj;
+            },
+
+            // 纹理
+            "texture": function (_type_, unit) {
+                var type = {
+                    "2d": gl.TEXTURE_2D,/*二维纹理*/
+                    "cube": gl.TEXTURE_CUBE_MAP/*立方体纹理*/
+                }[_type_];
+
+                // 创建纹理
+                var texture = initTexture(gl, type, unit, _type_);
+
+                // 配置纹理
+                gl.texParameteri(type, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+                gl.texParameteri(type, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+                gl.texParameteri(type, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(type, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+                var textureObj = {
+                    // 链接图片资源
+                    "useImage": function (image, level, format, textureType) {
+                        linkImage(gl, type, level, format, textureType, image);
+                        return textureObj;
+                    },
+                    // 链接多张图片
+                    "useCube": function (images, width, height, level, format, textureType) {
+                        linkCube(gl, type, level, format, textureType, images, width, height, texture);
+                        return textureObj;
+                    }
+                };
+                return textureObj;
+            },
+
+            // 视图窗口缩放设置
+            "updateScale": function (value) {
+
+                var viewWidth = gl.canvas.width * value;
+                var viewHeight = gl.canvas.height * value;
+
+                var elWidth = gl.canvas.width;
+                var elHeight = gl.canvas.height;
+
+                gl.viewport((elWidth - viewWidth) * 0.5, (elHeight - viewHeight) * 0.5, viewWidth, viewHeight);
+
+                return glObj;
+            }
+
+        };
+
+    // attribue和uniform数据设置
+    var valueMethods = value(gl);
+    for (var key in valueMethods) {
+        glObj[key] = valueMethods[key];
     }
 
     /**
-     *
-     * [格式化配置]
-     *
-     * 所有的配置校验和默认值设置等都应该在这里进行
-     * 经过这里处理以后，后续不需要再进行校验了
-     * 因此这里的内容的更改一定要慎重
-     *
+     * gl.viewport告诉WebGL如何将裁剪空间（-1 到 +1）中的点转换到像素空间
+     * 当你第一次创建WebGL上下文的时候WebGL会设置视域大小和画布大小匹配
+     * 但是在那之后就需要你自己设置（当你改变画布大小就需要告诉WebGL新的视域设置）
+     * 为了避免麻烦，我们每次都主动调用一下
      */
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
-    // 编辑器挂载点
-    if (isElement(options.el)) {
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/depthFunc
+    gl.depthFunc(gl.LEQUAL);
 
-        // 着色器
-        var shader = function () {
-            var resultData = [];
-            _this._contentArray.forEach(function (text) {
-                resultData.push([{
-                    content: text,
-                    color: _this._colorText
-                }]);
-            });
-            return resultData;
-        };
-
-        // 格式化
-        var format = function (textString) { return textString; }
-
-        this._el = options.el;
-        this._el.editor_terminal = 'none';
-
-        // 公共配置
-        options.color = options.color || {};
-        this._colorBackground = options.color.background || "#f5f5f5"; /*编辑器背景*/
-        this._colorText = options.color.text || "#000000"; /*普通文本颜色*/
-        this._colorNumber = options.color.number || "#888484"; /*行号颜色*/
-        this._colorEdit = options.color.edit || "#eaeaf1"; /*编辑行颜色*/
-        this._colorCursor = options.color.cursor || "#ff0000"; /*光标颜色*/
-        this._colorSelect = options.color.select || "#6c6cf1"; /*选择背景*/
-        this._fontFamily = options["font-family"] || "新宋体"; /*字体*/
-        this._fontWeight = options["font-weight"] || 600;/*字重*/
-        this._tabSpace = options.tabSpace || 4;/*设置一个tab表示多少个空格*/
-        this._readonly = options.readonly || false;/*是否只读*/
-        this._noLineNumber = options.noLineNumber || false;/*是否隐藏行号*/
-
-        // 文本
-        this._contentArray = isString(options.content) ? (this.$$filterText(options.content) + "").replace(/\r/g, '').split("\n") : [""];
-
-        // 着色方法
-        this.$shader = isFunction(options.shader) ? options.shader : (Array.isArray(options.shader) ? innerShader.apply(null, options.shader) : shader);
-
-        // 格式化方法
-        this.$format = isFunction(options.format) ? options.format : format;
-
-        // 辅助输入
-        this.$input = isFunction(options.input) ? options.input : null;
-
-    } else {
-
-        // 挂载点是必须的，一定要有
-        throw new Error('options.el is not a element!');
-    }
-
-    // 先初始化DOM
-    this.$$initDom();
-
-    // 初始化控制变量
-    this.__needUpdate = true;
-    this.__lineNum = this._contentArray.length - 1;
-    this.__leftNum = this._contentArray[this.__lineNum].length;
-    this.__cursor1 = this.__cursor2 = { leftNum: 0, lineNum: 0 };
-    this.__formatData = this.$$diff(this.$shader(this._contentArray.join('\n')));
-
-    // 初始化视图
-    this.$$initView();
-
-    // 更新视图
-    this.$$updateView();
-
-    // 绑定操作
-    this.$$bindEvent();
-
-    this.__updated__ = function () { };
-    // 编辑器管理的文本发生改变后会主动触发callback方法
-    this.updated = function (callback) {
-        _this.__updated__ = callback;
-    };
-
-    // 获取当前编辑器代码
-    this.valueOf = function (content) {
-
-        if (content || content == '') {
-
-            // 先删除内容
-            _this._contentArray = null;
-
-            // 输入以触发更新
-            _this.__focusDOM.value = content;
-            trigger(_this.__focusDOM, 'input');
-            _this.__focusDOM.focus();
-
-        }
-
-        return _this._contentArray.join('\n');
-    };
-
-    // 在当前光标位置输入新的内容
-    this.input = function (content, cursor, number) {
-        content = content || "";
-        cursor = cursor || 0;
-        number = number || 0;
-
-        // 先删除多余的内容
-
-        if (cursor != 0) {
-
-            if (number != 0) {
-                _this._contentArray[_this.__lineNum] =
-                    _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum + cursor) +
-                    _this._contentArray[_this.__lineNum].substring(_this.__leftNum + cursor + number);
-            }
-
-            // 修改光标位置
-            _this.__leftNum += cursor;
-
-        }
-
-        // 输入以触发更新
-        _this.__focusDOM.value = content;
-        trigger(_this.__focusDOM, 'input');
-        _this.__focusDOM.focus();
-
-    };
-
-    // 格式化代码
-    this.format = function () {
-
-        // 格式化内容
-        _this._contentArray = _this.$format(_this._contentArray.join('\n'), _this._tabSpace).split('\n');
-
-        _this.__lineNum = _this._contentArray.length - 1;
-        _this.__leftNum = _this._contentArray[_this.__lineNum].length;
-
-        // 着色
-        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-
-        // 更新视图
-        _this.$$updateView();
-
-        // 更新光标位置
-        _this.$$initView();
-
-    };
-
-    // 复制当前编辑器代码到电脑剪切板
-    this.copy = function (callback, errorback) {
-        copy(_this.valueOf(), callback, errorback);
-    };
-
+    return glObj;
 };
-
-// 挂载辅助方法
-editor.prototype.$$textWidth = textWidth;
-editor.prototype.$$bestLeftNum = bestLeftNum;
-editor.prototype.$$calcCanvasXY = calcCanvasXY;
-editor.prototype.$$selectIsNotBlank = selectIsNotBlank;
-editor.prototype.$$filterText = filterText;
-editor.prototype.$$toTemplate = toTemplate;
-
-// 挂载核心方法
-
-editor.prototype.$$initDom = initDom;
-editor.prototype.$$initView = initView;
-
-editor.prototype.$$updateView = updateView;
-editor.prototype.$$updateSelectView = updateSelectView;
-editor.prototype.$$updateCursorPosition = updateCursorPosition;
-editor.prototype.$$updateCanvasSize = updateCanvasSize;
-editor.prototype.$$cancelSelect = cancelSelect;
-editor.prototype.$$deleteSelect = deleteSelect;
-
-editor.prototype.$$bindEvent = bindEvent;
-
-// 性能优化系列方法
-
-editor.prototype.$$diff = diff;
-
-__pkg__scope_bundle__.default= editor;
 
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/trigger
+// Original file:./src/tool/webgl/shader
 /*****************************************************************/
-window.__pkg__bundleSrc__['174']=function(){
+window.__pkg__bundleSrc__['272']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-      // 触发事件
-  __pkg__scope_bundle__.default= function (dom, eventType) {
-    var event;
+    /**
+ * 着色器一些公共的方法
+ * --------------------------------------------
+ * 主要是和生成特定着色器无关的方法
+ * 着色器分为两类：顶点着色器 + 片段着色器
+ * 前者用于定义一个点的特性，比如位置，大小，颜色等
+ * 后者用于针对每个片段（可以理解为像素）进行处理
+ *
+ * 着色器采用的语言是：GLSL ES语言
+ */
 
-    //创建event的对象实例。
-    if (document.createEventObject) {
-        // IE浏览器支持fireEvent方法
-        event = document.createEventObject();
-        dom.fireEvent('on' + eventType, event);
-    }
-
-    // 其他标准浏览器使用dispatchEvent方法
-    else {
-        event = document.createEvent('HTMLEvents');
-        // 3个参数：事件类型，是否冒泡，是否阻止浏览器的默认行为
-        event.initEvent(eventType, true, false);
-        dom.dispatchEvent(event);
-    }
-
+// 把着色器字符串加载成着色器对象
+var _loadShader = function (gl, type, source) {
+    // 创建着色器对象
+    var shader = gl.createShader(type);
+    if (shader == null) throw new Error('Unable to create shader!');
+    // 绑定资源
+    gl.shaderSource(shader, source);
+    // 编译着色器
+    gl.compileShader(shader);
+    // 检测着色器编译是否成功
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+        throw new Error('Failed to compile shader:' + gl.getShaderInfoLog(shader));
+    return shader;
 };
+
+// 初始化着色器
+var _useShader = function (gl, vshaderSource, fshaderSource) {
+    // 分别加载顶点着色器对象和片段着色器对象
+    var vertexShader = _loadShader(gl, gl.VERTEX_SHADER, vshaderSource),
+        fragmentShader = _loadShader(gl, gl.FRAGMENT_SHADER, fshaderSource);
+    // 创建一个着色器程序
+    var glProgram = gl.createProgram();
+    // 把前面创建的两个着色器对象添加到着色器程序中
+    gl.attachShader(glProgram, vertexShader);
+    gl.attachShader(glProgram, fragmentShader);
+    // 把着色器程序链接成一个完整的程序
+    gl.linkProgram(glProgram);
+    // 检测着色器程序链接是否成功
+    if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS))
+        throw new Error('Failed to link program: ' + gl.getProgramInfoLog(glProgram));
+    // 使用这个完整的程序
+    gl.useProgram(glProgram);
+    return glProgram;
+};
+
+__pkg__scope_bundle__.loadShader = _loadShader;
+__pkg__scope_bundle__.useShader = _useShader;
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/copy
+// Original file:./src/tool/webgl/buffer
 /*****************************************************************/
-window.__pkg__bundleSrc__['61']=function(){
+window.__pkg__bundleSrc__['273']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
+    /**
+ * 缓冲区核心方法
+ * --------------------------------------------
+ * 缓冲区分为两种：
+ *  1.缓冲区中保存了包含顶点的数据
+ *  2.缓冲区保存了包含顶点的索引值
+ *
+ */
 
-__pkg__scope_args__=window.__pkg__getBundle('47');
-var appendTo =__pkg__scope_args__.default;
-
-
-// 复制到剪切板
-__pkg__scope_bundle__.default= function (text, callback, errorback) {
-
-    var el = appendTo(document.body, '<textarea>' + text + '</textarea>');
-
-    // 执行复制
-    el.select();
-    try {
-        var result = window.document.execCommand("copy", false, null);
-
-        if (result) {
-            if (isFunction(callback)) callback();
-        } else {
-            if (isFunction(errorback)) errorback();
-        }
-    } catch (e) {
-        if (isFunction(errorback)) errorback(e);
-    }
-
-    document.body.removeChild(el);
-
+// 获取一个新的缓冲区
+// isElement默认false，创建第一种缓冲区，为true创建第二种
+__pkg__scope_bundle__.newBuffer = function (gl, isElement) {
+    var buffer = gl.createBuffer(),
+        TYPE = isElement ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
+    // 把缓冲区对象绑定到目标
+    gl.bindBuffer(TYPE, buffer);
+    return buffer;
 };
+
+// 数据写入缓冲区
+// data是一个类型化数组，表示写入的数据
+// usage表示程序如何使用存储在缓冲区的数据
+__pkg__scope_bundle__.writeBuffer = function (gl, data, usage, isElement) {
+    var TYPE = isElement ? gl.ELEMENT_ARRAY_BUFFER : gl.ARRAY_BUFFER;
+    gl.bufferData(TYPE, data, usage);
+};
+
+// 使用缓冲区数据
+// location指定待分配的attribute变量的存储位置
+// size每个分量个数
+// type数据类型，应该是以下的某个：
+//      gl.UNSIGNED_BYTE    Uint8Array
+//      gl.SHORT            Int16Array
+//      gl.UNSIGNED_SHORT   Uint16Array
+//      gl.INT              Int32Array
+//      gl.UNSIGNED_INT     Uint32Array
+//      gl.FLOAT            Float32Array
+// stride相邻两个数据项的字节数
+// offset数据的起点字节位置
+// normalized是否把非浮点型的数据归一化到[0,1]或[-1,1]区间
+__pkg__scope_bundle__.useBuffer = function (gl, location, size, type, stride, offset, normalized) {
+    // 把缓冲区对象分配给目标变量
+    gl.vertexAttribPointer(location, size, type, normalized || false, stride || 0, offset || 0);
+    // 连接目标对象和缓冲区对象
+    gl.enableVertexAttribArray(location);
+};
+
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/tool
+// Original file:./src/tool/webgl/texture
 /*****************************************************************/
-window.__pkg__bundleSrc__['175']=function(){
+window.__pkg__bundleSrc__['274']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    
-// 计算文字长度
+    /**
+ * 纹理方法
+ * --------------------------------------------
+ * 在绘制的多边形上贴图
+ * 丰富效果
+ */
 
-__pkg__scope_bundle__.textWidth=function(text) {
-    this.__helpCalcDOM.innerText = text;
-    return this.__helpCalcDOM.offsetWidth;
+// 初始化一个纹理对象
+// type有gl.TEXTURE_2D代表二维纹理，gl.TEXTURE_CUBE_MAP 立方体纹理等
+__pkg__scope_bundle__.initTexture = function (gl, type, unit, _type_) {
+    // 创建纹理对象
+    var texture = gl.createTexture();
+
+    unit = unit || 0;
+    // 开启纹理单元，unit表示开启的编号
+    gl.activeTexture(gl['TEXTURE' + unit]);
+
+    // 绑定纹理对象到目标上
+    gl.bindTexture(type, texture);
+    return texture;
 };
 
-// 计算最佳光标左边位置
+// 链接资源图片
+// level默认传入0即可，和金字塔纹理有关
+// format表示图像的内部格式：
+//      gl.RGB(红绿蓝)
+//      gl.RGBA(红绿蓝透明度)
+//      gl.ALPHA(0.0,0.0,0.0,透明度)
+//      gl.LUMINANCE(L、L、L、1L:流明)
+//      gl.LUMINANCE_ALPHA(L、L、L,透明度)
+// textureType表示纹理数据的格式：
+//      gl.UNSIGNED_BYTE: 表示无符号整形，每一个颜色分量占据1字节
+//      gl.UNSIGNED_SHORT_5_6_5: 表示RGB，每一个分量分别占据占据5, 6, 5比特
+//      gl.UNSIGNED_SHORT_4_4_4_4: 表示RGBA，每一个分量分别占据占据4, 4, 4, 4比特
+//      gl.UNSIGNED_SHORT_5_5_5_1: 表示RGBA，每一个分量分别占据占据5比特，A分量占据1比特
+__pkg__scope_bundle__.linkImage = function (gl, type, level, format, textureType, image) {
+    format = {
+        "rgb": gl.RGB,
+        "rgba": gl.RGBA,
+        "alpha": gl.ALPHA
+    }[format] || gl.RGBA;
 
-__pkg__scope_bundle__.bestLeftNum=function(x, lineNum) {
+    gl.texImage2D(type, level || 0, format, format, {
 
-    if (arguments.length < 2) lineNum = lineNum || this.__lineNum;
+        // 目前一律采用默认值，先不对外提供修改权限
 
-    var text = this._contentArray[lineNum];
+    }[textureType] || gl.UNSIGNED_BYTE, image);
+};
 
-    if (x <= 40) return 0;
-    if (x - 40 >= this.$$textWidth(text)) return text.length;
+__pkg__scope_bundle__.linkCube = function (gl, type, level, format, textureType, images, width, height, texture) {
+    format = {
+        "rgb": gl.RGB,
+        "rgba": gl.RGBA,
+        "alpha": gl.ALPHA
+    }[format] || gl.RGBA;
 
-    var dist = x - 40, i = 1;
+    level = level || 0;
 
-    for (; i < text.length; i++) {
+    textureType = {
 
-        var tempDist = Math.abs(x - 40 - this.$$textWidth(text.substr(0, i)));
+        // 目前一律采用默认值，先不对外提供修改权限
 
-        if (tempDist > dist) break;
+    }[textureType] || gl.UNSIGNED_BYTE;
 
-        dist = tempDist;
+    var types = [
+        gl.TEXTURE_CUBE_MAP_POSITIVE_X,//右
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_X,//左
+        gl.TEXTURE_CUBE_MAP_POSITIVE_Y,//上
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,//下
+        gl.TEXTURE_CUBE_MAP_POSITIVE_Z,//后
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_Z//前
+    ], i, target;
 
+    for (i = 0; i < types.length; i++) {
+        target = types[i];
+        gl.texImage2D(target, level, format, width, height, 0, format, textureType, null);
+        gl.bindTexture(type, texture);
+        gl.texImage2D(target, level, format, format, textureType, images[i]);
     }
 
-    return i - 1;
+    gl.generateMipmap(type);
+
 };
 
-// 计算光标对应的x,y值
 
-__pkg__scope_bundle__.calcCanvasXY=function(leftNum, lineNum) {
+    return __pkg__scope_bundle__;
+}
 
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/webgl/value
+/*****************************************************************/
+window.__pkg__bundleSrc__['275']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (gl) {
     return {
-        x: this.$$textWidth(this._contentArray[lineNum].substr(0, leftNum)),
-        y: lineNum * 21
-    };
-
-};
-
-// 判断选区是否为空
-
-__pkg__scope_bundle__.selectIsNotBlank=function() {
-    return this.__cursor1.lineNum != this.__cursor2.lineNum || this.__cursor1.leftNum != this.__cursor2.leftNum;
-};
-
-// 根据内容生成模板
-
-__pkg__scope_bundle__.toTemplate=function(line, index, noLineNumber) {
-    var _this = this;
-
-    var template = "";
-
-    template += "<div style='min-width: fit-content;white-space: nowrap;line-height:21px;height:21px;'>";
-
-    var lineStyle = noLineNumber ? "font-size:0;" : "";
-
-    template += "<em style='" + lineStyle + "color:" + this._colorNumber + ";user-select: none;display:inline-block;font-style:normal;width:35px;text-align:right;margin-right:5px;'>" + (index + 1) + "</em>";
-
-    line.forEach(function (text) {
-
-        var contentText = text.content;
-
-        // 提前对特殊字符进行处理
-        contentText = contentText.replace(/\&/g, "&amp;");/*[&]*/
-        contentText = contentText.replace(/</g, "&lt;"); contentText = contentText.replace(/>/g, "&gt;");/*[<,>]*/
-
-        template += "<span style='user-select: none;font-weight:" + _this._fontWeight + ";white-space: pre;color:" + text.color + "'>" + contentText + "</span>";
-
-    });
-
-    return template + "</div>";
-};
-
-// 整理当前输入框信息
-
-__pkg__scope_bundle__.getInputMessage=function(editor) {
-    return {
-
-        // 光标前面有多少个字符
-        leftNum: editor.__leftNum,
-
-        // 当前行之前有多少行
-        lineNum: editor.__lineNum,
-
-        // 光标left坐标
-        x: editor.__cursorLeft,
-
-        // 光标top坐标
-        y: editor.__cursorTop,
-
-        // 一行文本的高
-        lineHeight: 21
-
-    };
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/init
-/*****************************************************************/
-window.__pkg__bundleSrc__['176']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('177');
-var setStyle =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('22');
-var bind =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('47');
-var appendTo =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('178');
-var stopPropagation =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('179');
-var preventDefault =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('180');
-var attr =__pkg__scope_args__.default;
-
-
-// 初始化结点
-
-__pkg__scope_bundle__.initDom=function() {
-    var _this = this;
-
-    this._el.innerHTML = "";
-
-    setStyle(this._el, {
-        "font-size": "12px",
-        position: "relative",
-        cursor: "text",
-        "font-family": this._fontFamily,
-        "background": this._colorBackground,
-        overflow: "auto"
-    });
-
-    bind(this._el, 'click', function () {
-
-        // 由于有时候点击屏幕的时候，是滚动导致的，因此位置可能没有计算好前聚焦了，导致光标错位
-        setTimeout(function () {
-            _this.__focusDOM.focus();
-        });
-
-    })
-
-    // 辅助计算标签
-    this.__helpCalcDOM = appendTo(this._el, "<span></span>");
-
-    setStyle(this.__helpCalcDOM, {
-        position: "absolute",
-        "z-index": "-1",
-        "white-space": "pre",
-        "top": 0,
-        "left": 0,
-        "color": "rgba(0,0,0,0)",
-        "font-weight": this._fontWeight
-    });
-
-    // 辅助输入标签
-    this.__helpInputDOM = appendTo(this._el, "<div></div>");
-
-    setStyle(this.__helpInputDOM, {
-        position: "absolute",
-        "z-index": 1
-    });
-
-    bind(this.__helpInputDOM, 'click', function (event) {
-
-        stopPropagation(event);
-        preventDefault(event);
-
-        _this.__focusDOM.focus();
-
-    });
-
-    // 光标
-    this.__focusDOM = appendTo(this._el, "<textarea></textarea>");
-
-    setStyle(this.__focusDOM, {
-        position: "absolute",
-        width: "6px",
-        "margin-top": "3px",
-        height: "15px",
-        "line-height": "15px",
-        resize: "none",
-        overflow: "hidden",
-        padding: "0",
-        outline: "none",
-        border: "none",
-        background: "rgba(0,0,0,0)",
-        color: this._colorCursor
-    });
-
-    attr(this.__focusDOM, {
-        wrap: "off",
-        autocorrect: "off",
-        autocapitalize: "off",
-        spellcheck: "false"
-    });
-
-    if (this._readonly) {
-        attr(this.__focusDOM, {
-            readonly: true
-        });
-    }
-
-    // 显示区域
-    this.__showDOM = appendTo(this._el, "<div></div>");
-
-    setStyle(this.__showDOM, {
-        padding: "10px 0"
-    });
-
-    // 选中区域
-    this.__selectCanvas = appendTo(this._el, "<canvas></canvas>");
-
-    setStyle(this.__selectCanvas, {
-        position: "absolute",
-        left: "40px",
-        top: "10px",
-        opacity: "0.5"
-    });
-
-    this.$$updateCanvasSize(1, 1);
-
-};
-
-// 初始化视图
-
-__pkg__scope_bundle__.initView=function() {
-
-    // 初始化定位光标位置
-    setStyle(this.__focusDOM, {
-        left: (40 + this.$$textWidth(this._contentArray[this.__lineNum])) + "px",
-        top: (10 + this.__lineNum * 21) + "px"
-    });
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/setStyle
-/*****************************************************************/
-window.__pkg__bundleSrc__['177']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 修改样式
-__pkg__scope_bundle__.default= function (el, styles) {
-    for (var key in styles) {
-        el.style[key] = styles[key];
-    }
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/stopPropagation
-/*****************************************************************/
-window.__pkg__bundleSrc__['178']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 阻止冒泡
-__pkg__scope_bundle__.default= function (event) {
-    event = event || window.event;
-    if (event.stopPropagation) { //这是其他非IE浏览器
-        event.stopPropagation();
-    } else {
-        event.cancelBubble = true;
-    }
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/preventDefault
-/*****************************************************************/
-window.__pkg__bundleSrc__['179']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 阻止默认事件
-__pkg__scope_bundle__.default= function (event) {
-    event = event || window.event;
-    if (event.preventDefault) {
-        event.preventDefault();
-    } else {
-        event.returnValue = false;
-    }
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/attr
-/*****************************************************************/
-window.__pkg__bundleSrc__['180']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 修改属性
-__pkg__scope_bundle__.default= function (el, attrs) {
-    for (var key in attrs) {
-        el.setAttribute(key, attrs[key]);
-    }
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/update
-/*****************************************************************/
-window.__pkg__bundleSrc__['181']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('177');
-var setStyle =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('180');
-var attr =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('182');
-var prependTo =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('183');
-var after =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('33');
-var remove =__pkg__scope_args__.default;
-
-
-// 更新编辑器内容视图
-
-__pkg__scope_bundle__.updateView=function() {
-    var _this = this;
-
-    // 如果有重复利用的行(可复用的过少就不选择这种方法了)
-    if (this.__diff && this.__diff.beginNum + this.__diff.endNum > 10) {
-
-        var lineDoms = this.__showDOM.childNodes;
-        var lineDoms_length = lineDoms.length;
-
-        // 先删除无用的行
 
         /**
-         * 这里的删除需要稍微注意一下
-         * 因为结点删除以后就没有了，这会导致lineDoms的更新，这也是为什么备份数组长度的原因
-         * 倒着删除同样是因为这个原因
+         * attribue
+         * ----------------------------------------
          */
 
-        for (var i = lineDoms_length - this.__diff.endNum - 1; i >= this.__diff.beginNum; i--) {
-            remove(lineDoms[i]);
-        }
+        // 浮点数
+        setAttribute1f: function (name, v0) {
+            // 获取存储位置
+            var location = gl.getAttribLocation(gl.program, name);
+            // 传递数据给变量
+            gl.vertexAttrib1f(location, v0);
+        },
+        setAttribute2f: function (name, v0, v1) {
+            var location = gl.getAttribLocation(gl.program, name);
+            gl.vertexAttrib2f(location, v0, v1);
+        },
+        setAttribute3f: function (name, v0, v1, v2) {
+            var location = gl.getAttribLocation(gl.program, name);
+            gl.vertexAttrib3f(location, v0, v1, v2);
+        },
+        setAttribute4f: function (name, v0, v1, v2, v3) {
+            var location = gl.getAttribLocation(gl.program, name);
+            gl.vertexAttrib4f(location, v0, v1, v2, v3);
+        },
 
-        // 追加不足的行
-        if (this.__diff.beginNum > 0) {
-            for (var i = this.__formatData.length - 1 - this.__diff.endNum; i >= this.__diff.beginNum; i--) {
-                after(lineDoms[this.__diff.beginNum - 1], this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
-            }
-        } else {
+        // 整数
+        setAttribute1i: function (name, v0) {
+            // 获取存储位置
+            var location = gl.getAttribLocation(gl.program, name);
+            // 传递数据给变量
+            gl.vertexAttrib1i(location, v0);
+        },
+        setAttribute2i: function (name, v0, v1) {
+            var location = gl.getAttribLocation(gl.program, name);
+            gl.vertexAttrib2i(location, v0, v1);
+        },
+        setAttribute3i: function (name, v0, v1, v2) {
+            var location = gl.getAttribLocation(gl.program, name);
+            gl.vertexAttrib3i(location, v0, v1, v2);
+        },
+        setAttribute4i: function (name, v0, v1, v2, v3) {
+            var location = gl.getAttribLocation(gl.program, name);
+            gl.vertexAttrib4i(location, v0, v1, v2, v3);
+        },
 
-            // 如果开头没有结点保留，为了简单，我们直接采用prependTo方法追加
-            for (var i = this.__formatData.length - this.__diff.endNum - 1; i >= 0; i--) {
-                prependTo(this.__showDOM, this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
-            }
+        /**
+        * uniform
+        * ----------------------------------------
+        */
 
-        }
+        // 浮点数
+        setUniform1f: function (name, v0) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniform1f(location, v0);
+        },
+        setUniform2f: function (name, v0, v1) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniform2f(location, v0, v1);
+        },
+        setUniform3f: function (name, v0, v1, v2) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniform3f(location, v0, v1, v2);
+        },
+        setUniform4f: function (name, v0, v1, v2, v3) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniform4f(location, v0, v1, v2, v3);
+        },
 
-        // 更新行号
-        lineDoms = this.__showDOM.childNodes;
-        for (var i = this.__diff.beginNum; i < this.__formatData.length; i++) {
-            lineDoms[i].getElementsByTagName('em')[0].innerText = i + 1;
-        }
+        // 整数
+        setUniform1i: function (name, v0) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniform1i(location, v0);
+        },
+        setUniform2i: function (name, v0, v1) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniform2i(location, v0, v1);
+        },
+        setUniform3i: function (name, v0, v1, v2) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniform3i(location, v0, v1, v2);
+        },
+        setUniform4i: function (name, v0, v1, v2, v3) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniform4i(location, v0, v1, v2, v3);
+        },
 
-    }
-
-    // 有时候，可能直接替换更快
-    else if (this.__diff != "not update") {
-        var template = "";
-        this.__formatData.forEach(function (line, index) {
-            template += _this.$$toTemplate(line, index, _this._noLineNumber);
-        });
-        this.__showDOM.innerHTML = template;
-    }
-
-    this.__diff = "not update";
-
-    var tempLineDom = this.__showDOM.childNodes[this.__lineNum];
-    // 修改当前编辑的行
-    if (!this._readonly && this.__lineDom) {
-        this.__lineDom.style.backgroundColor = "rgba(0, 0, 0, 0)";
-        tempLineDom.style.backgroundColor = this._colorEdit;
-    }
-    this.__lineDom = tempLineDom;
-
-
+        // 矩阵
+        setUniformMatrix2fv: function (name, value) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniformMatrix2fv(location, false, value);
+        },
+        setUniformMatrix3fv: function (name, value) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniformMatrix3fv(location, false, value);
+        },
+        setUniformMatrix4fv: function (name, value) {
+            var location = gl.getUniformLocation(gl.program, name);
+            gl.uniformMatrix4fv(location, false, value);
+        },
+    };
 };
 
-// 更新编辑器选中视图
 
-__pkg__scope_bundle__.updateSelectView=function() {
-    var _this = this;
+    return __pkg__scope_bundle__;
+}
 
-    var ctx = this.__selectCanvas.getContext('2d');
-    ctx.fillStyle = this._colorSelect;
-    ctx.clearRect(0, 0, this.__selectCanvas.scrollWidth, this.__selectCanvas.scrollHeight);
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/webgl/painter
+/*****************************************************************/
+window.__pkg__bundleSrc__['276']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (gl) {
 
-    // 绘制两个区间
-    var drawerSelect = function (beginLeftNum, endLeftNum, lineNum) {
+    var typeMap = {
+        "byte": gl.UNSIGNED_BYTE,
+        "short": gl.UNSIGNED_SHORT
+    };
 
-        var xy1 = _this.$$calcCanvasXY(beginLeftNum, lineNum);
-        var xy2 = _this.$$calcCanvasXY(endLeftNum, lineNum);
+    return {
 
-        // 如何一行过少，前置一点点选中显示
-        if (beginLeftNum == endLeftNum && beginLeftNum == 0) {
-            ctx.fillRect(xy1.x, xy1.y, 5, 21);
-        } else {
-            ctx.fillRect(xy1.x, xy1.y, xy2.x - xy1.x, 21);
+        // 开启深度计算
+        openDeep:function() {
+            gl.enable(gl.DEPTH_TEST);
+            return this;
+        },
+
+        // 绘制点
+        points:function(first, count, type) {
+            if (type) {
+                gl.drawElements(gl.POINTS, count, typeMap[type], first);
+            } else {
+                gl.drawArrays(gl.POINTS, first, count);
+            }
+            return this;
+        },
+
+        // 绘制直线
+        lines:function(first, count, type) {
+            if (type) {
+                gl.drawElements(gl.LINES, count, typeMap[type], first);
+            } else {
+                gl.drawArrays(gl.LINES, first, count);
+            }
+            return this;
+        },
+
+        // 绘制连续直线
+        stripLines:function(first, count, type) {
+            if (type) {
+                gl.drawElements(gl.LINE_STRIP, count, typeMap[type], first);
+            } else {
+                gl.drawArrays(gl.LINE_STRIP, first, count);
+            }
+            return this;
+        },
+
+        // 绘制闭合直线
+        loopLines:function(first, count, type) {
+            if (type) {
+                gl.drawElements(gl.LINE_LOOP, count, typeMap[type], first);
+            } else {
+                gl.drawArrays(gl.LINE_LOOP, first, count);
+            }
+            return this;
+        },
+
+        // 绘制三角形
+        triangles:function(first, count, type) {
+            if (type) {
+                gl.drawElements(gl.TRIANGLES, count, typeMap[type], first);
+            } else {
+                gl.drawArrays(gl.TRIANGLES, first, count);
+            }
+            return this;
+        },
+
+        // 绘制共有边三角形
+        stripTriangles:function(first, count, type) {
+            if (type) {
+                gl.drawElements(gl.TRIANGLE_STRIP, count, typeMap[type], first);
+            } else {
+                gl.drawArrays(gl.TRIANGLE_STRIP, first, count);
+            }
+            return this;
+        },
+
+        // 绘制旋转围绕三角形
+        fanTriangles:function(first, count, type) {
+            if (type) {
+                gl.drawElements(gl.TRIANGLE_FAN, count, typeMap[type], first);
+            } else {
+                gl.drawArrays(gl.TRIANGLE_FAN, first, count);
+            }
+            return this;
+        }
+    };
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/Matrix4/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['277']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 两个4x4矩阵相乘
+// 或矩阵和齐次坐标相乘
+var _multiply = function (matrix4, param) {
+    var newParam = [];
+    for (var i = 0; i < 4; i++)
+        for (var j = 0; j < param.length / 4; j++)
+            newParam[j * 4 + i] =
+                matrix4[i] * param[j * 4] +
+                matrix4[i + 4] * param[j * 4 + 1] +
+                matrix4[i + 8] * param[j * 4 + 2] +
+                matrix4[i + 12] * param[j * 4 + 3];
+    return newParam;
+};
+
+__pkg__scope_args__=window.__pkg__getBundle('278');
+var _move =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('279');
+var _rotate =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('280');
+var _scale =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('281');
+var _transform =__pkg__scope_args__.default;
+
+
+// 列主序存储的4x4矩阵
+
+__pkg__scope_bundle__.default= function (initMatrix4) {
+
+    var matrix4 = initMatrix4 || [
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    ];
+
+    var matrix4Obj = {
+
+        // 移动
+        "move": function (dis, a, b, c) {
+            matrix4 = _multiply(_move(dis, a, b, c), matrix4);
+            return matrix4Obj;
+        },
+
+        // 旋转
+        "rotate": function (deg, a1, b1, c1, a2, b2, c2) {
+            var matrix4s = _transform(a1, b1, c1, a2, b2, c2);
+            matrix4 = _multiply(_multiply(_multiply(matrix4s[1], _rotate(deg)), matrix4s[0]), matrix4);
+            return matrix4Obj;
+        },
+
+        // 缩放
+        "scale": function (xTimes, yTimes, zTimes, cx, cy, cz) {
+            matrix4 = _multiply(_scale(xTimes, yTimes, zTimes, cx, cy, cz), matrix4);
+            return matrix4Obj;
+        },
+
+        // 乘法
+        // 可以传入一个矩阵(matrix4,flag)
+        "multiply": function (newMatrix4, flag) {
+            matrix4 = flag ? _multiply(matrix4, newMatrix4) : _multiply(newMatrix4, matrix4);
+            return matrix4Obj;
+        },
+
+        // 对一个坐标应用变换
+        // 齐次坐标(x,y,z,w)
+        "use": function (x, y, z, w) {
+            // w为0表示点位于无穷远处，忽略
+            z = z || 0; w = w || 1;
+            var temp = _multiply(matrix4, [x, y, z, w]);
+            temp[0] = +temp[0].toFixed(7);
+            temp[1] = +temp[1].toFixed(7);
+            temp[2] = +temp[2].toFixed(7);
+            temp[3] = +temp[3].toFixed(7);
+            return temp;
+        },
+
+        // 矩阵的值
+        "value": function () {
+            return matrix4;
         }
 
     };
 
-    // 如果选中区域为空，不用绘制
-    if (this.__cursor1.lineNum == this.__cursor2.lineNum && this.__cursor1.leftNum == this.__cursor2.leftNum) return;
+    return matrix4Obj;
 
-    ctx.beginPath();
-
-    // 如果在一行
-    if (this.__cursor1.lineNum == this.__cursor2.lineNum) {
-
-        drawerSelect(this.__cursor1.leftNum, this.__cursor2.leftNum, this.__cursor1.lineNum);
-
-    }
-
-    // 如果选中的多于一行
-    else {
-
-        var beginCursor, endCursor;
-
-        if (this.__cursor1.lineNum < this.__cursor2.lineNum) {
-            beginCursor = this.__cursor1; endCursor = this.__cursor2;
-        } else {
-            beginCursor = this.__cursor2; endCursor = this.__cursor1;
-        }
-
-        // 绘制开始的结尾
-        drawerSelect(beginCursor.leftNum, this._contentArray[beginCursor.lineNum].length, beginCursor.lineNum);
-
-        // 绘制结束的开头
-        drawerSelect(0, endCursor.leftNum, endCursor.lineNum);
-
-        // 绘制两行之间
-        for (var lineNum = beginCursor.lineNum + 1; lineNum < endCursor.lineNum; lineNum++) {
-            drawerSelect(0, this._contentArray[lineNum].length, lineNum);
-        }
-
-    }
-
-};
-
-// 输入的时候更新光标位置
-
-__pkg__scope_bundle__.updateCursorPosition=function() {
-
-    this.__cursorTop = this.__lineNum * 21 + 10;
-    this.__cursorLeft = 40 + this.$$textWidth(this._contentArray[this.__lineNum].substring(0, this.__leftNum));
-
-    setStyle(this.__focusDOM, {
-        top: this.__cursorTop + "px",
-        left: this.__cursorLeft + "px",
-    });
-
-};
-
-// 更新画布尺寸
-
-__pkg__scope_bundle__.updateCanvasSize=function(width, height) {
-
-    if (arguments.length < 2) {
-        width = this._el.scrollWidth - 40;
-        height = this._el.scrollHeight - 10;
-    }
-
-    setStyle(this.__selectCanvas, {
-        width: width + "px",
-        height: height + "px",
-    });
-
-    attr(this.__selectCanvas, {
-        width: width,
-        height: height
-    });
-
-};
-
-// 取消选区
-
-__pkg__scope_bundle__.cancelSelect=function() {
-
-    this.$$updateCanvasSize(1, 1);
-    this.__cursor1 = { leftNum: 0, lineNum: 0 };
-    this.__cursor2 = { leftNum: 0, lineNum: 0 };
-
-};
-
-// 删除选区
-
-__pkg__scope_bundle__.deleteSelect=function() {
-
-    // 假定cursor2是结束光标
-    var beginCursor = this.__cursor2, endCursor = this.__cursor1;
-
-    // 根据行号来校对
-    if (this.__cursor1.lineNum < this.__cursor2.lineNum) {
-        beginCursor = this.__cursor1; endCursor = this.__cursor2;
-    } else if (this.__cursor1.lineNum == this.__cursor2.lineNum) {
-
-        // 根据列号来校对
-        if (this.__cursor1.leftNum < this.__cursor2.leftNum) {
-            beginCursor = this.__cursor1; endCursor = this.__cursor2;
-        }
-    }
-
-    var newLineText =
-        this._contentArray[beginCursor.lineNum].substr(0, beginCursor.leftNum) +
-        this._contentArray[endCursor.lineNum].substr(endCursor.leftNum)
-
-    this._contentArray.splice(beginCursor.lineNum, endCursor.lineNum - beginCursor.lineNum + 1, newLineText);
-
-    // 校对光标和选区
-    this.__leftNum = this.__cursor1.leftNum = this.__cursor2.leftNum = beginCursor.leftNum;
-    this.__lineNum = this.__cursor1.lineNum = this.__cursor2.lineNum = beginCursor.lineNum;
-
-    this.$$cancelSelect();
 };
 
 
@@ -1242,46 +1377,23 @@ __pkg__scope_bundle__.deleteSelect=function() {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/prependTo
+// Original file:./src/tool/Matrix4/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['182']=function(){
+window.__pkg__bundleSrc__['278']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('48');
-var isElement =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('49');
-var toNode =__pkg__scope_args__.default;
-
-
-// 追加节点(内部开头)
-__pkg__scope_bundle__.default= function (el, template) {
-    var node = isElement(template) ? template : toNode(template);
-    el.insertBefore(node, el.childNodes[0]);
-    return node;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/after
-/*****************************************************************/
-window.__pkg__bundleSrc__['183']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('48');
-var isElement =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('49');
-var toNode =__pkg__scope_args__.default;
-
-
-// 在被指定元素之后插入节点
-__pkg__scope_bundle__.default= function (el, template) {
-    var node = isElement(template) ? template : toNode(template);
-    el.parentNode.insertBefore(node, el.nextSibling);
-    return node;
+    /**
+ * 在(a,b,c)方向位移d
+ */
+__pkg__scope_bundle__.default= function (d, a, b, c) {
+    c = c || 0;
+    var sqrt = Math.sqrt(a * a + b * b + c * c);
+    return [
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        a * d / sqrt, b * d / sqrt, c * d / sqrt, 1
+    ];
 };
 
 
@@ -1289,581 +1401,258 @@ __pkg__scope_bundle__.default= function (el, template) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/bind
+// Original file:./src/tool/Matrix4/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['184']=function(){
+window.__pkg__bundleSrc__['279']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('168');
-var getKeyString=__pkg__scope_args__.getKeyString;
+    /**
+ * 围绕0Z轴旋转
+ * 其它的旋转可以借助transform实现
+ * 旋转角度单位采用弧度制
+ */
+__pkg__scope_bundle__.default= function (deg) {
+    var sin = Math.sin(deg),
+        cos = Math.cos(deg);
+    return [
+        cos, sin, 0, 0,
+        -sin, cos, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    ];
+};
 
-__pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('22');
-var bind =__pkg__scope_args__.default;
+    return __pkg__scope_bundle__;
+}
 
-__pkg__scope_args__=window.__pkg__getBundle('103');
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/Matrix4/scale
+/*****************************************************************/
+window.__pkg__bundleSrc__['280']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    /**
+ * 围绕圆心x、y和z分别缩放xTimes, yTimes和zTimes倍
+ */
+__pkg__scope_bundle__.default= function (xTimes, yTimes, zTimes, cx, cy, cz) {
+    cx = cx || 0; cy = cy || 0; cz = cz || 0;
+    return [
+        xTimes, 0, 0, 0,
+        0, yTimes, 0, 0,
+        0, 0, zTimes, 0,
+        cx - cx * xTimes, cy - cy * yTimes, cz - cz * zTimes, 1
+    ];
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/Matrix4/transform
+/*****************************************************************/
+window.__pkg__bundleSrc__['281']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    /**
+ * 针对任意射线(a1,b1,c1)->(a2,b2,c2)
+ * 计算出两个变换矩阵
+ * 分别为：任意射线变成OZ轴变换矩阵 + OZ轴变回原来的射线的变换矩阵
+ */
+__pkg__scope_bundle__.default= function (a1, b1, c1, a2, b2, c2) {
+
+    if (typeof a1 === 'number' && typeof b1 === 'number') {
+
+        // 如果设置两个点
+        // 表示二维上围绕某个点旋转
+        if (typeof c1 !== 'number') {
+            c1 = 0; a2 = a1; b2 = b1; c2 = 1;
+        }
+        // 只设置三个点(设置不足六个点都认为只设置了三个点)
+        // 表示围绕从原点出发的射线旋转
+        else if (typeof a2 !== 'number' || typeof b2 !== 'number' || typeof c2 !== 'number') {
+            a2 = a1; b2 = b1; c2 = c1; a1 = 0; b1 = 0; c1 = 0;
+        }
+
+        if (a1 == a2 && b1 == b2 && c1 == c2) throw new Error('It\'s not a legitimate ray!');
+
+        var sqrt1 = Math.sqrt((a2 - a1) * (a2 - a1) + (b2 - b1) * (b2 - b1)),
+            cos1 = sqrt1 != 0 ? (b2 - b1) / sqrt1 : 1,
+            sin1 = sqrt1 != 0 ? (a2 - a1) / sqrt1 : 0,
+
+            b = (a2 - a1) * sin1 + (b2 - b1) * cos1,
+            c = c2 - c1,
+
+            sqrt2 = Math.sqrt(b * b + c * c),
+            cos2 = sqrt2 != 0 ? c / sqrt2 : 1,
+            sin2 = sqrt2 != 0 ? b / sqrt2 : 0;
+
+        return [
+
+            // 任意射线变成OZ轴变换矩阵
+            [
+                cos1, cos2 * sin1, sin1 * sin2, 0,
+                -sin1, cos1 * cos2, cos1 * sin2, 0,
+                0, -sin2, cos2, 0,
+                b1 * sin1 - a1 * cos1, c1 * sin2 - a1 * sin1 * cos2 - b1 * cos1 * cos2, -a1 * sin1 * sin2 - b1 * cos1 * sin2 - c1 * cos2, 1
+            ],
+
+            // OZ轴变回原来的射线的变换矩阵
+            [
+                cos1, -sin1, 0, 0,
+                cos2 * sin1, cos2 * cos1, -sin2, 0,
+                sin1 * sin2, cos1 * sin2, cos2, 0,
+                a1, b1, c1, 1
+            ]
+
+        ];
+    } else {
+        throw new Error('a1 and b1 is required!');
+    }
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/viewHandler
+/*****************************************************************/
+window.__pkg__bundleSrc__['282']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 屏幕3D控制信息捕获
+
+__pkg__scope_args__=window.__pkg__getBundle('104');
 var mousePosition =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('61');
-var copy =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('22');
+var bind =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('178');
-var stopPropagation =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('179');
-var preventDefault =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('175');
-var getInputMessage=__pkg__scope_args__.getInputMessage;
+var getKeyCode =__pkg__scope_args__.default;
 
 
-// 绑定键盘和鼠标等交互事件处理
+__pkg__scope_bundle__.default= function (callback) {
 
-__pkg__scope_bundle__.default= function () {
-    var _this = this;
+    var el = document.getElementsByTagName('body')[0];
 
-    // 鼠标是否按下
-    var mouseDown = false;
+    // 键盘控制
+    getKeyCode(function (keyCode) {
+        callback({
+            type: {
+                up: "lookUp", // 向上
+                down: "lookDown", // 向下
+                left: "lookLeft", // 向左
+                right: "lookRight", // 向右
+            }[keyCode]
+        });
+    });
 
-    // shift是否按下
-    var shiftDown = false;
+    // 鼠标控制
+    var mouseP = null;
+    var doMove = function (event) {
+        if (mouseP == null) return;
 
-    // 辅助计算选择光标位置
-    var calcCursor = function (event) {
-        var position = mousePosition(_this._el, event);
-        var topIndex = Math.round((position.y - 20.5) / 21);
+        var tempMouseP = mousePosition(el, event);
 
-        if (topIndex < 0) topIndex = 0;
-        if (topIndex >= _this._contentArray.length) topIndex = _this._contentArray.length - 1;
+        // 先求解出轨迹向量
+        var normal = [tempMouseP.x - mouseP.x, mouseP.y - tempMouseP.y];
 
-        return {
-            leftNum: _this.$$bestLeftNum(position.x, topIndex),
-            lineNum: topIndex
-        };
+        // 方向向量旋转90deg得到选择向量
+        var rotateNormal = [
+            normal[1],
+            normal[0] * -1,
+            0
+        ]
+
+        // 非法射线忽略
+        if (rotateNormal[0] == 0 && rotateNormal[1] == 0) return;
+
+        callback({
+            type: "rotate",
+            normal: rotateNormal,
+            dist: Math.abs(tempMouseP.x - mouseP.x) + Math.abs(tempMouseP.y - mouseP.y)
+        });
+
+        mouseP = tempMouseP;
     };
 
-    // 获取光标之间的内容
-    var calcTwoCursor = function () {
+    bind(el, 'mousedown', function (event) {
+        mouseP = mousePosition(el, event);
+    });
+    bind(el, 'mouseup', function (event) {
+        mouseP = null;
+    });
+    bind(el, 'mousemove', function (event) {
+        doMove(event);
+    });
 
-        // 假定cursor2是结束光标
-        var beginCursor = _this.__cursor2,
-            endCursor = _this.__cursor1;
+    // 手指控制
+    bind(el, 'touchend', function (event) {
+        mouseP = null;
+    });
+    bind(el, 'touchstart', function (event) {
+        mouseP = mousePosition(el, event.touches[0]);
+    });
+    bind(el, 'touchmove', function (event) {
+        doMove(event.touches[0]);
+    });
 
-        // 根据行号来校对
-        if (_this.__cursor1.lineNum < _this.__cursor2.lineNum) {
-            beginCursor = _this.__cursor1;
-            endCursor = _this.__cursor2;
-        } else if (_this.__cursor1.lineNum == _this.__cursor2.lineNum) {
+    var doScale = function (value) {
+        if (value == 0) return;
 
-            // 根据列号来校对
-            if (_this.__cursor1.leftNum < _this.__cursor2.leftNum) {
-                beginCursor = _this.__cursor1;
-                endCursor = _this.__cursor2;
-            }
-
-            return _this._contentArray[beginCursor.lineNum].substring(beginCursor.leftNum, endCursor.leftNum);
-        }
-
-        // 余下的一定是多行
-        var resultData = "";
-        resultData += _this._contentArray[beginCursor.lineNum].substr(beginCursor.leftNum) + "\n";
-        for (var lineNum = beginCursor.lineNum + 1; lineNum < endCursor.lineNum; lineNum++) {
-            resultData += _this._contentArray[lineNum] + "\n";
-        }
-        resultData += _this._contentArray[endCursor.lineNum].substr(0, endCursor.leftNum);
-
-        return resultData;
-
+        callback({
+            type: "scale",
+            kind: value < 0 ? "reduce" : "enlarge",
+            rate: Math.abs(value),
+        });
     };
 
-    // 鼠标按下的时候，记录开始光标位置并标记鼠标按下动作
-    bind(this._el, 'mousedown', function (event) {
-        mouseDown = true;
-        _this.__cursor2 = _this.__cursor1 = calcCursor(event);
-
-        _this.$$updateCanvasSize();
-
-        // 绘制选中效果
-        _this.$$updateSelectView();
-
+    // 滚轮控制
+    bind(el, 'mousewheel', function (event) {
+        doScale(event.wheelDelta);
     });
 
-    // 移动的时候不停的同步结束光标位置
-    bind(this._el, 'mousemove', function (event) {
-        if (!mouseDown) return;
-        _this.__cursor2 = calcCursor(event);
+    if (window.addEventListener) {
 
-        // 绘制选中效果
-        _this.$$updateSelectView();
-    });
+        // 针对火狐浏览器
+        window.addEventListener('DOMMouseScroll', function (event) {
+            doScale(-1 * event.detail);
+        }, false);
+    }
 
-    // 鼠标放开或移出的时候，标记鼠标放开
-    bind(this._el, 'mouseup', function () { mouseDown = false });
+};
 
-    // 点击编辑界面
-    bind(this._el, 'click', function (event) {
 
-        _this.__helpInputDOM.innerHTML = '';
+    return __pkg__scope_bundle__;
+}
 
-        var position = mousePosition(_this._el, event);
-        var topIndex = Math.round((position.y - 20.5) / 21);
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/mousePosition
+/*****************************************************************/
+window.__pkg__bundleSrc__['104']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 获取鼠标相对特定元素左上角位置
+__pkg__scope_bundle__.default= function (el, event) {
 
-        // 如果超过了内容区域
-        if (topIndex < 0 || topIndex >= _this._contentArray.length) return;
+    event = event || window.event;
 
-        var __lineNum = topIndex;
-        var __leftNum = _this.$$bestLeftNum(position.x, __lineNum);
+    // 返回元素的大小及其相对于视口的位置
+    var bounding = el.getBoundingClientRect();
 
-        // 多选
-        if (shiftDown) {
-            _this.__cursor1 = {
-                leftNum: _this.__leftNum,
-                lineNum: _this.__lineNum
-            };
-            _this.__cursor2 = {
-                leftNum: __leftNum,
-                lineNum: __lineNum
-            };
+    if (!event || !event.clientX)
+        throw new Error('Event is necessary!');
+    var temp = {
 
-            // 绘制选中效果
-            _this.$$updateSelectView();
-        }
-
-        // 普通点击
-        else {
-            _this.__lineNum = __lineNum;
-            _this.__leftNum = __leftNum;
-            _this.$$updateCursorPosition();
-            _this.$$updateView();
-        }
-
-    });
-
-    // 双击编辑器界面
-    bind(this._el, 'dblclick', function () {
-        var formateData = _this.__formatData[_this.__lineNum];
-
-        // 求解左边边界
-        var _left;
-        for (var i = 0, leftLen = 0; i < formateData.length; i++) {
-            if (leftLen + formateData[i].content.length > _this.__leftNum) {
-                _left = leftLen;
-                break;
-            } else {
-                leftLen += formateData[i].content.length;
-            }
-        }
-
-        // 求解右边界
-        var _right;
-        for (var i = 0, leftLen = 0; i < formateData.length; i++) {
-            if (leftLen + formateData[i].content.length > _this.__leftNum) {
-                _right = leftLen + formateData[i].content.length;
-                break;
-            } else {
-                leftLen += formateData[i].content.length;
-            }
-        }
-
-        /**
-         * 由于前置cursor1和cursor2是对象，直接修改leftNum无法成功
-         */
-
-        _this.__cursor1 = {
-            leftNum: _left,
-            lineNum: _this.__lineNum
-        };
-        _this.__cursor2 = {
-            leftNum: _right,
-            lineNum: _this.__lineNum
-        };
-
-        // 绘制选中效果
-        _this.$$updateSelectView();
-    });
-
-    var update = function (text) {
-
-        // 获取输入内容
-        text = text || _this.__focusDOM.value;
-
-        text = _this.$$filterText(text);
-
-        _this.__focusDOM.value = "";
-
-        // 如果有选区，先删除选区
-        if (_this.$$selectIsNotBlank()) _this.$$deleteSelect();
-
-        // 如果输入的是回车，切割文本
-        if (/^\n$/.test(text)) {
-
-            if (_this.__leftNum >= _this._contentArray[_this.__lineNum].length) {
-                _this._contentArray.splice(_this.__lineNum + 1, 0, "");
-            } else {
-                _this._contentArray.splice(_this.__lineNum + 1, 0, _this._contentArray[_this.__lineNum].substring(_this.__leftNum));
-                _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum);
-            }
-            _this.__lineNum += 1;
-            _this.__leftNum = 0;
-
-        }
-
-        // 否则就是一堆文本（包括复制来的）
-        else {
-
-            var textArray = text.split(/\n/);
-
-            if (_this._contentArray == null) {
-                _this._contentArray = textArray;
-                _this.__lineNum = _this._contentArray.length - 1;
-                _this.__leftNum = _this._contentArray[_this.__lineNum].length;
-            }
-
-            // 如果只有一行文本(分开是为了加速)
-            else if (textArray.length <= 1) {
-                _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum) + text + _this._contentArray[_this.__lineNum].substring(_this.__leftNum);
-                _this.__leftNum += text.length;
-            }
-
-            // 如果是复制的多行文本
-            else {
-
-                // 需要切割的行两边文本
-                var leftText = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum);
-                var rightText = _this._contentArray[_this.__lineNum].substring(_this.__leftNum);
-
-                // 旧行文本拼接进来
-                textArray[0] = leftText + textArray[0];
-                textArray[textArray.length - 1] += rightText;
-
-                // 新内容记录下来
-                // _this._contentArray.splice(_this.__lineNum, 1, ...textArray);
-                _this._contentArray.splice(_this.__lineNum, 1);
-                for (var index = 0; index < textArray.length; index++) {
-                    _this._contentArray.splice(_this.__lineNum + index, 0, textArray[index]);
-                }
-
-                _this.__lineNum += (textArray.length - 1);
-                _this.__leftNum = textArray[textArray.length - 1].length - rightText.length;
-
-            }
-
-        }
-
-        // 着色并更新视图
-
-        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-        _this.$$updateCursorPosition();
-        _this.$$updateView();
-
-        // 通知文本改动
-        _this.__updated__();
-
+        // 鼠标相对元素位置 = 鼠标相对窗口坐标 - 元素相对窗口坐标
+        "x": event.clientX - bounding.left + el.scrollLeft,
+        "y": event.clientY - bounding.top + el.scrollTop
     };
 
-    // 中文输入开始
-    bind(this.__focusDOM, 'compositionstart', function () {
-        _this.__needUpdate = false;
-        _this.__focusDOM.style.color = "rgba(0,0,0,0)";
-        _this.__focusDOM.style.borderLeft = '1px solid ' + _this._colorCursor;
-    });
-
-    // 中文输入结束
-    bind(this.__focusDOM, 'compositionend', function () {
-        _this.__needUpdate = true;
-        _this.__focusDOM.style.color = _this._colorCursor;
-        _this.__focusDOM.style.borderLeft = "none";
-        update();
-
-        // 辅助输入
-        if (_this.$input != null) _this.__helpInputEvent = _this.$input(_this.__helpInputDOM, getInputMessage(_this), _this._contentArray) || {};
-    });
-
-    // 输入
-    bind(this.__focusDOM, 'input', function () {
-        // 如果是中文输入开始，不应该更新
-        if (_this.__needUpdate) {
-            update();
-
-            // 辅助输入
-            if (_this.$input != null) _this.__helpInputEvent = _this.$input(_this.__helpInputDOM, getInputMessage(_this), _this._contentArray) || {};
-        }
-    });
-
-    // 记录此刻MAC电脑的Command是否按下
-    var macCommand = false;
-
-    bind(this._el, 'keyup', function (event) {
-
-        var keyStringCode = getKeyString(event);
-
-        if (keyStringCode == 'command') macCommand = false;
-
-        // 取消shift被按下标志
-        shiftDown = false;
-
-    });
-
-    // 处理键盘控制
-    bind(this._el, 'keydown', function (event) {
-
-        var keyStringCode = getKeyString(event);
-
-        if (keyStringCode == 'command') macCommand = true;
-
-        // 如果Command被按下，就需要补充ctrl以兼容MAC电脑
-        if (macCommand && ['a', 'c', 'x'].indexOf(keyStringCode) > -1) {
-            keyStringCode = "ctrl+" + keyStringCode;
-        }
-
-        // 辅助输入前置拦截
-
-        if (_this.__helpInputDOM.innerHTML != '') {
-            var __helpInputEvent = _this.__helpInputEvent[keyStringCode];
-
-            if (isFunction(__helpInputEvent)) {
-
-                // 如果返回true表示继续调用，否则此快捷键结束
-                if (!__helpInputEvent()) return;
-            } else {
-                _this.__helpInputDOM.innerHTML = '';
-            }
-        }
-
-        // 只读模式需要拦截部分快捷键
-        // 命令行不拦截
-        if (_this._readonly && ['ctrl+a', 'ctrl+c'].indexOf(keyStringCode) < 0) return;
-
-        if (keyStringCode == 'shift') shiftDown = true;
-
-        // 进入常规快捷键
-
-        switch (keyStringCode) {
-
-            // 全选
-            case "ctrl+a":
-                {
-
-                    // 修改选区范围
-                    _this.__cursor1 = { leftNum: 0, lineNum: 0 };
-                    _this.__cursor2 = { lineNum: _this._contentArray.length - 1, leftNum: _this._contentArray[_this._contentArray.length - 1].length };
-
-                    // 绘制选中效果
-                    _this.$$updateSelectView();
-
-                    break;
-                }
-
-            // 复制
-            case "ctrl+c":
-                {
-                    if (_this.$$selectIsNotBlank()) {
-                        copy(calcTwoCursor());
-                        _this.__focusDOM.focus();
-                    }
-                    break;
-                }
-
-            // 剪切
-            case "ctrl+x":
-                {
-                    if (_this.$$selectIsNotBlank()) {
-
-                        copy(calcTwoCursor());
-                        _this.__focusDOM.focus();
-                        _this.$$deleteSelect();
-
-                        // 由于内容改变，需要重新调用着色
-                        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-
-                        // 更新视图
-                        _this.$$updateCursorPosition();
-                        _this.$$updateView();
-                        _this.$$cancelSelect();
-
-                        // 通知文本改动
-                        _this.__updated__();
-
-                    }
-                    break;
-                }
-
-            // 多空格输入或多行移位
-            case "tab":
-                {
-
-                    // tab用来控制输入多个空格，默认事件需要禁止
-                    stopPropagation(event);
-                    preventDefault(event);
-
-                    // 计算空格
-                    var blanks = "";
-                    for (var i = 0; i < _this._tabSpace; i++) blanks += " ";
-
-                    // 如果有选区，特殊处理
-                    if (_this.$$selectIsNotBlank()) {
-
-                        var beginLineNum = _this.__cursor1.lineNum,
-                            endLineNum = _this.__cursor2.lineNum;
-                        if (beginLineNum > endLineNum) {
-                            beginLineNum = _this.__cursor2.lineNum;
-                            endLineNum = _this.__cursor1.lineNum;
-                        }
-
-                        // 在开头追究tab
-                        for (var lineNum = beginLineNum; lineNum <= endLineNum; lineNum++) {
-                            _this._contentArray[lineNum] = blanks + _this._contentArray[lineNum];
-                        }
-
-                        // 校对选择区域
-                        _this.__cursor1.leftNum += _this._tabSpace;
-                        _this.__cursor2.leftNum += _this._tabSpace;
-
-                        // 校对光标
-                        _this.__leftNum += _this._tabSpace;
-
-                        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-                        _this.$$updateCursorPosition();
-                        _this.$$updateView();
-                        _this.$$updateCanvasSize();
-                        _this.$$updateSelectView();
-
-                        // 通知文本改动
-                        _this.__updated__();
-
-                    } else {
-                        update(blanks);
-                    }
-
-                    break;
-                }
-
-            // 光标向上
-            case "up":
-                {
-
-                    // 如果是第一行不需要任何处理
-                    if (_this.__lineNum <= 0) return;
-
-                    // 向上一行
-                    _this.__lineNum -= 1;
-
-                    _this.__leftNum = _this.$$bestLeftNum(_this.$$textWidth(_this._contentArray[_this.__lineNum + 1].substr(0, _this.__leftNum)) + 40);
-
-                    _this.$$updateCursorPosition();
-                    _this.$$updateView();
-                    _this.$$cancelSelect();
-
-                    _this._el.scrollTop -= 21;
-
-                    break;
-                }
-
-            // 光标向下
-            case "down":
-                {
-
-                    if (_this.__lineNum >= _this._contentArray.length - 1) return;
-
-                    // 向下一行
-                    _this.__lineNum += 1;
-
-                    _this.__leftNum = _this.$$bestLeftNum(_this.$$textWidth(_this._contentArray[_this.__lineNum - 1].substr(0, _this.__leftNum)) + 40);
-
-                    _this.$$updateCursorPosition();
-                    _this.$$updateView();
-                    _this.$$cancelSelect();
-
-                    _this._el.scrollTop += 21;
-
-                    break;
-                }
-
-            // 光标向左
-            case "left":
-                {
-
-                    if (_this.__leftNum <= 0) {
-                        if (_this.__lineNum <= 0) return;
-                        _this.__lineNum -= 1;
-                        _this.__leftNum = _this._contentArray[_this.__lineNum].length;
-                    } else {
-                        _this.__leftNum -= 1;
-                    }
-
-                    _this.$$updateCursorPosition();
-                    _this.$$cancelSelect();
-
-                    break;
-                }
-
-            // 光标向右
-            case "right":
-                {
-
-                    if (_this.__leftNum >= _this._contentArray[_this.__lineNum].length) {
-                        if (_this.__lineNum >= _this._contentArray.length - 1) return;
-                        _this.__lineNum += 1;
-                        _this.__leftNum = 0;
-                    } else {
-                        _this.__leftNum += 1;
-                    }
-
-                    _this.$$updateCursorPosition();
-                    _this.$$cancelSelect();
-
-                    break;
-                }
-
-            // 删除
-            case "backspace":
-                {
-
-                    // 如果有选区
-                    if (_this.$$selectIsNotBlank()) {
-
-                        // 删除选区
-                        _this.$$deleteSelect();
-
-                    }
-
-                    // 无选区的常规操作
-                    else {
-                        if (_this.__leftNum <= 0) {
-                            if (_this.__lineNum <= 0) return;
-
-                            _this.__lineNum -= 1;
-                            _this.__leftNum = _this._contentArray[_this.__lineNum].length;
-
-                            // 一行的开头应该删除本行（合并到前一行）
-                            _this._contentArray[_this.__lineNum] += _this._contentArray[_this.__lineNum + 1];
-                            _this._contentArray.splice(_this.__lineNum + 1, 1);
-
-                        } else {
-                            _this.__leftNum -= 1;
-                            _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum) + _this._contentArray[_this.__lineNum].substring(_this.__leftNum + 1);
-                        }
-                    }
-
-                    // 由于内容改变，需要重新调用着色
-                    _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-
-                    // 更新视图
-                    _this.$$updateCursorPosition();
-                    _this.$$updateView();
-                    _this.$$cancelSelect();
-
-                    // 通知文本改动
-                    _this.__updated__();
-
-                    break;
-                }
-        }
-
-    });
-
+    return temp;
 };
 
     return __pkg__scope_bundle__;
@@ -1872,7 +1661,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['168']=function(){
+window.__pkg__bundleSrc__['178']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
@@ -2075,183 +1864,383 @@ __pkg__scope_bundle__.default= function (callback) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/mousePosition
+// Original file:./src/tool/download
 /*****************************************************************/
-window.__pkg__bundleSrc__['103']=function(){
+window.__pkg__bundleSrc__['283']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 获取鼠标相对特定元素左上角位置
-__pkg__scope_bundle__.default= function (el, event) {
+    __pkg__scope_bundle__.downloadJSON = function (name, json) {
+    var blob = new Blob([JSON.stringify(json)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = name + ".json";
+    link.click();
+    URL.revokeObjectURL(url);
+};
 
-    event = event || window.event;
+    return __pkg__scope_bundle__;
+}
 
-    // 返回元素的大小及其相对于视口的位置
-    var bounding = el.getBoundingClientRect();
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/assemble
+/*****************************************************************/
+window.__pkg__bundleSrc__['154']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (begin, end, step, count) {
+    var val = [];
+    for (var index = 0; index < count; index++) val[index] = begin;
 
-    if (!event || !event.clientX)
-        throw new Error('Event is necessary!');
-    var temp = {
+    // 非常类似进制数，每次调用都+1
+    return function () {
+        for (var i = 0; i < count; i++) {
 
-        // 鼠标相对元素位置 = 鼠标相对窗口坐标 - 元素相对窗口坐标
-        "x": event.clientX - bounding.left + el.scrollLeft,
-        "y": event.clientY - bounding.top + el.scrollTop
+            // 如果当前位可以进1
+            if (val[i] + step < end) {
+                val[i] = +(val[i] + step).toFixed(7);
+                break;
+            }
+
+            // 如果当前位不可以，那当前位归0，尝试下一位
+            else if (i < count - 1) {
+                val[i] = begin;
+            }
+        }
+
+        return val;
+    }
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/webgl/getColorFactory
+/*****************************************************************/
+window.__pkg__bundleSrc__['284']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (painter) {
+    var width = painter.drawingBufferWidth, height = painter.drawingBufferHeight;
+
+    var pixels = new Uint8Array(
+        4 * width * height
+    );
+    painter.readPixels(
+        0,
+        0,
+        width,
+        height,
+        painter.RGBA,
+        painter.UNSIGNED_BYTE,
+        pixels
+    );
+
+    return function (x, y) {
+        y = height - y;
+
+        var pixelR = pixels[4 * (y * width + x)];
+        var pixelG = pixels[4 * (y * width + x) + 1];
+        var pixelB = pixels[4 * (y * width + x) + 2];
+        var pixelA = pixels[4 * (y * width + x) + 3];
+
+        return "rgba(" + pixelR + "," + pixelG + "," + pixelB + "," + pixelA + ")";
     };
-
-    return temp;
 };
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/diff
+// Original file:./src/pages/model-editor/initModelValue
 /*****************************************************************/
-window.__pkg__bundleSrc__['185']=function(){
+window.__pkg__bundleSrc__['285']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    
-// 判断一行是否匹配
+    __pkg__scope_args__=window.__pkg__getBundle('277');
+var Matrix4 =__pkg__scope_args__.default;
 
-var euqalLine = function (line1, line2) {
-    if (line1.length != line2.length) return false;
-    for (var i = 0; i < line1.length; i++) {
-        if (line1[i].content != line2[i].content || line1[i].color != line2[i].color) return false;
-    }
-    return true;
-};
+__pkg__scope_args__=window.__pkg__getBundle('286');
+var cylinderFactory =__pkg__scope_args__.default;
 
-/**
- * 为了加速页面渲染，我们引入差异对比
- * 简单的理解就是：
- * 原本在数据改变的时候直接更新整个DOM的方式替换成只功能必要的DOM
- */
+__pkg__scope_args__=window.__pkg__getBundle('294');
+var sphereFactory =__pkg__scope_args__.default;
 
-__pkg__scope_bundle__.default= function (newFormatData) {
 
-    /**
-     * 思路：
-     * 
-     * 从开始匹配无法匹配的，匹配条个数记作beginNum
-     * 再从结尾匹配无法匹配的，匹配条个数记作endNum
-     * 只有begin和end之间的数据需要更新DOM
-     * 
-     * 当然，也有特殊情况，因此在进行回归前，先把特殊情况提取处理
-     * 
-     */
+__pkg__scope_args__=window.__pkg__getBundle('296');
+var DownToUp=__pkg__scope_args__.DownToUp;
 
-    var oldFormatData = this.__formatData;
 
-    if (oldFormatData) {
-        // 寻找开始匹配行数
-        var beginNum = 0;
-        for (var i = 0; i < oldFormatData.length && i < newFormatData.length; i++) {
-            if (!euqalLine(oldFormatData[i], newFormatData[i])) {
-                break;
+var sphere = sphereFactory(), cylinder = cylinderFactory();
+
+// 主视图
+__pkg__scope_bundle__.mainView = function () {
+
+    var modelValue = [{
+        geometry: {
+            attributes: {
+                position: {
+                    array: [],
+                    count: 0,
+                    itemSize: 3
+                }
+            },
+            type: "LINES"
+        },
+        material: {
+            color: {
+                r: 0.5,
+                g: 0.5,
+                b: 0.5,
+                alpha: 1
             }
-            beginNum += 1;
         }
-
-        // 寻找结束匹配行数
-        var endNum = 0;
-        for (var i = 1; i <= oldFormatData.length && i <= newFormatData.length; i++) {
-            if (!euqalLine(oldFormatData[oldFormatData.length - i], newFormatData[newFormatData.length - i])) {
-                break;
+    }, {
+        geometry: {
+            attributes: {
+                position: {
+                    array: [],
+                    count: 0,
+                    itemSize: 3
+                }
+            },
+            type: "LINES"
+        },
+        material: {
+            color: {
+                r: 0.8,
+                g: 0.8,
+                b: 0.8,
+                alpha: 1
             }
-            endNum += 1;
+        }
+    }];
+
+    for (var i = 0; i <= 25; i++) {
+
+        // 深色线
+        if (i % 5 == 0) {
+            modelValue[0].geometry.attributes.position.array.push(
+
+                // 横
+                // [-1,0,-1+(2/25)*i]
+                -1, 0, 0.08 * i - 1,
+                1, 0, 0.08 * i - 1,
+
+                // 竖
+                0.08 * i - 1, 0, -1,
+                0.08 * i - 1, 0, 1
+            );
         }
 
-        var minLength = Math.min(oldFormatData.length, newFormatData.length);
-
-        // 校对(如果复用重叠了)
-        if (beginNum + endNum >= minLength) {
-            endNum = minLength - beginNum - 1;
-
-            // 由于不知道是删除还是增加，因此可能出现负数
-            if (endNum < 0) endNum = 0;
+        // 浅色线
+        else {
+            modelValue[1].geometry.attributes.position.array.push(
+                -1, 0, 0.08 * i - 1,
+                1, 0, 0.08 * i - 1,
+                0.08 * i - 1, 0, -1,
+                0.08 * i - 1, 0, 1
+            );
         }
-
-        // 对比以后的差异信息
-        this.__diff = {
-            beginNum: beginNum,
-            endNum: endNum
-        };
 
     }
 
-    return newFormatData;
-};
+    modelValue[0].geometry.attributes.position.count = modelValue[0].geometry.attributes.position.array.length / 3;
+    modelValue[1].geometry.attributes.position.count = modelValue[1].geometry.attributes.position.array.length / 3;
 
+    var object3D = [{
+        region: "Axios",
+        matrix: Matrix4(),
+        mesh: modelValue
+    }];
 
-    return __pkg__scope_bundle__;
-}
+    var geometryOral = [];
 
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/filter
-/*****************************************************************/
-window.__pkg__bundleSrc__['186']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 外来文本统一过滤处理
+    // 氢原子
+    geometryOral.push([sphere(-0.7, 0, 0, 0.36), [0.6, 0.6, 0.6, 1.0]]);
+    geometryOral.push([sphere(0.7, 0, 0, 0.36), [0.6, 0.6, 0.6, 1.0]]);
 
-__pkg__scope_bundle__.default= function (oralStr) {
+    // 氧原子
+    geometryOral.push([sphere(0, 0.7, 0, 0.5), [1, 0.2, 0.2, 1.0]]);
 
-    // 把tab统一变成空格
-    var tab = "";
-    for (var i = 0; i < this._tabSpace; i++) {
-        tab += " ";
-    }
+    // 化学键（左）
+    geometryOral.push([cylinder(-0.7, 0, 0, 0.16, 0, 0.7, 0), [0.2, 0.3, 0.1, 0.4]]);
 
-    return oralStr.replace(/\t/g, tab);
-};
+    // 化学键（右）
+    geometryOral.push([cylinder(0.7, 0, 0, 0.16, 0, 0.7, 0), [0.2, 0.3, 0.1, 0.4]]);
 
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/shader/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['187']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 代码着色计算
- */
-
-// 合并内容
-
-var toShaderReult = function (words) {
-
-    var resultData = [[]], lineNum = 0;
-
-    words.forEach(function (word) {
-
-        var codeArray = word.content.split(/\n/), index;
-
-        resultData[lineNum].push({
-            color: word.color,
-            content: codeArray[0]
-        });
-
-        for (index = 1; index < codeArray.length; index++) {
-            lineNum += 1;
-            resultData.push([]);
-
-            resultData[lineNum].push({
-                color: word.color,
-                content: codeArray[index]
+    for (var i = 0; i < geometryOral.length; i++) {
+        var mesh = []
+        for (var j = 0; j < geometryOral[i][0].length; j++) {
+            mesh.push({
+                geometry: {
+                    attributes: {
+                        position: {
+                            array: geometryOral[i][0][j].points,
+                            count: geometryOral[i][0][j].length,
+                            itemSize: 3
+                        }
+                    },
+                    type: DownToUp[geometryOral[i][0][j].method]
+                },
+                material: {
+                    color: {
+                        r: geometryOral[i][1][0],
+                        g: geometryOral[i][1][1],
+                        b: geometryOral[i][1][2],
+                        alpha: geometryOral[i][1][3]
+                    }
+                }
             });
-
         }
 
-    });
+        object3D.push({
+            region: "H2O#" + i,
+            matrix: Matrix4().scale(0.5, 0.5, 0.5, 0, 0, 0),
+            mesh: mesh
+        });
+    }
 
-    return resultData;
+    return object3D;
 };
 
+// 方向图标
+__pkg__scope_bundle__.axios = function () {
+
+    return [
+
+        // X轴承
+        {
+            length: 2,
+            method: "lines",
+            points: [-1.3, 0, 0, 1.3, 0, 0],
+            color: [1, 0, 0, 1]
+        }, {
+            length: 6,
+            method: "fanTriangles",
+            points: [
+                2, 0, 0,
+                1.25, 0.3, 0.3,
+                1.25, -0.3, 0.3,
+                1.25, -0.3, -0.3,
+                1.25, 0.3, -0.3,
+                1.25, 0.3, 0.3
+            ],
+            color: [1, 0, 0, 1]
+        },
+
+        // Y轴承
+        {
+            length: 2,
+            method: "lines",
+            points: [0, -1.3, 0, 0, 1.3, 0],
+            color: [0, 1, 0, 1]
+        }, {
+            length: 6,
+            method: "fanTriangles",
+            points: [
+                0, 2, 0,
+                0.3, 1.25, 0.3,
+                -0.3, 1.25, 0.3,
+                -0.3, 1.25, -0.3,
+                0.3, 1.25, -0.3,
+                0.3, 1.25, 0.3,
+            ],
+            color: [0, 1, 0, 1]
+        },
+
+        // Z轴承
+        {
+            length: 2,
+            method: "lines",
+            points: [0, 0, -1.3, 0, 0, 1.3],
+            color: [0, 0, 1, 1]
+        }, {
+            length: 6,
+            method: "fanTriangles",
+            points: [
+                0, 0, 2,
+                0.3, 0.3, 1.25,
+                -0.3, 0.3, 1.25,
+                -0.3, -0.3, 1.25,
+                0.3, -0.3, 1.25,
+                0.3, 0.3, 1.25
+            ],
+            color: [0, 0, 1, 1]
+        }
+    ];
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/geometry/cylinder
+/*****************************************************************/
+window.__pkg__bundleSrc__['286']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('287');
+var getOption =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('288');
+var splitNum=__pkg__scope_args__.splitNum;
+
+__pkg__scope_args__=window.__pkg__getBundle('289');
+var prism =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (option) {
+    var __option = getOption(option);
+
+    // 圆柱体
+    return function (x, y, z, radius, x2, y2, z2) {
+        // 求解出需要切割多少份比较合理
+        var num = splitNum(__option.precision, radius);
+
+        if (arguments.length == 5) {
+            return prism(option)(x, y, z, radius, x2, num);
+        } else {
+            return prism(option)(x, y, z, radius, x2, y2, z2, num);
+        }
+    };
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/geometry/option
+/*****************************************************************/
+window.__pkg__bundleSrc__['287']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('163');
+var initConfig=__pkg__scope_args__.initConfig;
+
+
+__pkg__scope_bundle__.default= function (option) {
+    return initConfig({
+        precision: 0.1, // 精度
+        normal: false, // 是否需要法向量
+    }, option || {});
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/config
+/*****************************************************************/
+window.__pkg__bundleSrc__['163']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    
 // 初始化配置文件
 
-var initConfig = function (init, data) {
+__pkg__scope_bundle__.initConfig = function (init, data) {
     var key;
     for (key in data)
         try {
@@ -2262,76 +2251,230 @@ var initConfig = function (init, data) {
     return init;
 };
 
-__pkg__scope_args__=window.__pkg__getBundle('188');
-var _inner_HTML_shader =__pkg__scope_args__.default;
+    return __pkg__scope_bundle__;
+}
 
-__pkg__scope_args__=window.__pkg__getBundle('189');
-var _inner_CSS_shader =__pkg__scope_args__.default;
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/geometry/tool/circle
+/*****************************************************************/
+window.__pkg__bundleSrc__['288']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 计算切割份数
+__pkg__scope_bundle__.splitNum = function (precision, radius) {
 
-__pkg__scope_args__=window.__pkg__getBundle('190');
-var _inner_ES_shader =__pkg__scope_args__.default;
+    // 根据切割弧度得出切割块数目
+    var num = Math.ceil(Math.PI * 2 /
 
+        // 为了满足最小精度而得出的切割弧度
+        Math.asin(precision / radius) * 2);
 
-var _deafultColors_html = {
-    "text": "#000000",/*文本颜色*/
-    "annotation": "#6a9955",/*注释颜色*/
-    "insign": "#555",/*符号颜色*/
-    "node": "#1e50b3",/*结点颜色*/
-    "attrKey": "#1e83b1",/*属性名称颜色*/
-    "attrValue": "#ac4c1e",/*属性值颜色*/
-};
-var _deafultColors_css = {
-    "annotation": "#6a9955",/*注释颜色*/
-    "insign": "#555",/*符号颜色*/
-    "selector": "#1e50b3",/*选择器*/
-    "attrKey": "#1e83b1",/*属性名称颜色*/
-    "attrValue": "#ac4c1e"/*属性值颜色*/
-};
-var _deafultColors_javascript = {
-    "text": "#000000",/*文本颜色*/
-    "annotation": "#6a9955",/*注释颜色*/
-    "insign": "#555",/*符号颜色*/
-    "key": "#ff0000",/*关键字颜色*/
-    "string": "#ac4c1e",/*字符串颜色*/
-    "funName": "#1e50b3",/*函数名称颜色*/
-    "execName": "#1e83b1"/*执行方法颜色*/
+    return (isNaN(num) || num < 12) ? 12 : num;
+
 };
 
-__pkg__scope_bundle__.default= function (lang, colors) {
-    colors = colors || {};
+    return __pkg__scope_bundle__;
+}
 
-    var _inner_shader, _inner_colors;
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/geometry/prism
+/*****************************************************************/
+window.__pkg__bundleSrc__['289']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('287');
+var getOption =__pkg__scope_args__.default;
 
-    if (lang == 'html') {
+__pkg__scope_args__=window.__pkg__getBundle('290');
+var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
 
-        colors._css = initConfig(_deafultColors_css, colors.css);
-        colors._javascript = initConfig(_deafultColors_javascript, colors.javascript);
-        _inner_colors = initConfig(_deafultColors_html, colors);
+__pkg__scope_args__=window.__pkg__getBundle('291');
+var rotateLineFactory =__pkg__scope_args__.default;
 
-        _inner_shader = _inner_HTML_shader;
+__pkg__scope_args__=window.__pkg__getBundle('292');
+var prismHorizontal =__pkg__scope_args__.default;
 
-    } else if (lang == 'css') {
+__pkg__scope_args__=window.__pkg__getBundle('293');
+var prismVertical =__pkg__scope_args__.default;
 
-        _inner_colors = initConfig(_deafultColors_css, colors);
 
-        _inner_shader = _inner_CSS_shader;
+__pkg__scope_bundle__.default= function (option) {
+    var __option = getOption(option);
 
-    } else if (lang == 'javascript') {
+    // 棱柱体
+    return function (x, y, z, radius, x2, y2, z2, num) {
+        var height, rotateLine = null;
 
-        _inner_colors = initConfig(_deafultColors_javascript, colors);
+        if (arguments.length == 6) {
+            height = x2;
+            num = y2;
+        } else {
+            height = (y > y2 ? -1 : 1) * Math.sqrt((x2 - x) * (x2 - x) + (y2 - y) * (y2 - y) + (z2 - z) * (z2 - z));
+            rotateLine = rotateLineFactory(x, y, z, x2, y2, z2);
+        }
 
-        _inner_shader = _inner_ES_shader;
+        var result = [{
+            name: "bottom",
+            points: [],
+            length: 0,
+            method: "triangles"
+        }, {
+            name: "top",
+            points: [],
+            length: 0,
+            method: "triangles"
+        }, {
+            name: "side",
+            points: [],
+            length: 0,
+            method: "triangles"
+        }];
+
+        // 绘制底部的盖子
+        mergeArrayTo(result[0].points, prismHorizontal(__option.normal, x, y, z, radius, num, height > 0 ? -1 : 1));
+
+        // 绘制顶部的盖子
+        mergeArrayTo(result[1].points, prismHorizontal(__option.normal, x, y + height, z, radius, num, height > 0 ? 1 : -1));
+
+        // 绘制侧边部分
+        mergeArrayTo(result[2].points, prismVertical(__option.normal, x, y, z, radius, height, num));
+
+        for (var i = 0; i < result.length; i++) {
+            if (rotateLine) {
+
+                var points = [];
+                var isNormal = false;
+                for (var index = 0; index < result[i].points.length; index += 3) {
+                    mergeArrayTo(points, rotateLine(result[i].points[index], result[i].points[index + 1], result[i].points[index + 2], (__option.normal) && isNormal));
+                    isNormal = !isNormal;
+                }
+                result[i].points = points;
+            }
+            result[i].length = result[i].points.length / (__option.normal ? 6 : 3);
+        }
+
+        return result;
+
+    };
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/Array
+/*****************************************************************/
+window.__pkg__bundleSrc__['290']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 合并数组到第一个
+__pkg__scope_bundle__.mergeArrayTo = function (targetArray) {
+    var sourceArray;
+    for (var i = 1; i < arguments.length; i++) {
+        sourceArray = arguments[i];
+        if (Array.isArray(sourceArray)) {
+            for (var j = 0; j < sourceArray.length; j++) {
+                targetArray.push(sourceArray[j]);
+            }
+        } else {
+            targetArray.push(sourceArray);
+        }
+    }
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/geometry/tool/rotateLine
+/*****************************************************************/
+window.__pkg__bundleSrc__['291']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= function (x, y, z, x2, y2, z2) {
+    return function (x0, y0, z0, isNormal) {
+        if (x == x2 && z == z2) return [x0, y0, z0];
+
+        var sin, cos, temp;
+
+        // 第一步：归零化
+        var _x0 = x0 - (isNormal ? 0 : x), _y0 = y0 - (isNormal ? 0 : y), _z0 = z0 - (isNormal ? 0 : z);  // 法向量起点本来就是原点
+        var _x2 = x2 - x, _y2 = y2 - y, _z2 = z2 - z;
+
+        // 第二步：围绕OZ轴旋转
+
+        var __d = Math.sqrt(_x2 * _x2 + _z2 * _z2);
+        cos = _x2 / __d;
+        sin = _z2 / __d;
+
+        var _x2N = _z2 * sin + _x2 * cos;
+
+        var d = Math.sqrt(_y2 * _y2 + _x2N * _x2N);
+        cos = _y2 / d;
+        sin = _x2N / d;
+
+        temp = [_y0, _x0];
+        _y0 = temp[0] * cos - temp[1] * sin;
+        _x0 = temp[0] * sin + temp[1] * cos;
+
+        // 第三步：围绕0Y轴旋转
+        cos = _x2 / __d;
+        sin = _z2 / __d;
+
+        temp = [_x0, _z0];
+        _x0 = temp[0] * cos - temp[1] * sin;
+        _z0 = temp[0] * sin + temp[1] * cos;
+
+        // 第四步：去零化（直接返回）
+        return [_x0 + (isNormal ? 0 : x), _y0 + (isNormal ? 0 : y), _z0 + (isNormal ? 0 : z)];
+    };
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/geometry/tool/prism-horizontal
+/*****************************************************************/
+window.__pkg__bundleSrc__['292']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('165');
+var rotate =__pkg__scope_args__.default;
+
+
+// 棱柱水平部分
+
+__pkg__scope_bundle__.default= function (normal, x, y, z, radius, num, d) {
+
+    var beginX, beginZ;
+    if (num == 4) {
+        var temp = radius / 1.414;
+        beginX = x + temp;
+        beginZ = z + temp;
 
     } else {
-        throw new Error('Language not supported:' + lang + ",The languages available include: html、css、javascript!");
+        beginX = x + radius;
+        beginZ = z;
     }
 
-    return function (textString) {
+    var point = [beginX, beginZ];
+    var points = [];
+    var deg = Math.PI * 2 / num;
+    for (var i = 0; i < num; i++) {
 
-        return toShaderReult(_inner_shader(textString, _inner_colors));
+        points.push(x, y, z);
+        if (normal) points.push(0, d, 0);
 
-    };
+        points.push(point[0], y, point[1]);
+        if (normal) points.push(0, d, 0);
 
+        point = rotate(x, z, deg * (i + 1), beginX, beginZ);
+        points.push(point[0], y, point[1]);
+        if (normal) points.push(0, d, 0);
+    }
+
+    return points;
 };
 
 
@@ -2339,597 +2482,224 @@ __pkg__scope_bundle__.default= function (lang, colors) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/shader/html
+// Original file:./src/tool/transform/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['188']=function(){
+window.__pkg__bundleSrc__['165']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('189');
-var _inner_CSS_shader =__pkg__scope_args__.default;
+    // 点（x,y）围绕中心（cx,cy）旋转deg度
+__pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
+    var cos = Math.cos(deg), sin = Math.sin(deg);
+    return [
+        +((x - cx) * cos - (y - cy) * sin + cx).toFixed(7),
+        +((x - cx) * sin + (y - cy) * cos + cy).toFixed(7)
+    ];
+};
 
-__pkg__scope_args__=window.__pkg__getBundle('190');
-var _inner_ES_shader =__pkg__scope_args__.default;
+    return __pkg__scope_bundle__;
+}
 
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/geometry/tool/prism-vertical
+/*****************************************************************/
+window.__pkg__bundleSrc__['293']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('165');
+var rotate =__pkg__scope_args__.default;
 
-__pkg__scope_bundle__.default= function (textString, colors) {
-
-    var shaderArray = [];
-
-    // 当前面对的
-    var i = 0;
-
-    // 获取往后n个值
-    var nextNValue = function (n) {
-        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
-    };
-
-    var template = "";
-
-    // 初始化模板，开始文本捕获
-    var initTemplate = function () {
-        if (template != "") {
-            shaderArray.push({
-                color: colors.text,
-                content: template
-            });
-        }
-
-        template = "";
-    };
-
-    // 匹配属性值模板
-    var getAttrValueTemplate = function () {
-        var endStr = " ";
-        // 寻找属性值边界
-        if (nextNValue(1) == '"') endStr = '"';
-        if (nextNValue(1) == "'") endStr = "'";
-
-        // 到达边界前一直寻找下一个
-        do {
-            template += textString[i++];
-        } while (nextNValue(1) != endStr && i < textString.length);
-
-        // 如果是匹配成功而不是匹配到末尾
-        if (endStr != " " && i < textString.length) {
-            template += endStr;
-            i += 1;
-        }
-
-        shaderArray.push({
-            color: colors.attrValue,
-            content: template
-        });
-        template = "";
-    };
-
-    while (true) {
-
-        /* 1.注释 */
-
-        if (nextNValue(4) == '<!--') {
-
-            initTemplate();
-            while (nextNValue(3) !== '-->' && i < textString.length) {
-                template += textString[i++];
-            }
-
-            shaderArray.push({
-                color: colors.annotation,
-                content: template + nextNValue(3)
-            });
-            i += 3;
-            template = "";
-
-        }
-
-        /* 2.</ */
-
-        else if (nextNValue(2) == '</') {
-
-            initTemplate();
-            shaderArray.push({
-                color: colors.insign,
-                content: "</"
-            });
-            i += 2;
-
-            while (nextNValue(1) !== '>' && i < textString.length) {
-                template += textString[i++];
-            }
-
-            if (template != "") {
-                shaderArray.push({
-                    color: colors.node,
-                    content: template
-                });
-                template = "";
-
-                if (i < textString.length) {
-                    shaderArray.push({
-                        color: colors.insign,
-                        content: ">"
-                    });
-                    i += 1;
-                }
-
-            }
-        }
-
-        /* 3.< */
-
-        else if (nextNValue(1) == '<' && nextNValue(2) != '< ') {
-
-            var specialTag = "";
-
-            initTemplate();
-            shaderArray.push({
-                color: colors.insign,
-                content: "<"
-            });
-            i += 1;
-
-            // 寻找标签名称
-            while (nextNValue(1) != '>' && nextNValue(1) != ' ' && i < textString.length) {
-                template += textString[i++];
-            }
-            if (template != '') {
-
-                // 针对style和script这样特殊的标签，内部需要调用对应的着色器着色
-                if (template == "style" || template == 'script') {
-                    specialTag = "</" + template + ">";
-                }
-
-                shaderArray.push({
-                    color: colors.node,
-                    content: template
-                });
-
-                template = '';
-                if (i < textString.length) {
-
-                    // 寻找标签属性
-                    while (i < textString.length) {
-
-                        // 遇到这个表示标签结束了
-                        // 也就意味着标签匹配结束
-                        if (nextNValue(1) == ">") {
-
-                            initTemplate();
-                            shaderArray.push({
-                                color: colors.insign,
-                                content: ">"
-                            });
-                            i += 1;
-                            break;
-                        }
-
-                        // 如果是空格，表示是属性之间，接着查看下一个即可
-                        else if (nextNValue(1) != ' ') {
-
-                            initTemplate();
-
-                            // 匹配属性名称
-                            if (nextNValue(1) != '"' && nextNValue(1) != "'") {
-
-                                // 如果不是=或>和空格就继续
-                                while (nextNValue(1) != "=" && nextNValue(1) != '>' && i < textString.length && nextNValue(1) != " ") {
-                                    template += textString[i++];
-                                }
-                                if (template != "") {
-                                    shaderArray.push({
-                                        color: colors.attrKey,
-                                        content: template
-                                    });
-                                    template = "";
-
-                                    // 如果下一个是=，就接着找属性值
-                                    if (nextNValue(1) == '=') {
-                                        shaderArray.push({
-                                            color: colors.insign,
-                                            content: "="
-                                        });
-                                        i += 1;
+__pkg__scope_args__=window.__pkg__getBundle('290');
+var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
 
 
-                                        if (i < textString.length && nextNValue(1) != " " && nextNValue(1) != '>') {
-                                            // 寻找属性值
-                                            getAttrValueTemplate();
+// 棱柱垂直部分
 
-                                        }
-                                    }
-                                } else {
-                                    template += textString[i++];
-                                }
-                            } else if (nextNValue(1) == '=') {
-                                shaderArray.push({
-                                    color: colors.insign,
-                                    content: "="
-                                });
-                                i += 1;
-                            } else {
-                                if (i < textString.length && nextNValue(1) != " " && nextNValue(1) != '>') {
+__pkg__scope_bundle__.default= function (normal, x, y, z, radius, height, num) {
+    var points = [], beginPosition;
 
-                                    getAttrValueTemplate();
-
-                                }
-                            }
-
-                        } else {
-                            template += textString[i++];
-                        }
-
-                    }
-
-                }
-
-            }
-
-            if (specialTag != "") {
-
-                var oldI = i, oldTemplate = template, langHelp, innerShaderArray;
-                while (nextNValue(specialTag.length) != specialTag && i < textString.length) {
-                    template += textString[i++];
-                }
-
-                if (i < textString.length) {
-
-                    langHelp = specialTag.replace(/<\//, '');
-
-                    innerShaderArray = {
-                        "style>": _inner_CSS_shader,
-                        "script>": _inner_ES_shader
-                    }[langHelp](template, {
-                        "style>": colors._css,
-                        "script>": colors._javascript
-                    }[langHelp]);
-
-                    innerShaderArray.forEach(function (innerShader) {
-                        shaderArray.push(innerShader);
-                    });
-
-                    template = "";
-                } else {
-                    template = oldTemplate;
-                    i = oldI;
-                }
-
-            }
-
-        }
-
-        /* 追加字符 */
-
-        else {
-            if (i >= textString.length) {
-                initTemplate();
-                break;
-            } else {
-                template += textString[i++];
-            }
-        }
-
+    if (num == 4) {
+        beginPosition = rotate(x, z, Math.PI * 0.25, x - radius, z);
+    } else {
+        beginPosition = [x + radius, z];
     }
 
-    return shaderArray;
+    var deg = Math.PI * 2 / num, degHalf = Math.PI * 2 / (num * 2);
 
-}
+    var endPosition, normalPosition = [];
+    for (var i = 0; i < num; i++) {
+
+        endPosition = rotate(x, z, deg, beginPosition[0], beginPosition[1]);
+
+        if (normal) {
+            var halfPosition = rotate(x, z, degHalf, beginPosition[0], beginPosition[1]);
+            normalPosition = [halfPosition[0], 0, halfPosition[1]];
+        }
+
+        mergeArrayTo(points, beginPosition[0], y, beginPosition[1], normalPosition)
+        mergeArrayTo(points, beginPosition[0], y + height, beginPosition[1], normalPosition);
+        mergeArrayTo(points, endPosition[0], y + height, endPosition[1], normalPosition);
+
+        mergeArrayTo(points, beginPosition[0], y, beginPosition[1], normalPosition);
+        mergeArrayTo(points, endPosition[0], y, endPosition[1], normalPosition);
+        mergeArrayTo(points, endPosition[0], y + height, endPosition[1], normalPosition);
+
+        beginPosition = endPosition;
+    }
+
+    return points;
+};
 
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/shader/css
+// Original file:./src/tool/geometry/sphere
 /*****************************************************************/
-window.__pkg__bundleSrc__['189']=function(){
+window.__pkg__bundleSrc__['294']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (textString, colors) {
-    var shaderArray = [];
+    __pkg__scope_args__=window.__pkg__getBundle('287');
+var getOption =__pkg__scope_args__.default;
 
-    // 当前面对的
-    var i = 0;
+__pkg__scope_args__=window.__pkg__getBundle('290');
+var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
 
-    // 获取往后n个值
-    var nextNValue = function (n) {
-        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
+__pkg__scope_args__=window.__pkg__getBundle('295');
+var sphereFragment =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('288');
+var splitNum=__pkg__scope_args__.splitNum;
+
+
+__pkg__scope_bundle__.default= function (option) {
+    var __option = getOption(option);
+
+    // 球体
+    return function (cx, cy, cz, radius) {
+
+        // 求解出需要切割多少份比较合理
+        var num = splitNum(__option.precision, radius);
+
+        // 然后一瓣瓣的绘制
+        var result = [{
+            name: "surface",
+            points: [],
+            length: 0,
+            method: "triangles"
+        }];
+        for (var i = 0; i < num; i++) {
+            mergeArrayTo(result[0].points, sphereFragment(__option.normal, cx, cy, cz, radius, num, i));
+        }
+
+        result[0].length = result[0].points.length / (__option.normal ? 6 : 3);
+        return result;
     };
+};
 
-    var template = "";
-
-    // 1:选择器 tag
-    // 2:属性名 attr
-    // 3:属性值 string
-    var state = "tag";
-
-    // 初始化模板，开始文本捕获
-    var initTemplate = function () {
-        if (template != "") {
-            shaderArray.push({
-                color: {
-                    tag: colors.selector,
-                    attr: colors.attrKey,
-                    string: colors.attrValue
-                }[state],
-                content: template
-            });
-        }
-
-        template = "";
-    };
-
-    while (true) {
-
-        /* 1.注释 */
-
-        if (nextNValue(2) == '/*') {
-
-            initTemplate();
-            while (nextNValue(2) !== '*/' && i < textString.length) {
-                template += textString[i++];
-            }
-
-            shaderArray.push({
-                color: colors.annotation,
-                content: template + nextNValue(2)
-            });
-            i += 2;
-            template = "";
-
-        }
-
-        /* 2.字符串 */
-
-        else if (["'", '"'].indexOf(nextNValue(1)) > -1) {
-
-            var strBorder = nextNValue(1);
-            initTemplate();
-
-            do {
-                template += textString[i++];
-            } while (nextNValue(1) != strBorder && i < textString.length)
-
-            // 因为可能是没有字符导致的结束
-            if (nextNValue(1) != strBorder) {
-                strBorder = "";
-            } else {
-                i += 1;
-            }
-
-            shaderArray.push({
-                color: colors.attrValue,
-                content: template + strBorder
-            });
-            template = "";
-
-        }
-
-        /* 3.边界 */
-
-        else if ([":", '{', '}', ";"].indexOf(nextNValue(1)) > -1) {
-
-            initTemplate();
-            shaderArray.push({
-                color: colors.insign,
-                content: nextNValue(1)
-            });
-            template = "";
-
-            if (nextNValue(1) == '{' || nextNValue(1) == ';') {
-                state = 'attr';
-            } else if (nextNValue(1) == '}') {
-                state = 'tag';
-            } else {
-                state = 'string';
-            }
-
-            i += 1;
-        }
-
-        /* 追加字符 */
-
-        else {
-            if (i >= textString.length) {
-                initTemplate();
-                break;
-            } else {
-                template += textString[i++];
-            }
-        }
-
-    }
-    return shaderArray;
+    return __pkg__scope_bundle__;
 }
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/geometry/tool/sphere-fragment
+/*****************************************************************/
+window.__pkg__bundleSrc__['295']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('165');
+var rotate =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('290');
+var mergeArrayTo=__pkg__scope_args__.mergeArrayTo;
+
+
+// 球体中的一瓣子
+
+__pkg__scope_bundle__.default= function (normal, cx, cy, cz, radius, num, index) {
+    var points = [cx, cy + radius, cz], deg = Math.PI * 2 / num, point;
+
+    if (normal) points.push(0, radius, 0);
+
+    var copy2 = function () {
+        mergeArrayTo(points, points.slice(points.length - (normal ? 12 : 6)));
+    }
+
+    for (var i = 1; i < num * 0.5; i++) {
+        point = rotate(cx, cy, deg * i, cx, cy + radius);
+
+        if (i > 1) copy2();
+
+        // 第一个点
+        var point1 = rotate(cx, cz, deg * index, point[0], cz);
+        points.push(point1[0], point[1], point1[1]);
+
+        if (normal) points.push(point1[0] - cx, point[1] - cy, point1[1] - cz);
+
+        if (i > 1) copy2();
+
+        // 下一个点
+        var point2 = rotate(cx, cz, deg * (index + 1), point[0], cz);
+        points.push(point2[0], point[1], point2[1]);
+
+        if (normal) points.push(point2[0] - cx, point2[1] - cy, point2[1] - cz);
+    }
+    copy2();
+    points.push(cx, cy - radius, cz);
+
+    if (normal) points.push(0, - radius, 0);
+
+    return points;
+};
 
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/shader/javascript
+// Original file:./src/pages/model-editor/methodChange
 /*****************************************************************/
-window.__pkg__bundleSrc__['190']=function(){
+window.__pkg__bundleSrc__['296']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // JS关键字
-var keyWords = [
-    "abstract", "arguments", "boolean", "break", "byte",
-    "case", "catch", "char", "class", "const",
-    "continue", "debugger", "default", "delete", "do",
-    "double", "else", "enum", "eval", "export",
-    "extends", "false", "final", "finally", "float",
-    "for", "function", "goto", "if", "implements",
-    "import", "in", "instanceof", "int", "interface",
-    "let", "long", "native", "new", "null",
-    "package", "private", "protected", "public", "return",
-    "short", "static", "super", "switch", "synchronized",
-    "this", "throw", "throws", "transient", "true",
-    "try", "typeof", "var", "void", "volatile",
-    "while", "with", "yield"
-];
+    __pkg__scope_bundle__.UpToDown = {
+    "LINES": "lines",
+    "LINE_STRIP": "stripLines",
+    "LINE_LOOP": "loopLines",
+    "TRIANGLES": "triangles",
+    "TRIANGLE_STRIP": "stripTriangles",
+    "TRIANGLE_FAN": "fanTriangles"
+};
 
-__pkg__scope_bundle__.default= function (textString, colors) {
-    var shaderArray = [];
+__pkg__scope_bundle__.DownToUp = {
+    "lines": "LINES",
+    "stripLines": "LINE_STRIP",
+    "loopLines": "LINE_LOOP",
+    "triangles": "TRIANGLES",
+    "stripTriangles": "TRIANGLE_STRIP",
+    "fanTriangles": "TRIANGLE_FAN"
+};
 
-    // 当前面对的
-    var i = 0;
-
-    // 获取往后n个值
-    var nextNValue = function (n) {
-        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
-    };
-
-    var template = "";
-
-    // 初始化模板，开始文本捕获
-    var initTemplate = function () {
-        if (template != "") {
-
-            // 考虑开始的(
-            if (template[0] == '(') {
-                shaderArray.push({
-                    color: colors.insign,
-                    content: "("
-                });
-                template = template.substr(1);
-            }
-
-            shaderArray.push({
-                color: colors.text,
-                content: template
-            });
-        }
-
-        template = "";
-    };
-
-    while (true) {
-
-        /* 1.注释1 */
-
-        if (nextNValue(2) == '/*') {
-
-            initTemplate();
-            while (nextNValue(2) !== '*/' && i < textString.length) {
-                template += textString[i++];
-            }
-
-            shaderArray.push({
-                color: colors.annotation,
-                content: template + nextNValue(2)
-            });
-            i += 2;
-            template = "";
-
-        }
-
-        /* 2.注释2 */
-
-        else if (nextNValue(2) == '//') {
-            initTemplate();
-            while (nextNValue(1) !== '\n' && i < textString.length) {
-                template += textString[i++];
-            }
-            shaderArray.push({
-                color: colors.annotation,
-                content: template
-            });
-            template = "";
-        }
-
-        /* 3.字符串 */
-
-        else if (["'", '"', '`'].indexOf(nextNValue(1)) > -1) {
-
-            var strBorder = nextNValue(1);
-            initTemplate();
-
-            do {
-                template += textString[i++];
-            } while (nextNValue(1) != strBorder && i < textString.length)
-
-            // 因为可能是没有字符导致的结束
-            if (nextNValue(1) != strBorder) {
-                strBorder = "";
-            } else {
-                i += 1;
-            }
-
-            shaderArray.push({
-                color: colors.string,
-                content: template + strBorder
-            });
-            template = "";
-
-        }
-
-
-        /* 4.函数定义 */
-
-        else if (nextNValue(1) == '(' && (template[0] == ' ' || (i - template.length - 1 >= 0 && textString[i - template.length - 1] == " "))) {
-            shaderArray.push({
-                color: colors.funName,
-                content: template
-            });
-            i += 1;
-            template = "(";
-
-        }
-
-        /* 5.方法调用 */
-
-        else if (nextNValue(1) == '(') {
-
-            shaderArray.push({
-                color: colors.execName,
-                content: template
-            });
-            i += 1;
-            template = "(";
-        }
-
-        /* 6.边界 */
-
-        else if ([";", '{', '}', '(', ')', '.', '\n', '=', '+', '>', '<', '[', ']', '-', '*', '/', '^', '*', '!'].indexOf(nextNValue(1)) > -1) {
-
-            initTemplate();
-            shaderArray.push({
-                color: colors.insign,
-                content: nextNValue(1)
-            });
-            template = "";
-            i += 1;
-        }
-
-        /* 7.关键字 */
-
-        else if (nextNValue(1) == ' ' && keyWords.indexOf(template.trim()) > -1) {
-
-            shaderArray.push({
-                color: colors.key,
-                content: template + " "
-            });
-            template = "";
-            i += 1;
-
-        }
-
-        /* 追加字符 */
-
-        else {
-            if (i >= textString.length) {
-                initTemplate();
-                break;
-            } else {
-                template += textString[i++];
-            }
-        }
-
-    }
-
-    return shaderArray;
+    return __pkg__scope_bundle__;
 }
 
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/model-editor/shader-vertex.c
+/*****************************************************************/
+window.__pkg__bundleSrc__['297']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= "attribute vec4 a_position;\r\nuniform mat4 u_camera;\r\nuniform mat4 u_matrix;\r\n\r\nvoid main()\r\n{\r\n    vec4 temp = u_camera * u_matrix * a_position;\r\n\r\n    // 表示眼睛距离vec4(0.0,0.0,1.0)的距离\r\n    float dist = 2.0;\r\n\r\n    // 使用投影直接计算\r\n    // 为保证纹理和相对位置正确\r\n    // x、y、z的改变满足线性变换\r\n    gl_Position = vec4((dist + 1.0) * temp.x, (dist + 1.0) * temp.y, dist * (dist + temp.z) + 1.0 - dist * dist, temp.w * 2.0 * (dist + temp.z));\r\n}"
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/pages/model-editor/shader-fragment.c
+/*****************************************************************/
+window.__pkg__bundleSrc__['298']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.default= "precision mediump float;\r\nuniform vec4 u_color;\r\n\r\nvoid main()\r\n{\r\n    gl_FragColor = u_color;\r\n}\r\n"
 
     return __pkg__scope_bundle__;
 }

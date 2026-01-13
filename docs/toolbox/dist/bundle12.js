@@ -1,25 +1,21 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/desktop/wins/tools/index.js
+// Original file:./src/pages/desktop/wins/begin/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['66']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('113');
+    __pkg__scope_args__=window.__pkg__getBundle('119');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('114');
+__pkg__scope_args__=window.__pkg__getBundle('120');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('110');
+__pkg__scope_args__=window.__pkg__getBundle('116');
 var animation =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('111');
+__pkg__scope_args__=window.__pkg__getBundle('121');
 var cardinal =__pkg__scope_args__.default;
-
-
-__pkg__scope_args__=window.__pkg__getBundle('115');
-var renderCalendar =__pkg__scope_args__.default;
 
 
 // 显示隐藏动画曲线
@@ -27,12 +23,17 @@ var cardinalFun = cardinal().setP([[0, 0], [0.4, 0.35], [1, 1]]);
 
 __pkg__scope_bundle__.default= function (obj) {
     return {
-        name: "tools",
+        name: "begin",
         render: template,
         data: {
-
+            project: window._project_
         },
         methods: {
+            showApp: function () {
+                this.$openView("computer", {
+                    init: "application"
+                });
+            },
             openApp: function (event, target) {
                 this.$openView(target.getAttribute('tag'));
             }
@@ -41,20 +42,17 @@ __pkg__scope_bundle__.default= function (obj) {
             this._el.addEventListener('click', function (event) {
                 event.stopPropagation();
             });
-
-            // 日历
-            renderCalendar(this._refs.calendar.value);
         },
         show: function () {
             var _this = this;
 
-            this._el.style.right = "-360px";
+            this._el.style.bottom = "-505px";
             this._el.style.display = "";
 
             animation(function (deep) {
-                _this._el.style.right = (360 * cardinalFun(deep) - 360) + "px";
+                _this._el.style.bottom = (545 * cardinalFun(deep) - 505) + "px";
             }, 350, function () {
-                _this._el.style.right = "0px";
+                _this._el.style.bottom = "40px";
             });
 
             return true;
@@ -62,8 +60,11 @@ __pkg__scope_bundle__.default= function (obj) {
         hidden: function () {
             var _this = this;
 
+            // 恢复滚动位置
+            this._refs.application.value.scrollTop = 0;
+
             animation(function (deep) {
-                _this._el.style.right = (-360 * cardinalFun(deep)) + "px";
+                _this._el.style.bottom = (40 - 545 * cardinalFun(deep)) + "px";
             }, 350, function () {
                 _this._el.style.display = "none";
             });
@@ -77,25 +78,25 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/desktop/wins/tools/index.html
+// Original file:./src/pages/desktop/wins/begin/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['113']=function(){
+window.__pkg__bundleSrc__['119']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1]},{"type":"tag","name":"div","attrs":{"ref":"calendar","class":"calendar"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2,4,6]},{"type":"tag","name":"div","attrs":{"class":"application","ref":"application"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"search"},"childNodes":[3]},{"type":"tag","name":"input","attrs":{"type":"text","placeholder":"搜索功能维护中..."},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"user"},"childNodes":[5]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"quick"},"childNodes":[7,9,10,12,14,16,17]},{"type":"tag","name":"a","attrs":{"target":"_blank","ui-bind:href":"project.author.url"},"childNodes":[8]},{"type":"tag","name":"span","attrs":{"ui-bind":"project.author.name"},"childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-on:click":"openDialog","tag":"api"},"childNodes":[11]},{"type":"text","content":"开发文档","childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-on:click":"openDialog","tag":"debugger"},"childNodes":[13]},{"type":"text","content":"调试工具","childNodes":[]},{"type":"tag","name":"a","attrs":{"target":"_blank","ui-bind:href":"project.bugs"},"childNodes":[15]},{"type":"text","content":"提建议","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"a","attrs":{"target":"_blank","href":"../notebook/index.html"},"childNodes":[18]},{"type":"text","content":"文档笔记","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/desktop/wins/tools/index.scss
+// Original file:./src/pages/desktop/wins/begin/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['114']=function(){
+window.__pkg__bundleSrc__['120']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [win-view=\"tools\"]{\n\nright: 0;\n\nbottom: 35px;\n\nwidth: 360px;\n\nheight: calc(100vh - 35px);\n\nbackground-color: rgb(91 90 90 / 10%);\n\nz-index: 1;\n\nfont-size: 12px;\n\nbox-shadow: none;\n\n}\n\n [win-view=\"tools\"]>div{\n\nbox-shadow: 0 0 15px 3px #000000ab;\n\nborder: 1px solid #ffffff52;\n\n}\n\n [win-view=\"tools\"]>div.calendar{\n\nwidth: 326px;\n\nmargin: auto;\n\ntext-align: center;\n\ncolor: white;\n\nposition: absolute;\n\nbottom: 20px;\n\nleft: 50%;\n\ntransform: translateX(-50%);\n\nbackground-color: #382f1d;\n\nborder-radius: 10px;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.header>button{\n\nborder: none;\n\noutline: none;\n\nbackground-color: transparent;\n\nfont-size: 14px;\n\ncolor: rgb(184, 182, 182);\n\ncursor: pointer;\n\nwidth: 30px;\n\nheight: 30px;\n\nborder-radius: 5px;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.header>button:hover{\n\nbackground-color: #eff9f80f;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.header>h3{\n\ndisplay: inline-block;\n\nwidth: 200px;\n\ntext-align: left;\n\npadding-top: 20px;\n\npadding-bottom: 30px;\n\nfont-size: 18px;\n\nfont-weight: 200;\n\nfont-family: monospace;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.title{\n\nmargin-top: 10px;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.title>span{\n\nline-height: 20px;\n\nheight: 20px;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.items{\n\npadding: 20px;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.items>span{\n\nborder-radius: 50%;\n\ncursor: pointer;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.items>span.gray{\n\ncolor: #75756c;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.items>span:not(.gray):hover{\n\nbackground-color: #eff9f80f;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.items>span.today{\n\nbackground-color: #55c8fb;\n\ncolor: black;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div.items>span.today:hover{\n\nbackground-color: #60bae1;\n\n}\n\n [win-view=\"tools\"]>div.calendar>div>span{\n\ndisplay: inline-block;\n\nwidth: 40px;\n\nheight: 40px;\n\nline-height: 40px;\n\n}\n";
+styleElement.innerHTML = "\n [win-view=\"begin\"]{\n\nleft: 5px;\n\nbottom: 40px;\n\nwidth: 400px;\n\nheight: 505px;\n\nbackground-color: rgba(0, 0, 0, 0.6);\n\nz-index: 1;\n\nborder-radius: 5px;\n\nfont-size: 12px;\n\nborder: 1px solid #4c4c4c;\n\nbox-shadow: none;\n\n}\n\n [win-view=\"begin\"]>div{\n\nposition: absolute;\n\n}\n\n [win-view=\"begin\"]>div.application{\n\nbackground-color: white;\n\nwidth: 255px;\n\nheight: 455px;\n\nleft: 10px;\n\ntop: 10px;\n\nborder-radius: 5px;\n\nbox-shadow: inset 0 0 1px 2px grey;\n\npadding: 10px 5px;\n\noverflow: auto;\n\n}\n\n [win-view=\"begin\"]>div.application::-webkit-scrollbar{\n\nwidth: 0;\n\nheight: 0;\n\n}\n\n [win-view=\"begin\"]>div.application>h1{\n\npadding: 0 10px;\n\nline-height: 34px;\n\nfont-size: 14px;\n\n}\n\n [win-view=\"begin\"]>div.application>h1>button{\n\nfloat: right;\n\nheight: 22px;\n\nmargin-top: 6px;\n\nfont-size: 12px;\n\nbackground-color: #dcdede;\n\noutline: none;\n\nborder: none;\n\ncolor: #696565;\n\nborder-radius: 3px;\n\ncursor: pointer;\n\nbackground-image: none;\n\n}\n\n [win-view=\"begin\"]>div.application>h2{\n\nfont-size: 12px;\n\nline-height: 25px;\n\npadding-left: 10px;\n\nfont-weight: 200;\n\ncolor: #4d4d4d;\n\n}\n\n [win-view=\"begin\"]>div.application>div[tag]{\n\nbackground-repeat: no-repeat;\n\nbackground-position: 5px center;\n\nbackground-size: auto 80%;\n\nline-height: 40px;\n\npadding-left: 45px;\n\ncursor: pointer;\n\ncolor: #4b4a4a;\n\nfont-weight: 800;\n\n}\n\n [win-view=\"begin\"]>div.application>div[tag]:hover{\n\ntext-decoration: underline;\n\n}\n\n [win-view=\"begin\"]>div.search{\n\nwidth: 255px;\n\nheight: 25px;\n\nleft: 10px;\n\ntop: 470px;\n\n}\n\n [win-view=\"begin\"]>div.search>input{\n\nwidth: 100%;\n\nheight: 100%;\n\nborder-radius: 5px;\n\nbox-shadow: inset 0 0 1px 2px grey;\n\noutline: none;\n\nborder: none;\n\npadding: 0 5px;\n\n}\n\n [win-view=\"begin\"]>div.user{\n\nborder-radius: 5px;\n\nbox-shadow: inset 0 0 1px 2px grey;\n\npadding: 5px;\n\nleft: 300px;\n\ntop: -30px;\n\nbackground-color: #0e7784;\n\n}\n\n [win-view=\"begin\"]>div.user>div{\n\nwidth: 50px;\n\nheight: 50px;\n\nborder-radius: 2px;\n\nbackground-image: url(\"../images/zxl20070701.jpg\");\n\nbackground-position: center center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: 100% auto;\n\nborder: 1px solid black;\n\n}\n\n [win-view=\"begin\"]>div.quick{\n\nleft: 265px;\n\ntop: 50px;\n\nwidth: 135px;\n\npadding: 15px;\n\nline-height: 2.4em;\n\n}\n\n [win-view=\"begin\"]>div.quick>hr{\n\nborder-color: #b8b8b8;\n\n}\n\n [win-view=\"begin\"]>div.quick>div, [win-view=\"begin\"]>div.quick>a{\n\ncursor: pointer;\n\ndisplay: block;\n\ncolor: #d1caca;\n\npadding: 0 5px;\n\nbackground-image: none;\n\n}\n\n [win-view=\"begin\"]>div.quick>div:hover, [win-view=\"begin\"]>div.quick>a:hover{\n\ntext-decoration: underline;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
@@ -104,7 +105,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['110']=function(){
+window.__pkg__bundleSrc__['116']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈
@@ -219,7 +220,7 @@ __pkg__scope_bundle__.default= function (doback, duration, callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/interpolation/cardinal
 /*****************************************************************/
-window.__pkg__bundleSrc__['111']=function(){
+window.__pkg__bundleSrc__['121']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -233,7 +234,7 @@ window.__pkg__bundleSrc__['111']=function(){
  * 第二个点的斜率由第一个点和第二个点的后一个点的斜率确定
  */
 
-__pkg__scope_args__=window.__pkg__getBundle('112');
+__pkg__scope_args__=window.__pkg__getBundle('122');
 var hermite =__pkg__scope_args__.default;
 
 
@@ -324,7 +325,7 @@ __pkg__scope_bundle__.default= function (t) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/interpolation/hermite
 /*****************************************************************/
-window.__pkg__bundleSrc__['112']=function(){
+window.__pkg__bundleSrc__['122']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (u) {
@@ -384,166 +385,6 @@ window.__pkg__bundleSrc__['112']=function(){
     return hermite;
 };
 
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/desktop/wins/tools/calendar/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['115']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('116');
-var calcDaysArray=__pkg__scope_args__.calcDaysArray;
-
-
-__pkg__scope_bundle__.default= function (el) {
-    var curDate = new Date();
-    var _year = curDate.getFullYear(), _month = curDate.getMonth() + 1, _day = curDate.getDate();
-
-    var selectDayView = function (year, month) {
-        var daysArray = calcDaysArray(year, month);
-
-        var preTemplate = "";
-        for (var i = 0; i < daysArray.pre.length; i++) {
-            preTemplate += "<span class='gray'>" + daysArray.pre[i] + "</span>";
-        }
-
-        var curTemplate = "";
-        for (var i = 0; i < daysArray.cur.length; i++) {
-            if (year == _year && month == _month && daysArray.cur[i] == _day) {
-                curTemplate += "<span class='today'>" + daysArray.cur[i] + "</span>";
-            } else {
-                curTemplate += "<span>" + daysArray.cur[i] + "</span>";
-            }
-        }
-
-        var nextTemplate = "";
-        for (var i = 0; i < daysArray.next.length; i++) {
-            nextTemplate += "<span class='gray'>" + daysArray.next[i] + "</span>";
-        }
-
-        el.innerHTML = "";
-
-        var headerEl = document.createElement('div');
-        el.appendChild(headerEl);
-
-        headerEl.setAttribute('class', 'header');
-
-        // 当前日期
-        var valEl = document.createElement('h3');
-        headerEl.appendChild(valEl);
-
-        valEl.innerHTML = year + "年" + month + "月";
-
-        // 上个月
-        var leftEl = document.createElement('button');
-        headerEl.appendChild(leftEl);
-
-        leftEl.innerHTML = "▲";
-
-        leftEl.addEventListener('click', function () {
-            selectDayView(month == 1 ? year - 1 : year, month == 1 ? 12 : month - 1);
-        });
-
-        // 下个月
-        var rightEl = document.createElement('button');
-        headerEl.appendChild(rightEl);
-
-        rightEl.innerHTML = "▼";
-
-        rightEl.addEventListener('click', function () {
-            selectDayView(month == 12 ? year + 1 : year, month == 12 ? 1 : month + 1);
-        });
-
-        // 标题
-        var titleEl = document.createElement('div');
-        el.appendChild(titleEl);
-        titleEl.innerHTML = '<span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>';
-
-        titleEl.setAttribute('class', 'title');
-
-        // 内容
-        var itemsEl = document.createElement('div');
-        el.appendChild(itemsEl);
-        itemsEl.innerHTML = preTemplate + curTemplate + nextTemplate;
-
-        itemsEl.setAttribute('class', 'items');
-    };
-
-    // 启动
-    selectDayView(_year, _month);
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/desktop/wins/tools/calendar/tool
-/*****************************************************************/
-window.__pkg__bundleSrc__['116']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 计算某月多少天
-var _calcDays = function (year, month) {
-
-    if (month == 2) {
-
-        if ((year % 4 != 0) || (year % 100 == 0 && year % 400 != 0)) {
-            return 28;
-        } else {
-            return 29;
-        }
-
-    } else {
-        return [31, -1, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
-    }
-
-};
-
-__pkg__scope_bundle__.calcDays = _calcDays;
-
-// 计算某月日历视图的天数组
-__pkg__scope_bundle__.calcDaysArray = function (year, month) {
-
-    // 0->周日 1->周一 ... 6->周六
-    var index = new Date(year + '/' + month + '/1').getDay();
-
-    // 前置多少天
-    var preNum = index - 1;
-    if (preNum == -1) preNum = 6;
-
-    // 本月多少天
-    var curNum = _calcDays(year, month);
-
-    // 后置多少天
-    var nextNum = 42 - preNum - curNum;
-
-    var daysArray = {
-        pre: [],
-        cur: [],
-        next: []
-    };
-
-    // 前置天数组
-    var preMonthDays = _calcDays(month == 1 ? year - 1 : year, month == 1 ? 12 : month - 1);
-    for (var i = preNum; i > 0; i--) {
-        daysArray.pre.push(preMonthDays - i + 1);
-    }
-
-    // 本月天数组
-    for (var i = 1; i <= curNum; i++) {
-        daysArray.cur.push(i);
-    }
-
-    // 后置天数组
-    for (var i = 1; i <= nextNum; i++) {
-        daysArray.next.push(i);
-    }
-
-    return daysArray;
-};
 
     return __pkg__scope_bundle__;
 }

@@ -1,27 +1,28 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/model-editor/wins/geometry/index.js
+// Original file:./src/pages/echarts/dialogs/single-wave/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['258']=function(){
+window.__pkg__bundleSrc__['227']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('394');
+    __pkg__scope_args__=window.__pkg__getBundle('395');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('395');
+__pkg__scope_args__=window.__pkg__getBundle('396');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
+
     return {
-        name: "geometry",
+        name: "echarts-example",
         render: template,
         data: {
-            dragdropPadding: [0, 0, 0, 0]
+            srcUrl: props.srcUrl
         },
-        methods: {
-            addGeometry: function (event, target) {
-                props.addGeometry(target.parentElement.getAttribute("name"), 0, 0, 0);
-            }
+        mounted: function () {
+
+            
+
         }
     };
 };
@@ -30,25 +31,25 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/model-editor/wins/geometry/index.html
+// Original file:./src/pages/echarts/dialogs/single-wave/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['394']=function(){
+window.__pkg__bundleSrc__['395']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"立方体","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"list"},"childNodes":[4,7,10]},{"type":"tag","name":"li","attrs":{"title":"球体","class":"sphere","name":"sphere"},"childNodes":[5,6]},{"type":"text","content":"球体","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"add","title":"点击我添加球体","ui-on:click":"addGeometry"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"棱柱体","class":"prism","name":"prism"},"childNodes":[8,9]},{"type":"text","content":"棱柱体","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"add","title":"点击我添加棱柱体","ui-on:click":"addGeometry"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"圆柱体","class":"cylinder","name":"cylinder"},"childNodes":[11,12]},{"type":"text","content":"圆柱体","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"add","title":"点击我添加圆柱体","ui-on:click":"addGeometry"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"旭日图使用视觉编码","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"div","attrs":{"class":"circle"},"childNodes":[12,13]},{"type":"tag","name":"div","attrs":{"class":"wave"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"value"},"childNodes":[14]},{"type":"text","content":"25%","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/model-editor/wins/geometry/index.scss
+// Original file:./src/pages/echarts/dialogs/single-wave/index.css
 /*****************************************************************/
-window.__pkg__bundleSrc__['395']=function(){
+window.__pkg__bundleSrc__['396']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [win-view='geometry']{\n\nleft: 30px;\n\ntop: 60px;\n\nheight: 500px;\n\nwidth: 100px;\n\nbackground-color: white;\n\n}\n\n [win-view='geometry']>h2{\n\nfont-size: 12px;\n\npadding-left: 30px;\n\nbackground-image: url('./model-editor.png');\n\nbackground-size: auto 80%;\n\nbackground-repeat: no-repeat;\n\nbackground-position: 3px center;\n\nline-height: 30px;\n\nheight: 30px;\n\nuser-select: none;\n\nbackground-color: #cad6db;\n\n}\n\n [win-view='geometry']>.list{\n\npadding: 5px 0;\n\n}\n\n [win-view='geometry']>.list>li{\n\ndisplay: inline-block;\n\nwidth: 55px;\n\nline-height: 30px;\n\nmargin: 5px 10px;\n\ntext-align: center;\n\noutline: 1px solid rgb(185, 182, 182);\n\nvertical-align: top;\n\nbackground-size: contain;\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\ncursor: move;\n\nposition: relative;\n\nfont-size: 12px;\n\n}\n\n [win-view='geometry']>.list>li:hover{\n\nbackground-color: #f2f5f6;\n\n}\n\n [win-view='geometry']>.list>li>.add{\n\ndisplay: inline-block;\n\nwidth: 30px;\n\nheight: 30px;\n\nposition: absolute;\n\nright: -30px;\n\nbackground-image: url(\"./add.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-size: 100% auto;\n\nbackground-position: center center;\n\ncursor: pointer;\n\n}\n";
+styleElement.innerHTML = ".circle {\r\n  width: 400px;\r\n  height: 400px;\r\n  background-color: aliceblue;\r\n  margin: 100px auto;\r\n  border-radius: 50%;\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n\r\n.wave {\r\n  position: absolute;\r\n  left: calc(50% - 400px);\r\n  width: 800px;\r\n  height: 800px;\r\n  background-color: aqua;\r\n  border-radius: 300px;\r\n  top: calc(300px);\r\n  animation: rotate_animation 10s infinite;\r\n}\r\n\r\n.value {\r\n  line-height: 400px;\r\n  font-size: 60px;\r\n}\r\n\r\n@keyframes rotate_animation {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

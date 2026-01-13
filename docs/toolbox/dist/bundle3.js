@@ -5,13 +5,13 @@
 window.__pkg__bundleSrc__['29']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('59');
+    __pkg__scope_args__=window.__pkg__getBundle('60');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('60');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('61');
+
+
+__pkg__scope_args__=window.__pkg__getBundle('62');
 var copy =__pkg__scope_args__.default;
 
 
@@ -66,7 +66,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/contextmenus/app/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['59']=function(){
+window.__pkg__bundleSrc__['60']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1]},{"type":"tag","name":"ul","attrs":{},"childNodes":[2,4,5,7,8,10,12,14,15,17,19,21,22]},{"type":"tag","name":"li","attrs":{"class":"btn","ui-on:click":"openApp"},"childNodes":[3]},{"type":"text","content":"打开","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"line"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:class":"'btn '+(type=='view'?'':'gray')","ui-on:click":"copyURL"},"childNodes":[6]},{"type":"text","content":"以URL方式分享","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"line"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:notshow":"from=='desktop'?'yes':'no'","class":"btn gray"},"childNodes":[9]},{"type":"text","content":"创建桌面快捷方式","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"btn gray"},"childNodes":[11]},{"type":"text","content":"锁定到任务栏","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"btn gray"},"childNodes":[13]},{"type":"text","content":"从「开始 」菜单解锁","childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:notshow":"from=='application'?'yes':'no'","class":"line"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:notshow":"from=='application'?'yes':'no'","class":"btn gray"},"childNodes":[16]},{"type":"text","content":"复制","childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:notshow":"from=='application'?'yes':'no'","class":"btn gray"},"childNodes":[18]},{"type":"text","content":"剪切","childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:notshow":"from=='application'?'yes':'no'","class":"btn gray"},"childNodes":[20]},{"type":"text","content":"重命名","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"line"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"btn gray"},"childNodes":[23]},{"type":"text","content":"属性","childNodes":[]}]
@@ -77,7 +77,7 @@ window.__pkg__bundleSrc__['59']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/contextmenus/app/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['60']=function(){
+window.__pkg__bundleSrc__['61']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -91,13 +91,13 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/copy
 /*****************************************************************/
-window.__pkg__bundleSrc__['61']=function(){
+window.__pkg__bundleSrc__['62']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunction =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('47');
+__pkg__scope_args__=window.__pkg__getBundle('48');
 var appendTo =__pkg__scope_args__.default;
 
 

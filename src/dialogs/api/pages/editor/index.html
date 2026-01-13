@@ -1,0 +1,206 @@
+<header>
+    代码编辑器
+</header>
+<h2>
+    引入
+</h2>
+<pre>
+import editorRender from './src/tool/editor/index';
+</pre>
+<h2>
+    使用
+</h2>
+<pre>
+var editor = new editorRender({
+
+    // 编辑器挂载点(必选)
+    el: document.getElementById('editor'),
+
+    // 初始化文本（可选）
+    content: "初始化文本内容",
+
+    // 编辑器字体（可选，默认"新宋体"）
+    "font-family": string,
+
+    // 编辑器字重（可选，默认600）
+    "font-weight": number,
+
+    // 着色方法（可选，默认不特殊着色）
+    shader: function(textString){
+        return [
+            [{
+                content:"内容",
+                color:"文字颜色"
+            },
+            ...],
+            ...
+        ];
+    },
+
+    // 格式化方法（可选）
+    format: function(textString, tabNumber){
+        return "格式化后的文本";
+    },
+
+    // 辅助输入（可选）
+    input: function(dom, options, contentArray){
+        /*
+        1.其中dom和contentArray分别表示辅助的悬浮结点和内容数组;
+        2.options的一些重要的辅助信息，是一个json，包括以下内容：
+            {
+                leftNum:光标前面有多少个字符
+                lineNum:当前行之前有多少行
+                x:光标left坐标
+                y:光标top坐标
+                lineHeight:一行文本的高
+            }
+        */
+
+        // 返回的是键盘操作,可以有任意多个(可选)
+        return {
+            // keyString可以取:
+            //    ”up“:按下键盘向上键
+            //    ”down“:按下键盘向下键
+            //    等
+            "keyString":function(){
+
+                // 最后返回true或false,默认false表示阻止默认行为（或原有行为）
+                return boolean;
+            },
+            ...
+        };
+    },
+
+    // 设置颜色（可选）
+    color: {
+        background: "#d6d6e4", /*编辑器背景*/
+        text : "#000000", /*文本颜色*/
+        number: "#888484", /*行号颜色*/
+        edit: "#eaeaf1", /*编辑行背景色*/
+        cursor: "#ff0000", /*光标颜色*/
+        select: "#6c6cf1", /*选择背景*/
+    },
+
+    // 设置一个tab表示多少个空格（可选，默认4）
+    tabSpace: number,
+
+    // 是否只读（默认false，如果设置true表示当前编辑器可以选择复制等操作，不可以进行内容修改）
+    readonly:boolean,
+
+    // 行号是否隐藏（默认false，如果设置true表示当前编辑器行号隐藏）
+    noLineNumber:boolean
+
+});
+</pre>
+<p>
+    返回的editor里面挂载着后续可控方法：
+</p>
+<h3>
+    格式化代码
+</h3>
+<pre>
+editor.format();
+</pre>
+<h3>
+    获取或设置值
+</h3>
+<p>
+    获取当前编辑器代码
+</p>
+<pre>
+// 如果content传递了，会先设置内容
+editor.valueOf([content]);
+</pre>
+<h3>
+    复制
+</h3>
+<p>
+    复制当前编辑器代码到电脑剪切板
+</p>
+<pre>
+// 成功回调和错误回调都非必输
+editor.copy(callback,errorback);
+</pre>
+<h3>
+    监听内容改变
+</h3>
+<p>
+    编辑器管理的文本发生改变后会主动触发callback方法
+</p>
+<pre>
+editor.updated(callback);
+</pre>
+<h3>
+    输入新内容
+</h3>
+<p>
+    在当前光标位置输入新的内容
+</p>
+<pre>
+// cursor和length默认都是0，前者表示光标偏移量，后者表示替换个数
+editor.input(content[, cursor, number]);
+</pre>
+<h2>
+    内置着色器
+</h2>
+<p>
+    对于上面的选项shader除了传递一个着色器方法外，还可以传递一个数组，以使用内置的着色器方法进行着色：
+</p>
+<pre>
+new editorRender({
+    ...
+    // lang是一个字符串，表示需要着色的语言
+    // colors可选，表示使用的色彩
+    // 此外，colors具体有多项，都可选，配置你希望修改的即可，其余自动使用默认值
+    shader:[lang,colors]
+    ...
+});
+</pre>
+<p>
+    下面来列举出所有可选的语言：
+</p>
+<h3>
+    html
+</h3>
+<pre>
+shader:['html',{
+    "text": "#000000",/*文本颜色*/
+    "annotation": "#6a9955",/*注释颜色*/
+    "insign": "#555",/*符号颜色*/
+    "node": "#1e50b3",/*结点颜色*/
+    "attrKey": "#1e83b1",/*属性名称颜色*/
+    "attrValue": "#ac4c1e",/*属性值颜色*/
+    "css":{
+        // 查看后续css语言部分
+    },
+    "javascript":{
+        // 查看后续javascript语言部分
+    }
+}]
+</pre>
+<h3>
+    css
+</h3>
+<pre>
+shader:['css',{
+    "annotation": "#6a9955",/*注释颜色*/
+    "insign": "#555",/*符号颜色*/
+    "selector": "#1e50b3",/*选择器*/
+    "attrKey": "#1e83b1",/*属性名称颜色*/
+    "attrValue": "#ac4c1e"/*属性值颜色*/
+}]
+</pre>
+<h3>
+    javascript
+</h3>
+<pre>
+shader:['javascript',{
+    "text": "#000000",/*文本颜色*/
+    "annotation": "#6a9955",/*注释颜色*/
+    "insign": "#555",/*符号颜色*/
+    "key": "#ff0000",/*关键字颜色*/
+    "string": "#ac4c1e",/*字符串颜色*/
+    "funName": "#1e50b3",/*函数名称颜色*/
+    "execName": "#1e83b1"/*执行方法颜色*/
+}]
+</pre>
