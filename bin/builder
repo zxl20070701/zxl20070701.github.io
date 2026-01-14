@@ -40,7 +40,52 @@ let needAnalyseFiles = [{
 
 // 复制入口文件和初始化
 let template = fs.readFileSync(fullPath('./src/index.html', process.cwd()));
-fs.writeFileSync(fullPath('index.html', targetFolder), (template + "").replace('<!-- built files will be auto injected -->', globalScript + '<script defer="defer" src="' + config.output.entry + '"></script>'));
+fs.writeFileSync(fullPath('index.html', targetFolder), (template + "").replace('<!-- built files will be auto injected -->', globalScript + '<script defer="defer" src="' + config.output.entry + '"></script>') + `
+
+<!-- 禁止 debugger -->
+<script>
+(function () {
+
+    try {
+
+        // 定时运行调试
+        setInterval(function () {
+
+            // 替换 debugger 语句
+            // 是为了防止手动去除debugger
+            // 比如在此处右键点击 "Nerver pause here" 去掉这里调试
+            // Function 构造器生成的 debugger 会在每一次执行时开启一个临时 js 文件
+            // 语法: new Function ([arg1[, arg2[, ...argN]],] functionBody)
+            new Function("debugger")();
+            // debugger;
+
+        }, 50);
+
+    } catch (err) {
+        console.log("[调试工具错误]", err);
+    }
+
+})();
+</script>
+
+<!-- 安装应用 -->
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./ServiceWorker.js', { scope: window.location.origin + window.location.pathname })
+            .then(function (registration) {
+
+                // 注册成功
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch(function (err) {
+
+                // 注册失败:(
+                console.log('ServiceWorker registration failed: ', err);
+            });
+    });
+}
+</script>`);
 fs.mkdirSync(fullPath("../", global._output));
 
 global._isEntry = true;// 是否是编译入口文件

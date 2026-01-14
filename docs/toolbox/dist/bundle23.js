@@ -1,58 +1,157 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/type-practice/index.js
+// Original file:./src/pages/browser/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['79']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('229');
+    __pkg__scope_args__=window.__pkg__getBundle('242');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('230');
+__pkg__scope_args__=window.__pkg__getBundle('243');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('30');
-var urlFormat =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('33');
+var remove =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('231');
+var blank = "browser://blank"; // 空白启动页
 
-__pkg__scope_args__=window.__pkg__getBundle('232');
-var lazyDialogs =__pkg__scope_args__.default;
+__pkg__scope_bundle__.default= function (obj, props) {
+    props = props || {};
+    if (!("url" in props)) props.url = blank;
 
-
-__pkg__scope_bundle__.default= function (obj) {
+    // 记录需要的所有的页签信息
+    var pageinfos = {};
+    var current = "";
 
     return {
-        name: "type-practice",
+        name: "browser",
         render: template,
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "金山打字通" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './type-practice/logo.png');
-        },
-        methods: {
-            openPage: function (event, target) {
-                this.openDialog(target.getAttribute('tag'));
-            },
-            openDialog: function (pagename, isInit) {
-
-                // 打开
-                if (!isInit) window.location.href = "#/type-practice/" + pagename;
-                this.$openDialog(lazyDialogs[pagename], {
-                    dialogs: lazyDialogs
-                }).then(function () {
-
-                    // 关闭后恢复路由
-                    window.location.href = "#/type-practice";
-                });
-            }
+            document.getElementsByTagName('title')[0].innerText = "Internet Explorer" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './browser.png');
         },
         mounted: function () {
-            var urlObj = urlFormat();
+            this.openPage(props.url);
+        },
+        methods: {
 
-            if (urlObj.router.length >= 2 && urlObj.router[1] in lazyDialogs) {
-                this.openDialog(urlObj.router[1], true);
+            // 打开新页面
+            newNav: function () {
+                this.openPage(blank);
+            },
+
+            // 刷新
+            doRefresh: function () {
+                var urlVal = this._refs.urlInput.value.value.trim();
+
+                // 空白页
+                if (blank == urlVal) {
+                    pageinfos[current].iframeEl.setAttribute('src', "");
+                }
+
+                // 合法的地址
+                else if (/^https*\:\/\//.test(urlVal) || /^file*\:\/\/\//.test(urlVal)) {
+                    pageinfos[current].iframeEl.setAttribute('src', urlVal);
+                }
+
+                // 否则直接查询
+                else {
+                    urlVal = "https://cn.bing.com/search?q=" + encodeURIComponent(urlVal);
+                    pageinfos[current].iframeEl.setAttribute('src', urlVal);
+
+                    pageinfos[current].url = urlVal;
+                    this._refs.urlInput.value.value = urlVal;
+                }
+
+            },
+
+            // 打开页面
+            openPage: function (url) {
+                var _this = this;
+
+                var uniqueHash = new Date().valueOf();
+
+                var navEl = document.createElement('span');
+                this._refs.navRoot.value.appendChild(navEl);
+
+                navEl.innerText = url;
+                this._refs.urlInput.value.value = url;
+
+                var closeNavEl = document.createElement('i');
+                navEl.appendChild(closeNavEl);
+
+                closeNavEl.innerText = "×";
+
+                this._refs.navRoot.value.insertBefore(navEl, this._refs.addBtn.value);
+
+                var iframeEl = document.createElement('iframe');
+                this._el.appendChild(iframeEl);
+
+                iframeEl.setAttribute('frameborder', '0');
+
+                pageinfos[uniqueHash] = {
+                    navEl: navEl,
+                    iframeEl: iframeEl,
+                    url: url
+                };
+
+                current = uniqueHash;
+                this.doRefresh();
+
+                /**
+                 * 绑定事件
+                 */
+
+                // 点击页签
+                navEl.addEventListener('click', function () {
+                    current = uniqueHash;
+                    for (var key in pageinfos) {
+
+                        // 应该显示的
+                        // 当然，肯定就是自己了
+                        if (key == uniqueHash) {
+                            navEl.setAttribute('active', 'yes');
+                            iframeEl.style.display = "";
+
+                            _this._refs.urlInput.value.value = pageinfos[key].url;
+                        }
+
+                        // 需要隐藏的
+                        else {
+                            pageinfos[key].navEl.setAttribute('active', 'no');
+                            pageinfos[key].iframeEl.style.display = "none";
+                        }
+                    }
+                });
+
+                // 关闭页签
+                closeNavEl.addEventListener("click", function (event) {
+                    event.stopPropagation();
+
+                    remove(navEl);
+                    remove(iframeEl);
+                    delete pageinfos[uniqueHash];
+
+                    // 如果当前页签内容的显示的
+                    // 需要先确定新的过会显示谁
+                    if (navEl.getAttribute('active') == 'yes') {
+                        var _key;
+                        for (var key in pageinfos) _key = key;
+                        if (_key) {
+                            pageinfos[_key].navEl.click();
+                            return;
+                        }
+
+                        // 如果没有可以切换的，打开新的空页签
+                        _this.newNav();
+                    }
+                });
+
+                navEl.click();
             }
+
         }
     };
 };
@@ -61,67 +160,26 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/type-practice/index.html
+// Original file:./src/pages/browser/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['229']=function(){
+window.__pkg__bundleSrc__['242']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"金山打字通","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5,7]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[6]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[10]},{"type":"tag","name":"span","attrs":{"class":"keyboard btn","ui-on:click":"openPage","tag":"keyboard"},"childNodes":[11]},{"type":"text","content":"键盘练习","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"top"},"childNodes":[8,13]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[9,10,11]},{"type":"tag","name":"span","attrs":{"class":"logo"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"spellcheck":"false","type":"text","ref":"urlInput","ui-on:keydown.enter":"doRefresh"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doRefresh"},"childNodes":[12]},{"type":"text","content":"刷新","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"navs","ref":"navRoot"},"childNodes":[14]},{"type":"tag","name":"button","attrs":{"ui-on:click":"newNav","ref":"addBtn"},"childNodes":[15]},{"type":"text","content":"＋","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/type-practice/index.scss
+// Original file:./src/pages/browser/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['230']=function(){
+window.__pkg__bundleSrc__['243']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"type-practice\"]{\n\npadding-bottom: 20px;\n\nwidth: 800px;\n\nleft: calc(50vw - 400px);\n\ntop: calc(50vh - 200px);\n\n}\n\n [page-view=\"type-practice\"][focus=\"no\"]>header{\n\nbackground-color: #fafafa;\n\n}\n\n [page-view=\"type-practice\"]>header{\n\ntext-align: left;\n\nline-height: 50px;\n\nbackground-color: #ffffff;\n\nmargin-bottom: 30px;\n\nbox-shadow: -3px 3px 20px #d2d2db;\n\n}\n\n [page-view=\"type-practice\"]>header>h2{\n\ncolor: #000000;\n\nfont-size: 20px;\n\npadding-left: 50px;\n\nbackground-image: url(\"./type-practice/logo.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 60%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"type-practice\"]>div.content{\n\ntext-align: center;\n\npadding: 50px 0;\n\n}\n\n [page-view=\"type-practice\"]>div.content>span.btn{\n\ndisplay: inline-block;\n\nwidth: 100px;\n\nheight: 100px;\n\nbox-shadow: -3px 3px 20px #d2d2db;\n\nmargin: 50px;\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\npadding-top: 100px;\n\nline-height: 2em;\n\ncursor: pointer;\n\n}\n\n [page-view=\"type-practice\"]>div.content>span.btn:hover{\n\noutline: 1px solid white;\n\ntext-decoration: underline;\n\n}\n\n [page-view=\"type-practice\"]>div.content>span.btn.keyboard{\n\nbackground-image: url('./type-practice/keyboard.png');\n\n}\n\n [page-view=\"type-practice\"]>div.content>span.btn.english{\n\nbackground-image: url('./type-practice/english.png');\n\n}\n\n [page-view=\"type-practice\"]>div.content>span.btn.pinyin{\n\nbackground-image: url('./type-practice/pinyin.png');\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"browser\"]{\n\nwidth: calc(100vw - 160px);\n\nheight: calc(100vh - 70px);\n\nleft: 80px;\n\ntop: 20px;\n\n}\n\n [page-view=\"browser\"][focus=\"no\"]>div.top{\n\nbackground-color: rgba(158, 196, 233, 0.85);\n\n}\n\n [page-view=\"browser\"]>header{\n\nheight: 30px;\n\nbackground-color: transparent;\n\nposition: absolute;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 100%;\n\n}\n\n [page-view=\"browser\"]>div.top{\n\nbackground-color: rgba(183, 218, 253, 0.85);\n\nborder-bottom: 1px solid gray;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content{\n\nheight: 55px;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>*{\n\nvertical-align: bottom;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>span{\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>span.logo{\n\nwidth: 50px;\n\nheight: 55px;\n\nbackground-image: url(\"./browser.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-position: center bottom;\n\nbackground-size: 90% auto;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>input{\n\nwidth: calc(100% - 100px);\n\noutline: none;\n\nborder: 1px solid rgb(208, 207, 207);\n\nborder-radius: 5px;\n\nheight: 24px;\n\npadding: 0 5px;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>button{\n\nheight: 24px;\n\nwidth: 40px;\n\nbackground-image: url(\"./refresh.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 20px;\n\noutline: none;\n\nborder: none;\n\nbackground-color: transparent;\n\nfont-size: 0;\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs{\n\npadding-top: 10px;\n\nheight: 40px;\n\ndisplay: flex;\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs>span{\n\nline-height: 30px;\n\nbackground-image: radial-gradient(rgba(255, 255, 255, 0), rgba(236, 230, 230, 0.489));\n\nfont-size: 12px;\n\nflex-basis: 200px;\n\nwhite-space: nowrap;\n\ntext-overflow: ellipsis;\n\noverflow: hidden;\n\npadding-left: 10px;\n\npadding-right: 20px;\n\nposition: relative;\n\nborder: 1px solid rgb(197, 195, 195);\n\nmargin-left: 2px;\n\ncursor: pointer;\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs>span[active='yes']{\n\nbackground-image: radial-gradient(white, white);\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs>span>i{\n\nposition: absolute;\n\ntop: 0;\n\nright: 0;\n\nwidth: 20px;\n\nline-height: 30px;\n\ntext-align: center;\n\nfont-style: normal;\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs>button{\n\nborder: none;\n\noutline: none;\n\nfont-size: 14px;\n\nwidth: 30px;\n\nheight: 20px;\n\nvertical-align: top;\n\nmargin-top: 5px;\n\nbackground-color: transparent;\n\ncursor: pointer;\n\n}\n\n [page-view=\"browser\"]>iframe{\n\nwidth: 100%;\n\nheight: calc(100% - 95px);\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/type-practice/dialogs/index.scss
-/*****************************************************************/
-window.__pkg__bundleSrc__['231']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    var styleElement = document.createElement('style');
-var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [dialog-view='type-practice']{\n\nleft: calc(50vw - 450px);\n\ntop: calc(50vh - 300px);\n\nuser-select: none;\n\nwidth: 900px;\n\nheight: 550px;\n\n}\n\n [dialog-view='type-practice']>header{\n\ntext-align: left;\n\nline-height: 50px;\n\nbackground: linear-gradient(45deg, #6fb5ec, #d2e4f2, #0b71c1);\n\nwhite-space: nowrap;\n\nbox-shadow: -3px 3px 20px #5f5f62;\n\nposition: relative;\n\n}\n\n [dialog-view='type-practice']>header>h2{\n\ncolor: #000000;\n\nfont-size: 20px;\n\npadding-left: 50px;\n\nbackground-image: url(\"./type-practice/logo.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 60%;\n\ndisplay: inline-block;\n\nfont-family: cursive;\n\n}\n\n [dialog-view='type-practice']>header>div.src-url{\n\nline-height: 17px;\n\nfont-size: 12px;\n\ndisplay: inline-block;\n\npadding-left: 50px;\n\npadding-top: 8px;\n\nvertical-align: top;\n\n}\n\n [dialog-view='type-practice']>header>div.src-url>a{\n\ndisplay: block;\n\ntext-decoration: underline;\n\ncolor: rgb(3, 136, 230);\n\n}\n\n [dialog-view='type-practice']>div.content{\n\nheight: calc(100% - 50px);\n\ntext-align: center;\n\nbackground-color: #fafafa;\n\n}\n";
-styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/pages/type-practice/dialogs/lazy-load
-/*****************************************************************/
-window.__pkg__bundleSrc__['232']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= {
-
-    // 键盘练习
-    "keyboard": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle68.js','233')
-    },
-
-    // 英文打字
-    "english": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle69.js','234')
-    },
-
-    // 拼音打字
-    "pinyin": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle70.js','235')
-    }
-};
 
     return __pkg__scope_bundle__;
 }

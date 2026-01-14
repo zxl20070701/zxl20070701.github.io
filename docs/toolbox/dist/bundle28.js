@@ -1,54 +1,110 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/format-json/index.js
+// Original file:./src/pages/excel/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['84']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('302');
+    __pkg__scope_args__=window.__pkg__getBundle('279');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('303');
+__pkg__scope_args__=window.__pkg__getBundle('280');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('304');
-var formatJSON =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('183');
-var editorRender =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('281');
+var Excel =__pkg__scope_args__.default;
 
 
 __pkg__scope_bundle__.default= function (obj) {
-    var sourceEditor, targetEditor;
 
     return {
-        name: "format-json",
+        name: "excel",
         render: template,
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "格式化JSON字符串" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './format-json.png');
-        },
-        mounted: function () {
-            sourceEditor = new editorRender({
-                el: this._refs.source.value,
-                shader: ['javascript']
-            });
-
-            targetEditor = new editorRender({
-                el: this._refs.target.value,
-                shader: ['javascript'],
-                readonly: true
-            });
+            document.getElementsByTagName('title')[0].innerText = "Excel" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './excel.png');
         },
         methods: {
-            formatJSON: function () {
-                try {
-                    targetEditor.valueOf(JSON.stringify(formatJSON(sourceEditor.valueOf()), null, 4));
-                } catch (e) {
-                    console.error(e);
-                    alert('运行出错（' + e + '）');
+
+        },
+        mounted: function () {
+            new Excel({
+                el: this._refs.excel.value,
+                content: {
+                    version: "v1",
+                    filename: "Excel",
+                    contents: [{
+                        name: "食物列表",
+                        content: [
+                            [
+                                { colspan: 1, rowspan: 2, value: "序号", style: { "vertical-align": "middle", "text-align": "center", "color": "rgb(255, 255, 255)", "background": "rgb(238, 121, 118)" } },
+                                { colspan: 1, rowspan: 2, value: "名称", style: { "vertical-align": "middle", "text-align": "center", "color": "rgb(255, 255, 255)", "background": "rgb(238, 121, 118)" } },
+                                { colspan: 2, rowspan: 1, value: "分类", style: { "vertical-align": "middle", "text-align": "center", "color": "rgb(255, 255, 255)", "background": "rgb(238, 121, 118)" } },
+                                { colspan: 1, rowspan: 1, value: "", style: { display: "none" } },
+                                { colspan: 1, rowspan: 2, value: "价格", style: { "vertical-align": "middle", "text-align": "center", "color": "rgb(255, 255, 255)", "background": "rgb(238, 121, 118)" } },
+                                { colspan: 1, rowspan: 2, value: "备注", style: { "vertical-align": "middle", "text-align": "center", "color": "rgb(255, 255, 255)", "background": "rgb(238, 121, 118)" } }
+                            ],
+                            [
+                                { colspan: 1, rowspan: 1, value: "", style: { display: "none" } },
+                                { colspan: 1, rowspan: 1, value: "", style: { display: "none" } },
+                                { colspan: 1, rowspan: 1, value: "大类", style: { "vertical-align": "middle", "text-align": "center", "color": "rgb(255, 255, 255)", "background": "rgb(238, 121, 118)" } },
+                                { colspan: 1, rowspan: 1, value: "小类", style: { "vertical-align": "middle", "text-align": "center", "color": "rgb(255, 255, 255)", "background": "rgb(238, 121, 118)" } },
+                                { colspan: 1, rowspan: 1, value: "", style: { display: "none" } },
+                                { colspan: 1, rowspan: 1, value: "", style: { display: "none" } },
+                            ], [
+                                { colspan: 1, rowspan: 1, value: "001" },
+                                { colspan: 1, rowspan: 1, value: "苹果" },
+                                { colspan: 1, rowspan: 1, value: "植物" },
+                                { colspan: 1, rowspan: 1, value: "水果" },
+                                { colspan: 1, rowspan: 1, value: "6.2¥/kg" },
+                                { colspan: 1, rowspan: 1, value: "" }
+                            ], [
+                                { colspan: 1, rowspan: 1, value: "002" },
+                                { colspan: 1, rowspan: 1, value: "西瓜" },
+                                { colspan: 1, rowspan: 1, value: "植物" },
+                                { colspan: 1, rowspan: 1, value: "水果" },
+                                { colspan: 1, rowspan: 1, value: "10.4¥/kg" },
+                                { colspan: 1, rowspan: 1, value: "" }
+                            ], [
+                                { colspan: 1, rowspan: 1, value: "003" },
+                                { colspan: 1, rowspan: 1, value: "猪肉" },
+                                { colspan: 1, rowspan: 1, value: "动物" },
+                                { colspan: 1, rowspan: 1, value: "肉类" },
+                                { colspan: 1, rowspan: 1, value: "10.5¥/kg" },
+                                { colspan: 1, rowspan: 1, value: "" }
+                            ], [
+                                { colspan: 1, rowspan: 1, value: "004" },
+                                { colspan: 1, rowspan: 1, value: "榴莲" },
+                                { colspan: 1, rowspan: 1, value: "植物" },
+                                { colspan: 1, rowspan: 1, value: "水果" },
+                                { colspan: 1, rowspan: 1, value: "59¥/kg" },
+                                { colspan: 1, rowspan: 1, value: "不好吃，多次尝试失败，难以下咽" }
+                            ], [
+                                { colspan: 1, rowspan: 1, value: "005" },
+                                { colspan: 1, rowspan: 1, value: "西红柿" },
+                                { colspan: 1, rowspan: 1, value: "植物" },
+                                { colspan: 1, rowspan: 1, value: "水果&蔬菜" },
+                                { colspan: 1, rowspan: 1, value: "4.7¥/kg" },
+                                { colspan: 1, rowspan: 1, value: "" }
+                            ], [
+                                { colspan: 1, rowspan: 1, value: "006" },
+                                { colspan: 1, rowspan: 1, value: "橘子" },
+                                { colspan: 1, rowspan: 1, value: "植物" },
+                                { colspan: 1, rowspan: 1, value: "水果" },
+                                { colspan: 1, rowspan: 1, value: "5.9¥/kg" },
+                                { colspan: 1, rowspan: 1, value: "yyds，非常好吃，爱了爱了" }
+                            ], [], [], [], [], [], []
+                        ]
+                    }, {
+                        name: "未命名",
+                        content: [
+                            [], [], [], [], [], [], [], []
+                        ]
+                    }]
                 }
-            }
+
+            });
+
         }
     };
 };
@@ -57,443 +113,160 @@ __pkg__scope_bundle__.default= function (obj) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/format-json/index.html
+// Original file:./src/pages/excel/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['302']=function(){
+window.__pkg__bundleSrc__['279']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,15]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"格式化JSON字符串","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5,7]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[6]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[10,14]},{"type":"tag","name":"h2","attrs":{},"childNodes":[11,12]},{"type":"text","content":"源代码","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"run","ui-on:click":"formatJSON"},"childNodes":[13]},{"type":"text","content":"运行","childNodes":[]},{"type":"tag","name":"div","attrs":{"ref":"source"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[16,18]},{"type":"tag","name":"h2","attrs":{},"childNodes":[17]},{"type":"text","content":"运行结果","childNodes":[]},{"type":"tag","name":"div","attrs":{"ref":"target"},"childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"Excel 表格","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"excel"},"childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/format-json/index.scss
+// Original file:./src/pages/excel/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['303']=function(){
+window.__pkg__bundleSrc__['280']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"format-json\"]{\n\nwidth: calc(100vw - 200px);\n\nheight: calc(100vh - 70px);\n\ntop: 20px;\n\nleft: 100px;\n\nfont-size: 0;\n\nwhite-space: nowrap;\n\n}\n\n [page-view=\"format-json\"][focus=\"no\"]>header{\n\nbackground-color: #e8eaed;\n\n}\n\n [page-view=\"format-json\"]>header{\n\ntext-align: left;\n\nline-height: 30px;\n\nheight: 30px;\n\nbackground-color: #dee1e7;\n\n}\n\n [page-view=\"format-json\"]>header>h2{\n\ncolor: #000000;\n\nfont-size: 16px;\n\npadding-left: 45px;\n\nbackground-image: url(\"./format-json.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 80%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"format-json\"]>div{\n\ndisplay: inline-block;\n\nfont-size: 16px;\n\nwhite-space: normal;\n\nvertical-align: top;\n\noutline: 1px solid #8c9da5;\n\nmargin: 20px 0 0 20px;\n\n}\n\n [page-view=\"format-json\"]>div>h2{\n\nborder-bottom: 1px solid #8c9da5;\n\nheight: 50px;\n\nline-height: 50px;\n\npadding: 0 20px;\n\nposition: relative;\n\nfont-family: cursive;\n\nfont-weight: 200;\n\nfont-size: 16px;\n\n}\n\n [page-view=\"format-json\"]>div>h2>button{\n\nposition: absolute;\n\nright: 10px;\n\ntop: 10px;\n\nheight: 30px;\n\nline-height: 30px;\n\npadding: 0 20px;\n\nborder: none;\n\noutline: none;\n\ncolor: white;\n\ncursor: pointer;\n\n}\n\n [page-view=\"format-json\"]>div>h2>button.run{\n\nbackground-color: #009688;\n\n}\n\n [page-view=\"format-json\"]>div>div{\n\nwidth: calc(50vw - 130px);\n\nheight: calc(100vh - 190px);\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"excel\"]{\n\nwidth: calc(100vw - 100px);\n\nleft: 50px;\n\ntop: 20px;\n\n}\n\n [page-view=\"excel\"][focus=\"no\"]>header{\n\nbackground-color: #fafafa;\n\n}\n\n [page-view=\"excel\"]>header{\n\ntext-align: left;\n\nline-height: 50px;\n\nbackground-color: #ffffff;\n\nbox-shadow: -3px 3px 20px #d2d2db;\n\n}\n\n [page-view=\"excel\"]>header>h2{\n\ncolor: #000000;\n\nfont-size: 20px;\n\npadding-left: 50px;\n\nbackground-image: url(\"./excel.png\");\n\nbackground-position: 10px center;\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 60%;\n\nfont-family: cursive;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"excel\"]>div.content{\n\nheight: calc(100vh - 120px);\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/json/index
+// Original file:./src/tool/excel/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['304']=function(){
+window.__pkg__bundleSrc__['281']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('305');
-var analyseWord =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('306');
-var toValue =__pkg__scope_args__.default;
-
-
-// 把一段字符串变成json返回
-__pkg__scope_bundle__.default= function (express) {
-
-    if (isString(express)) {
-
-        // 先分析出来单词
-        var wordArray = analyseWord(express);
-
-        /**
-         * 思路：
-         * 从后往前找，找到第一个需要归结的，直接归结，
-         * 归结完毕以后，继续，知道找到开头，说明归结完毕，
-         * 这样设计的好处是：
-         * 从后往前找，一定是叶子，这就消除了递归。
-         */
-        var i = wordArray.length - 1, j;
-
-        // 只要单词数组归结完毕
-        while (wordArray.length > 1) {
-
-            // 从后往前找第一个需要归结的子对象
-            while (i >= 0 && (wordArray[i].type != 'insign' || ['{', '['].indexOf(wordArray[i].value) < 0)) {
-                i = i - 1;
-            }
-
-            if (i < 0) {
-                // 如果到开头都没有遇到，缺少开始符号
-                throw new Error("Illegal express : " + express + "\nstep='toOne-searchBeginIndex',wordArray=" + JSON.stringify(wordArray));
-            }
-
-            // 然后合并
-            j = i + 1;
-            var subWordArray = [wordArray[i]];
-            while (j < wordArray.length && (wordArray[j].type != 'insign' || wordArray[j].value != {
-                "{": "}",
-                "[": "]"
-            }[wordArray[i].value])) {
-                subWordArray.push(wordArray[j]);
-                j = j + 1;
-            }
-
-            if (j >= wordArray.length) {
-                // 如果到结尾都没有需要应该闭合的符号，缺少闭合符号
-                throw new Error("Illegal express : " + express + "\nstep='toOne-searchEndIndex',wordArray=" + JSON.stringify(wordArray));
-            } else {
-
-                // 结尾追加进去
-                subWordArray.push(wordArray[j]);
-
-                // 归结
-                wordArray[i] = toValue(subWordArray);
-
-                // 调整
-                wordArray.splice(i + 1, j - i);
-            }
-
-
-        }
-
-        // 返回计算结果
-        return wordArray[0].value;
-
-    } else {
-
-        throw new Error('The data passed is not a string.');
-
-    }
-
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/json/analyseWord
-/*****************************************************************/
-window.__pkg__bundleSrc__['305']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('132');
-var ReadString =__pkg__scope_args__.default;
-
-
-__pkg__scope_bundle__.default= function (express) {
-
-    // 剔除开头和结尾的空白
-    express = express.trim();
-
-    // 获取字符串分析对象
-    var reader = ReadString(express);
-
-    var wordArray = [];
-    var tempWord = "";
-    reader.readNext();
-
-    // 定义一个追加普通串的方法
-    var pushNormal = function () {
-        tempWord = tempWord.trim();
-        if (tempWord != '') {
-            wordArray.push({
-                type: "normal",
-                value: tempWord
-            });
-        }
-        tempWord = "";
-    };
-
-    while (true) {
-
-        if (reader.index >= express.length) break;
-
-        // 单行注释
-        if (reader.getNextN(2) == '//') {
-            while (!/\n/.test(reader.readNext()) && reader.index < express.length);
-        }
-
-        // 多行注释
-        else if (reader.getNextN(2) == '/*') {
-            while (reader.getNextN(2) != '*/') {
-                if (reader.index >= express.length) {
-                    throw new Error("Multiline comment not closed correctly : " + express + "\nstep='analyseWord-searchEndComment'");
-                }
-                reader.readNext();
-            }
-            reader.readNext();
-            reader.readNext();
-        }
-
-        // 如果是边界符号
-        else if (['{', '}', ',', '[', ']', ':'].indexOf(reader.currentChar) > -1) {
-            pushNormal();
-
-            wordArray.push({
-                type: "insign",
-                value: reader.currentChar
-            });
-            reader.readNext();
-        }
-
-        // 如果遇到字符串，应该是一个独立的单词
-        else if (['"', "'"].indexOf(reader.currentChar) > -1) {
-
-            var tempStrWord = "";
-            while (['"', "'"].indexOf(reader.readNext()) < 0) {
-                if (reader.index >= express.length) {
-                    throw new Error("The string is not closed correctly : " + express + "\nstep='analyseWord-searchString',currentStrWord=" + tempStrWord);
-                }
-                tempStrWord += reader.currentChar;
-            }
-            reader.readNext();
-            wordArray.push({
-                type: "string",
-                value: tempStrWord
-            });
-
-        } else {
-            tempWord += reader.currentChar;
-            reader.readNext();
-        }
-
-    }
-
-    return wordArray;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/ReadString
-/*****************************************************************/
-window.__pkg__bundleSrc__['132']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (express) {
-
-    var reader = {
-        index: -1,
-        currentChar: null
-    };
-
-    // 读取下一个字符
-    reader.readNext = function () {
-        reader.currentChar = reader.index++ < express.length - 1 ? express[reader.index] : null;
-        return reader.currentChar;
-    };
-
-    // 获取往后num个值
-    reader.getNextN = function (num) {
-        return express.substring(reader.index, num + reader.index > express.length ? express.length : num + reader.index);
-    };
-
-    return reader;
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/json/toValue
-/*****************************************************************/
-window.__pkg__bundleSrc__['306']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    var toValue = function (word) {
-
-    if (word.type != 'string' && word.type != 'object') {
-
-        // 数字
-        if (/[+-]{0,1}\d{1,}\.{0,1}\d{0,}/.test(word.value)) {
-            return +word.value;
-        }
-
-        // undefined
-        else if (word.value == 'undefined') {
-            return undefined;
-        }
-
-        // null
-        else if (word.value == 'null') {
-            return null;
-        }
-
-        // false
-        else if (word.value == 'false') {
-            return false;
-        }
-
-        // true
-        else if (word.value == 'true') {
-            return true;
-        }
-
-    }
-
-    return word.value;
-}
-
-__pkg__scope_bundle__.default= function (wordArray) {
-
-    var value, i;
-
-    // 是json
-    if (wordArray[0].value == '{') {
-        value = {};
-        for (i = 3; i < wordArray.length; i += 4) {
-            value[wordArray[i - 2].value] = toValue(wordArray[i]);
-        }
-    }
-
-    // 数组
-    else {
-        value = [];
-        for (i = 2; i < wordArray.length; i += 2) {
-            value.push(toValue(wordArray[i - 1]));
-        }
-    }
-
-    return {
-        type: "object",
-        value: value
-    };
-};
-
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['183']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-__pkg__scope_args__=window.__pkg__getBundle('184');
-var trigger =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('62');
-var copy =__pkg__scope_args__.default;
-
-
-__pkg__scope_args__=window.__pkg__getBundle('49');
+    __pkg__scope_args__=window.__pkg__getBundle('49');
 var isElement =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('31');
-var isString =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('22');
+var bind =__pkg__scope_args__.default;
 
 
 // 核心方法和工具方法
 
-__pkg__scope_args__=window.__pkg__getBundle('185');
-var textWidth=__pkg__scope_args__.textWidth;
-var bestLeftNum=__pkg__scope_args__.bestLeftNum;
-var calcCanvasXY=__pkg__scope_args__.calcCanvasXY;
-var selectIsNotBlank=__pkg__scope_args__.selectIsNotBlank;
-var toTemplate=__pkg__scope_args__.toTemplate;
-
-
-__pkg__scope_args__=window.__pkg__getBundle('186');
+__pkg__scope_args__=window.__pkg__getBundle('282');
 var initDom=__pkg__scope_args__.initDom;
 var initView=__pkg__scope_args__.initView;
+var initTableView=__pkg__scope_args__.initTableView;
+var itemClickHandler=__pkg__scope_args__.itemClickHandler;
+var itemInputHandler=__pkg__scope_args__.itemInputHandler;
+var itemMoveHandler=__pkg__scope_args__.itemMoveHandler;
 
-__pkg__scope_args__=window.__pkg__getBundle('191');
-var updateView=__pkg__scope_args__.updateView;
-var updateSelectView=__pkg__scope_args__.updateSelectView;
-var updateCursorPosition=__pkg__scope_args__.updateCursorPosition;
-var updateCanvasSize=__pkg__scope_args__.updateCanvasSize;
-var cancelSelect=__pkg__scope_args__.cancelSelect;
-var deleteSelect=__pkg__scope_args__.deleteSelect;
-
-__pkg__scope_args__=window.__pkg__getBundle('194');
-var bindEvent =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('195');
-var diff =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('288');
+var formatContent=__pkg__scope_args__.formatContent;
+var calcColName=__pkg__scope_args__.calcColName;
+var styleToString=__pkg__scope_args__.styleToString;
+var newItemData=__pkg__scope_args__.newItemData;
+var getLeftTop=__pkg__scope_args__.getLeftTop;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('196');
-var filterText =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('289');
+var style =__pkg__scope_args__.default;
 
 
-// 内置着色器方法
+__pkg__scope_args__=window.__pkg__getBundle('290');
+var moveCursorTo=__pkg__scope_args__.moveCursorTo;
 
-__pkg__scope_args__=window.__pkg__getBundle('197');
-var innerShader =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('291');
+var setItemStyle=__pkg__scope_args__.setItemStyle;
+
+__pkg__scope_args__=window.__pkg__getBundle('292');
+var calcRegionInfo=__pkg__scope_args__.calcRegionInfo;
+var showRegion=__pkg__scope_args__.showRegion;
+var cancelRegion=__pkg__scope_args__.cancelRegion;
 
 
-var editor = function (options) {
+// 键盘交互总控
+
+__pkg__scope_args__=window.__pkg__getBundle('293');
+var renderKeyboard =__pkg__scope_args__.default;
+
+
+// 挂载顶部菜单
+
+__pkg__scope_args__=window.__pkg__getBundle('294');
+var menu =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('296');
+var updateMenu =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('298');
+var menuHandler =__pkg__scope_args__.default;
+
+
+__pkg__scope_args__=window.__pkg__getBundle('299');
+var insertUp=__pkg__scope_args__.insertUp;
+var insertDown=__pkg__scope_args__.insertDown;
+var insertLeft=__pkg__scope_args__.insertLeft;
+var insertRight=__pkg__scope_args__.insertRight;
+
+__pkg__scope_args__=window.__pkg__getBundle('301');
+var deleteRow=__pkg__scope_args__.deleteRow;
+var deleteCol=__pkg__scope_args__.deleteCol;
+
+
+// 挂载右键菜单
+
+__pkg__scope_args__=window.__pkg__getBundle('302');
+var rightMenu =__pkg__scope_args__.default;
+
+
+var Excel = function (options) {
     var _this = this;
 
-    if (!(this instanceof editor)) {
-        throw new Error('Editor is a constructor and should be called with the `new` keyword');
+    if (!(this instanceof Excel)) {
+        throw new Error('Excel is a constructor and should be called with the `new` keyword');
     }
-
-    /**
-     *
-     * [格式化配置]
-     *
-     * 所有的配置校验和默认值设置等都应该在这里进行
-     * 经过这里处理以后，后续不需要再进行校验了
-     * 因此这里的内容的更改一定要慎重
-     *
-     */
 
     // 编辑器挂载点
     if (isElement(options.el)) {
 
-        // 着色器
-        var shader = function () {
-            var resultData = [];
-            _this._contentArray.forEach(function (text) {
-                resultData.push([{
-                    content: text,
-                    color: _this._colorText
-                }]);
-            });
-            return resultData;
-        };
+        this.__el = options.el;
 
-        // 格式化
-        var format = function (textString) { return textString; }
+        // 内容
+        this.__contentArray = this.$$formatContent(options.content);
 
-        this._el = options.el;
-        this._el.editor_terminal = 'none';
+        // 用于选择记录区域
+        this.__region = null;
 
-        // 公共配置
-        options.color = options.color || {};
-        this._colorBackground = options.color.background || "#f5f5f5"; /*编辑器背景*/
-        this._colorText = options.color.text || "#000000"; /*普通文本颜色*/
-        this._colorNumber = options.color.number || "#888484"; /*行号颜色*/
-        this._colorEdit = options.color.edit || "#eaeaf1"; /*编辑行颜色*/
-        this._colorCursor = options.color.cursor || "#ff0000"; /*光标颜色*/
-        this._colorSelect = options.color.select || "#6c6cf1"; /*选择背景*/
-        this._fontFamily = options["font-family"] || "新宋体"; /*字体*/
-        this._fontWeight = options["font-weight"] || 600;/*字重*/
-        this._tabSpace = options.tabSpace || 4;/*设置一个tab表示多少个空格*/
-        this._readonly = options.readonly || false;/*是否只读*/
-        this._noLineNumber = options.noLineNumber || false;/*是否隐藏行号*/
+        // 用于记录是否按下了格式刷按钮
+        this.__format = false;
 
-        // 文本
-        this._contentArray = isString(options.content) ? (this.$$filterText(options.content) + "").replace(/\r/g, '').split("\n") : [""];
+        // 记录鼠标是否按下
+        this.__ismousedown = false;
 
-        // 着色方法
-        this.$shader = isFunction(options.shader) ? options.shader : (Array.isArray(options.shader) ? innerShader.apply(null, options.shader) : shader);
+        // 记录鼠标右键菜单是否打开
+        this.__isrightmenu = false;
 
-        // 格式化方法
-        this.$format = isFunction(options.format) ? options.format : format;
+        bind(options.el, 'mousedown', function () {
+            _this.__ismousedown = true;
+            _this.__isrightmenu = false;
+            _this.__rightMenuDom.style.display = 'none';
+        });
 
-        // 辅助输入
-        this.$input = isFunction(options.input) ? options.input : null;
+        bind(options.el, 'mouseup', function () {
+            _this.__ismousedown = false;
+        });
+
+        bind(options.el, 'contextmenu', function (event) {
+            event.preventDefault();
+
+            _this.__rightMenuDom.style.left = event.clientX + "px";
+            _this.__rightMenuDom.style.top = event.clientY + "px";
+
+            // 标记鼠标右键菜单被打开
+            _this.__isrightmenu = true;
+            _this.__rightMenuDom.style.display = 'block';
+
+        });
 
     } else {
 
@@ -501,324 +274,114 @@ var editor = function (options) {
         throw new Error('options.el is not a element!');
     }
 
+    // 启动键盘事件监听
+    this.$$renderKeyboard();
+
     // 先初始化DOM
     this.$$initDom();
 
-    // 初始化控制变量
-    this.__needUpdate = true;
-    this.__lineNum = this._contentArray.length - 1;
-    this.__leftNum = this._contentArray[this.__lineNum].length;
-    this.__cursor1 = this.__cursor2 = { leftNum: 0, lineNum: 0 };
-    this.__formatData = this.$$diff(this.$shader(this._contentArray.join('\n')));
+    // 挂载菜单
+    this.$$createdMenu();
+
+    // 挂载右键菜单
+    this.$$createRightMenu();
+    this.__rightMenuDom.style.display = 'none';
 
     // 初始化视图
     this.$$initView();
 
-    // 更新视图
-    this.$$updateView();
-
-    // 绑定操作
-    this.$$bindEvent();
-
-    this.__updated__ = function () { };
-    // 编辑器管理的文本发生改变后会主动触发callback方法
-    this.updated = function (callback) {
-        _this.__updated__ = callback;
-    };
-
-    // 获取当前编辑器代码
+    // 获取当前Excel内容
     this.valueOf = function (content) {
 
-        if (content || content == '') {
+        // 如果有值，就是设置
+        if (content) {
 
-            // 先删除内容
-            _this._contentArray = null;
+            _this.__contentArray = this.$$formatContent(content);
 
-            // 输入以触发更新
-            _this.__focusDOM.value = content;
-            trigger(_this.__focusDOM, 'input');
-            _this.__focusDOM.focus();
+            var els = _this.__el.children;
+            els[2].parentNode.removeChild(els[2]);
+            els[1].parentNode.removeChild(els[1]);
 
+            _this.$$initView();
+
+            return _this;
         }
 
-        return _this._contentArray.join('\n');
-    };
-
-    // 在当前光标位置输入新的内容
-    this.input = function (content, cursor, number) {
-        content = content || "";
-        cursor = cursor || 0;
-        number = number || 0;
-
-        // 先删除多余的内容
-
-        if (cursor != 0) {
-
-            if (number != 0) {
-                _this._contentArray[_this.__lineNum] =
-                    _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum + cursor) +
-                    _this._contentArray[_this.__lineNum].substring(_this.__leftNum + cursor + number);
-            }
-
-            // 修改光标位置
-            _this.__leftNum += cursor;
-
-        }
-
-        // 输入以触发更新
-        _this.__focusDOM.value = content;
-        trigger(_this.__focusDOM, 'input');
-        _this.__focusDOM.focus();
-
-    };
-
-    // 格式化代码
-    this.format = function () {
-
-        // 格式化内容
-        _this._contentArray = _this.$format(_this._contentArray.join('\n'), _this._tabSpace).split('\n');
-
-        _this.__lineNum = _this._contentArray.length - 1;
-        _this.__leftNum = _this._contentArray[_this.__lineNum].length;
-
-        // 着色
-        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-
-        // 更新视图
-        _this.$$updateView();
-
-        // 更新光标位置
-        _this.$$initView();
-
-    };
-
-    // 复制当前编辑器代码到电脑剪切板
-    this.copy = function (callback, errorback) {
-        copy(_this.valueOf(), callback, errorback);
+        return {
+            version: "v1",
+            filename: "Excel",
+            contents: _this.__contentArray
+        };
     };
 
 };
 
 // 挂载辅助方法
-editor.prototype.$$textWidth = textWidth;
-editor.prototype.$$bestLeftNum = bestLeftNum;
-editor.prototype.$$calcCanvasXY = calcCanvasXY;
-editor.prototype.$$selectIsNotBlank = selectIsNotBlank;
-editor.prototype.$$filterText = filterText;
-editor.prototype.$$toTemplate = toTemplate;
+
+Excel.prototype.$$formatContent = formatContent;
+Excel.prototype.$$calcColName = calcColName;
+Excel.prototype.$$addStyle = style();
+Excel.prototype.$$styleToString = styleToString;
+Excel.prototype.$$newItemData = newItemData;
+Excel.prototype.$$itemClickHandler = itemClickHandler;
+Excel.prototype.$$itemInputHandler = itemInputHandler;
+Excel.prototype.$$itemMoveHandler = itemMoveHandler;
+Excel.prototype.$$getLeftTop = getLeftTop;
 
 // 挂载核心方法
 
-editor.prototype.$$initDom = initDom;
-editor.prototype.$$initView = initView;
+Excel.prototype.$$initDom = initDom;
+Excel.prototype.$$initView = initView;
+Excel.prototype.$$initTableView = initTableView;
 
-editor.prototype.$$updateView = updateView;
-editor.prototype.$$updateSelectView = updateSelectView;
-editor.prototype.$$updateCursorPosition = updateCursorPosition;
-editor.prototype.$$updateCanvasSize = updateCanvasSize;
-editor.prototype.$$cancelSelect = cancelSelect;
-editor.prototype.$$deleteSelect = deleteSelect;
+Excel.prototype.$$createdMenu = menu;
+Excel.prototype.$$updateMenu = updateMenu;
+Excel.prototype.$$menuHandler = menuHandler;
 
-editor.prototype.$$bindEvent = bindEvent;
+Excel.prototype.$$moveCursorTo = moveCursorTo;
+Excel.prototype.$$setItemStyle = setItemStyle;
 
-// 性能优化系列方法
+Excel.prototype.$$calcRegionInfo = calcRegionInfo;
+Excel.prototype.$$showRegion = showRegion;
+Excel.prototype.$$cancelRegion = cancelRegion;
 
-editor.prototype.$$diff = diff;
+Excel.prototype.$$insertUpNewRow = insertUp;
+Excel.prototype.$$insertDownNewRow = insertDown;
+Excel.prototype.$$insertLeftNewCol = insertLeft;
+Excel.prototype.$$insertRightNewCol = insertRight;
 
-__pkg__scope_bundle__.default= editor;
+Excel.prototype.$$deleteCurrentRow = deleteRow;
+Excel.prototype.$$deleteCurrentCol = deleteCol;
+
+Excel.prototype.$$createRightMenu = rightMenu;
+
+// 挂载键盘交互总控
+
+Excel.prototype.$$renderKeyboard = renderKeyboard;
+
+__pkg__scope_bundle__.default= Excel;
 
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/trigger
+// Original file:./src/tool/excel/excel-view/init
 /*****************************************************************/
-window.__pkg__bundleSrc__['184']=function(){
+window.__pkg__bundleSrc__['282']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-      // 触发事件
-  __pkg__scope_bundle__.default= function (dom, eventType) {
-    var event;
+    __pkg__scope_args__=window.__pkg__getBundle('283');
+var find =__pkg__scope_args__.default;
 
-    //创建event的对象实例。
-    if (document.createEventObject) {
-        // IE浏览器支持fireEvent方法
-        event = document.createEventObject();
-        dom.fireEvent('on' + eventType, event);
-    }
-
-    // 其他标准浏览器使用dispatchEvent方法
-    else {
-        event = document.createEvent('HTMLEvents');
-        // 3个参数：事件类型，是否冒泡，是否阻止浏览器的默认行为
-        event.initEvent(eventType, true, false);
-        dom.dispatchEvent(event);
-    }
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/copy
-/*****************************************************************/
-window.__pkg__bundleSrc__['62']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('48');
-var appendTo =__pkg__scope_args__.default;
-
-
-// 复制到剪切板
-__pkg__scope_bundle__.default= function (text, callback, errorback) {
-
-    var el = appendTo(document.body, '<textarea>' + text + '</textarea>');
-
-    // 执行复制
-    el.select();
-    try {
-        var result = window.document.execCommand("copy", false, null);
-
-        if (result) {
-            if (isFunction(callback)) callback();
-        } else {
-            if (isFunction(errorback)) errorback();
-        }
-    } catch (e) {
-        if (isFunction(errorback)) errorback(e);
-    }
-
-    document.body.removeChild(el);
-
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/tool
-/*****************************************************************/
-window.__pkg__bundleSrc__['185']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 计算文字长度
-
-__pkg__scope_bundle__.textWidth=function(text) {
-    this.__helpCalcDOM.innerText = text;
-    return this.__helpCalcDOM.offsetWidth;
-};
-
-// 计算最佳光标左边位置
-
-__pkg__scope_bundle__.bestLeftNum=function(x, lineNum) {
-
-    if (arguments.length < 2) lineNum = lineNum || this.__lineNum;
-
-    var text = this._contentArray[lineNum];
-
-    if (x <= 40) return 0;
-    if (x - 40 >= this.$$textWidth(text)) return text.length;
-
-    var dist = x - 40, i = 1;
-
-    for (; i < text.length; i++) {
-
-        var tempDist = Math.abs(x - 40 - this.$$textWidth(text.substr(0, i)));
-
-        if (tempDist > dist) break;
-
-        dist = tempDist;
-
-    }
-
-    return i - 1;
-};
-
-// 计算光标对应的x,y值
-
-__pkg__scope_bundle__.calcCanvasXY=function(leftNum, lineNum) {
-
-    return {
-        x: this.$$textWidth(this._contentArray[lineNum].substr(0, leftNum)),
-        y: lineNum * 21
-    };
-
-};
-
-// 判断选区是否为空
-
-__pkg__scope_bundle__.selectIsNotBlank=function() {
-    return this.__cursor1.lineNum != this.__cursor2.lineNum || this.__cursor1.leftNum != this.__cursor2.leftNum;
-};
-
-// 根据内容生成模板
-
-__pkg__scope_bundle__.toTemplate=function(line, index, noLineNumber) {
-    var _this = this;
-
-    var template = "";
-
-    template += "<div style='min-width: fit-content;white-space: nowrap;line-height:21px;height:21px;'>";
-
-    var lineStyle = noLineNumber ? "font-size:0;" : "";
-
-    template += "<em style='" + lineStyle + "color:" + this._colorNumber + ";user-select: none;display:inline-block;font-style:normal;width:35px;text-align:right;margin-right:5px;'>" + (index + 1) + "</em>";
-
-    line.forEach(function (text) {
-
-        var contentText = text.content;
-
-        // 提前对特殊字符进行处理
-        contentText = contentText.replace(/\&/g, "&amp;");/*[&]*/
-        contentText = contentText.replace(/</g, "&lt;"); contentText = contentText.replace(/>/g, "&gt;");/*[<,>]*/
-
-        template += "<span style='user-select: none;font-weight:" + _this._fontWeight + ";white-space: pre;color:" + text.color + "'>" + contentText + "</span>";
-
-    });
-
-    return template + "</div>";
-};
-
-// 整理当前输入框信息
-
-__pkg__scope_bundle__.getInputMessage=function(editor) {
-    return {
-
-        // 光标前面有多少个字符
-        leftNum: editor.__leftNum,
-
-        // 当前行之前有多少行
-        lineNum: editor.__lineNum,
-
-        // 光标left坐标
-        x: editor.__cursorLeft,
-
-        // 光标top坐标
-        y: editor.__cursorTop,
-
-        // 一行文本的高
-        lineHeight: 21
-
-    };
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/init
-/*****************************************************************/
-window.__pkg__bundleSrc__['186']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('187');
+__pkg__scope_args__=window.__pkg__getBundle('165');
 var setStyle =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('284');
+var removeClass =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('285');
+var hasClass =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
 var bind =__pkg__scope_args__.default;
@@ -826,134 +389,406 @@ var bind =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('48');
 var appendTo =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('188');
-var stopPropagation =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('286');
+var getTargetNode=__pkg__scope_args__.getTargetNode;
 
-__pkg__scope_args__=window.__pkg__getBundle('189');
-var preventDefault =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('190');
-var attr =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('287');
+var defaultStyle=__pkg__scope_args__.defaultStyle;
 
 
 // 初始化结点
 
 __pkg__scope_bundle__.initDom=function() {
-    var _this = this;
 
-    this._el.innerHTML = "";
-
-    setStyle(this._el, {
-        "font-size": "12px",
-        position: "relative",
-        cursor: "text",
-        "font-family": this._fontFamily,
-        "background": this._colorBackground,
-        overflow: "auto"
+    this.__el.innerHTML = "";
+    setStyle(this.__el, {
+        "background-color": "#f7f7f7",
+        "user-select": "none"
     });
 
-    bind(this._el, 'click', function () {
+};
 
-        // 由于有时候点击屏幕的时候，是滚动导致的，因此位置可能没有计算好前聚焦了，导致光标错位
-        setTimeout(function () {
-            _this.__focusDOM.focus();
+__pkg__scope_bundle__.itemInputHandler=function(event) {
+    this.__contentArray[this.__tableIndex].content[+getTargetNode(event).getAttribute('row') - 1][+getTargetNode(event).getAttribute('col') - 1].value = getTargetNode(event).innerText;
+};
+
+__pkg__scope_bundle__.itemMoveHandler=function(event) {
+
+    if (this.__ismousedown) {
+
+        // 如果本来存在区域，应该取消
+        if (this.__region != null) {
+            this.$$cancelRegion();
+            this.__region = null;
+        }
+
+        // 记录下来区域信息
+        this.__region = this.$$calcRegionInfo({
+            row: this.__rowNum,
+            col: this.__colNum,
+            rowNum: +this.__target.getAttribute('rowspan'),
+            colNum: +this.__target.getAttribute('colspan')
+        }, {
+            row: +event.target.getAttribute('row'),
+            col: +event.target.getAttribute('col'),
+            rowNum: +event.target.getAttribute('rowspan'),
+            colNum: +event.target.getAttribute('colspan')
         });
 
-    })
+        this.$$showRegion();
 
-    // 辅助计算标签
-    this.__helpCalcDOM = appendTo(this._el, "<span></span>");
-
-    setStyle(this.__helpCalcDOM, {
-        position: "absolute",
-        "z-index": "-1",
-        "white-space": "pre",
-        "top": 0,
-        "left": 0,
-        "color": "rgba(0,0,0,0)",
-        "font-weight": this._fontWeight
-    });
-
-    // 辅助输入标签
-    this.__helpInputDOM = appendTo(this._el, "<div></div>");
-
-    setStyle(this.__helpInputDOM, {
-        position: "absolute",
-        "z-index": 1
-    });
-
-    bind(this.__helpInputDOM, 'click', function (event) {
-
-        stopPropagation(event);
-        preventDefault(event);
-
-        _this.__focusDOM.focus();
-
-    });
-
-    // 光标
-    this.__focusDOM = appendTo(this._el, "<textarea></textarea>");
-
-    setStyle(this.__focusDOM, {
-        position: "absolute",
-        width: "6px",
-        "margin-top": "3px",
-        height: "15px",
-        "line-height": "15px",
-        resize: "none",
-        overflow: "hidden",
-        padding: "0",
-        outline: "none",
-        border: "none",
-        background: "rgba(0,0,0,0)",
-        color: this._colorCursor
-    });
-
-    attr(this.__focusDOM, {
-        wrap: "off",
-        autocorrect: "off",
-        autocapitalize: "off",
-        spellcheck: "false"
-    });
-
-    if (this._readonly) {
-        attr(this.__focusDOM, {
-            readonly: true
-        });
     }
 
-    // 显示区域
-    this.__showDOM = appendTo(this._el, "<div></div>");
+}
 
-    setStyle(this.__showDOM, {
-        padding: "10px 0"
-    });
+__pkg__scope_bundle__.itemClickHandler=function(event) {
+    // 如果格式刷按下了
+    if (this.__format == true) {
 
-    // 选中区域
-    this.__selectCanvas = appendTo(this._el, "<canvas></canvas>");
+        var rowNodes = find(this.__contentDom[this.__tableIndex], function () { return true; }, 'tr');
 
-    setStyle(this.__selectCanvas, {
-        position: "absolute",
-        left: "40px",
-        top: "10px",
-        opacity: "0.5"
-    });
+        var targetStyle = this.__contentArray[this.__tableIndex].content[+getTargetNode(event).getAttribute('row') - 1][+getTargetNode(event).getAttribute('col') - 1].style;
 
-    this.$$updateCanvasSize(1, 1);
+        for (var row = this.__region.info.row[0]; row <= this.__region.info.row[1]; row++) {
 
+            var colNodes = find(rowNodes[row], function () { return true; }, 'th');
+
+            for (var col = this.__region.info.col[0]; col <= this.__region.info.col[1]; col++) {
+
+                // 遍历所有的样式
+                for (var key in targetStyle) {
+
+                    // 修改界面显示
+                    colNodes[col].style[key] = targetStyle[key];
+
+                    // 修改数据
+                    this.__contentArray[this.__tableIndex].content[row - 1][col - 1].style[key] = targetStyle[key];
+
+                }
+
+            }
+
+        }
+
+        // 取消标记格式刷
+        this.__format = false;
+        removeClass(find(this.__menuQuickDom, function (node) { return node.getAttribute('def-type') == 'format' }, 'span')[0], 'active');
+
+    }
+
+    this.$$moveCursorTo(getTargetNode(event), +getTargetNode(event).getAttribute('row'), +getTargetNode(event).getAttribute('col'));
 };
 
 // 初始化视图
 
-__pkg__scope_bundle__.initView=function() {
+__pkg__scope_bundle__.initTableView=function(itemTable, index, styleToString) {
 
-    // 初始化定位光标位置
-    setStyle(this.__focusDOM, {
-        left: (40 + this.$$textWidth(this._contentArray[this.__lineNum])) + "px",
-        top: (10 + this.__lineNum * 21) + "px"
+    var tableTemplate = "", _this = this;
+
+    // 顶部的
+    tableTemplate += "<tr><th class='top-left' excel></th>";
+    for (var k = 0; k < itemTable.content[0].length; k++) {
+        tableTemplate += "<th class='top-name' excel>" + this.$$calcColName(k) + "</th>";
+    }
+    tableTemplate += '</tr>';
+
+    // 行
+    for (var i = 0; i < itemTable.content.length; i++) {
+
+        tableTemplate += "<tr><th class='line-num' excel>" + (i + 1) + "</th>";
+
+        //  列
+        for (var j = 0; j < itemTable.content[i].length; j++) {
+
+            // contenteditable="true" 可编辑状态，则可点击获取焦点，同时内容也是可以编辑的
+            // tabindex="0" 点击获取焦点，内容是不可编辑的
+            tableTemplate += "<th" +
+                " row='" + (i + 1) + "'" +
+                " col='" + (j + 1) + "'" +
+                ' contenteditable="true"' +
+                ' class="item"' +
+                ' colspan="' + itemTable.content[i][j].colspan + '"' +
+                ' rowspan="' + itemTable.content[i][j].rowspan + '"' +
+                ' style="' + styleToString(itemTable.content[i][j].style) + '"' +
+                ' excel>' + itemTable.content[i][j].value + '</th>';
+
+        }
+        tableTemplate += '</tr>';
+
+    }
+
+    this.__contentDom[index] = appendTo(this.__tableFrame, "<table style='display:none;' class='excel-view' excel>" + tableTemplate + "</table>");
+
+    // 后续动态新增的需要重新绑定
+
+    var items = find(this.__contentDom[index], function (node) { return hasClass(node, 'item') }, 'th');
+
+    bind(items, 'mousedown', function (event) {
+
+        setTimeout(function () {
+            if (!_this.__isrightmenu) _this.$$itemClickHandler(event);
+        });
+
+    });
+
+    bind(items, 'mousemove', function (event) {
+
+        _this.$$itemMoveHandler(event);
+
+    });
+
+    bind(items, 'input', function (event) {
+
+        _this.$$itemInputHandler(event);
+
     });
 
 };
+
+var bottomClick = function (target, index) {
+    for (var i = 0; i < target.__contentDom.length; i++) {
+        if (i == index) {
+            setStyle(target.__contentDom[i], {
+                'display': 'table'
+            });
+            target.__btnDom[i].setAttribute('active', 'yes');
+        } else {
+            setStyle(target.__contentDom[i], {
+                'display': 'none'
+            });
+            target.__btnDom[i].setAttribute('active', 'no');
+        }
+    }
+    target.__tableIndex = index;
+
+    target.$$moveCursorTo(target.__contentDom[index].getElementsByTagName('tr')[1].getElementsByTagName('th')[1], 1, 1);
+};
+
+__pkg__scope_bundle__.initView=function() {
+    var _this = this;
+
+    // 对数据进行校对
+    for (var index = 0; index < this.__contentArray.length; index++) {
+
+        var maxColNum = 30;
+        for (var row = 0; row < this.__contentArray[index].content.length; row++) {
+            maxColNum = Math.max(maxColNum, this.__contentArray[index].content[row].length);
+        }
+
+        for (var row = 0; row < this.__contentArray[index].content.length; row++) {
+            for (var col = 0; col < maxColNum; col++) {
+
+                if (this.__contentArray[index].content[row][col]) {
+
+                    if (this.__contentArray[index].content[row][col].style) {
+
+                        for (var styleKey in defaultStyle()) {
+                            if (styleKey in this.__contentArray[index].content[row][col].style) {
+                                // todo
+                            } else {
+                                this.__contentArray[index].content[row][col].style[styleKey] = defaultStyle()[styleKey];
+                            }
+                        }
+                    } else {
+                        this.__contentArray[index].content[row][col].style = defaultStyle();
+                    }
+
+                } else {
+                    this.__contentArray[index].content[row][col] = {
+                        colspan: "1",
+                        rowspan: "1",
+                        value: "",
+                        style: defaultStyle()
+                    };
+                }
+            }
+        }
+
+    }
+
+    this.__contentDom = [];
+    this.__tableFrame = appendTo(this.__el, "<div></div>");
+
+    setStyle(this.__tableFrame, {
+        "width": "100%",
+        "height": "calc(100% - 92px)",
+        "overflow": "auto"
+    });
+
+    for (var index = 0; index < this.__contentArray.length; index++) {
+
+        this.$$initTableView(this.__contentArray[index], index, this.$$styleToString);
+
+        setStyle(this.__contentDom[index], {
+            "display": index == 0 ? 'table' : "none"
+        });
+
+    }
+
+    this.$$addStyle('excel-view', "" +
+
+        ".excel-view{" +
+        "    border-collapse: collapse;" +
+        "    width: 100%;" +
+        "}" +
+
+        ".excel-view .top-left{" +
+        "    border: 1px solid #d6cccb;" +
+        "    border-right:none;" +
+        "    background-color:white;" +
+        "}" +
+
+        ".excel-view .top-name{" +
+        "    border: 1px solid #d6cccb;" +
+        "    border-bottom:none;" +
+        "    color:gray;" +
+        "    font-size:12px;" +
+        "}" +
+
+        ".excel-view .line-num{" +
+        "    padding:0 5px;" +
+        "    border: 1px solid #d6cccb;" +
+        "    border-right:none;" +
+        "    color:gray;" +
+        "    font-size:12px;" +
+        "}" +
+
+        ".excel-view .item{" +
+        "    min-width:50px;" +
+        "    white-space: nowrap;" +
+        "    border:0.5px solid rgba(85,85,85,0.5);" +
+        "    outline:none;" +
+        "    font-size:12px;" +
+        "    padding:2px;" +
+        "}" +
+
+        ".excel-view .item[active='yes']{" +
+        "    outline: 2px dashed red;" +
+        "}");
+
+    // 添加底部控制选择显示表格按钮
+    var bottomBtns = appendTo(this.__el, "<div class='bottom-btn' excel></div>");
+
+    var addBtn = appendTo(bottomBtns, "<span class='add item' excel>+</span>");
+
+    bind(addBtn, 'click', function () {
+
+        // 首先，需要追加数据
+        _this.__contentArray.push(_this.$$formatContent()[0]);
+
+        var index = _this.__contentArray.length - 1;
+
+        // 然后添加table
+
+        _this.$$initTableView(_this.__contentArray[index], index, _this.$$styleToString);
+
+        // 添加底部按钮
+        var bottomBtn = appendTo(bottomBtns, "<span class='name item' excel>" + _this.__contentArray[index].name + "</span>");
+        _this.__btnDom.push(bottomBtn);
+
+        bind(bottomBtn, 'click', function () {
+            bottomClick(_this, index);
+        });
+
+    });
+
+    this.__btnDom = [];
+
+    for (var index = 0; index < this.__contentArray.length; index++) {
+        (function (index) {
+            var bottomBtn = appendTo(bottomBtns, "<span class='name item' excel>" + _this.__contentArray[index].name + "</span>");
+
+            // 点击切换显示的视图
+            bind(bottomBtn, 'click', function () {
+                bottomClick(_this, index);
+            });
+
+            // 双击可以修改名字
+
+            bind(bottomBtn, 'dblclick', function () {
+                _this.__btnDom[index].setAttribute('contenteditable', 'true');
+            });
+
+            bind(bottomBtn, 'blur', function () {
+                _this.__contentArray[index].name = bottomBtn.innerText;
+            });
+
+            // 登记起来所有的按钮
+            _this.__btnDom.push(bottomBtn);
+        })(index);
+    }
+
+    this.$$addStyle('bottom-btn', "" +
+
+        ".bottom-btn{" +
+        "    width: 100%;" +
+        "    height: 30px;" +
+        "    overflow: auto;" +
+        "    border-top: 1px solid #d6cccb;" +
+        "    box-sizing: border-box;" +
+        "}" +
+
+        ".bottom-btn .item{" +
+        "    line-height: 30px;" +
+        "    box-sizing: border-box;" +
+        "    vertical-align: top;" +
+        "    display: inline-block;" +
+        "    cursor: pointer;" +
+        "}" +
+
+        ".bottom-btn .add{" +
+        "    width: 30px;" +
+        "    text-align: center;" +
+        "    font-size: 18px;" +
+        "}" +
+
+        ".bottom-btn .name{" +
+        "    font-size: 12px;" +
+        "    padding: 0 10px;" +
+        "}" +
+        ".bottom-btn .name:focus{" +
+        "    outline:none;" +
+        "}" +
+
+        ".bottom-btn .name:hover{" +
+        "    background-color:#efe9e9;" +
+        "}" +
+
+        ".bottom-btn .name[active='yes']{" +
+        "    background-color:white;" +
+        "}");
+
+    // 初始化点击第一个
+    this.__btnDom[0].click();
+
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/find
+/*****************************************************************/
+window.__pkg__bundleSrc__['283']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('49');
+var isElement =__pkg__scope_args__.default;
+
+
+// 在当前上下文context上查找结点
+// selectFun可选，返回boolean用以判断当前面对的结点是否保留
+__pkg__scope_bundle__.default= function (context, selectFun, tagName) {
+    if (!isElement(context)) return [];
+    var nodes = context.getElementsByTagName(tagName || '*');
+    var result = [];
+    for (var i = 0; i < nodes.length; i++) {
+        if (isElement(nodes[i]) && (typeof selectFun != "function" || selectFun(nodes[i])))
+            result.push(nodes[i]);
+    }
+    return result;
+}
 
     return __pkg__scope_bundle__;
 }
@@ -961,7 +796,7 @@ __pkg__scope_bundle__.initView=function() {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/setStyle
 /*****************************************************************/
-window.__pkg__bundleSrc__['187']=function(){
+window.__pkg__bundleSrc__['165']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 修改样式
@@ -975,284 +810,281 @@ __pkg__scope_bundle__.default= function (el, styles) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/stopPropagation
+// Original file:./src/tool/xhtml/removeClass
 /*****************************************************************/
-window.__pkg__bundleSrc__['188']=function(){
+window.__pkg__bundleSrc__['284']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 阻止冒泡
-__pkg__scope_bundle__.default= function (event) {
-    event = event || window.event;
-    if (event.stopPropagation) { //这是其他非IE浏览器
-        event.stopPropagation();
-    } else {
-        event.cancelBubble = true;
-    }
+    // 删除指定class
+__pkg__scope_bundle__.default= function (dom, clazz) {
+    var oldClazz = " " + (dom.getAttribute('class') || "") + " ";
+    var newClazz = oldClazz.replace(" " + clazz.trim() + " ", " ");
+    dom.setAttribute('class', newClazz.trim());
 };
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/preventDefault
+// Original file:./src/tool/xhtml/hasClass
 /*****************************************************************/
-window.__pkg__bundleSrc__['189']=function(){
+window.__pkg__bundleSrc__['285']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 阻止默认事件
-__pkg__scope_bundle__.default= function (event) {
-    event = event || window.event;
-    if (event.preventDefault) {
-        event.preventDefault();
-    } else {
-        event.returnValue = false;
-    }
-};
+    // 判断结点是否有指定class
+// clazzs可以是字符串或数组字符串
+// notStrict可选，boolean值，默认false表示结点必须包含全部class,true表示至少包含一个即可
+__pkg__scope_bundle__.default= function (dom, clazzs, notStrict) {
+    if (clazzs.constructor !== Array) clazzs = [clazzs];
 
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/attr
-/*****************************************************************/
-window.__pkg__bundleSrc__['190']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    // 修改属性
-__pkg__scope_bundle__.default= function (el, attrs) {
-    for (var key in attrs) {
-        el.setAttribute(key, attrs[key]);
-    }
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/update
-/*****************************************************************/
-window.__pkg__bundleSrc__['191']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('187');
-var setStyle =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('190');
-var attr =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('192');
-var prependTo =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('193');
-var after =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('33');
-var remove =__pkg__scope_args__.default;
-
-
-// 更新编辑器内容视图
-
-__pkg__scope_bundle__.updateView=function() {
-    var _this = this;
-
-    // 如果有重复利用的行(可复用的过少就不选择这种方法了)
-    if (this.__diff && this.__diff.beginNum + this.__diff.endNum > 10) {
-
-        var lineDoms = this.__showDOM.childNodes;
-        var lineDoms_length = lineDoms.length;
-
-        // 先删除无用的行
-
-        /**
-         * 这里的删除需要稍微注意一下
-         * 因为结点删除以后就没有了，这会导致lineDoms的更新，这也是为什么备份数组长度的原因
-         * 倒着删除同样是因为这个原因
-         */
-
-        for (var i = lineDoms_length - this.__diff.endNum - 1; i >= this.__diff.beginNum; i--) {
-            remove(lineDoms[i]);
-        }
-
-        // 追加不足的行
-        if (this.__diff.beginNum > 0) {
-            for (var i = this.__formatData.length - 1 - this.__diff.endNum; i >= this.__diff.beginNum; i--) {
-                after(lineDoms[this.__diff.beginNum - 1], this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
-            }
+    var class_str = " " + (dom.getAttribute('class') || "") + " ";
+    for (var i = 0; i < clazzs.length; i++) {
+        if (class_str.indexOf(" " + clazzs[i] + " ") >= 0) {
+            if (notStrict) return true;
         } else {
-
-            // 如果开头没有结点保留，为了简单，我们直接采用prependTo方法追加
-            for (var i = this.__formatData.length - this.__diff.endNum - 1; i >= 0; i--) {
-                prependTo(this.__showDOM, this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
-            }
-
+            if (!notStrict) return false;
         }
-
-        // 更新行号
-        lineDoms = this.__showDOM.childNodes;
-        for (var i = this.__diff.beginNum; i < this.__formatData.length; i++) {
-            lineDoms[i].getElementsByTagName('em')[0].innerText = i + 1;
-        }
-
     }
-
-    // 有时候，可能直接替换更快
-    else if (this.__diff != "not update") {
-        var template = "";
-        this.__formatData.forEach(function (line, index) {
-            template += _this.$$toTemplate(line, index, _this._noLineNumber);
-        });
-        this.__showDOM.innerHTML = template;
-    }
-
-    this.__diff = "not update";
-
-    var tempLineDom = this.__showDOM.childNodes[this.__lineNum];
-    // 修改当前编辑的行
-    if (!this._readonly && this.__lineDom) {
-        this.__lineDom.style.backgroundColor = "rgba(0, 0, 0, 0)";
-        tempLineDom.style.backgroundColor = this._colorEdit;
-    }
-    this.__lineDom = tempLineDom;
-
-
+    return true;
 };
 
-// 更新编辑器选中视图
+    return __pkg__scope_bundle__;
+}
 
-__pkg__scope_bundle__.updateSelectView=function() {
-    var _this = this;
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/tool/polyfill
+/*****************************************************************/
+window.__pkg__bundleSrc__['286']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.getTargetNode=function(event) {
+    var _event = event || window.event;
+    return _event.target || _event.srcElement;
+};
 
-    var ctx = this.__selectCanvas.getContext('2d');
-    ctx.fillStyle = this._colorSelect;
-    ctx.clearRect(0, 0, this.__selectCanvas.scrollWidth, this.__selectCanvas.scrollHeight);
+    return __pkg__scope_bundle__;
+}
 
-    // 绘制两个区间
-    var drawerSelect = function (beginLeftNum, endLeftNum, lineNum) {
-
-        var xy1 = _this.$$calcCanvasXY(beginLeftNum, lineNum);
-        var xy2 = _this.$$calcCanvasXY(endLeftNum, lineNum);
-
-        // 如何一行过少，前置一点点选中显示
-        if (beginLeftNum == endLeftNum && beginLeftNum == 0) {
-            ctx.fillRect(xy1.x, xy1.y, 5, 21);
-        } else {
-            ctx.fillRect(xy1.x, xy1.y, xy2.x - xy1.x, 21);
-        }
-
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/config
+/*****************************************************************/
+window.__pkg__bundleSrc__['287']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_bundle__.defaultStyle = function () {
+    return {
+        display: "table-cell",
+        color: 'black',
+        background: 'white',
+        'vertical-align': 'top',
+        'text-align': 'left',
+        'font-weight': "normal",// bold粗体
+        'font-style': 'normal',// italic斜体
+        'text-decoration': 'none'// line-through中划线 underline下划线
     };
+};
 
-    // 如果选中区域为空，不用绘制
-    if (this.__cursor1.lineNum == this.__cursor2.lineNum && this.__cursor1.leftNum == this.__cursor2.leftNum) return;
 
-    ctx.beginPath();
+    return __pkg__scope_bundle__;
+}
 
-    // 如果在一行
-    if (this.__cursor1.lineNum == this.__cursor2.lineNum) {
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/excel-view/tool
+/*****************************************************************/
+window.__pkg__bundleSrc__['288']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('51');
+var isNumber =__pkg__scope_args__.default;
 
-        drawerSelect(this.__cursor1.leftNum, this.__cursor2.leftNum, this.__cursor1.lineNum);
+__pkg__scope_args__=window.__pkg__getBundle('287');
+var defaultStyle=__pkg__scope_args__.defaultStyle;
 
+
+__pkg__scope_bundle__.styleToString=function(style) {
+
+    var styleString = "";
+    for (var key in style) {
+        styleString += key + ":" + style[key] + ';';
     }
 
-    // 如果选中的多于一行
+    return styleString;
+};
+
+__pkg__scope_bundle__.newItemData=function() {
+    return {
+        value: " ", colspan: "1", rowspan: "1",
+        style: defaultStyle()
+    };
+};
+
+__pkg__scope_bundle__.formatContent=function(file) {
+
+    // 如果传递了内容
+    if (file && 'version' in file && file.filename == 'Excel') {
+
+        // 后续如果格式进行了升级，可以格式兼容转换成最新版本
+        return file.contents;
+    }
+
+    // 否则，自动初始化
     else {
 
-        var beginCursor, endCursor;
+        var content = [];
+        for (var i = 0; i < 100; i++) {
+            var rowArray = []
+            for (var j = 0; j < 30; j++) {
+                rowArray.push(this.$$newItemData());
+            }
 
-        if (this.__cursor1.lineNum < this.__cursor2.lineNum) {
-            beginCursor = this.__cursor1; endCursor = this.__cursor2;
+            content.push(rowArray);
+        }
+        return [{
+            name: "未命名",
+            content
+        }];
+    }
+
+};
+
+__pkg__scope_bundle__.calcColName=function(index) {
+    if (!isNumber(index)) return index;
+
+    var codes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    var result = "";
+
+    while (true) {
+
+        // 求解当前坐标
+        var _index = index % 26;
+
+        // 拼接
+        result = codes[_index] + result;
+
+        // 求解余下的数
+        index = Math.floor(index / 26);
+
+        if (index == 0) break;
+
+        index -= 1;
+    }
+    return result;
+};
+
+__pkg__scope_bundle__.getLeftTop=function(rowIndex, colIndex) {
+    var content = this.__contentArray[this.__tableIndex].content;
+
+    // 从下到上
+    for (var row = rowIndex; row >= 1; row--) {
+        // 从右到左
+        for (var col = colIndex; col >= 1; col--) {
+
+            // 同一行如果遇到第一个显示的，只有两种可能：
+            // 1.这个就是所求
+            // 2.本行都不会有结果
+            if (content[row - 1][col - 1].style.display != 'none') {
+
+                // 如果目标可以包含自己，那就找到了
+                if (
+                    content[row - 1][col - 1].rowspan - - row > rowIndex
+                    &&
+                    content[row - 1][col - 1].colspan - - col > colIndex
+                ) {
+
+                    return {
+                        row,
+                        col,
+                        content: content[row - 1][col - 1]
+                    };
+
+                } else {
+                    break;
+                }
+
+            }
+
+            // 不加else的原因是，理论上一定会存在唯一的一个
+
+        }
+    }
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/tool/style
+/*****************************************************************/
+window.__pkg__bundleSrc__['289']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    
+var addUniqueNamespace = function (style) {
+
+    var uniqueNameSpace = 'excel';
+
+    style = style.replace(/( {0,}){/g, "{");
+    style = style.replace(/( {0,}),/g, ",");
+
+    var temp = "";
+    // 分别表示：是否处于注释中、是否处于内容中、是否由于特殊情况在遇到{前完成了hash
+    var isSpecial = false, isContent = false, hadComplete = false;
+    for (var i = 0; i < style.length; i++) {
+        if (style[i] == ':' && !isSpecial && !hadComplete && !isContent) {
+            hadComplete = true;
+            temp += "[" + uniqueNameSpace + "]";
+        } else if (style[i] == '{' && !isSpecial) {
+            isContent = true;
+            if (!hadComplete) temp += "[" + uniqueNameSpace + "]";
+        } else if (style[i] == '}' && !isSpecial) {
+            isContent = false;
+            hadComplete = false;
+        } else if (style[i] == '/' && style[i + 1] == '*') {
+            isSpecial = true;
+        } else if (style[i] == '*' && style[i + 1] == '/') {
+            isSpecial = false;
+        } else if (style[i] == ',' && !isSpecial && !isContent) {
+            if (!hadComplete) temp += "[" + uniqueNameSpace + "]";
+            hadComplete = false;
+        }
+
+        temp += style[i];
+
+    }
+
+    return temp;
+
+};
+
+__pkg__scope_bundle__.default= function () {
+
+    if ('excel@style' in window) {
+        // todo
+    } else {
+        window['excel@style'] = {};
+    }
+
+    var head = document.head || document.getElementsByTagName('head')[0];
+
+    return function (keyName, styleString) {
+        if (window['excel@style'][keyName]) {
+            // todo
         } else {
-            beginCursor = this.__cursor2; endCursor = this.__cursor1;
+            window['excel@style'][keyName] = true;
+
+            // 创建style标签
+            var styleElement = document.createElement('style');
+            styleElement.setAttribute('type', 'text/css');
+
+            // 写入样式内容
+            // 添加统一的后缀是防止污染
+            styleElement.innerHTML = addUniqueNamespace(styleString);
+
+            // 添加到页面
+            head.appendChild(styleElement);
         }
-
-        // 绘制开始的结尾
-        drawerSelect(beginCursor.leftNum, this._contentArray[beginCursor.lineNum].length, beginCursor.lineNum);
-
-        // 绘制结束的开头
-        drawerSelect(0, endCursor.leftNum, endCursor.lineNum);
-
-        // 绘制两行之间
-        for (var lineNum = beginCursor.lineNum + 1; lineNum < endCursor.lineNum; lineNum++) {
-            drawerSelect(0, this._contentArray[lineNum].length, lineNum);
-        }
-
-    }
-
-};
-
-// 输入的时候更新光标位置
-
-__pkg__scope_bundle__.updateCursorPosition=function() {
-
-    this.__cursorTop = this.__lineNum * 21 + 10;
-    this.__cursorLeft = 40 + this.$$textWidth(this._contentArray[this.__lineNum].substring(0, this.__leftNum));
-
-    setStyle(this.__focusDOM, {
-        top: this.__cursorTop + "px",
-        left: this.__cursorLeft + "px",
-    });
-
-};
-
-// 更新画布尺寸
-
-__pkg__scope_bundle__.updateCanvasSize=function(width, height) {
-
-    if (arguments.length < 2) {
-        width = this._el.scrollWidth - 40;
-        height = this._el.scrollHeight - 10;
-    }
-
-    setStyle(this.__selectCanvas, {
-        width: width + "px",
-        height: height + "px",
-    });
-
-    attr(this.__selectCanvas, {
-        width: width,
-        height: height
-    });
-
-};
-
-// 取消选区
-
-__pkg__scope_bundle__.cancelSelect=function() {
-
-    this.$$updateCanvasSize(1, 1);
-    this.__cursor1 = { leftNum: 0, lineNum: 0 };
-    this.__cursor2 = { leftNum: 0, lineNum: 0 };
-
-};
-
-// 删除选区
-
-__pkg__scope_bundle__.deleteSelect=function() {
-
-    // 假定cursor2是结束光标
-    var beginCursor = this.__cursor2, endCursor = this.__cursor1;
-
-    // 根据行号来校对
-    if (this.__cursor1.lineNum < this.__cursor2.lineNum) {
-        beginCursor = this.__cursor1; endCursor = this.__cursor2;
-    } else if (this.__cursor1.lineNum == this.__cursor2.lineNum) {
-
-        // 根据列号来校对
-        if (this.__cursor1.leftNum < this.__cursor2.leftNum) {
-            beginCursor = this.__cursor1; endCursor = this.__cursor2;
-        }
-    }
-
-    var newLineText =
-        this._contentArray[beginCursor.lineNum].substr(0, beginCursor.leftNum) +
-        this._contentArray[endCursor.lineNum].substr(endCursor.leftNum)
-
-    this._contentArray.splice(beginCursor.lineNum, endCursor.lineNum - beginCursor.lineNum + 1, newLineText);
-
-    // 校对光标和选区
-    this.__leftNum = this.__cursor1.leftNum = this.__cursor2.leftNum = beginCursor.leftNum;
-    this.__lineNum = this.__cursor1.lineNum = this.__cursor2.lineNum = beginCursor.lineNum;
-
-    this.$$cancelSelect();
+    };
 };
 
 
@@ -1260,46 +1092,90 @@ __pkg__scope_bundle__.deleteSelect=function() {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/prependTo
+// Original file:./src/tool/excel/excel-view/cursor
 /*****************************************************************/
-window.__pkg__bundleSrc__['192']=function(){
+window.__pkg__bundleSrc__['290']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('49');
 var isElement =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('50');
-var toNode =__pkg__scope_args__.default;
 
+// 移动光标到指定位置
+__pkg__scope_bundle__.moveCursorTo=function(target, rowNum, colNum) {
 
-// 追加节点(内部开头)
-__pkg__scope_bundle__.default= function (el, template) {
-    var node = isElement(template) ? template : toNode(template);
-    el.insertBefore(node, el.childNodes[0]);
-    return node;
+    // 如果本来存在区域，应该取消
+    if (this.__region != null) {
+
+        this.$$cancelRegion();
+
+        this.__region = null;
+    }
+
+    // 如果shift被按下，我们认为是在选择区间
+    if (this.__keyLog.shift) {
+
+        // 记录下来区域信息
+        this.__region = this.$$calcRegionInfo({
+            row: this.__rowNum,
+            col: this.__colNum,
+            rowNum: +this.__target.getAttribute('rowspan'),
+            colNum: +this.__target.getAttribute('colspan')
+        }, {
+            row: rowNum,
+            col: colNum,
+            rowNum: +target.getAttribute('rowspan'),
+            colNum: +target.getAttribute('colspan')
+        });
+
+        this.$$showRegion();
+
+    } else {
+
+        if (isElement(this.__target)) this.__target.setAttribute('active', 'no');
+
+        // 记录当前鼠标的位置
+
+        this.__rowNum = rowNum;
+        this.__colNum = colNum;
+        this.__target = target;
+
+        // 先获取对应的原始数据
+
+        var oralItemData = this.__contentArray[this.__tableIndex].content[rowNum - 1][colNum - 1];
+
+        // 接着更新顶部菜单
+
+        this.$$updateMenu(oralItemData.style);
+
+        target.setAttribute('active', 'yes');
+    }
+
 };
+
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/after
+// Original file:./src/tool/excel/excel-view/modify
 /*****************************************************************/
-window.__pkg__bundleSrc__['193']=function(){
+window.__pkg__bundleSrc__['291']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('49');
-var isElement =__pkg__scope_args__.default;
+    
+// 修改默认输入条目的样式
+__pkg__scope_bundle__.setItemStyle=function(key, value) {
 
-__pkg__scope_args__=window.__pkg__getBundle('50');
-var toNode =__pkg__scope_args__.default;
+    // 更新数据内容
+    this.__contentArray[this.__tableIndex].content[this.__rowNum - 1][this.__colNum - 1].style[key] = value;
 
+    // 更新输入条目
+    this.__target.style[key] = value;
 
-// 在被指定元素之后插入节点
-__pkg__scope_bundle__.default= function (el, template) {
-    var node = isElement(template) ? template : toNode(template);
-    el.parentNode.insertBefore(node, el.nextSibling);
-    return node;
+    // 更新菜单状态
+    this.$$updateMenu(this.__contentArray[this.__tableIndex].content[this.__rowNum - 1][this.__colNum - 1].style);
+
 };
 
 
@@ -1307,582 +1183,146 @@ __pkg__scope_bundle__.default= function (el, template) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/bind
+// Original file:./src/tool/excel/excel-view/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['194']=function(){
+window.__pkg__bundleSrc__['292']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('178');
+    
+// 计算出区域的必要信息
+__pkg__scope_bundle__.calcRegionInfo=function(target1, target2) {
+
+    var region = {
+
+        // 区域的边界信息
+        info: {},
+
+        // 区域范围内的所有结点，第一个结点一定是左上角的那个
+        nodes: []
+    };
+
+    // 先计算出行边界
+
+    var row1_min = target1.row;
+    var row1_max = target1.row + target1.rowNum - 1;
+
+    var row2_min = target2.row;
+    var row2_max = target2.row + target2.rowNum - 1;
+
+    var row_min = row1_min > row2_min ? row2_min : row1_min;
+    var row_max = row1_max > row2_max ? row1_max : row2_max;
+
+    // 再计算出列边界
+
+    var col1_min = target1.col;
+    var col1_max = target1.col + target1.colNum - 1;
+
+    var col2_min = target2.col;
+    var col2_max = target2.col + target2.colNum - 1;
+
+    var col_min = col1_min > col2_min ? col2_min : col1_min;
+    var col_max = col1_max > col2_max ? col1_max : col2_max;
+
+    // 然后就可以标记区域的边界了
+
+    region.info = {
+        row: [row_min, row_max],
+        col: [col_min, col_max]
+    };
+
+    // 最后我们需要计算出此区域里面所有的结点
+
+    var trs = this.__contentDom[this.__tableIndex].getElementsByTagName('tr');
+    for (var i = row_min; i <= row_max; i++) {
+        var ths = trs[i].getElementsByTagName('th');
+        for (var j = 1; j < ths.length; j++) {
+
+            var colValue = ths[j].getAttribute('col');
+
+            if (colValue >= col_min && colValue <= col_max) {
+                region.nodes.push(ths[j]);
+            } else {
+
+                // 判断是否可以提前结束
+                if (colValue > col_max) {
+                    break;
+                }
+
+            }
+
+        }
+    }
+
+    return region;
+};
+
+// 在页面中标记当前选择的区域
+__pkg__scope_bundle__.showRegion=function() {
+
+    for (var i = 0; i < this.__region.nodes.length; i++) {
+        this.__region.nodes[i].style.background = '#e5e0e0';
+    }
+
+};
+
+// 取消在页面中标记的区域效果
+__pkg__scope_bundle__.cancelRegion=function() {
+
+    for (var i = 0; i < this.__region.nodes.length; i++) {
+        this.__region.nodes[i].style.background = this.__contentArray[this.__tableIndex].content[this.__region.nodes[i].getAttribute('row') - 1][this.__region.nodes[i].getAttribute('col') - 1].style.background;
+    }
+
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/Keyboard
+/*****************************************************************/
+window.__pkg__bundleSrc__['293']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 键盘总控
+
+__pkg__scope_args__=window.__pkg__getBundle('173');
 var getKeyString=__pkg__scope_args__.getKeyString;
-
-__pkg__scope_args__=window.__pkg__getBundle('32');
-var isFunction =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
 var bind =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('104');
-var mousePosition =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('62');
-var copy =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('188');
-var stopPropagation =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('189');
-var preventDefault =__pkg__scope_args__.default;
-
-__pkg__scope_args__=window.__pkg__getBundle('185');
-var getInputMessage=__pkg__scope_args__.getInputMessage;
-
-
-// 绑定键盘和鼠标等交互事件处理
 
 __pkg__scope_bundle__.default= function () {
     var _this = this;
 
-    // 鼠标是否按下
-    var mouseDown = false;
+    if ('__keyLog' in this) {
+        console.error('Keyboard has been initialized');
+        return;
+    } else {
 
-    // shift是否按下
-    var shiftDown = false;
-
-    // 辅助计算选择光标位置
-    var calcCursor = function (event) {
-        var position = mousePosition(_this._el, event);
-        var topIndex = Math.round((position.y - 20.5) / 21);
-
-        if (topIndex < 0) topIndex = 0;
-        if (topIndex >= _this._contentArray.length) topIndex = _this._contentArray.length - 1;
-
-        return {
-            leftNum: _this.$$bestLeftNum(position.x, topIndex),
-            lineNum: topIndex
-        };
-    };
-
-    // 获取光标之间的内容
-    var calcTwoCursor = function () {
-
-        // 假定cursor2是结束光标
-        var beginCursor = _this.__cursor2,
-            endCursor = _this.__cursor1;
-
-        // 根据行号来校对
-        if (_this.__cursor1.lineNum < _this.__cursor2.lineNum) {
-            beginCursor = _this.__cursor1;
-            endCursor = _this.__cursor2;
-        } else if (_this.__cursor1.lineNum == _this.__cursor2.lineNum) {
-
-            // 根据列号来校对
-            if (_this.__cursor1.leftNum < _this.__cursor2.leftNum) {
-                beginCursor = _this.__cursor1;
-                endCursor = _this.__cursor2;
-            }
-
-            return _this._contentArray[beginCursor.lineNum].substring(beginCursor.leftNum, endCursor.leftNum);
-        }
-
-        // 余下的一定是多行
-        var resultData = "";
-        resultData += _this._contentArray[beginCursor.lineNum].substr(beginCursor.leftNum) + "\n";
-        for (var lineNum = beginCursor.lineNum + 1; lineNum < endCursor.lineNum; lineNum++) {
-            resultData += _this._contentArray[lineNum] + "\n";
-        }
-        resultData += _this._contentArray[endCursor.lineNum].substr(0, endCursor.leftNum);
-
-        return resultData;
-
-    };
-
-    // 鼠标按下的时候，记录开始光标位置并标记鼠标按下动作
-    bind(this._el, 'mousedown', function (event) {
-        mouseDown = true;
-        _this.__cursor2 = _this.__cursor1 = calcCursor(event);
-
-        _this.$$updateCanvasSize();
-
-        // 绘制选中效果
-        _this.$$updateSelectView();
-
-    });
-
-    // 移动的时候不停的同步结束光标位置
-    bind(this._el, 'mousemove', function (event) {
-        if (!mouseDown) return;
-        _this.__cursor2 = calcCursor(event);
-
-        // 绘制选中效果
-        _this.$$updateSelectView();
-    });
-
-    // 鼠标放开或移出的时候，标记鼠标放开
-    bind(this._el, 'mouseup', function () { mouseDown = false });
-
-    // 点击编辑界面
-    bind(this._el, 'click', function (event) {
-
-        _this.__helpInputDOM.innerHTML = '';
-
-        var position = mousePosition(_this._el, event);
-        var topIndex = Math.round((position.y - 20.5) / 21);
-
-        // 如果超过了内容区域
-        if (topIndex < 0 || topIndex >= _this._contentArray.length) return;
-
-        var __lineNum = topIndex;
-        var __leftNum = _this.$$bestLeftNum(position.x, __lineNum);
-
-        // 多选
-        if (shiftDown) {
-            _this.__cursor1 = {
-                leftNum: _this.__leftNum,
-                lineNum: _this.__lineNum
-            };
-            _this.__cursor2 = {
-                leftNum: __leftNum,
-                lineNum: __lineNum
-            };
-
-            // 绘制选中效果
-            _this.$$updateSelectView();
-        }
-
-        // 普通点击
-        else {
-            _this.__lineNum = __lineNum;
-            _this.__leftNum = __leftNum;
-            _this.$$updateCursorPosition();
-            _this.$$updateView();
-        }
-
-    });
-
-    // 双击编辑器界面
-    bind(this._el, 'dblclick', function () {
-        var formateData = _this.__formatData[_this.__lineNum];
-
-        // 求解左边边界
-        var _left;
-        for (var i = 0, leftLen = 0; i < formateData.length; i++) {
-            if (leftLen + formateData[i].content.length > _this.__leftNum) {
-                _left = leftLen;
-                break;
-            } else {
-                leftLen += formateData[i].content.length;
-            }
-        }
-
-        // 求解右边界
-        var _right;
-        for (var i = 0, leftLen = 0; i < formateData.length; i++) {
-            if (leftLen + formateData[i].content.length > _this.__leftNum) {
-                _right = leftLen + formateData[i].content.length;
-                break;
-            } else {
-                leftLen += formateData[i].content.length;
-            }
-        }
-
-        /**
-         * 由于前置cursor1和cursor2是对象，直接修改leftNum无法成功
-         */
-
-        _this.__cursor1 = {
-            leftNum: _left,
-            lineNum: _this.__lineNum
-        };
-        _this.__cursor2 = {
-            leftNum: _right,
-            lineNum: _this.__lineNum
+        this.__keyLog = {
+            'shift': false
         };
 
-        // 绘制选中效果
-        _this.$$updateSelectView();
-    });
+        bind(document.body, 'keydown', function (event) {
+            var keyString = getKeyString(event);
 
-    var update = function (text) {
+            // 标记shift按下
+            if (keyString == 'shift') _this.__keyLog.shift = true;
+        });
 
-        // 获取输入内容
-        text = text || _this.__focusDOM.value;
+        bind(document.body, 'keyup', function (event) {
+            var keyString = getKeyString(event);
 
-        text = _this.$$filterText(text);
+            // 标记shift放开
+            if (keyString == 'shift') _this.__keyLog.shift = false;
+        });
 
-        _this.__focusDOM.value = "";
-
-        // 如果有选区，先删除选区
-        if (_this.$$selectIsNotBlank()) _this.$$deleteSelect();
-
-        // 如果输入的是回车，切割文本
-        if (/^\n$/.test(text)) {
-
-            if (_this.__leftNum >= _this._contentArray[_this.__lineNum].length) {
-                _this._contentArray.splice(_this.__lineNum + 1, 0, "");
-            } else {
-                _this._contentArray.splice(_this.__lineNum + 1, 0, _this._contentArray[_this.__lineNum].substring(_this.__leftNum));
-                _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum);
-            }
-            _this.__lineNum += 1;
-            _this.__leftNum = 0;
-
-        }
-
-        // 否则就是一堆文本（包括复制来的）
-        else {
-
-            var textArray = text.split(/\n/);
-
-            if (_this._contentArray == null) {
-                _this._contentArray = textArray;
-                _this.__lineNum = _this._contentArray.length - 1;
-                _this.__leftNum = _this._contentArray[_this.__lineNum].length;
-            }
-
-            // 如果只有一行文本(分开是为了加速)
-            else if (textArray.length <= 1) {
-                _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum) + text + _this._contentArray[_this.__lineNum].substring(_this.__leftNum);
-                _this.__leftNum += text.length;
-            }
-
-            // 如果是复制的多行文本
-            else {
-
-                // 需要切割的行两边文本
-                var leftText = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum);
-                var rightText = _this._contentArray[_this.__lineNum].substring(_this.__leftNum);
-
-                // 旧行文本拼接进来
-                textArray[0] = leftText + textArray[0];
-                textArray[textArray.length - 1] += rightText;
-
-                // 新内容记录下来
-                // _this._contentArray.splice(_this.__lineNum, 1, ...textArray);
-                _this._contentArray.splice(_this.__lineNum, 1);
-                for (var index = 0; index < textArray.length; index++) {
-                    _this._contentArray.splice(_this.__lineNum + index, 0, textArray[index]);
-                }
-
-                _this.__lineNum += (textArray.length - 1);
-                _this.__leftNum = textArray[textArray.length - 1].length - rightText.length;
-
-            }
-
-        }
-
-        // 着色并更新视图
-
-        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-        _this.$$updateCursorPosition();
-        _this.$$updateView();
-
-        // 通知文本改动
-        _this.__updated__();
-
-    };
-
-    // 中文输入开始
-    bind(this.__focusDOM, 'compositionstart', function () {
-        _this.__needUpdate = false;
-        _this.__focusDOM.style.color = "rgba(0,0,0,0)";
-        _this.__focusDOM.style.borderLeft = '1px solid ' + _this._colorCursor;
-    });
-
-    // 中文输入结束
-    bind(this.__focusDOM, 'compositionend', function () {
-        _this.__needUpdate = true;
-        _this.__focusDOM.style.color = _this._colorCursor;
-        _this.__focusDOM.style.borderLeft = "none";
-        update();
-
-        // 辅助输入
-        if (_this.$input != null) _this.__helpInputEvent = _this.$input(_this.__helpInputDOM, getInputMessage(_this), _this._contentArray) || {};
-    });
-
-    // 输入
-    bind(this.__focusDOM, 'input', function () {
-        // 如果是中文输入开始，不应该更新
-        if (_this.__needUpdate) {
-            update();
-
-            // 辅助输入
-            if (_this.$input != null) _this.__helpInputEvent = _this.$input(_this.__helpInputDOM, getInputMessage(_this), _this._contentArray) || {};
-        }
-    });
-
-    // 记录此刻MAC电脑的Command是否按下
-    var macCommand = false;
-
-    bind(this._el, 'keyup', function (event) {
-
-        var keyStringCode = getKeyString(event);
-
-        if (keyStringCode == 'command') macCommand = false;
-
-        // 取消shift被按下标志
-        shiftDown = false;
-
-    });
-
-    // 处理键盘控制
-    bind(this._el, 'keydown', function (event) {
-
-        var keyStringCode = getKeyString(event);
-
-        if (keyStringCode == 'command') macCommand = true;
-
-        // 如果Command被按下，就需要补充ctrl以兼容MAC电脑
-        if (macCommand && ['a', 'c', 'x'].indexOf(keyStringCode) > -1) {
-            keyStringCode = "ctrl+" + keyStringCode;
-        }
-
-        // 辅助输入前置拦截
-
-        if (_this.__helpInputDOM.innerHTML != '') {
-            var __helpInputEvent = _this.__helpInputEvent[keyStringCode];
-
-            if (isFunction(__helpInputEvent)) {
-
-                // 如果返回true表示继续调用，否则此快捷键结束
-                if (!__helpInputEvent()) return;
-            } else {
-                _this.__helpInputDOM.innerHTML = '';
-            }
-        }
-
-        // 只读模式需要拦截部分快捷键
-        // 命令行不拦截
-        if (_this._readonly && ['ctrl+a', 'ctrl+c'].indexOf(keyStringCode) < 0) return;
-
-        if (keyStringCode == 'shift') shiftDown = true;
-
-        // 进入常规快捷键
-
-        switch (keyStringCode) {
-
-            // 全选
-            case "ctrl+a":
-                {
-
-                    // 修改选区范围
-                    _this.__cursor1 = { leftNum: 0, lineNum: 0 };
-                    _this.__cursor2 = { lineNum: _this._contentArray.length - 1, leftNum: _this._contentArray[_this._contentArray.length - 1].length };
-
-                    // 绘制选中效果
-                    _this.$$updateSelectView();
-
-                    break;
-                }
-
-            // 复制
-            case "ctrl+c":
-                {
-                    if (_this.$$selectIsNotBlank()) {
-                        copy(calcTwoCursor());
-                        _this.__focusDOM.focus();
-                    }
-                    break;
-                }
-
-            // 剪切
-            case "ctrl+x":
-                {
-                    if (_this.$$selectIsNotBlank()) {
-
-                        copy(calcTwoCursor());
-                        _this.__focusDOM.focus();
-                        _this.$$deleteSelect();
-
-                        // 由于内容改变，需要重新调用着色
-                        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-
-                        // 更新视图
-                        _this.$$updateCursorPosition();
-                        _this.$$updateView();
-                        _this.$$cancelSelect();
-
-                        // 通知文本改动
-                        _this.__updated__();
-
-                    }
-                    break;
-                }
-
-            // 多空格输入或多行移位
-            case "tab":
-                {
-
-                    // tab用来控制输入多个空格，默认事件需要禁止
-                    stopPropagation(event);
-                    preventDefault(event);
-
-                    // 计算空格
-                    var blanks = "";
-                    for (var i = 0; i < _this._tabSpace; i++) blanks += " ";
-
-                    // 如果有选区，特殊处理
-                    if (_this.$$selectIsNotBlank()) {
-
-                        var beginLineNum = _this.__cursor1.lineNum,
-                            endLineNum = _this.__cursor2.lineNum;
-                        if (beginLineNum > endLineNum) {
-                            beginLineNum = _this.__cursor2.lineNum;
-                            endLineNum = _this.__cursor1.lineNum;
-                        }
-
-                        // 在开头追究tab
-                        for (var lineNum = beginLineNum; lineNum <= endLineNum; lineNum++) {
-                            _this._contentArray[lineNum] = blanks + _this._contentArray[lineNum];
-                        }
-
-                        // 校对选择区域
-                        _this.__cursor1.leftNum += _this._tabSpace;
-                        _this.__cursor2.leftNum += _this._tabSpace;
-
-                        // 校对光标
-                        _this.__leftNum += _this._tabSpace;
-
-                        _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-                        _this.$$updateCursorPosition();
-                        _this.$$updateView();
-                        _this.$$updateCanvasSize();
-                        _this.$$updateSelectView();
-
-                        // 通知文本改动
-                        _this.__updated__();
-
-                    } else {
-                        update(blanks);
-                    }
-
-                    break;
-                }
-
-            // 光标向上
-            case "up":
-                {
-
-                    // 如果是第一行不需要任何处理
-                    if (_this.__lineNum <= 0) return;
-
-                    // 向上一行
-                    _this.__lineNum -= 1;
-
-                    _this.__leftNum = _this.$$bestLeftNum(_this.$$textWidth(_this._contentArray[_this.__lineNum + 1].substr(0, _this.__leftNum)) + 40);
-
-                    _this.$$updateCursorPosition();
-                    _this.$$updateView();
-                    _this.$$cancelSelect();
-
-                    _this._el.scrollTop -= 21;
-
-                    break;
-                }
-
-            // 光标向下
-            case "down":
-                {
-
-                    if (_this.__lineNum >= _this._contentArray.length - 1) return;
-
-                    // 向下一行
-                    _this.__lineNum += 1;
-
-                    _this.__leftNum = _this.$$bestLeftNum(_this.$$textWidth(_this._contentArray[_this.__lineNum - 1].substr(0, _this.__leftNum)) + 40);
-
-                    _this.$$updateCursorPosition();
-                    _this.$$updateView();
-                    _this.$$cancelSelect();
-
-                    _this._el.scrollTop += 21;
-
-                    break;
-                }
-
-            // 光标向左
-            case "left":
-                {
-
-                    if (_this.__leftNum <= 0) {
-                        if (_this.__lineNum <= 0) return;
-                        _this.__lineNum -= 1;
-                        _this.__leftNum = _this._contentArray[_this.__lineNum].length;
-                    } else {
-                        _this.__leftNum -= 1;
-                    }
-
-                    _this.$$updateCursorPosition();
-                    _this.$$cancelSelect();
-
-                    break;
-                }
-
-            // 光标向右
-            case "right":
-                {
-
-                    if (_this.__leftNum >= _this._contentArray[_this.__lineNum].length) {
-                        if (_this.__lineNum >= _this._contentArray.length - 1) return;
-                        _this.__lineNum += 1;
-                        _this.__leftNum = 0;
-                    } else {
-                        _this.__leftNum += 1;
-                    }
-
-                    _this.$$updateCursorPosition();
-                    _this.$$cancelSelect();
-
-                    break;
-                }
-
-            // 删除
-            case "backspace":
-                {
-
-                    // 如果有选区
-                    if (_this.$$selectIsNotBlank()) {
-
-                        // 删除选区
-                        _this.$$deleteSelect();
-
-                    }
-
-                    // 无选区的常规操作
-                    else {
-                        if (_this.__leftNum <= 0) {
-                            if (_this.__lineNum <= 0) return;
-
-                            _this.__lineNum -= 1;
-                            _this.__leftNum = _this._contentArray[_this.__lineNum].length;
-
-                            // 一行的开头应该删除本行（合并到前一行）
-                            _this._contentArray[_this.__lineNum] += _this._contentArray[_this.__lineNum + 1];
-                            _this._contentArray.splice(_this.__lineNum + 1, 1);
-
-                        } else {
-                            _this.__leftNum -= 1;
-                            _this._contentArray[_this.__lineNum] = _this._contentArray[_this.__lineNum].substring(0, _this.__leftNum) + _this._contentArray[_this.__lineNum].substring(_this.__leftNum + 1);
-                        }
-                    }
-
-                    // 由于内容改变，需要重新调用着色
-                    _this.__formatData = _this.$$diff(_this.$shader(_this._contentArray.join('\n')));
-
-                    // 更新视图
-                    _this.$$updateCursorPosition();
-                    _this.$$updateView();
-                    _this.$$cancelSelect();
-
-                    // 通知文本改动
-                    _this.__updated__();
-
-                    break;
-                }
-        }
-
-    });
+    }
 
 };
+
 
     return __pkg__scope_bundle__;
 }
@@ -1890,7 +1330,7 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['178']=function(){
+window.__pkg__bundleSrc__['173']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
@@ -2093,262 +1533,374 @@ __pkg__scope_bundle__.default= function (callback) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/xhtml/mousePosition
+// Original file:./src/tool/excel/menu/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['104']=function(){
+window.__pkg__bundleSrc__['294']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // 获取鼠标相对特定元素左上角位置
-__pkg__scope_bundle__.default= function (el, event) {
+    __pkg__scope_args__=window.__pkg__getBundle('283');
+var find =__pkg__scope_args__.default;
 
-    event = event || window.event;
+__pkg__scope_args__=window.__pkg__getBundle('48');
+var appendTo =__pkg__scope_args__.default;
 
-    // 返回元素的大小及其相对于视口的位置
-    var bounding = el.getBoundingClientRect();
+__pkg__scope_args__=window.__pkg__getBundle('22');
+var bind =__pkg__scope_args__.default;
 
-    if (!event || !event.clientX)
-        throw new Error('Event is necessary!');
-    var temp = {
+__pkg__scope_args__=window.__pkg__getBundle('285');
+var hasClass =__pkg__scope_args__.default;
 
-        // 鼠标相对元素位置 = 鼠标相对窗口坐标 - 元素相对窗口坐标
-        "x": event.clientX - bounding.left + el.scrollLeft,
-        "y": event.clientY - bounding.top + el.scrollTop
-    };
+__pkg__scope_args__=window.__pkg__getBundle('295');
+var colorTemplate =__pkg__scope_args__.default;
 
-    return temp;
-};
-
-    return __pkg__scope_bundle__;
-}
-
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/diff
-/*****************************************************************/
-window.__pkg__bundleSrc__['195']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 判断一行是否匹配
-
-var euqalLine = function (line1, line2) {
-    if (line1.length != line2.length) return false;
-    for (var i = 0; i < line1.length; i++) {
-        if (line1[i].content != line2[i].content || line1[i].color != line2[i].color) return false;
-    }
-    return true;
-};
-
-/**
- * 为了加速页面渲染，我们引入差异对比
- * 简单的理解就是：
- * 原本在数据改变的时候直接更新整个DOM的方式替换成只功能必要的DOM
- */
-
-__pkg__scope_bundle__.default= function (newFormatData) {
-
-    /**
-     * 思路：
-     * 
-     * 从开始匹配无法匹配的，匹配条个数记作beginNum
-     * 再从结尾匹配无法匹配的，匹配条个数记作endNum
-     * 只有begin和end之间的数据需要更新DOM
-     * 
-     * 当然，也有特殊情况，因此在进行回归前，先把特殊情况提取处理
-     * 
-     */
-
-    var oldFormatData = this.__formatData;
-
-    if (oldFormatData) {
-        // 寻找开始匹配行数
-        var beginNum = 0;
-        for (var i = 0; i < oldFormatData.length && i < newFormatData.length; i++) {
-            if (!euqalLine(oldFormatData[i], newFormatData[i])) {
-                break;
-            }
-            beginNum += 1;
-        }
-
-        // 寻找结束匹配行数
-        var endNum = 0;
-        for (var i = 1; i <= oldFormatData.length && i <= newFormatData.length; i++) {
-            if (!euqalLine(oldFormatData[oldFormatData.length - i], newFormatData[newFormatData.length - i])) {
-                break;
-            }
-            endNum += 1;
-        }
-
-        var minLength = Math.min(oldFormatData.length, newFormatData.length);
-
-        // 校对(如果复用重叠了)
-        if (beginNum + endNum >= minLength) {
-            endNum = minLength - beginNum - 1;
-
-            // 由于不知道是删除还是增加，因此可能出现负数
-            if (endNum < 0) endNum = 0;
-        }
-
-        // 对比以后的差异信息
-        this.__diff = {
-            beginNum: beginNum,
-            endNum: endNum
-        };
-
-    }
-
-    return newFormatData;
-};
+__pkg__scope_args__=window.__pkg__getBundle('286');
+var getTargetNode=__pkg__scope_args__.getTargetNode;
 
 
-    return __pkg__scope_bundle__;
-}
+__pkg__scope_bundle__.default= function () {
+    var _this = this;
 
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/editor/edit-view/filter
-/*****************************************************************/
-window.__pkg__bundleSrc__['196']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    
-// 外来文本统一过滤处理
+    // 顶部操作栏
+    var topDom = appendTo(this.__el, "<div class='top-dom' excel></div>");
 
-__pkg__scope_bundle__.default= function (oralStr) {
+    this.$$addStyle('top-dom', "" +
 
-    // 把tab统一变成空格
-    var tab = "";
-    for (var i = 0; i < this._tabSpace; i++) {
-        tab += " ";
-    }
+        ".top-dom{" +
+        "    width: 100%;" +
+        "    height: 62px;" +
+        "    overflow: hidden;" +
+        "}");
 
-    return oralStr.replace(/\t/g, tab);
-};
+    // 菜单
+    this.__menuDom = appendTo(topDom, "<div class='menu' excel>" +
+        "<span excel>" +
+        "    操作" +
+        "    <div excel>" +
+        "       <span class='item more' excel>" +
+        "            插入" +
+        "            <div excel>" +
+        "                <span class='item' excel>" +
+        "                    <span def-type='insert-up'>向上插入</span>" +
+        "                    <input value='1' excel />" +
+        "                    <span def-type='insert-up'>行</span>" +
+        "                </span>" +
+        "                <span class='item' excel>" +
+        "                    <span def-type='insert-down'>向下插入</span>" +
+        "                    <input value='1' excel />" +
+        "                    <span def-type='insert-down'>行</span>" +
+        "                </span>" +
+        "                <span class='item' excel>" +
+        "                    <span def-type='insert-left'>向左插入</span>" +
+        "                    <input value='1' excel />" +
+        "                    <span def-type='insert-left'>列</span>" +
+        "                </span>" +
+        "                <span class='item' excel>" +
+        "                    <span def-type='insert-right'>向右插入</span>" +
+        "                    <input value='1' excel />" +
+        "                    <span def-type='insert-right'>列</span>" +
+        "                </span>" +
+        "            </div>" +
+        "        </span>" +
+        "        <span class='item more' excel>" +
+        "            删除" +
+        "            <div excel>" +
+        "                <span class='item' excel def-type='delete-row'>" +
+        "                    删除当前行" +
+        "                </span>" +
+        "                <span class='item' excel def-type='delete-col'>" +
+        "                    删除当前列" +
+        "                </span>" +
+        "            </div>" +
+        "        </span>" +
+        "        <span class='item more' excel>" +
+        "            合并单元格" +
+        "            <div excel>" +
+        "                <span class='item' def-type='merge-all' excel>全部合并</span>" +
+        "                <span class='item' def-type='merge-cancel' excel>取消合并</span>" +
+        "            </div>" +
+        "        </span>" +
+        "    </div>" +
+        "</span>" +
+        "<span excel>" +
+        "    格式" +
+        "    <div excel>" +
+        "        <span class='item' def-type='bold' excel>粗体</span>" +
+        "        <span class='item' def-type='italic' excel>斜体</span>" +
+        "        <span class='item' def-type='underline' excel>下划线</span>" +
+        "        <span class='item' def-type='line-through' excel>中划线</span>" +
+        "        <span class='line' excel></span>" +
+        "        <span class='item more' excel>" +
+        "            水平对齐" +
+        "            <div excel>" +
+        "                <span class='item' def-type='horizontal-left' excel>左对齐</span>" +
+        "                <span class='item' def-type='horizontal-center' excel>居中对齐</span>" +
+        "                <span class='item' def-type='horizontal-right' excel>右对齐</span>" +
+        "            </div>" +
+        "        </span>" +
+        "        <span class='item more' excel>" +
+        "            垂直对齐" +
+        "            <div excel>" +
+        "                <span class='item' def-type='vertical-top' excel>顶部对齐</span>" +
+        "                <span class='item' def-type='vertical-middle' excel>居中对齐</span>" +
+        "                <span class='item' def-type='vertical-bottom' excel>底部对齐</span>" +
+        "            </div>" +
+        "        </span>" +
+        "    </div>" +
+        "</span>" +
+        "</div>");
 
-    return __pkg__scope_bundle__;
-}
+    this.$$addStyle('menu', "" +
 
-/*************************** [bundle] ****************************/
-// Original file:./src/tool/shader/index
-/*****************************************************************/
-window.__pkg__bundleSrc__['197']=function(){
-    var __pkg__scope_bundle__={};
-    var __pkg__scope_args__;
-    /**
- * 代码着色计算
- */
+        ".menu{" +
+        "    border-bottom: 1px solid #d6cccb;" +
+        "    padding: 0 20px;" +
+        "    box-sizing: border-box;" +
+        "    white-space: nowrap;" +
+        "}" +
 
-// 合并内容
+        ".menu>span{" +
+        "    display: inline-block;" +
+        "    line-height: 26px;" +
+        "    padding: 0 10px;" +
+        "    font-size: 12px;" +
+        "    cursor: pointer;" +
+        "    color: #555555;" +
+        "}" +
 
-var toShaderReult = function (words) {
+        ".menu>span:hover{" +
+        "    background: white;" +
+        "}" +
 
-    var resultData = [[]], lineNum = 0;
+        ".menu>span>div{" +
+        "    margin-left: -10px;" +
+        "}" +
 
-    words.forEach(function (word) {
+        ".menu>span div{" +
+        "    position:absolute;" +
+        "    background: white;" +
+        "    width: 140px;" +
+        "    box-shadow: 4px 3px 6px 0 #c9c9e2;" +
+        "    display:none;" +
+        "    padding:5px 0;" +
+        "}" +
 
-        var codeArray = word.content.split(/\n/), index;
+        ".menu>span div span{" +
+        "    display:block;" +
+        "    position:relative;" +
+        "    padding:5px 20px;" +
+        "}" +
 
-        resultData[lineNum].push({
-            color: word.color,
-            content: codeArray[0]
-        });
+        ".menu>span div span>div{" +
+        "    left:140px;" +
+        "    top:0px;" +
+        "}" +
 
-        for (index = 1; index < codeArray.length; index++) {
-            lineNum += 1;
-            resultData.push([]);
+        ".menu .line{" +
+        "    height:1px;" +
+        "    background-color:#d6cccb;" +
+        "    padding:0;" +
+        "    margin:0 10px;" +
+        "}" +
 
-            resultData[lineNum].push({
-                color: word.color,
-                content: codeArray[index]
-            });
+        ".menu input{" +
+        "    width:20px;" +
+        "    outline:none;" +
+        "}" +
 
-        }
+        ".menu span:hover>div{" +
+        "    display:block;" +
+        "}" +
+
+        ".menu span.more:after{" +
+        '    content:" > ";' +
+        "    position: absolute;" +
+        "    right: 12px;" +
+        "    font-weight: 800;" +
+        "}" +
+
+        ".menu a{" +
+        "    text-decoration: none;" +
+        "    color: #555555;" +
+        "}" +
+
+        ".menu input{" +
+        "    width:20px;" +
+        "    outline:none;" +
+        "}" +
+
+        ".menu .item.active::before{" +
+        '    content: " * ";' +
+        "    color: red;" +
+        "    position: absolute;" +
+        "    left: 8px;" +
+        "}" +
+
+        ".menu .item{" +
+        "    text-decoration: none;" +
+        "}" +
+
+        ".menu .item:hover{" +
+        "    text-decoration: underline;" +
+        "}");
+
+    // 快捷菜单
+    this.__menuQuickDom = appendTo(topDom, "<div class='quick-menu' excel>" +
+        "<span class='item' def-type='format' excel>格式刷</span>" +
+        "<span class='line' excel></span>" +
+        "<span class='item color' def-type='font-color' excel>" +
+        "    文字颜色：<i class='color' excel></i>" +
+        colorTemplate +
+        "</span>" +
+        "<span class='item color' def-type='background-color' excel>" +
+        "    填充色：<i class='color' excel></i>" +
+        colorTemplate +
+        "</span>" +
+        "<span class='line' excel></span>" +
+        "<span class='item' def-type='merge-all' excel>" +
+        "    全部合并" +
+        "</span>" +
+        "<span class='item' def-type='merge-cancel' excel>" +
+        "    取消合并" +
+        "</span>" +
+        "<span class='line' excel></span>" +
+        "<span class='item' def-type='horizontal-left' excel>" +
+        "    左对齐" +
+        "</span>" +
+        "<span class='item' def-type='horizontal-center' excel>" +
+        "    居中对齐" +
+        "</span>" +
+        "<span class='item' def-type='horizontal-right' excel>" +
+        "    右对齐" +
+        "</span>" +
+        "<span class='line' excel></span>" +
+        "<span class='item' def-type='vertical-top' excel>" +
+        "    顶部对齐" +
+        "</span>" +
+        "<span class='item' def-type='vertical-middle' excel>" +
+        "    居中对齐" +
+        "</span>" +
+        "<span class='item' def-type='vertical-bottom' excel>" +
+        "    底部对齐" +
+        "</span>" +
+        "</div>");
+
+    this.$$addStyle('quick-menu', "" +
+
+        ".quick-menu{" +
+        "    line-height: 36px;" +
+        "    font-size: 12px;" +
+        "    white-space: nowrap;" +
+        "    width: 100%;" +
+        "    overflow: auto;" +
+        "}" +
+
+        ".quick-menu span{" +
+        "    display:inline-block;" +
+        "    vertical-align: top;" +
+        "}" +
+
+        ".quick-menu span>i.color{" +
+        "    display: inline-block;" +
+        "    height: 14px;" +
+        "    width: 20px;" +
+        "    border:1px solid #d6cccb;" +
+        "    vertical-align: middle;" +
+        "}" +
+
+        ".quick-menu .item{" +
+        "    margin:0 10px;" +
+        "    cursor: pointer;" +
+        "}" +
+
+        ".quick-menu .line{" +
+        "    background-color:#d6cccb;" +
+        "    width:1px;" +
+        "    height:22px;" +
+        "    margin-top:7px;" +
+        "}" +
+
+        ".quick-menu .item:hover{" +
+        "    font-weight: 800;" +
+        "}" +
+
+        ".quick-menu .item.active{" +
+        "    font-weight: 800;" +
+        "    color: red;" +
+        "}" +
+
+        "/* 选择颜色 */" +
+
+        ".color-view{" +
+        "    font-size: 0px;" +
+        "    width: 171px;" +
+        "    position: absolute;" +
+        "    padding: 10px;" +
+        "    box-sizing: content-box;" +
+        "    background: #fefefe;" +
+        "    box-shadow: 1px 1px 5px #9e9695;" +
+        "    line-height:1em;" +
+        "    display:none;" +
+        "    margin-top: -5px;" +
+        "    white-space: normal;" +
+        "}" +
+
+        ".color:hover>.color-view, .color-view:hover{" +
+        "    display:block;" +
+        "}" +
+
+        ".color-item{" +
+        "    display: inline-block;" +
+        "    width: 19px;" +
+        "    height: 19px;" +
+        "}" +
+
+        ".color-item>span{" +
+        "    width: 15px;" +
+        "    height: 15px;" +
+        "    margin: 2px;" +
+        "    cursor: pointer;" +
+        "    box-sizing: border-box;" +
+        "}" +
+
+        ".color-item>span:hover{" +
+        "    outline:1px solid black;" +
+        "}");
+
+    // 对菜单添加点击事件
+    var menuClickItems = find(topDom, function (node) { return node.getAttribute('def-type'); }, 'span');
+
+    bind(menuClickItems, 'click', function (event) {
+
+        var node = getTargetNode(event);
+
+        // 获取按钮类型
+        var defType = node.getAttribute('def-type');
+
+        _this.$$menuHandler(defType, node);
 
     });
 
-    return resultData;
-};
+    // 对选择颜色添加点击事件
+    var colorItems = find(topDom, function (node) { return hasClass(node, 'color'); }, 'span');
+    for (var i = 0; i < colorItems.length; i++) {
 
-// 初始化配置文件
+        var colorClickItems = find(colorItems[i], function () { return true; }, 'span');
+        (function (i) {
+            bind(colorClickItems, 'click', function (event) {
 
-var initConfig = function (init, data) {
-    var key;
-    for (key in data)
-        try {
-            init[key] = data[key];
-        } catch (e) {
-            throw new Error("Illegal property value！");
-        }
-    return init;
-};
+                var defType = colorItems[i].getAttribute('def-type');
+                var colorValue = getTargetNode(event).style.background;
 
-__pkg__scope_args__=window.__pkg__getBundle('198');
-var _inner_HTML_shader =__pkg__scope_args__.default;
+                // 设置
+                _this.$$setItemStyle({
+                    'background-color': 'background',
+                    'font-color': 'color'
+                }[defType], colorValue);
 
-__pkg__scope_args__=window.__pkg__getBundle('199');
-var _inner_CSS_shader =__pkg__scope_args__.default;
+            });
+        })(i);
 
-__pkg__scope_args__=window.__pkg__getBundle('200');
-var _inner_ES_shader =__pkg__scope_args__.default;
-
-
-var _deafultColors_html = {
-    "text": "#000000",/*文本颜色*/
-    "annotation": "#6a9955",/*注释颜色*/
-    "insign": "#555",/*符号颜色*/
-    "node": "#1e50b3",/*结点颜色*/
-    "attrKey": "#1e83b1",/*属性名称颜色*/
-    "attrValue": "#ac4c1e",/*属性值颜色*/
-};
-var _deafultColors_css = {
-    "annotation": "#6a9955",/*注释颜色*/
-    "insign": "#555",/*符号颜色*/
-    "selector": "#1e50b3",/*选择器*/
-    "attrKey": "#1e83b1",/*属性名称颜色*/
-    "attrValue": "#ac4c1e"/*属性值颜色*/
-};
-var _deafultColors_javascript = {
-    "text": "#000000",/*文本颜色*/
-    "annotation": "#6a9955",/*注释颜色*/
-    "insign": "#555",/*符号颜色*/
-    "key": "#ff0000",/*关键字颜色*/
-    "string": "#ac4c1e",/*字符串颜色*/
-    "funName": "#1e50b3",/*函数名称颜色*/
-    "execName": "#1e83b1"/*执行方法颜色*/
-};
-
-__pkg__scope_bundle__.default= function (lang, colors) {
-    colors = colors || {};
-
-    var _inner_shader, _inner_colors;
-
-    if (lang == 'html') {
-
-        colors._css = initConfig(_deafultColors_css, colors.css);
-        colors._javascript = initConfig(_deafultColors_javascript, colors.javascript);
-        _inner_colors = initConfig(_deafultColors_html, colors);
-
-        _inner_shader = _inner_HTML_shader;
-
-    } else if (lang == 'css') {
-
-        _inner_colors = initConfig(_deafultColors_css, colors);
-
-        _inner_shader = _inner_CSS_shader;
-
-    } else if (lang == 'javascript') {
-
-        _inner_colors = initConfig(_deafultColors_javascript, colors);
-
-        _inner_shader = _inner_ES_shader;
-
-    } else {
-        throw new Error('Language not supported:' + lang + ",The languages available include: html、css、javascript!");
     }
-
-    return function (textString) {
-
-        return toShaderReult(_inner_shader(textString, _inner_colors));
-
-    };
 
 };
 
@@ -2357,597 +1909,1180 @@ __pkg__scope_bundle__.default= function (lang, colors) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/shader/html
+// Original file:./src/tool/excel/menu/color-template
 /*****************************************************************/
-window.__pkg__bundleSrc__['198']=function(){
+window.__pkg__bundleSrc__['295']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('199');
-var _inner_CSS_shader =__pkg__scope_args__.default;
+    var colors = [
+    ['白', 'rgb(255, 255, 255)'],
+    ['漆黑', 'rgb(13, 0, 21)'],
+    ['红', 'rgb(254, 44, 35)'],
+    ['橙', 'rgb(255, 153, 0)'],
+    ['黄', 'rgb(255, 217, 0)'],
+    ['葱绿', 'rgb(163, 224, 67)'],
+    ['湖蓝', 'rgb(55, 217, 240)'],
+    ['天色', 'rgb(77, 168, 238)'],
+    ['藤紫', 'rgb(149, 111, 231)'],
+    ['白练', 'rgb(243, 243, 244)'],
+    ['白鼠', 'rgb(204, 204, 204)'],
+    ['樱', 'rgb(254, 242, 240)'],
+    ['镐', 'rgb(254, 245, 231)'],
+    ['练', 'rgb(254, 252, 217)'],
+    ['芽', 'rgb(237, 246, 232)'],
+    ['水', 'rgb(230, 250, 250)'],
+    ['缥', 'rgb(235, 244, 252)'],
+    ['丁香', 'rgb(240, 237, 246)'],
+    ['灰青', 'rgb(215, 216, 217)'],
+    ['鼠', 'rgb(165, 165, 165)'],
+    ['虹', 'rgb(251, 212, 208)'],
+    ['落柿', 'rgb(255, 215, 185)'],
+    ['花叶', 'rgb(249, 237, 166)'],
+    ['白绿', 'rgb(212, 233, 214)'],
+    ['天青', 'rgb(199, 230, 234)'],
+    ['天空', 'rgb(204, 224, 241)'],
+    ['水晶', 'rgb(218, 213, 233)'],
+    ['薄纯', 'rgb(123, 127, 131)'],
+    ['墨', 'rgb(73, 73, 73)'],
+    ['甚三红', 'rgb(238, 121, 118)'],
+    ['珊瑚', 'rgb(250, 165, 115)'],
+    ['金', 'rgb(230, 179, 34)'],
+    ['薄青', 'rgb(152, 192, 145)'],
+    ['白群', 'rgb(121, 198, 205)'],
+    ['薄花', 'rgb(110, 170, 215)'],
+    ['紫苑', 'rgb(156, 142, 193)'],
+    ['石墨', 'rgb(65, 70, 75)'],
+    ['黑', 'rgb(51, 51, 51)'],
+    ['绯红', 'rgb(190, 26, 29)'],
+    ['棕黄', 'rgb(185, 85, 20)'],
+    ['土黄', 'rgb(173, 114, 14)'],
+    ['苍翠', 'rgb(28, 114, 49)'],
+    ['孔雀', 'rgb(28, 120, 146)'],
+    ['琉璃', 'rgb(25, 67, 156)'],
+    ['青莲', 'rgb(81, 27, 120)']
+];
 
-__pkg__scope_args__=window.__pkg__getBundle('200');
-var _inner_ES_shader =__pkg__scope_args__.default;
+var template = "<div class='color-view' excel>";
+for (var i = 0; i < colors.length; i++) {
+    template += "<div class='color-item' excel><span title='" + colors[i][0] + "' excel style='background:" + colors[i][1] + "'> </span></div>";
+}
+template += "</div>";
+
+__pkg__scope_bundle__.default= template;
 
 
-__pkg__scope_bundle__.default= function (textString, colors) {
+    return __pkg__scope_bundle__;
+}
 
-    var shaderArray = [];
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/menu/update
+/*****************************************************************/
+window.__pkg__bundleSrc__['296']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('283');
+var find =__pkg__scope_args__.default;
 
-    // 当前面对的
-    var i = 0;
+__pkg__scope_args__=window.__pkg__getBundle('297');
+var addClass =__pkg__scope_args__.default;
 
-    // 获取往后n个值
-    var nextNValue = function (n) {
-        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
-    };
+__pkg__scope_args__=window.__pkg__getBundle('284');
+var removeClass =__pkg__scope_args__.default;
 
-    var template = "";
 
-    // 初始化模板，开始文本捕获
-    var initTemplate = function () {
-        if (template != "") {
-            shaderArray.push({
-                color: colors.text,
-                content: template
-            });
-        }
+__pkg__scope_bundle__.default= function (style) {
 
-        template = "";
-    };
+    // 更新顶部菜单
 
-    // 匹配属性值模板
-    var getAttrValueTemplate = function () {
-        var endStr = " ";
-        // 寻找属性值边界
-        if (nextNValue(1) == '"') endStr = '"';
-        if (nextNValue(1) == "'") endStr = "'";
+    var menuItems = find(this.__menuDom, function (node) { return node.getAttribute('def-type'); }, 'span');
+    for (var i = 0; i < menuItems.length; i++) {
 
-        // 到达边界前一直寻找下一个
-        do {
-            template += textString[i++];
-        } while (nextNValue(1) != endStr && i < textString.length);
+        // 获取按钮类型
+        var defType = menuItems[i].getAttribute('def-type');
 
-        // 如果是匹配成功而不是匹配到末尾
-        if (endStr != " " && i < textString.length) {
-            template += endStr;
-            i += 1;
-        }
+        // 粗体
+        if (defType == 'bold') {
 
-        shaderArray.push({
-            color: colors.attrValue,
-            content: template
-        });
-        template = "";
-    };
-
-    while (true) {
-
-        /* 1.注释 */
-
-        if (nextNValue(4) == '<!--') {
-
-            initTemplate();
-            while (nextNValue(3) !== '-->' && i < textString.length) {
-                template += textString[i++];
+            if (style['font-weight'] == 'bold') {
+                addClass(menuItems[i], 'active');
+            } else {
+                removeClass(menuItems[i], 'active');
             }
 
-            shaderArray.push({
-                color: colors.annotation,
-                content: template + nextNValue(3)
-            });
-            i += 3;
-            template = "";
+        }
+
+        // 粗体
+        else if (defType == 'italic') {
+
+            if (style['font-style'] == 'italic') {
+                addClass(menuItems[i], 'active');
+            } else {
+                removeClass(menuItems[i], 'active');
+            }
 
         }
 
-        /* 2.</ */
+        // 中划线
+        else if (defType == 'underline') {
 
-        else if (nextNValue(2) == '</') {
-
-            initTemplate();
-            shaderArray.push({
-                color: colors.insign,
-                content: "</"
-            });
-            i += 2;
-
-            while (nextNValue(1) !== '>' && i < textString.length) {
-                template += textString[i++];
+            if (style['text-decoration'] == 'underline') {
+                addClass(menuItems[i], 'active');
+            } else {
+                removeClass(menuItems[i], 'active');
             }
 
-            if (template != "") {
-                shaderArray.push({
-                    color: colors.node,
-                    content: template
-                });
-                template = "";
+        }
 
-                if (i < textString.length) {
-                    shaderArray.push({
-                        color: colors.insign,
-                        content: ">"
-                    });
-                    i += 1;
+        // 下划线
+        else if (defType == 'line-through') {
+
+            if (style['text-decoration'] == 'line-through') {
+                addClass(menuItems[i], 'active');
+            } else {
+                removeClass(menuItems[i], 'active');
+            }
+
+        }
+
+        // 水平对齐方式
+        else if (/^horizontal\-/.test(defType)) {
+
+            if (defType == 'horizontal-' + style['text-align']) {
+                addClass(menuItems[i], 'active');
+            } else {
+                removeClass(menuItems[i], 'active');
+            }
+
+        }
+
+        // 垂直对齐方式
+        else if (/^vertical\-/.test(defType)) {
+
+            if (defType == 'vertical-' + style['vertical-align']) {
+                addClass(menuItems[i], 'active');
+            } else {
+                removeClass(menuItems[i], 'active');
+            }
+
+        }
+
+    }
+
+    // 更新快速使用菜单
+
+    var quickItems = find(this.__menuQuickDom, function (node) { return node.getAttribute('def-type'); }, 'span');
+    for (var i = 0; i < quickItems.length; i++) {
+
+        // 获取按钮类型
+        var defType = quickItems[i].getAttribute('def-type');
+
+        // 文字颜色
+        if (defType == 'font-color') {
+            quickItems[i].getElementsByTagName('i')[0].style.backgroundColor = style.color;
+        }
+
+        // 填充色
+        else if (defType == 'background-color') {
+            quickItems[i].getElementsByTagName('i')[0].style.backgroundColor = style.background;
+        }
+
+        // 水平对齐方式
+        else if (/^horizontal\-/.test(defType)) {
+
+            if (defType == 'horizontal-' + style['text-align']) {
+                addClass(quickItems[i], 'active');
+            } else {
+                removeClass(quickItems[i], 'active');
+            }
+
+        }
+
+        // 垂直对齐方式
+        else if (/^vertical\-/.test(defType)) {
+
+            if (defType == 'vertical-' + style['vertical-align']) {
+                addClass(quickItems[i], 'active');
+            } else {
+                removeClass(quickItems[i], 'active');
+            }
+
+        }
+
+    }
+
+};
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/addClass
+/*****************************************************************/
+window.__pkg__bundleSrc__['297']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('285');
+var hasClass =__pkg__scope_args__.default;
+
+
+// 添加指定class
+__pkg__scope_bundle__.default= function (dom, clazz) {
+    if (hasClass(dom, clazz)) return;
+    var oldClazz = dom.getAttribute('class') || "";
+    dom.setAttribute('class', oldClazz + " " + clazz);
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/menu/menu-handler
+/*****************************************************************/
+window.__pkg__bundleSrc__['298']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('285');
+var hasClass =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('283');
+var find =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('297');
+var addClass =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.default= function (defType, node) {
+
+    // 格式刷
+    if (defType == 'format') {
+
+        // 首先需要确定选择区域，然后点击格式刷来同步格式
+        if (this.__region != null) {
+
+            // 标记格式刷
+            this.__format = true;
+            addClass(find(this.__menuQuickDom, function (node) { return node.getAttribute('def-type') == 'format'; }, 'span')[0], 'active');
+
+        }
+
+    }
+
+    // 粗体
+    else if (defType == 'bold') {
+        this.$$setItemStyle('font-weight', hasClass(node, 'active') ? 'normal' : 'bold');
+    }
+
+    // 斜体
+    else if (defType == 'italic') {
+        this.$$setItemStyle('font-style', hasClass(node, 'active') ? 'normal' : 'italic');
+    }
+
+    // 中划线
+    else if (defType == 'line-through') {
+        this.$$setItemStyle('text-decoration', hasClass(node, 'active') ? 'none' : 'line-through');
+    }
+
+    // 下划线
+    else if (defType == 'underline') {
+        this.$$setItemStyle('text-decoration', hasClass(node, 'active') ? 'none' : 'underline');
+    }
+
+    // 水平对齐方式
+    else if (/^horizontal\-/.test(defType)) {
+        this.$$setItemStyle('text-align', defType.replace('horizontal-', ''));
+    }
+
+    // 垂直对齐方式
+    else if (/^vertical\-/.test(defType)) {
+        this.$$setItemStyle('vertical-align', defType.replace('vertical-', ''));
+    }
+
+    // 合并单元格
+    else if (/^merge\-/.test(defType)) {
+
+        // 无选择区域，直接结束
+        if (this.__region == null) return;
+
+        // 全部合并
+        if (defType == 'merge-all') {
+
+            // 如果选择的区域就一个结点，不用额外的操作了
+            if (this.__region.nodes.length <= 1) return;
+
+            // 删除多余的结点并修改数据
+            for (var i = 1; i < this.__region.nodes.length; i++) {
+
+                this.__contentArray[this.__tableIndex].content[this.__region.nodes[i].getAttribute('row') - 1][this.__region.nodes[i].getAttribute('col') - 1].style.display = 'none';
+                this.__contentArray[this.__tableIndex].content[this.__region.nodes[i].getAttribute('row') - 1][this.__region.nodes[i].getAttribute('col') - 1].value = ' ';
+                this.__region.nodes[i].style.display = 'none';
+            }
+
+            this.__region.nodes = [this.__region.nodes[0]];
+
+            // 修改第一个结点的数据和占位
+
+            this.__contentArray[this.__tableIndex].content[this.__region.nodes[0].getAttribute('row') - 1][this.__region.nodes[0].getAttribute('col') - 1].colspan = (this.__region.info.col[1] - this.__region.info.col[0] + 1) + "";
+            this.__contentArray[this.__tableIndex].content[this.__region.nodes[0].getAttribute('row') - 1][this.__region.nodes[0].getAttribute('col') - 1].rowspan = (this.__region.info.row[1] - this.__region.info.row[0] + 1) + "";
+
+            this.__region.nodes[0].setAttribute('colspan', (this.__region.info.col[1] - this.__region.info.col[0] + 1) + "");
+            this.__region.nodes[0].setAttribute('rowspan', (this.__region.info.row[1] - this.__region.info.row[0] + 1) + "");
+
+            this.__region.nodes[0].click();
+        }
+
+        // 取消合并
+        else if (defType == 'merge-cancel') {
+
+            var rowNodes = find(this.__contentDom[this.__tableIndex], function () { return true; }, 'tr');
+
+            // 确保所有的格子都是 1*1 的
+            for (var row = this.__region.info.row[0]; row <= this.__region.info.row[1]; row++) {
+
+                var colNodes = find(rowNodes[row], function () { return true; }, 'th');
+
+                for (var col = this.__region.info.col[0]; col <= this.__region.info.col[1]; col++) {
+
+                    // 修改界面显示
+                    colNodes[col].style.display = 'table-cell';
+                    colNodes[col].setAttribute('colspan', '1');
+                    colNodes[col].setAttribute('rowspan', '1');
+
+                    // 修改数据
+                    this.__contentArray[this.__tableIndex].content[row - 1][col - 1].style.display = 'table-cell';
+                    this.__contentArray[this.__tableIndex].content[row - 1][col - 1].colspan = '1';
+                    this.__contentArray[this.__tableIndex].content[row - 1][col - 1].rowspan = '1';
+
                 }
 
             }
+
+            this.$$cancelRegion();
+            this.__region = null;
+
         }
 
-        /* 3.< */
+    }
 
-        else if (nextNValue(1) == '<' && nextNValue(2) != '< ') {
+    // 插入
+    else if (/^insert\-/.test(defType)) {
 
-            var specialTag = "";
+        var num = +find(node.parentNode, function () { return true; }, 'input')[0].value;
 
-            initTemplate();
-            shaderArray.push({
-                color: colors.insign,
-                content: "<"
-            });
-            i += 1;
+        // 向上插入行
+        if (defType == 'insert-up') {
+            for (var i = 0; i < num; i++) this.$$insertUpNewRow();
+        }
 
-            // 寻找标签名称
-            while (nextNValue(1) != '>' && nextNValue(1) != ' ' && i < textString.length) {
-                template += textString[i++];
-            }
-            if (template != '') {
+        // 向下插入行
+        else if (defType == 'insert-down') {
+            for (var i = 0; i < num; i++) this.$$insertDownNewRow();
+        }
 
-                // 针对style和script这样特殊的标签，内部需要调用对应的着色器着色
-                if (template == "style" || template == 'script') {
-                    specialTag = "</" + template + ">";
+        // 向左插入列
+        else if (defType == 'insert-left') {
+            for (var i = 0; i < num; i++) this.$$insertLeftNewCol();
+        }
+
+        // 向右插入列
+        else if (defType == 'insert-right') {
+            for (var i = 0; i < num; i++) this.$$insertRightNewCol();
+        }
+
+    }
+
+    // 删除
+    else if (/^delete\-/.test(defType)) {
+
+        // 删除当前行
+        if (defType == 'delete-row') {
+            this.$$deleteCurrentRow();
+        }
+
+        // 删除当前列
+        else if (defType == 'delete-col') {
+            this.$$deleteCurrentCol();
+        }
+
+    }
+
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/menu/insert
+/*****************************************************************/
+window.__pkg__bundleSrc__['299']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('283');
+var find =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('300');
+var before =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('22');
+var bind =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('48');
+var appendTo =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('171');
+var after =__pkg__scope_args__.default;
+
+
+__pkg__scope_bundle__.insertUp=function() {
+    var _this = this;
+
+    var rowNodes = find(this.__contentDom[this.__tableIndex], function () { return true; }, 'tr');
+
+    // 首先，直接在插入行前面插入一行
+    var newRowNode = before(rowNodes[this.__rowNum], '<tr><th class="line-num" excel>' + (this.__rowNum) + '</th></tr>');
+
+    rowNodes.splice(this.__rowNum, 0, newRowNode);
+    this.__contentArray[this.__tableIndex].content.splice(this.__rowNum - 1, 0, []);
+
+    // 然后，校对数据
+    for (var row = this.__rowNum + 1; row <= rowNodes.length - 1; row++) {
+        var colNodes = find(rowNodes[row], function () { return true; }, 'th');
+
+        // 修改行数
+        colNodes[0].innerText = row;
+
+        // 依次修改记录的行数
+        for (var col = 1; col < colNodes.length; col++) {
+            colNodes[col].setAttribute('row', row);
+        }
+    }
+
+    for (var col = 1; col <= this.__contentArray[this.__tableIndex].content[this.__rowNum == 1 ? 1 : 0].length; col++) {
+
+        // 获取新的数据
+        var tempNewItemData = this.$$newItemData();
+
+        /**
+         * 嗅探当前单元格情况，
+         * 由于会出现合并单元格情况，所以需要对一些特殊情况，进行特殊校对
+         */
+
+        var currentItemData = this.__contentArray[this.__tableIndex].content[this.__rowNum][col - 1];
+
+        //  如果不是第一行，而且自己不可见
+        if (this.__rowNum != 1 && currentItemData.style.display == 'none') {
+
+            // 那么，我们现在需要确定我们当前行是否位于合并单元格的顶部
+            // 因为，如果自己位于顶部，即使不可见，依旧应该可以向上新增一行而不是增高自己
+
+            // 如何知道自己是不是顶部？
+            // 我们可以不停的嗅探左边第一个显示的单元格，如果他可以囊括自己，那自己应该就是上顶部
+            // 否则就是非第一行
+
+            var isFirstLine = false;
+            for (var toLeftCol = col - 1; toLeftCol >= 1; toLeftCol--) {
+                var leftItemData = this.__contentArray[this.__tableIndex].content[this.__rowNum][toLeftCol - 1];
+                if (leftItemData.style.display != 'none') {
+
+                    // 如果找到的第一个显示的可以包含当前条目
+                    if (toLeftCol - -leftItemData.colspan > col) isFirstLine = true;
+
+                    break;
                 }
 
-                shaderArray.push({
-                    color: colors.node,
-                    content: template
-                });
+            }
 
-                template = '';
-                if (i < textString.length) {
+            // 如果是第一行我们就可以直接放过
+            if (!isFirstLine) {
 
-                    // 寻找标签属性
-                    while (i < textString.length) {
+                // 到目前为止，我们可以确定的是，当前新增的条目需要隐藏
+                tempNewItemData.style.display = 'none';
 
-                        // 遇到这个表示标签结束了
-                        // 也就意味着标签匹配结束
-                        if (nextNValue(1) == ">") {
+                // 判断是不是最左边的
+                var isLeftFirst = col == 1 || (function () {
+                    var updist = 1;
+                    while (true) {
 
-                            initTemplate();
-                            shaderArray.push({
-                                color: colors.insign,
-                                content: ">"
-                            });
-                            i += 1;
+                        // 如果到顶了还没有遇到左上，必须不是最左边
+                        if (_this.__rowNum - 1 - updist < 0) return false;
+
+                        // 如果都不显示，继续往上
+                        if (_this.__contentArray[_this.__tableIndex].content[_this.__rowNum - 1 - updist][col - 1].style.display == 'none') {
+                            updist += 1;
+                        } else {
+
+                            // 如果遇到第一个显示的可以包括自己，那自己一定是最左边
+                            return _this.__contentArray[_this.__tableIndex].content[_this.__rowNum - 1 - updist][col - 1].rowspan - updist > 0;
+                        }
+                    }
+                })();
+
+                // 如果是最左边的，就需要负责修改左上角格子的值
+                if (isLeftFirst) {
+
+                    for (var preRow = this.__rowNum - 1; preRow > 0; preRow--) {
+
+                        // 接着，让我们寻找这个条目合并后单元格的左上角
+                        if (this.__contentArray[this.__tableIndex].content[preRow - 1][col - 1].style.display != 'none') {
+
+                            // 数据
+                            this.__contentArray[this.__tableIndex].content[preRow - 1][col - 1].rowspan -= -1;
+
+                            // 结点
+                            var leftTopNode = find(rowNodes[preRow], function () { return true; }, 'th')[col];
+                            leftTopNode.setAttribute('rowspan', leftTopNode.getAttribute('rowspan') - -1);
+
+                            // 找到以后别忘了停止
                             break;
                         }
-
-                        // 如果是空格，表示是属性之间，接着查看下一个即可
-                        else if (nextNValue(1) != ' ') {
-
-                            initTemplate();
-
-                            // 匹配属性名称
-                            if (nextNValue(1) != '"' && nextNValue(1) != "'") {
-
-                                // 如果不是=或>和空格就继续
-                                while (nextNValue(1) != "=" && nextNValue(1) != '>' && i < textString.length && nextNValue(1) != " ") {
-                                    template += textString[i++];
-                                }
-                                if (template != "") {
-                                    shaderArray.push({
-                                        color: colors.attrKey,
-                                        content: template
-                                    });
-                                    template = "";
-
-                                    // 如果下一个是=，就接着找属性值
-                                    if (nextNValue(1) == '=') {
-                                        shaderArray.push({
-                                            color: colors.insign,
-                                            content: "="
-                                        });
-                                        i += 1;
-
-
-                                        if (i < textString.length && nextNValue(1) != " " && nextNValue(1) != '>') {
-                                            // 寻找属性值
-                                            getAttrValueTemplate();
-
-                                        }
-                                    }
-                                } else {
-                                    template += textString[i++];
-                                }
-                            } else if (nextNValue(1) == '=') {
-                                shaderArray.push({
-                                    color: colors.insign,
-                                    content: "="
-                                });
-                                i += 1;
-                            } else {
-                                if (i < textString.length && nextNValue(1) != " " && nextNValue(1) != '>') {
-
-                                    getAttrValueTemplate();
-
-                                }
-                            }
-
-                        } else {
-                            template += textString[i++];
-                        }
-
                     }
 
                 }
 
             }
 
-            if (specialTag != "") {
-
-                var oldI = i, oldTemplate = template, langHelp, innerShaderArray;
-                while (nextNValue(specialTag.length) != specialTag && i < textString.length) {
-                    template += textString[i++];
-                }
-
-                if (i < textString.length) {
-
-                    langHelp = specialTag.replace(/<\//, '');
-
-                    innerShaderArray = {
-                        "style>": _inner_CSS_shader,
-                        "script>": _inner_ES_shader
-                    }[langHelp](template, {
-                        "style>": colors._css,
-                        "script>": colors._javascript
-                    }[langHelp]);
-
-                    innerShaderArray.forEach(function (innerShader) {
-                        shaderArray.push(innerShader);
-                    });
-
-                    template = "";
-                } else {
-                    template = oldTemplate;
-                    i = oldI;
-                }
-
-            }
-
         }
 
-        /* 追加字符 */
+        // 追加数据
+        this.__contentArray[this.__tableIndex].content[this.__rowNum - 1].push(tempNewItemData);
 
-        else {
-            if (i >= textString.length) {
-                initTemplate();
-                break;
-            } else {
-                template += textString[i++];
-            }
-        }
+        // 追加结点
+        var newItemNode = appendTo(newRowNode,
+            '<th row="' + this.__rowNum + '" col="' + col + '" contenteditable="true" class="item" colspan="1" rowspan="1" style="' + this.$$styleToString(tempNewItemData.style) + '" excel></th>'
+        );
+
+        // 绑定事件
+        bind(newItemNode, 'mousedown', function (event) {
+            setTimeout(function () {
+                if (!_this.__isrightmenu) _this.$$itemClickHandler(event);
+            });
+        });
+        bind(newItemNode, 'mousemove', function (event) {
+            _this.$$itemMoveHandler(event);
+        });
+        bind(newItemNode, 'input', function (event) {
+            _this.$$itemInputHandler(event);
+        });
 
     }
 
-    return shaderArray;
+    // 最后标记下沉
+    this.__rowNum += 1;
+};
 
-}
+__pkg__scope_bundle__.insertDown=function() {
+    var _this = this;
+
+    var rowNodes = find(this.__contentDom[this.__tableIndex], function () { return true; }, 'tr');
+
+    // 首先，直接在插入行前面插入一行
+    var newRowNode = after(rowNodes[this.__rowNum], '<tr><th class="line-num" excel>' + (this.__rowNum + 1) + '</th></tr>');
+
+    rowNodes.splice(this.__rowNum + 1, 0, newRowNode);
+    this.__contentArray[this.__tableIndex].content.splice(this.__rowNum, 0, []);
+
+    // 然后，校对数据
+    for (var row = this.__rowNum + 2; row <= rowNodes.length - 1; row++) {
+        var colNodes = find(rowNodes[row], function () { return true; }, 'th');
+
+        // 修改行数
+        colNodes[0].innerText = row;
+
+        // 依次修改记录的行数
+        for (var col = 1; col < colNodes.length; col++) {
+            colNodes[col].setAttribute('row', row);
+        }
+    }
+
+    for (var col = 1; col <= this.__contentArray[this.__tableIndex].content[0].length; col++) {
+
+        // 获取新的数据
+        var tempNewItemData = this.$$newItemData();
+
+        /**
+         * 对当前单元格合并情况进行嗅探
+         */
+
+        //  如果不是最后一行
+        if (this.__rowNum != this.__contentArray[this.__tableIndex].content.length - 1) {
+
+            var currentItemData = this.__contentArray[this.__tableIndex].content[this.__rowNum - 1][col - 1];
+
+            // 不可见或行数不为1
+            if (currentItemData.style.display == 'none' || currentItemData.rowspan != '1') {
+
+                // 为了可以之前当前插入点的相对位置，我们首先需要找到合并后单元格左上角的数据和位置
+                var leftTopData = this.$$getLeftTop(this.__rowNum, col);
+
+                // 如果不是最底部一行
+                if (leftTopData.row - -leftTopData.content.rowspan - 1 > this.__rowNum) {
+
+                    // 到此为止，可以确定当前的条目一定隐藏
+                    tempNewItemData.style.display = 'none';
+
+                    // 如果是最左边的
+                    if (leftTopData.col == col) {
+
+                        // 数据
+                        this.__contentArray[this.__tableIndex].content[leftTopData.row - 1][leftTopData.col - 1].rowspan -= -1;
+
+                        // 结点
+                        var leftTopNode = find(rowNodes[leftTopData.row], function () { return true; }, 'th')[leftTopData.col];
+                        leftTopNode.setAttribute('rowspan', leftTopNode.getAttribute('rowspan') - -1);
+
+                    }
+
+                }
+            }
+        }
+
+        // 追加数据
+        this.__contentArray[this.__tableIndex].content[this.__rowNum].push(tempNewItemData);
+
+        // 追加结点
+        var newItemNode = appendTo(newRowNode,
+            '<th row="' + this.__rowNum + '" col="' + col + '" contenteditable="true" class="item" colspan="1" rowspan="1" style="' + this.$$styleToString(tempNewItemData.style) + '" excel></th>'
+        );
+
+        // 绑定事件
+        bind(newItemNode, 'mousedown', function (event) {
+            setTimeout(function () {
+                if (!_this.__isrightmenu) _this.$$itemClickHandler(event);
+            });
+        });
+        bind(newItemNode, 'mousemove', function (event) {
+            _this.$$itemMoveHandler(event);
+        });
+        bind(newItemNode, 'input', function (event) {
+            _this.$$itemInputHandler(event);
+        });
+
+    }
+
+};
+
+__pkg__scope_bundle__.insertLeft=function() {
+    var _this = this;
+
+    var rowNodes = find(this.__contentDom[this.__tableIndex], function () { return true; }, 'tr');
+
+    // 先修改顶部的位置提示
+    appendTo(rowNodes[0], "<th class='top-name' excel>" + this.$$calcColName(this.__contentArray[this.__tableIndex].content[0].length) + "</th>");
+
+    for (var row = 1; row < rowNodes.length; row++) {
+        var colNodes = find(rowNodes[row], function () { return true; }, 'th');
+
+        // 校对列序号
+        for (var col = this.__colNum; col < colNodes.length; col++) {
+            colNodes[col].setAttribute('col', col + 1);
+        }
+
+        // 获取新的数据
+        var tempNewItemData = this.$$newItemData();
+
+        /**
+         * 对当前单元格合并情况进行嗅探
+         */
+
+        var currentItemData = this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum - 1];
+
+        //  如果不是第一列，而且自己不可见
+        if (this.__colNum != 1 && currentItemData.style.display == 'none') {
+
+            var isFirstCol = false;
+            for (var toTopRow = row - 1; toTopRow >= 1; toTopRow--) {
+                var topItemData = this.__contentArray[this.__tableIndex].content[toTopRow - 1][this.__colNum];
+                if (topItemData.style.display != 'none') {
+
+                    // 如果找到的第一个显示的可以包含当前条目
+                    if (toTopRow - -topItemData.rowspan > row) isFirstCol = true;
+
+                    break;
+                }
+
+            }
+
+            // 如果是第一列我们就可以直接放过
+            if (!isFirstCol) {
+                tempNewItemData.style.display = 'none';
+
+                // 判断是不是最顶部的
+                var isTopFirst = row == 1 || this.__contentArray[this.__tableIndex].content[row - 2][this.__colNum].style.display != 'none';
+
+                // 如果是最坐标的，就需要负责修改左上角格子的值
+                if (isTopFirst) {
+
+                    for (var preCol = this.__colNum - 1; preCol > 0; preCol--) {
+
+                        // 接着，让我们寻找这个条目合并后单元格的左上角
+                        if (this.__contentArray[this.__tableIndex].content[row - 1][preCol - 1].style.display != 'none') {
+
+                            // 数据
+                            this.__contentArray[this.__tableIndex].content[row - 1][preCol - 1].colspan -= -1;
+
+                            // 结点
+                            var leftTopNode = find(rowNodes[row], function () { return true; }, 'th')[preCol];
+                            leftTopNode.setAttribute('colspan', leftTopNode.getAttribute('colspan') - -1);
+
+                            // 找到以后别忘了停止
+                            break;
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+        // 追加数据
+        this.__contentArray[this.__tableIndex].content[row - 1].splice(this.__colNum - 1, 0, tempNewItemData);
+
+        // 追加结点
+        var newItemNode = before(colNodes[this.__colNum],
+            '<th row="' + row + '" col="' + this.__colNum + '" contenteditable="true" class="item" colspan="1" rowspan="1" style="' + this.$$styleToString(tempNewItemData.style) + '" excel></th>'
+        );
+
+        // 绑定事件
+        bind(newItemNode, 'mousedown', function (event) {
+            setTimeout(function () {
+                if (!_this.__isrightmenu) _this.$$itemClickHandler(event);
+            });
+        });
+        bind(newItemNode, 'mousemove', function (event) {
+            _this.$$itemMoveHandler(event);
+        });
+        bind(newItemNode, 'input', function (event) {
+            _this.$$itemInputHandler(event);
+        });
+
+    }
+
+    // 最后标记右移
+    this.__colNum += 1;
+};
+
+__pkg__scope_bundle__.insertRight=function() {
+    var _this = this;
+
+    var rowNodes = find(this.__contentDom[this.__tableIndex], function () { return true; }, 'tr');
+
+    // 先修改顶部的位置提示
+    appendTo(rowNodes[0], "<th class='top-name' excel>" + this.$$calcColName(this.__contentArray[this.__tableIndex].content[0].length) + "</th>");
+
+    for (var row = 1; row < rowNodes.length; row++) {
+        var colNodes = find(rowNodes[row], function () { return true; }, 'th');
+
+        // 校对列序号
+        for (var col = this.__colNum + 1; col < colNodes.length; col++) {
+            colNodes[col].setAttribute('col', col + 1);
+        }
+
+        // 获取新的数据
+        var tempNewItemData = this.$$newItemData();
+
+        /**
+        * 对当前单元格合并情况进行嗅探
+        */
+
+        //  如果不是最后一列
+        if (this.__colNum != this.__contentArray[this.__tableIndex].content[0].length - 1) {
+
+            var currentItemData = this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum - 1];
+
+            // 不可见或列数不为1
+            if (currentItemData.style.display == 'none' || currentItemData.colspan != '1') {
+
+                // 为了可以获取当前插入点的相对位置，我们首先需要找到合并后单元格左上角的数据和位置
+                var leftTopData = this.$$getLeftTop(row, this.__colNum);
+
+                // 如果不是最右边一列
+                if (leftTopData.col - -leftTopData.content.colspan - 1 > this.__colNum) {
+
+                    // 到此为止，可以确定当前的条目一定隐藏
+                    tempNewItemData.style.display = 'none';
+
+                    // 如果是最顶部的
+                    if (leftTopData.row == row) {
+
+                        // 数据
+                        this.__contentArray[this.__tableIndex].content[leftTopData.row - 1][leftTopData.col - 1].colspan -= -1;
+
+                        // 结点
+                        var leftTopNode = find(rowNodes[leftTopData.row], function () { return true; }, 'th')[leftTopData.col];
+                        leftTopNode.setAttribute('colspan', leftTopNode.getAttribute('colspan') - -1);
+
+                    }
+
+                }
+            }
+
+        }
+
+        // 追加数据
+        this.__contentArray[this.__tableIndex].content[row - 1].splice(this.__colNum, 0, tempNewItemData);
+
+        // 追加结点
+        var newItemNode = after(colNodes[this.__colNum],
+            '<th row="' + row + '" col="' + (this.__colNum + 1) + '" contenteditable="true" class="item" colspan="1" rowspan="1" style="' + this.$$styleToString(tempNewItemData.style) + '" excel></th>'
+        );
+
+        // 绑定事件
+        bind(newItemNode, 'mousedown', function (event) {
+            setTimeout(function () {
+                if (!_this.__isrightmenu) _this.$$itemClickHandler(event);
+            });
+        });
+        bind(newItemNode, 'mousemove', function (event) {
+            _this.$$itemMoveHandler(event);
+        });
+        bind(newItemNode, 'input', function (event) {
+            _this.$$itemInputHandler(event);
+        });
+    }
+
+};
 
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/shader/css
+// Original file:./src/tool/xhtml/before
 /*****************************************************************/
-window.__pkg__bundleSrc__['199']=function(){
+window.__pkg__bundleSrc__['300']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= function (textString, colors) {
-    var shaderArray = [];
+    __pkg__scope_args__=window.__pkg__getBundle('49');
+var isElement =__pkg__scope_args__.default;
 
-    // 当前面对的
-    var i = 0;
+__pkg__scope_args__=window.__pkg__getBundle('50');
+var toNode =__pkg__scope_args__.default;
 
-    // 获取往后n个值
-    var nextNValue = function (n) {
-        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
-    };
 
-    var template = "";
+// 在被选元素之前插入内容
+__pkg__scope_bundle__.default= function (el, template) {
+    var node = isElement(template) ? template : toNode(template);
+    el.parentNode.insertBefore(node, el);
+    return node;
+};
 
-    // 1:选择器 tag
-    // 2:属性名 attr
-    // 3:属性值 string
-    var state = "tag";
-
-    // 初始化模板，开始文本捕获
-    var initTemplate = function () {
-        if (template != "") {
-            shaderArray.push({
-                color: {
-                    tag: colors.selector,
-                    attr: colors.attrKey,
-                    string: colors.attrValue
-                }[state],
-                content: template
-            });
-        }
-
-        template = "";
-    };
-
-    while (true) {
-
-        /* 1.注释 */
-
-        if (nextNValue(2) == '/*') {
-
-            initTemplate();
-            while (nextNValue(2) !== '*/' && i < textString.length) {
-                template += textString[i++];
-            }
-
-            shaderArray.push({
-                color: colors.annotation,
-                content: template + nextNValue(2)
-            });
-            i += 2;
-            template = "";
-
-        }
-
-        /* 2.字符串 */
-
-        else if (["'", '"'].indexOf(nextNValue(1)) > -1) {
-
-            var strBorder = nextNValue(1);
-            initTemplate();
-
-            do {
-                template += textString[i++];
-            } while (nextNValue(1) != strBorder && i < textString.length)
-
-            // 因为可能是没有字符导致的结束
-            if (nextNValue(1) != strBorder) {
-                strBorder = "";
-            } else {
-                i += 1;
-            }
-
-            shaderArray.push({
-                color: colors.attrValue,
-                content: template + strBorder
-            });
-            template = "";
-
-        }
-
-        /* 3.边界 */
-
-        else if ([":", '{', '}', ";"].indexOf(nextNValue(1)) > -1) {
-
-            initTemplate();
-            shaderArray.push({
-                color: colors.insign,
-                content: nextNValue(1)
-            });
-            template = "";
-
-            if (nextNValue(1) == '{' || nextNValue(1) == ';') {
-                state = 'attr';
-            } else if (nextNValue(1) == '}') {
-                state = 'tag';
-            } else {
-                state = 'string';
-            }
-
-            i += 1;
-        }
-
-        /* 追加字符 */
-
-        else {
-            if (i >= textString.length) {
-                initTemplate();
-                break;
-            } else {
-                template += textString[i++];
-            }
-        }
-
-    }
-    return shaderArray;
+    return __pkg__scope_bundle__;
 }
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/after
+/*****************************************************************/
+window.__pkg__bundleSrc__['171']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('49');
+var isElement =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('50');
+var toNode =__pkg__scope_args__.default;
+
+
+// 在被指定元素之后插入节点
+__pkg__scope_bundle__.default= function (el, template) {
+    var node = isElement(template) ? template : toNode(template);
+    el.parentNode.insertBefore(node, el.nextSibling);
+    return node;
+};
 
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/shader/javascript
+// Original file:./src/tool/excel/menu/delete
 /*****************************************************************/
-window.__pkg__bundleSrc__['200']=function(){
+window.__pkg__bundleSrc__['301']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    // JS关键字
-var keyWords = [
-    "abstract", "arguments", "boolean", "break", "byte",
-    "case", "catch", "char", "class", "const",
-    "continue", "debugger", "default", "delete", "do",
-    "double", "else", "enum", "eval", "export",
-    "extends", "false", "final", "finally", "float",
-    "for", "function", "goto", "if", "implements",
-    "import", "in", "instanceof", "int", "interface",
-    "let", "long", "native", "new", "null",
-    "package", "private", "protected", "public", "return",
-    "short", "static", "super", "switch", "synchronized",
-    "this", "throw", "throws", "transient", "true",
-    "try", "typeof", "var", "void", "volatile",
-    "while", "with", "yield"
-];
+    __pkg__scope_args__=window.__pkg__getBundle('283');
+var find =__pkg__scope_args__.default;
 
-__pkg__scope_bundle__.default= function (textString, colors) {
-    var shaderArray = [];
-
-    // 当前面对的
-    var i = 0;
-
-    // 获取往后n个值
-    var nextNValue = function (n) {
-        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
-    };
-
-    var template = "";
-
-    // 初始化模板，开始文本捕获
-    var initTemplate = function () {
-        if (template != "") {
-
-            // 考虑开始的(
-            if (template[0] == '(') {
-                shaderArray.push({
-                    color: colors.insign,
-                    content: "("
-                });
-                template = template.substr(1);
-            }
-
-            shaderArray.push({
-                color: colors.text,
-                content: template
-            });
-        }
-
-        template = "";
-    };
-
-    while (true) {
-
-        /* 1.注释1 */
-
-        if (nextNValue(2) == '/*') {
-
-            initTemplate();
-            while (nextNValue(2) !== '*/' && i < textString.length) {
-                template += textString[i++];
-            }
-
-            shaderArray.push({
-                color: colors.annotation,
-                content: template + nextNValue(2)
-            });
-            i += 2;
-            template = "";
-
-        }
-
-        /* 2.注释2 */
-
-        else if (nextNValue(2) == '//') {
-            initTemplate();
-            while (nextNValue(1) !== '\n' && i < textString.length) {
-                template += textString[i++];
-            }
-            shaderArray.push({
-                color: colors.annotation,
-                content: template
-            });
-            template = "";
-        }
-
-        /* 3.字符串 */
-
-        else if (["'", '"', '`'].indexOf(nextNValue(1)) > -1) {
-
-            var strBorder = nextNValue(1);
-            initTemplate();
-
-            do {
-                template += textString[i++];
-            } while (nextNValue(1) != strBorder && i < textString.length)
-
-            // 因为可能是没有字符导致的结束
-            if (nextNValue(1) != strBorder) {
-                strBorder = "";
-            } else {
-                i += 1;
-            }
-
-            shaderArray.push({
-                color: colors.string,
-                content: template + strBorder
-            });
-            template = "";
-
-        }
+__pkg__scope_args__=window.__pkg__getBundle('33');
+var remove =__pkg__scope_args__.default;
 
 
-        /* 4.函数定义 */
+__pkg__scope_bundle__.deleteRow=function() {
 
-        else if (nextNValue(1) == '(' && (template[0] == ' ' || (i - template.length - 1 >= 0 && textString[i - template.length - 1] == " "))) {
-            shaderArray.push({
-                color: colors.funName,
-                content: template
-            });
-            i += 1;
-            template = "(";
+    var rowNodes = find(this.__contentDom[this.__tableIndex], function () { return true; }, 'tr');
 
-        }
+    // 校对行号
+    for (var row = this.__rowNum + 1; row <= this.__contentArray[this.__tableIndex].content.length; row++) {
+        var colNodes = find(rowNodes[row], function () { return true; }, 'th');
 
-        /* 5.方法调用 */
+        // 修改行数
+        colNodes[0].innerText = row - 1;
 
-        else if (nextNValue(1) == '(') {
-
-            shaderArray.push({
-                color: colors.execName,
-                content: template
-            });
-            i += 1;
-            template = "(";
-        }
-
-        /* 6.边界 */
-
-        else if ([";", '{', '}', '(', ')', '.', '\n', '=', '+', '>', '<', '[', ']', '-', '*', '/', '^', '*', '!'].indexOf(nextNValue(1)) > -1) {
-
-            initTemplate();
-            shaderArray.push({
-                color: colors.insign,
-                content: nextNValue(1)
-            });
-            template = "";
-            i += 1;
-        }
-
-        /* 7.关键字 */
-
-        else if (nextNValue(1) == ' ' && keyWords.indexOf(template.trim()) > -1) {
-
-            shaderArray.push({
-                color: colors.key,
-                content: template + " "
-            });
-            template = "";
-            i += 1;
-
-        }
-
-        /* 追加字符 */
-
-        else {
-            if (i >= textString.length) {
-                initTemplate();
-                break;
-            } else {
-                template += textString[i++];
-            }
+        // 依次修改记录的行数
+        for (var col = 1; col < colNodes.length; col++) {
+            colNodes[col].setAttribute('row', row - 1);
         }
 
     }
 
-    return shaderArray;
+    var isLastLine = this.__rowNum == this.__contentArray[this.__tableIndex].content.length;// 是否是最后一行
+
+    var downColNodes;
+    if (!isLastLine) downColNodes = find(rowNodes[this.__rowNum + 1], function () { return true; }, 'th');
+
+    // 校对colspan
+    for (var col = 1; col <= this.__contentArray[this.__tableIndex].content[0].length; col++) {
+
+        // 如果当前条目隐藏
+        if (this.__contentArray[this.__tableIndex].content[this.__rowNum - 1][col - 1].style.display == 'none') {
+
+            // 隐藏的话，就只需要考虑位于左上角的正下方情况
+            for (var preRow = this.__rowNum - 1; preRow >= 1; preRow--) {
+                if (this.__contentArray[this.__tableIndex].content[preRow - 1][col - 1].style.display != 'none') {
+
+                    // 如果是左上角
+                    if (preRow - -this.__contentArray[this.__tableIndex].content[preRow - 1][col - 1].rowspan > this.__rowNum) {
+
+                        var newRowspan = this.__contentArray[this.__tableIndex].content[preRow - 1][col - 1].rowspan - 1;
+
+                        // 结点
+                        find(rowNodes[preRow], function () { return true; }, 'th')[col].setAttribute('rowspan', newRowspan);
+
+                        // 数据
+                        this.__contentArray[this.__tableIndex].content[preRow - 1][col - 1].rowspan = newRowspan;
+
+                    }
+
+                    break;
+                }
+
+            }
+
+        }
+
+        // 如果没有隐藏，可是是左上角
+        // (如果是一行肯定可以直接无视)
+        else if (this.__contentArray[this.__tableIndex].content[this.__rowNum - 1][col - 1].rowspan - 1 > 0) {
+
+            var newRowspan = this.__contentArray[this.__tableIndex].content[this.__rowNum - 1][col - 1].rowspan - 1;
+            var colspan = this.__contentArray[this.__tableIndex].content[this.__rowNum - 1][col - 1].colspan;
+
+            // 结点
+            downColNodes[col].setAttribute('rowspan', newRowspan);
+            downColNodes[col].setAttribute('colspan', colspan);
+            downColNodes[col].style.display = 'table-cell';
+
+            // 数据
+            this.__contentArray[this.__tableIndex].content[this.__rowNum][col - 1].rowspan = newRowspan;
+            this.__contentArray[this.__tableIndex].content[this.__rowNum][col - 1].colspan = colspan;
+            this.__contentArray[this.__tableIndex].content[this.__rowNum][col - 1].style.display = 'table-cell';
+
+        }
+
+    }
+
+    // 删除当前行
+    remove(rowNodes[this.__rowNum]);
+
+    // 删除数据
+    this.__contentArray[this.__tableIndex].content.splice(this.__rowNum - 1, 1);
+
+    // 重置光标
+    this.__btnDom[this.__tableIndex].click();
+};
+
+__pkg__scope_bundle__.deleteCol=function() {
+
+    var rowNodes = find(this.__contentDom[this.__tableIndex], function () { return true; }, 'tr');
+
+    // 校对rowspan
+    for (var row = 1; row <= this.__contentArray[this.__tableIndex].content.length; row++) {
+
+        // 如果当前条目隐藏
+        if (this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum - 1].style.display == 'none') {
+
+            for (var preCol = this.__colNum - 1; preCol >= 1; preCol--) {
+
+                if (this.__contentArray[this.__tableIndex].content[row - 1][preCol - 1].style.display != 'none') {
+
+                    // 如果是左上角
+                    if (preCol - -this.__contentArray[this.__tableIndex].content[row - 1][preCol - 1].colspan > this.__colNum) {
+
+                        var newColspan = this.__contentArray[this.__tableIndex].content[row - 1][preCol - 1].colspan - 1;
+
+                        // 结点
+                        find(rowNodes[row], function () { return true; }, 'th')[preCol].setAttribute('colspan', newColspan);
+
+                        // 数据
+                        this.__contentArray[this.__tableIndex].content[row - 1][preCol - 1].colspan = newColspan;
+
+                    }
+
+                    break;
+                }
+
+            }
+
+        }
+
+        //  左上角
+        else if (this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum - 1].colspan - 1 > 0) {
+
+            var nextColNode = find(rowNodes[row], function () { return true; }, 'th')[this.__colNum + 1];
+            var newColspan = this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum - 1].colspan - 1;
+            var rowspan = this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum - 1].rowspan;
+
+            // 结点
+            nextColNode.setAttribute('colspan', newColspan);
+            nextColNode.setAttribute('rowspan', rowspan);
+            nextColNode.style.display = 'table-cell';
+
+            // 数据
+            this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum].colspan = newColspan;
+            this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum].rowspan = rowspan;
+            this.__contentArray[this.__tableIndex].content[row - 1][this.__colNum].style.display = 'table-cell';
+
+        }
+
+    }
+
+    // 先删除列标题
+    find(rowNodes[0], function () { return true; }, 'th')[this.__contentArray[this.__tableIndex].content[0].length].remove();
+
+    for (var row = 1; row < rowNodes.length; row++) {
+        var colNodes = find(rowNodes[row], function () { return true; }, 'th');
+
+        // 校对列序号
+        for (var col = this.__colNum + 1; col < colNodes.length; col++) {
+            colNodes[col].setAttribute('col', col - 1);
+        }
+
+        // 删除当前光标所在列
+        remove(colNodes[this.__colNum]);
+
+        // 数据也要删除
+        this.__contentArray[this.__tableIndex].content[row - 1].splice(this.__colNum - 1, 1);
+    }
+
+    // 重置光标
+    this.__btnDom[this.__tableIndex].click();
+};
+
+
+    return __pkg__scope_bundle__;
 }
 
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/excel/right-menu/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['302']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('48');
+var appendTo =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('283');
+var find =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('22');
+var bind =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('166');
+var stopPropagation =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('286');
+var getTargetNode=__pkg__scope_args__.getTargetNode;
+
+
+__pkg__scope_bundle__.default= function () {
+    var _this = this;
+
+    var rightMenuFrame = appendTo(this.__el, "<div class='right-menu-frame' excel>" +
+        "    <span class='item' def-type='merge-all' excel>" +
+        "        全部合并" +
+        "    </span>" +
+        "    <span class='item' def-type='merge-cancel' excel>" +
+        "        取消合并" +
+        "    </span>" +
+        "    <span class='line' excel></span>" +
+        "    <span class='item' def-type='delete-row' excel>" +
+        "        删除当前行" +
+        "    </span>" +
+        "    <span class='item' def-type='delete-col' excel>" +
+        "        删除当前列" +
+        "    </span>" +
+        "</div>");
+
+    this.__rightMenuDom = rightMenuFrame;
+
+    //  如果点击的是右键菜单，取消全局控制
+    bind(rightMenuFrame, 'mousedown', function (event) {
+        stopPropagation(event);
+    });
+
+    // 对菜单添加点击事件
+    var menuClickItems = find(rightMenuFrame, function (node) { return node.getAttribute('def-type'); }, 'span');
+
+    bind(menuClickItems, 'click', function (event) {
+
+        var node = getTargetNode(event);
+
+        // 获取按钮类型
+        var defType = node.getAttribute('def-type');
+
+        _this.$$menuHandler(defType, node);
+
+        // 关闭右键菜单
+        _this.__isrightmenu = false;
+        _this.__rightMenuDom.style.display = 'none';
+    });
+
+    this.$$addStyle('right-menu-frame', "" +
+        ".right-menu-frame{" +
+        "    position:fixed;" +
+        "    width:120px;" +
+        "    background-color: white;" +
+        "    left: 100px;" +
+        "    top: 100px;" +
+        "    box-shadow: 0 0 9px 0px #bab2b2;" +
+        "    font-size: 14px;" +
+        "    padding:0 5px;" +
+        "}" +
+        ".right-menu-frame span{" +
+        "    display: block;" +
+        "}" +
+        ".right-menu-frame .item{" +
+        "    padding: 5px 0;" +
+        "    cursor: pointer;" +
+        "}" +
+        ".right-menu-frame .item:hover{" +
+        "    font-weight: 800;" +
+        "    text-decoration: underline;" +
+        "}" +
+        ".right-menu-frame .line{" +
+        "    height: 1px;" +
+        "    background-color: black;" +
+        "}");
+};
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/xhtml/stopPropagation
+/*****************************************************************/
+window.__pkg__bundleSrc__['166']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 阻止冒泡
+__pkg__scope_bundle__.default= function (event) {
+    event = event || window.event;
+    if (event.stopPropagation) { //这是其他非IE浏览器
+        event.stopPropagation();
+    } else {
+        event.cancelBubble = true;
+    }
+};
 
     return __pkg__scope_bundle__;
 }

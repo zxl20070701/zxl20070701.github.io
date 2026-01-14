@@ -1,0 +1,52 @@
+[page-view="code-example"] {
+  width: 400px;
+  left: calc(50vw - 200px);
+  top: 25px;
+  font-family: cursive;
+
+  &[focus="no"] {
+    &>header {
+      background-color: #d0b56d;
+    }
+  }
+
+  &>header {
+    text-align: left;
+    line-height: 50px;
+    background-color: #c0a354;
+
+    &>h2 {
+      color: #000000;
+      font-size: 20px;
+      padding-left: 50px;
+      background-image: url("./code-example.png");
+      background-position: 10px center;
+      background-repeat: no-repeat;
+      background-size: auto 60%;
+      display: inline-block;
+    }
+  }
+
+  &>.content {
+    height: calc(100vh - 150px);
+    overflow: auto;
+    &>.button{
+      border: 1px solid rgb(69, 69, 69);
+      padding:7px 10px;
+      margin: 5px;
+      border-radius: 5px;
+      color: black;
+      cursor: pointer;
+      &::before{
+        content: "</>";
+        display: inline-block;
+        margin-right: 5px;
+        font-weight: 800;
+        color: #4b4a4a;
+      }
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../docs/images/zxl20070701.jpg">
+    <title>金额中文大写</title>
+</head>
+
+<body>
+
+    <h2>
+        Tips：F12打开控制台查看！
+    </h2>
+
+    <script type="module">
+        import chineseAmount from "../src/tool/chineseAmount.js";
+
+        var test = function (oralval) {
+            console.log(oralval + " : " + chineseAmount(oralval));
+        }
+
+        test(123);
+        test(123.02);
+        test(90003.32);
+    </script>
+
+</body>
+
+</html>

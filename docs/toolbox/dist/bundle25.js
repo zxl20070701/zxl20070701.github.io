@@ -1,157 +1,53 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/browser/index.js
+// Original file:./src/pages/computer/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['81']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('260');
+    __pkg__scope_args__=window.__pkg__getBundle('250');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('261');
+__pkg__scope_args__=window.__pkg__getBundle('251');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('33');
-var remove =__pkg__scope_args__.default;
+__pkg__scope_args__=window.__pkg__getBundle('30');
+var urlFormat =__pkg__scope_args__.default;
 
-
-var blank = "browser://blank"; // 空白启动页
 
 __pkg__scope_bundle__.default= function (obj, props) {
-    props = props || {};
-    if (!("url" in props)) props.url = blank;
-
-    // 记录需要的所有的页签信息
-    var pageinfos = {};
-    var current = "";
-
     return {
-        name: "browser",
+        name: "computer",
         render: template,
+        data: {
+            nav: obj.ref("")
+        },
         beforeFocus: function () {
-            document.getElementsByTagName('title')[0].innerText = "Internet Explorer" + window.systeName;
-            document.getElementById('icon-logo').setAttribute('href', './browser.png');
+            document.getElementsByTagName('title')[0].innerText = "我的电脑" + window.systeName;
+            document.getElementById('icon-logo').setAttribute('href', './computer.png');
         },
         mounted: function () {
-            this.openPage(props.url);
+            if (props.init) {
+                this.changeNav(props.init);
+            } else {
+                var urlObj = urlFormat();
+                this.changeNav(urlObj.router[1] || "application", true);
+            }
         },
         methods: {
-
-            // 打开新页面
-            newNav: function () {
-                this.openPage(blank);
+            openApp: function (event, target) {
+                this.$openView(target.getAttribute('tag'));
             },
-
-            // 刷新
-            doRefresh: function () {
-                var urlVal = this._refs.urlInput.value.value.trim();
-
-                // 空白页
-                if (blank == urlVal) {
-                    pageinfos[current].iframeEl.setAttribute('src', "");
-                }
-
-                // 合法的地址
-                else if (/^https*\:\/\//.test(urlVal) || /^file*\:\/\/\//.test(urlVal)) {
-                    pageinfos[current].iframeEl.setAttribute('src', urlVal);
-                }
-
-                // 否则直接查询
-                else {
-                    urlVal = "https://cn.bing.com/search?q=" + encodeURIComponent(urlVal);
-                    pageinfos[current].iframeEl.setAttribute('src', urlVal);
-
-                    pageinfos[current].url = urlVal;
-                    this._refs.urlInput.value.value = urlVal;
-                }
-
+            openDialog: function (event, target) {
+                this.$openDialog(target.getAttribute('tag'));
             },
-
-            // 打开页面
-            openPage: function (url) {
-                var _this = this;
-
-                var uniqueHash = new Date().valueOf();
-
-                var navEl = document.createElement('span');
-                this._refs.navRoot.value.appendChild(navEl);
-
-                navEl.innerText = url;
-                this._refs.urlInput.value.value = url;
-
-                var closeNavEl = document.createElement('i');
-                navEl.appendChild(closeNavEl);
-
-                closeNavEl.innerText = "×";
-
-                this._refs.navRoot.value.insertBefore(navEl, this._refs.addBtn.value);
-
-                var iframeEl = document.createElement('iframe');
-                this._el.appendChild(iframeEl);
-
-                iframeEl.setAttribute('frameborder', '0');
-
-                pageinfos[uniqueHash] = {
-                    navEl: navEl,
-                    iframeEl: iframeEl,
-                    url: url
-                };
-
-                current = uniqueHash;
-                this.doRefresh();
-
-                /**
-                 * 绑定事件
-                 */
-
-                // 点击页签
-                navEl.addEventListener('click', function () {
-                    current = uniqueHash;
-                    for (var key in pageinfos) {
-
-                        // 应该显示的
-                        // 当然，肯定就是自己了
-                        if (key == uniqueHash) {
-                            navEl.setAttribute('active', 'yes');
-                            iframeEl.style.display = "";
-
-                            _this._refs.urlInput.value.value = pageinfos[key].url;
-                        }
-
-                        // 需要隐藏的
-                        else {
-                            pageinfos[key].navEl.setAttribute('active', 'no');
-                            pageinfos[key].iframeEl.style.display = "none";
-                        }
-                    }
-                });
-
-                // 关闭页签
-                closeNavEl.addEventListener("click", function (event) {
-                    event.stopPropagation();
-
-                    remove(navEl);
-                    remove(iframeEl);
-                    delete pageinfos[uniqueHash];
-
-                    // 如果当前页签内容的显示的
-                    // 需要先确定新的过会显示谁
-                    if (navEl.getAttribute('active') == 'yes') {
-                        var _key;
-                        for (var key in pageinfos) _key = key;
-                        if (_key) {
-                            pageinfos[_key].navEl.click();
-                            return;
-                        }
-
-                        // 如果没有可以切换的，打开新的空页签
-                        _this.newNav();
-                    }
-                });
-
-                navEl.click();
+            clickNav: function (event, target) {
+                this.changeNav(target.getAttribute('tag'));
+            },
+            changeNav: function (navname, isInit) {
+                if (!isInit) window.location.href = "#/computer/" + navname;
+                this.nav = navname;
             }
-
         }
     };
 };
@@ -160,25 +56,25 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/browser/index.html
+// Original file:./src/pages/computer/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['260']=function(){
+window.__pkg__bundleSrc__['250']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"top"},"childNodes":[8,13]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[9,10,11]},{"type":"tag","name":"span","attrs":{"class":"logo"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"spellcheck":"false","type":"text","ref":"urlInput","ui-on:keydown.enter":"doRefresh"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doRefresh"},"childNodes":[12]},{"type":"text","content":"刷新","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"navs","ref":"navRoot"},"childNodes":[14]},{"type":"tag","name":"button","attrs":{"ui-on:click":"newNav","ref":"addBtn"},"childNodes":[15]},{"type":"text","content":"＋","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,13]},{"type":"tag","name":"div","attrs":{"class":"left"},"childNodes":[2,4]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[3]},{"type":"text","content":"我的电脑","childNodes":[]},{"type":"tag","name":"nav","attrs":{},"childNodes":[5,7,9,11]},{"type":"tag","name":"div","attrs":{"class":"item","ui-on:click":"clickNav","tag":"file","ui-bind:active":"nav=='file'?'yes':'no'"},"childNodes":[6]},{"type":"text","content":"系统文件","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"item","ui-on:click":"clickNav","tag":"system","ui-bind:active":"nav=='system'?'yes':'no'"},"childNodes":[8]},{"type":"text","content":"系统程序","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"item","ui-on:click":"clickNav","tag":"application","ui-bind:active":"nav=='application'?'yes':'no'"},"childNodes":[10]},{"type":"text","content":"应用程序","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"item","ui-on:click":"clickNav","tag":"other","ui-bind:active":"nav=='other'?'yes':'no'"},"childNodes":[12]},{"type":"text","content":"其它","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right"},"childNodes":[14,21,24,27,56]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[15,16]},{"type":"tag","name":"input","attrs":{"type":"text","placeholder":"搜索功能维护中..."},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[17,19]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[18]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[20]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content applist","ui-bind:active":"nav=='file'?'yes':'no'"},"childNodes":[22]},{"type":"tag","name":"div","attrs":{"tag":"api","ui-on:dblclick":"openDialog","ui-right-menu:app":"dialog"},"childNodes":[23]},{"type":"text","content":"开发文档","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content applist","ui-bind:active":"nav=='system'?'yes':'no'"},"childNodes":[25]},{"type":"tag","name":"div","attrs":{"tag":"debugger","ui-on:dblclick":"openDialog","ui-right-menu:app":"dialog"},"childNodes":[26]},{"type":"text","content":"调试工具","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content applist","ui-bind:active":"nav=='application'?'yes':'no'"},"childNodes":[28,30,32,34,36,38,40,42,44,46,48,50,52,54]},{"type":"tag","name":"div","attrs":{"tag":"model-editor","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[29]},{"type":"text","content":"3D模型编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"code-editor","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[31]},{"type":"text","content":"代码编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"format-json","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[33]},{"type":"text","content":"格式化JSON字符串","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"geo-json","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[35]},{"type":"text","content":"geoJSON查看器","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"browser","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[37]},{"type":"text","content":"Internet Explorer","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"scss","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[39]},{"type":"text","content":"scss转css","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"image-editor","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[41]},{"type":"text","content":"图片编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"audio-editor","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[43]},{"type":"text","content":"音频编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"recorder-screen","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[45]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"snipping-tool","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[47]},{"type":"text","content":"截图工具","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"type-practice","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[49]},{"type":"text","content":"金山打字通","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"excel","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[51]},{"type":"text","content":"Excel 表格","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"regexper-visualization","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[53]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"snake-eating","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[55]},{"type":"text","content":"贪吃蛇","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content applist","ui-bind:active":"nav=='other'?'yes':'no'"},"childNodes":[57,59]},{"type":"tag","name":"div","attrs":{"tag":"code-example","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[58]},{"type":"text","content":"代码例子","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"echarts","ui-on:dblclick":"openApp","ui-right-menu:app":""},"childNodes":[60]},{"type":"text","content":"可视化图表","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/browser/index.scss
+// Original file:./src/pages/computer/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['261']=function(){
+window.__pkg__bundleSrc__['251']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"browser\"]{\n\nwidth: calc(100vw - 160px);\n\nheight: calc(100vh - 70px);\n\nleft: 80px;\n\ntop: 20px;\n\n}\n\n [page-view=\"browser\"][focus=\"no\"]>div.top{\n\nbackground-color: rgba(158, 196, 233, 0.85);\n\n}\n\n [page-view=\"browser\"]>header{\n\nheight: 30px;\n\nbackground-color: transparent;\n\nposition: absolute;\n\nleft: 0;\n\ntop: 0;\n\nwidth: 100%;\n\n}\n\n [page-view=\"browser\"]>div.top{\n\nbackground-color: rgba(183, 218, 253, 0.85);\n\nborder-bottom: 1px solid gray;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content{\n\nheight: 55px;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>*{\n\nvertical-align: bottom;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>span{\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>span.logo{\n\nwidth: 50px;\n\nheight: 55px;\n\nbackground-image: url(\"./browser.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-position: center bottom;\n\nbackground-size: 90% auto;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>input{\n\nwidth: calc(100% - 100px);\n\noutline: none;\n\nborder: 1px solid rgb(208, 207, 207);\n\nborder-radius: 5px;\n\nheight: 24px;\n\npadding: 0 5px;\n\n}\n\n [page-view=\"browser\"]>div.top>div.content>button{\n\nheight: 24px;\n\nwidth: 40px;\n\nbackground-image: url(\"./refresh.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-position: center center;\n\nbackground-size: auto 20px;\n\noutline: none;\n\nborder: none;\n\nbackground-color: transparent;\n\nfont-size: 0;\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs{\n\npadding-top: 10px;\n\nheight: 40px;\n\ndisplay: flex;\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs>span{\n\nline-height: 30px;\n\nbackground-image: radial-gradient(rgba(255, 255, 255, 0), rgba(236, 230, 230, 0.489));\n\nfont-size: 12px;\n\nflex-basis: 200px;\n\nwhite-space: nowrap;\n\ntext-overflow: ellipsis;\n\noverflow: hidden;\n\npadding-left: 10px;\n\npadding-right: 20px;\n\nposition: relative;\n\nborder: 1px solid rgb(197, 195, 195);\n\nmargin-left: 2px;\n\ncursor: pointer;\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs>span[active='yes']{\n\nbackground-image: radial-gradient(white, white);\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs>span>i{\n\nposition: absolute;\n\ntop: 0;\n\nright: 0;\n\nwidth: 20px;\n\nline-height: 30px;\n\ntext-align: center;\n\nfont-style: normal;\n\n}\n\n [page-view=\"browser\"]>div.top>div.navs>button{\n\nborder: none;\n\noutline: none;\n\nfont-size: 14px;\n\nwidth: 30px;\n\nheight: 20px;\n\nvertical-align: top;\n\nmargin-top: 5px;\n\nbackground-color: transparent;\n\ncursor: pointer;\n\n}\n\n [page-view=\"browser\"]>iframe{\n\nwidth: 100%;\n\nheight: calc(100% - 95px);\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"computer\"]{\n\nwidth: calc(100vw - 160px);\n\nheight: calc(100vh - 70px);\n\nleft: 80px;\n\ntop: 20px;\n\nfont-size: 0;\n\nwhite-space: nowrap;\n\nbackground-color: white;\n\nuser-select: none;\n\n}\n\n [page-view=\"computer\"][focus=\"no\"]>.left{\n\nbackground-color: rgba(158, 196, 233, 0.85);\n\n}\n\n [page-view=\"computer\"]>div{\n\nheight: 100%;\n\nvertical-align: top;\n\nfont-size: 16px;\n\nwhite-space: normal;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"computer\"]>div.left{\n\nbackground-color: rgba(183, 218, 253, 0.85);\n\nwidth: 260px;\n\n}\n\n [page-view=\"computer\"]>div.left>header{\n\nbackground-repeat: no-repeat;\n\nbackground-position: 15px center;\n\nbackground-size: auto 20px;\n\nbackground-image: url('./computer.png');\n\nline-height: 40px;\n\npadding: 10px;\n\npadding-left: 40px;\n\ncursor: pointer;\n\ncolor: #4b4a4a;\n\nfont-weight: 400;\n\nfont-size: 14px;\n\n}\n\n [page-view=\"computer\"]>div.left>nav{\n\npadding: 20px;\n\n}\n\n [page-view=\"computer\"]>div.left>nav>.item{\n\nfont-size: 14px;\n\npadding: 10px;\n\ncursor: pointer;\n\n}\n\n [page-view=\"computer\"]>div.left>nav>.item[active=\"yes\"]{\n\nbackground-color: #0000000a;\n\nfont-weight: 800;\n\nborder-radius: 5px;\n\n}\n\n [page-view=\"computer\"]>div.right{\n\nwidth: calc(100% - 260px);\n\n}\n\n [page-view=\"computer\"]>div.right>header{\n\nline-height: 40px;\n\nmargin: 10px;\n\n}\n\n [page-view=\"computer\"]>div.right>header>input{\n\nbackground-color: rgb(230 230 230);\n\nwidth: 260px;\n\nheight: 30px;\n\nborder-radius: 15px;\n\npadding: 0 10px;\n\nfont-size: 12px;\n\nborder: none;\n\noutline: none;\n\n}\n\n [page-view=\"computer\"]>div.right>div.content{\n\nwidth: 100%;\n\nheight: calc(100% - 60px);\n\noverflow: auto;\n\n}\n\n [page-view=\"computer\"]>div.right>div.content[active=\"no\"]{\n\ndisplay: none;\n\n}\n\n [page-view=\"computer\"]>div.right>div.content.applist>div{\n\nwidth: 70px;\n\npadding-top: 60px;\n\nmargin: 10px;\n\nfont-size: 12px;\n\ncolor: rgb(0, 0, 0);\n\nbackground-size: 45px auto;\n\nbackground-repeat: no-repeat;\n\nbackground-position: center 10px;\n\ntext-align: center;\n\nline-height: 1.6em;\n\nheight: 100px;\n\nvertical-align: top;\n\ncursor: pointer;\n\ndisplay: inline-block;\n\n}\n\n [page-view=\"computer\"]>div.right>div.content.applist>div:hover{\n\noutline: 1px dashed rgb(185, 183, 183);\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

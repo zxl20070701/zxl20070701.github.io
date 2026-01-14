@@ -1,0 +1,39 @@
+[dialog-view="code-example"] {
+  height: 400px;
+  width: 600px;
+  top: calc(50vh - 200px);
+  left: calc(50vw - 300px);
+
+  & > div.textarea-eraser {
+    width: 400px;
+    margin: auto;
+    position: relative;
+
+    & > p {
+      text-align: left;
+      text-indent: 2em;
+      line-height: 1.8em;
+      padding-top: 75px;
+      color: #212332;
+      font-weight: 800;
+      font-style: italic;
+      font-family: system-ui;
+      text-decoration: overline;
+
+      &.help {
+        position: absolute;
+        top: 0;
+
+        & > span {
+          background: linear-gradient(
+            to right,
+            transparent var(--p),
+            #fff calc(var(--p) + 30px)
+          );
+          color: transparent;
+          animation: erase_animation 5s linear forwards;
+        }
+      }
+    }
+  }
+}

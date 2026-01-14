@@ -1,7 +1,7 @@
 <ul class="content" ui-right-menu:system ui-on:click="doSelect" tag="">
-    <li class="link" ui-bind:select="select=='regexper-visualization'?'yes':'no'" ui-on:click.stop="doSelect"
-        title="输入一个正则表达式后可以把其变成可视化的图表来快速读懂意义" tag="regexper-visualization" ui-on:dblclick="goto" ui-right-menu:app>
-        正则表达式可视化
+    <li ui-bind:select="select=='computer'?'yes':'no'" ui-on:click.stop="doSelect" title="包含所有应用的地方" tag="computer"
+        ui-on:dblclick="goto" ui-right-menu:app>
+        我的电脑
     </li>
     <li class="link" ui-bind:select="select=='recorder-screen'?'yes':'no'" ui-on:click.stop="doSelect"
         title="一个H5版本的电脑屏幕录制软件" tag="recorder-screen" ui-on:dblclick="goto" ui-right-menu:app>
@@ -15,13 +15,21 @@
         title="支持图片、代码等查看和编辑，支持文件或目录打开、编辑、新建和保存" tag="code-editor" ui-on:dblclick="goto" ui-right-menu:app>
         代码编辑器
     </li>
-     <li class="link" ui-bind:select="select=='snake-eating'?'yes':'no'" ui-on:click.stop="doSelect" title="一个经典的贪吃蛇小游戏"
+    <li class="link" ui-bind:select="select=='snake-eating'?'yes':'no'" ui-on:click.stop="doSelect" title="一个经典的贪吃蛇小游戏"
         tag="snake-eating" ui-on:dblclick="goto" ui-right-menu:app>
         贪吃蛇
     </li>
     <li class="link" ui-bind:select="select=='snipping-tool'?'yes':'no'" ui-on:click.stop="doSelect" title="一个H5版本的截图工具"
         tag="snipping-tool" ui-on:dblclick="goto" ui-right-menu:app>
         截图工具
+    </li>
+    <li class="link" ui-bind:select="select=='regexper-visualization'?'yes':'no'" ui-on:click.stop="doSelect"
+        title="输入一个正则表达式后可以把其变成可视化的图表来快速读懂意义" tag="regexper-visualization" ui-on:dblclick="goto" ui-right-menu:app>
+        正则表达式可视化
+    </li>
+    <li class="link" ui-bind:select="select=='geo-json'?'yes':'no'" ui-on:click.stop="doSelect"
+        title="主要用于快速了解一份geoJSON地理数据的内容" tag="geo-json" ui-on:dblclick="goto" ui-right-menu:app>
+        geoJSON查看器
     </li>
     <li class="link" ui-bind:select="select=='type-practice'?'yes':'no'" ui-on:click.stop="doSelect" title="一个打字练习软件"
         tag="type-practice" ui-on:dblclick="goto" ui-right-menu:app>

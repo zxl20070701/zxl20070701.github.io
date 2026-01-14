@@ -1,0 +1,33 @@
+[page-view="draft"] {
+  width: calc(100vw - 100px);
+  left: 50px;
+  top: 25px;
+
+  &[focus="no"] {
+    &>header {
+      background-color: #edeeee;
+    }
+  }
+
+  &>header {
+    text-align: left;
+    line-height: 50px;
+    box-shadow: -2px 2px 5px 0px #0000004f;
+
+    &>h2 {
+      color: #224858;
+      font-size: 20px;
+      padding-left: 50px;
+      background-image: url("./draft.png");
+      background-position: 10px center;
+      background-repeat: no-repeat;
+      background-size: auto 60%;
+      font-family: fangsong;
+      display: inline-block;
+    }
+  }
+
+  &>.content {
+    height: calc(100vh - 150px);
+  }
+}

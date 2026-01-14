@@ -5,16 +5,16 @@
 window.__pkg__bundleSrc__['66']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('119');
+    __pkg__scope_args__=window.__pkg__getBundle('124');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('120');
+__pkg__scope_args__=window.__pkg__getBundle('125');
 
-
-__pkg__scope_args__=window.__pkg__getBundle('116');
-var animation =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('121');
+var animation =__pkg__scope_args__.default;
+
+__pkg__scope_args__=window.__pkg__getBundle('126');
 var cardinal =__pkg__scope_args__.default;
 
 
@@ -80,10 +80,10 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/desktop/wins/begin/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['119']=function(){
+window.__pkg__bundleSrc__['124']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,2,4,6]},{"type":"tag","name":"div","attrs":{"class":"application","ref":"application"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"search"},"childNodes":[3]},{"type":"tag","name":"input","attrs":{"type":"text","placeholder":"搜索功能维护中..."},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"user"},"childNodes":[5]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"quick"},"childNodes":[7,9,10,12,14,16,17]},{"type":"tag","name":"a","attrs":{"target":"_blank","ui-bind:href":"project.author.url"},"childNodes":[8]},{"type":"tag","name":"span","attrs":{"ui-bind":"project.author.name"},"childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-on:click":"openDialog","tag":"api"},"childNodes":[11]},{"type":"text","content":"开发文档","childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-on:click":"openDialog","tag":"debugger"},"childNodes":[13]},{"type":"text","content":"调试工具","childNodes":[]},{"type":"tag","name":"a","attrs":{"target":"_blank","ui-bind:href":"project.bugs"},"childNodes":[15]},{"type":"text","content":"提建议","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"a","attrs":{"target":"_blank","href":"../notebook/index.html"},"childNodes":[18]},{"type":"text","content":"文档笔记","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,46,48,50]},{"type":"tag","name":"div","attrs":{"class":"application","ref":"application"},"childNodes":[2,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44]},{"type":"tag","name":"h1","attrs":{},"childNodes":[3,4]},{"type":"text","content":"常用应用","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"showApp"},"childNodes":[5]},{"type":"text","content":"全部内容 ▶","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[7]},{"type":"text","content":"D","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"code-editor","ui-on:click":"openApp"},"childNodes":[9]},{"type":"text","content":"代码编辑器","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[11]},{"type":"text","content":"G","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"format-json","ui-on:click":"openApp"},"childNodes":[13]},{"type":"text","content":"格式化JSON字符串","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"geo-json","ui-on:click":"openApp"},"childNodes":[15]},{"type":"text","content":"geoJSON查看器","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[17]},{"type":"text","content":"I","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"browser","ui-on:click":"openApp"},"childNodes":[19]},{"type":"text","content":"Internet Explorer","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[21]},{"type":"text","content":"J","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"snipping-tool","ui-on:click":"openApp"},"childNodes":[23]},{"type":"text","content":"截图工具","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[25]},{"type":"text","content":"L","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"recorder-screen","ui-on:click":"openApp"},"childNodes":[27]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[29]},{"type":"text","content":"S","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"scss","ui-on:click":"openApp"},"childNodes":[31]},{"type":"text","content":"scss转css","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[33]},{"type":"text","content":"T","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"image-editor","ui-on:click":"openApp"},"childNodes":[35]},{"type":"text","content":"图片编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"snake-eating","ui-on:click":"openApp"},"childNodes":[37]},{"type":"text","content":"贪吃蛇","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[39]},{"type":"text","content":"Y","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"audio-editor","ui-on:click":"openApp"},"childNodes":[41]},{"type":"text","content":"音频编辑器","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[43]},{"type":"text","content":"Z","childNodes":[]},{"type":"tag","name":"div","attrs":{"tag":"regexper-visualization","ui-on:click":"openApp"},"childNodes":[45]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"search"},"childNodes":[47]},{"type":"tag","name":"input","attrs":{"type":"text","placeholder":"搜索功能维护中..."},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"user"},"childNodes":[49]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"quick"},"childNodes":[51,53,54,56,58,60,61]},{"type":"tag","name":"a","attrs":{"target":"_blank","ui-bind:href":"project.author.url"},"childNodes":[52]},{"type":"tag","name":"span","attrs":{"ui-bind":"project.author.name"},"childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-on:click":"openDialog","tag":"api"},"childNodes":[55]},{"type":"text","content":"开发文档","childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-on:click":"openDialog","tag":"debugger"},"childNodes":[57]},{"type":"text","content":"调试工具","childNodes":[]},{"type":"tag","name":"a","attrs":{"target":"_blank","ui-bind:href":"project.bugs"},"childNodes":[59]},{"type":"text","content":"提建议","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"a","attrs":{"target":"_blank","href":"../notebook/index.html"},"childNodes":[62]},{"type":"text","content":"文档笔记","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -91,7 +91,7 @@ window.__pkg__bundleSrc__['119']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/desktop/wins/begin/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['120']=function(){
+window.__pkg__bundleSrc__['125']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -105,7 +105,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['116']=function(){
+window.__pkg__bundleSrc__['121']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈
@@ -220,7 +220,7 @@ __pkg__scope_bundle__.default= function (doback, duration, callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/interpolation/cardinal
 /*****************************************************************/
-window.__pkg__bundleSrc__['121']=function(){
+window.__pkg__bundleSrc__['126']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -234,7 +234,7 @@ window.__pkg__bundleSrc__['121']=function(){
  * 第二个点的斜率由第一个点和第二个点的后一个点的斜率确定
  */
 
-__pkg__scope_args__=window.__pkg__getBundle('122');
+__pkg__scope_args__=window.__pkg__getBundle('127');
 var hermite =__pkg__scope_args__.default;
 
 
@@ -325,7 +325,7 @@ __pkg__scope_bundle__.default= function (t) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/interpolation/hermite
 /*****************************************************************/
-window.__pkg__bundleSrc__['122']=function(){
+window.__pkg__bundleSrc__['127']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (u) {

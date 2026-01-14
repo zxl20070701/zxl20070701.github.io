@@ -1,0 +1,13 @@
+<header ui-dragdrop:desktop>
+    <div class="win-btns">
+        <button class="min" ui-on:click.stop="$minView">最小化</button>
+        <button class="close" ui-on:click.stop="$closeView">关闭</button>
+    </div>
+    <h2>
+        代码例子
+    </h2>
+</header>
+<ul class="content">
+    <li class="button" ui-on:click="openExamples" tag="textarea-eraser">一个简单的多行文本擦除显示动画效果</li>
+    <li class="button" ui-on:click="openExamples" tag="colorful-dice">一个旋转的3D彩色骰子</li>
+</ul>

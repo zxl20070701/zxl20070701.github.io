@@ -1,0 +1,29 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        <a ui-bind:href="srcUrl" target="_blank"> 一个简单的多行文本擦除显示动画效果</a>
+    </h2>
+    <div class="win-btns">
+        <button class="close" ui-on:click.stop="$closeDialog">关闭</button>
+    </div>
+</header>
+<div class="content textarea-eraser" ref="mycontent">
+
+    <p ui-bind="text"></p>
+    <p class="help">
+        <span ui-bind="text"></span>
+    </p>
+
+</div>
+<style>
+@property --p {
+    syntax: '<percentage>';
+    initial-value: 0%;
+    inherits: false;
+}
+
+@keyframes erase_animation {
+    to {
+        --p: 100%;
+    }
+}
+</style>

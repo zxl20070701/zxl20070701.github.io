@@ -30,6 +30,16 @@ export default {
         return import('./npm-download/index.js')
     },
 
+    // 格式化JSON字符串
+    "format-json": function () {
+        return import('./format-json/index.js')
+    },
+
+    // scss转css
+    "scss": function () {
+        return import('./scss/index.js')
+    },
+
     // 录屏软件
     "recorder-screen": function () {
         return import('./recorder-screen/index.js')
@@ -40,19 +50,8 @@ export default {
         return import('./regexper-visualization/index.js')
     },
 
-    // scss转css
-    "scss": function () {
-        return import('./scss/index.js')
-    },
-
-    // 格式化JSON字符串
-    "format-json": function () {
-        return import('./format-json/index.js')
-    },
-
     // 视频播放器
     "video-play": function () {
         return import('./video-play/index.js')
     }
-
 };

@@ -1,0 +1,43 @@
+[dialog-view="code-example"] {
+  left: 20px;
+  top: 20px;
+  user-select: none;
+  width: calc(100vw - 40px);
+  height: calc(100vh - 40px);
+  background-color: white;
+
+  & > header {
+    text-align: left;
+    line-height: 50px;
+    background-color: #ffffff;
+    border-bottom: 1px solid rgb(187, 184, 184);
+    white-space: nowrap;
+    overflow: hidden;
+
+    & > h2 {
+      font-size: 20px;
+      padding-left: 50px;
+      background-image: url("./code-example.png");
+      background-position: 10px center;
+      background-repeat: no-repeat;
+      background-size: auto 60%;
+      display: inline-block;
+      font-family: sans-serif;
+
+      & > a {
+        color: #000000;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  & > div {
+    &.content {
+      text-align: center;
+      overflow: hidden;
+    }
+  }
+}

@@ -5,19 +5,19 @@
 window.__pkg__bundleSrc__['42']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('107');
+    __pkg__scope_args__=window.__pkg__getBundle('112');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('108');
+__pkg__scope_args__=window.__pkg__getBundle('113');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('109');
+__pkg__scope_args__=window.__pkg__getBundle('114');
 var lazyApiPages =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('2');
 var useTemplate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('116');
+__pkg__scope_args__=window.__pkg__getBundle('121');
 var animation =__pkg__scope_args__.default;
 
 
@@ -98,7 +98,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['107']=function(){
+window.__pkg__bundleSrc__['112']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,6,8]},{"type":"tag","name":"header","attrs":{"ui-dragdrop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"开发文档","childNodes":[]},{"type":"tag","name":"i","attrs":{"ui-on:click":"$closeDialog","id":"api-close"},"childNodes":[5]},{"type":"text","content":"×","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tips"},"childNodes":[7]},{"type":"text","content":"温馨提示：此文档提供的所有功能都是内置的，只能在本项目中使用。","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[9,34]},{"type":"tag","name":"div","attrs":{"class":"menu"},"childNodes":[10,14,18,22,26,30]},{"type":"tag","name":"div","attrs":{},"childNodes":[11,13]},{"type":"tag","name":"h1","attrs":{"tag":"framework","ui-on:click":"loadApiPage","id":"init-api-el"},"childNodes":[12]},{"type":"text","content":"内置框架","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[15,17]},{"type":"tag","name":"h1","attrs":{"tag":"editor","ui-on:click":"loadApiPage"},"childNodes":[16]},{"type":"text","content":"代码编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[19,21]},{"type":"tag","name":"h1","attrs":{"tag":"webgl","ui-on:click":"loadApiPage"},"childNodes":[20]},{"type":"text","content":"3D绘图 WebGL","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[23,25]},{"type":"tag","name":"h1","attrs":{"tag":"canvas","ui-on:click":"loadApiPage"},"childNodes":[24]},{"type":"text","content":"位图画笔 Canvas","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[27,29]},{"type":"tag","name":"h1","attrs":{"tag":"color-picker","ui-on:click":"loadApiPage"},"childNodes":[28]},{"type":"text","content":"颜色选择器","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[31,33]},{"type":"tag","name":"h1","attrs":{"tag":"svg","ui-on:click":"loadApiPage"},"childNodes":[32]},{"type":"text","content":"矢图画笔 SVG","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","id":"api-content"},"childNodes":[]}]
@@ -109,7 +109,7 @@ window.__pkg__bundleSrc__['107']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['108']=function(){
+window.__pkg__bundleSrc__['113']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -123,39 +123,39 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/dialogs/api/pages/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['109']=function(){
+window.__pkg__bundleSrc__['114']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 内置框架
     framework: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle41.js','110')
+        return window.__pkg__getLazyBundle('./dist/bundle46.js','115')
     },
 
     // 代码编辑器
     editor: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle42.js','111')
+        return window.__pkg__getLazyBundle('./dist/bundle47.js','116')
     },
 
     // WebGL
     webgl: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle43.js','112')
+        return window.__pkg__getLazyBundle('./dist/bundle48.js','117')
     },
 
     // canvas
     canvas: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle44.js','113')
+        return window.__pkg__getLazyBundle('./dist/bundle49.js','118')
     },
 
     // 颜色选择器
     "color-picker": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle45.js','114')
+        return window.__pkg__getLazyBundle('./dist/bundle50.js','119')
     },
 
     // svg
     svg: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle46.js','115')
+        return window.__pkg__getLazyBundle('./dist/bundle51.js','120')
     }
 };
 
@@ -165,7 +165,7 @@ window.__pkg__bundleSrc__['109']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/animation
 /*****************************************************************/
-window.__pkg__bundleSrc__['116']=function(){
+window.__pkg__bundleSrc__['121']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     //当前正在运动的动画的tick函数堆栈

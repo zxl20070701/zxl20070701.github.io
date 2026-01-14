@@ -210,32 +210,16 @@ header {
     }
 }
 
-[tag="debugger"] {
-    background-image: url('./debugger.png');
-}
-
-[tag="what"] {
-    background-image: url('./what.png');
-}
-
-[tag="recorder-screen"] {
-    background-image: url('./recorder-screen.png');
-}
-
-[tag="regexper-visualization"] {
-    background-image: url('./regexper-visualization.png');
-}
-
-[tag="file-manager"] {
-    background-image: url('./file-manager.png');
-}
-
 [tag="browser"] {
     background-image: url('./safari.png');
 }
 
 [tag="notepad"] {
     background-image: url('./note.png');
+}
+
+[tag="file-manager"] {
+    background-image: url('./file-manager.png');
 }
 
 [tag="setting"] {
@@ -246,12 +230,28 @@ header {
     background-image: url('./echarts/logo.png');
 }
 
-[tag="scss"] {
-    background-image: url('./scss.png');
+[tag="debugger"] {
+    background-image: url('./debugger.png');
+}
+
+[tag="what"] {
+    background-image: url('./what.png');
 }
 
 [tag="format-json"] {
     background-image: url('./format-json.png');
+}
+
+[tag="scss"] {
+    background-image: url('./scss.png');
+}
+
+[tag="recorder-screen"] {
+    background-image: url('./recorder-screen.png');
+}
+
+[tag="regexper-visualization"] {
+    background-image: url('./regexper-visualization.png');
 }
 
 [tag="video-play"] {

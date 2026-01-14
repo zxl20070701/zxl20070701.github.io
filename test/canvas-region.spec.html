@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../docs/images/zxl20070701.jpg">
+    <title>canvas-region测试用例</title>
+</head>
+
+<body>
+    <canvas width="400" height="400"></canvas>
+
+    <script type="module">
+        import canvasRender from "../src/tool/canvas/region.js";
+
+        var painter = canvasRender(document.getElementsByTagName('canvas')[0]);
+
+        painter.config({
+            "fontSize": 50,
+            "textAlign": "center"
+        }).setRegion("【这是文字】").fillText("这是文字", 200, 200, 45);
+
+        painter
+            .config({
+                "strokeStyle": "red",
+                "lineWidth": 5
+            })
+            .setRegion("红色十字连线和一个黑色的球")
+            .beginPath().moveTo(0, 200).lineTo(400, 200).stroke()
+            .beginPath().moveTo(200, 0).lineTo(200, 400).stroke();
+
+        painter.fullCircle(100, 300, 100);
+
+        painter.config({
+            "fillStyle": "blue"
+        }).setRegion("蓝色的矩形").fillRect(300, 100, 50, 200);
+
+        document.getElementsByTagName('canvas')[0].addEventListener("click", function (event) {
+            console.log(painter.getRegion(event));
+        });
+
+    </script>
+
+</body>
+
+</html>
