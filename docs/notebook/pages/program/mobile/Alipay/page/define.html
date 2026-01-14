@@ -1,0 +1,54 @@
+<header>
+    如何定义一个页面？
+</header>
+<h2>
+    基本结构
+</h2>
+<pre tag="javascript">
+Page({
+
+    // 数据
+    data: {},
+
+    // 自定义方法
+    doit(){},
+
+    // 生命周期
+    onLoad(query){}, // 页面加载
+    onShow(){}, // 页面显示
+    onReady(){}, // 页面加载完成
+    onHide(){}, // 页面隐藏
+    onUnload(){}, // 页面被关闭
+
+    // 特殊处理
+    onTitleClick(){}, // 标题被点击
+    onPullDownRefresh(){}, // 页面被下拉
+    onReachBottom(){}, // 页面被拉到底部
+    onShareAppMessage(){}, // 返回自定义分享信息
+});
+</pre>
+<h2>
+    数据的获取和修改
+</h2>
+<p>
+    比如我们有个数据：
+</p>
+<pre tag="javascript">
+Page({
+    data:{
+        tips:"初始化数据"
+    }
+});
+</pre>
+<h3>
+    获取
+</h3>
+<pre tag="javascript">
+    console.log("tips初始数据是："+this.data.tips);
+</pre>
+<h3>
+    修改
+</h3>
+<pre tag="javascript">
+    this.setData({tips:"新的值"});
+</pre>

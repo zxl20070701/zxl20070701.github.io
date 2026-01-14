@@ -1,0 +1,36 @@
+<header>
+    ngrok
+</header>
+<img src="./images/ngrok.webp">
+<h2>
+    第一步：下载
+</h2>
+<p>
+    进入官网（
+    <a href="https://ngrok.com/" target="_blank">https://ngrok.com/</a>
+    ）下载，大家可以根据自己系统类型下载。下载好，解压到本地就可以。
+</p>
+<h2>
+    第二步：获取授权码
+</h2>
+<p>
+    这里需要登录才能获取(如果你有GitHub的账号可以用GitHub的账号登录，或者注册一个都可以)，登录成功后可以在“Your Authtoken”中找到。
+</p>
+<h2>
+    第三步：授权命令
+</h2>
+<p>
+    在命令行，使用下面命令：
+</p>
+<pre>
+    ngrok authtoken 你的授权码
+</pre>
+<h2>
+    第四步：使用
+</h2>
+<p>
+    比如我们有了一个本地起的http服务，端口8080，实现穿透直接：
+</p>
+<pre>
+    ngrok http 8080
+</pre>

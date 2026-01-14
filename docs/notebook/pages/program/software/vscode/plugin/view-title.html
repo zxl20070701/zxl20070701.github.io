@@ -1,0 +1,122 @@
+<header>
+    在视图views中添加view/title（右上角按钮）
+</header>
+<h2>
+    效果展示
+</h2>
+<p>
+    最终效果如下：
+</p>
+<img src="./images/vscode/view-title1.png">
+<p>
+    在views的右上角多了一个可以点击的按钮（这里是图片，文字也可以）。
+</p>
+<h2>
+    配置
+</h2>
+<p>
+    在
+    <span class="special">package.json</span>
+    中配置好命令并定义：
+</p>
+<pre tag="javascript">
+"contributes": {
+    "commands": [
+      {
+        "command": "vscode-auxiliary.appStore",
+        "title": "appStore",
+        "icon": {
+          "light": "images/logo.png",
+          "dark": "images/logo.png"
+        }
+      }
+    ]
+    "menus": {
+        "view/title": [{
+          "command": "vscode-auxiliary.appStore",
+          "when": "view==vscode-auxiliary.entry",
+          "group": "navigation"
+        }]
+    }
+}
+</pre>
+<p>
+    可以看出来，这个title按钮归属于id为<span class="warn">vscode-auxiliary.entry</span>的视图，这很重要，因为我们可能有多个视图。
+</p>
+<h2>
+    多个按钮
+</h2>
+<p>
+    比如我们再配置一个视图：
+</p>
+<pre tag="javascript">
+"contributes": {
+    "commands": [
+      {
+        "command": "vscode-auxiliary.tool",
+        "title": "工具"
+      }
+    ]
+    "menus": {
+        "view/title": [{
+          "command": "vscode-auxiliary.tool",
+          "when": "view==vscode-auxiliary.entry",
+          "group": "navigation"
+        }]
+    }
+}
+</pre>
+<p>
+    运行效果如下：
+</p>
+<img src="./images/vscode/view-title2.png">
+<p>
+    可以看见多了一个文字按钮“工具”，不过，你可能希望图标按钮在前，工具按钮在后，就像这样：
+</p>
+<img src="./images/vscode/view-title3.png">
+<p>
+    那么加个排序吧：
+</p>
+<pre tag="javascript">
+"contributes": {
+    "menus": {
+        "view/title": [{
+          "command": "vscode-auxiliary.tool",
+          "when": "view==vscode-auxiliary.entry",
+          "group": "navigation@2"
+        },{
+          "command": "vscode-auxiliary.appStore",
+          "when": "view==vscode-auxiliary.entry",
+          "group": "navigation@1"
+        }]
+    }
+}
+</pre>
+<h2>
+    折叠起来按钮
+</h2>
+<p>
+    有时候，一些不怎么常有的功能，可能你希望他们折叠起来，就类似这样：
+</p>
+<img src="./images/vscode/view-title4.png">
+<p>
+    很简单，只要去掉“group”配置即可：
+</p>
+<pre tag="javascript">
+   "contributes": {
+    "menus": {
+        "view/title": [{
+          "command": "vscode-auxiliary.tool1",
+          "when": "view==vscode-auxiliary.entry"
+        },
+        {
+          "command": "vscode-auxiliary.tool2",
+          "when": "view==vscode-auxiliary.entry"
+        },
+        {
+          "command": "vscode-auxiliary.tool3",
+          "when": "view==vscode-auxiliary.entry"
+        }]
+    }
+} 
+</pre>

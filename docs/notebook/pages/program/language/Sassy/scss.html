@@ -1,0 +1,240 @@
+<header>
+    Sassy CSS 基本使用
+</header>
+<p>
+    sass分为两类，其中一种是SCSS（Sassy CSS），是一个 CSS3 语法的扩充版本，本笔记就是选择这种。
+</p>
+<p>
+    更多内容你可以访问：
+    <a href="https://sass-lang.com/documentation/" target="_blank">
+        https://sass-lang.com/documentation/
+    </a>
+</p>
+<h2>
+    Ruby版本的安装和使用
+</h2>
+<p>
+    安装好ruby以后，直接在命令行运行下面的命令进行安装：
+</p>
+<pre ui-code>gem install sass</pre>
+<p>
+    安装完毕之后，就可以直接运行下面的命令开始使用：
+</p>
+<pre ui-code>sass [--style param] sourceFile.scss targetFile.css</pre>
+<p>
+    表示编译sass文件为css文件（其中param可选参数有：nested：嵌套缩进的css代码，它是默认值；expanded：没有缩进的、扩展的css代码；compact：简洁格式的css代码；compressed：压缩后的css代码）。
+</p>
+<p>
+    例如：
+</p>
+<pre ui-code>sass --style compressed test.scss test.css</pre>
+<p>
+    如果你希望修改scss代码的时候可以自动编译：
+</p>
+<pre ui-code>sass --style compressed --watch test.scss:test.css</pre>
+<h2>
+    常用语法
+</h2>
+
+<h3>
+    变量
+</h3>
+<p>
+    以$开头即可定义变量：
+</p>
+<pre tag="css">
+$btn_bgcolor:#222222;
+
+input.btn{
+    background-color:$btn_bgcolor;
+}
+</pre>
+<p>
+    如果变量是用在字符串中，你需要用#{}包裹一下：
+</p>
+<pre tag="css">
+$direction:top;
+
+input.btn{
+    margin-#{$direction}:10px;
+}
+</pre>
+<h3>
+    计算
+</h3>
+<pre tag="css">
+div{
+    padding:(14px / 2);
+    right: $var * 10%;
+}
+</pre>
+<h3>
+    嵌套
+</h3>
+<p>
+    类型一：
+</p>
+<pre tag="css">
+//源代码
+div{
+    .btn{
+        //Todo
+    }
+}
+//编译后
+div .btn{
+    //Todo
+}
+</pre>
+<p>
+    类型二：
+</p>
+<pre tag="css">
+//源代码
+div{
+    &.btn{
+        //Todo
+    }
+}
+//编译后
+div.btn{
+    //Todo
+}
+</pre>
+<h3>
+    注释
+</h3>
+<p>
+    一共支持三种注释：
+</p>
+<ul>
+    <li>
+        <span class="important">
+            /* annotation */
+        </span>
+        多行注释，会保留到编译后；
+    </li>
+    <li>
+        <span class="important">
+            // annotation
+        </span>
+        单行注释，且只出现在源文件；
+    </li>
+    <li>
+        <span class="important">
+            /*! annotation */
+        </span>
+        多行注释，即使是压缩了也会保留。
+    </li>
+</ul>
+<h3>
+    继承
+</h3>
+<p>
+    现在有了一个公共的按钮样式：
+</p>
+<pre ui-code>
+.btn{
+    //按钮的公共样式
+}
+</pre>
+<p>
+    你现在要写一个提交按钮，为了在基础按钮基础上开发，你可以写这样的代码：
+</p>
+<pre tag="css">
+.btn-submit{
+    @extend .btn;
+    //你对提交按钮的特殊样式
+}
+</pre>
+<h3>
+    插入文件
+</h3>
+<p>
+    编译一般编译主文件，别的文件由主文件引入，比如现在有主文件root.scss，还有一个重置文件_reset.scss（开头的下划线表示这是一个局部文件，并不需要生成对应的独立css文件），你只需要在主文件中添加一行：
+</p>
+<pre tag="css">@import "./src/reset";</pre>
+<h3>
+    Mixin
+</h3>
+<p>
+    说的简单点就是代码模板预定义：
+</p>
+<pre tag="css">
+@mixin bgQuick($url,$bgcolor:red){
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: auto auto;
+    background-image:url($url);
+    background-color:$bgcolor;
+}
+</pre>
+<p>
+    使用的时候，出入参数（有缺省值的可以传入也可以不传入）：
+</p>
+<pre ui-code>
+div{
+    @include bgQuick('image/smile.png');
+}
+</pre>
+<h3>
+    函数
+</h3>
+<pre tag="css">
+@function double($size) {
+    @return $size * 2;
+}
+
+#sidebar {
+   width: double(5px);
+}
+</pre>
+<h3>
+    if
+</h3>
+<p>
+    sass的@if用not,or,and分别表示非，或，与。
+</p>
+<pre tag="css">
+$flag:1;
+div{
+    @if $flag == 1 {
+        //Todo
+    } @else if($flag > 1 and $flag < 10){
+        //Todo
+    } @else {
+        //Todo
+    }
+}
+</pre>
+<h3>
+    for
+</h3>
+<pre tag="css">
+@for $i from 0 to $home_nav_num {
+    .nav li:nth-child(#{$i + 1}) {
+        background-position-y: (0 - $i)*70px - 20px;
+    }
+}
+</pre>
+<h3>
+    whild
+</h3>
+<pre tag="css">
+$i:0;
+@while $i <  $home_nav_num {
+    .nav li:nth-child(#{$i + 1}) {
+        background-position-y: (0 - $i)*70px - 20px;
+    }
+}
+</pre>
+<h3>
+    each
+</h3>
+<pre tag="css">
+@each $i in 1, 2, 3 {
+    .nav li:nth-child(#{$i + 1}) {
+        background-position-y: (0 - $i)*70px - 20px;
+    }
+}
+</pre>

@@ -1,0 +1,299 @@
+<header>
+    如何添加或编辑一篇文章？
+</header>
+<h2>
+    新添加一篇文章
+</h2>
+<p>
+    首先，你需要确定你的文章应该存在的位置，目录分为两级，一级目录直接在
+    <span class="warn">/docs/notebook/index.html</span>
+    中查看。比如你希望在
+    <span class="warn">资料&笔记/编程相关/基础&通识/编程语言</span>
+    中添加，那么查看这个节点：
+</p>
+<pre tag="html">
+<span tag="program-course">
+    编程语言
+</span>
+</pre>
+<p>
+    就可以知道，二级目录位置就是：<span class="warn">/docs/notebook/pages/program/language</span>。
+</p>
+<div class="tips">
+    如果一级不存在你需要的分类，添加也按照一样的规则新建文件和文件夹即可，余下类似。
+</div>
+<p>
+    然后，还是以上面的例子继续，现在我们希望添加的新文章位置：
+    <span class="warn">HTML/</span>下，名称是
+    <span class="warn">新的文章</span>，那么上面的<span class="important">menu.html</span>就大概编辑成如下：
+</p>
+<pre tag="html">
+<span>
+    HTML
+</span>
+<ul>
+    <li>
+        <span tag="html/newPage">
+            新的文章
+        </span>
+    </li>
+</ul>
+</pre>
+<p>
+    然后，在<span class="warn">/docs/notebook/pages/program/language/html</span>文件夹下新建文件<span class="important">newPage.html</span>即可。
+</p>
+<h3>
+    页面内导航
+</h3>
+<p>
+    比如我们有个子标题，只需要额外提供一个fixed属性：
+</p>
+<pre tag="html">
+<h3 fixed="subtitle1">
+    子标题一
+</h3>
+</pre>
+<p>
+    然后在触发点，使用fixedTo方法即可：
+</p>
+<pre tag="html">
+    <button class="btn" onclick="fixedTo('subtitle1')">点击我滚动到标题一</button>
+</pre>
+<h2>
+    标题级别
+</h2>
+<p>
+    文章的标题使用header，比如：
+</p>
+<pre tag="html">
+<header>
+    新的文章
+</header>
+</pre>
+<p>
+    其余的按照级别依次可以使用的标签为：h2、h3、h4、h5。
+</p>
+<h2>
+    特殊标记
+</h2>
+<h3>
+    important
+</h3>
+<p>
+    一般用于标记极度重要，比如关键字等，比如：
+</p>
+<pre tag="html">
+<p>
+    我们都喜欢吃<span class="important">苹果</span>等水果。
+</p>
+</pre>
+<p>
+    运行后效果：
+</p>
+<p>
+    我们都喜欢吃<span class="important">苹果</span>等水果。
+</p>
+<h3>
+    warn
+</h3>
+<p>
+    和正常文本一样级别，只不过，需要更突出来描述，比如：
+</p>
+<pre tag="html">
+<p>
+    这是一段文字，其中<span class="warn">这个词</span>非常重要。
+</p>
+<p class="warn">
+    这是另一段文字，整段文字都非常重要。
+</p>
+</pre>
+<p>
+    运行后效果：
+</p>
+<p>
+    这是一段文字，其中<span class="warn">这个词</span>非常重要。
+</p>
+<p class="warn">
+    这是另一段文字，整段文字都非常重要。
+</p>
+<h3>
+    tips
+</h3>
+<p>
+    一些额外的补充说明，比如：
+</p>
+<pre tag="html">
+<div class="tips">
+    需要特别补充说明的是～
+</div>
+</pre>
+<p>
+    运行后效果：
+</p>
+<div class="tips">
+    需要特别补充说明的是～
+</div>
+<h3>
+    special
+</h3>
+<p>
+    重点突出一些内容，不过不是非常重要的，只是突出，比如：
+</p>
+<pre tag="html">
+<p>
+    我们希望<span class="special">突出</span>这个内容。
+</p>
+</pre>
+<p>
+    运行后效果：
+</p>
+<p>
+    我们希望<span class="special">突出</span>这个内容。
+</p>
+<h3>
+    click
+</h3>
+<p>
+    一般用于标记可点击按钮，比如：
+</p>
+<pre tag="html">
+<p>
+    你可以<span class="click">点击我</span>。
+</p>
+</pre>
+<p>
+    运行后效果：
+</p>
+<p>
+    你可以<span class="click">点击我</span>。
+</p>
+<h3>
+    link
+</h3>
+<p>
+    标记是一个跳转链接，比如：
+</p>
+<pre tag="html">
+<p>
+    <a class="link" href="https://oi-contrib.github.io/VISLite" target="_blank">点击我</a>打开一个新页面。
+</p>
+</pre>
+<p>
+    运行后效果：
+</p>
+<p>
+    <a class="link" href="https://oi-contrib.github.io/VISLite" target="_blank">点击我</a>打开一个新页面。
+</p>
+<h3>
+    btn
+</h3>
+<p>
+    标记是一个可点击元素，比如：
+</p>
+<pre tag="html">
+<p>
+    你可以<span class="btn">点击我</span>哦。
+</p>
+</pre>
+<p>
+    运行后效果：
+</p>
+<p>
+    你可以<span class="btn">点击我</span>哦。
+</p>
+<h3>
+    tips-info
+</h3>
+<p>
+    一般用于翻译等解释，比如：
+</p>
+<pre tag="html">
+<p>
+    eg:
+    <span class="special">To hear</span> is to false.
+    <span class="tips-info">
+        听是假的。
+    </span>
+</p>
+</pre>
+<p>
+    运行后效果：
+</p>
+<p>
+    eg:
+    <span class="special">To hear</span> is to false.
+    <span class="tips-info">
+        听是假的。
+    </span>
+</p>
+<h2>
+    弹框
+</h2>
+<h3>
+    说明文字
+</h3>
+<p>
+    什么是说明文字？比如你点击下面的按钮，就会出现一些弹框对一个不应该属于本篇，不过又应该说明的一些进一步解释：
+</p>
+<button tag="linear-export" type="explain">点击我试一下（只是一个例子）</button>
+<p>
+    新建一个这样的弹框非常容易，以上面的例子为例，按钮的源码如下：
+</p>
+<pre tag="html">
+    <button tag="linear-export" type="explain">点击我试一下（只是一个例子）</button>
+</pre>
+<p>
+    然后，你需要根据tag的值是“linear-export”，应该存在一个文件<span class="warn">explains/linear-export.html</span>，在里面就是弹框的内容了。
+</p>
+<p>
+    当然，也可以使用方法进行调用：
+</p>
+<pre tag="html">
+    <button onClick="loadExpalins('linear-export')">点击我试一下（只是一个例子）</button>
+</pre>
+<h3>
+    运行用例
+</h3>
+<p>
+    和上面的类似，下面也是一个例子，先点击一下试试：
+</p>
+<button tag="linear-gradient">点击我试一下（只是一个例子）</button>
+<p>
+    源码如下：
+</p>
+<pre tag="html">
+    <button tag="linear-gradient">点击我试一下（只是一个例子）</button>
+</pre>
+<p>
+    类似的，根据tag我们知道，例子的代码写在<span class="warn">examples/linear-gradient.html</span>中。
+</p>
+<p>
+    当然，也可以使用方法进行调用：
+</p>
+<pre tag="html">
+    <button onClick="loadExamples('linear-gradient')">点击我试一下（只是一个例子）</button>
+</pre>
+<p>
+    而如果你希望例子直接运行在页面，可以类似这样：
+</p>
+<pre tag="html">
+<iframe src="./examples/linear-gradient.html" class="page-examples"></iframe>
+<p>
+    点击下面的按钮可以查看上面运行程序的具体代码：
+</p>
+<button tag="linear-gradient" type="code" format="html">查看用例</button>
+</pre>
+<p>
+    效果如下：
+</p>
+<iframe src="./examples/linear-gradient.html" class="page-examples"></iframe>
+<p>
+    点击下面的按钮可以查看上面运行程序的具体代码：
+</p>
+<button tag="linear-gradient" type="code" format="html">查看用例</button>
+<p>
+    当然，也可以使用方法进行调用：
+</p>
+<pre tag="html">
+    <button onClick="showExamples('linear-gradient','css')">点击我试一下（只是一个例子）</button>
+</pre>

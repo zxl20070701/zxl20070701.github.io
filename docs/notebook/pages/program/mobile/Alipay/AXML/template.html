@@ -1,0 +1,45 @@
+<header>
+    模板
+</header>
+<p>
+    AXML提供模板（template），可以在模板中定义代码片段，然后在不同的地方调用。
+</p>
+<div class="tips">
+    建议使用 template 方式引入模板片段，因为 template 会指定其作用域，只使用 data 传入的数据，如果 template 的 data 没有改变，该片段 UI 不会重新渲染。
+</div>
+<h2>
+    定义模板
+</h2>
+<p>
+    使用 name 属性，作为模板的名字。然后在&lt;template/&gt;内定义代码片段，如：
+</p>
+<pre tag="html">
+&lt;template name="demo"&gt;
+    &lt;text&gt; {{index}}: {{msg}} &lt;/text&gt;
+&lt;/template&gt;    
+</pre>
+<h2>
+    使用模板
+</h2>
+<p>
+    使用 is 属性，声明需要的使用的模板，然后将模板所需要的 data 传入，如：
+</p>
+<pre tag="html">
+    &lt;template is="demo" data="{{...info}}"/&gt;
+</pre>
+<p>
+    其中info定义如下：
+</p>
+<pre tag="javascript">
+Page({
+    data:{
+        info:{
+            index: 0,
+            msg: 'this is a template'
+        }
+    }
+});
+</pre>
+<div class="tips">
+    模板拥有自己的作用域，只能使用 data 传入的数据。
+</div>

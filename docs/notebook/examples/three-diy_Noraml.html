@@ -1,0 +1,81 @@
+<script src="https://fastly.jsdelivr.net/npm/three@0.145.0"></script>
+
+<body></body>
+<style>
+    body {
+        margin: 0;
+    }
+</style>
+<script>
+    setTimeout(function () {
+
+        var scene = new THREE.Scene();
+
+        var geometry = new THREE.BufferGeometry();
+
+        var vertices = new Float32Array([
+            0, 0, 0,
+            50, 0, 0,
+            30, 70, 0,
+            0, 0, 0,
+            20, 0, 100,
+            50, 0, 0
+        ]);
+
+        geometry.attributes.position = new THREE.BufferAttribute(vertices, 3);
+
+        // 法向量
+        var normals = new Float32Array([
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 1, 0,
+            0, 1, 0,
+            0, 1, 0
+        ]);
+
+        geometry.attributes.normal = new THREE.BufferAttribute(normals, 3);
+
+        var material = new THREE.MeshLambertMaterial({
+            color: "white",
+            side: THREE.DoubleSide
+        });
+
+        var mesh = new THREE.Mesh(geometry, material);
+
+        scene.add(mesh);
+
+        //点光源
+        var point = new THREE.PointLight("yellow");
+        point.position.set(400, 200, 300);
+        scene.add(point);
+
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var k = width / height;
+        var s = 100;
+
+        var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+
+        camera.position.set(200, 300, 200);
+        camera.lookAt(scene.position);
+
+        var renderer = new THREE.WebGLRenderer();
+
+        renderer.setSize(width, height);
+        renderer.setClearColor(0xb9d3ff, 1);
+        document.body.appendChild(renderer.domElement);
+
+        function render() {
+
+            renderer.render(scene, camera);
+
+            mesh.rotateY(0.01);
+            requestAnimationFrame(render);
+
+        }
+
+        render();
+
+    }, 200);
+</script>

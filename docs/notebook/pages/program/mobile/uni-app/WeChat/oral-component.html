@@ -1,0 +1,70 @@
+<header>
+    如何使用微信小程序原生组件？
+</header>
+<h2>
+    准备好组件
+</h2>
+<p>
+    比如我们有一个原生组件：wxexample，存放位置：
+</p>
+<pre>
+- uniapp项目
+    - wxcomponents
+        - wxexample
+            - index.js
+            - index.json
+            - index.wxml
+            - index.wxss
+</pre>
+<p>
+    比如上面的index.js，大概内容如下：
+</p>
+<pre tag="javascript">
+Component({
+    properties: {
+        val: {
+            type: "String",
+            defalut: ""
+        }
+    },
+    data: {},
+    lifetimes: {
+        ready() {}
+    },
+    methods: {}
+});
+</pre>
+<h2>
+    引入
+</h2>
+<p>
+    在<span class="special">pages.json</span>文件中引入：
+</p>
+<pre tag="javascript">
+{
+    "globalStyle": {
+		"mp-weixin": {
+			"usingComponents": {
+				"wxexample": "/wxcomponents/wxexample/index"
+			}
+		}
+	}
+}
+</pre>
+<h2>
+    使用
+</h2>
+<p>
+    最后，在需要使用的地方使用即可：
+</p>
+<pre tag="html">
+&lt;!-- #ifdef MP-WEIXIN --&gt;
+<wxexample val="传递的数据"></wxexample>
+&lt;!-- #endif --&gt;
+</pre>
+<p>
+    此外，特别注意，定义组件的时候千万别用wx-开头，比如下面就是错误的：
+</p>
+<pre tag="html">
+<wx-example val="传递的数据"></wx-example>
+</pre>

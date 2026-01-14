@@ -1,0 +1,210 @@
+<header>
+    vue.config.js
+</header>
+<p>
+    更多细节可以
+    <a href="https://cli.vuejs.org/zh/config/#vue-config-js" target="_blank">点击此处</a>
+    查看官方文档。
+</p>
+<h2>
+    移除部分依赖
+</h2>
+<p>
+    externals 配置项提供了阻止将某些 import 的包(package)打包到 bundle 中的功能，在运行时(runtime)再从外部获取这些扩展依赖(external dependencies)。
+</p>
+<p>
+    我们以vue为例，比如我们代码中有如下语句：
+</p>
+<pre tag="javascript">
+    import Vue from 'vue';
+</pre>
+<p>
+    可以这样配置：
+</p>
+<pre tag="javascript">
+module.exports = {
+    configureWebpack: (config) => {
+        config.externals = {
+            vue: 'Vue'
+        };
+    }
+};
+</pre>
+<p class="warn">
+    温馨提示：key是第三方依赖库的名称，value时依赖库赋值给window的全局变量名称。
+</p>
+<p>
+    后续发布的时候，只需要在比如index.html页面中引入vue.js即可：
+</p>
+<pre tag="html">
+&lt;script src="./vue.js"&gt; &lt;/script&gt;
+</pre>
+<h2>
+    如何分包？
+</h2>
+<p>
+    比如我们现在有三个独立的业务模块，代码目录可能是这样：
+</p>
+<pre>
+▼ public
+    template.html
+    favicon.ico
+▼ src
+    ▼ modules
+        ▼ pageA
+            App.vue
+            main.js
+        ► pageB
+        ► pageC
+</pre>
+<p>
+    然后配置内容如下：
+</p>
+<pre tag="javascript">
+module.exports = {
+    pages:{
+        pageA: {
+            entry: 'src/modules/pageA/main.js',
+            template: 'public/template.html',
+            filename: 'index.html',
+            title: 'pageA',
+            chunks: [ 'chunk-vendors', 'chunk-common', 'pageA' ],
+            favicon: 'public/favicon.ico'
+        },
+        pageB:{},
+        pageC:{}
+    },
+    outputDir: `dist/${process.env.PROJECT_NAME}`
+};
+</pre>
+<h3>
+    开发
+</h3>
+<p>
+    直接配置如下命令即可：
+</p>
+<pre tag="javascript">
+{
+    "scripts": {
+        "serve": "vue-cli-service serve"
+    }   
+}
+</pre>
+<h3>
+    打包
+</h3>
+<p>
+    可以使用如下语句（nodejs代码）：
+</p>
+<pre tag="javascript">
+let pages = ["pageA", "pageB", "pageC"];
+for (let index = 0; index &lt; page.length; index++) {
+    require('child_process').spawn("vue-cli-service", [], {
+        env: {
+            PROJECT_NAME: pages[index]
+        }
+    });
+}
+</pre>
+<p>
+    打包后存放在dist文件夹中，结构如下：
+</p>
+<pre>
+▼ dist
+    ▼ pageA
+        ► css
+        ► img
+        ► js
+        favicon.ico
+        index.html
+    ► pageB
+    ► pageC
+</pre>
+<h2>
+    更多
+</h2>
+<h3>
+    configureWebpack
+</h3>
+<p>
+    比如我们希望在原来的webpack中添加一个插件 MyPlugin ，可以这样：
+</p>
+<pre tag="javascript">
+module.exports = {
+    configureWebpack: {
+        plugins: [
+            new MyPlugin()
+        ]   
+    }
+}
+</pre>
+<p>
+    该对象将会被合并入最终的 webpack 配置。
+</p>
+<p>
+    如果你需要基于环境有条件地配置行为，或者想要直接修改配置，那就换成一个函数：
+</p>
+<pre tag="javascript">
+module.exports = {
+    configureWebpack: config => {
+        if (process.env.NODE_ENV === 'production') {
+            // 为生产环境修改配置...
+        } else {
+            // 为开发环境修改配置...
+        }
+    }
+}
+</pre>
+<p>
+    在函数内，你可以直接修改配置，或者返回一个将会被合并的对象。
+</p>
+<h3>
+    chainWebpack
+</h3>
+<p>
+    Vue CLI 内部的 webpack 配置是通过 webpack-chain 维护的。它允许我们更细粒度的控制其内部配置。
+</p>
+<p class="warn">
+    当你打算链式访问特定的 loader 时，你可以（比如针对scss）：
+    <span class="important">
+        vue inspect --rule scss
+    </span>
+    这样来查看配置结果可能是有益的。
+</p>
+<h4>
+    添加一个新的 Loader
+</h4>
+<p>
+    比如我们对原来的vue-loader再加一个loader（会附加在该规则现有的 loader 之后）：
+</p>
+<pre tag="javascript">
+module.exports = {
+    chainWebpack: config => {
+        config.module
+            .rule('vue')
+            .test(/\.vue$/)
+            .use('./pre-vue-loader.js')
+            .loader('./pre-vue-loader.js')
+            .end()
+    }
+}
+</pre>
+<h4>
+    替换一个规则里的 Loader
+</h4>
+<p>
+    比如我们希望vue文件原来的loader删除了，就用我现在的就可以了：
+</p>
+<pre tag="javascript">
+module.exports = {
+    chainWebpack: config => {
+        const vueRule = config.module.rule('vue').test(/\.vue$/)
+
+        vueRule.uses.clear()
+
+        vueRule.use('./pre-vue-loader.js')
+            .loader('./pre-vue-loader.js')
+            .end()
+    }
+}
+</pre>

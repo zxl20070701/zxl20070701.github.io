@@ -1,0 +1,45 @@
+<header>
+    说明和用例
+</header>
+<p>
+    Tkinter 是内置到 python 的安装包中、只要安装好 Python 之后就能 import Tkinter 库。
+</p>
+<h2>
+    创建一个GUI程序
+</h2>
+<pre tag="javascript">
+#!/usr/bin/python3
+ 
+import tkinter
+root = tkinter.Tk()  # 实例化主窗口
+root.title('窗口标题')
+root.geometry('400x300')  # 设置尺寸
+root.mainloop()  # 启动事件循环
+</pre>
+<h2>
+    添加控件
+</h2>
+<p>
+    Tkinter的提供各种控件，如按钮，标签和文本框，一个GUI应用程序中使用。这些控件通常被称为控件或者部件。
+</p>
+<p>
+    比如我们在页面中添加一个按钮，点击打印信息：
+</p>
+<pre tag="javascript">
+import tkinter
+root = tkinter.Tk()
+root.geometry('400x300')
+
+def doit():
+   print("你点击了按钮")
+
+btn = tkinter.Button(root, text = "点我", command = doit) # 创建一个按钮
+btn.pack() # 添加到窗口中
+
+root.mainloop() 
+</pre>
+<p>
+    上面的
+    <span class="warn">btn.pack()</span>
+    是一种几何管理，公开的几何管理类：包（pack）、网格（grid）、位置（place）。
+</p>

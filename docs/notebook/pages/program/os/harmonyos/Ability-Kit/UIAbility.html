@@ -1,0 +1,115 @@
+<header>
+    @ohos.app.ability.UIAbility
+</header>
+<p>
+    UIAbility是包含UI界面的应用组件，继承自
+    <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-app-ability-ability-V5"
+        target="_blank">
+        @ohos.app.ability.Ability
+    </a>
+    ，提供组件创建、销毁、前后台切换等生命周期回调，同时也具备组件协同的能力。
+</p>
+<p>
+    简单的理解就是：一个APP中一个独立的窗口，每个窗口可以有多个页面。
+</p>
+<h2>
+    定义
+</h2>
+<p>
+    比如我们定义一个入口 EntryAbility 窗口，大致如下：
+</p>
+<pre tag="javascript">
+import UIAbility from '@ohos.app.ability.UIAbility';
+
+export default class EntryAbility extends UIAbility {
+    onWindowStageCreate(windowStage: window.WindowStage) {
+        windowStage.loadContent('pages/Index', (err, data) => {
+            // todo
+        });
+    }
+}
+</pre>
+<h2>
+    生命周期
+</h2>
+<h3>
+    onCreate
+</h3>
+<p>
+    实例处于完全关闭状态下被创建完成后进入该生命周期回调，执行初始化业务逻辑操作：
+</p>
+<pre tag="javascript">
+    onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void
+</pre>
+<h3>
+    onWindowStageCreate
+</h3>
+<p>
+    当WindowStage创建后调用：
+</p>
+<pre tag="javascript">
+    onWindowStageCreate(windowStage: window.WindowStage): void
+</pre>
+<h3>
+    onWindowStageWillDestroy
+</h3>
+<p>
+    当WindowStage即将销毁时调用：
+</p>
+<pre tag="javascript">
+    onWindowStageWillDestroy(windowStage: window.WindowStage): void
+</pre>
+<h3>
+    onWindowStageDestroy
+</h3>
+<p>
+    当WindowStage销毁后调用：
+</p>
+<pre tag="javascript">
+    onWindowStageDestroy(): void
+</pre>
+<h3>
+    onWindowStageRestore
+</h3>
+<p>
+    当迁移多实例ability时，恢复WindowStage后调用：
+</p>
+<pre tag="javascript">
+    onWindowStageRestore(windowStage: window.WindowStage): void
+</pre>
+<h3>
+    onDestroy
+</h3>
+<p>
+    在销毁时回调：
+</p>
+<pre tag="javascript">
+    onDestroy(): void | Promise&lt;void&gt;
+</pre>
+<h3>
+    onForeground
+</h3>
+<p>
+    当应用从后台转到前台时触发：
+</p>
+<pre tag="javascript">
+    onForeground(): void
+</pre>
+<h3>
+    onBackground
+</h3>
+<p>
+    当应用从前台转到后台时触发：
+</p>
+<pre tag="javascript">
+    onBackground(): void
+</pre>
+<h3>
+    onBackPressed
+</h3>
+<p>
+    当UIAbility侧滑返回时触发：
+</p>
+<pre tag="javascript">
+    onBackPressed(): boolean
+</pre>

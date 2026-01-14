@@ -1,0 +1,24 @@
+<header>
+    方差与标准差
+</header>
+<p>
+    <span class="title">
+        定义
+    </span>
+    若随机变量X<sup>2</sup>的数学期望E(X<sup>2</sup>)存在，则称偏差平方(X-E(X))<sup>2</sup>的数学期望E(X-E(X))<sup>2</sup>为随机变量X的<span
+        class="important">方差</span>，记为
+    <span class="oneline">
+        Var(X) = E(X-EX)<sup>2</sup> =
+        <code>
+            ["equationSet",
+                ["join",["sum","i","",""],["rightTop",["bracket",["join",["rightBottom","x","i"]," - E(X)"],"small"],"2"],"p(",["rightBottom","x","i"],")，在离散场合"],
+                ["join",["integral",["join",["rightTop","(x-E(X))","2"],"p(x)"],"dx","-∞","∞"],"，在连续场合"]
+            ]
+        </code>
+    </span>
+    称方差的正平方根
+    <code>
+        ["gen","var(X)"]
+    </code>
+    为随机变量X的<span class="important">标准差</span>，记为σ(X)。
+</p>

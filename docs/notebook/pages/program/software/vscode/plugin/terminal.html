@@ -1,0 +1,21 @@
+<header>
+    新建Terminal
+</header>
+<h2>
+    创建
+</h2>
+<pre tag="javascript">
+vscode.window.createTerminal({
+    cwd: "需要执行的命令", 
+    name: "此命令行名称"
+});
+</pre>
+<h2>
+    关闭
+</h2>
+<pre tag="javascript">
+let terminals = vscode.window.terminals;
+for(let item of terminals){
+    if(item.name==="此命令行名称") item.dispose();
+}
+</pre>

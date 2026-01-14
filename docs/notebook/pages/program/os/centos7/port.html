@@ -1,0 +1,38 @@
+<header>
+    端口
+</header>
+<h2>
+    开端口命令
+</h2>
+<pre>
+    firewall-cmd --zone=public --add-port=80/tcp --permanent
+</pre>
+<p>
+    命令含义：
+</p>
+<ul>
+    <li>
+        --zone #作用域
+    </li>
+    <li>
+        --add-port=80/tcp #添加端口，格式为：端口/通讯协议
+    </li>
+    <li>
+        --permanent #永久生效，没有此参数重启后失效
+    </li>
+</ul>
+<h2>
+    端口使用情况
+</h2>
+<p>
+    查看8080端口使用情况：
+</p>
+<pre>
+    netstat -ntulp|grep 8080
+</pre>
+<p>
+    查看所有端口使用情况：
+</p>
+<pre>
+    netstat -ntlp
+</pre>

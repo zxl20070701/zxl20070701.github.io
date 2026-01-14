@@ -1,0 +1,23 @@
+<header>
+    Tensor
+</header>
+<div class="tips">
+    tf.Tensor extends TensorInfo
+</div>
+<h2>
+    dataSync()
+</h2>
+<p>
+    同步获取一个张量的值，比如我们有如下代码：
+</p>
+<pre tag="javascript">
+let myT=tf.tensor([1, 2, 3, 4, 5, 6], [3, 2]);
+console.log(myT.dataSync());
+</pre>
+<p>
+    打印结果：
+</p>
+<pre tag="javascript">
+Float32Array(6) [1, 2, 3, 4, 5, 6, buffer: ArrayBuffer(24), byteLength: 24, 
+    byteOffset: 0, length: 6, Symbol(Symbol.toStringTag): 'Float32Array']
+</pre>

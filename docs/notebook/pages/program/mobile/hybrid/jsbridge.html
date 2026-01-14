@@ -1,0 +1,70 @@
+<header>
+    JSBridge
+</header>
+<h2>
+    原生调用Web端代码
+</h2>
+<p>
+    WebView是Native中加载网页的一个控件，该组件提供一个evaluateJavascript()方法运行JS代码。我们要做的是在Native端执行一个js方法，在Web端进行监听。
+</p>
+<h3>
+    Web端定义方法
+</h3>
+<pre tag="javascript">
+window.doit=function(data){
+    console.log(data);
+};
+</pre>
+<h3>
+    原生调用
+</h3>
+<pre tag="javascript">
+webView.evaluateJavascript("window.doit('来自原生的数据')", null);
+</pre>
+<h2>
+    Web端调用原生代码
+</h2>
+<p>
+    当Web端要请求Native端的方法时，我们首先要自定义一个URL Schema，向Native端发起一个请求，最后在Native端的WebView进行监听。
+</p>
+<h4>
+    URL schema介绍
+</h4>
+<p>
+    URL schema 是类URL的请求格式，如：&lt;protocol&gt;://&lt;domain&gt;/&lt;path&gt;?&lt;query&gt;
+</p>
+<h3>
+    Web端发送URL schema请求
+</h3>
+<p>
+    比如我们可以通过修改一个隐藏的iframe地址来实现发送请求：
+</p>
+<pre tag="html">
+<iframe src="jsbridge://showToast?text=来自Web端端数据"></iframe>
+</pre>
+<p class="warn">
+    温馨提示：正常来说是可以通过window.location.href达到发起网络请求的效果的，但是有一个很严重的问题，就是如果我们连续多次修改window.location.href的值，在Native层只能接收到最后一次请求，前面的请求都会被忽略掉。所以JS端发起网络请求的时候，需要使用iframe，这样就可以避免这个问题。
+</p>
+<h3>
+    原生实现监听
+</h3>
+<h4>
+    安卓
+</h4>
+<p>
+    在Android中(WebViewClient里)，通过shouldoverrideurlloading可以捕获到url scheme的触发：
+</p>
+<pre tag="javascript">
+private WebViewClient webViewClient = new WebViewClient() {
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url){
+        //读取到url后自行进行分析处理
+
+        //如果返回false，则WebView处理链接url，如果返回true，代表WebView根据程序来执行url
+        return true;
+    }
+}
+</pre>
+<p class="warn">
+    温馨提示：另外，Web中也可以不通过iframe.src来触发scheme，通过window.prompt(uri, "");来触发scheme，然后原生中通过重写WebViewClient的onJsPrompt来获取uri。
+</p>

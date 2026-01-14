@@ -1,0 +1,43 @@
+<header>
+    自定义组件
+</header>
+<h2>
+    基本结构
+</h2>
+<pre tag="javascript">
+Component({
+
+    // 属性列表
+    props:{},
+
+    // 数据
+    data: {},
+
+    // 自定义方法(位置)
+    methods:{},
+
+    // 生命周期
+    didMount() {}, // 组件创建完毕时触发
+    didUpdate(prevProps, prevData) {}, // 组件更新完毕时触发
+    didUnmount() {}, // 组件删除时触发
+});
+</pre>
+<h2>
+    属性定义和使用
+</h2>
+<p>
+    属性也就是用户使用这个组件的时候可以设置的属性：
+</p>
+<pre tag="javascript">
+Component({
+    props: {
+        width: 300
+    }
+});
+</pre>
+<p>
+    使用的时候也非常简单：
+</p>
+<pre tag="javascript">
+    console.log(this.props.width);
+</pre>

@@ -1,0 +1,91 @@
+<header>
+    Class 与 Style 绑定
+</header>
+<h2>
+    绑定 HTML class
+</h2>
+<h3>
+    对象语法
+</h3>
+<pre tag="html">
+    <div v-bind:class="{ active: isActive }"></div>
+</pre>
+<p>
+    上面的语法表示 active 这个 class 存在与否将取决于数据
+    <span class="special">this.isActive</span>
+    是true还是false。
+</p>
+<p>
+    值是一个json，还可以写多个或者和class共存：
+</p>
+<pre tag="html">
+    <div class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }"></div>
+</pre>
+<p>
+    当然，绑定的数据对象不必内联定义在模板里，也可以：
+</p>
+<pre tag="html">
+    <div v-bind:class="classObject"></div>
+</pre>
+<p>
+    data当前应该类似：
+</p>
+<pre tag="javascript">
+data(){
+    return {
+        classObject: {
+            active: true,
+            'text-danger': false
+        }
+    }
+}
+</pre>
+<h3>
+    绑定数组
+</h3>
+<pre tag="html">
+    <div v-bind:class="[activeClass, errorClass]"></div>
+</pre>
+<p>
+    而data：
+</p>
+<pre tag="javascript">
+data(){
+    return {
+        {
+            activeClass: 'active',
+            errorClass: 'text-danger'
+        }
+    }
+}
+</pre>
+<p>
+    那么渲染后就是：
+</p>
+<pre tag="html">
+    <div class="active text-danger"></div>
+</pre>
+<p>
+    如果你也想根据条件切换列表中的 class，可以用三元表达式：
+</p>
+<pre tag="html">
+    <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+</pre>
+<h2>
+    绑定内联样式
+</h2>
+<h3>
+    对象语法
+</h3>
+<pre tag="html">
+    <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+</pre>
+<h3>
+    数组语法
+</h3>
+<p>
+    可以将多个样式对象应用到同一个元素上：
+</p>
+<pre tag="html">
+    <div v-bind:style="[baseStyles, overridingStyles]"></div>
+</pre>

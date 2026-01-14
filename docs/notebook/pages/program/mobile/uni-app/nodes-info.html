@@ -1,0 +1,74 @@
+<header>
+    节点信息
+</header>
+<p class="warn">
+    温馨提示：更多细节你可以进入
+    <a href="https://uniapp.dcloud.net.cn/api/ui/nodes-info.html" target="_blank">uniapp节点信息</a>
+    进行查看。
+</p>
+<h2>
+    查找
+</h2>
+<pre tag="javascript">
+    let selectorQuery = uni.createSelectorQuery().in(component)
+</pre>
+<p>
+    返回一个
+    <span class="special">SelectorQuery</span>
+    对象实例，并通过
+    <span class="special">in方法</span>
+    将选择器的选取范围更改为自定义组件component内。
+</p>
+<p class="warn">
+    温馨提示：支付宝小程序不支持in(component)，使用无效果。
+</p>
+<h3>
+    select
+</h3>
+<p>
+    在当前页面下选择第一个匹配选择器selector的节点，返回一个
+    <span class="special">NodesRef</span>
+    对象实例，可以用于获取节点信息：
+</p>
+<pre tag="javascript">
+    let nodesRef = selectorQuery.select(selector) 
+</pre>
+<p>
+    其中selector类似于CSS的选择器，但仅支持下列语法：
+</p>
+<ul>
+    <li>
+        ID选择器：<span class="important">#the-id</span>
+    </li>
+    <li>
+        class选择器（可以连续指定多个）：<span class="important">.a-class.another-class</span>
+    </li>
+    <li>
+        子元素选择器：<span class="important">.the-parent &gt; .the-child</span>
+    </li>
+    <li>
+        后代选择器：<span class="important">.the-ancestor .the-descendant</span>
+    </li>
+    <li>
+        跨自定义组件的后代选择器：<span class="important">.the-ancestor &gt;&gt;&gt; .the-descendant</span>
+    </li>
+    <li>
+        多选择器的并集：<span class="important">#a-node, .some-other-nodes</span>
+    </li>
+</ul>
+<h2>
+    属性
+</h2>
+<h3>
+    boundingClientRect
+</h3>
+<p>
+    其功能类似于DOM的
+    <span class="special">getBoundingClientRect</span>
+    方法：
+</p>
+<pre tag="javascript">
+nodesRef.boundingClientRect(data => {
+    // data就是回调参数，包含了重要的节点信息
+}).exec()
+</pre>

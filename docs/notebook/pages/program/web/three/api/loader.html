@@ -1,0 +1,37 @@
+<header>
+    模型加载器
+</header>
+<h2>
+    GLTF加载器（GLTFLoader）
+</h2>
+<pre tag="javascript">
+var gltfLoader = new GLTFLoader(manager);
+</pre>
+<ul>
+    <li>
+        manager - 可选参数，默认为THREE.DefaultLoadingManager，该加载器将要使用的loadingManager
+    </li>
+</ul>
+<h3>
+    方法
+</h3>
+<h4>
+    load
+</h4>
+<pre tag="javascript">
+gltfLoader.load (url, onLoad, onProgress, onError);
+</pre>
+<ul>
+    <li>
+        url - 包含有.gltf/.glb文件路径/URL的字符串
+    </li>
+    <li>
+        onLoad - 加载成功完成后将会被调用的函数
+    </li>
+    <li>
+        onProgress - 可选参数，加载正在进行过程中会被调用的函数
+    </li>
+    <li>
+        onError - 可选参数，若在加载过程发生错误，将被调用的函数
+    </li>
+</ul>

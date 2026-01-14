@@ -10,5 +10,5 @@ exports.error = function (txt) {
 
 // 调试
 exports.print = function (txt) {
-    console.log("\x1B[37m" + txt + "\x1B[39m");
+    console.log("\x1B[34m" + txt + "\x1B[39m");
 };

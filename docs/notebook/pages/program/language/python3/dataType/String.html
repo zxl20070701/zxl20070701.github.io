@@ -1,0 +1,49 @@
+<header>
+    String（字符串）
+</header>
+<p>
+    创建字符串可以使用单引号、双引号、三单引号和三双引号，其中三引号可以多行定义字符串，有点类似ES6中的反引号。
+</p>
+<h2>
+    运算符
+</h2>
+<h3>
+    方括号 []
+</h3>
+<p>
+    可以使用方括号 [] 来截取字符串，字符串的截取的语法格式如下：
+</p>
+<pre tag>
+    变量[头下标:尾下标]
+</pre>
+<p>
+    索引值以 0 为开始值，-1 为从末尾的开始位置：
+</p>
+<img src="./images/python/index.jpeg" width="400px">
+<p>
+    下面是一些有用的例子：
+</p>
+<pre tag>
+val_str='zxl20070701'
+
+print(val_str[:]) #zzxl20070701
+print(val_str[0]) #z
+print(val_str[1:]) #xl20070701
+print(val_str[1:3]) #xl
+print(val_str[:3]) #zxl
+</pre>
+<h3>
+    in 和 not in
+</h3>
+<pre tag>
+val_str='zxl20070701'
+
+print("zxl" in val_str) # True
+print("zxl" not in val_str) # False
+</pre>
+<h3>
+    重复字符串
+</h3>
+<pre tag>
+print("2007" * 3) # 200720072007
+</pre>

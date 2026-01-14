@@ -1,0 +1,64 @@
+<header>
+    在左侧Activity Bar（活动栏）中添加一个按钮
+</header>
+<h2>
+    效果展示
+</h2>
+<p>
+    最终效果如下：
+</p>
+<img src="./images/vscode/activitybar.png" width="300px">
+<p>
+    在Activity Bar（活动栏）中添加了一个按钮，点击以后在Primary Sidebar（主侧边栏）中打开了一个views页面。
+</p>
+<h2>
+    配置
+</h2>
+<p>
+    在
+    <span class="special">package.json</span>
+    中配置好activitybar并定义使用的view：
+</p>
+<pre tag="javascript">
+"contributes": {
+    "viewsContainers": {
+        "activitybar": [{
+            "id": "Helper",
+            "title": "Auxiliary",
+            "icon": "images/logo.png"
+        }]
+    },
+    "views": {
+        "Helper": [
+            {
+            "id": "vscode-auxiliary.entry",
+            "type": "webview",
+            "name": "Welcome"
+            }
+        ]
+    }
+}
+</pre>
+<p>
+    上面定义好<span class="warn">activitybar</span>，使用<span class="warn">view/Helper</span>作为视图，此视图id为<span
+        class="warn">vscode-auxiliary.entry</span>。
+</p>
+<h2>
+    注册WebviewViewProvider
+</h2>
+<p>
+    为id是<span class="warn">vscode-auxiliary.entry</span>的视图定义提供者（extension.js文件中）：
+</p>
+<pre tag="javascript">
+class UtilsWebviewViewProvider implements vscode.WebviewViewProvider {
+    public resolveWebviewView(webviewView: vscode.WebviewView) {
+        webviewView.webview.html = "页面内容";
+    }
+}
+
+function activate(context) {
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider("vscode-auxiliary.entry", new UtilsWebviewViewProvider())
+    ); 
+}
+</pre>

@@ -1,0 +1,192 @@
+<header>
+    关于this指向的一些梳理
+</header>
+<h2>
+    函数内
+</h2>
+<h3>
+    非严格模式
+</h3>
+<p>
+    通常情况下，定义的函数的this就是window，比如：
+</p>
+<pre tag="javascript">
+function doit(){
+    console.log(this);
+}
+
+doit();
+</pre>
+<p>
+    打印结果：
+</p>
+<pre tag="javascript">
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+</pre>
+<h3>
+    严格模式
+</h3>
+<p>
+    不过，如果开启了严格模式：
+</p>
+<pre tag="javascript">
+"use strict"
+
+function doit(){
+    console.log(this);
+}
+
+doit();
+</pre>
+<p>
+    打印结果：
+</p>
+<pre tag="javascript">
+undefined
+</pre>
+<h3>
+    箭头函数
+</h3>
+<p>
+    不过，如果严格模式下改为箭头函数，打印结果就还是window：
+</p>
+<pre tag="javascript">
+"use strict"
+
+var doit = ()=&gt;{
+    console.log(this);
+}
+
+doit();
+</pre>
+<h2>
+    对象中
+</h2>
+<h3>
+    普通函数
+</h3>
+<p>
+    总结起来就是：谁调用我，我指向谁。比如我们现在有一个json如下：
+</p>
+<pre tag="javascript">
+var obj = {
+    key1: {
+        key2: {
+            doit: function () {
+                console.log(this);
+            },
+            key3: {
+                doit: function () {
+                    console.log(this);
+                }
+            }
+        }
+    }
+};
+</pre>
+<p>
+    那么，执行下面语句：
+</p>
+<pre tag="javascript">
+obj.key1.key2.doit();
+</pre>
+<p>
+    打印结果就是：
+</p>
+<pre tag="javascript">
+{key3: {…}, doit: ƒ}
+</pre>
+<p>
+    因为调用我的是obj.key1.key2，所以this就是它。而执行下面的语句：
+</p>
+<pre tag="javascript">
+obj.key1.key2.key3.doit();
+</pre>
+<p>
+    打印结果就是：
+</p>
+<pre tag="javascript">
+{doit: ƒ}
+</pre>
+<p>
+    同理，此时this就是obj.key1.key2.key3。
+</p>
+<h4>
+    接收一下
+</h4>
+<p>
+    如果下面这样先存一下再调用：
+</p>
+<pre tag="javascript">
+var doit=obj.key1.key2.doit;
+doit();
+</pre>
+<p>
+    打印结果如下：
+</p>
+<pre tag="javascript">
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+</pre>
+<h3>
+    箭头函数
+</h3>
+<p>
+    这里情况其实变得更简单了，this永远指向当前作用域中的this。
+</p>
+<p>
+    比如我们把上面的json改造一下：
+</p>
+<pre tag="javascript">
+var obj = {
+    key1: {
+        key2: {
+            doit: ()=> {
+                console.log(this);
+            },
+            key3: {
+                doit: ()=> {
+                    console.log(this);
+                }
+            }
+        }
+    }
+}
+</pre>
+<p>
+    那么对于下面的语句：
+</p>
+<pre tag="javascript">
+obj.key1.key2.doit();
+obj.key1.key2.key3.doit();
+</pre>
+<p>
+    那么打印结果就是：
+</p>
+<pre tag="javascript">
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+</pre>
+<p>
+    由于json定义在全局作用域上，所以this就是window。
+</p>
+<h2>
+    柯理化函数
+</h2>
+<p>
+    比如我们有如下一个json：
+</p>
+<pre tag="javascript">
+var json = {
+    doit: function () {
+        return function () {
+            console.log(this);
+        };
+    }
+};
+</pre>
+<p>
+    打印结果：
+</p>
+<pre tag="javascript">
+Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+</pre>

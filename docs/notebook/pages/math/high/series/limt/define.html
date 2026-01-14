@@ -1,0 +1,114 @@
+<header>
+    基本概念与性质
+</header>
+<p>
+    <span class="title">
+        定义
+    </span>
+    设{a<sub>n</sub>}为数列，a为定数。若对任给的正数ε，总存在正整数N，使得当n＞N时有
+    <span class="oneline">
+        |a<sub>n</sub> - a| ＜ ε
+    </span>
+    则称为数列{a<sub>n</sub>}收敛于a，定数a称为数列{a<sub>n</sub>}的极限，并记作
+    <span class="oneline">
+        <code>
+            ["limt","n→∞",["rightBottom","a","n"]]
+        </code>
+    </span>
+    读作“当n趋于无穷大时，{a<sub>n</sub>}的极限等于a”。
+</p>
+<h2>
+    四则运算法则
+</h2>
+<p>
+    若{a<sub>n</sub>}与{b<sub>n</sub>}为收敛数列，则{a<sub>n</sub>+b<sub>n</sub>},{a<sub>n</sub>-b<sub>n</sub>},{a<sub>n</sub>·b<sub>n</sub>}也是收敛数列，且有
+    <span class="oneline">
+        <code>["limt","n→∞",["join","(",["rightBottom","a","n"],"±",["rightBottom","b","n"],")"]]</code>=
+        <code>
+            ["limt","n→∞",["rightBottom","a","n"]]
+        </code>±
+        <code>
+            ["limt","n→∞",["rightBottom","b","n"]]
+        </code>
+    </span>
+    <span class="oneline">
+        <code>["limt","n→∞",["join","(",["rightBottom","a","n"],"·",["rightBottom","b","n"],")"]]</code>=
+        <code>
+            ["limt","n→∞",["rightBottom","a","n"]]
+        </code>·
+        <code>
+            ["limt","n→∞",["rightBottom","b","n"]]
+        </code>
+    </span>
+    特别当b<sub>n</sub>为常数c时有
+    <span class="oneline">
+        <code>["limt","n→∞",["join","(",["rightBottom","a","n"],"+ c )"]]</code>=
+        <code>
+            ["limt","n→∞",["rightBottom","a","n"]]
+        </code>+ c
+    </span>
+    <span class="oneline">
+        <code>
+            ["limt","n→∞",["rightBottom","c a","n"]]
+        </code>= c
+        <code>
+            ["limt","n→∞",["rightBottom","a","n"]]
+        </code>
+    </span>
+    若再假设b<sub>n≠0</sub>及
+    <code>
+        ["limt","n→∞",["rightBottom","b","n"]]
+    </code>
+    ≠0，则
+    <code>
+        ["bracket",["division",["rightBottom","a","n"],["rightBottom","b","n"]],"big"]
+    </code>
+    也是收敛数列，且有
+    <span class="oneline">
+        <code>
+            ["limt","n→∞",["division",["rightBottom","a","n"],["rightBottom","b","n"]]]
+        </code> =
+        <code>
+            ["division", ["limt","n→∞",["rightBottom","a","n"]], ["limt","n→∞",["rightBottom","b","n"]]]
+        </code>
+    </span>
+</p>
+<h2>
+    重要性质
+</h2>
+<p>
+    <span class="title">
+        定理（唯一性）
+    </span>
+    若数列{a<sub>n</sub>}收敛，则它只有一个极限。
+</p>
+<p>
+    <span class="title">
+        定理（有界性）
+    </span>
+    若数列{a<sub>n</sub>}收敛，则{a<sub>n</sub>}为有界数列，即存在正数M，使得对一切正整数n有|a<sub>n</sub>| ≤ M。
+</p>
+<p>
+    <span class="title">
+        定理（保号性）
+    </span>
+    若 <code>["limt","n→∞",["rightBottom","a","n"]]</code> =
+    a＞0(或＜0)，则对任何a'∈(0,a)(或a'∈(a,0))，存在正数N，使得当n＞N时有a<sub>n</sub>＞a'(或a<sub>n</sub>＜a')。
+</p>
+<p>
+    <span class="title">
+        定理（保不等式性）
+    </span>
+    设{a<sub>n</sub>}与{b<sub>n</sub>}均为收敛数列。若存在正数N<sub>0</sub>，使得当n＞N<sub>0</sub>时有a<sub>n</sub>≤b<sub>n</sub>，则
+    <code>["limt","n→∞",["rightBottom","a","n"]]</code> ≤ <code>["limt","n→∞",["rightBottom","b","n"]]</code>。
+</p>
+<p>
+    <span class="title">
+        定理（迫敛性）
+    </span>
+    设收敛数列{a<sub>n</sub>},{b<sub>n</sub>}都以a为极限，数列{c<sub>n</sub>}满足：存在正数N<sub>0</sub>，当n＞N<sub>0</sub>时有
+    <span class="oneline">
+        a<sub>n</sub>≤c<sub>n</sub>≤b<sub>n</sub>
+    </span>
+    则数列{c<sub>n</sub>}收敛，且 <code>["limt","n→∞",["rightBottom","c","n"]]</code> = a。
+</p>

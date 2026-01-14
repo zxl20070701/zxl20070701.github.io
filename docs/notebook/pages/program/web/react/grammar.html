@@ -1,0 +1,59 @@
+<header>
+    如何定义类组件？
+</header>
+<h2>
+    基本结构
+</h2>
+<pre tag="javascript">
+class Demo extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        return (<div>
+            页面内容部分
+        </div>)
+    }
+}
+</pre>
+<h2>
+    插槽
+</h2>
+<p>
+    比如我们打算写个组件Demo，用起来大概是这样子：
+</p>
+<pre tag="html">
+&lt;Demo&gt;用户自定义的一些内容&lt;/Demo&gt;
+</pre>
+<p>
+    如果我们希望组件中间的内容在组件的指定位置显示，就可以：
+</p>
+<pre tag="javascript">
+class Demo extends React.Component {
+    private slots: Array<any>
+    constructor(props) {
+        super(props)
+        this.slots = React.Children.toArray(props.children)
+    }
+    render() {
+        return (<div>
+            页面内容部分
+            {slots.map(slot => {
+                return slot
+            })}
+        </div>)
+    }
+}
+</pre>
+<p>
+    渲染结果就是：
+</p>
+<pre tag="html">
+<div>
+    页面内容部分
+    用户自定义的一些内容
+</div>
+</pre>
+<p>
+    当然，你也可以通过判断slot的一些属性来实现类似具名插槽的效果。
+</p>

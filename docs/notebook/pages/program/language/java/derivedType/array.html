@@ -1,0 +1,83 @@
+<header>
+    数组
+</header>
+<h2>
+    声明数组变量
+</h2>
+<pre tag="javascript">
+    dataType[] arrayRefVar; 
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+    double[] myList; 
+</pre>
+<h2>
+    创建数组
+</h2>
+<p>
+    Java语言使用new操作符来创建数组，语法如下：
+</p>
+<pre tag="javascript">
+    arrayRefVar = new dataType[arraySize];
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+    double[] myList = new double[3];
+</pre>
+<h2>
+    赋值
+</h2>
+<p>
+    除了一个个赋值外，也可以在创建的时候直接初始化：
+</p>
+<pre tag="javascript">
+    double[] myList = { 1.2, 1.2, 3.0 };
+</pre>
+<h2>
+    For-Each 循环
+</h2>
+<p>
+    JDK 1.5 引进了一种新的循环类型，被称为 For-Each 循环或者加强型循环，它能在不使用下标的情况下遍历数组。
+</p>
+<p>
+    语法格式如下：
+</p>
+<pre tag="javascript">
+for(type element: array){
+    System.out.println(element);
+}
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+double[] myList = { 1.2, 1.2, 3.0 };
+for (double element : myList) {
+    System.out.println(element);
+}
+</pre>
+<h2>
+    多维数组
+</h2>
+<p>
+    以二维数组为例，初始化格式如下：
+</p>
+<pre tag="javascript">
+    type[][] typeName = new type[typeLength1][typeLength2];
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+    int[][] myList = new int[2][3];
+</pre>
+<p>
+    赋值也类似：
+</p>
+<pre tag="javascript">
+    int[][] myList = { { 1, 2, 3 }, { 4, 5, 6 } };
+</pre>

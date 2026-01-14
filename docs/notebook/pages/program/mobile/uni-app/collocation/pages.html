@@ -1,0 +1,458 @@
+<header>
+    pages.json 页面路由
+</header>
+<p>
+    用来对 uni-app 进行全局配置，决定页面文件的路径、窗口样式、原生的导航栏、底部的原生tabbar 等。
+</p>
+<p>
+    导航栏高度为 44px (不含状态栏)，tabBar 高度为 50px (不含安全区)。
+</p>
+<p>
+    它类似微信小程序中app.json的页面管理部分。注意定位权限申请等原属于app.json的内容，在uni-app中是在manifest中配置。
+</p>
+<h2>
+    配置项列表
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>描述</th>
+            <th>平台兼容</th>
+        </tr>
+    </thead>
+    <tbody> 
+        <tr>
+            <td class="btn" onclick="fixedTo('globalStyle')">globalStyle</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>设置默认页面的窗口表现</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="btn" onclick="fixedTo('pages')">pages</td>
+            <td>Object Array</td>
+            <td>是</td>
+            <td>设置页面路径及窗口表现</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>easycom</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>组件自动引入规则</td>
+            <td>2.5.5+</td>
+        </tr>
+        <tr>
+            <td>tabBar</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>设置底部 tab 的表现</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>condition</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>启动模式配置</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>subPackages</td>
+            <td>Object Array</td>
+            <td>否</td>
+            <td>分包加载配置</td>
+            <td>H5 不支持</td>
+        </tr>
+        <tr>
+            <td>preloadRule</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>分包预下载规则</td>
+            <td>微信小程序</td>
+        </tr>
+        <tr>
+            <td>
+                <a class="link" href="https://developers.weixin.qq.com/miniprogram/dev/framework/workers.html"
+                    target="_blank">
+                    workers
+                </a>
+            </td>
+            <td>String</td>
+            <td>否</td>
+            <td>Worker代码放置的目录</td>
+            <td>微信小程序</td>
+        </tr>
+        <tr>
+            <td>leftWindow</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>大屏左侧窗口</td>
+            <td>H5</td>
+        </tr>
+        <tr>
+            <td>topWindow</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>大屏顶部窗口</td>
+            <td>H5</td>
+        </tr>
+        <tr>
+            <td>rightWindow</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>大屏右侧窗口</td>
+            <td>H5</td>
+        </tr>
+        <tr>
+            <td><a href="https://doc.dcloud.net.cn/uniCloud/uni-id/summary.html#uni-id-router" target="_blank"
+                    class="link">uniIdRouter</a></td>
+            <td>Object</td>
+            <td>否</td>
+            <td>自动跳转相关配置，新增于HBuilderX 3.5.0</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>entryPagePath</td>
+            <td>String</td>
+            <td>否</td>
+            <td>默认启动首页，新增于HBuilderX 3.7.0</td>
+            <td>微信小程序、支付宝小程序</td>
+        </tr>
+    </tbody>
+</table>
+<h3 fixed="globalStyle">
+    globalStyle
+</h3>
+<p>
+    用于设置应用的状态栏、导航条、标题、窗口背景色等。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>属性</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>描述</th>
+            <th>平台差异说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>navigationBarBackgroundColor</td>
+            <td>HexColor</td>
+            <td>#F8F8F8</td>
+            <td>导航栏背景颜色（同状态栏背景色）</td>
+            <td>APP与H5为#F8F8F8，小程序平台请参考相应小程序文档</td>
+        </tr>
+        <tr>
+            <td>navigationBarTextStyle</td>
+            <td>String</td>
+            <td>black</td>
+            <td>导航栏标题颜色及状态栏前景颜色，仅支持 black/white</td>
+            <td>支付宝小程序不支持，请使用
+                <a href="https://opendocs.alipay.com/mini/api/xwq8e6" target="_blank"
+                    class="link">my.setNavigationBar</a>
+            </td>
+        </tr>
+        <tr>
+            <td>navigationBarTitleText</td>
+            <td>String</td>
+            <td></td>
+            <td>导航栏标题文字内容</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>navigationStyle</td>
+            <td>String</td>
+            <td>default</td>
+            <td>导航栏样式，仅支持 default/custom。custom即取消默认的原生导航栏</td>
+            <td>微信小程序 7.0+、百度小程序、H5、App（2.0.3+）</td>
+        </tr>
+        <tr>
+            <td>backgroundColor</td>
+            <td>HexColor</td>
+            <td>#ffffff</td>
+            <td>下拉显示出来的窗口的背景色</td>
+            <td>微信小程序</td>
+        </tr>
+        <tr>
+            <td>backgroundTextStyle</td>
+            <td>String</td>
+            <td>dark</td>
+            <td>下拉 loading 的样式，仅支持 dark / light</td>
+            <td>微信小程序</td>
+        </tr>
+        <tr>
+            <td>enablePullDownRefresh</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否开启下拉刷新</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>onReachBottomDistance</td>
+            <td>Number</td>
+            <td>50</td>
+            <td>页面上拉触底事件触发时距页面底部距离，单位只支持px</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>backgroundColorTop</td>
+            <td>HexColor</td>
+            <td>#ffffff</td>
+            <td>顶部窗口的背景色（bounce回弹区域）</td>
+            <td>仅 iOS 平台</td>
+        </tr>
+        <tr>
+            <td>backgroundColorBottom</td>
+            <td>HexColor</td>
+            <td>#ffffff</td>
+            <td>底部窗口的背景色（bounce回弹区域）</td>
+            <td>仅 iOS 平台</td>
+        </tr>
+        <tr>
+            <td>titleImage</td>
+            <td>String</td>
+            <td></td>
+            <td>导航栏图片地址（替换当前文字标题），支付宝小程序内必须使用https的图片链接地址</td>
+            <td>支付宝小程序、H5、APP</td>
+        </tr>
+        <tr>
+            <td>transparentTitle</td>
+            <td>String</td>
+            <td>none</td>
+            <td>导航栏整体（前景、背景）透明设置。支持 always 一直透明 / auto 滑动自适应 / none 不透明</td>
+            <td>支付宝小程序、H5、APP</td>
+        </tr>
+        <tr>
+            <td>titlePenetrate</td>
+            <td>String</td>
+            <td>NO</td>
+            <td>导航栏点击穿透</td>
+            <td>支付宝小程序、H5</td>
+        </tr>
+        <tr>
+            <td>pageOrientation</td>
+            <td>String</td>
+            <td>portrait</td>
+            <td>横屏配置，屏幕旋转设置，仅支持 auto / portrait / landscape 详见
+                <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/view/resizable.html" target="_blank"
+                    class="link">响应显示区域变化</a>
+            </td>
+            <td>App 2.4.7+、微信小程序、QQ小程序</td>
+        </tr>
+        <tr>
+            <td>animationType</td>
+            <td>String</td>
+            <td>pop-in</td>
+            <td>窗口显示的动画效果</td>
+            <td>App</td>
+        </tr>
+        <tr>
+            <td>animationDuration</td>
+            <td>Number</td>
+            <td>300</td>
+            <td>窗口显示动画的持续时间，单位为 ms</td>
+            <td>App</td>
+        </tr>
+        <tr>
+            <td>app-plus</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 App 平台的特定样式
+            </td>
+            <td>App</td>
+        </tr>
+        <tr>
+            <td>h5</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 H5 平台的特定样式</td>
+            <td>H5</td>
+        </tr>
+        <tr>
+            <td>mp-alipay</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 mp-alipay 平台的特定样式</td>
+            <td>支付宝小程序</td>
+        </tr>
+        <tr>
+            <td>mp-weixin</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 mp-weixin 平台的特定样式</td>
+            <td>微信小程序</td>
+        </tr>
+        <tr>
+            <td>mp-baidu</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 mp-baidu 平台的特定样式</td>
+            <td>百度小程序</td>
+        </tr>
+        <tr>
+            <td>mp-toutiao</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 mp-toutiao 平台的特定样式</td>
+            <td>抖音小程序</td>
+        </tr>
+        <tr>
+            <td>mp-lark</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 mp-lark 平台的特定样式</td>
+            <td>飞书小程序</td>
+        </tr>
+        <tr>
+            <td>mp-qq</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 mp-qq 平台的特定样式</td>
+            <td>QQ小程序</td>
+        </tr>
+        <tr>
+            <td>mp-kuaishou</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 mp-kuaishou 平台的特定样式</td>
+            <td>快手小程序</td>
+        </tr>
+        <tr>
+            <td>mp-jd</td>
+            <td>Object</td>
+            <td></td>
+            <td>设置编译到 mp-jd 平台的特定样式</td>
+            <td>京东小程序</td>
+        </tr>
+        <tr>
+            <td>usingComponents</td>
+            <td>Object</td>
+            <td></td>
+            <td>引用小程序组件</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>renderingMode</td>
+            <td>String</td>
+            <td></td>
+            <td>同层渲染，webrtc(实时音视频) 无法正常时尝试配置 seperated 强制关掉同层</td>
+            <td>微信小程序</td>
+        </tr>
+        <tr>
+            <td>leftWindow</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>当存在 leftWindow 时，默认是否显示 leftWindow</td>
+            <td>H5</td>
+        </tr>
+        <tr>
+            <td>topWindow</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>当存在 topWindow 时，默认是否显示 topWindow</td>
+            <td>H5</td>
+        </tr>
+        <tr>
+            <td>rightWindow</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>当存在 rightWindow 时，默认是否显示 rightWindow</td>
+            <td>H5</td>
+        </tr>
+        <tr>
+            <td>rpxCalcMaxDeviceWidth</td>
+            <td>Number</td>
+            <td>960</td>
+            <td>rpx 计算所支持的最大设备宽度，单位 px</td>
+            <td>App（vue2 且不含 nvue）、H5（2.8.12+）</td>
+        </tr>
+        <tr>
+            <td>rpxCalcBaseDeviceWidth</td>
+            <td>Number</td>
+            <td>375</td>
+            <td>rpx 计算使用的基准设备宽度，设备实际宽度超出 rpx 计算所支持的最大设备宽度时将按基准宽度计算，单位 px</td>
+            <td>App（vue2 且不含 nvue）、H5（2.8.12+）</td>
+        </tr>
+        <tr>
+            <td>rpxCalcIncludeWidth</td>
+            <td>Number</td>
+            <td>750</td>
+            <td>rpx 计算特殊处理的值，始终按实际的设备宽度计算，单位 rpx</td>
+            <td>App（vue2 且不含 nvue）、H5（2.8.12+）</td>
+        </tr>
+        <tr>
+            <td>dynamicRpx</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>动态 rpx，屏幕大小变化会重新渲染 rpx</td>
+            <td>App-nvue（vue3 固定值为 true） 3.2.13+</td>
+        </tr>
+        <tr>
+            <td>maxWidth</td>
+            <td>Number</td>
+            <td></td>
+            <td>
+                单位px，当浏览器可见区域宽度大于maxWidth时，两侧留白，当小于等于maxWidth时，页面铺满；不同页面支持配置不同的maxWidth；maxWidth =
+                leftWindow(可选)+page(页面主体)+rightWindow(可选)</td>
+            <td>H5（2.9.9+）</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    注意
+</p>
+<ul>
+    <li>
+        支付宝小程序使用titleImage时必须使用https的图片链接地址，需要真机调试才能看到效果，支付宝开发者工具内无效果
+    </li>
+    <li>
+        globalStyle中设置的titleImage也会覆盖掉pages->style内的设置文字标题
+    </li>
+    <li>
+        使用 maxWidth 时，页面内fixed元素需要使用--window-left,--window-right来保证布局位置正确
+    </li>
+    <li>
+        dynamicRpx vue3 nvue页面已移除此配置，升级为横竖屏切换自动rpx，如果不需要可以使用 px
+    </li>
+</ul>
+<h3 fixed="pages">
+    pages
+</h3>
+<p>
+    uni-app 通过 pages 节点配置应用由哪些页面组成，pages 节点接收一个数组，数组每个项都是一个对象，其属性值如下：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>属性</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>path</td>
+            <td>String</td>
+            <td></td>
+            <td>配置页面路径</td>
+        </tr>
+        <tr>
+            <td>style</td>
+            <td>Object</td>
+            <td></td>
+            <td>配置页面窗口表现</td>
+        </tr>
+        <tr>
+            <td>needLogin</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否需要登录才可访问</td>
+        </tr>
+    </tbody>
+</table>

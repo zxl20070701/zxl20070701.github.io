@@ -1,0 +1,75 @@
+<header>
+    v-model
+</header>
+<pre tag="html">
+    <input v-model="info">
+</pre>
+<p>
+    上面的代码等价于：
+</p>
+<pre tag="html">
+    <input v-bind:value="info" v-on:input="info = $event.target.value">
+</pre>
+<p>
+    当用在组件上时，则会这样：
+</p>
+<pre tag="html">
+    &lt;ui-input v-bind:value="info" v-on:input="info = $event" &gt;
+</pre>
+<p>
+    当然，这等价于：
+</p>
+<pre tag="html">
+    &lt;ui-input v-model="info"&gt;
+</pre>
+<p>
+    为了让它正常工作，这个组件内的
+    <span class="special">&lt;input&gt;</span>
+    写成代码之后是这样的：
+</p>
+<pre tag="html">
+    <input v-bind:value="value" v-on:input="$emit('input', $event.target.value)">
+</pre>
+<h3>
+    自定义参数
+</h3>
+<p>
+    默认情况下，一个组件上的v-model会把value用作prop且把input用作event，所以上面自定义v-model的JS部分大体如下：
+</p>
+<pre tag="javascript">
+export default {
+    props: {
+        value: {
+            type: String,
+            default: ''
+        }
+    },
+    methods: {
+        updateVal(val) {
+            this.$emit('input', val)
+        }
+    }
+}
+</pre>
+<p>
+    如果我们想调整使用别的prop和event的时候，就可以这样：
+</p>
+<pre tag="javascript">
+export default {
+    model: {
+        prop: 'newValue',
+        event: 'newEvent'
+    },
+    props: {
+        newValue: {
+            type: String,
+            default: ''
+        }
+    },
+    methods: {
+        updateVal(val) {
+            this.$emit('newEvent', val)
+        }
+    }
+}
+</pre>

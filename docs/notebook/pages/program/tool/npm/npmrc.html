@@ -1,0 +1,49 @@
+<header>
+    .npmrc 文件
+</header>
+<p>
+    .npmrc文件由一系列键值对组成，用于配置npm在执行命令时的行为和参数。
+</p>
+<h2>
+    常见用法
+</h2>
+<h3>
+    定义镜像源
+</h3>
+<p>
+    比如我们希望所有的包去
+    <span class="special">https://registry.example.com</span>
+    下载，除了@zxl20070701名下的包需要去
+    <span class="special">https://registry.example.zxl20070701.com</span>
+    下载，那么可以：
+</p>
+<pre tag>
+registry=https://registry.example.com
+@zxl20070701:registry=https://registry.example.zxl20070701.com
+</pre>
+<h3>
+    管理依赖的存储路径
+</h3>
+<p>
+    在默认情况下，npm将依赖安装到项目根目录下的node_modules文件夹中。但在某些情况下，我们可能希望将依赖安装到其他目录，例如统一管理全局依赖。这时，可以配置prefix来指定全局依赖的存储路径：
+</p>
+<pre tag>
+prefix=/Users/zxl20070701/npm/global/node_modules
+</pre>
+<h2>
+    配置优先级
+</h2>
+<p>
+    npmrc的配置存在优先级，当我们在多个配置文件中定义相同的键时，npm将按照以下顺序查找和应用配置：
+</p>
+<ol>
+    <li>
+        项目根目录下的.npmrc文件
+    </li>
+    <li>
+        用户主目录下的.npmrc文件
+    </li>
+    <li>
+        npm内置的默认配置
+    </li>
+</ol>

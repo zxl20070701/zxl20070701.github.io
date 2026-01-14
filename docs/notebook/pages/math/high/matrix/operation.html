@@ -1,0 +1,105 @@
+<header>
+    基本运算定义
+</header>
+<h2>
+    加法
+</h2>
+<p>
+    设
+</p>
+<p>
+    <code>
+        ["join","A = ",["rightBottom",["join","(",["rightBottom","a","ij"],")"],"sn"]," = ",["matrix",[
+            [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+            [["rightBottom","a","21"],["rightBottom","a","22"],"...",["rightBottom","a","2n"]],
+            ["⁝","⁝"," ","⁝"],
+            [["rightBottom","a","s1"],["rightBottom","a","s2"],"...",["rightBottom","a","sn"]]
+        ]],"，"]
+    </code>
+</p>
+<p>
+    <code>
+        ["join","B = ",["rightBottom",["join","(",["rightBottom","b","ij"],")"],"sn"]," = ",["matrix",[
+            [["rightBottom","b","11"],["rightBottom","b","12"],"...",["rightBottom","b","1n"]],
+            [["rightBottom","b","21"],["rightBottom","b","22"],"...",["rightBottom","b","2n"]],
+            ["⁝","⁝"," ","⁝"],
+            [["rightBottom","b","s1"],["rightBottom","b","s2"],"...",["rightBottom","b","sn"]]
+        ]]]
+    </code>
+</p>
+<p>
+    是两个s×n矩阵，则矩阵
+</p>
+<p>
+    <code>
+        ["join","C = ",
+            ["rightBottom",["join","(",["rightBottom","c","ij"],")"],"sn"]," = ",
+            ["rightBottom",["join","(",
+                ["rightBottom","a","ij"],
+                "+",
+                ["rightBottom","b","ij"]
+            ,")"],"sn"]," = ",
+            ["matrix",[
+                [["join",["rightBottom","a","11"],"+",["rightBottom","b","11"]],["join",["rightBottom","a","12"],"+",["rightBottom","b","12"]],"...",["join",["rightBottom","a","1n"],"+",["rightBottom","b","1n"]]],
+                [["join",["rightBottom","a","21"],"+",["rightBottom","b","21"]],["join",["rightBottom","a","22"],"+",["rightBottom","b","22"]],"...",["join",["rightBottom","a","2n"],"+",["rightBottom","b","2n"]]],
+                ["⁝","⁝"," ","⁝"],
+                [["join",["rightBottom","a","s1"],"+",["rightBottom","b","s1"]],["join",["rightBottom","a","s2"],"+",["rightBottom","b","s2"]],"...",["join",["rightBottom","a","sn"],"+",["rightBottom","b","sn"]]]
+            ]]
+        ]
+    </code>
+</p>
+<p>
+    称为A和B的和，记为：C = A + B。
+</p>
+<h2>
+    乘法
+</h2>
+<p>
+    设
+</p>
+<p>
+    <code>
+        ["join","A = ",["rightBottom",["join","(",["rightBottom","a","ik"],")"],"sn"],"，","B = ",["rightBottom",["join","(",["rightBottom","b","kj"],")"],"nm"],"，"]
+    </code>
+</p>
+<p>
+    那么矩阵
+    <code>
+        ["join","C = ",["rightBottom",["join","(",["rightBottom","c","ij"],")"],"sm"]]
+    </code>
+    ，其中
+</p>
+<p>
+    <code>
+        ["join",["rightBottom","c","ij"]," = ",
+            ["rightBottom","a","i1"],["rightBottom","b","1j"],"+",
+            ["rightBottom","a","i2"],["rightBottom","b","2j"],"+",
+            " ... +",
+            ["rightBottom","a","in"],["rightBottom","b","nj"]," = ",
+            ["sum","k=1","n",["join",["rightBottom","a","ik"],["rightBottom","b","kj"]]],
+            "，"
+        ]
+    </code>
+</p>
+<p>
+    称为A与B的乘积，记为：C = AB。
+</p>
+<h2>
+    数量乘积
+</h2>
+<p>
+    矩阵
+    <code>
+        ["matrix",[
+            [["rightBottom","k a","11"],["rightBottom","k a","12"],"...",["rightBottom","k a","1n"]],
+            [["rightBottom","k a","21"],["rightBottom","k a","22"],"...",["rightBottom","k a","2n"]],
+            ["⁝","⁝"," ","⁝"],
+            [["rightBottom","k a","s1"],["rightBottom","k a","s2"],"...",["rightBottom","k a","sn"]]
+        ]]
+    </code>
+    称为矩阵
+    <code>
+        ["join","A = ",["rightBottom",["join","(",["rightBottom","a","ij"],")"],"sn"]]
+    </code>
+    与数k的数量乘积，记为kA。
+</p>

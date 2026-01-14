@@ -1,0 +1,68 @@
+<header>
+    生命周期钩子
+</header>
+<h2>
+    如何使用？
+</h2>
+<p>
+    比如钩子ngOnInit()，如果你想使用它，只需要：
+</p>
+<pre tag="javascript">
+@Component({})
+export class AppComponent {
+    ngOnInit() {
+        // todo
+    }
+}
+</pre>
+<h2>
+    生命周期的顺序
+</h2>
+<h3>
+    ngOnChanges()
+</h3>
+<p>
+    如果组件绑定过输入属性，那么在 ngOnInit() 之前以及所绑定的一个或多个输入属性的值发生变化时都会调用。
+</p>
+<h3>
+    ngOnInit()
+</h3>
+<p>
+    在第一轮 ngOnChanges() 完成之后调用，只调用一次。而且即使没有调用过 ngOnChanges()，也仍然会调用 ngOnInit()。
+</p>
+<h3>
+    ngDoCheck()
+</h3>
+<p>
+    紧跟在每次执行变更检测时的 ngOnChanges() 和 首次执行变更检测时的 ngOnInit() 后调用。
+</p>
+<h3>
+    ngAfterContentInit()
+</h3>
+<p>
+    第一次 ngDoCheck() 之后调用，只调用一次。
+</p>
+<h3>
+    ngAfterContentChecked()
+</h3>
+<p>
+    ngAfterContentInit() 和每次 ngDoCheck() 之后调用。
+</p>
+<h3>
+    ngAfterViewInit()
+</h3>
+<p>
+    第一次 ngAfterContentChecked() 之后调用，只调用一次。
+</p>
+<h3>
+    ngAfterViewChecked()
+</h3>
+<p>
+    ngAfterViewInit() 和每次 ngAfterContentChecked() 之后调用。
+</p>
+<h3>
+    ngOnDestroy()
+</h3>
+<p>
+    在 Angular 销毁指令或组件之前立即调用。
+</p>

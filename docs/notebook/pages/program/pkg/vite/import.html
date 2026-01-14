@@ -1,0 +1,29 @@
+<header>
+    import相关
+</header>
+<h2>
+    import.meta.glob
+</h2>
+<p>
+    比如当前目录下有个文件夹data里面有很多json文件，那么可以这样来获取这些json内容：
+</p>
+<pre tag="javascript">
+let jsonPromises = import.meta.glob("./data/*.json")
+
+for (let filepath in jsonPromises) {
+    jsonPromises[filepath]().then(data => {
+        // data.default 就是当前文件 filepath 的内容
+    })
+}
+</pre>
+<h2>
+    import()
+</h2>
+<p>
+    就是类似require()的功能，例如：
+</p>
+<pre tag="javascript">
+import('./index.js').then(data => {
+    // data.default 就是 index.js 默认导出的内容
+})
+</pre>

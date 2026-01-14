@@ -1,0 +1,103 @@
+<header>
+    使用方式之内联方式
+</header>
+<p>
+    使用方式包括配置方式和内联方式，配置方法就是我们平时在webpack中配置的方式，我们这里主要说一下”内联方式“。
+</p>
+<h2>
+    基本说明
+</h2>
+<p>
+    也就是在import/require语句中显示的指定loader，比如：
+</p>
+<pre tag="javascript">
+    import Styles from 'style-loader!css-loader!./styles.css';
+</pre>
+<p>
+    !将多个loader分割，行内loader调用顺序还是从右到左，所以上述语句意思为：
+</p>
+<p>
+    对./style.css文件依次使用css-loader和style-loader处理。
+</p>
+<p>
+    与上面语句等价的webpack配置如下：
+</p>
+<pre tag="javascript">
+{
+    test:/\.css$/,
+    loader:["style-loader", "css-loader"]
+}
+</pre>
+<h2>
+    配置选项options
+</h2>
+<p>
+    比如上面的例子，如果我们希望给css-loader配置options，例如：
+</p>
+<pre tag="javascript">
+    import Styles from 'style-loader!css-loader?modules=true!./styles.css';
+</pre>
+<p>
+    同样的，等价于：
+</p>
+<pre tag="javascript">
+{
+    test:/\.css$/,
+    loader:["style-loader", {
+        loader:"css-loader",
+        options:{
+            modules:true
+        }
+    }]
+}
+</pre>
+<h2>
+    前缀
+</h2>
+<p>
+    可以为内联import语句增加前缀，来表达更多的意图，具体有如下：
+</p>
+<ul>
+    <li>
+        <span class="important">
+            !
+        </span>
+        ：将禁用所有的normal loader；
+    </li>
+    <li>
+        <span class="important">
+            !!
+        </span>
+        ：将禁用所有已配置的loader；
+    </li>
+    <li>
+        <span class="important">
+            -!
+        </span>
+        ：将禁用所有已配置的preLoader和loader，但不禁用postLoader。
+    </li>
+</ul>
+<p>
+    比如我们实现一个类似style-loader的功能：
+</p>
+<pre tag="javascript">
+const loaderUtils = require('loader-utils');
+
+const loaderApi = () => { };
+loaderApi.pitch = function (remainingRequest) {
+
+    // 类似：'!!css-loader!postcss-loader!./styles.css';
+    let request = loaderUtils.stringifyRequest(this, '!!' + remainingRequest);
+
+    // 返回的代码直接作为这条loader们最终的返回值
+    return `
+        var content = require(' + request + ')[1];
+
+        var styleElement = document.createElement('style');
+        styleElement.innerHTML = content;
+        document.head.appendChild(styleElement);
+    `;
+};
+module.exports = loaderApi;
+    
+</pre>

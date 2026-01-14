@@ -1,0 +1,38 @@
+<header>
+    终端不能执行命令怎么办？
+</header>
+<p>
+    比如我们在windows下的TERMINAL终端执行了一个命令，结果打印如下：
+</p>
+<p class="important">
+    devby : 无法加载文件 C:\Users\zxl20070701\AppData\Roaming\npm\devby.ps1，因为在此系统上禁止运行脚本。有关详细信息，请参阅
+    https:/go.microsoft.com/fwlink/?LinkID=135170 中的 about_Execution_Policies。
+</p>
+<p>
+    可能是
+    <span class="special">powershell工具</span>
+    执行策略问题。执行下面命令查看策略：
+</p>
+<pre>
+    get-executionpolicy
+</pre>
+<p>
+    可以看见打印结果是：<span class="special">Restricted</span>，现在，以管理员身份运行 <span class="special">powershell工具</span>：
+</p>
+<img src="./images/vscode/shell.jpeg" />
+<p>
+    然后运行下面命令：
+</p>
+<pre>
+    set-executionpolicy -executionpolicy unrestricted
+</pre>
+<p>
+    然后可以看见类似下面的界面：
+</p>
+<img src="./images/vscode/executionpolicy.jpeg" />
+<p>
+    输入<span class="warn">A</span>后回车。
+</p>
+<p>
+    好了，现在在vscode的TERMINAL终端中就可以执行命令了。
+</p>

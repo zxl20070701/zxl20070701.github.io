@@ -1,0 +1,148 @@
+<header>
+    中值定理
+</header>
+<p>
+    <span class="title">
+        定理（罗尔中值定理）
+    </span>
+    若函数ƒ满足如下条件：
+</p>
+<ol>
+    <li>
+        ƒ在闭区间[a,b]上连续
+    </li>
+    <li>
+        ƒ在开区间(a,b)上可导
+    </li>
+    <li>
+        ƒ(a)=ƒ(b)
+    </li>
+</ol>
+<p>
+    则在(a,b)上至少存在一点ξ，使得
+    <span class="oneline">
+        ƒ<sup>'</sup>(ξ)=0
+    </span>
+</p>
+<p>
+    <span class="title">
+        定理（拉格朗日中值定理）
+    </span>
+    若函数ƒ满足如下条件：
+</p>
+<ol>
+    <li>
+        ƒ在闭区间[a,b]上连续
+    </li>
+    <li>
+        ƒ在开区间(a,b)上可导
+    </li>
+</ol>
+<p>
+    则在(a,b)上至少存在一点ξ，使得
+    <span class="oneline">
+        ƒ<sup>'</sup>(ξ)=<code>["division","ƒ(b)-ƒ(a)","b-a"]</code>
+    </span>
+</p>
+<p>
+    <span class="title">
+        定理（柯西中值定理）
+    </span>
+    设函数ƒ和g满足
+</p>
+<ol>
+    <li>
+        在[a,b]上都连续
+    </li>
+    <li>
+        在(a,b)上都可导
+    </li>
+    <li>
+        ƒ<sup>'</sup>(x)和g<sup>'</sup>(x)不同时为零
+    </li>
+    <li>
+        g(a)≠g(b)
+    </li>
+</ol>
+<p>
+    则在(a,b)上至少存在一点ξ，使得
+    <code>
+        ["division",["join",["rightTop","ƒ","'"],"(ξ)"],["join",["rightTop","g","'"],"(ξ)"]]
+    </code>
+    =
+    <code>
+        ["division","ƒ(b)-ƒ(a)","g(b)-g(a)"]
+    </code>
+</p>
+<h2>
+    洛必达法则
+</h2>
+<p>
+    基于柯西中值定理，我们可以建立洛必达法则来帮助求解极限。
+</p>
+<h3>
+    <code>["division","0","0"]</code>
+    型不定式极限
+</h3>
+<p>
+    <span class="title">
+        定理
+    </span>
+    若函数ƒ和g满足：
+</p>
+<ol>
+    <li>
+        <code>["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>=
+        <code>["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]</code>=0
+    </li>
+    <li>
+        在点x<sub>0</sub>的某个空心领域U<sup>0</sup>(x<sub>0</sub>)上两者都可导，且g<sup>'</sup>≠0
+    </li>
+    <li>
+        <code>["limt",["join","x→",["rightBottom","x","0"]],["division",["join",["rightTop","ƒ","'"],"(x)"],["join",["rightTop","g","'"],"(x)"]]]</code>=A
+        (A可为实数，也可为±∞或∞)
+    </li>
+</ol>
+<p>
+    则
+    <span class="oneline">
+        <code>["limt",["join","x→",["rightBottom","x","0"]],["division","ƒ(x)","g(x)"]]</code>=
+        <code>["limt",["join","x→",["rightBottom","x","0"]],["division",["join",["rightTop","ƒ","'"],"(x)"],["join",["rightTop","g","'"],"(x)"]]]</code>=A
+    </span>
+</p>
+<h3>
+    <code>["division","•","∞"]</code>
+    型不定式极限
+</h3>
+<p>
+    <span class="title">
+        定理
+    </span>
+    若函数ƒ和g满足：
+</p>
+<ol>
+    <li>
+        在x<sub>0</sub>的某个右领域U<sup>0</sup><sub>+</sub>(x<sub>0</sub>)上两者可导，且g<sup>'</sup>(x)≠0
+    </li>
+    <li>
+        <code>
+            ["limt",["join","x→",["rightTop",["rightBottom","x","0"],"+"]],"g(x)"]
+        </code>
+        =∞
+    </li>
+    <li>
+        <code>
+            ["limt",["join","x→",["rightTop",["rightBottom","x","0"],"+"]],["division",["join",["rightTop","ƒ","'"],"(x)"],["join",["rightTop","g","'"],"(x)"]]]
+        </code>
+        =A (A可为实数，也可为±∞或∞)
+    </li>
+</ol>
+<p>
+    则
+    <span class="oneline">
+        <code>
+            ["limt",["join","x→",["rightTop",["rightBottom","x","0"],"+"]],["division","ƒ(x)","g(x)"]]
+        </code>
+        =A
+    </span>
+</p>

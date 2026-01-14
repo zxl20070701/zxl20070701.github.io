@@ -1,0 +1,75 @@
+<header>
+    生命周期
+</header>
+<h2>
+    生命周期钩子
+</h2>
+<p>
+    Webpack 5中常用的钩子包括但不限于：
+</p>
+<ul>
+    <li>
+        run: 在编译开始时触发。
+    </li>
+    <li>
+        compileComponents: 在compileComponents完成后调用。
+    </li>
+    <li>
+        emit: 在生成资源到output目录之前调用。
+    </li>
+    <li>
+        afterEmit: 在所有资源输出完成后调用。
+    </li>
+    <li>
+        done: 在完成构建并输出结果后调用。
+    </li>
+    <li>
+        watchRun: 在启动新的编译之前调用（仅在观察模式下有效）。
+    </li>
+    <li>
+        failed: 在构建失败时调用。
+    </li>
+    <li>
+        invalid: 在需要重新编译时调用（例如，文件更改）。
+    </li>
+    <li>
+        compilation: 提供对compilation对象的访问，可以在编译过程中进行各种操作。
+    </li>
+    <li>
+        make: 在从配置中收集到要编译的模块后调用。
+    </li>
+    <li>
+        thisCompilation: 在当前编译阶段提供对compilation对象的访问。
+    </li>
+</ul>
+<h2>
+    示例代码
+</h2>
+<p>
+    在每次编译开始时打印一条消息：
+</p>
+<pre tag="javascript">
+class DemoPlugin {
+    apply(compiler) {
+        // 一个run钩子，在编译开始时触发
+        compiler.hooks.run.tap('DemoPlugin', (compilation) => {
+            console.log('Compiling...')
+        })
+    } 
+}
+</pre>
+<p>
+    如果你使用同步的tapAsync方法，那么就是：
+</p>
+<pre tag="javascript">
+class DemoPlugin {
+    apply(compiler) {
+        compiler.hooks.run.tapAsync('DemoPlugin', (compilation, callback) => {
+            console.log('Compiling...')
+            
+            // 调用回调函数以继续编译过程
+            callback()
+        })
+    } 
+}
+</pre>

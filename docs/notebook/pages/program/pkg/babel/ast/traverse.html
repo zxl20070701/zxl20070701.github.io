@@ -1,0 +1,93 @@
+<header>
+    @babel/traverse
+</header>
+<p>
+    官方文档地址：
+    <a href="https://babel.dev/docs/babel-traverse" target="_blank">
+        https://babel.dev/docs/babel-traverse
+    </a>
+</p>
+<h2>
+    执行时机
+</h2>
+<pre tag="javascript">
+traverse(ast, {
+    enter(path) {}
+})
+</pre>
+<p>
+    上面执行时机使用的是enter，表示递归子孙节点之前执行；还可以使用exit，表示子孙节点遍历完后，回溯时执行。
+</p>
+<h2>
+    Vistor函数
+</h2>
+<p>
+    默认遍历的是所有节点，当然，也可以只遍历标识符，比如改成这样：
+</p>
+<pre tag="javascript">
+traverse(ast, {
+    Identifier(path) {}
+})
+</pre>
+<p>
+    当然，我们还是可以使用enter或exit来设置执行时机（默认是enter）：
+</p>
+<pre tag="javascript">
+traverse(ast, {
+    Identifier: {
+        enter(path) {}
+    }
+})
+</pre>
+<p>
+    每种节点类型对应一个 Visitor 函数，这些函数会在 Babel 遍历 AST 时被调用，允许开发者对节点进行分析、修改或替换操作。以下是一些常见的 Visitor 函数及其作用：
+</p>
+<button tag="babel-traverse-visitor" type="explain">点击我查看</button>
+<h2>
+    节点 path
+</h2>
+<p>
+    它代表 AST 中的一个节点，并提供了操作这个节点的方法。下面是其部分属性（不同类型的节点拥有的属性可能有差异）：
+</p>
+<ul>
+    <li>
+        node: 当前 AST 节点。
+        <ul>
+            <li>
+                leadingComments:访问 AST 中某个节点之前的注释信息。
+            </li>
+        </ul>
+    </li>
+    <li>
+        parent: 当前 AST 父节点。
+    </li>
+    <li>
+        parentPath: 父 AST 节点的 path。
+    </li>
+    <li>
+        scope: 当前节点的作用域对象，提供了有关变量绑定和作用域链的信息。
+    </li>
+    <li>
+        context: 提供了有关当前节点的上下文信息，包括插件的配置选项等。
+    </li>
+    <li>
+        hub: 提供了与 Babel 编译过程相关的核心方法和工具，可以通过 path.hub.file 拿到最外层 File 对象， path.hub.getScope 拿到最外层作用域，path.hub.getCode
+        拿到源码字符串。
+    </li>
+    <li>
+        type: 当前 AST 节点的类型，可以用来识别节点的具体种类（如 Identifier、FunctionDeclaration 等）。
+    </li>
+    <li>
+        container: 当前 AST 节点所在的父节点属性的属性值。
+    </li>
+    <li>
+        key: 当前 AST 节点所在父节点属性的属性名或所在数组的下标。
+    </li>
+    <li>
+        listKey: 当前 AST 节点所在父节点属性的属性值为数组时 listkey 为该属性名，否则为 undefined
+    </li>
+</ul>
+<p>
+    此外，其上还有若干有用的方法：
+</p>
+<button tag="babel-traverse-path-function" type="explain">点击我查看</button>

@@ -1,0 +1,145 @@
+<header>
+    泛型
+</header>
+<h2>
+    基础说明
+</h2>
+<p>
+    如果我们需要定义一个函数，一个入参和一个返回值，入参和返回值类型需要保持一致，怎么办？
+</p>
+<p>
+    比如规定类型都是字符串，那么：
+</p>
+<pre tag="javascript">
+function doit(arg: string): string {
+    return arg;
+}
+</pre>
+<p>
+    可以看出来，类型这里写死成string了，那类型可不可以像参数一样定义成变量传递进来？当然可以，我们改造一下代码：
+</p>
+<pre tag="javascript">
+function doit&lt;T&gt;(arg: T): T {
+    return arg;
+}
+</pre>
+<p>
+    这里通过&lt;T&gt;定义了一个类型变量T，而这个T具体是什么类型，使用的时候用户传递即可：
+</p>
+<pre tag="javascript">let result: string = doit&lt;string&gt;("我是一个字符串");</pre>
+<p>
+    事实上，编译器通过查看arg的值的类型，可以推断出T表示什么类型，因此，大部分情况下，上述代码可以简化一下：
+</p>
+<pre tag="javascript">let result: string = doit("我是一个字符串");</pre>
+<h2>
+    泛型类型
+</h2>
+<pre tag="javascript">
+function doit&lt;T&gt;(arg: T): T {
+    return arg;
+}
+
+let myDoit: Function = doit;
+</pre>
+<p>
+    我们想把函数doit赋值给变量myDoit，我们定义myDoit的类型是Function，那么，可不可以明确一下myDoit的类型细节？答案是肯定的：
+</p>
+<pre tag="javascript">let myDoit: &lt;T&gt;(arg: T) =&gt; T = doit;</pre>
+<p>
+    或
+</p>
+<pre tag="javascript">let myDoit: { &lt;T&gt;(arg: T): T } = doit;</pre>
+<h3>
+    泛型接口
+</h3>
+<p>
+    聪明的是肯定可以想到，我们还可以定义一个接口：
+</p>
+<pre tag="javascript">
+interface DoitFnType {
+    &lt;T&gt;(arg: T): T;
+}
+    
+let myDoit: DoitFnType = doit;
+</pre>
+<h4>
+    类型锁定
+</h4>
+<p>
+    现在有一个情况，我们在给myDoit赋值的是，已经明确了类型T的实际值一定是string，那么，就可以这样改动：
+</p>
+<pre tag="javascript">
+interface DoitFnType&lt;T&gt; {
+    (arg: T): T;
+}
+    
+let myDoit: DoitFnType&lt;string&gt; = doit;
+</pre>
+<h3>
+    泛型类
+</h3>
+<p>
+    也非常简单，我们直接举个例子：
+</p>
+<pre tag="javascript">
+class Dog&lt;T&gt;{
+    info: T;
+    setInfo(info: T): void {
+        this.info = info;
+    }
+}
+</pre>
+<p>
+    创建的时候也是类似的：
+</p>
+<pre tag="javascript">let dog = new Dog&lt;string&gt;();</pre>
+<p>
+    那么，setInfo函数就只能传递字符串类型：
+</p>
+<pre tag="javascript">dog.setInfo('小狗🐶');</pre>
+<p>
+    而下面的写法就是错误的：
+</p>
+<pre tag="javascript">
+// Argument of type 'boolean' is not assignable to parameter of type 'string'.    
+dog.setInfo(true);
+</pre>
+<p class="warn">
+    温馨提示：类的静态属性不能使用这个泛型类型，为什么？因为类型值是new的时候设置的，静态的时候根本不存在。
+</p>
+<h2>
+    泛型约束
+</h2>
+<pre tag="javascript">
+function doit&lt;T&gt;(arg: T) {
+
+    // Property 'length' does not exist on type 'T'.
+    console.log(arg.length);
+}
+</pre>
+<p>
+    在上面的代码中，我们希望打印arg的属性length，虽然类型T待定，可是我们明确知道传递的数据一定会有length属性。可是，编译器并不能证明类型T包含lenght属性，因此会提示错误。
+</p>
+<p>
+    怎么办？我们把代码改造一下：
+</p>
+<pre tag="javascript">
+interface ArgType {
+    length: number;
+}
+
+function doit&lt;T extends ArgType&gt;(arg: T) {
+    console.log(arg.length);
+}
+</pre>
+<p>
+    现在这个泛型被约束了，传递的参数必须包含length属性，比如字符串是可以的：
+</p>
+<pre tag="javascript">doit("小花");</pre>
+<p>
+    而数字就不行：
+</p>
+<pre tag="javascript">
+// Argument of type 'number' is not assignable to parameter of type 'ArgType'.
+doit(10);
+</pre>

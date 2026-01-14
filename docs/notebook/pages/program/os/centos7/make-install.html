@@ -1,0 +1,47 @@
+<header>
+    安装nodejs
+</header>
+<p>
+    首先准备好nodejs源码包：
+</p>
+<pre>
+    wget https://nodejs.org/dist/v14.20.0/node-v14.20.0.tar.gz
+</pre>
+<p>
+    然后解压：
+</p>
+<pre>
+tar -zxvf node-v14.20.0.tar.gz
+cd node-v14.20.0
+</pre>
+<p>
+    配置、编译、安装：
+</p>
+<pre>
+./configure --prefix=/usr/local/node 
+make && make install
+</pre>
+<p class="warn">
+    温馨提示：如果make老失败，可以选择使用linux编译后的文件（node-v14.20.0-linux-x64.tar.gz），直接解压后使用。
+</p>
+<p>
+    配置nodejs环境：
+</p>
+<pre>
+    vim /etc/profile
+</pre>
+<p>
+    然后修改其中内容：
+</p>
+<pre>
+#set nodejs env
+export NODE_HOME=/usr/local/node
+export PATH=$NODE_HOME/bin:$PATH
+export NODE_PATH=$NODE_HOME/lib/node_modules:$PATH
+</pre>
+<p>
+    重启生效：
+</p>
+<pre>
+    source /etc/profile 
+</pre>

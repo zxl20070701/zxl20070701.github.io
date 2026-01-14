@@ -1,0 +1,337 @@
+<header>
+    从零开始搭建Vue3组件库开发环境
+</header>
+<h2>
+    搭建开发环境
+</h2>
+<h3>
+    Vite初始化
+</h3>
+<p>
+    新建一个空的文件夹，比如叫
+    <span class="special">
+        Vue3UI
+    </span>
+    ，然后使用命令行在此文件夹下使用npm初始化：
+</p>
+<pre tag>
+    npm init
+</pre>
+<p>
+    回车后，我们再安装vite（我们这里选择使用Vite进行打包，使用别的也类似）：
+</p>
+<pre tag>
+    npm install --save-dev vite
+</pre>
+<p>
+    根目录创建
+    <span class="warn">index.html</span>
+    文件，里面内容如下：
+</p>
+<pre tag="html">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-cn"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Vue3 UI&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  Hello Vue3 UI!
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+    现在，在之前生成的
+    <span class="warn">package.json</span>
+    中添加vite启动命令：
+</p>
+<pre tag="javascript">
+{
+    "script": {
+        "dev": "vite"
+    }
+}
+</pre>
+<p>
+    现在，试着运行Vite吧：
+</p>
+<pre>
+    npm run dev
+</pre>
+<p>
+    看见类似下面的语句，就说明运行成功了：
+</p>
+<pre>
+VITE v5.3.4  ready in 841 ms
+
+➜  Local:   http://localhost:5173/
+➜  Network: use --host to expose
+➜  press h + enter to show help
+</pre>
+<p>
+    然后浏览器访问即可：
+</p>
+<img src="./images/course/vite-vue3_ui/vite.png">
+<p>
+    至此，Vite就准备好了。
+</p>
+<div class="tips">
+    小结：Vite其实简单的理解就是一个HTTP服务器，只不过，可以通过安装插件等方式，对一些文件等进行“调整”。
+</div>
+<h3>
+    测试TS代码
+</h3>
+<p>
+    在正式开发Vue组件前，我们先来试试普通的TS代码是否可以正常运行。
+</p>
+<p>
+    创建文件 <span class="warn">index.ts</span>：
+</p>
+<pre tag="javascript">
+const str: String = 'Hello Vue3 UI';
+console.log(str);
+</pre>
+<p>
+    在 <span class="warn">index.html</span> 的body标签中引入：
+</p>
+<pre tag="html">
+    <script src="./index.ts"></script>
+</pre>
+<p>
+    保存后刷新浏览器，可以在控制台中看到如图显示，说明 TS 可以正常使用：
+</p>
+<img src="./images/course/vite-vue3_ui/ts.png">
+<h3>
+    添加对Vue的支持
+</h3>
+<p>
+    首先，我们需要安装Vue（这里安装的是vue3版本，因为vue发布后由用户安装，因此这里安装到dev下，下同）：
+</p>
+<pre>
+    npm install --save-dev vue
+</pre>
+<p>
+    下面，我们来具体说明，以一个Button为例。
+</p>
+<h4>
+    Render函数
+</h4>
+<p>
+    创建 <span class="warn">src/Button/index.ts</span> 文件：
+</p>
+<pre tag="javascript">
+import { defineComponent, h } from 'vue';
+
+export default defineComponent({
+    name: 'Button',
+    render() {
+        return h("button", null, "一个按钮（点击我）");
+    }
+});
+</pre>
+<p>
+    在
+    <span class="warn">index.html</span>
+    中增加根容器，展示组件：
+</p>
+<pre tag="html">
+    <div id="app"></div>
+</pre>
+<p>
+    在
+    <span class="warn">index.ts</span>
+    中创建 Vue 实例并使用组件：
+</p>
+<pre tag="javascript">
+import { createApp } from 'vue';
+import Button from './button';
+
+createApp(Button).mount('#app');
+</pre>
+<p>
+    启动项目后，浏览器没有显示按钮，而且控制台报错：
+</p>
+<p class="important">
+    Uncaught SyntaxError: Cannot use import statement outside a module (at index.ts:1:1)
+</p>
+<p>
+    因为
+    <span class="warn">index.ts</span>
+    中使用了 es6 的语法，所以在
+    <span class="warn">index.html</span>
+    中引入时需要指定为模块导入：
+</p>
+<pre tag="html">
+    <script src="./index.ts" type="module"></script>
+</pre>
+<p>
+    修改后按钮显示了，但是在浏览器控制台会有以下告警：
+</p>
+<img src="./images/course/vite-vue3_ui/warn.png">
+<p>
+    怎么办？安装下面插件：
+</p>
+<pre>
+    npm install --save-dev @vitejs/plugin-vue
+</pre>
+<p>
+    新建<span class="warn">vite.config.ts</span>文件并写入如下内容：
+</p>
+<pre tag="javascript">
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+
+export default defineConfig({
+    plugins: [
+        vue() // VUE插件
+    ]
+});
+</pre>
+<p>
+    再次启动时，命令行会如下警告：
+</p>
+<img src="./images/course/vite-vue3_ui/cmd-warn.png">
+<p>
+    在 <span class="warn">package.json</span> 中增加配置：
+</p>
+<pre tag="javascript">
+{
+    "type": "module"
+}
+</pre>
+<p>
+    运行项目，可以看到按钮，启动时和浏览器控制台就都没有警告了：
+</p>
+<img src="./images/course/vite-vue3_ui/button.png">
+<h4>
+    单文件组件
+</h4>
+<p>
+    也就是使用
+    <span class="warn">Button.vue</span>
+    文件来编写组件。
+</p>
+<p>
+    上一步我们已经添加了
+    <span class="special">@vitejs/plugin-vue</span>
+    插件，所以这里其实已经支持了。
+</p>
+<h4>
+    JSX 组件
+</h4>
+<p>
+    首先需要安装支持jsx的插件：
+</p>
+<pre>
+    npm install --save-dev @vitejs/plugin-vue-jsx
+</pre>
+<p>
+    然后修改
+    <span class="warn">vite.config.ts</span>
+    配置：
+</p>
+<pre tag="javascript">
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+
+export default defineConfig({
+    plugins: [
+        vue(), // VUE 插件
+        vueJsx() // JSX 插件
+    ],
+});
+</pre>
+<p>
+    刚刚的按钮，就可以改成
+    <span class="warn">src/Button/index.tsx</span>
+    ：
+</p>
+<pre tag="javascript">
+import { defineComponent, h } from 'vue';
+
+export default defineComponent({
+    name: 'Button',
+    render() {
+        return &lt;button&gt;一个按钮（点击我）&lt;/button&gt;;
+    }
+});
+</pre>
+<h2>
+    封装库文件
+</h2>
+<p>
+    组件库需要支持两种导入方式：
+</p>
+<ul>
+    <li>
+        <span class="important">完整引入</span>
+        ：一次性引入全部组件，通过 Vue.use 以 Vue 插件的方式引入；
+    </li>
+    <li>
+        <span class="important">按需引入</span>
+        ：导入单个组件，使用Vue.component 注册。
+    </li>
+</ul>
+<p>
+    创建入口文件 <span class="warn">src/index.ts</span>，内容如下：
+</p>
+<pre tag="javascript">
+import { App } from "vue";
+import UiButton from "./Button";
+
+export { UiButton }; // 导出单独组件
+
+export default { // 实现 install 方法
+    install(app: App) {
+        app.component(UiButton.name as string, UiButton);
+    }
+}
+</pre>
+<p>
+    现在，需要在
+    <span class="warn">
+        vite.config.ts
+    </span>
+    文件中配置build：
+</p>
+<pre tag="javascript">
+{
+    build: {
+        rollupOptions: {
+            external: ["vue"],
+            output: {
+                globals: {
+                    vue: "Vue"
+                }
+            }
+        },
+        minify: false, // 可以指定压缩工具terser
+        sourcemap: true, // 是否生成 sourcemap 文件
+        cssCodeSplit: true, // css 代码分割
+        lib: {
+            entry: "./src/index.ts",
+            name: "Vue3UI",
+            fileName: "vue3ui",
+            formats: ["es", "umd", "iife"] // 输出常用的三种模块类型
+        }
+    }
+}
+</pre>
+<p>
+    在
+    <span class="warn">
+        package.json
+    </span>
+    增加 build 命令打包：
+</p>
+<pre tag="javascript">
+{
+    "script": {
+        "build": "vite build"
+    }
+}
+</pre>
+<p>
+    运行 npm run build 即可完成打包。
+</p>

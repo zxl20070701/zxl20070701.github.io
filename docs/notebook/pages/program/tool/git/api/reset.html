@@ -1,0 +1,59 @@
+<header>
+    撤销
+</header>
+<h2>
+    回退本地文件
+</h2>
+<p>
+    将特定的filename文件回滚到hashname提交。
+</p>
+<pre tag>git checkout hashname filename</pre>
+<h2>
+    删除本地修改
+</h2>
+<p>
+    用暂存区的所有文件直接覆盖本地文件，不给用户任何确认的机会，可以理解放弃本地修改。
+</p>
+<pre tag>git checkout .</pre>
+<p>
+    只会放弃已跟踪文件的修改，如果是未跟踪的文件和目录需要删除，可以：
+</p>
+<pre tag>git clean -df</pre>
+<h2>
+    撤销add
+</h2>
+<p>
+    把add添加的文件filename从缓冲区删除，恢复到没有add前（不会丢失文件）。
+</p>
+<pre tag>git reset -- filename</pre>
+<h2>
+    删除提交
+</h2>
+<p>
+    恢复到hashname指定的提交时，不保留修改。
+</p>
+<pre tag>git reset --hard hashname</pre>
+<p class="warn">
+    温馨提示：比如你想删除本次提交，就像什么也没有发生一样，上面的hashname使用这次提交的前一个即可。
+</p>
+<h2>
+    撤销提交
+</h2>
+<p>
+    恢复到hashname指定的提交时，保留修改。
+</p>
+<pre tag>git reset --soft hashname</pre>
+<p class="warn">
+    温馨提示：比如你想撤销本次提交，恢复到add状态，上面的hashname使用这次提交的前一个即可。
+</p>
+<h3>
+    简化语句
+</h3>
+<p>
+    比如我们想撤销上一次提交，可以简化的写成：
+</p>
+<pre tag>git reset HEAD~1</pre>
+<p>
+    其中数字1表示撤销最近的一次提交，可以修改数字来调整撤销的提交次数（可以不传，默认为1），比如撤销最近的五次提交：
+</p>
+<pre tag>git reset HEAD~5</pre>

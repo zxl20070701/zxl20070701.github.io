@@ -1,0 +1,46 @@
+<header>
+    如何搭建环境和运行？
+</header>
+<h2>
+    HelloWorld
+</h2>
+<p>
+    文件名称：<span class="special">index.c</span>
+</p>
+<pre tag="javascript">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+    printf("你好呀！\n");
+}
+</pre>
+<h2>
+    运行
+</h2>
+<p>
+    首先执行编译命令：
+</p>
+<pre tag>
+    gcc index.c -o main.out
+</pre>
+<p>
+    编译成功后，执行下面命令即可运行：
+</p>
+<pre tag>
+    ./main.out
+</pre>
+<p>
+    如果在
+    <span class="special">
+        Windows
+    </span>
+    的
+    <span class="special">
+        CMD命令行
+    </span>
+    上运行出现乱码，可以修改一下编译命令：
+</p>
+<pre tag>
+    gcc -fexec-charset=GBK index.c -o main.out
+</pre>

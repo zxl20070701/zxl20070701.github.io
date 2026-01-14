@@ -1,0 +1,50 @@
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: 100px 100px 100px 100px;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "header header header header"
+            "main main . sidebar"
+            "footer footer footer footer";
+    }
+
+    .container>span {
+        line-height: 100px;
+        text-align: center;
+    }
+
+    .header {
+        grid-area: header;
+        background-color: #2076e1;
+    }
+
+    .main {
+        grid-area: main;
+        background-color: #ffdb00;
+    }
+
+    .sidebar {
+        grid-area: sidebar;
+        background-color: #c93d3d;
+    }
+
+    .footer {
+        grid-area: footer;
+        background-color: #5bbb5d;
+    }
+</style>
+<div class="container">
+    <span class="header">
+        header
+    </span>
+    <span class="main">
+        main
+    </span>
+    <span class="sidebar">
+        sidebar
+    </span>
+    <span class="footer">
+        footer
+    </span>
+</div>

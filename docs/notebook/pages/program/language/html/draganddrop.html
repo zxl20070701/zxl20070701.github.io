@@ -1,0 +1,62 @@
+<header>
+    拖放（Drag 和 Drop）
+</header>
+<h2>
+    拖动什么
+</h2>
+<h3>
+    设置元素为可拖放
+</h3>
+<p>
+    首先，为了使元素可拖动，把 draggable 属性设置为 true ：
+</p>
+<pre tag="html">
+    <img draggable="true">
+</pre>
+<h3>
+    标记谁被拖拽
+</h3>
+<p>
+    当元素被拖动时，设置一下谁被拖拽的：
+</p>
+<pre tag="html">
+    <img draggable="true" ondragstart="drag(event)">
+</pre>
+<pre tag="javascript">
+function drag(event){
+    event.dataTransfer.setData("source","一张图片");
+}
+</pre>
+<h2>
+    放到何处
+</h2>
+<p>
+    ondragover 事件规定在何处放置被拖动的数据，默认地，无法将数据/元素放置到其他元素中。如果需要设置允许放置，我们必须阻止对元素的默认处理方式。
+</p>
+<p>
+    而当放置被拖数据时，会发生 drop 事件，因此拖拽目标的代码大概如下：
+</p>
+<pre tag="html">
+    <div ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+</pre>
+<pre tag="javascript">
+function allowDrop(event){
+    event.preventDefault();
+}
+
+function drop(event){
+    event.preventDefault();
+    var data = event.dataTransfer.getData("source"); 
+    // todo（data内容就是“一张图片”）
+}
+</pre>
+<ul>
+    <li>
+        上面setData和getData配合传递的值应该是一个字符串。
+    </li>
+    <li>
+        调用 preventDefault() 来避免浏览器对数据的默认处理（drop 事件的默认行为是以链接形式打开）。
+    </li>
+</ul>
+
+<button tag="html-draganddrop">查看用例</button>

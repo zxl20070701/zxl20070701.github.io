@@ -1,0 +1,102 @@
+<header>
+    基础语法
+</header>
+<h2>
+    函数
+</h2>
+<h3>
+    函数声明
+</h3>
+<p>
+    函数声明会告诉编译器函数名称及如何调用函数，函数的实际主体可以单独定义，下面是一个例子：
+</p>
+<pre tag="javascript">
+/* 函数声明 */
+int max(int num1, int num2);
+
+int main ()
+{
+    /* 可以在这里调用max函数 */
+}
+
+/* 函数的实际主体 */
+int max(int num1, int num2) {
+
+}
+</pre>
+<h2>
+    头文件
+</h2>
+<p>
+    头文件是扩展名为
+    <span class="important">
+        .h
+    </span>
+    的文件，需要使用的时候，通过 C 预处理指令 #include 来引用它即可。
+</p>
+<p>
+    例如我们有一个工具文件
+    <span class="important">
+        tool.h
+    </span>
+    ，里面定义了一个方法：
+</p>
+<pre tag="javascript">
+#include &lt;stdio.h&gt;
+
+void doit()
+{
+    printf("doit方法被调用了！\n");
+}
+</pre>
+<p>
+    那么，在使用的地方：
+</p>
+<pre tag="javascript">
+#include "./tool.h"
+
+int main()
+{
+    doit();
+}
+</pre>
+<p>
+    运行的话，就可以看见打印的结果：doit方法被调用了！
+</p>
+<div class="tips">
+    引用头文件相当于复制头文件的内容，也就是把
+    <span class="special">
+        头文件
+    </span>
+    复制到写
+    <span class="special">
+        #include
+    </span>
+    的地方。
+</div>
+<h3>
+    只引用一次头文件
+</h3>
+<p>
+    如果一个头文件被引用两次，编译器会处理两次头文件的内容，这将产生错误。为了防止这种情况，标准的做法是把文件的整个内容放在条件编译语句中，例如上面的
+    <span class="important">
+        tool.h
+    </span>
+    文件：
+</p>
+<pre tag="javascript">
+#ifndef HEADER_SELF_TOOL
+#define HEADER_SELF_TOOL
+
+#include &lt;stdio.h&gt;
+
+void doit()
+{
+    printf("doit方法被调用了！\n");
+}
+
+#endif
+</pre>
+<p class="warn">
+    需要注意的是：上面的 HEADER_SELF_TOOL 可以随便起，不过应该保证全局唯一。
+</p>

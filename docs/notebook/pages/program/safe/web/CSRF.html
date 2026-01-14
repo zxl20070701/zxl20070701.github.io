@@ -1,0 +1,85 @@
+<header>
+    CSRF（Cross Site Request Forgy）跨站请求伪造
+</header>
+<h2>
+    原理
+</h2>
+<p>
+    比如我们提前打开了网站www.example.com并登录成功，然后我们打开另一个网站往这个网站发送请求，那么这个请求就会携带和之前网站同样的cookie。
+</p>
+<h2>
+    防御
+</h2>
+<h3>
+    Tooken
+</h3>
+<p>
+    比如前端网页打开的时候，生成一个csrf-tooken，添加到cookie中，每次发生请求的时候，请求body也加上这个字段，服务器接收到请求的时候，判断这2个字段是否相同。
+</p>
+<h3>
+    SameSite
+</h3>
+<p>
+    相应头 set-cookie 新增的属性，例子：
+</p>
+<pre tag="javascript">
+    set-cookie: expires=Wed, 17-Apr-2024 02:13:04 GMT; path=/; Secure; HttpOnly; SameSite=none
+</pre>
+<p>
+    SameSite属性可以设置三个值：
+</p>
+<ul>
+    <li>
+        Strict：严格，完全禁止第三方获取cookie，跨站点时，任何情况下都不会发送cookie；只有当前网页的 URL 与请求目标一致，才会带上 Cookie。
+    </li>
+    <li>
+        Lax：防范跨站，大多数情况下禁止获取cookie，除非导航到目标网址的GET请求（链接、预加载、GET表单）；设置了Strict或Lax以后，基本就杜绝了 CSRF 攻击。
+    </li>
+    <li>
+        SameSite属性的默认SameSite=Lax
+    </li>
+</ul>
+<h3>
+    验证码
+</h3>
+<p>
+    比如图形验证码，可以确定是用户主动触发的或者不是脚本。
+</p>
+<h2>
+    其它
+</h2>
+<h3>
+    同源策略
+</h3>
+<p>
+    由于现在浏览器开启了同源策略，跨域请求的时候，你可能会看见类似这样的错误：
+</p>
+<pre tag>
+Access to XMLHttpRequest at 'xxx' from origin 'xxx' has been blocked by CORS policy: 
+No 'Access-Control-Allow-Origin' header is present on the requested resource.
+</pre>
+<h4>
+    Mac
+</h4>
+<p>
+    如果你是Mac电脑，直接执行下面命令后会打开新的浏览器窗口，此窗口就去掉了同源策略：
+</p>
+<pre tag>
+    open -n /Applications/Google\ Chrome.app/ --args --disable-web-security --user-data-dir=/Users/xxx/Desktop/chrome-data
+</pre>
+<h4>
+    Windows
+</h4>
+<p>
+    对于Windows电脑，需要打开Chrome快捷方式的属性：
+</p>
+<img src="./images/disable-web-security.png">
+<p>
+    然后把目标输入框内容修改为：
+</p>
+<pre tag>
+C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chrome.exe 
+--disable-web-security 
+--user-data-dir=C:\MyChromeDevUserData 
+--allow-file-access-from-files
+</pre>

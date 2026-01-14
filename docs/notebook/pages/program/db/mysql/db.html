@@ -1,0 +1,63 @@
+<header>
+    数据库操作
+</header>
+<p>
+    使用下面的命令进行登录：
+</p>
+<pre tag>
+    mysql -h 主机名 -u 用户名 -p
+</pre>
+<p>
+    回车后输入密码即可。
+</p>
+<h2>
+    基础命令
+</h2>
+<h3>
+    查看版本
+</h3>
+<pre tag>
+    select version();
+</pre>
+<h2>
+    数据库操作
+</h2>
+<h3>
+    创建
+</h3>
+<pre tag>
+    create database [数据库名];
+</pre>
+<h3>
+    删除
+</h3>
+<pre tag>
+    drop database [数据库名];
+</pre>
+<h3>
+    选择
+</h3>
+<p>
+    在你连接到 MySQL 数据库后，可能有多个可以操作的数据库，所以你需要选择你要操作的数据库：
+</p>
+<pre tag>
+    use [数据库名];
+</pre>
+<h3>
+    查看
+</h3>
+<p>
+    也就是查看当前有哪些数据库：
+</p>
+<pre tag>
+    show databases;
+</pre>
+<h3>
+    当前
+</h3>
+<p>
+    查看当前选中操作的数据库是谁：
+</p>
+<pre tag>
+    select database();
+</pre>

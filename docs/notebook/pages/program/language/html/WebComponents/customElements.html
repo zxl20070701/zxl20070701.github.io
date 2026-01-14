@@ -1,0 +1,62 @@
+<header>
+    自定义标签初步
+</header>
+<h2>
+    基本结构
+</h2>
+<pre tag="javascript">
+class UiDemo extends HTMLElement {
+    constructor() {
+        super()
+        // 元素的功能代码
+    }
+}
+window.customElements.define('ui-demo', UiDemo)
+</pre>
+<button tag="html-customElements">查看用例</button>
+<p>
+    上面定义的直接作为标签使用即可：
+</p>
+<pre tag="html">
+    <ui-demo></ui-demo>
+</pre>
+<p class="warn">
+    温馨提示：还可以扩展已有标签的属性等，这里先不再补充。
+</p>
+<h2>
+    生命周期
+</h2>
+<p>
+    也就是在特定时刻主动触发的钩子，作为方法定义在类上即可，可以使用的如下：
+</p>
+<ul>
+    <li>
+        <span class="special">connectedCallback</span>
+        ：当 custom element 首次被插入文档 DOM 时，被调用；
+    </li>
+    <li>
+        <span class="special">disconnectedCallback</span>
+        ：当 custom element 从文档 DOM 中删除时，被调用；
+    </li>
+    <li>
+        <span class="special">adoptedCallback</span>
+        ：当 custom element 被移动到新的文档时，被调用；
+    </li>
+    <li>
+        <span class="special">attributeChangedCallback</span>
+        ：当 custom element 增加、删除、修改自身属性时，被调用。
+    </li>
+</ul>
+<h3>
+    observedAttributes
+</h3>
+<p>
+    比如attributeChangedCallback钩子，如果你希望在修改value的时候触发，还需要参考下面代码进行修改：
+</p>
+<pre tag="javascript">
+class UiDemo extends HTMLElement {
+    static get observedAttributes() {
+        return ['value']
+    }
+}
+</pre>

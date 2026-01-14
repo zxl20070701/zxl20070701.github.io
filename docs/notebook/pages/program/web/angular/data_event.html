@@ -1,0 +1,57 @@
+<header>
+    数据或事件绑定
+</header>
+<h2>
+    数据绑定
+</h2>
+<p>
+    我们在组件中定义一个数据：
+</p>
+<pre tag="javascript">
+@Component({})
+export class AppComponent {
+    val = "默认值..."
+}
+</pre>
+<p>
+    使用的时候直接：
+</p>
+<pre tag="html">
+    &lt;input type="text" [value]="val"&gt;
+</pre>
+<p>
+    运行截图：
+</p>
+<img src="./images/ng2-data_event-bind.png">
+<p>
+    当然，如果没有节点，也可以直接：
+</p>
+<pre tag="html">
+    {{val}}
+</pre>
+<h2>
+    事件绑定
+</h2>
+<p>
+    同样的，我们先定义一个方法：
+</p>
+<pre tag="javascript">
+@Component({})
+export class AppComponent {
+    doit(event:Event){
+        console.log(event)
+    }
+}
+</pre>
+<p>
+    然后，在页面中就可以这样绑定了：
+</p>
+<pre tag="html">
+    &lt;input type="text" (input)="doit($event)"&gt;
+</pre>
+<p>
+    上面绑定的是输入框的输入事件，如果我们修改输入框的内容就会看见控制台打印：
+</p>
+<pre>
+    InputEvent {isTrusted: true, data: null, isComposing: false, …}
+</pre>

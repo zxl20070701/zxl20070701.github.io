@@ -1,0 +1,70 @@
+<header>
+    工具类型
+</header>
+<p class="warn">
+    温馨提示：更多工具类型你可以进入
+    <a href="https://www.typescriptlang.org/docs/handbook/utility-types.html" target="_blank">Utility Types</a>
+    进行查看。
+</p>
+<h2>
+    Partial
+</h2>
+<p>
+    用来构造(创建)一个类型，将 Type 的所有属性设置为可选。
+</p>
+<pre tag="javascript">
+type Props = {
+    id: string;
+    children: number[];
+};
+    
+type PartialProps = Partial&lt;Props&gt;;
+</pre>
+<p>
+    构造出来的新类型 PartialProps 结构和 Props 相同，但所有属性都变为可选的。
+</p>
+<h2>
+    Readonly
+</h2>
+<p>
+    用来构造一个类型，将 Type 的所有属性都设置为 readonly(只读)。
+</p>
+<pre tag="javascript">
+type Props = {
+    id: string;
+    children: number[];
+};
+
+type ReadonlyProps = Readonly&lt;Props&gt;;
+</pre>
+<p>
+    构造出来的新类型 ReadonlyProps 结构和 Props 相同，但所有属性都变为只读的。
+</p>
+<h2>
+    Pick
+</h2>
+<p>
+    Pick&lt;Type, Keys&gt; 从 Type 中选择一组属性来构造新类型。
+</p>
+<pre>
+interface Props {
+    id: string;
+    title: string;
+    children: number[];
+    }
+type PickProps = Pick&lt;Props, 'id' | 'title'&gt;;
+</pre>
+<ul>
+    <li>
+        Pick 工具类型有两个类型变量:1 表示选择谁的属性 2 表示选择哪几个属性。
+    </li>
+    <li>
+        其中第二个类型变量，如果只选择一个则只传入该属性名即可，如果有多个使用联合类型即可。
+    </li>
+    <li>
+        第二个类型变量传入的属性只能是第一个类型变量中存在的属性。
+    </li>
+    <li>
+        构造出来的新类型 PickProps，只有 id 和 title 两个属性类型。
+    </li>
+</ul>

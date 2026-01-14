@@ -1,0 +1,111 @@
+<header>
+    Transition
+</header>
+<p>
+    将进入和离开动画应用到通过默认插槽传递给它的元素或组件上。
+</p>
+<h2>
+    触发条件
+</h2>
+<p>
+    进入或离开可以由以下的条件之一触发：
+</p>
+<ul>
+    <li>
+        由 v-if 所触发的切换
+    </li>
+    <li>
+        由 v-show 所触发的切换
+    </li>
+    <li>
+        由特殊元素 &lt;component&gt; 切换的动态组件
+    </li>
+    <li>
+        改变特殊的 key 属性
+    </li>
+</ul>
+<h2>
+    CSS 过渡 class
+</h2>
+<p>
+    一共有 6 个应用于进入与离开过渡效果的 CSS class。
+</p>
+<img width="600px" src="./images/transition-classes.png">
+<h3>
+    为过渡效果命名
+</h3>
+<p>
+    可以给组件传一个 name prop 来声明一个过渡效果名：
+</p>
+<pre tag="html">
+&lt;Transition name="demo"&gt;
+    ...
+&lt;/Transition&gt;
+</pre>
+<p>
+    对于一个有名字的过渡效果，对它起作用的过渡 class 会以其名字而不是 v 作为前缀。比如class 将会是 demo-enter-active 而不是 v-enter-active
+</p>
+<h2>
+    JavaScript 钩子
+</h2>
+<p>
+    你可以通过监听 &lt;Transition&gt; 组件事件的方式在过渡过程中挂上钩子函数：
+</p>
+<pre tag="html">
+&lt;Transition
+    @before-enter="onBeforeEnter"
+    @enter="onEnter"
+    @after-enter="onAfterEnter"
+    @enter-cancelled="onEnterCancelled"
+    @before-leave="onBeforeLeave"
+    @leave="onLeave"
+    @after-leave="onAfterLeave"
+    @leave-cancelled="onLeaveCancelled"
+&gt;
+    ...
+&lt;/Transition&gt;
+</pre>
+<pre tag="javascript">
+// 在元素被插入到 DOM 之前被调用
+// 用这个来设置元素的 "enter-from" 状态
+function onBeforeEnter(el) {}
+
+// 在元素被插入到 DOM 之后的下一帧被调用
+// 用这个来开始进入动画
+function onEnter(el, done) {
+  // 调用回调函数 done 表示过渡结束
+  // 如果与 CSS 结合使用，则这个回调是可选参数
+  done()
+}
+
+// 当进入过渡完成时调用。
+function onAfterEnter(el) {}
+
+// 当进入过渡在完成之前被取消时调用
+function onEnterCancelled(el) {}
+
+// 在 leave 钩子之前调用
+// 大多数时候，你应该只会用到 leave 钩子
+function onBeforeLeave(el) {}
+
+// 在离开过渡开始时调用
+// 用这个来开始离开动画
+function onLeave(el, done) {
+  // 调用回调函数 done 表示过渡结束
+  // 如果与 CSS 结合使用，则这个回调是可选参数
+  done()
+}
+
+// 在离开过渡完成、
+// 且元素已从 DOM 中移除时调用
+function onAfterLeave(el) {}
+
+// 仅在 v-show 过渡中可用
+function onLeaveCancelled(el) {}
+</pre>
+<p>
+    在使用仅由 JavaScript 执行的动画时，最好是添加一个 :css="false" prop。这显式地向 Vue 表明可以跳过对 CSS 过渡的自动探测。除了性能稍好一些之外，还可以防止 CSS 规则意外地干扰过渡效果。
+</p>
+<div class="tips">
+    在有了 :css="false" 后，我们就自己全权负责控制什么时候过渡结束了。这种情况下对于 @enter 和 @leave 钩子来说，回调函数 done 就是必须的。否则，钩子将被同步调用，过渡将立即完成。
+</div>

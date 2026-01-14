@@ -1,0 +1,34 @@
+<header>
+    如何实现点击等交互？
+</header>
+<p>
+    首先，需要准备好一个射线投射器实例：
+</p>
+<pre tag="javascript">
+    var raycaster = new THREE.Raycaster();
+</pre>
+<p>
+    然后定义射线的方向，比如我们这里使用鼠标点并配合相机定义：
+</p>
+<pre tag="javascript">
+var pointer = new THREE.Vector2();
+pointer.set((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1);
+
+raycaster.setFromCamera(pointer, camera);
+</pre>
+<p>
+    你点击的位置是相对canvas左上角的，这里的pointer是webgl坐标系下的值，所以set的时候映射计算一下。
+</p>
+<p>
+    最后，我们判断当前鼠标点击的位置击中了哪些：
+</p>
+<pre tag="javascript">
+var intersect = raycaster.intersectObjects([mesh1, mesh2, mesh3]);
+</pre>
+<p class="warn">
+    注意 :击中了谁会在[mesh1, mesh2, mesh3]中选择，别的没有传递的直接无视存在。
+</p>
+<p>
+    返回的是一个数组，由近到远。
+</p>
+<button tag="three-raycaster">查看用例</button>

@@ -1,0 +1,51 @@
+<header>
+     灯光
+</header>
+<h2>
+    点光源（PointLight）
+</h2>
+<pre tag="javascript">
+new THREE.PointLight(color, intensity, distance, decay);
+</pre>
+<ul>
+    <li>
+        color - 可选参数，默认0xffffff，光照颜色
+    </li>
+    <li>
+        intensity - 可选参数，默认1，光照强度
+    </li>
+    <li>
+        distance - 可选参数，默认0，这个距离表示从光源到光照强度为0的位置
+    </li>
+    <li>
+        decay - 可选参数，默认2，沿着光照距离的衰退量
+    </li>
+</ul>
+<h2>
+    平行光（DirectionalLight）
+</h2>
+<pre tag="javascript">
+new THREE.DirectionalLight(color, intensity);
+</pre>
+<ul>
+    <li>
+        color - 可选参数，默认0xffffff，光照颜色
+    </li>
+    <li>
+        intensity - 可选参数，默认1，光照强度
+    </li>
+</ul>
+<h2>
+    环境光（AmbientLight）
+</h2>
+<pre tag="javascript">
+new THREE.AmbientLight(color, intensity);
+</pre>
+<ul>
+    <li>
+        color - 可选参数，默认0xffffff，光照颜色
+    </li>
+    <li>
+        intensity - 可选参数，默认1，光照强度
+    </li>
+</ul>

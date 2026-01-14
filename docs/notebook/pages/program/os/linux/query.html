@@ -1,0 +1,29 @@
+<header>
+    查询命令
+</header>
+<h2>
+    which
+</h2>
+<p>
+    在PATH变量指定的路径中，搜索某个系统命令的位置，并返回第一个搜索结果。例如：
+</p>
+<pre>
+which node
+</pre>
+<p>
+    打印结果可能类似：<span class="special">/usr/local/bin/node</span>。
+</p>
+<h2>
+    find
+</h2>
+<p>
+    比如我们想在当前目录查找名称包含pre前缀的文件或文件夹：
+</p>
+<pre>
+find . -name "pre*"
+</pre>
+<p class="warn">
+    温馨提示：如果想不区分大小写，可以把
+    <span class="special">-name</span>
+    改成 <span class="special">-iname</span>。
+</p>

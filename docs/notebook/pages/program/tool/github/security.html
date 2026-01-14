@@ -1,0 +1,151 @@
+<header>
+    github无法push？Please use a personal access token instead.
+</header>
+<p>
+    由于github修改了校验的方式，我们这里说明如何使用SSH进行校验。
+</p>
+<h2>
+    生成ssh公钥
+</h2>
+<p>
+    首先，需要运行命令来生成公钥：
+</p>
+<pre tag>
+    ssh-keygen -t rsa -C "你的邮箱"
+</pre>
+<p>
+    这时候 我们如果没有设置过路径 则直接切换到 ~/.ssh 文件夹然后即可看到 id_rsa 和 id_rsa.pub 两个文件。
+</p>
+<p>
+    我们运行:
+</p>
+<pre tag>
+    cat id_rsa.pub
+</pre>
+<p class="warn">
+    温馨提示：包括后续的vi命令，如果是windows，比如这里，直接在资源管理器中打开后用记事本编辑或查看是一样的。
+</p>
+<h2>
+    ssh配置
+</h2>
+<p>
+    打开用户头像后，打开点击设置
+    <span class="important">Settings</span>：
+</p>
+<img src="./images/github/set.jpeg">
+<p>
+    然后点击
+    <span class="important">SSH and GPG keys</span>：
+</p>
+<img src="./images/github/ssh.jpeg">
+<p>
+    接着点击
+    <span class="important">New SSH key</span>就可以看见下面界面了：
+</p>
+<img src="./images/github/ssh-new.jpeg">
+<p>
+    Title可以随便写一个，比如：我的小电脑，Key里面就把上一步cat id_rsa.pub里面的内容复制进去（是全部内容）。
+</p>
+<p>
+    然后点击
+    <span class="important">Add SSH key</span>即可。
+</p>
+<h2>
+    clone代码
+</h2>
+<p>
+    上面都准备好了以后，就可以使用ssh提交代码了，此时，clone的地址不应该再使用http或https协议的。比如：
+</p>
+<pre tag>
+    git clone https://github.com/zxl20070701/notebook.git
+</pre>
+<p>
+    上面就是错误的，正确的应该是：
+</p>
+<pre tag>
+    git clone git@github.com:zxl20070701/notebook.git
+</pre>
+<h3>
+    修改地址为ssh
+</h3>
+<p>
+    当然，你可以有旧的clone的代码，我们可以修改地址后正常提交。
+</p>
+<p>
+    如何修改？你可以在项目的根路径下用vi打开git的配置文件：
+</p>
+<pre tag>
+    vi ./.git/config
+</pre>
+<p>
+    你会看见类似下面内容：
+</p>
+<img src="./images/github/vi-config.jpeg">
+<p>
+    你需要把里面的对应这行内容：
+</p>
+<pre tag>
+[remote "origin"]
+url = https://github.com/zxl20070701/notebook
+</pre>
+<p>
+    改成
+</p>
+<pre tag>
+[remote "origin"]
+url = git@github.com:zxl20070701/notebook.git
+</pre>
+<p>
+    经过上面的修改以后，就可以正常push成功了，提交前，别忘了配置邮箱和姓名哦～
+</p>
+<h2>
+    ssh配置多用户多密钥
+</h2>
+<h3>
+    生成更多ssh公钥
+</h3>
+<p>
+    首先，使用不同邮箱重复上述生成ssh公钥步骤。
+</p>
+<p class="warn">
+    温馨提示：多用户下保存时不要覆盖前面的名称，如id_rsa，我现在使用id_rsa_sabrinayh5y（这样id_rsa和id_rsa_sabrinayh5y就是两组密钥了）。
+</p>
+<h3>
+    配置多用户和密钥的关联
+</h3>
+<p>我们切换到 ~/.ssh 文件夹，在文件config中添加</p>
+<pre tag>
+Host default
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa
+
+# 新加sabrinayh5y密钥
+Host sabrinayh5y
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa_sabrinayh5y
+</pre>
+<h3>
+    测试连接
+</h3>
+<pre tag>
+ssh -T git@github.com
+ssh -T git@sabrinayh5y
+</pre>
+<p>
+    出现字样：
+    <span class="special">
+        Hi Sabrinayh5y! You've successfully authenticated, but GitHub does not provide shell access.
+    </span>
+    后，就说明测试通过了，恭喜你！
+</p>
+<h3>
+    ssh方法检出代码
+</h3>
+<pre tag>
+git clone git@sabrinayh5y:Sabrinayh5y/notebook.git
+</pre>
+<p class="warn">
+    温馨提示：这里访问的是git@sabrinayh5y，而不是git@github.com，它来自config中新加sabrinayh5y密钥的Host别名。
+</p>

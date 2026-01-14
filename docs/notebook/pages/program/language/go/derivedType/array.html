@@ -1,0 +1,76 @@
+<header>
+    数组
+</header>
+<h2>
+    声明数组
+</h2>
+<p>
+    Go 语言数组声明需要指定元素类型及元素个数，语法格式如下：
+</p>
+<pre tag="javascript">
+    var arrayName [size]dataType
+</pre>
+<p>
+    其中，arrayName 是数组的名称，size 是数组的大小，dataType 是数组中元素的数据类型。
+</p>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+    var balance [10]float32
+</pre>
+<h2>
+    初始化数组
+</h2>
+<p>
+    以下实例声明一个名为 numbers 的整数数组，其大小为 5：
+</p>
+<pre tag="javascript">
+    var numbers [5]int
+</pre>
+<p class="warn">
+    在声明时，数组中的每个元素都会根据其数据类型进行默认初始化，对于整数类型，初始值为 0。
+</p>
+<p>
+    还可以使用初始化列表来初始化数组的元素：
+</p>
+<pre tag="javascript">
+    var numbers = [5]int{1, 2, 3, 4, 5}
+</pre>
+<p class="important">
+    注意：在 Go 语言中，数组的大小是类型的一部分，因此不同大小的数组是不兼容的，也就是说 [5]int 和 [10]int 是不同的类型。
+</p>
+<p>
+    如果数组长度不确定，可以使用 ... 代替数组的长度，编译器会根据元素个数自行推断数组的长度：
+</p>
+<pre tag="javascript">
+    var balance = [...]float32{1000.0, 2.0, 3.4, 7.0, 50.0}
+</pre>
+<h2>
+    多维数组
+</h2>
+<p>
+    常用的多维数组声明方式：
+</p>
+<pre tag="javascript">
+    var variable_name [SIZE1][SIZE2]...[SIZEN] variable_type
+</pre>
+<p>
+    以下实例声明了二维的整型数组：
+</p>
+<pre tag="javascript">
+    var myArray [5][10]int
+</pre>
+<p>
+    我们再看看如何初始化一个二维数组：
+</p>
+<pre tag="javascript">
+var myArray = [3][4]int{  
+    {0, 1, 2, 3} ,
+    {4, 5, 6, 7} ,
+    {8, 9, 10, 11}, // 倒数第二行
+}
+</pre>
+<p class="warn">
+    以上代码中倒数第二行的 } 必须要有逗号，因为最后一行的 } 不能单独一行。
+</p>

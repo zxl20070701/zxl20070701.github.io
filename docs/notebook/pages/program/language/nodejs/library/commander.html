@@ -1,0 +1,30 @@
+<header>
+    命令行交互 commander
+</header>
+<h2>
+    注册多个命令（index.js文件）：
+</h2>
+<pre tag="javascript">
+import { program } from 'commander'
+program
+  .command('install &lt;package&gt;')
+  .description('安装一个包')
+  .action((packageName) => {
+    console.log(`安装包: ${packageName}`);
+  });
+ 
+program
+  .command('uninstall &lt;package&gt;')
+  .description('卸载一个包')
+  .action((packageName) => {
+    console.log(`卸载包: ${packageName}`);
+  });
+ 
+program.parse(process.argv); 
+</pre>
+<p>
+    比如你希望触发安装vislite的命令，只需要：
+</p>
+<pre>
+node ./index.js install vislite
+</pre>

@@ -1,0 +1,89 @@
+<header>
+    多线程开发之 Web Worker
+</header>
+<p>
+    我们都知道，浏览器执行js代码是单线程的，当页面脚步执行时，页面是没办法响应别的的，直到脚步的结束，而这里介绍的WebWorkers就可以改变这一切。
+</p>
+<p>
+    WebWorkers是运行在后台的js代码，独立于其他脚本，不会影响页面的性能。我们可以继续做任何愿意做的事情：点击、选取内容等等，而此时WebWorkers在后台运行。
+</p>
+<p class="warn">
+    所有主流浏览器均支持 web worker，除了 Internet Explorer。
+</p>
+<h2>
+    生成worker
+</h2>
+<p>
+    调用Worker()构造函数，指定一个要在worker线程内运行的脚本的URI，例子是当前页面指定worker线程执行的脚步为script-worker.js。
+</p>
+<pre tag="javascript">
+    var myWorker = new Worker("script-worker.js");
+</pre>
+<p>
+    在script-worker.js里面我们可以执行额外的代码，这些代码的执行不会影响页面去干别的你想干的事情，这听起来很棒。
+</p>
+<h2>
+    传递数据
+</h2>
+<p>
+    页面可以和worker交互传递数据，这样worker在不影响页面干有意义的事情的情况下可以默默去计算，好了告诉一下页面，使用这些数据。
+</p>
+<pre tag="javascript">
+//[主页面代码]
+myWorker.postMessage("data-from-mainpage");
+
+//[worker代码]
+onmessage = function (oEvent) {
+
+    console.log("主页面发送过来的数据是："+oEvent.data));
+    
+};
+</pre>
+<p>
+    上面是【主页面发送数据给worker脚本】的情况，是的，你看见了非常亲切的postMessage，好吧，我喜欢这个东西。
+</p>
+<pre tag="javascript">
+//[主页面代码]
+myWorker.onmessage = function (oEvent) {
+    console.log("worker脚本发送过来的数据是："+oEvent.data));
+};
+
+//[worker代码]
+postMessage("data-from-mainpage");
+</pre>
+<p>
+    上面是【worker脚本发送数据给主页面】的情况，依旧很简单，不过这些只是API，关键在于巧妙的使用才是有益的。
+</p>
+<p>
+    此外，可能worker执行会出错，主页面通过:
+</p>
+<pre ta g>
+    myWorker.onerror=function(oEvent){};
+</pre>
+<p>
+    可以监听worker发生错误。
+</p>
+<h2>
+    补充说明
+</h2>
+<p>
+    worker线程能够在不干扰UI的情况下执行任务，所执行的JavaScript代码完全在另一个作用域，与当前网页中的代码不共享作用域。
+</p>
+<p>
+    Worker的全局作用域中提供了importScripts()方法，接收一个或多个指向JavaScript文件的URL，加载过程都是异步进行。
+</p>
+<p>
+    importScripts()只会在您提供绝对URI的情况下生效，执行过程也是异步的。
+</p>
+<p>
+    当我们创建WebWorkers对象后，它会继续监听消息（即使在外部脚本完成之后）直到其被终止为止，使用myWorker.terminate()方法可以终止WebWorkers，并释放浏览器/计算机资源。
+</p>
+<h2>
+    重要限制
+</h2>
+<p>
+    无法访问DOM节点，无法访问全局变量或是全局函数，无法调用alert()或者confirm之类的函数和无法访问window、document之类的浏览器全局变量；
+</p>
+<p>
+    不过Web Worker中的Javascript依然可以使用setTimeout(),setInterval()之类的函数，也可以使用XMLHttpRequest对象来做Ajax通信。
+</p>

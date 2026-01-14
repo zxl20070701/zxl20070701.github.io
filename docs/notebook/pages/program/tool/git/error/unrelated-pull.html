@@ -1,0 +1,52 @@
+<header>
+    共同祖先导致pull拉取不了
+</header>
+<p>
+    错误信息
+    <span class="important">
+        "fatal: refusing to merge unrelated histories"
+    </span>
+    通常发生在尝试合并两个没有共同祖先的 Git 仓库历史时。
+</p>
+<h2>
+    原因
+</h2>
+<h3>
+    ‌历史记录不相关‌
+</h3>
+<p>
+    Git 通过历史记录来跟踪每个提交的父提交，以便构建提交的关系图。当尝试合并两个没有共同祖先的历史时，Git 会认为它们是不相关的，因此默认情况下拒绝合并‌。
+</p>
+<h3>
+    本地和远程仓库历史不一致
+</h3>
+<p>
+    如果本地仓库和远程仓库的历史记录不一致，合并时会出现这个错误‌。
+</p>
+<h2>
+    解决方法
+</h2>
+<h3>
+    --allow-unrelated-histories
+</h3>
+<p>
+    使用 --allow-unrelated-histories 标志‌：可以在 git pull 或 git merge 命令中添加 --allow-unrelated-histories 选项来允许合并不相关的历史。例如：
+</p>
+<pre tag>
+    git pull origin master --allow-unrelated-histories
+</pre>
+<h3>
+    创建新分支
+</h3>
+<p>
+    如果不希望混合两个不相关的历史，可以创建一个新的分支，然后将远程仓库的内容合并到该分支中：
+</p>
+<pre tag>
+git checkout -b new-branch
+git pull origin master
+git commit -m "Merge remote branch into new branch"
+git push origin new-branch
+</pre>
+<p>
+    这种方法可以避免合并不相关的历史，同时保留原始分支的完整性‌。
+</p>

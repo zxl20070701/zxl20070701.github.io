@@ -1,0 +1,27 @@
+<header>
+    Teleport
+</header>
+<p>
+    拿下面的代码举例子：
+</p>
+<pre tag="html">
+&lt;div&gt;
+    &lt;ui-dialog&gt;&lt;/ui-dialog&gt;
+&lt;/div&gt;
+</pre>
+<p>
+    因为是弹框，你可能希望弹框组件直接挂载在body上，那么，你只需要：
+</p>
+<pre tag="html">
+&lt;div&gt;
+    &lt;teleport to="body"&gt;
+        &lt;ui-dialog&gt;&lt;/ui-dialog&gt;
+    &lt;/teleport&gt;
+&lt;/div&gt;
+</pre>
+<p class="warn">
+    如果 &lt;teleport&gt; 包含 Vue 组件，则它仍将是 &lt;teleport&gt; 父组件的逻辑子组件。
+</p>
+<p>
+    其中的to表明直接挂载到哪里，值可以是任意一个类似sizzle.js选择器的字符串或结点。
+</p>

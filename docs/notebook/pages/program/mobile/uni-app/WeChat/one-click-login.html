@@ -1,0 +1,45 @@
+<header>
+    一键登录
+</header>
+<pre tag="html">
+<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">手机号快捷登录</button>
+</pre>
+<pre tag="javascript">
+async getPhoneNumber(e){
+    uni.getProvider({
+        service: "oauth", //授权登录
+        success: (pres) => {
+            // 判断授权登录渠道是否有微信
+            if (pres.provider.indexOf("weixin") > -1) {
+
+                //进行微信登录  获取code
+                uni.login({
+                    provider: "weixin", //登录服务提供商
+                    success: async (lres) => {
+
+                        if (lres.errMsg == "login:ok") {
+
+                            //获取用户openId
+                            let ores = await getOpenId({ // getOpenId是一个请求，通过code获取openid
+                                code: lres.code,
+                            });
+
+                            if (ores.data.statusCode == "0") {
+
+                                let olres = await oneClickLogin({ // oneClickLogin是一个请求，登录
+                                    code: e.detail.code,
+                                    openId: ores.data.openid,
+                                });
+                                
+                            }
+
+                        }
+
+                    }
+                });
+
+            }
+        }
+    });
+}
+</pre>

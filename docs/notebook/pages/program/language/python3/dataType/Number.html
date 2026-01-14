@@ -1,0 +1,62 @@
+<header>
+    Number（数字）
+</header>
+<p>
+    数字类型是顾名思义是用来存储数值的，需要记住的是，有点和Java的字符串味道差不多，如果改变了数字数据类型的值，将重新分配内存空间。
+</p>
+<p>
+    可以使用del语句删除一些数字对象的引用：
+</p>
+<pre tag>
+    del var1[,var2[,var3[....,varN]]]]
+</pre>
+<p>
+    Python 支持三种不同的数值类型：
+</p>
+<h3>
+    整型(Int)
+</h3>
+<p>
+    通常被称为是整型或整数，是正或负整数，不带小数点。Python3 整型是没有限制大小的，可以当作 Long 类型使用，所以 Python3 没有 Python2 的 Long 类型。
+</p>
+<h3>
+    浮点型(float)
+</h3>
+<p>
+    浮点型由整数部分与小数部分组成，浮点型也可以使用科学计数法表示（2.5e2 = 2.5 x 10<sup>2</sup> = 250）。
+</p>
+<h3>
+    复数(complex)
+</h3>
+<p>
+    复数由实数部分和虚数部分构成，可以用a + bj,或者complex(a,b)表示， 复数的实部a和虚部b都是浮点型。
+</p>
+<h2>
+    数字类型转换
+</h2>
+<ul>
+    <li>
+        <span class="special">
+            int(x)
+        </span>
+        将x转换为一个整数。
+    </li>
+    <li>
+        <span class="special">
+            float(x)
+        </span>
+        将x转换到一个浮点数。
+    </li>
+    <li>
+        <span class="special">
+            complex(x)
+        </span>
+        将x转换到一个复数，实数部分为 x，虚数部分为 0。
+    </li>
+    <li>
+        <span class="special">
+            complex(x, y)
+        </span>
+        将 x 和 y 转换到一个复数，实数部分为 x，虚数部分为 y。x 和 y 是数字表达式。
+    </li>
+</ul>

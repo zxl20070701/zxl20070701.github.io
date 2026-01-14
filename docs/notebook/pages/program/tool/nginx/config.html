@@ -1,0 +1,110 @@
+<header>
+    配置文件说明
+</header>
+<p>
+    你可以点击下载<a href="./data/mime.types" download="mime.types">mime.types</a>文件。
+</p>
+<pre tag>
+#定义Nginx运行的用户和用户组
+#user root admin;
+
+#nginx进程数，建议设置为等于CPU总核心数。
+worker_processes  1;
+
+#全局错误日志
+error_log   /Users/zxl20070701/nginxConfig/error_debug.log  debug;
+error_log   /Users/zxl20070701/nginxConfig/error_notice.log  notice;
+error_log   /Users/zxl20070701/nginxConfig/error_info.log  info;
+error_log   /Users/zxl20070701/nginxConfig/error_warn.log  warn;
+error_log   /Users/zxl20070701/nginxConfig/error_error.log  error;
+error_log   /Users/zxl20070701/nginxConfig/error_crit.log  crit;
+
+#进程文件
+pid       /Users/zxl20070701/nginxConfig/nginx.pid;
+
+events {
+    #单个进程最大连接数（最大连接数=连接数*进程数）
+    worker_connections  256;
+}
+
+#设定http服务器，利用它的反向代理功能提供负载均衡支持
+http {
+
+    #文件扩展名与文件类型映射表
+    include      /Users/zxl20070701/nginxConfig/mime.types;
+
+    #默认文件类型
+    default_type  application/octet-stream;
+
+    #默认编码
+    #charset utf-8;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '"$request_body" $body_bytes_sent $status ';
+
+    #sendfile指令指定 nginx 是否调用sendfile 函数来输出文件，对于普通应用，必须设为on。
+    #如果用来进行下载等应用磁盘IO重负载应用，可设置为off，以平衡磁盘与网络IO处理速度，降低系统uptime。
+    sendfile        on;
+
+    #长连接超时时间，单位是秒
+    keepalive_timeout  65;
+
+    #预定义的第一个请求数据的地址
+    upstream localJsonProxy {
+        server 127.0.0.1:30000;
+    }
+
+    #负载均衡配置简单例子
+    #upstream serverName {
+    #    server 192.168.0.14 weight=10;
+    #    server 192.168.0.15 weight=10;
+    #}
+
+    #预定义的第二个请求数据的地址
+    upstream serverProxy {
+        server 192.168.0.16:20000;
+    }
+
+    #虚拟主机的配置
+    server {
+
+        #监听端口
+        listen       8080;
+        #域名可以有多个，用空格隔开
+        server_name  localhost;
+        access_log  /Users/zxl20070701/nginxConfig/host.access.log main;
+
+        #---1
+        location / {
+            root  /Users/zxl20070701/-------/source/;
+            index  index.html;
+        }
+
+        #---2
+        location /server/ {
+            proxy_pass http://serverProxy/server/;
+            proxy_redirect          off;
+        }
+
+        #---3
+        location /local/ {
+            rewrite ^(.*).do$ $1.json last;
+            proxy_pass http://localJsonProxy/;
+            proxy_redirect          off;
+        }
+    }
+
+    #虚拟主机的配置（这里是对应上面的『预定义的第一个请求数据的地址』）
+    server {
+        listen       30000;
+        server_name  dataServer;
+        access_log  /Users/zxl20070701/nginxConfig/data.access.log main;
+
+        location ~ (.*\.json) {
+            root   /Users/zxl20070701/-------/source/data;
+            default_type application/json;
+            error_page 405 =200 $1;
+        }
+    }
+}
+</pre>

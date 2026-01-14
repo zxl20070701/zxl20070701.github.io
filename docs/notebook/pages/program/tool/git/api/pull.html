@@ -1,0 +1,23 @@
+<header>
+    拉取
+</header>
+<p>
+    从远程服务器拉取代码更新，hostname是对应的仓库名称，branchname是分支名称。
+</p>
+<pre tag>git pull hostname branchname</pre>
+<p>
+    【不推荐直接用这个】添加文件到缓冲区，你可以指定添加的文件filename，也可以使用-A把文件夹下全部文件添加到缓冲区。
+</p>
+<pre tag>
+    git fetch hostname branchname
+git diff localbranchname hostname/branchname[ -- filepath][ &gt;&gt;filePath]
+git merge hostname/branchname</pre>
+<p>
+    【推荐使用这个比较安全】以上命令的含义：首先从远程的hostname的branchname分支下载最新的版本到hostname/branchname分支上，然后比较本地的branchname分支和hostname/branchname分支的差别，最后进行合并。
+</p>
+<p>
+    最后可选参数 -- filepath是指定对比的文件，不指定就是全部文件。
+</p>
+<p>
+    最后的可选参数 >>filePath表示把差异文件输出到文件，方便查看。
+</p>

@@ -1,0 +1,71 @@
+<header>
+    Image和资源Resource
+</header>
+<h3>
+    使用本地图片
+</h3>
+<p>
+    比如我们把图片
+    <span class="warn">logo.jpg</span>
+    放到
+    <span class="special">
+        entry/src/main/ets/images
+    </span>
+    中，那么，
+    <span class="warn">Image组件</span>
+    用的时候，就可以：
+</p>
+<pre tag="javascript">
+Image("/images/logo.jpg")
+</pre>
+<h3>
+    使用Resource下的图片
+</h3>
+<h4>
+    media
+</h4>
+<p>
+    比如我们把图片
+    <span class="warn">logo.jpg</span>
+    放到
+    <span class="special">
+        entry/src/main/resources/base/media
+    </span>
+    中，那么，
+    <span class="warn">Image组件</span>
+    用的时候，就可以：
+</p>
+<pre tag="javascript">
+Image($r("app.media.logo"))
+</pre>
+<h4>
+    rawfile
+</h4>
+<p>
+    比如我们把图片
+    <span class="warn">logo.jpg</span>
+    放到
+    <span class="special">
+        entry/src/main/resources/rawfile
+    </span>
+    中，那么，
+    <span class="warn">Image组件</span>
+    用的时候，就可以：
+</p>
+<pre tag="javascript">
+Image($rawfile("logo.jpg"))
+</pre>
+<h3>
+    使用网络图片
+</h3>
+<pre tag="javascript">
+Image("https://zxl20070701.github.io/notebook/images/logo.png")
+</pre>
+<p>
+    使用网络图片时，在preview中时，可以预览，但是在模拟器和真实项目中，必须申请网络权限（module.json5）：
+</p>
+<pre tag="javascript">
+"requestPermissions": [{
+    "name":"ohos.permission.INTERNET"
+}]
+</pre>

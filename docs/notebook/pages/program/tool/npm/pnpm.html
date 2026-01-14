@@ -1,0 +1,190 @@
+<header>
+    包管理工具之PNPM
+</header>
+<p>
+    安装pnpm本身：
+</p>
+<pre>
+    npm install -g pnpm
+</pre>
+<h2>
+    安装依赖包
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>
+                命令
+            </td>
+            <td>
+                说明
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                pnpm add vislite
+            </td>
+            <td>
+                保存到 dependencies
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pnpm add -D vislite
+            </td>
+            <td>
+                保存到 devDependencies
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pnpm add -O vislite
+            </td>
+            <td>
+                保存到 optionalDependencies
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pnpm add -g vislite
+            </td>
+            <td>
+                Install package globally
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pnpm add vislite@alpha
+            </td>
+            <td>
+                从 alpha 标签下安装
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pnpm add vislite@0.8.0
+            </td>
+            <td>
+                安装指定版本 0.8.0
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    一些特殊安装方法
+</h3>
+<h4>
+    安装本地项目
+</h4>
+<p>
+    比如我们有一个包<span class="warn">vislite</span>，其本地项目工程位置为：
+    <span class="warn">/Users/zxl20070701/Desktop/VISLite</span>，可以直接：
+</p>
+<pre>
+    pnpm add vislite@/Users/zxl20070701/Desktop/VISLite
+</pre>
+<h2>
+    下载所有依赖
+</h2>
+<pre tag="javascript">
+    pnpm install
+</pre>
+<h2>
+    版本更新
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>
+                命令
+            </td>
+            <td>
+                说明
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                pnpm update
+            </td>
+            <td>
+                遵循 package.json 指定的范围更新所有的依赖项
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pnpm update --latest
+            </td>
+            <td>
+                更新所有依赖项，此操作会忽略 package.json 指定的范围
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pnpm update vislte@1
+            </td>
+            <td>
+                将 vislte 更新到 v1 上的最新版本
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pnpm update "@zxl20070701/*"
+            </td>
+            <td>
+                更新 @zxl20070701 范围内的所有依赖项
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    工作空间（Workspace）
+</h2>
+<h3>
+    基本使用
+</h3>
+<p>
+    比如我们现在有一个项目，项目中有两个子项目，大体结构如下：
+</p>
+<pre>
+- packages
+    - pkg1
+        - package.json
+    - pkg2
+        - package.json
+- package.json
+- pnpm-workspace.yaml
+</pre>
+<p>
+    其中<span class="special">pnpm-workspace.yaml</span>内容如下：
+</p>
+<pre>
+packages:
+  - 'packages/*'
+</pre>
+<p>
+    而<span class="warn">pkg1</span>和<span class="warn">pkg12</span>的项目名称分别是<span class="special">mypkg1</span>和<span
+        class="special">mypkg2</span>。
+</p>
+<h4>
+    主目录下安装：
+</h4>
+<p>
+    比如在项目根项目下安装<span class="special">pkg1</span>，只需要：
+</p>
+<pre>
+    pnpm install mypkg1 -w
+</pre>
+<h4>
+    子项目下安装：
+</h4>
+<p>
+    比如在子项目<span class="special">pkg2</span>下安装<span class="special">pkg1</span>，只需要：
+</p>
+<pre>
+cd packages/pkg1
+pnpm install mypkg1
+</pre>

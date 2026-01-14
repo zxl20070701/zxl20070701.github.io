@@ -1,0 +1,54 @@
+<header>
+    自定义Hooks
+</header>
+<p>
+    现在页面中有两个输入框，需要计算后显示其和：
+</p>
+<pre tag="html">
+<div>
+    num1：<input v-model.number="num1" style="width: 100px" />
+    num2：<input v-model.number="num2" style="width: 100px" />
+</div>
+相加等于:{{ addNum }}
+</pre>
+<p>
+    首先，就是定义hooks文件
+    <span class="warn">src/hooks/useAdd.ts</span>：
+</p>
+<pre tag="javascript">
+import { ref, watch, type Ref } from 'vue';
+const useAdd = (num1: Ref&lt;number&gt;, num2: Ref&lt;number&gt;) => {
+    const addNum = ref(0)
+    watch([num1, num2], ([num1, num2]) => {
+        addFn(num1, num2)
+    })
+    const addFn = (num1: number, num2: number) => {
+        addNum.value = num1 + num2
+    }
+
+    addFn(num1.value, num2.value);
+    return {
+        addNum,
+        addFn
+    }
+}
+export default useAdd
+</pre>
+<p>
+    然后，在用的页面中：
+</p>
+<pre tag="javascript">
+import { ref } from "vue";
+import useAdd from "../hooks/useAdd";
+
+const num1 = ref(2);
+const num2 = ref(1);
+
+const { addNum, addFn } = useAdd(num1, num2);
+</pre>
+<p>
+    这样，修改输入框的值后就会自动显示其和了。当然，你也可以主动调用方法进行计算：
+</p>
+<pre tag="javascript">
+    addFn(10, 20);
+</pre>

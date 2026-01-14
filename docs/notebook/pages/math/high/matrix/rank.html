@@ -1,0 +1,58 @@
+<header>
+    秩相关说明
+</header>
+<p>
+    在定义秩之前，我们需要先说明一个定理。
+</p>
+<p>
+    <span class="title">
+        定理
+    </span>
+    矩阵列向量组的秩和矩阵行向量组的秩相等，分别称为矩阵的行秩和列秩。
+</p>
+<p>
+    现在，我们就可以来定义矩阵的秩了。
+</p>
+<p>
+    <span class="title">
+        定义
+    </span>
+    由于矩阵的行秩和列秩相等，所以我们统称为
+    <span class="important">矩阵的秩</span>。
+</p>
+<h2>
+    与行列式
+</h2>
+<p>
+    <span class="title">
+        定理
+    </span>
+    n×n矩阵
+    <span class="oneline">
+        A =
+        <code>
+            ["matrix",[
+                [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                [["rightBottom","a","21"],["rightBottom","a","22"],"...",["rightBottom","a","2n"]],
+                ["⁝","⁝"," ","⁝"],
+                [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+            ]]
+        </code>
+    </span>
+    的行列式为零的充分必要条件是A的秩小于n。
+</p>
+<h2>
+    k级子式
+</h2>
+<p>
+    <span class="title">
+        定义
+    </span>
+    在一个s×n矩阵A中任意选定k行和k列，位于这些选定的行和列的交点上的k<sup>2</sup>个元素按原来的次序所组成的k级行列式，称为A的一个k级子式。
+</p>
+<p>
+    <span class="title">
+        定理
+    </span>
+    一矩阵的秩是r的充分必要条件为矩阵中有一个r级子式不为零，同时所有的r+1级子式全为零。
+</p>

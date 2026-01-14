@@ -1,0 +1,63 @@
+<header>
+    什么是行列式？
+</header>
+<p>
+    简单的理解就是数域P上的一个排列，只不过这个排列有点特殊，是一个方阵：
+    <code>
+        ["matrix",[
+          [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+          [["rightBottom","a","21"],["rightBottom","a","22"],"...",["rightBottom","a","2n"]],
+          ["⁝","⁝"," ","⁝"],
+          [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+        ],true]
+    </code>
+    ，这个方阵按照一个规则运算得到一个数，这个数就是这个行列式的值，或者说行列式其实是一个数，只是“外表”有点特殊。
+</p>
+<p>
+    <span class="title">
+        定义
+    </span>
+    n级行列式
+    <span class="oneline">
+        <code>
+            ["matrix",[
+                [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                [["rightBottom","a","21"],["rightBottom","a","22"],"...",["rightBottom","a","2n"]],
+                ["⁝","⁝"," ","⁝"],
+                [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+            ],true]
+        </code>
+    </span>
+    等于所有取自不同行不同列的n个元素的乘积
+    <span class="oneline">
+        <code>
+        ["join",
+            ["rightBottom","a",["rightBottom","1j","1"]],
+            ["rightBottom","a",["rightBottom","2j","2"]],
+            "...",
+            ["rightBottom","a",["rightBottom","nj","n"]]
+        ]
+       </code>
+    </span>
+    的代数和，这里
+    <code>
+        ["join",["rightBottom","j","1"],["rightBottom","j","2"],"...",["rightBottom","j","n"]]
+    </code>
+    是1,2,...,n的一个排列，上述每一项都按下列规则带有符号：
+</p>
+<ul>
+    <li>
+        当
+        <code>
+            ["join",["rightBottom","j","1"],["rightBottom","j","2"],"...",["rightBottom","j","n"]]
+        </code>
+        是偶排列时，带正号；
+    </li>
+    <li>
+        当
+        <code>
+            ["join",["rightBottom","j","1"],["rightBottom","j","2"],"...",["rightBottom","j","n"]]
+        </code>
+        是奇排列是，带负号。
+    </li>
+</ul>

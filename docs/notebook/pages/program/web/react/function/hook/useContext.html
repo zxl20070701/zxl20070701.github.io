@@ -1,0 +1,57 @@
+<header>
+    useContext
+</header>
+<p>
+    支持组件为后代组件提供数据或方法等，比如我们有如下两个自定义组件的用法：
+</p>
+<pre tag="html">
+&lt;PDemo&gt;
+    &lt;CDemo&gt;&lt;/CDemo&gt;
+&lt;/PDemo&gt;
+</pre>
+<p>
+    我们现在希望通过上下文实现
+    <span class="warn">PDemo</span>给<span class="warn">CDemo</span>
+    传递数据，怎么办？
+</p>
+<h2>
+    定义上下文
+</h2>
+<p>
+    比如新建一个文件<span class="special">context.ts</span>，其中内容如下：
+</p>
+<pre tag="javascript">
+import { createContext } from 'react'
+export let DemoContext = createContext()
+</pre>
+<h2>
+    内容提供者
+</h2>
+<p>
+    很明显，<span class="warn">PDemo</span>提供数据，大致写法如下：
+</p>
+<pre tag="javascript">
+import { DemoContext } from "./context.ts"
+function PDemo(){
+    return (&lt;DemoContext.Provider value={"来自PDemo的数据"}&gt;
+        &lt;div&gt;一些内容&lt;/div&gt;
+    &lt;DemoContext.Provider&gt;)
+}
+</pre>
+<h2>
+    内容消费者
+</h2>
+<p>
+    现在，就可以在<span class="warn">CDemo</span>消费这个数据了：
+</p>
+<pre tag="javascript">
+import { useContext } from "react"
+import { DemoContext } from "./context.ts"
+function CDemo(){
+    let value = useContext(DemoContext)
+    return &lt;div&gt;{value}&lt;/div&gt;
+}
+</pre>
+<p>
+    如果<span class="warn">PDemo</span>提供的是state，那么数据改变的时候，<span class="warn">CDemo</span>也会自动改变。
+</p>

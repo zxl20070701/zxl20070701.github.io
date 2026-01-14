@@ -1,0 +1,21 @@
+<header>
+    事件event相关
+</header>
+<p>
+    以click为例，对于定义的组件，如果希望其上的click触发，比如：
+</p>
+<pre tag="html">
+    &lt;ui-demo @click=“doit” &gt; &lt;/ui-demo&gt;
+</pre>
+<p>
+    必须保证组件内部有类似下面的语句：
+</p>
+<pre tag="javascript">
+    this.$emit("click");
+</pre>
+<p>
+    如果没有，也可以触发原生事件：
+</p>
+<pre tag="html">
+    &lt;ui-demo @click.native=“doit” &gt; &lt;/ui-demo&gt;
+</pre>

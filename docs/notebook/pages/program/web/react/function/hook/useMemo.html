@@ -1,0 +1,73 @@
+<header>
+    useMemo
+</header>
+<p>
+    简单的理解就是：对计算的值进行缓存，只有当指定的依赖改变才重新计算。
+</p>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+let memoizedValue = useMemo(() => {
+    return newValue
+}, [a, b, ...])
+</pre>
+<p>
+    它仅会在某个依赖项改变时才重新计算memoized值，如果没有提供依赖项数组，useMemo在每次渲染时都会计算新的值。
+</p>
+<h2>
+    计数器示例
+</h2>
+<p>
+    创建2个计数器，并能区分当前是奇数或者偶数，为了模拟点击按钮时包含大量的计算逻辑影响性能，在判断偶数的方法中添加了没有用的计算逻辑，为了让性能差的明显。代码如下：
+</p>
+<pre tag="javascript">
+import React, { useState } from 'react'
+
+export default function Counter() {
+    const [counterOne, setCounterOne] = useState(0)
+    const [counterTwo, setCounterTwo] = useState(0)
+
+    const incrementOne = () => {
+        setCounterOne(counterOne + 1)
+    }
+
+    const incrementTwo = () => {
+        setCounterTwo(counterTwo + 1)
+    }
+
+    const isEven = () => {
+        let i = 0
+        while (i < 1000000000) i += 1
+        return counterOne % 2 === 0
+    }
+
+    return (<div>
+        <button onClick={incrementOne}>Count One = {counterOne}</button>
+        <span>{ isEven() ? 'even' : 'odd' }</span>
+        <button onClick={incrementTwo}>Count Two = {counterTwo}</button>
+    </div>)
+}
+</pre>
+<p>
+    运行后我们发现点击第一个按钮有较长的延迟，因为我们的判断偶数的逻辑中包含了大量的计算逻辑。但是，我们点击第二个按钮，也有较长的延迟！这很奇怪。
+</p>
+<p>
+    这是因为，每次 state 更新时，组件会 rerender，isEven 会被执行，这就是我们点击第二个按钮时，也会卡的原因。我们需要优化，告诉 React 不要有不必要的计算，特别是这种计算量复杂的。
+</p>
+<p>
+    所以，上面的例子只需要简单改造一下（下面只有需要改造部分的代码）：
+</p>
+<pre tag="javascript">
+const isEven = useMemo(() => {
+    let i = 0
+    while (i < 1000000000) i += 1
+    return counterOne % 2 === 0
+}, [counterOne])
+</pre>
+<p>
+    最后记得修改 isEven 使用的地方，已经从一个方法变为了一个变量
+</p>
+<pre tag="javascript">
+    {isEven ? 'even' : 'odd'}
+</pre>

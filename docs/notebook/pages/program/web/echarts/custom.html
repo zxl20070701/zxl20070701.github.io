@@ -1,0 +1,120 @@
+<header>
+    自定义图形
+</header>
+<h2>
+    主体架子
+</h2>
+<p>
+    把 series.type 设置成 custom 后，就可以自己提供图形渲染的逻辑，从而实现自定义图形，一般的主体如下：
+</p>
+<pre tag="javascript">
+series: [{
+    type: 'custom',
+    renderItem: function (params, api) {
+        // 需要返回包含意图的对象
+    },
+    data:data
+}]
+</pre>
+<h3>
+    一个例子
+</h3>
+<p>
+    比如我们现在有一组数据：[13, 22, 10]，分别表示苹果、香蕉和火龙果的销量，我们希望绘制一个图，要求如下：
+</p>
+<ul>
+    <li>
+        横坐标区分不同的水果
+    </li>
+    <li>
+        纵坐标表示销量，对应三个小球的位置
+    </li>
+</ul>
+<p>
+    最终的代码如下：
+</p>
+<button tag="echarts-custom">查看用例</button>
+<p>
+    从例子可以看出来，重要的就是params和api，以及返回值格式。
+</p>
+<h2>
+    params
+</h2>
+<p>
+    包含了当前数据信息和坐标系的信息。
+</p>
+<h2>
+    api
+</h2>
+<p>
+    一些开发者可调用的方法集合，主要有如下：
+</p>
+<h3>
+    value
+</h3>
+<p>
+    取出 dataItem 中的数值。例如 api.value(0) 表示取出当前 dataItem 中第一个维度的数值。
+</p>
+<h3>
+    coord
+</h3>
+<p>
+    进行坐标转换计算。例如 var point = api.coord([api.value(0), api.value(1)]) 表示 dataItem 中的数值转换成坐标系上的点。
+</p>
+<h3>
+    style
+</h3>
+<p>
+    返回值中样式的设置会使用到，他能得到 series.itemStyle 中定义的样式信息，以及视觉映射的样式信息。
+</p>
+<p>
+    当然，也可以传递一个参数，覆盖部分样式信息：
+</p>
+<pre tag="javascript">
+api.style({
+    fill: 'green'
+})
+</pre>
+<h2>
+    返回值格式
+</h2>
+<p>
+    返回的是图形元素，每个图形元素是一个 object，如果什么都不渲染，可以不返回任何东西。
+</p>
+<p>
+    比如，如果你需要一个绘制一个矩形：
+</p>
+<pre tag="javascript">
+{
+    type: 'rect',
+    shape: {
+        x: x, y: y, width: width, height: height
+    },
+    style: api.style()
+}
+</pre>
+<p>
+    如果你绘制的图形多于一个：
+</p>
+<pre tag="javascript">
+{
+    type: 'group',
+    diffChildrenByName: true,
+    children: [{
+        type: 'circle',
+        shape: {
+            cx: cx, cy: cy, r: r
+        },
+        style: api.style()
+    }, {
+        type: 'line',
+        shape: {
+            x1: x1, y1: y1, x2: x2, y2: y2
+        },
+        style: api.style()
+    }]
+}
+</pre>
+<p class="warn">
+    如果 diffChildrenByName 设为 true，则会使用 child.name 进行 diff，从而能有更好的过渡动画，但是降低性能。缺省为 false。
+</p>

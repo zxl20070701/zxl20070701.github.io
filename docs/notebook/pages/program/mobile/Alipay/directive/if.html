@@ -1,0 +1,17 @@
+<header>
+    条件渲染
+</header>
+<p>
+    在框架中，使用 a:if="" 来判断是否需要渲染该代码块：
+</p>
+<pre tag="html">
+    <view a:if="{{flag}}"></view>
+</pre>
+<p>
+    也可以用 a:elif 和 a:else 来添加一个 else 块：
+</p>
+<pre tag="html">
+<view a:if="{{flag=='1'}}"></view>
+<view a:elif="{{flag=='2'}}"></view>
+<view a:else></view>
+</pre>

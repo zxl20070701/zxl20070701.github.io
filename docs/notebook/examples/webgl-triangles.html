@@ -1,0 +1,73 @@
+<canvas width=200 height=200 style="outline:1px solid gray;">
+    非常抱歉，您的浏览器不支持canvas!
+</canvas>
+
+<!-- 顶点着色器 -->
+<script type='x-shader/x-vertex' id='vs'>
+    attribute vec4 a_position;
+    void main(){
+        gl_Position=a_position;
+    }
+</script>
+
+<!-- 片段着色器 -->
+<script type='x-shader/x-fragment' id='fs'>
+    precision mediump float;
+    uniform vec4 u_color;
+    void main(){
+        gl_FragColor=u_color;
+    }
+</script>
+
+<script>
+    var gl = document.getElementsByTagName('canvas')[0].getContext('webgl');
+
+    var loadShader = function (type, source) {
+        var shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        return shader;
+    };
+
+    var vertexShader = loadShader(gl.VERTEX_SHADER, document.getElementById('vs').innerHTML),
+        fragmentShader = loadShader(gl.FRAGMENT_SHADER, document.getElementById('fs').innerHTML);
+
+    var glProgram = gl.createProgram();
+    gl.attachShader(glProgram, vertexShader);
+    gl.attachShader(glProgram, fragmentShader);
+    gl.linkProgram(glProgram);
+    gl.useProgram(glProgram);
+
+    // 设置三角形的颜色（红色）
+    var u_color = gl.getUniformLocation(glProgram, 'u_color');
+    gl.uniform4f(u_color, 1, 0, 0, 1);
+
+    // 创建缓冲区
+    var buffer = gl.createBuffer();
+
+    // 把缓冲区对象绑定到目标
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    // 准备好点的数据
+    var data = new Float32Array([
+        -0.7, -0.7, 0,
+        0.7, -0.7, 1,
+        0, 0.7, 0
+    ]);
+
+    // 写入数据到缓冲区
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+
+    // 获取变量位置
+    var a_position = gl.getAttribLocation(glProgram, "a_position");
+
+    // 把缓冲区对象分配给目标变量
+    gl.vertexAttribPointer(a_position, 3, gl.FLOAT, false, data.BYTES_PER_ELEMENT * 3, 0);
+
+    // 连接目标对象和缓冲区对象
+    gl.enableVertexAttribArray(a_position);
+
+    // 绘制一个三角形
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+</script>

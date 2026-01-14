@@ -1,0 +1,97 @@
+<header>
+    Ref相关
+</header>
+<h2>
+    unref
+</h2>
+<p>
+    返回变量的值，如果访问的是ref变量，就返回其.value值；如果不是ref变量，就直接返回。
+</p>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;
+    import { ref, unref } from 'vue';
+
+    const hello = ref('Hello');
+    const world = 'World';
+
+    console.log(unref(hello));  // 'Hello'
+    console.log(unref(world));  // 'World'
+&lt;/script&gt;
+</pre>
+<h2>
+    customRef
+</h2>
+<p>
+    用于自定义ref对象：
+</p>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;
+import { customRef } from "vue"
+
+let num = customRef((track, trigger) => {
+  let value = 100;
+  return {
+    get() {
+      track();
+      return value;
+    },
+    set(newVal: number) {
+      value = newVal;
+      trigger();
+    }
+  };
+});
+&lt;/script&gt;
+</pre>
+<p>
+    除了多了额外的控制外，等价于下面写法：
+</p>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;
+import { ref } from "vue"
+
+let num = ref(100);
+&lt;/script&gt;
+</pre>
+<h2>
+    toRef
+</h2>
+<p>
+    把一个reactive对象中的某个属性变成ref变量：
+</p>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;
+    import { toRef, reactive } from "vue";
+    let user = { name: "张三", age: 10 };
+
+    let age = toRef(reactive(user), "age"); // ref对象
+&lt;/script&gt;
+</pre>
+<h2>
+    toRefs
+</h2>
+<p>
+    把一个reactive响应式对象变成ref变量（包括变量和其属性都是ref类型的响应式）。
+</p>
+<h2>
+    shallowRef
+</h2>
+<p>
+    和toRefs类似，只是只把变量本身变成ref类型，不包括其属性。
+</p>
+<h2>
+    triggerRef
+</h2>
+<p>
+    由于shallowRef放弃了变量的属性响应式，使用这个可以在属性修改的时候主动触发试图刷新：
+</p>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;
+    import { shallowRef, triggerRef } from "vue";
+
+    let info = shallowRef({ a: { b: { c: 1 } }, d: 2 });
+
+    info.value.d++;
+    triggerRef(info); // 强制渲染更新
+&lt;/script&gt;
+</pre>

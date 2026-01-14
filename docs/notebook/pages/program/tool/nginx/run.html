@@ -1,0 +1,34 @@
+<header>
+    启动、关闭等命令
+</header>
+<h2>
+    启动
+</h2>
+<pre>
+nginx -c ./nginx.conf
+</pre>
+<p class="warn">
+    温馨提示：./nginx.conf为nginx的配置文件，需要根据实际情况修改路径。
+</p>
+<h2>
+    重新启动
+</h2>
+<pre>
+nginx -s reload
+</pre>
+<h2>
+    杀死
+</h2>
+<p>
+    首先查看ngixn的进程：
+</p>
+<pre>
+ps -ef|grep nginx
+</pre>
+<img src="./images/ps-nginx.png" width="100%">
+<p>
+    　然后，杀死nginx启动的进程 :
+</p>
+<pre>
+sudo kill -9 21024
+</pre>

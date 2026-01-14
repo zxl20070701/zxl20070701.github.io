@@ -1,0 +1,114 @@
+<header>
+    正则表达式常用方法和规则整理
+</header>
+<h2>
+    正则对象方法
+</h2>
+<pre tag="javascript">
+    RegExpObject.exec(string)
+</pre>
+<p>
+    检索字符串中指定的值，如果匹配到，返回格式如下： { 0:'匹配的字符串', 1:'匹配的第一个元祖，如果有的话', 2:'以此类推，第二个元祖', ...... index:'匹配文本的第一个字符的位置',
+    input:'输入的匹配的原来字符串', length:'0,1,2,...的个数' } exec如果匹配不到，返回null。
+</p>
+<p class="warn">
+    重要事项：完成了一次模式匹配之后检索新的字符串前应该手动地把正则对象的lastIndex属性重置为 0。
+</p>
+<pre tag="javascript">
+    RegExpObject.test(string)
+</pre>
+<p>
+    检索字符串中指定的值，如果字符串 string 中含有与RegExpObject匹配的文本，则返回 true，否则返回 false。
+</p>
+<h2>
+    字符串对象方法
+</h2>
+<pre tag="javascript">
+    stringObject.search(regexp)
+</pre>
+<p>
+    检索与正则表达式相匹配的值，返回stringObject中第一个与regexp相匹配的子串的起始位置，如果没有找到返回-1；search()方法不执行全局匹配，它将忽略标志
+    g。它同时忽略regexp的lastIndex属性，并且总是从字符串的开始进行检索，这意味着它总是返回stringObject的第一个匹配的位置。
+</p>
+<pre tag="javascript">
+    stringObject.match(searchvalue|regexp)
+</pre>
+<p>
+    找到一个或多个正则表达式的匹配，返回匹配的字符串数组。
+</p>
+<pre tag="javascript">
+    stringObject.replace(regexp|substr,replacement|function)
+</pre>
+<p>
+    替换与正则表达式匹配的子串。
+</p>
+<p class="warn">
+    温馨提示：其中function传递进去的是匹配的字符串，return返回的是最后替换成的，类似管道的写法。
+</p>
+<pre tag="javascript">
+    stringObject.split(separator[,howmany])
+</pre>
+<p>
+    把字符串分割为字符串数组，返回切割后的数组。
+</p>
+<h2>
+    零宽断言
+</h2>
+<p>
+    零宽，意味者不会返回匹配的字符；断言，就是预测此处是什么。因此这是一种匹配不返回，只是猜测固定位置应该是什么的存在。
+</p>
+<h3>
+    匹配目标的后面是exp:(?=exp)
+</h3>
+<p>
+    比如现在需要匹配一个单词是以ing结尾的，但是结尾的ing不捕获，可以这样使用：
+</p>
+<pre tag="javascript">
+    "name-doing-text-heeeing".match(/([a-z]+(?=ing))/g);
+</pre>
+<p>
+    返回结果是["do", "heee"]。
+</p>
+<h3>
+    匹配目标的后面不是exp:(?!exp)
+</h3>
+<p>
+    比如现在需要在一个单词里面寻找一些字母，这些字母的下一个字母不可以是e，可以这样使用：
+</p>
+<pre tag="javascript">
+    "dream".match(/([a-z]{1}(?!e))/g);
+</pre>
+<p>
+    返回的结果是["d", "e", "a", "m"]
+</p>
+<h2>
+    懒惰限定符
+</h2>
+<ul>
+    <li>
+        "*?"【重复任意次，但尽可能少重复】
+    </li>
+    <li>
+        +?【重复1次或更多次，但尽可能少重复】
+    </li>
+    <li>
+        ??【重复0次或1次，但尽可能少重复】
+    </li>
+    <li>
+        {n,m}?【重复n到m次，但尽可能少重复】
+    </li>
+    <li>
+        {n,}?【重复n次以上，但尽可能少重复】
+    </li>
+</ul>
+<h2>
+    捕获分组
+</h2>
+<ul>
+    <li>
+        (exp)【匹配exp,并捕获文本到自动命名的组里】
+    </li>
+    <li>
+        (?:exp)【匹配exp,不捕获匹配的文本，也不给此分组分配组号】
+    </li>
+</ul>

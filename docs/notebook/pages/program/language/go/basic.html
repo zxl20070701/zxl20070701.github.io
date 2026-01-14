@@ -1,0 +1,288 @@
+<header>
+    基础语法
+</header>
+<h2>
+    定义变量
+</h2>
+<pre tag="javascript">
+    var identifier type
+</pre>
+<p>
+    或者一次声明多个变量：
+</p>
+<pre tag="javascript">
+    var identifier1, identifier2 type
+</pre>
+<p>
+    或者定义和赋值一气呵成：
+</p>
+<pre tag="javascript">
+    identifier := value
+</pre>
+<p>
+    同样可以多个变量一起：
+</p>
+<pre tag="javascript">
+    identifier1, identifier2, identifier3 := value1, value2, value3
+</pre>
+<h2>
+    控制语法
+</h2>
+<h3>
+    if 语句
+</h3>
+<pre tag="javascript">
+if 布尔表达式 {
+    /* 在布尔表达式为 true 时执行 */
+}
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+package main
+
+import "fmt"
+
+func main() {
+    /* 定义局部变量 */
+    var a int = 10
+    
+    /* 使用 if 语句判断布尔表达式 */
+    if a < 20 {
+        /* 如果条件为 true 则执行以下语句 */
+        fmt.Printf("a 小于 20\n" )
+    }
+    fmt.Printf("a 的值为 : %d\n", a)
+}
+</pre>
+<h3>
+    for 循环
+</h3>
+<p>
+    Go 语言的 For 循环有 3 种形式。
+</p>
+<h4>
+    和 C 语言的 for 一样
+</h4>
+<pre tag="javascript">
+    for init; condition; post { }
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+package main
+
+import "fmt"
+
+func main() {
+   sum := 0
+      for i := 0; i <= 10; i++ {
+         sum += i
+      }
+   fmt.Println(sum)
+}
+</pre>
+<h4>
+    和 C 的 while 一样
+</h4>
+<pre tag="javascript">
+    for condition { }
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+package main
+
+import "fmt"
+
+func main() {
+    sum := 1
+    for sum <= 10{
+        sum += sum
+    }
+    fmt.Println(sum)
+}
+</pre>
+<h4>
+    和 C 的 for(;;) 一样
+</h4>
+<pre tag="javascript">
+    for { }
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+package main
+
+import "fmt"
+
+func main() {
+   sum := 0
+   for {
+      sum++ // 无限循环下去
+   }
+   fmt.Println(sum) // 无法输出
+}
+</pre>
+<h3>
+    循环嵌套
+</h3>
+<p>
+    以下为 Go 语言嵌套循环的格式：
+</p>
+<pre tag="javascript">
+for [condition |  ( init; condition; increment ) | Range]
+{
+   for [condition |  ( init; condition; increment ) | Range]
+   {
+      statement(s);
+   }
+   statement(s);
+}
+</pre>
+<p>
+    下面是九九乘法表的例子：
+</p>
+<pre tag="javascript">
+package main 
+
+import "fmt"
+
+func main() {
+    for m := 1; m < 10; m++ {
+        /* fmt.Printf("第%d次：\n",m) */
+        for n := 1; n <= m; n++ {
+            fmt.Printf("%dx%d=%d ",n,m,m*n)
+        }
+        fmt.Println("")
+    }
+}
+</pre>
+<h3>
+    循环控制语句
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>序号 </th>
+            <th> 控制语句和描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> 1</td>
+            <td>
+                <div class="warn">break 语句</div>
+                经常用于中断当前 for 循环或跳出 switch 语句
+            </td>
+        </tr>
+        <tr>
+            <td> 2</td>
+            <td>
+                <div class="warn">continue 语句</div>
+                跳过当前循环的剩余语句，然后继续进行下一轮循环。
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>
+                <div class="warn">goto 语句</div>
+                将控制转移到被标记的语句。
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h4>
+    goto 语句
+</h4>
+<p>
+    语法格式如下：
+</p>
+<pre tag="javascript">
+goto label;
+..
+.
+label: statement;
+</pre>
+<p>
+    下面的例子表示在变量 a 等于 15 的时候跳过本次循环并回到循环的开始语句 LOOP 处：
+</p>
+<pre tag="javascript">
+package main
+
+import "fmt"
+
+func main() {
+    /* 定义局部变量 */
+    var a int = 10
+
+    /* 循环 */
+    LOOP: for a < 20 {
+        if a == 15 {
+            /* 跳过迭代 */
+            a = a + 1
+            goto LOOP
+        }
+        fmt.Printf("a的值为 : %d\n", a)
+        a++    
+    }  
+}
+</pre>
+<h2>
+    函数
+</h2>
+<h3>
+    函数定义
+</h3>
+<p>
+    Go 语言函数定义格式如下：
+</p>
+<pre tag="javascript">
+func function_name( [parameter list] ) [return_types] {
+    函数体
+}
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+/* 函数返回两个数的最大值 */
+func max(num1, num2 int) int {
+   /* 声明局部变量 */
+   var result int
+
+   if (num1 > num2) {
+      result = num1
+   } else {
+      result = num2
+   }
+   return result
+}
+</pre>
+<h3>
+    返回多个值
+</h3>
+<pre tag="javascript">
+package main
+
+import "fmt"
+
+func swap(x, y string) (string, string) {
+   return y, x
+}
+
+func main() {
+   a, b := swap("zxl20070701", "notebook")
+   fmt.Println(a, b)
+}
+</pre>
+<p>
+    以上实例执行结果为：
+    <span class="important">
+        notebook zxl20070701
+    </span>。
+</p>

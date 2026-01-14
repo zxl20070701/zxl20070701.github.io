@@ -1,0 +1,43 @@
+<header>
+    Transform 转换
+</header>
+<p>
+    转换就是对一个节点元素进行缩放、旋转、位移等空间上的操作，如何定义一个转换？很简单：
+</p>
+<pre tag="css">
+    transform: none | transform-functions;
+</pre>
+<p>
+    其中transform-functions表示转换函数，有很多种，比如：rotate(angle)、scale(x,y)等。不过，在有些时候，需要和别的属性进行配合，下面我们来一一举例说明。
+</p>
+<pre tag="css">
+    transform-origin: x-axis y-axis z-axis;
+</pre>
+<p>
+    设置元素转换的中心点，比如旋转图片，改变图片选择依赖的旋转中心，见下面：
+</p>
+<img src="./images/transform-origin.png">
+<pre tag="css">
+    transform-style: flat | preserve-3d;
+</pre>
+<p>
+    定义里面转换的元素是在2D平面呈现还是在3D空间呈现，讲的直白些，就是这个元素里面的空间维度是二维还是三维，下面是一个直观的例子：
+</p>
+<img src="./images/transform-style.png">
+<pre tag="css">
+    perspective: number | none;
+</pre>
+<p>
+    属性是定义3D元素距试图的距离，设置以后，其子元素会获得透视效果，需要注意的是该值只对3D转换有效，这也是很容易理解的。此外，还可以通过Transform的属性值的方式设置，两者是有一定区别的，你可以认为，前者是把整个看成一个舞台，后者是每一个都是一个舞台，下面是具体的一个例子：
+</p>
+<img src="./images/perspective.png">
+<pre tag="css">
+    perspective-origin: x-axis y-axis;
+</pre>
+<p>
+    必须和perspective一起使用，只对3D转换元素有效，简单的理解就是你的眼睛看的焦点，下面用一个例子来说明：
+</p>
+<img src="./images/perspective-origin.png">
+<p>
+    当然，还有更多方法和属性，我们这里就不展开说明了。
+</p>

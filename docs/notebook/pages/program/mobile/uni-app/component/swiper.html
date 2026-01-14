@@ -1,0 +1,200 @@
+<header>
+    swiper
+</header>
+<p>
+    滑块视图容器。
+</p>
+<p>
+    一般用于左右滑动或上下滑动，比如banner轮播图。
+</p>
+<p>
+    注意滑动切换和滚动的区别，滑动切换是一屏一屏的切换。swiper下的每个swiper-item是一个滑动切换区域，不能停留在2个滑动区域之间。
+</p>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+            <th>平台差异说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>indicator-dots</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否显示面板指示点</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>indicator-color</td>
+            <td>Color</td>
+            <td>rgba(0, 0, 0, .3)</td>
+            <td>指示点颜色</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>indicator-active-color</td>
+            <td>Color</td>
+            <td>#000000</td>
+            <td>当前选中的指示点颜色</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>active-class</td>
+            <td>String</td>
+            <td></td>
+            <td>swiper-item 可见时的 class</td>
+            <td>支付宝小程序</td>
+        </tr>
+        <tr>
+            <td>changing-class</td>
+            <td>String</td>
+            <td></td>
+            <td>acceleration 设置为 true 时且处于滑动过程中，中间若干屏处于可见时的class</td>
+            <td>支付宝小程序</td>
+        </tr>
+        <tr>
+            <td>autoplay</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否自动切换</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>current</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>当前所在滑块的 index</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>current-item-id</td>
+            <td>String</td>
+            <td></td>
+            <td>当前所在滑块的 item-id ，不能与 current 被同时指定</td>
+            <td>支付宝小程序不支持</td>
+        </tr>
+        <tr>
+            <td>interval</td>
+            <td>Number</td>
+            <td>5000</td>
+            <td>自动切换时间间隔</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>duration</td>
+            <td>Number</td>
+            <td>500</td>
+            <td>滑动动画时长</td>
+            <td>app-nvue不支持</td>
+        </tr>
+        <tr>
+            <td>circular</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否采用衔接滑动，即播放到末尾后重新回到开头</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>vertical</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>滑动方向是否为纵向</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>previous-margin</td>
+            <td>String</td>
+            <td>0px</td>
+            <td>前边距，可用于露出前一项的一小部分，接受 px 和 rpx 值</td>
+            <td>app-nvue、抖音小程序、飞书小程序不支持</td>
+        </tr>
+        <tr>
+            <td>next-margin</td>
+            <td>String</td>
+            <td>0px</td>
+            <td>后边距，可用于露出后一项的一小部分，接受 px 和 rpx 值</td>
+            <td>app-nvue、抖音小程序、飞书小程序不支持</td>
+        </tr>
+        <tr>
+            <td>acceleration</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>当开启时，会根据滑动速度，连续滑动多屏</td>
+            <td>支付宝小程序</td>
+        </tr>
+        <tr>
+            <td>disable-programmatic-animation</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁用代码变动触发 swiper 切换时使用动画。</td>
+            <td>支付宝小程序</td>
+        </tr>
+        <tr>
+            <td>display-multiple-items</td>
+            <td>Number</td>
+            <td>1</td>
+            <td>同时显示的滑块数量</td>
+            <td>app-nvue、支付宝小程序不支持</td>
+        </tr>
+        <tr>
+            <td>skip-hidden-item-layout</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否跳过未显示的滑块布局，设为 true 可优化复杂情况下的滑动性能，但会丢失隐藏状态滑块的布局信息</td>
+            <td>App、微信小程序、京东小程序</td>
+        </tr>
+        <tr>
+            <td>disable-touch</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁止用户 touch 操作</td>
+            <td>App 2.5.5+、H5 2.5.5+、支付宝小程序、抖音小程序与飞书小程序（只在初始化时有效，不能动态变更）</td>
+        </tr>
+        <tr>
+            <td>touchable</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否监听用户的触摸事件，只在初始化时有效，不能动态变更</td>
+            <td>抖音小程序与飞书小程序（uni-app 2.5.5+ 推荐统一使用 disable-touch）</td>
+        </tr>
+        <tr>
+            <td>easing-function</td>
+            <td>String</td>
+            <td>default</td>
+            <td>指定 swiper 切换缓动动画类型，有效值：default、linear、easeInCubic、easeOutCubic、easeInOutCubic
+            </td>
+            <td>微信小程序、快手小程序、京东小程序</td>
+        </tr>
+        <tr>
+            <td>@change</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>current 改变时会触发 change 事件，event.detail = {current: current, source: source}
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>@transition</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>swiper-item 的位置发生改变时会触发 transition 事件，event.detail = {dx: dx, dy:
+                dy}，支付宝小程序暂不支持dx, dy</td>
+            <td>App、H5、微信小程序、支付宝小程序、抖音小程序、飞书小程序、QQ小程序、快手小程序</td>
+        </tr>
+        <tr>
+            <td>@animationfinish</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>动画结束时会触发 animationfinish 事件，event.detail = {current: current, source: source}
+            </td>
+            <td>抖音小程序与飞书小程序不支持</td>
+        </tr>
+    </tbody>
+</table>

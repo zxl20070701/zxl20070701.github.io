@@ -1,0 +1,49 @@
+<header>
+    Props之数据传递
+</header>
+<p>
+    简单的理解就是：接收当前组件使用时候的属性值。看个例子：
+</p>
+<pre tag="javascript">
+class Demo extends React.Component {
+    constructor(props) {
+        super(props)
+
+        console.log(props)
+    }
+    render() {
+        return <span>例子组件</span>
+    }
+}
+</pre>
+<p>
+    比如我们这样使用：
+</p>
+<pre tag="javascript">
+render() {
+    &lt;Demo name="未命名" /&gt;
+}
+</pre>
+<p>
+    那么打印结果就是：
+</p>
+<pre tag="javascript">
+    {name: '未命名'}
+</pre>
+<h2>
+    默认值
+</h2>
+<p>
+    我们可以在定义完毕组件后，添加一些默认值：
+</p>
+<pre tag="javascript">
+Demo.defaultProps = {
+    key: 'demo-key'
+}
+</pre>
+<p>
+    打印结果就会变成：
+</p>
+<pre tag="javascript">
+    {name: '未命名', key: 'demo-key'}
+</pre>

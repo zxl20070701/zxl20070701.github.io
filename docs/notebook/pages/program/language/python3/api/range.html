@@ -1,0 +1,38 @@
+<header>
+    range()函数
+</header>
+<pre tag>
+    range(start, stop[, step])
+</pre>
+<p>
+    参数说明：
+</p>
+<ul>
+    <li>
+        start: 计数从 start 开始，默认是从 0 开始
+    </li>
+    <li>
+        stop: 计数到 stop 结束，但不包括 stop，必输
+    </li>
+    <li>
+        step：步长，默认为1
+    </li>
+</ul>
+<p>
+    下面是一些例子：
+</p>
+<pre tag>
+print(list(range(5, 9)))  # [5, 6, 7, 8]
+
+for i in range(5):
+    print(i, end=' ')  # 0 1 2 3 4
+
+for i in range(1, 3):
+    print(i, end=' ')  # 1 2
+
+for i in range(0, 10, 3):
+    print(i, end=' ')  # 0 3 6 9
+
+for i in range(-10, -100, -30):
+    print(i, end=' ')  # -10 -40 -70
+</pre>

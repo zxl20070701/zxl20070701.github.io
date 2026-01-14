@@ -1,0 +1,81 @@
+<header>
+    viewBox 视区
+</header>
+<h2>
+    基本语法
+</h2>
+<p>
+    首先，我在大小为400 x 400的画布中绘制了一个200 x 200的矩形：
+</p>
+<button tag="svg_viewBox-normal">查看用例</button>
+<p>
+    可以发现，没有问题。
+</p>
+<p>
+    现在，我把svg的宽和高改变后：
+</p>
+<button tag="svg_viewBox-normal_ratio">查看用例</button>
+<p>
+    可以看见，等比例变小了。
+</p>
+<p>
+    简单的理解就是：viewBox规范了画布的大小，svg标签里面的内容都是按照这个画布大小来绘制的，绘制后获得了一张图片，在页面显示的时候，svg的宽和高指定了图片显示多大。
+</p>
+<h3>
+    偏移
+</h3>
+<p>
+    那如果viewBox规范的画布不是从0,0开始的会怎么样？
+</p>
+<button tag="svg_viewBox-ratio_move">查看用例</button>
+<p>
+    参考下面的草图理解：画布的起点是100,100，而宽和高分别是300,300，由此，实际画布的大小是400 x 400，画布上绘制的结果是一个居中，大小为200 x 200的红色矩形：
+</p>
+<img src="./images/svg_viewBox_move.jpeg">
+<p>
+    而显示的时候，我们需要显示的内容是画布起点100,100，大小300 x 300，也就是上面草图重点标出来的位置。
+</p>
+<h3>
+    非等比例
+</h3>
+<p>
+    接着还有一个问题：如果画布的大小和最终图片显示的svg大小不是等比例的，会怎么样？
+</p>
+<button tag="svg_viewBox-notRatio">查看用例</button>
+<p>
+    可以发现，并没有变形，而是居中显示，处理方式类似背景图片。
+</p>
+<p>
+    具体的，就牵扯到一个新属性：preserveAspectRatio 。
+</p>
+<h2>
+    preserveAspectRatio
+</h2>
+<p>
+    我们对上面的例子进行调整：
+</p>
+<button tag="svg_viewBox-preserveAspectRatio">查看用例</button>
+<p>
+    其实preserveAspectRatio不写也是有默认值："xMidYMid meet"，相比默认值，我们只是把meet改成了slice。
+</p>
+<p>
+    总结就是，preserveAspectRatio的值由两个参数组成。
+</p>
+<h3>
+    第一个参数
+</h3>
+<p>
+    可选值有：xMinYMin、xMinYMid、xMinYMax、xMidYMin、xMidYMid、xMidYMax、xMaxYMin、xMaxYMid和xMaxYMax。
+</p>
+<p>
+    x和y表示对齐的轴线，min,mid,max表示对齐的方式。min是往坐标小的方向对齐；mid居中对齐；max是往坐标大的方向对齐。
+</p>
+<h3>
+    第二个参数
+</h3>
+<p>
+    可选值有：meet和slice。
+</p>
+<p>
+    meet就是前面那种自动调整viewBox到可以在svg画布中完全展示，类似css里background-size:contain；而slice是自动调整viewBox到撑满整个svg画布，非常类似background-size:cover。
+</p>

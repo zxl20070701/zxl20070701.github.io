@@ -1,0 +1,90 @@
+<header>
+    身份证重命名（根据内容）
+</header>
+<h2>
+    需求描述
+</h2>
+<p>
+    比如当前目录下有一个文件夹idcard，里面有很多身份证文件，目录结构如下：
+</p>
+<pre>
+- idcard
+    - 001（身份证）.jpg
+    - 002（身份证）.jpg
+    - 南京地区
+        - 101（身份证）.jpg
+</pre>
+<h2>
+    识别内容
+</h2>
+<p>
+    首先，我们随便选择一张图片，来看看身份证被识别成文本后的内容，比如：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import handler
+from py3office import ocr
+
+handler.printList(ocr.toTexts("./idcard/001（身份证）.jpg"))
+</pre>
+<p>
+    打印内容大概如下：
+</p>
+<pre>
+[0] 姓名
+[1] 李四
+[2] 性别男
+[3] 民族汉
+[4] 出生
+[5] 1981年3月29日
+[6] 住址
+[7] 黑龙江省拜泉县兴华乡顺利村6组
+[8] 公民身份号码
+[9] 1309313981032291849
+</pre>
+<h2>
+    批量转换
+</h2>
+<p>
+    不同图片识别的结果可能有差异，我们这里发现<span class="warn">“[1] 李四”</span>就是我们要的，那么批量修改的代码就是：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import handler
+from py3office import ocr
+
+sourcePath = "./idcard"
+targetPath = "./rename"
+
+def doit(fileInfo):
+    idcardInfo = ocr.toTexts(fileInfo["path"])
+    handler.copy(
+        fileInfo["path"],
+        fileInfo["folder"].replace(sourcePath, targetPath) + "/" + idcardInfo[1] + ".jpg",
+    )
+
+def renameTest():
+    handler.listFile(sourcePath, doit)
+</pre>
+<h2>
+    转换结果
+</h2>
+<p>
+    运行后的结果大致如下：
+</p>
+<pre>
+- idcard
+    - 001（身份证）.jpg
+    - 002（身份证）.jpg
+    - 南京地区
+        - 101（身份证）.jpg
+- rename
+    - 李四.jpg
+    - 张三.jpg
+    - 南京地区
+            - 王五.jpg
+</pre>

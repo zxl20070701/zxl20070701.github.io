@@ -1,0 +1,20 @@
+<header>
+    事件
+</header>
+<h2>
+    绑定
+</h2>
+<p>
+    比如tap事件：
+</p>
+<pre tag="html">
+<button bindtap="doit" data-tips="一些数据">点击我</button>
+</pre>
+<p>
+    上面点击的时候就会触发doit方法：
+</p>
+<pre tag="javascript">
+doit(event){
+    console.log("tips:"+event.target.dataset.tips);
+}
+</pre>

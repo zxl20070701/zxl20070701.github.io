@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <style>
+        div.inner {
+            /* 此时，这个div的 包含块就不是父结点，而是body了 */
+            position: absolute;
+            background-color: blue;
+            padding: 10%;
+            width: 100px;
+            height: 50px;
+            background-clip: content-box;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 可以试试给父div设置  position:relative  改变包含块再试试 -->
+    <div style='width:300px;height:100px;border:1px solid green;'>
+        <div class='inner'></div>
+    </div>
+
+</body>
+
+</html>

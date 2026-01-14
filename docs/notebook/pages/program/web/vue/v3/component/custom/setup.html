@@ -1,0 +1,87 @@
+<header>
+    setup
+</header>
+<p>
+    文件index.vue：
+</p>
+<pre tag="html">
+&lt;template&gt;
+    &lt;!-- 模板 --&gt;  
+&lt;/template&gt;
+&lt;script setup lang="ts"&gt;  
+    // 代码
+&lt;/script&gt;  
+&lt;style lang="scss" scoped&gt;  
+    /* 样式 */
+&lt;/style&gt;  
+</pre>
+<p>
+    可以通过下面方法获取ctx：
+</p>
+<pre>
+    let ctx = getCurrentInstance().ctx;
+</pre>
+<p>
+    如此你就可以（不过里面不包含attrs、slots、emit、expose等，比如emit你可以直接引入defineEmits后创建获得）：
+</p>
+<pre>
+    ctx.$forceUpdate();
+</pre>
+<h2>
+    props
+</h2>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;  
+let props = defineProps({})
+&lt;/script&gt; 
+</pre>
+<h3>
+    watch
+</h3>
+<p>
+    如果你想监听某个props值的改变，可以：
+</p>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;  
+import { watch } from "vue";
+watch(() => props.demo, (newValue,oldValue) => {})
+&lt;/script&gt; 
+</pre>
+<h2>
+    emit
+</h2>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;  
+let emit = defineEmits(["xxx"])
+let doit = () => {
+    emit("xxx")
+}
+&lt;/script&gt; 
+</pre>
+<h2>
+    defineExpose
+</h2>
+<p>
+    比如我们希望定义的组件里面有个方法，被通过ref调用，就类似这样：
+</p>
+<pre tag="html">
+&lt;template&gt; 
+    <ui-demo ref="demoRef"></ui-demo>
+&lt;/template&gt; 
+&lt;script setup lang="ts"&gt; 
+let demoRef = ref()
+onMounted(() => {
+    demoRef.value.doit()
+})
+&lt;/script&gt;  
+</pre>
+<p>
+    那么，在定义组件的时候，也就是在ui-demo组件中，可以类似这样：
+</p>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;  
+defineExpose({
+    doit: () => {}
+})
+&lt;/script&gt; 
+</pre>

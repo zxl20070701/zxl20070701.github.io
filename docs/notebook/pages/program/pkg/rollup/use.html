@@ -1,0 +1,103 @@
+<header>
+    快速入门使用
+</header>
+<h2>
+    配置文件
+</h2>
+<p>
+    首先，需要新建一个配置文件（比如 rollup.config.js）：
+</p>
+<pre tag="javascript">
+export default {
+    input: string, // 入口文件位置
+    output: {
+        name: string, // 包名
+        file: string, // 打包文件位置
+        format: string
+    },
+    plugins: []
+};
+</pre>
+<h3>
+    输出格式 format
+</h3>
+<p>
+    用于表示打包后适用的模块规范，一共有如下值可选：
+</p>
+<ol>
+    <li>
+        <span class="important">amd</span>
+        ：异步模块定义，用于像 RequireJS 这样的模块加载器；
+    </li>
+    <li>
+        <span class="important">cjs</span>
+        ：CommonJS，适用于 Node 和 Browserify/Webpack；
+    </li>
+    <li>
+        <span class="important">es</span>
+        ：将软件包保存为 ES 模块文件；
+    </li>
+    <li>
+        <span class="important">iife</span>
+        ：一个自动执行的功能，适合作为 &lt;script&gt; 标签；
+    </li>
+    <li>
+        <span class="important">umd</span>
+        ：通用模块定义，以 amd，cjs 和 iife 为一体。
+    </li>
+</ol>
+<p>
+    等上面都准备好了以后，在package.json中配置启动命令：
+</p>
+<pre tag="javascript">
+"scripts": {
+    "rollup": "rollup --config rollup.config.js"
+}
+</pre>
+<p>
+    需要打包的时候直接：
+</p>
+<pre tag="javascript">npm run rollup</pre>
+<h2>
+    脚本代码
+</h2>
+<p>
+    直接在需要的nodejs代码中使用下面的内容：
+</p>
+<pre tag="javascript">
+const rollup = require("rollup");
+const pluginCommonjs = require("@rollup/plugin-commonjs");
+const { nodeResolve } = require("@rollup/plugin-node-resolve");
+
+async function build(inputOptions, outputOptions) {
+    try {
+        const bundle = await rollup.rollup(inputOptions);
+        await bundle.write(outputOptions);
+    } catch (e) {}
+}
+
+build(
+    {
+        input: string,
+        plugins: [nodeResolve(), pluginCommonjs()],
+
+        // 不参与打包进入的模块，后续使用到了需要自己通过script引入
+        external: ["jquery"]
+    },
+    {
+        format: string,
+        name: string,
+        file: string,
+        globals: {
+
+            // 举例子：windows.$的值作为 from jquery 的值
+            jquery:"$"
+        }
+    }
+);
+</pre>
+<p>
+    我们引入了两个插件，分别用于解决基于CommonJS模块引入和外部npm依赖，当然，在
+    <span class="warn">配置文件</span>
+    中使用也是类似的，我们只是在这里举例子。
+</p>

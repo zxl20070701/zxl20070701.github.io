@@ -1,0 +1,50 @@
+<header>
+    什么是定积分？
+</header>
+<p>
+    <span class="title">
+        定义
+    </span>
+    设闭区间[a,b]上有n-1个点，依次为
+    <span class="oneline">
+        a=x<sub>0</sub>＜x<sub>1</sub>＜x<sub>2</sub>＜...x<sub>n-1</sub>＜x<sub>n</sub>=b，
+    </span>
+    它们把[a,b]分为n个小区间Δ<sub>i</sub>=[x<sub>i-1</sub>,x<sub>i</sub>]，i=1,2,...,n。这些分点或这些闭子区间构成对[a,b]的一个<span
+        class="important">分割</span>，记为
+    <span class="oneline">
+        T={x<sub>0</sub>,x<sub>1</sub>,...,x<sub>n</sub>}或{Δ<sub>1</sub>,Δ<sub>2</sub>,...,Δ<sub>n</sub>}。
+    </span>
+    小区间Δi的长度为Δx<sub>i</sub>=x<sub>i</sub>-x<sub>i-1</sub>，并记
+    <span class="oneline">
+        ||T||=max{Δx<sub>i</sub>},
+    </span>
+    称为分割T的<span class="important">模</span>。
+</p>
+<p>
+    再设ƒ是定义在[a,b]上的一个函数，对于上述分割，任取点ξ<sub>i</sub>∈Δξ<sub>i</sub>，i=1,2,...,n，并作和式
+    <span class="oneline">
+        <code>
+            ["sum","i=1","n",["join","ƒ(",["rightBottom","ξ","i"],")"]]
+        </code>
+        Δx<sub>i</sub>
+    </span>
+    称此和式为函数ƒ在区间[a,b]上的一个<span class="important">积分和</span>， 也称<span class="important">黎曼和</span>。
+</p>
+<p>
+    接着，我们定义J是一个确定的实数。若对任给的正数ε，总存在某一正数δ， 使得对[a,b]的任何分割T,以及在其上任意选取的点集{ξi}，只要||T||＜δ，就有
+    <span class="oneline">
+        |
+        <code>
+            ["sum","i=1","n",["join","ƒ(",["rightBottom","ξ","i"],")"]]
+        </code>
+        Δx<sub>i</sub> - J
+        | ＜ ε
+    </span>
+    则称函数ƒ在区间[a,b]上<span class="important">可积</span>或<span class="important">黎曼可积</span>；数J称为ƒ在[a,b]上的<span
+        class="important">定积分</span>或<span class="important">黎曼积分</span>，记作
+    <span class="oneline">
+        J = <code>["integral","ƒ(x)","dx","a","b"]</code>
+    </span>
+    其中，ƒ称为<span class="important">被积函数</span>， x称为<span class="important">积分变量</span>， [a,b]称为<span
+        class="important">积分区间</span>， a,b分别称为这个定积分的<span class="important">下限</span>和<span class="important">上限</span>。
+</p>

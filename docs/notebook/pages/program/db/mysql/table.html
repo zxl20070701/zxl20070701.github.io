@@ -1,0 +1,107 @@
+
+<header>
+    表操作
+</header>
+<h2>
+    查看有哪些表
+</h2>
+<pre tag>
+    show tables;
+</pre>
+<h2>
+    查看表结构
+</h2>
+<pre tag>
+    desc [表名];
+</pre>
+<h2>
+    删除表
+</h2>
+<pre tag>
+    drop table [表名];
+</pre>
+<h2>
+    创建表
+</h2>
+<pre tag>
+    create table [表名] (列名 列类型,列名 列类型,...);
+</pre>
+<h3>
+    例子
+</h3>
+<pre tag>
+create table myhobby(
+   id INT NOT NULL AUTO_INCREMENT,
+   label VARCHAR(40) NOT NULL,
+   info VARCHAR(100) NOT NULL,
+   date DATE,
+   PRIMARY KEY ( id )
+   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+</pre>
+<h2>
+    插入数据
+</h2>
+<pre tag>
+insert into [表名]  
+    ( field1, field2,...fieldN )
+values
+    ( value1, value2,...valueN );
+</pre>
+<p>
+    如果数据是字符型，必须使用单引号或者双引号。
+</p>
+<h3>
+    例子
+</h3>
+<pre tag>
+insert into myhobby
+    ( label, info, date )
+values
+    ( "喜欢吃水果"," 特别喜欢吃橘子",NOW() );
+</pre>
+<p>
+    或一次插入多条数据：
+</p>
+<pre tag>
+insert into myhobby
+    ( label, info, date )
+values
+    ( "运动"," 比如跑步、跳绳","2022-08-16" ),
+    ( "追番"," 哈哈哈，已经看了很多年",NOW() );
+</pre>
+<h2>
+    查询数据
+</h2>
+<pre tag>
+    select field1,field2,...,fieldN from [表名] [WHERE Clause] [LIMIT N][ OFFSET M];
+</pre>
+<p>
+    如果是查询全部，直接：
+</p>
+<pre tag>
+    select * from [表名];
+</pre>
+<h2>
+    修改数据
+</h2>
+<pre tag>
+    update [表名] set field1=newValue1,field2=newValue2,...,fieldN=newValueN [WHERE Clause];
+</pre>
+<h3>
+    例子
+</h3>
+<pre tag>
+    update myhobby set date="2030-12-31" where id=2;
+</pre>
+<h2>
+    删除数据
+</h2>
+<pre tag>
+    delete from [表名] [WHERE Clause];
+</pre>
+<h3>
+    例子
+</h3>
+<pre tag>
+    delete from myhobby where id=2;
+</pre>

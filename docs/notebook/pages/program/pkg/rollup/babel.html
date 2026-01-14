@@ -1,0 +1,63 @@
+<header>
+    Babel转义
+</header>
+<h2>
+    安装并使用
+</h2>
+<p>
+    首先，你需要安装必要的插件：
+</p>
+<pre tag="javascript">npm install --save-dev @rollup/plugin-babel</pre>
+<p>
+    然后，引入并使用：
+</p>
+<pre tag="javascript">
+import babel from '@rollup/plugin-babel';
+
+export default {
+    plugins: [babel({
+        babelHelpers:"bundled",
+
+        babelrc:false,
+        presets: ["@babel/preset-env"],
+
+        include:["src/**"], // 只是例子，具体根据项目调整
+        exclude:["node_modules/**"]
+
+    })]
+};
+</pre>
+<h2>
+    配置项
+</h2>
+<h3>
+    babelHelpers
+</h3>
+<p>
+    有如下可选值：
+</p>
+<ol>
+    <li>
+        <span class="important">runtime</span>
+        ：如果你要用rollup构建一个js包的时候，使用该配置，该配置要结合@babel/plugin-transform-runtime插件使用，使用@babel/plugin-transform-runtime也要安装@babel/runtime插件；
+    </li>
+    <li>
+        <span class="important">bundled</span>
+        ：如果用rollup构建一个项目的用此参数；
+    </li>
+    <li>
+        <span class="important">inline</span>
+        ：官网不推荐使用，会导致很多重复性代码；
+    </li>
+    <li>
+        <span class="important">external</span>
+        ：要结合@babel/plugin-external-helpers插件使用，它会把helpers 收集到一个共享模块，我的理解是相当于runtime和bundled一个集合，就是把helpers
+        抽到一个全局的共享模块但是又不会造成全局的污染。
+    </li>
+</ol>
+<h3>
+    babelrc
+</h3>
+<p>
+    用于配置是否启用.babelrc文件来规范具体的babel配置。比如这里设置成false，就弃用了此文件，可以通过presets来指定。
+</p>

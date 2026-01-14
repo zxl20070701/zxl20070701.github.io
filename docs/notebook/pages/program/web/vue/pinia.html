@@ -1,0 +1,111 @@
+<header>
+    Pinia
+</header>
+<h2>
+    安装
+</h2>
+<p>
+    在正式使用前，还需要使用
+    <span class="warn">createPinia</span>
+    安装这个插件：
+</p>
+<pre tag="javascript">
+import { createPinia } from "pinia";
+app.use(createPinia());
+</pre>
+<p>
+    上面的是Vue3的安装方法，如果使用的是Vue2，需要修改为（后续都是使用Vue3举例子）：
+</p>
+<pre tag="javascript">
+import { createPinia, PiniaVuePlugin } from "pinia";
+Vue.use(PiniaVuePlugin);
+new Vue({
+    pinia: createPinia()
+});
+</pre>
+<h2>
+    引入和使用
+</h2>
+<p>
+    首先，你需要创建Store对象并暴露出来：
+</p>
+<pre tag="javascript">
+import { defineStore } from "pinia";
+
+const useStore = defineStore('loginStore', {
+    state(){
+        return {
+            isLogin:false // 登录状态
+        };
+    },
+    getters:{},
+    actions:{}
+});
+
+export default useStore;
+</pre>
+<p>
+    现在，就可以直接在项目中进行使用了。
+</p>
+<p>
+    比如上面的登录状态，可以直接在页面中进行获取或修改：
+</p>
+<pre tag="javascript">
+import { useStore } from "@/common/stores";
+
+let loginStore = useStore();
+
+let doit = () => {
+    // 调用这个方法，每次把登录状态取反
+    loginStore.isLogin=!loginStore.isLogin;
+};
+</pre>
+<h2>
+    获取和修改
+</h2>
+<p>
+    虽然上面的内容已经足够使用了，不过，对于数据的修改和获取，有更良好的实践方案。
+</p>
+<h3>
+    Getters
+</h3>
+<p>
+    拿上面的登录举例子，可能我们在使用的时候进行一点点修改：
+</p>
+<pre tag="javascript">
+......
+getters: {
+    loginFlag() {
+        return this.isLogin ? "YES" : "NO";
+    }
+}
+......
+</pre>
+<p>
+    比如在页面中使用，就可以：
+</p>
+<pre tag="html">
+    &lt;div v-bind:loginFlag='loginStore.loginFlag'&gt;&lt;/div&gt;
+</pre>
+<h3>
+    Actions
+</h3>
+<p>
+    同样的，如果我们现在需要修改登录状态：
+</p>
+<pre tag="javascript">
+......
+actions: {
+    changeLoginState(loginFlag){
+        // 设置前需要先转成boolean值
+        this.isLogin = loginFlag == 'YES' ? true : false;
+    }
+}
+......
+</pre>
+<p>
+    然后使用的时候：
+</p>
+<pre tag="javascript">
+loginStore.changeLoginState("YES");
+</pre>

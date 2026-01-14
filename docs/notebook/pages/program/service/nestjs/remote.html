@@ -1,0 +1,89 @@
+<header>
+    常用的请求相关
+</header>
+<h2>
+    基础语法
+</h2>
+<h3>
+    GET请求
+</h3>
+<pre tag="javascript">
+import { Get, Query } from '@nestjs/common'
+
+...
+    @Get('/my-get')
+    doDemo(@Query() query:any):any{
+        return {}
+    }
+...
+</pre>
+<p>
+    其中query就是Get请求携带的参数。
+</p>
+<h3>
+    POST请求
+</h3>
+<pre tag="javascript">
+import { Post, Body } from '@nestjs/common'
+
+...
+    @Post('/my-post')
+    doDemo(@Body() body:any):any{
+        return {}
+    }
+...
+</pre>
+<p>
+    其中body就是Post请求携带的参数。
+</p>
+<h2>
+    更多装饰器
+</h2>
+<div class="warn">
+    温馨提示：下面的装饰器如果没有特别说明，基本上所有的请求类型都可以使用。
+</div>
+<h3>
+    @Request()
+</h3>
+<p>
+    所有的请求信息都包含在其中。
+</p>
+<h3>
+    @Headers(name?: string)
+</h3>
+<p>
+    默认包含所有的请求头信息。
+</p>
+<p>
+    或者只想查看其中确定的请求头content-type，就可以这样：：
+</p>
+<pre tag="javascript">
+import { Post, Headers } from '@nestjs/common'
+
+...
+    @Post('/my-post')
+    doDemo(@Headers('content-type') headers:any):any{
+        return {}
+    }
+...
+</pre>
+<h3>
+    @Header(name: string,value: string)
+</h3>
+<p>
+    用于设置响应头，下面是一个简单的例子：
+</p>
+<pre tag="javascript">
+import { Post, Header } from '@nestjs/common'
+
+...
+    @Post('/my-post')
+    @Header('Content-Type','application/json; charset=utf-8')
+    doDemo():any{
+        return {}
+    }
+...
+</pre>
+<p>
+    如果需要设置的响应头参数有多个，同样写多个Header装饰器即可。
+</p>

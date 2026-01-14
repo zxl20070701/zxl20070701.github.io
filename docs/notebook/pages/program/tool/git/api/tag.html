@@ -1,0 +1,43 @@
+<header>
+    标签
+</header>
+<h2>
+    查看
+</h2>
+<p>
+    查看已经打的标签，如果要进行筛选，可以使用-l添加选择（比如git tag -l v1.会选择开头是v1.标签，而git tag -l .2会选择结尾是.2的，以此类推别的，*就是一个通配符）。
+</p>
+<pre tag>git tag [-l 筛选表达式]</pre>
+<h2>
+    新增
+</h2>
+<p>
+    打一个名称为tagname并添加该标签的注释为tagremark的标签，这种是普通的标签（如果你有GPG私钥，把-a换成-s就是签名的tag了）。
+</p>
+<pre tag>git tag -a tagname [-m tagremark]</pre>
+<h2>
+    提交
+</h2>
+<p>
+    提交标签tagname到远程hostname。
+</p>
+<pre tag>
+    git push hostname tagname
+</pre>
+<p>
+    提交全部标签到远程hostname。
+</p>
+<pre tag>
+    git push hostname --tags
+</pre>
+<h2>
+    删除
+</h2>
+<p>
+    删除标签tagname(本地的)。
+</p>
+<pre tag>git tag -d tagname</pre>
+<p>
+    删除标签tagname(远程的)。
+</p>
+<pre tag>git push hostname -d tag tagname</pre>

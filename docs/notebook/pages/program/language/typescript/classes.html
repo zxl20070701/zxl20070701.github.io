@@ -1,0 +1,267 @@
+<header>
+    类
+</header>
+<h2>
+    基础说明
+</h2>
+<p>
+    先来看个例子：
+</p>
+<pre tag="javascript">
+class Person {
+    name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+    say() {
+        return "你好，我是" + this.name;
+    }
+}
+</pre>
+<p>
+    这样，我们就定义了一个类，包含一个属性用于保存名称，一个构造器用于创建的时候设置名称，方法say用于获取名称描述：
+</p>
+<pre tag="javascript">
+let person = new Person("小强");
+console.log(person.say());
+</pre>
+<p>
+    打印的结果就是：“你好，我是小强”。
+</p>
+<h3>
+    公共，私有与受保护的修饰符
+</h3>
+<p>
+    也就是定义属性、方法等的访问权限，下面来具体说明。
+</p>
+<h4>
+    public
+</h4>
+<p>
+    默认访问权限就是public，你可以自由的访问程序里定义的成员，比如上面的例子和下面的代码是等价的：
+</p>
+<pre tag="javascript">
+class Person {
+    public name: string;
+    public constructor(name: string) {
+        this.name = name;
+    }
+    public say() {
+        return "你好，我是" + this.name;
+    }
+}
+</pre>
+<h4>
+    private
+</h4>
+<p>
+    当成员被标记成 private时，它就不能在声明它的类的外部访问，比如我们对上面的例子进行改造：
+</p>
+<pre tag="javascript">
+class Person {
+    private name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+    say() {
+        return "你好，我是" + this.name;
+    }
+}
+
+var person = new Person('小明');
+</pre>
+<p>
+    可以看见，name现在是私有属性了，那么下面代码依旧是可以的：
+</p>
+<pre tag="javascript">person.say();</pre>
+<p>
+    而下面的代码就不行：
+</p>
+<pre tag="javascript">
+// Property 'name' is private and only accessible within class 'Person'.
+person.name;
+</pre>
+<p class="warn">
+    温馨提示：两个类如果所有的成员的类型都是兼容的，我们就认为它们的类型是兼容的，可是，比较带有private或protected成员类型的时候，不只是类型需要相同，并且还需要来自同一份声明。
+</p>
+<h4>
+    protected
+</h4>
+<p>
+    和private类似，唯一不同的是，除了可以在声明它的类的内部访问，还可以在派生类中访问：
+</p>
+<pre tag="javascript">
+class Person {
+    protected name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+    
+class ChinaPerson extends Person {
+    constructor(name: string) {
+        super(name);
+    }
+    say() {
+        return "你好，我是" + this.name + "，我来自中国";
+    }
+}
+
+let chinaPerson = new ChinaPerson("小茜");
+</pre>
+<p>
+    那么，下面代码也是可行的：
+</p>
+<pre tag="javascript">chinaPerson.say();</pre>
+<h3>
+    readonly修饰符
+</h3>
+<p>
+    也就是标记只读，只读的属性只能声明时或构造函数里被初始化，例如：
+</p>
+<pre tag="javascript">
+class Person {
+    readonly name: string = "小灰灰";
+}
+    
+let person = new Person();
+</pre>
+<p>
+    那么，读取是可以的：
+</p>
+<pre tag="javascript">person.name;</pre>
+<p>
+    而下面当我们尝试修改就会出错：
+</p>
+<pre tag="javascript">
+// Cannot assign to 'name' because it is a read-only property.
+person.name = "大灰灰";
+</pre>
+<h4>
+    参数属性
+</h4>
+<p>
+    如果只读属性希望通过构造函数初始化，可以这样：
+</p>
+<pre tag="javascript">
+class Person {
+    readonly name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+</pre>
+<p>
+    而更简单的写法是：
+</p>
+<pre tag="javascript">
+class Person {
+    constructor(readonly name: string) {
+        this.name = name;
+    }
+}
+</pre>
+<h3>
+    静态属性
+</h3>
+<p>
+    也就是那些归属类而不是对象的属性或方法，例如：
+</p>
+<pre tag="javascript">
+class Person {
+    static age: number;
+}
+</pre>
+<p>
+    直接使用类即可访问：
+</p>
+<pre tag="javascript">Person.age = 10;</pre>
+<p>
+    而对象则无法访问：
+</p>
+<pre tag="javascript">
+// Property 'age' does not exist on type 'Person'. 
+// Did you mean to access the static member 'Person.age' instead?ts(2576)
+new Person().age = 10;
+</pre>
+<h2>
+    存取器
+</h2>
+<p>
+    比如我们现在有一个场景：
+</p>
+<pre tag="javascript">
+class Person {
+    name: string;
+}
+</pre>
+<p>
+    那么，我们创建好对象后就可以很容易的设置和获取属性name值：
+</p>
+<pre tag="javascript">
+let person = new Person();
+
+person.name = "阿肥";
+console.log(person.name);
+</pre>
+<p>
+    可是现在有一个问题，name值在设置的时候必须满足一定规则。怎么办？我们就可以把上面的类改写成使用
+    <span class="important">getter</span>
+    和
+    <span class="important">setter</span>
+    来实现：
+</p>
+<pre tag="javascript">
+class Person {
+    private _name: string;
+    
+    get name(): string {
+        return this._name;
+    }
+    
+    set name(name: string) {
+        if (name.length > 4) {
+        this._name = name;
+        }
+    }
+}
+</pre>
+<p>
+    名称设置名称的时候，长度必须大于4，不然会设置失败。
+</p>
+<h2>
+    继承
+</h2>
+<p>
+    比如狗是动物，那么狗就可以继承动物上面的一些内容：
+</p>
+<pre tag="javascript">
+class Animal {
+    eat() {
+        console.log("我会吃饭");
+    }
+}
+    
+class Dog extends Animal {
+    bark() {
+        console.log("我会狗叫");
+    }
+}
+</pre>
+<p>
+    动物的实例上就有eat方法，而狗除了eat还可以bark。
+</p>
+<h2>
+    抽象类
+</h2>
+<p>
+    和接口类似，只不过可以包含成员的实现细节，abstract关键字是用于定义抽象类和在抽象类内部定义抽象方法：
+</p>
+<pre tag="javascript">
+abstract class Dog {
+    abstract bark(): void;
+    run(): void {
+        console.log("我在跑");
+    }
+}
+</pre>

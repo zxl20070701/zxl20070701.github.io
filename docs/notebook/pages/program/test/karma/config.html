@@ -1,0 +1,91 @@
+<header>
+    karma.conf.js
+</header>
+<pre tag="javascript">
+let webpackConfig = require('./webpack.config.js')
+
+module.exports = function (config) {
+    config.set({
+
+        /***
+         * 基础路径，用在files，exclude属性上
+         */
+        basePath: '',
+
+        /**
+         * 测试框架
+         * 可用的框架：https://npmjs.org/browse/keyword/karma-adapter
+         */
+        frameworks: ['jasmine'],
+
+        /**
+         * 需要加载到浏览器的文件列表
+         */
+        files: [
+            './**/*.spec.ts'
+        ],
+
+        /**
+         * 排除的文件列表
+         */
+        exclude: [],
+
+        /**
+         * 在浏览器使用之前处理匹配的文件
+         * 可用的预处理: https://npmjs.org/browse/keyword/karma-preprocessor
+         */
+        preprocessors: {
+            // 为选定脚本指定前处理器，这里配置所有的测试脚本需要经过webpack处理
+            '../**/*.ts': ['webpack']
+        },
+
+        /**
+         * 使用测试结果报告者
+         * 可能的值: "dots", "progress"
+         * 可用的报告者：https://npmjs.org/browse/keyword/karma-reporter
+         */
+        reporters: ['progress'],
+
+        // web server port
+        port: 9876,
+
+        // enable / disable colors in the output (reporters and logs)
+        colors: true,
+
+        /**
+         * 日志等级
+         * 可能的值：
+         * config.LOG_DISABLE //不输出信息
+         * config.LOG_ERROR    //只输出错误信息
+         * config.LOG_WARN //只输出警告信息
+         * config.LOG_INFO //输出全部信息
+         * config.LOG_DEBUG //输出调试信息
+         */
+        logLevel: config.LOG_INFO,
+
+
+        // enable / disable watching file and executing tests whenever any file changes
+        autoWatch: true,
+
+        /**
+         * 测试启动的浏览器
+         * 可用的浏览器：https://npmjs.org/browse/keyword/karma-launcher
+         */
+        browsers: ['Chrome'],
+
+        /**
+         * 开启或禁用持续集成模式
+         * 设置为true, Karma将打开浏览器，执行测试并最后退出
+         */
+        singleRun: false,
+
+        /**
+         * 并发级别（启动的浏览器数）
+         */
+        concurrency: Infinity,
+
+        // Webpack配置
+        webpack: webpackConfig
+    })
+}
+</pre>

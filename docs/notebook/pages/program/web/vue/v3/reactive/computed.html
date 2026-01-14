@@ -1,0 +1,43 @@
+<header>
+    计算属性
+</header>
+<h2>
+    基本写法
+</h2>
+<pre tag="html">
+<template>
+    {{info}}
+</template>
+&lt;script setup lang="ts"&gt;
+import { computed } from "vue";
+
+let info = computed(()=>{
+    return "当前时间：" + new Date().valueOf();
+});
+&lt;/script&gt;
+</pre>
+<h2>
+    自定义setter
+</h2>
+<p>
+    计算属性默认只有 getter，不过在需要时你也可以提供一个 setter：
+</p>
+<pre tag="javascript">
+let firstName="",lastName="";
+
+let fullName = computed({
+    get: function () {
+        return firstName + ' ' + lastName;
+    },
+    set: function (newValue) {
+        let names = newValue.split(' ');
+        firstName = names[0];
+        lastName = names[names.length - 1];
+    }
+});
+</pre>
+<p>
+    现在再运行
+    <span class="special">fullName.value = '托马斯 米奇'</span>
+    时，setter 会被调用，firstName 和 lastName 也会相应地被更新。
+</p>

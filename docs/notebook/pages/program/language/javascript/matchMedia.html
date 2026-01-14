@@ -1,0 +1,87 @@
+<header>
+    matchMedia 媒体查询
+</header>
+<p>
+    matchMedia() 返回一个新的 MediaQueryList 对象，表示指定的媒体查询字符串解析后的结果。
+</p>
+<p>
+    matchMedia() 方法的值可以是任何一个 CSS
+    <a href="./#/program/language/css/media" target="_blank">@media 规则</a>
+    的特性, 如 min-height, min-width, orientation 等。
+</p>
+<p>
+    MediaQueryList 对象有以下两个属性：
+</p>
+<ul>
+    <li>
+        <span class="warn">media</span>
+        ：查询语句的内容。
+    </li>
+    <li>
+        <span class="warn">matches</span>
+        ：用于检测查询结果，如果匹配，值为true，否则为false。
+    </li>
+</ul>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+if (window.matchMedia("(max-width: 700px)").matches) {
+    /* 窗口小于或等于 700 像素 */
+} else {
+    /*窗口大于 700 像素 */
+}
+</pre>
+<p>
+    MediaQueryList 对象还可以监听事件。通过监听，在查询结果发生变化时，就调用指定的回调函数：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                方法
+            </th>
+            <th>
+                描述
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                addListener(callback)
+            </td>
+            <td>
+                添加一个新的监听器函数，该函数在媒体查询的结果发生变化时执行。
+            </td>
+        </tr>
+        <tr>
+            <td>
+                removeListener(callback)
+            </td>
+            <td>
+                从媒体查询列表中删除之前添加的监听器。
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+var portrait = window.matchMedia('(orientation: portrait)');
+
+function callback(event){
+    if(event.matches){
+        /* 竖屏，即设备中的页面可见区域高度>=宽度 */
+    }else{
+        /* 横屏，即设备中的页面可见区域高度&lt;=宽度） */
+    }
+}
+
+if (portrait.addEventListener) {
+portrait.addEventListener('change', callback);
+} else {
+window.addEventListener('orientationchange', callback);
+}
+</pre>

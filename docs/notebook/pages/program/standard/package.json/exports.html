@@ -1,0 +1,134 @@
+<header>
+    exports
+</header>
+<h2>
+    基本语法
+</h2>
+<p>
+    exports 配置的基本形式是一个对象，其中键是"导出路径"，值是"目标文件路径"：
+</p>
+<pre tag="javascript">
+{
+  "exports": {
+    "导出路径": "目标文件路径"
+  }
+}
+</pre>
+<h3>
+    主入口导出
+</h3>
+<p>
+    表示包的主入口，即当用户通过包名直接导入时（如 import 'package-name'）所使用的入口：
+</p>
+<pre tag="javascript">
+{
+  "exports": {
+    ".": "./index.js"
+  }
+}
+</pre>
+<p>
+    这相当于传统的 {main: "./index.js"} ，但功能更强大。
+</p>
+<h3>
+    子路径导出
+</h3>
+<p>
+    除了主入口，你还可以定义子路径导出，允许用户通过 package-name/subpath 形式导入：
+</p>
+<pre tag="javascript">
+{
+  "exports": {
+    ".": "./index.js",
+    "./utils": "./src/utils.js",
+    "./helpers/*": "./src/helpers/*.js"
+  }
+}
+</pre>
+<p>
+    这样用户就可以这样导入：
+</p>
+<pre tag="javascript">
+import main from 'package-name';
+import utils from 'package-name/utils';
+import helper from 'package-name/helpers/format';
+</pre>
+<h2>
+    多类型文件
+</h2>
+<pre tag="javascript">
+{
+   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./unstyled": {
+      "types": "./dist/unstyled.d.ts",
+      "import": "./dist/unstyled.mjs",
+      "require": "./dist/unstyled.js"
+    }
+  },
+}
+</pre>
+<h2>
+    常见问题
+</h2>
+<h3>
+build过程，无法识别'package-name/dist/style.css'路径
+</h3>
+<pre tag="javascript">
+{
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./unstyled": {
+      "types": "./dist/unstyled.d.ts",
+      "import": "./dist/unstyled.mjs",
+      "require": "./dist/unstyled.js"
+    },
++   "./*": [
++      "./*",
++      "./*.d.ts"
++    ]
+  },
+}
+</pre>
+<h3>
+    ts无法识别'package-name/unstyled'路径
+</h3>
+<p class="warn">
+    特别需要注意的是：dist目录下需要保证unstyled.d.ts存在，并且需要和exports中子路径名称一致，否则依然无法找到路径
+</p>
+<pre tag="javascript">
+{
+  "exports": {
+   ".": {
+     "types": "./dist/index.d.ts",
+     "import": "./dist/index.mjs",
+     "require": "./dist/index.js"
+   },
+   "./unstyled": { // 需和dist下unstyled.d.ts文件名称一致
+     "types": "./dist/unstyled.d.ts", // 可以省略，但不建议
+     "import": "./dist/unstyled.mjs",
+     "require": "./dist/unstyled.js"
+   },
++   "./*": [
++      "./*",
++      "./*.d.ts"
++    ]
+ },
++  "typesVersions": {
++    "*": {
++      "*": [
++        "./dist/*",
++        "./*"
++      ]
++    }
+ },
+}
+</pre>

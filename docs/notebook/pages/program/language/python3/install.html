@@ -1,0 +1,49 @@
+<header>
+    如何搭建环境和运行？
+</header>
+<h2>
+    安装
+</h2>
+<p>
+    如果你已经安装过python或系统内置有，可以先查看版本：
+</p>
+<pre tag>
+    python --version
+</pre>
+<p>
+    如果版本不对或没有安装，可以去
+    <a href="https://www.python.org/" target="_blank">https://www.python.org</a>
+    下载后进行安装。
+</p>
+<h2>
+    HelloWorld
+</h2>
+<p>
+    文件名称：<span class="special">index.py</span>
+</p>
+<pre tag="javascript">
+#!/usr/bin/python3
+
+print("你好呀！")
+</pre>
+<h2>
+    运行
+</h2>
+<p>
+    执行下面命令即可运行：
+</p>
+<pre tag>
+    python index.py
+</pre>
+<p>
+    如果你看见类似下面的报错：
+</p>
+<p class="important">
+    SyntaxError: Non-ASCII character '\xe4' in file index.py on line 3, but no encoding declared;
+</p>
+<p>
+    可以在文件开头（其实应该是第二行）添加下面语句：
+</p>
+<pre tag>
+# coding=utf-8
+</pre>

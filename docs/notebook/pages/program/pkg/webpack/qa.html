@@ -1,0 +1,17 @@
+<header>
+    常见问题
+</header>
+<h2>
+    如何去掉箭头函数？
+</h2>
+<p>
+    webpack5打包以后还有箭头函数，配置babel也不行。
+</p>
+<p>
+    其实，只需要添加target配置：
+</p>
+<pre tag="javascript">
+module.exports = {
+    target: ["web", "es5"]
+};
+</pre>

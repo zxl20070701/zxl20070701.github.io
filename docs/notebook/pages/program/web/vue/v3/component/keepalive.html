@@ -1,0 +1,51 @@
+<header>
+    KeepAlive
+</header>
+<h2>
+    基本使用
+</h2>
+<pre tag="html">
+&lt;component :is="myComp" /&gt;
+</pre>
+<p>
+    对于上面的例子，myComp表示一个组件变量，默认情况下，如果改变此变量的值，原来组件实例在被替换掉后会被销毁，这会导致它丢失其中所有已变化的状态，当这个组件再一次被显示时，会创建一个只带有初始状态的新实例。
+</p>
+<p>
+    如果你希望切换回来的时候，原来的状态被缓存，只需要：
+</p>
+<pre tag="html">
+&lt;KeepAlive&gt;
+    &lt;component :is="myComp" /&gt;
+&lt;/KeepAlive&gt;
+</pre>
+<h3>
+    路由中使用
+</h3>
+<pre tag="html">
+&lt;router-view v-slot="{ Component }"&gt;
+    &lt;KeepAlive&gt;
+        &lt;component :is="Component" /&gt;
+    &lt;/KeepAlive&gt;
+&lt;/router-view&gt;
+</pre>
+<h2>
+    缓存实例的生命周期
+</h2>
+<p>
+    当一个组件实例从DOM上移除但因为被&lt;KeepAlive&gt;缓存而仍作为组件树的一部分时，它将变为不活跃状态而不是被卸载；当一个组件实例作为缓存树的一部分插入到DOM中时，它将重新被激活：
+</p>
+<pre tag="html">
+&lt;script setup lang="ts"&gt;
+    import { onActivated, onDeactivated } from 'vue'
+
+    onActivated(() => {
+        // 在首次挂载、
+        // 以及每次从缓存中被重新插入的时候调用
+    })
+
+    onDeactivated(() => {
+        // 在从 DOM 上移除、进入缓存
+        // 以及组件卸载时调用
+    })
+&lt;/script&gt;
+</pre>

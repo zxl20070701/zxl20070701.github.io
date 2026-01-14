@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dispatchEvent模拟交互触发事件</title>
+    <style>
+        #mydiv {
+            background-color: red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="mydiv" onclick="doBack(event)">按钮</button>
+
+    <button onclick="doit()">
+        点击我查看 Console 控制台
+    </button>
+
+    <script>
+
+        function myClick(dom) {
+            var event = new PointerEvent('click', {
+                view: window,
+                bubbles: true, // 是否冒泡
+                cancelable: true, // 是否取消默认事件
+                clientX: 77,
+                clientY: 77
+            });
+            dom.dispatchEvent(event);
+        }
+
+        // js触发
+        function doit() {
+            myClick(document.getElementById('mydiv'));
+        }
+
+        // 用户触发
+        function doBack(event) {
+            console.log(event);
+        }
+
+    </script>
+
+</body>
+
+</html>

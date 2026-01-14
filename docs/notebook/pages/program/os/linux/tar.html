@@ -1,0 +1,47 @@
+<header>
+    tar
+</header>
+<h2>
+    快速使用
+</h2>
+<h3>
+    解压命令
+</h3>
+<p>
+    将压缩文件解压到当前目录下（解压后的路径，默认为当前路径）：
+</p>
+<pre>
+    tar -zxvf test.tar.gz
+</pre>
+<p>
+    或者，将压缩文件解压到指定路径下：
+</p>
+<pre>
+    tar -zxvf test.tar.gz -C /home/
+</pre>
+<h3>
+    压缩命令
+</h3>
+<p>
+    将当前目录下的所有文件压缩：
+</p>
+<pre>
+    tar -zcvf test.tar.gz ./
+</pre>
+<p>
+    或者，指定需要打包的文件（不包含目录 /home/testDir/）：
+</p>
+<pre>
+    tar -zcvf test.tar.gz -C /home/testDir/ .
+</pre>
+<h2>
+    常用参数
+</h2>
+<pre>
+-c, --create 创建一个新归档
+-x, --extract, --get 从归档中解出文件
+-f, --file=ARCHIVE 使用归档文件
+-z, --gzip, --gunzip, --ungzip 通过 gzip 过滤归档
+-C, --directory=DIR 改变至目录 DIR
+-v, --verbose 详细地列出处理的文件
+</pre>

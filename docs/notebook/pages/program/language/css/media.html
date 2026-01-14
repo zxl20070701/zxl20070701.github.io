@@ -1,0 +1,260 @@
+<header>
+    @media 规则
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="css">
+@media not|only mediatype and (mediafeature and|or|not mediafeature) {
+    /* css代码 */
+}
+</pre>
+<p>
+    例如（如果文档宽度小于 300 像素则修改背景颜色(background-color)）：
+</p>
+<pre tag="css">
+@media screen and (max-width: 300px) {
+    body {
+        background-color:lightblue;
+    }
+}
+</pre>
+<p>
+    not, and, 和 only 可用于联合构造复杂的媒体查询，还可以通过用逗号分隔多个媒体查询，将它们组合为一个规则。
+</p>
+<ul>
+    <li>
+        <span class="warn">not</span>
+        : not 运算符用于否定媒体查询，如果不满足这个条件则返回 true，否则返回 false。 如果出现在以逗号分隔的查询列表中，它将仅否定应用了该查询的特定查询。 如果使用 not 运算符，则还必须指定媒体类型。
+    </li>
+    <li>
+        <span class="warn">only</span>
+        : only 运算符仅在整个查询匹配时才用于应用样式，并且对于防止较早的浏览器应用所选样式很有用。 当不使用 only 时，旧版本的浏览器会将 screen and (max-width: 500px) 简单地解释为
+        screen，忽略查询的其余部分，并将其样式应用于所有屏幕。 如果使用 only 运算符，则还必须指定媒体类型。
+    </li>
+    <li>
+        <span class="warn">, </span>
+        (逗号) 逗号用于将多个媒体查询合并为一个规则。 逗号分隔列表中的每个查询都与其他查询分开处理。 因此，如果列表中的任何查询为 true，则整个 media 语句均返回 true。 换句话说，列表的行为类似于逻辑或 or
+        运算符。
+    </li>
+    <li>
+        <span class="warn">and</span>
+        : and 操作符用于将多个媒体查询规则组合成单条媒体查询，当每个查询规则都为真时则该条媒体查询为真，它还用于将媒体功能与媒体类型结合在一起。
+    </li>
+</ul>
+<p>
+    媒体类型（Media types）描述设备的一般类别。除非使用 not 或 only 逻辑操作符，媒体类型是可选的，并且会（隐式地）应用 all 类型。
+</p>
+<p>
+    你也可以针对不同的媒体使用不同样式文件 :
+</p>
+<pre tag="html">
+<!-- 宽度大于 900px 的屏幕使用该样式 -->
+<link rel="stylesheet" media="screen and (min-width: 900px)" href="widescreen.css">
+<!-- 宽度小于或等于 600px 的屏幕使用该样式 -->
+<link rel="stylesheet" media="screen and (max-width: 600px)" href="smallscreen.css">
+....
+</pre>
+<h2>
+    媒体类型
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th style="width:25%">值</th>
+            <th>描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>all</td>
+            <td>用于所有设备</td>
+        </tr>
+        <tr>
+            <td>aural</td>
+            <td>已废弃。用于语音和声音合成器</td>
+        </tr>
+        <tr>
+            <td>braille</td>
+            <td>已废弃。 应用于盲文触摸式反馈设备</td>
+        </tr>
+        <tr>
+            <td>embossed</td>
+            <td>已废弃。 用于打印的盲人印刷设备</td>
+        </tr>
+        <tr>
+            <td>handheld</td>
+            <td>已废弃。 用于掌上设备或更小的装置，如PDA和小型电话</td>
+        </tr>
+        <tr>
+            <td>print</td>
+            <td>用于打印机和打印预览</td>
+        </tr>
+        <tr>
+            <td>projection</td>
+            <td>已废弃。 用于投影设备</td>
+        </tr>
+        <tr>
+            <td>screen</td>
+            <td>用于电脑屏幕，平板电脑，智能手机等。</td>
+        </tr>
+        <tr>
+            <td>speech</td>
+            <td>应用于屏幕阅读器等发声设备</td>
+        </tr>
+        <tr>
+            <td>tty</td>
+            <td>已废弃。 用于固定的字符网格，如电报、终端设备和对字符有限制的便携设备</td>
+        </tr>
+        <tr>
+            <td>tv</td>
+            <td>已废弃。 用于电视和网络电视</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    媒体功能
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th style="width:25%">值</th>
+            <th>描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="height: 31px">aspect-ratio</td>
+            <td style="height: 31px">定义输出设备中的页面可见区域宽度与高度的比率</td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>定义输出设备每一组彩色原件的个数。如果不是彩色设备，则值等于0</td>
+        </tr>
+        <tr>
+            <td>color-index</td>
+            <td>定义在输出设备的彩色查询表中的条目数。如果没有使用彩色查询表，则值等于0</td>
+        </tr>
+        <tr>
+            <td>device-aspect-ratio</td>
+            <td>定义输出设备的屏幕可见宽度与高度的比率。</td>
+        </tr>
+        <tr>
+            <td>device-height</td>
+            <td>定义输出设备的屏幕可见高度。</td>
+        </tr>
+        <tr>
+            <td>device-width</td>
+            <td>定义输出设备的屏幕可见宽度。</td>
+        </tr>
+        <tr>
+            <td>grid</td>
+            <td>用来查询输出设备是否使用栅格或点阵。</td>
+        </tr>
+        <tr>
+            <td>height</td>
+            <td>定义输出设备中的页面可见区域高度。</td>
+        </tr>
+        <tr>
+            <td>max-aspect-ratio</td>
+            <td>定义输出设备的屏幕可见宽度与高度的最大比率。</td>
+        </tr>
+        <tr>
+            <td>max-color</td>
+            <td>定义输出设备每一组彩色原件的最大个数。 </td>
+        </tr>
+        <tr>
+            <td>max-color-index</td>
+            <td>定义在输出设备的彩色查询表中的最大条目数。</td>
+        </tr>
+        <tr>
+            <td>max-device-aspect-ratio</td>
+            <td>定义输出设备的屏幕可见宽度与高度的最大比率。 </td>
+        </tr>
+        <tr>
+            <td>max-device-height</td>
+            <td>定义输出设备的屏幕可见的最大高度。</td>
+        </tr>
+        <tr>
+            <td>max-device-width</td>
+            <td>定义输出设备的屏幕最大可见宽度。</td>
+        </tr>
+        <tr>
+            <td>max-height</td>
+            <td>定义输出设备中的页面最大可见区域高度。</td>
+        </tr>
+        <tr>
+            <td>max-monochrome</td>
+            <td>定义在一个单色框架缓冲区中每像素包含的最大单色原件个数。</td>
+        </tr>
+        <tr>
+            <td>max-resolution</td>
+            <td>定义设备的最大分辨率。</td>
+        </tr>
+        <tr>
+            <td>max-width</td>
+            <td>定义输出设备中的页面最大可见区域宽度。</td>
+        </tr>
+        <tr>
+            <td>min-aspect-ratio</td>
+            <td>定义输出设备中的页面可见区域宽度与高度的最小比率。</td>
+        </tr>
+        <tr>
+            <td>min-color</td>
+            <td>定义输出设备每一组彩色原件的最小个数。</td>
+        </tr>
+        <tr>
+            <td>min-color-index</td>
+            <td>定义在输出设备的彩色查询表中的最小条目数。</td>
+        </tr>
+        <tr>
+            <td>min-device-aspect-ratio</td>
+            <td>定义输出设备的屏幕可见宽度与高度的最小比率。</td>
+        </tr>
+        <tr>
+            <td>min-device-width</td>
+            <td>定义输出设备的屏幕最小可见宽度。</td>
+        </tr>
+        <tr>
+            <td>min-device-height</td>
+            <td>定义输出设备的屏幕的最小可见高度。</td>
+        </tr>
+        <tr>
+            <td>min-height</td>
+            <td>定义输出设备中的页面最小可见区域高度。</td>
+        </tr>
+        <tr>
+            <td>min-monochrome</td>
+            <td>定义在一个单色框架缓冲区中每像素包含的最小单色原件个数</td>
+        </tr>
+        <tr>
+            <td>min-resolution</td>
+            <td>定义设备的最小分辨率。</td>
+        </tr>
+        <tr>
+            <td>min-width</td>
+            <td>定义输出设备中的页面最小可见区域宽度。</td>
+        </tr>
+        <tr>
+            <td>monochrome</td>
+            <td>定义在一个单色框架缓冲区中每像素包含的单色原件个数。如果不是单色设备，则值等于0
+            </td>
+        </tr>
+        <tr>
+            <td>orientation</td>
+            <td>定义输出设备中的页面可见区域高度是否大于或等于宽度。</td>
+        </tr>
+        <tr>
+            <td>resolution</td>
+            <td>定义设备的分辨率。如：96dpi, 300dpi, 118dpcm</td>
+        </tr>
+        <tr>
+            <td>scan</td>
+            <td>定义电视类设备的扫描工序。</td>
+        </tr>
+        <tr>
+            <td>width</td>
+            <td>定义输出设备中的页面可见区域宽度。</td>
+        </tr>
+    </tbody>
+</table>

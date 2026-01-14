@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>canvas标签</title>
+    <style>
+        canvas {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+    <script>
+        // 获取canvas标签提供的画笔
+        var painter = document.getElementsByTagName('canvas')[0].getContext('2d');
+        // 绘制
+        painter.fillRect(0, 0, 100, 50);
+    </script>
+</body>
+</html>

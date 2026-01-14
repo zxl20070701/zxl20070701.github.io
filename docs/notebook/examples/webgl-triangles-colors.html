@@ -1,0 +1,70 @@
+<canvas width=200 height=200 style="outline:1px solid gray;">
+    非常抱歉，您的浏览器不支持canvas!
+</canvas>
+
+<!-- 顶点着色器 -->
+<script type='x-shader/x-vertex' id='vs'>
+    attribute vec4 a_position;
+    attribute vec4 a_color;
+    varying vec4 v_color;
+    void main(){
+        gl_Position=a_position;
+        v_color=a_color;
+    }
+</script>
+
+<!-- 片段着色器 -->
+<script type='x-shader/x-fragment' id='fs'>
+    precision mediump float;
+    varying vec4 v_color;
+    void main(){
+        gl_FragColor=v_color;
+    }
+</script>
+
+<script>
+    var gl = document.getElementsByTagName('canvas')[0].getContext('webgl');
+
+    var loadShader = function (type, source) {
+        var shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        return shader;
+    };
+
+    var vertexShader = loadShader(gl.VERTEX_SHADER, document.getElementById('vs').innerHTML),
+        fragmentShader = loadShader(gl.FRAGMENT_SHADER, document.getElementById('fs').innerHTML);
+
+    var glProgram = gl.createProgram();
+    gl.attachShader(glProgram, vertexShader);
+    gl.attachShader(glProgram, fragmentShader);
+    gl.linkProgram(glProgram);
+    gl.useProgram(glProgram);
+
+    var buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    // 准备好点的数据
+    var data = new Float32Array([
+        -0.7, -0.7, 0, 1, 0, 0,
+        0.7, -0.7, 1, 0, 1, 0,
+        0, 0.7, 0, 0, 0, 1
+    ]);
+
+    // 写入数据到缓冲区
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+
+    // 点的位置
+    var a_position = gl.getAttribLocation(glProgram, "a_position");
+    gl.vertexAttribPointer(a_position, 3, gl.FLOAT, false, data.BYTES_PER_ELEMENT * 6, 0);
+    gl.enableVertexAttribArray(a_position);
+
+    // 点的颜色
+    var a_color = gl.getAttribLocation(glProgram, "a_color");
+    gl.vertexAttribPointer(a_color, 3, gl.FLOAT, false, data.BYTES_PER_ELEMENT * 6, data.BYTES_PER_ELEMENT * 3);
+    gl.enableVertexAttribArray(a_color);
+
+    // 绘制一个三角形
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+</script>

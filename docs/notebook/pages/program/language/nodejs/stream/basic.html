@@ -1,0 +1,66 @@
+<header>
+    四种基本流
+</header>
+<h2>
+    可读流（Readable Stream）
+</h2>
+<p>
+    这种类型的流主要用于从数据源读取数据。当数据准备好后，可以通过监听 'data' 事件来获取数据。当没有数据可读时，可以通过监听 'end' 事件来知道何时数据已经读取完毕。
+</p>
+<p>
+    比如我们现在有个文件
+     <span class="warn">input.txt</span>，里面的内容是
+     <span class="special">"你好呀！"</span>
+     ，那么：
+</p>
+<pre tag="javascript">
+const fs = require('fs');
+
+const readStream = fs.createReadStream('input.txt');
+
+readStream.on('data', (chunk) => {
+    console.log(">>> 内容：" + chunk)
+});
+
+readStream.on('end', () => {
+    console.log('>> 数据读取完毕！');
+});
+</pre>
+<p>
+    运行结果就是：
+</p>
+<pre tag>
+>>> 内容：你好呀！
+>> 数据读取完毕！
+</pre>
+<h2>
+    可写流（Writable Stream）
+</h2>
+<p>
+    这种类型的流主要用于将数据写入目标。可以通过监听 'drain' 事件来知道何时可以继续写入数据。当写入过程中发生错误时，可以通过监听 'error' 事件来处理错误。
+</p>
+<pre tag="javascript">
+const fs = require('fs');
+
+const writeStream = fs.createWriteStream('output.txt');
+
+writeStream.write('你好呀!');
+writeStream.end();
+</pre>
+<p>
+    执行完毕就可以获得一个文件
+    <span class="warn">output.txt</span>，里面的内容是
+     <span class="special">"你好呀！"</span>。
+</p>
+<h2>
+    双向流（Duplex Stream）
+</h2>
+<p>
+    这种类型的流同时具有可读和可写的能力。例如，net.Socket 和 fs.ReadStream 都是双向流。双向流可以同时处理数据的读取和写入。
+</p>
+<h2>
+    转换流（Transform Stream）
+</h2>
+<p>
+    在读取和写入过程中对数据进行转换。
+</p>

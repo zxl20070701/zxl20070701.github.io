@@ -1,0 +1,166 @@
+<header>
+    一个简单的入门用例
+</header>
+<p>
+    这是一个底层基于
+    <span class="important">WebGL</span>
+    开发的3D渲染引擎（ 当然，后续是否会正式发布基于
+    <span class="important">WebGPU</span>
+    的版本，也是可能的）。
+</p>
+<p>
+    和直接使用WebGL相比，比如
+    <span class="important">着色器</span>
+    ，大部分情况下你无需自己开发，不过，情况并不总是这样，如果你的需求太过特殊，我们依旧可以用更接近原生的方式来绘制，这是一个非常友好的设计。
+</p>
+<h2>
+    绘制流程
+</h2>
+<p>
+    一般最通用的绘制流程大致如下：
+</p>
+<p>
+    <span class="pip-block">
+        准备好场景
+    </span>
+    →
+    <span class="pip-block">
+        准备好相机
+    </span>
+    →
+    <span class="pip-block">
+        使用渲染器渲染出来
+    </span>
+</p>
+<p>
+    你可以提前看看我们最终要绘制的效果（一个旋转的立方体）：
+</p>
+<button tag="threejs-quick">查看用例</button>
+<h2>
+    场景
+</h2>
+<p>
+    所谓的场景，也就是空间的属性，就是当前空间里面有什么东西；比如：有什么物体（物体的材质、形状、尺寸）、有没有光（点光源还是环境光、或者平行光）等。
+</p>
+<p>
+    对我们这里而言，很明显，空间里有一个正六面体，而且，好像还有光照在上面。
+</p>
+<p>
+    那么，我们首先创建好场景，后续再补充场景中的内容：
+</p>
+<pre tag="javascript">
+    var scene = new THREE.Scene();
+</pre>
+<h3>
+    网格模型
+</h3>
+<p>
+    现在，我们来创建一个立方体：
+</p>
+<pre tag="javascript">
+    var geometry = new THREE.BoxGeometry(100, 100, 100);
+</pre>
+<p>
+    立方体是红色的，所以，还需要创建一个材质对象：
+</p>
+<pre tag="javascript">
+var material = new THREE.MeshLambertMaterial({
+    color: "red"
+});
+</pre>
+<p>
+    然后，把立方体和材质对象关联起来，就获得了表示这个完整立方体信息的模型对象了：
+</p>
+<pre tag="javascript">
+    var mesh = new THREE.Mesh(geometry, material);
+</pre>
+<p>
+    最后，把这个立方体放到之前创建的空间中去：
+</p>
+<pre tag="javascript">
+    scene.add(mesh);
+</pre>
+<h3>
+    光照
+</h3>
+<p>
+    光一般有多种，比如环境光，其实我们就可以认为是漫反射，在原生代码中，我们需要自己设计光叠加的算法，而在这里，你只需要调用api设置参数即可：
+</p>
+<pre tag="javascript">
+    var ambient = new THREE.AmbientLight("green");
+</pre>
+<p>
+    同样的，也需要被添加到当前空间中去：
+</p>
+<pre tag="javascript">
+    scene.add(ambient);
+</pre>
+<p>
+    别的类型的光也类似，只是设置的参数不一样，这里就不再赘述了。
+</p>
+<h2>
+    相机
+</h2>
+<p>
+    其实就相当于你的眼睛的可视区域。空间中有什么，不代表你就应该看见什么，通过相机来确定你看的位置、方向、范围等。
+</p>
+<p>
+    还有一点需要特别说明，因为你看见的其实是平面，空间本身是3D的，那就存在一个投影算法，不同的投影算法最终你空间的内容也是不一样的（我们这里选择的是正射投影），整体来说比较好理解，直接看代码：
+</p>
+<pre tag="javascript">
+var width = window.innerWidth; //窗口宽度
+var height = window.innerHeight; //窗口高度
+var k = width / height; //窗口宽高比
+var s = 100; //三维场景显示范围控制系数，系数越大，显示的范围越大
+
+var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+
+camera.position.set(200, 300, 200); //设置相机位置
+camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
+</pre>
+<h2>
+    渲染器
+</h2>
+<p>
+    好了，空间准备好了，相机也准备好了，接下来就是渲染出来了。
+</p>
+<p>
+    首先，创建好渲染器：
+</p>
+<pre tag="javascript">
+    var renderer = new THREE.WebGLRenderer();
+</pre>
+<p>
+    然后，设置好参数：
+</p>
+<pre tag="javascript">
+renderer.setSize(width, height);//设置渲染区域尺寸
+renderer.setClearColor(0xb9d3ff, 1); //设置背景颜色
+</pre>
+<p>
+    最终渲染的内容在哪里显示？当前是页面了，所以渲染器需要关联到页面中：
+</p>
+<pre tag="javascript">
+    document.body.appendChild(renderer.domElement);
+</pre>
+<p>
+    一切准备就绪，渲染即可：
+</p>
+<pre tag="javascript">
+    renderer.render(scene, camera);
+</pre>
+<h2>
+    变换
+</h2>
+<p>
+    相比最终的效果，我们绘制出来的是一个静止的，怎么办？
+</p>
+<p>
+    你可以修改相机的位置、角度等，或者改变物体的位置。比如这里，我们改变物体的位置：
+</p>
+<pre tag="javascript">
+    mesh.rotateY(0.01);
+</pre>
+<p>
+    同样的，改变完毕后，重新使用渲染器渲染即可。
+</p>

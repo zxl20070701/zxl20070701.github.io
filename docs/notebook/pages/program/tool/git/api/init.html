@@ -1,0 +1,45 @@
+<header>
+    初始化
+</header>
+<ul>
+    <li>
+        <span class="important">工作区</span>
+        ：就是你在电脑里能看到的目录。
+    </li>
+    <li>
+        <span class="important">暂存区</span>
+        ：英文叫stage, 或index。一般存放在 ".git目录下" 下的index文件（.git/index）中，所以我们把暂存区有时也叫作索引（index)。
+    </li>
+    <li>
+        <span class="important">版本库</span>
+        ：工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
+    </li>
+</ul>
+<h2>
+    用户名和邮箱
+</h2>
+<p>
+    分别修改用户名和邮箱，其中--global带和不带的区别在于操作文件是.git/config还是~/.gitconfig，如果你使用的是--system则对应的就是/etc/gitconfig文件。
+</p>
+<p>
+    对于是否在最后带username或email，区别在于你是设置还是查看。
+</p>
+<pre tag>
+git config [--global] user.name [username]
+git config [--global] user.email [email]
+</pre>
+<p>
+    如果想重新设置系统保存的用户名和密码。
+</p>
+<pre tag>sudo git config --system --unset credential.helper</pre>
+<h2>
+    创建仓库
+</h2>
+<p>
+    使用该命令会在目录中创建新的Git仓库，本地化的。
+</p>
+<pre tag>git init</pre>
+<p>
+    把uri指定的仓库代码克隆到本地来，如果加了可选参数dir，表示克隆到该文件夹下。
+</p>
+<pre tag>git clone uri [dir]</pre>

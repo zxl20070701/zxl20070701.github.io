@@ -1,0 +1,83 @@
+<header>
+    相关基础包简略
+</header>
+<h2>
+    相关包及简略
+</h2>
+<h3>
+    @babel/parser
+</h3>
+<p>
+    接受源码，进行词法分析、语法分析，生成AST。
+</p>
+<div class="tips">
+    一个在线工具，可以查看生成的AST：<a href="https://astexplorer.net/" target="_blank">https://astexplorer.net/</a>
+</div>
+<h3>
+    @babel/traverse
+</h3>
+<p>
+    接受一个AST，并对其遍历，根据preset、plugin进行逻辑处理，进行替换、删除、添加节点。
+</p>
+<h3>
+    @babel/types
+</h3>
+<p>
+    用于检验、构建和改变AST树的节点。
+</p>
+<h3>
+    @babel/generator
+</h3>
+<p>
+    接受最终生成的AST，并将其转换为代码字符串，同时此过程也可以创建source map。
+</p>
+<h2>
+    一个例子
+</h2>
+<p>
+     比如我们有一段代码如下：
+</p>
+<pre tag="javascript">
+let code = `
+    let doit = ()=>{
+        console.log("试试箭头函数")
+    }`
+</pre>
+<p>
+    我们希望去掉箭头函数变成：
+</p>
+<pre tag="javascript">
+let doit = function () {
+    console.log("试试箭头函数");
+};
+</pre>
+<p>
+    那么可以：
+</p>
+<pre tag="javascript">
+const parse = require("@babel/parser").parse
+const traverse = require("@babel/traverse").default
+const types = require("@babel/types")
+const generate = require("@babel/generator").default
+
+//【1】获取语法树
+let ast = parse(code)
+
+traverse(ast, {
+
+    //【2】遍历语法树
+    enter(path) {
+
+        //【3】修改语法树（比如节点类型是ArrowFunctionExpression的话，特殊处理一下）
+        if (path.type == 'ArrowFunctionExpression') {
+
+            // 把类型从箭头函数变成普通函数（当然，实际代码还需要考虑this的调整等，还可以借助types进行一些判断）
+            path.node.type = 'FunctionExpression'
+        }
+    }
+})
+
+//【4】变成目标代码
+const output = generate( ast,{ /* options */})
+console.log(output.code)
+</pre>

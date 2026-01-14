@@ -1,0 +1,41 @@
+<header>
+    基本语法
+</header>
+<h2>
+    定义
+</h2>
+<p>
+    比如我们要开发一个Loader
+    <span class="important">DemoLoader</span>
+    ，直接新建文件 demo-loader.js后写入如下代码：
+</p>
+<pre tag="javascript">
+const loaderUtils = require('loader-utils');
+module.exports = function(source){
+
+    let options = loaderUtils.getOptions(this) || {
+       
+    };
+
+    return newSource;
+}
+</pre>
+<h2>
+    使用
+</h2>
+<p>
+    定义好了以后，就和普通的Loader一样使用即可，比如在
+    <span class="important">webpack.config.js</span>
+    文件中：
+</p>
+<pre tag="javascript">
+
+module.exports = {
+    ...
+    {
+        loader:"./demo-loader.js",
+        options:{}
+    }
+    ...
+};
+</pre>

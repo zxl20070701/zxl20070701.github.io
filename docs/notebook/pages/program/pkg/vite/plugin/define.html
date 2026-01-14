@@ -1,0 +1,50 @@
+<header>
+    基本语法
+</header>
+<p>
+    完整的官方文档地址：
+    <a href="https://cn.vitejs.dev/guide/api-plugin" target="_blank">
+        https://cn.vitejs.dev/guide/api-plugin
+    </a>
+</p>
+<h2>
+    定义
+</h2>
+<p>
+    比如我们要开发一个插件
+    <span class="important">DemoPlugin</span>
+    ，直接新建文件 demp-plugin.ts后写入如下代码：
+</p>
+<pre tag="javascript">
+import type { Plugin } from 'vite'
+
+export default function DemoPlugin(): Plugin {
+    return {
+        // 插件名称
+        name: 'DemoPlugin',
+
+        // 代码转译
+        transform(code, id, opt) {
+            // todo
+        }
+    }
+};
+</pre>
+<h2>
+    使用
+</h2>
+<p>
+    定义好了以后，就和普通的插件一样使用即可，比如在
+    <span class="important">vite.config.js</span>
+    文件中：
+</p>
+<pre tag="javascript">
+import { defineConfig } from 'vite'
+import DemoPlugin from './demp-plugin'
+
+export default defineConfig({
+    ...
+    plugins: [DemoPlugin(),...]
+    ...
+})
+</pre>

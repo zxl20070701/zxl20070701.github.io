@@ -1,0 +1,85 @@
+<header>
+    模块
+</header>
+<h2>
+    导出
+</h2>
+<h3>
+    导出声明
+</h3>
+<p>
+    比如变量、函数、类、类型别名或接口等，例如：
+</p>
+<pre tag="javascript">export interface DemoType { }</pre>
+<p>
+    或者
+</p>
+<pre tag="javascript">export const demo: number = 10;</pre>
+<p>
+    当然，别的声明也可以，这里就不一一举例子了。如何记住？在声明语句的开头加一个export即可。
+</p>
+<h3>
+    导出语句
+</h3>
+<p>
+    有时候，我们可能需要先声明，然后导出，可以使用类似下面的语句：
+</p>
+<pre tag="javascript">
+class DemoClass {}
+
+// 导出
+export { DemoClass };
+</pre>
+<p>
+    当然，导出的时候，可以修改名称：
+</p>
+<pre tag="javascript">export { DemoClass as ExampleClass };</pre>
+<h3>
+    重新导出
+</h3>
+<p>
+    比如我们导出一个功能来自一个已经存在的模块：
+</p>
+<pre tag="javascript">
+    export { demoFun } from "./demo";
+</pre>
+<p>
+    或者一个模块可以包裹多个模块，并通过下面的语法把他们导出的内容联合在一起：
+</p>
+<pre tag="javascript">export * from "demo";</pre>
+<h2>
+    导入
+</h2>
+<h3>
+    导入一个模块中的某个导出内容
+</h3>
+<pre tag="javascript">import { demoFun } from "./demo";</pre>
+<h4>
+    可以对导入内容重命名
+</h4>
+<p>
+    当然，导出的内容可以改名后使用：
+</p>
+<pre tag="javascript">import { demoFun as doit } from "./demo";</pre>
+<h3>
+    将整个模块导入到一个变量，并通过它来访问模块的导出部分
+</h3>
+<p>
+    比如我们把demo模块导出成一个变量demo：
+</p>
+<pre tag="javascript">import * as demo from "./demo";</pre>
+<p>
+    那么，本来的demoFun就可以这样访问：
+</p>
+<pre tag="javascript">demo.demoFun();</pre>
+<h2>
+    默认导出&导入
+</h2>
+<p>
+    导出的时候，只需要把export改成export default即可，例如：
+</p>
+<pre tag="javascript">export default function() { }</pre>
+<p>
+    导入的时候，用一个变量（合理的标志符即可）接一下就可以了：
+</p>
+<pre tag="javascript">import demoFun from "./demo";</pre>

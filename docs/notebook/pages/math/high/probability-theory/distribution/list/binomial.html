@@ -1,0 +1,20 @@
+<header>
+    二项分布
+</header>
+<p>
+    如果记X为n重伯努利试验中成功（记为事件A）的次数，则X的可能取值为0,1,...,n。记p为每次试验中A发生的概率，即P(A)=p，则P(<code>["upLine","A"]</code>)=1-p。
+</p>
+<p>
+    因为n重伯努利试验的基本结果可以记作
+    <span class="oneline">
+        ω=(ω<sub>1</sub>,ω<sub>2</sub>,...,ω<sub>n</sub>)
+    </span>
+    其中ω<sub>i</sub>或者为A，或者为<code>["upLine","A"]</code>。这样的ω共有2<sup>n</sup>个，这2<sup>n</sup>个样本点ω组成了样本空间Ω。
+</p>
+<p>
+    可以得到，X的分布列为：
+    <span class="oneline">
+        P(X=k)=<code>["C","n","k"]</code>p<sup>k</sup>(1-p)<sup>1-k</sup>,k=0,1,...,n
+    </span>
+    这个分布称为<span class="important">二项分布</span>，记为X~b(n,p)。
+</p>

@@ -1,0 +1,57 @@
+<header>
+    跳转
+</header>
+<h2>
+    数据传递
+</h2>
+<p>
+    比如我们有下面的跳转语句：
+</p>
+<pre tag="javascript">
+uni.navigateTo({
+    url: '/pages/search/search?from=home&tag=1'
+})
+</pre>
+<p>
+    那么，在
+    <span class="special">/pages/search/search.vue</span>
+    页面，就可以这样接收参数：
+</p>
+<pre tag="javascript">
+export default {
+    onLoad: function (option) {
+
+        // {from: "home", tag: "1"}
+        console.log(option) 
+    }
+}
+</pre>
+<h3>
+    特殊字符
+</h3>
+<p>
+    参数中出现空格等特殊字符时需要对参数进行编码，可以考虑使用
+    <span class="warn">encodeURIComponent</span>
+    对参数进行编码。
+</p>
+<p>
+    比如上面的例子修改为：
+</p>
+<pre tag="javascript">
+const dataStr = encodeURIComponent(JSON.stringify({from: "home", tag: "1"}));
+uni.navigateTo({
+    url: '/pages/search/search?encodedData='+dataStr
+})
+</pre>
+<p>
+    获取数据的地方：
+</p>
+<pre tag="javascript">
+export default {
+    onLoad: function (option) {
+
+        // {from: "home", tag: "1"}
+        console.log( JSON.parse(decodeURIComponent(option.encodedData))) 
+    }
+}
+</pre>

@@ -1,0 +1,47 @@
+<header>
+    证明
+</header>
+<p>
+    在平面坐标系中，有一个点
+    <code>
+    ["join",["rightTop","p","'"],"(",["rightTop","x","'"],",",["rightTop","y","'"],")"]
+</code>
+    经过逆时针旋转θ度，那么坐标变换公式就是：
+</p>
+<p>
+    <code>
+        ["equationSet",
+            ["join","x=",["rightTop","x","'"],"cosθ - ",["rightTop","y","'"],"sinθ"],
+            ["join","y=",["rightTop","x","'"],"sinθ + ",["rightTop","y","'"],"cosθ"]
+        ]
+    </code>
+</p>
+<h2>
+    证：
+</h2>
+<img src="./images/rotate_x_y.jpeg" />
+<p>
+    由上图可得：
+</p>
+<p>
+    <code>
+        ["equationSet",
+            ["join",["division","x","R"]," = cos(α + θ) = cosθcosα - sinθsinα"],
+            ["join",["division","y","R"]," = sin(α + θ) = cosαsinθ + cosθsinα"]
+        ]
+    </code>
+</p>
+<p>
+    进一步可得：
+</p>
+<p>
+    <code>
+        ["equationSet",
+            ["join","x = Rcosθcosα - Rsinθsinα = Rcosα * cosθ - Rsinα * sinθ = ",["rightTop","x","'"],"cosθ - ",["rightTop","y","'"],"sinθ"],
+            ["join","y = Rcosαsinθ + Rcosθsinα = Rcosα * sinθ + Rsinα * cosθ = ",["rightTop","x","'"],"sinθ + ",["rightTop","y","'"],"cosθ"]
+        ]
+    </code>
+</p>
+<p>
+    至此，上述得证。
+</p>

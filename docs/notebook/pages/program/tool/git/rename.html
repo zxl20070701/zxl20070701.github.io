@@ -1,0 +1,42 @@
+<header>
+    文件或文件夹名称大小写修改
+</header>
+<p>
+    比如我们有个文件
+    <span class="warn">
+        ./src/Example.txt
+    </span>已经提交到git仓库了。
+    现在，你想把这个文件名称改为
+    <span class="warn">
+        ./src/example.txt
+    </span>。
+</p>
+<p>
+    我们知道，如果你右键重命名，在不修改git配置的前提下， 是不会有任何用的。
+</p>
+<p>
+    怎么办？
+</p>
+<p>
+    很简单，只需要使用下面命令进行修改即可：
+</p>
+<pre>
+    git mv ./src/Example.txt ./src/example.txt
+</pre>
+<p>
+    运行后执行
+    <span class="special">git status</span>
+    就可以看见：
+</p>
+<pre>
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        renamed:    src/Example.txt -> scr/example.txt
+</pre>
+<p>
+    修改成功了，后续正常提交即可！
+</p>

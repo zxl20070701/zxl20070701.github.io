@@ -1,0 +1,199 @@
+<header>
+    #include &lt;stdlib.h&gt;
+</header>
+<h2>
+    库函数
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>序号</th>
+            <th>函数 &amp; 描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>
+                <div class="warn">double atof(const char *str)</div>把参数 <i>str</i> 所指向的字符串转换为一个浮点数（类型为
+                double 型）。
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>
+                <div class="warn">int atoi(const char *str)</div>把参数 <i>str</i> 所指向的字符串转换为一个整数（类型为 int
+                型）。
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>
+                <div class="warn">long int atol(const char *str)</div>把参数 <i>str</i> 所指向的字符串转换为一个长整数（类型为
+                long int 型）。
+            </td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>
+                <div class="warn">double strtod(const char *str, char **endptr)</div>把参数 <i>str</i>
+                所指向的字符串转换为一个浮点数（类型为 double 型）。
+            </td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>
+                <div class="warn">long int strtol(const char *str, char **endptr, int base)</div>把参数
+                <i>str</i> 所指向的字符串转换为一个长整数（类型为 long int 型）。
+            </td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>
+                <div class="warn">unsigned long int strtoul(const char *str, char **endptr, int
+                    base)</div>把参数 <i>str</i> 所指向的字符串转换为一个无符号长整数（类型为 unsigned long int 型）。
+            </td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>
+                <div class="warn">void *calloc(size_t nitems, size_t size)</div>分配所需的内存空间，并返回一个指向它的指针。
+            </td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>
+                <div class="warn">void free(void *ptr)</div>释放之前调用 <i>calloc、malloc</i> 或 <i>realloc</i>
+                所分配的内存空间。
+            </td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>
+                <div class="warn">void *malloc(size_t size)</div>分配所需的内存空间，并返回一个指向它的指针。
+            </td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>
+                <div class="warn">void *realloc(void *ptr, size_t size)</div>尝试重新调整之前调用 <i>malloc</i>
+                或 <i>calloc</i> 所分配的 ptr 所指向的内存块的大小。
+            </td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>
+                <div class="warn">void abort(void)</div>使一个异常程序终止。
+            </td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>
+                <div class="warn">int atexit(void (*func)(void))</div>当程序正常终止时，调用指定的函数 <b>func</b>。
+            </td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>
+                <div class="warn">void exit(int status)</div>使程序正常终止。
+            </td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td>
+                <div class="warn">char *getenv(const char *name)</div>搜索 name 所指向的环境字符串，并返回相关的值给字符串。
+            </td>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td>
+                <div class="warn">int system(const char *string)</div>由 string 指定的命令传给要被命令处理器执行的主机环境。
+            </td>
+        </tr>
+        <tr>
+            <td>16</td>
+            <td>
+                <div class="warn">void *bsearch(const void *key, const void *base, size_t nitems, size_t
+                    size, int (*compar)(const void *, const void *))</div>执行二分查找。
+            </td>
+        </tr>
+        <tr>
+            <td>17</td>
+            <td>
+                <div class="warn">void qsort(void *base, size_t nitems, size_t size, int (*compar)(const
+                    void *, const void*))</div>数组排序。
+            </td>
+        </tr>
+        <tr>
+            <td>18</td>
+            <td>
+                <div class="warn">int abs(int x)</div>返回 x 的绝对值。
+            </td>
+        </tr>
+        <tr>
+            <td>19</td>
+            <td>
+                <div class="warn">div_t div(int numer, int denom)</div>分子除以分母。
+            </td>
+        </tr>
+        <tr>
+            <td>20</td>
+            <td>
+                <div class="warn">long int labs(long int x)</div>返回 x 的绝对值。
+            </td>
+        </tr>
+        <tr>
+            <td>21</td>
+            <td>
+                <div class="warn">ldiv_t ldiv(long int numer, long int denom)</div>分子除以分母。
+            </td>
+        </tr>
+        <tr>
+            <td>22</td>
+            <td>
+                <div class="warn">int rand(void)</div>返回一个范围在 0 到 <i>RAND_MAX</i> 之间的伪随机数。
+            </td>
+        </tr>
+        <tr>
+            <td>23</td>
+            <td>
+                <div class="warn">void srand(unsigned int seed)</div>该函数播种由函数 <b>rand</b> 使用的随机数发生器。
+            </td>
+        </tr>
+        <tr>
+            <td>24</td>
+            <td>
+                <div class="warn">int mblen(const char *str, size_t n)</div>返回参数 <i>str</i>
+                所指向的多字节字符的长度。
+            </td>
+        </tr>
+        <tr>
+            <td>25</td>
+            <td>
+                <div class="warn">size_t mbstowcs(schar_t *pwcs, const char *str, size_t n)</div>把参数
+                <i>str</i> 所指向的多字节字符的字符串转换为参数 <i>pwcs</i> 所指向的数组。
+            </td>
+        </tr>
+        <tr>
+            <td>26</td>
+            <td>
+                <div class="warn">int mbtowc(whcar_t *pwc, const char *str, size_t n)</div>检查参数
+                <i>str</i> 所指向的多字节字符。
+            </td>
+        </tr>
+        <tr>
+            <td>27</td>
+            <td>
+                <div class="warn">size_t wcstombs(char *str, const wchar_t *pwcs, size_t n)</div>把数组
+                <i>pwcs</i> 中存储的编码转换为多字节字符，并把它们存储在字符串 <i>str</i> 中。
+            </td>
+        </tr>
+        <tr>
+            <td>28</td>
+            <td>
+                <div class="warn">int wctomb(char *str, wchar_t wchar)</div>检查对应于参数 <i>wchar</i>
+                所给出的多字节字符的编码。
+            </td>
+        </tr>
+    </tbody>
+</table>

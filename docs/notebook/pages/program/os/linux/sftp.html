@@ -1,0 +1,72 @@
+<header>
+    sftp
+</header>
+<h2>
+    连接
+</h2>
+<pre>
+    sftp -P 22 username@ip
+</pre>
+<p>
+    然后输入密码即可登录。
+</p>
+<h2>
+    文件传输
+</h2>
+<h3>
+    上传文件
+</h3>
+<pre>
+    put -r /User/zxl20070701/Desktop/demo.html /root/zxl20070701
+</pre>
+<p>
+    上面的例子就是把本机电脑的<span class="special">/User/zxl20070701/Desktop/demo.html</span>文件上传到服务器的
+    <span class="special">/root/zxl20070701</span>文件夹下。
+</p>
+<h3>
+    下载文件
+</h3>
+<pre>
+    get -r /root/zxl20070701/demo.html /User/zxl20070701/Desktop
+</pre>
+<p>
+    上面的例子就是把服务器的<span class="special">/root/zxl20070701/demo.html</span>文件下载到本机电脑的
+    <span class="special">/User/zxl20070701/Desktop</span>文件夹下。
+</p>
+<h2>
+    服务器操作
+</h2>
+<ul>
+    <li>
+        pwd 打印服务器当前目录
+    </li>
+    <li>
+        cd 切换服务器当前目录
+    </li>
+    <li>
+        ls 列出服务器当前目录下的文件
+    </li>
+    <li>
+        mkdir 为服务器创建目录
+    </li>
+</ul>
+<h2>
+    本机操作
+</h2>
+<p>
+    比服务器目录操作命令多了一个"l"(Local)：
+</p>
+<ul>
+    <li>
+        lpwd 打印本机当前目录
+    </li>
+    <li>
+        lcd 切换本机当前目录
+    </li>
+    <li>
+        lls 列出本机当前目录下的文件
+    </li>
+    <li>
+        lmkdir 为本机创建目录
+    </li>
+</ul>

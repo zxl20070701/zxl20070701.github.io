@@ -1,0 +1,180 @@
+<header>
+    画布（Canvas）
+</header>
+<p>
+    和 html5 中的画布一样，都是用来绘图的。您可以将图形，文本，小部件或框架放置在画布上。
+</p>
+<h2>
+    语法
+</h2>
+<pre tag>
+canvas = tkinter.Canvas ( master, option=value, ... )
+</pre>
+<p>
+    其中master表示按钮的父容器，option是可选项目，包括：
+</p>
+<table class="reference">
+    <thead>
+        <tr>
+            <th>序号</th>
+            <th>可选项 &amp; 描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>
+                <p><b>bd</b></p>
+                <p>边框宽度，单位像素，默认为 2 像素。</p>
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>
+                <p><b>bg</b></p>
+                <p>背景色</p>
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>
+                <p><b>confine</b></p>
+                <p>如果为 true (默认), 画布不能滚动到可滑动的区域外。</p>
+            </td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>
+                <p><b>cursor</b></p>
+                <p>光标的形状设定，如arrow, circle, cross, plus 等</p>
+            </td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>
+                <p><b>height</b></p>
+                <p>高度</p>
+            </td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>
+                <p><b>highlightcolor</b></p>
+                <p>要高亮的颜色</p>
+            </td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>
+                <p><b>relief</b></p>
+                <p>边框样式,可选值为 FLAT、SUNKEN、RAISED、GROOVE、RIDGE。 默认为 FLAT。</p>
+            </td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>
+                <p><b>scrollregion</b></p>
+                <p>一个元组 tuple (w, n, e, s) ，定义了画布可滚动的最大区域，w 为左边，n 为头部，e 为右边，s 为底部。</p>
+            </td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>
+                <p><b>width</b></p>
+                <p>画布在 X 坐标轴上的大小。</p>
+            </td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>
+                <p><b>xscrollincrement</b></p>
+                <p>用于滚动请求水平滚动的数量值。</p>
+            </td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>
+                <p><b>xscrollcommand</b></p>
+                <p>水平滚动条，如果画布是可滚动的，则该属性是水平滚动条的 .set（）方法。</p>
+            </td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>
+                <p><b>yscrollincrement</b></p>
+                <p>类似 xscrollincrement, 但是垂直方向。</p>
+            </td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>
+                <p><b>yscrollcommand</b></p>
+                <p>垂直滚动条，如果画布是可滚动的，则该属性是垂直滚动条的 .set（）方法。</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    比如，在页面中绘制一个矩形：
+</p>
+<pre tag="javascript">
+import tkinter
+root = tkinter.Tk()
+root.geometry('400x300')
+
+canvas = tkinter.Canvas(root,bg="white")
+canvas.create_rectangle(10,10,110,110)
+canvas.pack()
+
+root.mainloop() 
+</pre>
+<h2>
+    图形组件
+</h2>
+<h3>
+    arc
+</h3>
+<p>
+    创建一个扇形：
+</p>
+<pre tag="javascript">
+coord = 10, 50, 240, 210
+arc = canvas.create_arc(coord, start=0, extent=150, fill="blue")
+</pre>
+<h3>
+    image
+</h3>
+<p>
+    创建图像：
+</p>
+<pre tag="javascript">
+filename = PhotoImage(file = "sunshine.gif")
+image = canvas.create_image(50, 50, anchor=NE, image=filename)
+</pre>
+<h3>
+    line
+</h3>
+<p>
+    创建线条：
+</p>
+<pre tag="javascript">
+line = canvas.create_line(x0, y0, x1, y1, ..., xn, yn, options)
+</pre>
+<h3>
+    oval
+</h3>
+<p>
+    创建一个圆：
+</p>
+<pre tag="javascript">
+oval = canvas.create_oval(x0, y0, x1, y1, options)
+</pre>
+<h3>
+    polygon
+</h3>
+<p>
+    创建一个至少有三个顶点的多边形：
+</p>
+<pre tag="javascript">
+polygon = canvas.create_polygon(x0, y0, x1, y1,...xn, yn, options)
+</pre>

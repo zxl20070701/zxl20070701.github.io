@@ -1,0 +1,22 @@
+<header>
+    useTransition
+</header>
+<p>
+    帮助你在不阻塞 UI 的情况下更新状态。
+</p>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+let [isPending, startTransition] = useTransition()
+</pre>
+<ul>
+    <li>
+        <span class="important">isPending</span>：
+        告诉你是否存在待处理的transition。
+    </li>
+    <li>
+        <span class="important">startTransition</span>：
+        你可以使用此方法将状态更新标记为transition。
+    </li>
+</ul>

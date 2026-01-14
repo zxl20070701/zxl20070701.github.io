@@ -1,0 +1,40 @@
+<header>
+    tsconfig.json
+</header>
+<p>
+    此文件指定用来编译这个项目的根文件和编译选项。
+</p>
+<pre tag="javascript">
+{
+    // 指定一个包含相对或绝对文件路径的列表
+    "files": [],
+
+    // 定义哪些文件夹下面的文件被被编译
+    "include": ["./src/**/*"],
+
+    // 定义哪些是不被处理的
+    "exclude": ["./node_modules/**/*"],
+
+    "compilerOptions": {
+      "target": "ES6",  // 设置需要转换的es版本,
+      "module": "System", // 指定使用模块化规范
+      "outDir": "./dist", //指定编译后文件的输出目录
+      "outFile": "System.js", // 把所有需要编译的文件打到一个文件中，这里需要和module配合，module必须要为amd或者system
+
+      // 指定要包含在编译中的库文件,一般来说在浏览器环境下不需要改动，在node等环境下可能改动，
+      // 可选择的查看https://www.typescriptlang.org/tsconfig#lib
+      "lib": ["ES6", "DOM"],  
+      
+      "allowJs": false, // 是否对js文件进行编译, 默认false
+      "checkJs": false, // 是否去检查js语法， 会给js加入ts的检查规则
+      "removeComments": false, // 在转换的过程中是否移除注释
+      "noEmit": false, //不生成编译文件
+      "noEmitOnError": false, //当有错误的时候不编译生成文件
+      "alwaysStrict": true, //使用编译后是严格模式
+      "noImplicitAny": false, //不允许隐的any
+      "noImplicitThis": false, // 不允许不明确的this使用 
+      "strictNullChecks": false, //严格检查null值
+      "strict": false, // 严格检查的总开关
+    }
+}
+</pre>

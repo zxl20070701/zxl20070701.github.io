@@ -1,0 +1,63 @@
+<header>
+    快速入门使用
+</header>
+<h2>
+    基本说明
+</h2>
+<p>
+    一般我们都需要安装至少两个（或更多）包来组合使用，这里我们举个例子：
+</p>
+<pre tag="javascript">
+    npm install --save-dev @babel/core @babel/preset-env
+</pre>
+<p>
+    其中
+    <span class="important">@babel/core</span>
+    是核心包，必须的，而
+    <span class="important">@babel/preset-env</span>
+    是具体干事的。
+</p>
+<p class="warn">
+    温馨提示：如果是ts，可以选择@babel/preset-typescript，如果是jsx，可以选择@babel/preset-react等，当然，他们之间也可以灵活的组合。
+</p>
+<p>
+    和webpack等配合使用的时候，可以通过配置文件来规范babel具体如何转义（下面还是以上面的包举例子）。
+</p>
+<h3>
+    .babelrc
+</h3>
+<pre tag="javascript">
+{
+    "presets": ["@babel/preset-env"]
+}
+</pre>
+<h3>
+    babel.config.js
+</h3>
+<pre tag="javascript">
+module.exports = {
+    "presets": ["@babel/preset-env"]
+};
+</pre>
+<p class="warn">
+    温馨提示：不同的插件有自己的可配置项，具体的查询对应的文档即可。
+</p>
+<h2>
+    脚本代码
+</h2>
+<p>
+    直接在需要的nodejs代码中使用下面的内容：
+</p>
+<pre tag="javascript">
+const babelCore = require("@babel/core");
+
+let code = babelCore.transformSync(source, {
+    configFile: false,
+    presets: [require("@babel/preset-env")]
+}).code;
+</pre>
+<p class="warn">
+    温馨提示：上面只是一个同步的例子，可以
+    <a href="https://babeljs.io/docs/en/babel-core" target="_blank">点击此处</a>
+    了解更多细节。
+</p>

@@ -1,0 +1,79 @@
+<header>
+    条件编译扩展
+</header>
+<p>
+    完整的官方文档地址：
+    <a href="https://uniapp.dcloud.net.cn/collocation/package.html" target="_blank">
+        https://uniapp.dcloud.net.cn/collocation/package.html
+    </a>
+</p>
+<p>
+    比如我们现在最终打包的平台是web，不过，希望细化为普通web和微信公众号，希望扩展条件编译平台。
+</p>
+<p>
+    怎么办？下面我们进行演示：
+</p>
+<h2>
+    第一步：配置平台
+</h2>
+<p>
+    在package.json中添加下面代码：
+</p>
+<pre tag="javascript">
+{
+    "uni-app":{
+        "scripts": {
+            "h5-offiaccount": {
+                "title": "微信公众号",
+                "env": {
+                    "UNI_PLATFORM": "h5"
+                },
+                "define": {
+                    "H5-OFFIACCOUNT": true
+                }
+            },
+            "h5-web": {
+                "title": "普通Web",
+                "env": {
+                    "UNI_PLATFORM": "h5"
+                },
+                "define": {
+                    "H5-WEB": true
+                }
+            }
+        }
+    }
+}
+</pre>
+<p class="warn">
+    温馨提示：上面的 “define” 属性值最好使用大写，否则可能会无效。
+</p>
+<h2>
+    第二步：配置命令
+</h2>
+<p>
+    以上面的“微信公众号”为例，添加script运行命令：
+</p>
+<pre tag="javascript">
+{
+    "scripts": {
+        "dev:h5-offiaccount": "npm run dev:custom h5-offiaccount",
+        "build:h5-offiaccount": "npm run build:custom h5-offiaccount",    
+    }
+}
+</pre>
+<h2>
+    第三步：使用
+</h2>
+<p>
+    和原本的条件编译用起来完全一样，因此，我们下面简单举一个css代码中使用例子：
+</p>
+<pre tag="css">
+/* #ifdef H5-OFFIACCOUNT */
+background-color: blue;
+/* #endif */
+
+/* #ifdef H5-WEB */
+background-color: red;
+/* #endif */
+</pre>

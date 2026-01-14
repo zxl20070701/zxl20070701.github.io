@@ -1,0 +1,178 @@
+<header>
+    picker
+</header>
+<p>
+    从底部弹起的滚动选择器。支持五种选择器，通过mode来区分，分别是普通选择器，多列选择器，时间选择器，日期选择器，省市区选择器，默认是普通选择器。
+</p>
+<h2>
+    普通选择器
+</h2>
+<p>
+    <span class="important">
+        mode = selector
+    </span>
+</p>
+<h3>
+    属性说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+            <th>平台差异说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>range</td>
+            <td>Array / Array&lt;Object&gt;</td>
+            <td>[]</td>
+            <td>mode为 selector 或 multiSelector 时，range 有效</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>range-key</td>
+            <td>String</td>
+            <td></td>
+            <td>当 range 是一个 Array＜Object＞ 时，通过 range-key 来指定 Object 中 key
+                的值作为选择器显示内容</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>value</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>value 的值表示选择了 range 中的第几个（下标从 0 开始）</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>selector-type</td>
+            <td>String</td>
+            <td>auto</td>
+            <td>UI类型,仅大屏时该属性生效，支持 picker、select、auto，默认在 iPad 以 picker 样式展示而在 PC 以 select 样式展示
+            </td>
+            <td>H5 2.9.9+</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁用</td>
+            <td>快手小程序不支持</td>
+        </tr>
+        <tr>
+            <td>@change</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>value 改变时触发 change 事件，event.detail = {value: value}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>@cancel</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>取消选择或点遮罩层收起 picker 时触发</td>
+            <td>快手小程序不支持</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    多列选择器
+</h2>
+<p>
+    <span class="important">
+        mode = multiSelector
+    </span>
+</p>
+<h3>
+    平台差异说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>App</th>
+            <th>H5</th>
+            <th>微信小程序</th>
+            <th>支付宝小程序</th>
+            <th>百度小程序</th>
+            <th>抖音小程序<br />飞书小程序</th>
+            <th>QQ小程序</th>
+            <th>快手小程序</th>
+            <th>京东小程序</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="white-space: nowrap;">vue支持<br />nvue自2.4起支持</td>
+            <td>√</td>
+            <td>√</td>
+            <td>x</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    属性说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>range</td>
+            <td>二维 Array / 二维 Array＜Object＞</td>
+            <td>[]</td>
+            <td>mode为 selector 或 multiSelector 时，range
+                有效。二维数组，长度表示多少列，数组的每项表示每列的数据，如[["a","b"], ["c","d"]]</td>
+        </tr>
+        <tr>
+            <td>range-key</td>
+            <td>String</td>
+            <td></td>
+            <td>当 range 是一个二维 Array＜Object＞ 时，通过 range-key 来指定 Object 中 key 的值作为选择器显示内容</td>
+        </tr>
+        <tr>
+            <td>value</td>
+            <td>Array</td>
+            <td>[]</td>
+            <td>value 每一项的值表示选择了 range 对应项中的第几个（下标从 0 开始）</td>
+        </tr>
+        <tr>
+            <td>@change</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>value 改变时触发 change 事件，event.detail = {value: value}</td>
+        </tr>
+        <tr>
+            <td>@columnchange</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>某一列的值改变时触发 columnchange 事件，event.detail = {column: column, value: value}，column 的值表示改变了第几列（下标从0开始），value 的值表示变更值的下标</td>
+        </tr>
+        <tr>
+            <td>@cancel</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>取消选择时触发（快手小程序不支持）</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁用（快手小程序不支持）</td>
+        </tr>
+    </tbody>
+</table>

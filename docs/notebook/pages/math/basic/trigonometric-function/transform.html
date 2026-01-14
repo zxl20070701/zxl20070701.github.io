@@ -1,0 +1,90 @@
+<header>
+    变换公式及其推导过程
+</header>
+<h2>
+    推导
+</h2>
+<img src="./images/trigonometric-function-table.jpeg">
+<p>
+    由上图可以轻松得出最基本的两个公式：
+</p>
+<ul>
+    <li>
+        <code>
+            ["join","sin(α+β) = cosαsinβ + sinαcosβ"]
+        </code>
+    </li>
+    <li>
+        <code>
+            ["join","cos(α+β) = cosαcosβ - sinαsinβ"]
+        </code>
+    </li>
+</ul>
+<h2>
+    快速查询
+</h2>
+<h3>
+    相乘
+</h3>
+<ul>
+    <li>
+        <code>
+            ["join","sinαsinβ = -",["division","1","2"],"[cos(α+β) - cos(α-β)]"]
+        </code>
+    </li>
+    <li>
+        <code>
+            ["join","cosαcosβ = ",["division","1","2"],"[cos(α+β) + cos(α-β)]"]
+        </code>
+    </li>
+    <li>
+        <code>
+            ["join","sinαcosβ = ",["division","1","2"],"[sin(α+β) + sin(α-β)]"]
+        </code>
+    </li>
+    <li>
+        <code>
+            ["join","cosαsinβ = ",["division","1","2"],"[sin(α+β) - sin(α-β)]"]
+        </code>
+    </li>
+</ul>
+<h3>
+    相加
+</h3>
+<ul>
+    <li>
+        <code>
+            ["join","sinα + sinβ = 2sin",["division","α+β","2"],"cos",["division","α-β","2"]]
+       </code>
+    </li>
+    <li>
+        <code>
+            ["join","sinα - sinβ = 2cos",["division","α+β","2"],"sin",["division","α-β","2"]]
+       </code>
+    </li>
+    <li>
+        <code>
+            ["join","cosα + cosβ = 2cos",["division","α+β","2"],"cos",["division","α-β","2"]]
+       </code>
+    </li>
+    <li>
+        <code>
+            ["join","cosα - cosβ = -2sin",["division","α+β","2"],"sin",["division","α-β","2"]]
+       </code>
+    </li>
+</ul>
+<h3>
+    半角公式
+</h3>
+<ul>
+    <li>
+        <code>
+            ["join","sin",["division","α","2"]," = ±",["gen",["division","1-cosα","2"]]]
+        </code>
+    </li>
+    <li>
+        <code>
+            ["join","cos",["division","α","2"]," = ±",["gen",["division","1+cosα","2"]]]
+        </code>
+    </li>
+</ul>

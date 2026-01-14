@@ -1,0 +1,128 @@
+<header>
+    常用方法&属性
+</header>
+<h2>
+    基础
+</h2>
+<h3>
+    开启深度计算
+</h3>
+<pre tag="javascript">
+    gl.enable(gl.DEPTH_TEST);
+ </pre>
+<h3>
+    缓冲区数据类型
+</h3>
+<p>
+    可选的数据类型，应该是以下的某个： Uint8Array、Int16Array、Uint16Array、Int32Array、Uint32Array、Float32Array。
+</p>
+<h3>
+    viewport
+</h3>
+<p>
+    gl.viewport告诉WebGL如何将裁剪空间（-1 到 +1）中的点转换到像素空间
+</p>
+<pre tag="javascript">
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+</pre>
+<p>
+    当你第一次创建WebGL上下文的时候WebGL会设置视域大小和画布大小匹配，但是在那之后就需要你自己设置（当你改变画布大小就需要告诉WebGL新的视域设置）
+</p>
+<h2>
+    普通画笔
+</h2>
+<h3>
+    点
+</h3>
+<pre tag="javascript">
+    gl.drawArrays(gl.POINTS, first, count);
+</pre>
+<h3>
+    直线
+</h3>
+<pre tag="javascript">
+    gl.drawArrays(gl.LINES, first, count);
+</pre>
+<h3>
+    连续直线
+</h3>
+<pre tag="javascript">
+    gl.drawArrays(gl.LINE_STRIP, first, count);
+</pre>
+<h3>
+    闭合直线
+</h3>
+<pre tag="javascript">
+    gl.drawArrays(gl.LINE_LOOP, first, count);
+</pre>
+<h3>
+    三角形
+</h3>
+<pre tag="javascript">
+    gl.drawArrays(gl.TRIANGLES, first, count);
+</pre>
+<h3>
+    共边三角形
+</h3>
+<pre tag="javascript">
+    gl.drawArrays(gl.TRIANGLE_STRIP, first, count);
+</pre>
+<h3>
+    旋转围绕三角形
+</h3>
+<pre tag="javascript">
+    gl.drawArrays(gl.TRIANGLE_FAN, first, count);
+</pre>
+<h2>
+    索引画笔
+</h2>
+<p>
+    下面的参数type表示索引缓冲区的数据类型，应该是
+    <span class="important">gl.UNSIGNED_BYTE</span>
+    或<span class="important">gl.UNSIGNED_SHORT</span>。
+</p>
+<p class="warn">
+    gl.UNSIGNED_BYTE对应Uint8Array，gl.UNSIGNED_SHORT对应Uint16Array。
+</p>
+<h3>
+    点
+</h3>
+<pre tag="javascript">
+    gl.drawElements(gl.POINTS, count, type, first);
+</pre>
+<h3>
+    直线
+</h3>
+<pre tag="javascript">
+    gl.drawElements(gl.LINES, count, type, first);
+</pre>
+<h3>
+    连续直线
+</h3>
+<pre tag="javascript">
+    gl.drawElements(gl.LINE_STRIP, count, type, first);
+</pre>
+<h3>
+    闭合直线
+</h3>
+<pre tag="javascript">
+    gl.drawElements(gl.LINE_LOOP, count, type, first);
+</pre>
+<h3>
+    三角形
+</h3>
+<pre tag="javascript">
+    gl.drawElements(gl.TRIANGLES, count, type, first);
+</pre>
+<h3>
+    共边三角形
+</h3>
+<pre tag="javascript">
+    gl.drawElements(gl.TRIANGLE_STRIP, count, type, first);
+</pre>
+<h3>
+    旋转围绕三角形
+</h3>
+<pre tag="javascript">
+    gl.drawElements(gl.TRIANGLE_FAN, count, type, first);
+</pre>

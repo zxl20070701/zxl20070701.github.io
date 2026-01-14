@@ -1,0 +1,76 @@
+<header>
+    如何灵活设置pdf转word文件后的文件名称？
+</header>
+<h2>
+    常规说明
+</h2>
+<p>
+    getName方法有四个参数，分别表示：
+    <span class="warn">文件名称</span> 、
+    <span class="warn">文件内容</span>、
+    <span class="warn">当前第几页</span>、
+    <span class="warn">总页数</span>。
+</p>
+<p>
+    在获取最终Word名称的时候，可以借助此进行任意运算。比如我们有个pdf文件，叫：example.pdf，一共两页，那么这样写：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import pdf
+
+def getName(name, texts, index, total):
+    return name + "-" + str(index+1)
+
+pdf.toWord("./example.pdf", "./words", getName)
+</pre>
+<p>
+    就可以在words文件夹中看见两份word文件：example-1.docx和example-2.docx
+</p>
+<p>
+    那如果希望pdf文件就一张的时候直接使用文件名称，多于一张的时候才加上页数序号：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import pdf
+
+def getName(name, texts, index, total):
+    if total > 1:
+        return name + "_" + str(index)
+    else:
+        return name
+
+pdf.toWord("./example.pdf", "./words", getName)
+</pre>
+<h2>
+    借助replace
+</h2>
+<p>
+    如果文件名称都是类似 <span class="special">文件_李四.pdf</span>，而我们只需要用人名作为word文件名称：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import pdf
+
+def getName(name, texts, index, total):
+    return name.replace("文件_", "")
+
+pdf.toWord("./文件_李四.pdf", "./words", getName)
+</pre>
+<p>
+    这样，就可以在words文件夹中获得名称为
+    <span class="warn">李四.docx</span>
+    的word文件。
+</p>
+<div class="tips">
+    温馨提示：我们这里都是用
+    <span class="special">name</span>
+    举例子，对于类似
+    <span class="special">texts[2]</span>
+    获取的内容也是类似的，也可以这样处理。
+</div>

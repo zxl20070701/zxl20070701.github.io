@@ -1,0 +1,115 @@
+<header>
+    child_process（子进程）
+</header>
+<h2>
+    异步
+</h2>
+<h3>
+    spawn 执行命令
+</h3>
+<pre tag="javascript">
+let ls = require('child_process').spawn(command[, args][, options]);
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+require('child_process').spawn("node", ['./demo.js'], {
+    stdio: 'inherit'
+});
+</pre>
+<p>
+    等价于：
+</p>
+<pre>
+node ./demo.js
+</pre>
+<p>
+    也就是运行命令 “node” 并携带参数 “./demo.js”。
+</p>
+<div class="tips">
+    如果Windows电脑使用出现“Error: spawn EINVAL”错误，可以改成 {stdio: "inherit",shell: true} 试试。
+</div>
+<h3>
+    回调钩子
+</h3>
+<h4>
+    close
+</h4>
+<p>
+    命令执行完毕后触发：
+</p>
+<pre tag="javascript">
+ls.on('close', () => {
+    // todo
+});
+</pre>
+<h3>
+    exec 执行命令
+</h3>
+<pre tag="javascript">
+require('child_process').exec(command[, options][, callback])
+</pre>
+<button tag="child_process-exec_option" type="explain">options 参数说明</button>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+require('child_process').exec("node -v",(err,stdout,stdin)=>{
+    if(err) return err;
+    console.log(stdout); // v21.6.1
+});
+</pre>
+<button tag="child_process-exec" type="explain">获取子进程打印日志</button>
+<h3>
+    execFile 执行可执行文件
+</h3>
+<pre tag="javascript">
+require('child_process').execFile(file[, args][, options][, callback])
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+require('child_process').execFile("node", ["-v"], (err, stdout) => {
+    if (err) console.log(err);
+    console.log(stdout); // v21.6.1
+});
+</pre>
+<h3>
+    fork 创建node子进程
+</h3>
+<pre tag="javascript">
+require('child_process').fork(modulePath[, args][, options])
+</pre>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+require('child_process').fork("./demo.js");
+</pre>
+<p>
+    此外，进程和子进程之间可以通信，下面是例子：
+</p>
+<button tag="child_process-fork" type="explain">fork通信</button>
+<h2>
+    同步
+</h2>
+<h3>
+    spawnSync 执行命令
+</h3>
+<pre tag="javascript">
+require('child_process').spawnSync(command[, args][, options])
+</pre>
+<h3>
+    execSync 执行命令
+</h3>
+<pre tag="javascript">
+require('child_process').execSync(command[, options])
+</pre>
+<h3>
+    execFileSync 执行可执行文件
+</h3>
+<pre tag="javascript">
+require('child_process').execFileSync(file[, args][, options])
+</pre>

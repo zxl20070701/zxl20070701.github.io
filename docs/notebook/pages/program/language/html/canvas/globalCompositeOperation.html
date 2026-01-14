@@ -1,0 +1,96 @@
+<header>
+    globalCompositeOperation
+</header>
+<p>
+    使用不同的 globalCompositeOperation 值绘制矩形。红色矩形是目标图像，蓝色矩形是源图像：
+</p>
+<p>
+    （左边：source-over 右边：destination-over）
+</p>
+<iframe src="./examples/globalCompositeOperation.html" class="page-examples"></iframe>
+<p>
+    点击下面的按钮可以查看上面运行程序的具体代码：
+</p>
+<button tag="globalCompositeOperation" type="code" format="html">查看用例</button>
+<p>
+    globalCompositeOperation 属性设置或返回如何将一个源（新的）图像绘制到目标（已有的）的图像上。
+</p>
+<p>
+    源图像 = 打算放置到画布上的绘图。
+</p>
+<p>
+    目标图像 = 已经放置在画布上的绘图。
+</p>
+<iframe style="width:700px;height:450px;" src="./examples/globalCompositeOperation-api.html"
+    class="page-examples"></iframe>
+<p>
+    下面是具体的解释：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th style="width:18%">值</th>
+            <th>描述</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>source-over</td>
+            <td>默认。在<em>目标图像</em>上显示<em>源图像</em>。
+            </td>
+
+        </tr>
+        <tr>
+            <td>source-atop</td>
+            <td>在<em>目标图像</em>顶部显示<em>源图像</em>。<i>源图像</i>位于<i>目标图像</i>之外的部分是不可见的。</td>
+
+        </tr>
+        <tr>
+            <td>source-in</td>
+            <td>在<em>目标图像</em>中显示<em>源图像</em>。只有<i>目标图像</i>之内的<i>源图像</i>部分会显示，<i>目标图像</i>是透明的。</td>
+
+        </tr>
+        <tr>
+            <td>source-out</td>
+            <td>在<em>目标图像</em>之外显示<em>源图像</em>。只有<i>目标图像</i>之外的<i>源图像</i>部分会显示，<i>目标图像</i>是透明的。</td>
+
+        </tr>
+        <tr>
+            <td>destination-over</td>
+            <td>在<em>源图像</em>上显示<em>目标图像</em>。
+            </td>
+
+        </tr>
+        <tr>
+            <td>destination-atop</td>
+            <td>在<em>源图像</em>顶部显示<em>目标图像</em>。<i>目标图像</i>位于<i>源图像</i>之外的部分是不可见的。</td>
+
+        </tr>
+        <tr>
+            <td>destination-in</td>
+            <td>在<em>源图像</em>中显示<em>目标图像</em>。只有<i>源图像</i>之内的<i>目标图像</i>部分会被显示，<i>源图像</i>是透明的。</td>
+
+        </tr>
+        <tr>
+            <td>destination-out</td>
+            <td>在<em>源图像</em>之外显示<em>目标图像</em>。只有<i>源图像</i>之外的<i>目标图像</i>部分会被显示，<i>源图像</i>是透明的。</td>
+
+        </tr>
+        <tr>
+            <td>lighter</td>
+            <td>显示<em>源图像</em> + <em>目标图像</em>。
+            </td>
+
+        </tr>
+        <tr>
+            <td>copy</td>
+            <td>显示<em>源图像</em>。忽略<em>目标图像</em>。</td>
+        </tr>
+        <tr>
+            <td>xor</td>
+            <td>使用异或操作对<em>源图像</em>与<em>目标图像</em>进行组合。
+            </td>
+        </tr>
+    </tbody>
+</table>

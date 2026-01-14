@@ -1,0 +1,55 @@
+<header>
+    基础&核心
+</header>
+<h2>
+    ref
+</h2>
+<p>
+    用于定义基本数据类型的响应式数据：
+</p>
+<pre tag="html">
+&lt;template&gt;
+    {{num}} 
+&lt;/template&gt;
+&lt;script setup lang="ts"&gt;
+    import { ref } from 'vue';
+    let num = ref(100);
+
+    // setup中使用.value来访问
+    num.value = 101;
+&lt;/script&gt;
+</pre>
+<h2>
+    reactive
+</h2>
+<p>
+    定义引用数据类型的深度响应式变量。
+</p>
+<p>
+    定义引用数据类型的深度响应式变量。
+</p>
+<h3>reactive的一种巧妙使用</h3>
+<p>首先定义 form 变量，其中包含多个属性：name, age, sex。</p>
+<p>假如需要 item 给 form 赋值，我们可能会觉得 Object.assign 是种比较简便的方法：</p>
+<pre tag="javascript">
+let form = reactive({
+    name: '',
+    age: '',
+    sex: ''
+});
+let item = { name: 'Alice', age: '19', sex: 'F' };
+Object.assign(form, item);
+</pre>
+<p>上面的写法，其实是不优雅的写法。</p>
+<p>更优雅的做法，是在定义 reactive 时使用 item 包裹 name、age、sex 属性：</p>
+<pre tag="javascript">
+let form = reactive({
+    item: {
+        name: '',
+        age: '',
+        sex: '',
+    }
+});
+let item = { name: 'Alice', age: '19', sex: 'F' };
+form.item = item;
+</pre>

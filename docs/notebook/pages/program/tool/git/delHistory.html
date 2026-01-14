@@ -1,0 +1,24 @@
+<header>
+    从仓库彻底删除敏感文件
+</header>
+<p>
+    如果要彻底从 Git 仓库中删除某个文件可以用如下操作：
+</p>
+<pre tag>
+    git filter-branch --index-filter 'git rm -rf --cached --ignore-unmatch path_to_file' HEAD
+</pre>
+<p>
+    其中 path_to_file 就是你要删除的文件在项目中的相对路径，例如：src/index.js 。
+</p>
+<p class="warn">
+    温馨提示：执行改命令后，git 会遍历整个仓库的历史记录找出这个文件，清理，然后重新构造 git 的历史链条。
+</p>
+<p>
+    最后，我们还需要执行下面语句强推上去：
+</p>
+<pre tag>
+    git push -f
+</pre>
+<p>
+    这样远程仓库上（包括历史记录）也不会再存在这个文件了。
+</p>

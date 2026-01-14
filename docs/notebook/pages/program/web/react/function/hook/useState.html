@@ -1,0 +1,99 @@
+<header>
+    useState
+</header>
+<p>
+    允许我们定义状态变量，并确保当这些状态变量的值发生变化时，页面会重新渲染。
+</p>
+<h2>
+    使用说明和举例
+</h2>
+<h3>
+    定义状态
+</h3>
+<pre tag="javascript">
+import { useState } from "react"
+
+let [time, setTime] = useState("2022-11-10")
+let [remark, setRemark] = useState("今天是一个晴朗的日子")
+</pre>
+<p>
+    比如我们在上面定义了两个具体的状态：time和remark。
+</p>
+<p>
+    使用起来和普通的对象属性并无二致，例如我们试着在页面中用一下：
+</p>
+<pre tag="javascript">
+function Demo() {
+    return (<div>
+        日期：{time}
+    </div>)
+}
+</pre>
+<p>
+    运行结果如下：
+</p>
+<pre tag="html">
+<div>日期：2022-11-10</div>
+</pre>
+<h3>
+    设置状态
+</h3>
+<p>
+    比如，如果我们想修改日期，可以直接：
+</p>
+<pre tag="javascript">
+setTime("2023-12-07")
+</pre>
+<p>
+    修改后，页面会自动变成：
+</p>
+<pre tag="html">
+<div>日期：2023-12-07</div>
+</pre>
+<h2>
+    常见问题
+</h2>
+<h3>
+    多次更新丢失
+</h3>
+<p>
+    比如我们的代码如下：
+</p>
+<pre tag="javascript">
+function Demo(){
+    let [count, setCount] = useState(0)
+    return (&lt;div&gt;
+        {count}
+        &lt;button onClick={()=&lt;{
+            for(let i=0;i&lt;5;i++){
+                setCount(count+1)
+            }
+        }}&gt;+5&lt;/button&gt;
+    &lt;/div&gt;)
+}
+</pre>
+<p>
+    当你点击按钮的时候，count并没有变成5，而是变成了1，为什么？
+</p>
+<p>
+    这是因为setCount方法是异步的，不能立即反应并更新，瞬间调动多次入参中的count仍然是旧的值，没有被更新。
+</p>
+<p>
+    可以修改如下：
+</p>
+<pre tag="javascript">
+function Demo(){
+    let [count, setCount] = useState(0)
+    return (&lt;div&gt;
+        {count}
+        &lt;button onClick={()=&lt;{
+            for(let i=0;i&lt;5;i++){
+                setCount(prevCount => prevCount + 1)
+            }
+        }}&gt;+5&lt;/button&gt;
+    &lt;/div&gt;)
+}
+</pre>
+<p>
+    现在，就可以了。
+</p>

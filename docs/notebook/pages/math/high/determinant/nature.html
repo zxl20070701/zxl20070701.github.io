@@ -1,0 +1,73 @@
+<header>
+    性质
+</header>
+<p>
+    <span class="title">
+        性质
+    </span>
+    <span class="oneline">
+        <code>
+            ["join",
+                ["matrix",[
+                    [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","ka","i1"],["rightBottom","ka","i2"],"...",["rightBottom","ka","in"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+                ],true],
+                " = k",
+                ["matrix",[
+                    [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","i1"],["rightBottom","a","i2"],"...",["rightBottom","a","in"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+                ],true]
+          ]
+        </code>
+    </span>
+    也就是说，一行的公因子可以提出去，或者说以一数乘行列式的一行就相当于用这个数乘此行列式。
+</p>
+<p class="warn">
+    温馨提示：对列也是一样满足，下同。
+</p>
+<p>
+    <span class="title">
+        性质
+    </span>
+    <span class="oneline">
+        <code>
+            ["join",
+                ["matrix",[
+                    [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["join",["rightBottom","b","1"]," + ",["rightBottom","c","1"]],["join",["rightBottom","b","2"]," + ",["rightBottom","c","2"]],"...",["join",["rightBottom","b","n"]," + ",["rightBottom","c","n"]]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+                ],true],
+                " = ",
+                ["matrix",[
+                    [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","b","1"],["rightBottom","b","2"],"...",["rightBottom","b","n"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+                ],true],
+                " + ",
+                ["matrix",[
+                    [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","c","1"],["rightBottom","c","2"],"...",["rightBottom","c","n"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+                ],true]
+          ]
+        </code>
+    </span>
+</p>
+<p>
+    <span class="title">
+        性质
+    </span>
+    对换行列式中两行的位置，行列式反号。
+</p>

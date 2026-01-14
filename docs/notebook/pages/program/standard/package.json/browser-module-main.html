@@ -1,0 +1,187 @@
+<header>
+    browser、module、main 字段优先级
+</header>
+<h2>
+    文件优先级
+</h2>
+<p>
+    在说 package.json 之前，先说下文件优先级。
+</p>
+<p>
+    由于我们使用的模块规范有 ESM 和 commonJS 两种，为了能在 node 环境下原生执行 ESM 规范的脚本文件，.mjs 文件就应运而生。
+</p>
+<p>
+    当存在 index.mjs 和 index.js 这种同名不同后缀的文件时，import './index' 或者 require('./index') 是会优先加载 index.mjs 文件的。
+</p>
+<p>
+    也就是说，优先级 mjs &gt; js
+</p>
+<h2>
+    browser，module 和 main 字段
+</h2>
+<h3>
+    字段定义
+</h3>
+<ul>
+    <li>
+        main : 定义了 npm 包的入口文件，browser 环境和 node 环境均可使用
+    </li>
+    <li>
+        module : 定义 npm 包的 ESM 规范的入口文件，browser 环境和 node 环境均可使用
+    </li>
+    <li>
+        browser : 定义 npm 包在 browser 环境下的入口文件
+    </li>
+</ul>
+<h3>
+    使用场景与优先级
+</h3>
+<p>
+    首先，我们假定 npm 包 test 有以下目录结构：
+</p>
+<pre tag="javascript">
+----- lib
+   |-- index.browser.js
+   |-- index.browser.mjs
+   |-- index.js
+   |-- index.mjs
+</pre>
+<p>
+    其中 *.js 文件是使用 commonJS 规范的语法(require('xxx'))，*.mjs 是用 ESM 规范的语法(import 'xxx')
+</p>
+<p>
+    其 package.json 文件：
+</p>
+<pre tag="javascript">
+"main": "lib/index.js",  // main 
+"module": "lib/index.mjs", // module
+
+// browser 可定义成和 main/module 字段一一对应的映射对象，也可以直接定义为字符串
+"browser": {
+"./lib/index.js": "./lib/index.browser.js", // browser+cjs
+"./lib/index.mjs": "./lib/index.browser.mjs"  // browser+mjs
+},
+
+// "browser": "./lib/index.browser.js" // browser
+</pre>
+<p>
+    根据上述配置，那么其实我们的 package.json 指定的入口可以有：
+</p>
+<ol>
+    <li>
+        main
+    </li>
+    <li>
+        module
+    </li>
+    <li>
+        browser
+    </li>
+    <li>
+        browser+cjs
+    </li>
+    <li>
+        browser+mjs
+    </li>
+</ol>
+<p>
+    这 5 种情况。
+</p>
+<h4>
+    webpack + web + ESM
+</h4>
+<p>
+    通过 webpack 打包构建我们的 web 应用，模块语法使用 ESM。当我们加载：
+</p>
+<pre tag="javascript">
+    import test from 'test'
+</pre>
+<p>
+    实际上的加载优先级是
+    <span class="warn">
+        browser = browser+mjs &gt; module &gt; browser+cjs &gt; main
+    </span>
+    也就是说 webpack 会根据这个顺序去寻找字段指定的文件，直到找到为止。
+</p>
+<div class="tips">
+    然而实际上的情况可能比这个更加复杂，具体可以参考
+    <span class="btn" onclick="loadExpalins('browser-module-main')">流程图</span>
+    。
+</div>
+<h4>
+    webpack + web + commonJS
+</h4>
+<pre tag="javascript">
+    const test = require('test')
+</pre>
+<p>
+    事实上，构建 web 应用时，使用 ESM 或者 commonJS 模块规范对于加载优先级并没有任何影响，优先级依然是
+    <span class="warn">
+        browser = browser+mjs &gt; module &gt; browser+cjs &gt; main
+    </span>
+</p>
+<h4>
+    webpack + node + ESM/commonJS
+</h4>
+<p>
+    使用 webpack 构建项目的时候，有一个
+    <a href="https://webpack.js.org/configuration/target/" target="_blank" class="link">
+        target
+    </a>
+    选项，默认为 web，即进行 web 应用构建。
+</p>
+<p>
+    当我们需要进行一些 同构项目，或者其他 node 项目的构建的时候，我们需要将 webpack.config.js 的 target 选项设置为 node 进行构建。
+</p>
+<pre tag="javascript">
+import test from 'test'
+// 或者 const test = require('test')
+</pre>
+<p>
+    优先级是： <span class="warn">module &gt; main</span>
+</p>
+<h4>
+    node + commonJS
+</h4>
+<p>
+    通过 node test.js 直接执行脚本
+</p>
+<pre tag="javascript">
+    const test = require('test')
+</pre>
+<p>
+    只有 main 字段有效。
+</p>
+<h4>
+    node + ESM
+</h4>
+<p>
+    通过 --experimental-modules 可以让 node 执行 ESM 规范的脚本(必须是 mjs 文件后缀)（执行命令：
+    <span class="warn">
+        node --experimental-modules test.mjs
+    </span>
+    ）：
+</p>
+<pre tag="javascript">
+    import test from 'test'
+</pre>
+<p>
+    只有 main 字段有效。
+</p>
+<h2>
+    总结
+</h2>
+<ul>
+    <li>
+        如果 npm 包导出的是 ESM 规范的包，使用 module
+    </li>
+    <li>
+        如果 npm 包只在 web 端使用，并且严禁在 server 端使用，使用 browser
+    </li>
+    <li>
+        如果 npm 包只在 server 端使用，使用 main
+    </li>
+    <li>
+        如果 npm 包在 web 端和 server 端都允许使用，使用 browser 和 main
+    </li>
+</ul>

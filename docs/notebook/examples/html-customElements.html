@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>customElements自定义标签</title>
+    <script>
+
+        class uiDemo extends HTMLElement {
+
+            constructor() {
+                super();
+
+                console.warn("outerHTML：" + this.outerHTML);
+
+                // 创建shadow根
+                const shadow = this.attachShadow({ mode: 'open' });
+
+                // 创建输入框并挂载到根结点
+                const inputEl = document.createElement('input');
+                shadow.appendChild(inputEl);
+
+                // 为输入框添加样式
+                inputEl.setAttribute('class', 'myinput');
+
+                const style = document.createElement('style');
+                style.textContent = `.myinput{
+                    border:1px solid red;
+                }`;
+
+                shadow.appendChild(style);
+
+            }
+        }
+
+        customElements.define('ui-demo', uiDemo);
+
+    </script>
+</head>
+
+<body>
+
+    <ui-demo></ui-demo>
+
+    <!-- 样式自动隔绝了 -->
+    <input class="myinput">
+
+</body>
+
+</html>

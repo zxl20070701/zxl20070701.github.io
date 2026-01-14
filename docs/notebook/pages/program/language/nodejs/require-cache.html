@@ -1,0 +1,35 @@
+<header>
+    清除模块缓存
+</header>
+<p>
+    Node.js 会缓存通过 require() 加载的模块，可以通过删除 require.cache 中的条目来清除特定模块的缓存。
+</p>
+<pre tag="javascript">
+// 清除特定模块的缓存
+function clearModuleCache(modulePath) {
+  delete require.cache[require.resolve(modulePath)];
+}
+
+// 示例：清除 './myModule.js' 的缓存
+clearModuleCache('./myModule.js');
+
+// 重新加载模块
+const myModule = require('./myModule.js');
+</pre>
+<p>
+    require.resolve() 用于获取模块的绝对路径。删除 require.cache 中的条目后，下次 require() 会重新加载模块。
+</p>
+<p>
+    如果需要清除所有模块的缓存（慎用！），可以遍历 require.cache 并删除所有条目。
+</p>
+<pre tag="javascript">
+// 清除所有模块缓存（慎用！）
+function clearAllModuleCache() {
+  Object.keys(require.cache).forEach(key => {
+    delete require.cache[key];
+  });
+}
+
+// 示例：清除所有缓存
+clearAllModuleCache();
+</pre>

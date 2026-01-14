@@ -1,0 +1,34 @@
+<header>
+    List（列表）
+</header>
+<p>
+    序列是Python中最基本的数据结构。序列中的每个元素都分配一个数字 - 它的位置，或索引，第一个索引是0，第二个索引是1，依此类推。非常类似数组，具体的一些操作就很像字符串（类似ES中数组和字符串的关系）。
+</p>
+<p class="warn">
+    Python有6个序列的内置类型（列表、元组、字符串、Unicode字符串、buffer对象和xrange对象）。
+</p>
+<h2>
+    访问列表中的值
+</h2>
+<p>
+    列表索引从 0 开始，第二个索引是 1，依此类推：
+</p>
+<img src="./images/python/positive-indexes.png" width="500px">
+<p>
+    比如我们想打印第4个条目：
+</p>
+<pre tag>
+list = ['red', 'green', 'blue', 'yellow', 'white', 'black']
+print( list[3] ) # yellow
+</pre>
+<p>
+    索引也可以从尾部开始，最后一个元素的索引为 -1，往前一位为 -2，以此类推：
+</p>
+<img src="./images/python/negative-indexes.png" width="500px">
+<p>
+    比如我们想截取除最后两个的条目：
+</p>
+<pre tag>
+list = ['red', 'green', 'blue', 'yellow', 'white', 'black']
+print( list[:-2] ) # ['red', 'green', 'blue', 'yellow']
+</pre>

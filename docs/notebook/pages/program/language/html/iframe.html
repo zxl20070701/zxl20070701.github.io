@@ -1,0 +1,28 @@
+<header>
+    iframe
+</header>
+<h2>
+    子页面向父页面发送消息
+</h2>
+<pre tag="html">
+    <iframe src="http://127.0.0.1:8080/index.html"></iframe>
+</pre>
+<p>
+    index.html内容大概如下：
+</p>
+<pre tag="javascript">
+window.parent.postMessage({ data: "Hello from child" }, "*");
+</pre>
+<p>
+    而在父页面的接收数据的方法需要提前注册好，如下：
+</p>
+<pre tag="javascript">
+window.addEventListener("message",function (event) {
+    // event.data.data 就是数据
+  },
+  false,
+);
+</pre>
+<p>
+    此外，其中的event.origin这里就是“*”，可以用于判断是否接收，可选。
+</p>

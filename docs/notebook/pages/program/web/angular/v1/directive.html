@@ -1,0 +1,185 @@
+<header>
+    自定义指令相关内容
+</header>
+<h2>
+    定义指令
+</h2>
+<pre tag="javascript">
+angular.module('AppModuleName', []).directive('uiDirective', function() {
+    return {
+        // 在这里定义各种选项
+    };
+});
+</pre>
+<p>
+    上面是基本结构，我们可以根据实际情况定义具体使用的选项。
+</p>
+<h3>
+    restrict
+</h3>
+<p>
+    字符串类型，标明该指令可以在模板中用于元素E、属性A、类C和注释M或组合。
+</p>
+<h3>
+    priority
+</h3>
+<p>
+    数字类型，设置指令执行优先级，在某个DOM上优先级高的会先执行。
+</p>
+<h3>
+    terminal
+</h3>
+<p>
+    布尔值类型，为true时，指示优先级小于当前指令的指令都不执行，仅执行到本指令。
+</p>
+<h3>
+    template
+</h3>
+<p>
+    字符串或函数类型，就是设置模板，和下面的templateUrl属性两个只可以设置一个。
+</p>
+<h3>
+    templateUrl
+</h3>
+<p>
+    字符串或函数类型，和template类似，只不过是提供路径指定template文件。
+</p>
+<h3>
+    replace
+</h3>
+<p>
+    布尔值类型，指令模板是否替换原来的元素。
+</p>
+<h2>
+    scope
+</h2>
+<p>
+    布尔值类型，为true的时候，表示继承父scope，是一个新的scope，否则直接使用父scope
+</p>
+<h2>
+    controller
+</h2>
+<p>
+    字符串或函数，也就是定义指令自己的控制器。
+</p>
+<p>
+    如果是函数，格式如下：
+</p>
+<pre tag="javascript">
+"controller":function(scope, element, attrs) {
+    // todo
+}
+</pre>
+<h3>
+    require
+</h3>
+<p>
+    字符串或数组，请求另外的controller，然后作为link方法的第四个参数传递进去，具体有如下几种查找方式：
+</p>
+<ul>
+    <li>
+        使用？表示如果在当前指令中没有找到所需要的控制器，会将null作为传给link函数的第四个参数。
+    </li>
+    <li>
+        如果添加了^前缀，指令会在上游的指令链中查找require参数所指定的控制器。
+    </li>
+    <li>
+        如果没有前缀，指令将会在自身所提供的控制器中进行查找，如果没有找到任何控制器（或具有指定名字的指令）就抛出一个错误。
+    </li>
+</ul>
+<p class="warn">
+    此外，他们也可以组合使用，比如require: "?^ngModel"。
+</p>
+<h3>
+    link
+</h3>
+<p>
+    函数类型，基本结构如下：
+</p>
+<pre tag="javascript">
+"link": function(scope, element, attrs,ctrl) {
+    // todo
+}
+</pre>
+<p>
+    此方法在每个实例都执行一遍，因此这里长用于编写DOM修改操作。
+</p>
+<h3>
+    compile
+</h3>
+<p>
+    函数类型，基本结构如下：
+</p>
+<pre tag="javascript">
+"compile":function(element, attrs) {
+    // todo
+}
+</pre>
+<p>
+    和link互斥，如果配置了此选项，link就无效了，此外，无论指令被使用多少次，这里都只会执行一次。
+</p>
+<h2>
+    有价值的经验
+</h2>
+<h3>
+    视图和model之间的数据格式化
+</h3>
+<p>
+    类似过滤器的功能，有时候我们希望页面显示的是数据经过某种翻译后的样子，以便于约定，不过对于数据库也许简单的序号会更有益，因此你可能会需要在link中使用下面的方法来实现这个功能：
+</p>
+<ol>
+    <li>
+        ctrl.$formatters.unshift(function(input) {//model到view的数据格式化})；
+    </li>
+    <li>
+        ctrl.$parsers.unshift(function(input) {//view到model的数据格式化})。
+    </li>
+</ol>
+<p>
+    上面的$formatters和$parsers就是两个队列，视图到model和model到视图，会方便经过里面定义的方法的过滤，有点类似管道流，最后流到目的地。
+</p>
+<p class="warn">
+    别忘了设置类似require: "?ngModel"这样的语句去查找控制器。
+</p>
+<h3>
+    视图和model数据同步问题
+</h3>
+<p>
+    有时候在指令里面通过jquery修改了input的数据，不过angularjs并不会知道，这时候，你可以选择下面中的一个方法：
+</p>
+<ol>
+    <li>
+        触发输入框change改变，让Angularjs发现数据改变了，从而去调用$setViewValue(value),同步数据：$("input").trigger("change");
+    </li>
+    <li>
+        直接手动触发同步value到viewValue和modelValue中的行为：ctrl.$setViewValue($scope.info)。
+    </li>
+</ol>
+<h3>
+    常用方法或服务
+</h3>
+<p>
+    解析一段字符串（可能是属性也可能是方法）的方法有两个：
+</p>
+<ol>
+    <li>
+        $scope.$eval(expression);
+    </li>
+    <li>
+        $parse(expression)($scope);
+    </li>
+</ol>
+<h3>
+    几个零碎的技巧
+</h3>
+<ol>
+    <li>
+        根据输入框是否合法来设置true或false：ctrl.$setValidity(errorType, boolean);//errorType表示错误类别，可以自定义；
+    </li>
+    <li>
+        设置监听指定的一个model值，当然还有监听集合等方法：$scope.$watch(attrs['ngModel'], function(newValue, oldValue) {});
+    </li>
+    <li>
+        有时候在指令里面新添加的字符串需要被angularjs管理，就可以用下面的方法编译一下：$compile(newHtml)($scope)。
+    </li>
+</ol>

@@ -1,0 +1,69 @@
+<header>
+    命令清单
+</header>
+<h2>
+    初始化
+</h2>
+<p>
+    把uri指定的仓库代码检出到本地来：
+</p>
+<pre tag>
+    svn checkout url
+</pre>
+<p>
+    更新代码：
+</p>
+<pre tag>
+    svn up
+</pre>
+<p>
+    清理：
+</p>
+<pre tag>
+    svn cleanup
+</pre>
+<h2>
+    状态查询
+</h2>
+<p>
+    查看当前工作区的状态：
+</p>
+<pre tag>
+    svn status
+</pre>
+<p>
+    查看svn信息：
+</p>
+<pre tag>
+    svn info
+</pre>
+<h2>
+    提交
+</h2>
+<p>
+    添加新文件到版本库：
+</p>
+<pre tag>
+    svn add filename
+</pre>
+<p>
+    递归添加当前目录下的所有新文件：
+</p>
+<pre tag>
+    svn add . --no-ignore --force
+</pre>
+<p>
+    提交代码（只有新文件需要add,修改文件可以直接提交）：
+</p>
+<pre tag>
+    svn commit -m "提交描述"
+</pre>
+<h2>
+    忽略或删除
+</h2>
+<p>
+    已经通过add添加到仓库的文件，如果想删除，需要执行下面命令回退到unversioned状态：
+</p>
+<pre tag>
+    svn revert file --depth infinity
+</pre>

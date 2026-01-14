@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF转图片</title>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.14.305/build/pdf.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@2.14.305/build/pdf.worker.min.js";
+
+        function doChange(event) {
+            for (var index = 0; index < event.target.files.length; index++) {
+                (function (index) {
+                    var reader = new FileReader();
+                    var file = event.target.files[index];
+
+                    reader.onload = function () {
+
+                        var loadingTask = pdfjsLib.getDocument({
+                            url: reader.result,
+
+                            // 解决部分文字未正确显示问题
+                            cMapPacked: true,
+                            cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.14.305/cmaps/'
+
+                        });
+
+                        loadingTask.promise.then(function (pdf) {
+
+                            // 一页页的来
+                            for (var pagenum = 0; pagenum < pdf.numPages; pagenum++) {
+                                pdf.getPage(pagenum + 1).then(function (page) {
+
+                                    var viewport = page.getViewport({ scale: 1 });
+
+                                    var canvas = document.createElement("canvas");
+                                    var context = canvas.getContext('2d', {
+                                        willReadFrequently: true
+                                    });
+
+                                    var CSS_UNITS = 3 * 96 / 72;
+
+                                    canvas.width = Math.floor(viewport.width * CSS_UNITS);
+                                    canvas.height = Math.floor(viewport.height * CSS_UNITS);
+
+                                    var pageRendering = page.render({
+                                        canvasContext: context,
+                                        transform: [CSS_UNITS, 0, 0, CSS_UNITS, 0, 0],
+                                        viewport
+                                    });
+
+                                    // 等render渲染完毕后，触发下载
+                                    pageRendering.promise.then(function () {
+                                        var url = canvas.toDataURL("image/jpeg");
+
+                                        var a = document.createElement("a");
+                                        a.href = url;
+                                        a.download = file.name.replace('.pdf', '') + (pdf.numPages > 1 ? ("_" + (pagenum + 1)) : '') + ".jpeg";
+
+                                        a.click();
+                                    });
+
+                                })
+                            }
+
+                        })
+
+                    }
+                    reader.readAsDataURL(file);
+                })(index);
+            }
+
+        }
+    </script>
+</head>
+
+<body>
+    <input type="file" multiple onChange="doChange(event)" accept="application/pdf">
+</body>
+
+</html>

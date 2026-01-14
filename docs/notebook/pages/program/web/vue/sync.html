@@ -1,0 +1,27 @@
+<header>
+    修饰符sync
+</header>
+<p>
+    比如我们在使用组件的时候会这样使用：
+</p>
+<pre tag="html">
+<ui-demo :show="flag"></ui-demo>
+</pre>
+<p>
+    而在组件ui-demo内部会存在这样的语句：
+</p>
+<pre tag="javascript">
+this.$emit('update:show', "新的值")
+</pre>
+<p>
+    那么此时，如果希望使用组件的地方的flag值可以同步更新，可以修改一下：
+</p>
+<pre tag="html">
+<ui-demo :show="flag" v-on:update:show="val=>flag=val"></ui-demo>
+</pre>
+<p>
+    其实，这里就等价于：
+</p>
+<pre tag="html">
+<ui-demo :show.sync="flag"></ui-demo>
+</pre>

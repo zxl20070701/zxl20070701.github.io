@@ -1,0 +1,39 @@
+<header>
+    如何发布一个包？
+</header>
+<h2>
+    准备工作
+</h2>
+<p>
+    首先，我们默认你已经安装好python3并拥有了pip3命令。
+</p>
+<p>
+    原则上安装了pip3的环境都有setuptools,但并不影响你去尝试升级一下它：
+</p>
+<pre>
+    pip3 install --upgrade setuptools
+</pre>
+<p>
+    此外，我们还依赖一个简化将库发布到PyPI上流程的工具：
+</p>
+<pre>
+    pip3 install --upgrade twine
+</pre>
+<p>
+    这样，我们的前置工作就准备好了。
+</p>
+<h2>
+    打包&发布
+</h2>
+<p>
+    首先，在setup.py的同级目录下运行以下命令进行打包：
+</p>
+<pre>
+    python3 setup.py sdist
+</pre>
+<p>
+    然后运行发布：
+</p>
+<pre>
+    twine upload dist/*
+</pre>

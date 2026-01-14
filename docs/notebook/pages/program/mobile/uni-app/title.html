@@ -1,0 +1,42 @@
+<header>
+    自定义标题
+</header>
+<h2>
+    需求
+</h2>
+<p>
+    我们在自定义标题的时候，需要计算的值主要包括状态栏和标题栏的高度，具体如下：
+</p>
+<img src="./images/miniprogram/wx-title.png" />
+<h2>
+    状态栏
+</h2>
+<p>
+    这个比较好计算，直接调用方法即可：
+</p>
+<pre tag="javascript">
+ztlHeight = uni.getSystemInfoSync().statusBarHeight;
+</pre>
+<h2>
+    标题栏
+</h2>
+<p>
+    对于小程序而言，考虑到右边有个
+    <span class="special">胶囊</span>
+    ，所以计算的时候按照如下原则：
+</p>
+<pre>
+    胶囊 + 2 * (胶囊顶部到顶的距离 - 状态栏的高)
+</pre>
+<p>
+    而对于H5或者APP这种没有胶囊的，直接写死一个合适的值即可。由此，最终代码如下：
+</p>
+<pre tag="javascript">
+// #ifndef APP-PLUS || H5
+btlHeight = (uni.getMenuButtonBoundingClientRect().top - ztlHeight) * 2 + uni.getMenuButtonBoundingClientRect().height;
+// #endif
+
+// #ifdef APP-PLUS || H5
+btlHeight = uni.upx2px(80);
+// #endif
+</pre>

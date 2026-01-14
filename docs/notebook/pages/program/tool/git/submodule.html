@@ -1,0 +1,108 @@
+<header>
+    使用子模块实现项目拆分
+</header>
+<p>
+    比如我们现在有一个git仓库<span class="special">rootFolder</span>，
+    然后还有一个子git仓库<span class="special">subFolder</span>，
+    我们希望subFolder作为rootFolder的一个自文件夹存在，不过有自己的git，就像这样：
+</p>
+<pre>
+- rootFolder
+    - .git
+    - 别的文件或文件夹...
+    - subFolder
+        - .git
+        - 别的文件或文件夹...
+</pre>
+<h2>
+    初始化环境
+</h2>
+<h3>
+    创建项目
+</h3>
+<p>
+    将主项目clone到本地：
+</p>
+<pre>
+git clone [rootFolder远程仓库地址]
+</pre>
+<p>
+    然后命令行进入主仓库后，添加子模块：
+</p>
+<pre>
+cd rootFolder
+git submodule add [subFolder远程仓库地址]
+</pre>
+<p>
+    此时项目仓库中会多出两个文件（.gitmodules和subFolder），大体结构如下：
+</p>
+<pre>
+- rootFolder
+    - .git
+    - 别的文件或文件夹...
+    - .gitmodules
+    - subFolder
+        - .git
+        - 别的文件或文件夹...
+</pre>
+<p>
+    其中subFolder就是子仓库，不用多说了，而.gitmodules保存着子模块的相关信息，如此，环境初始化就完成了。
+</p>
+<h3>
+    clone项目
+</h3>
+<p>
+    clone一个带有子仓库的项目，比如上面的rootFolder，可以这样：
+</p>
+<pre>
+git clone --recurse-submodules [rootFolder远程仓库地址]
+</pre>
+<div class="tips">
+    如果这样创建的项目修改子项目后在子项目中提交的时候出现类似下面的提示：
+    <div class="important">
+        HEAD detached at xxxxxxx
+    </div>
+    可能是子项目分支不对，切换到正确的分支（比如master或dev）即可。
+</div>
+<h2>
+    修改&更新
+</h2>
+<h3>
+    拉取代码
+</h3>
+<p>
+    对于已经clone过存在的项目，用git pull 命令同样如此：
+</p>
+<pre>
+    git pull --recurse-submodules
+</pre>
+<h3>
+    更新子项目
+</h3>
+<p>
+    如果远程子项目的代码修改了，可以使用下面命令同步到本地子项目：
+</p>
+<pre>
+    git submodule update --remote
+</pre>
+<p class="warn">
+    温馨提示：上面的命令是把远程子项目（这里就是subFolder）更新到本地，所以，如果希望远程主仓库（这里就是rootFolder）也是最新的，这里还需要提交一下。
+</p>
+<p>
+    当然也可以进入到子模块目录下，用传统的git pull获取最新代码。如果主项目的子项目特别多，此时可以用以下命令执行：
+</p>
+<pre>
+    git submodule foreach git pull
+</pre>
+<h2>
+    删除子项目
+</h2>
+<p>
+    直接移除子项目，比如这里的subFolder就是：
+</p>
+<pre>
+    git rm subFolder
+</pre>
+<p>
+    这样就会移除了subFolder文件夹，并自动在.gitmodules删除相关信息。然后，你正常把主项目的修改提交上去即可。
+</p>

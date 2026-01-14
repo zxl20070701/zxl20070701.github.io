@@ -1,0 +1,81 @@
+<header>
+    State(状态)
+</header>
+<p>
+    简单的理解就是：一个React组件可以通过state来定义一个状态，页面可以和这些状态绑定，后续状态被修改后，会自动重新渲染用户界面（不要操作 DOM）。
+</p>
+<h2>
+    定义状态
+</h2>
+<pre tag="javascript">
+constructor(props) {
+    super(props)
+    this.state = {
+        time:"2022-11-10",
+        remark:"今天是一个晴朗的日子"
+    }
+}
+</pre>
+<p>
+    比如我们在上面定义了两个具体的状态：time和remark。
+</p>
+<p>
+    使用起来和普通的对象属性并无二致，例如我们试着在页面中用一下：
+</p>
+<pre tag="javascript">
+render() {
+    return (<div>
+        日期：{this.state.time}
+    </div>)
+}
+</pre>
+<p>
+    运行结果如下：
+</p>
+<pre tag="html">
+<div>日期：2022-11-10</div>
+</pre>
+<h2>
+    设置状态
+</h2>
+<pre tag="javascript">
+this.setState(object nextState[, function callback])
+</pre>
+<h3>
+    参数说明
+</h3>
+<ul>
+    <li>
+        nextState：将要设置的新状态，该状态会和当前的state合并。
+    </li>
+    <li>
+        callback： 可选参数，回调函数。该函数会在setState设置成功，且组件重新渲染后调用。
+    </li>
+</ul>
+<h3>
+    例子
+</h3>
+<p>
+    比如，如果我们想修改日期，可以直接：
+</p>
+<pre tag="javascript">
+this.setState({
+    time: "2023-12-07"
+})
+</pre>
+<p>
+    修改后，页面会自动变成：
+</p>
+<pre tag="html">
+<div>日期：2023-12-07</div>
+</pre>
+<p>
+    或者这样也可以：
+</p>
+<pre tag="javascript">
+this.setState(state =&gt; {
+    return {
+        time: "2023-12-07"
+    }
+})
+</pre>

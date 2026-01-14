@@ -1,0 +1,217 @@
+<header>
+    接口
+</header>
+<p>
+    接口就是定义一个类型，比如一个json数据或一个函数等，描述其具体的结构就可以使用接口来规范。
+</p>
+<h2>
+    基础说明
+</h2>
+<p>
+    先来看个例子：
+</p>
+<pre tag="javascript">
+interface MyDataType {
+    name: string,
+    age: number
+}
+</pre>
+<p>
+    我们定义了一个json的数据格式，可以且只可以包含值是字符串的name属性和值是数字的age属性，下面是一个正确的例子：
+</p>
+<pre tag="javascript">
+let myData: MyDataType={
+    name:"小明",
+    age:19
+};
+</pre>
+<h3>
+    可选属性
+</h3>
+<p>
+    假如我们认为age是可选的，也就是 {name:"小明"} 也是正确的值，那么就可以这样调整：
+</p>
+<pre tag="javascript">
+interface MyDataType {
+    name: string,
+    age?: number
+}
+</pre>
+<h3>
+    只读属性
+</h3>
+<p>
+    如果你希望name不被后续修改，也就是只读的，可以这样修改：
+</p>
+<pre tag="javascript">
+interface MyDataType {
+    readonly name: string,
+    age: number
+}
+</pre>
+<p>
+    如果一个数组类型
+    <span class="important">Array</span>
+    希望标记是只读的，可以使用新类型
+    <span class="important">ReadonlyArray</span>
+    进行代替。
+</p>
+<h2>
+    函数类型
+</h2>
+<p>
+    比如我们想定义一个函数，传递一个字符串和一个数字，返回一个字符串：
+</p>
+<pre tag="javascript">
+interface DoitFunc {
+    (name: string, age: number): string
+}
+</pre>
+<p>
+    下面是一个正确的例子：
+</p>
+<pre tag="javascript">
+let doit: DoitFunc = function (name: string, age: number): string {
+    return "姓名：" + name + "，年龄：" + age;
+}
+</pre>
+<h2>
+    可索引的类型
+</h2>
+<h3>
+    基础使用
+</h3>
+<p>
+    也就是那些可以通过
+    <span class="warn">索引</span>
+    得到值的类型，典型的就是json和数组。
+</p>
+<pre tag="javascript">
+interface MyDataType {
+    [index: number]: string
+}
+</pre>
+<p class="warn">
+    温馨提示：比如这里的index可以是任意合法的标志符，具体是什么并没有什么意义。
+</p>
+<p>
+    比如下面的值就是合法的：
+</p>
+<pre tag="javascript">let myData: MyDataType = ["小明", "小强"]; </pre>
+<p>
+    或
+</p>
+<pre tag="javascript">
+let myData: MyDataType = {};
+myData[0] = "小明";
+myData[1] = "小强";
+</pre>
+<h3>
+    多类型属性
+</h3>
+<p>
+    索引除了是数字外，还可以是字符串，定义和上面是类似的。此外，也可以同时定义索引可以是字符串或数字：
+</p>
+<pre tag="javascript">
+interface MyDataType {
+    [key1: number]: string;
+    [key2: string]: string;
+}
+</pre>
+<p>
+    下面是一个正确的例子：
+</p>
+<pre tag="javascript">
+let myData: MyDataType = {};
+myData[0] = "小明";
+myData[1] = "小强";
+myData['key'] = "小丽";
+</pre>
+<p>
+    虽然可以同时使用两种类型的索引，但需要注意：数字索引的返回值必须是字符串索引返回值类型的子类型。
+</p>
+<h2>
+    类类型
+</h2>
+<p>
+    比如我们希望定义的类都有一个属性currentTime表示当前时间，那我们可以定义一个类接口，然后所有的类都实现这个接口。
+</p>
+<h3>
+    定义
+</h3>
+<pre tag="javascript">
+interface ClockInterface {
+    currentTime: Date;
+}
+</pre>
+<h3>
+    使用
+</h3>
+<pre tag="javascript">
+class Clock implements ClockInterface {
+    currentTime: Date;
+    constructor() { 
+        this.currentTime=new Date();
+    }
+}
+</pre>
+<h3>
+    继承接口
+</h3>
+<p>
+    比如和ClockInterface相比，我们有一个DateInterface接口，多了一个获取保存的currentTime值的方法getValue：
+</p>
+<h4>
+    定义
+</h4>
+<pre tag="javascript">
+interface DateInterface extends ClockInterface {
+    getValue(): Date;
+}
+</pre>
+<h4>
+    使用
+</h4>
+<pre tag="javascript">
+class MyDate implements DateInterface {
+    currentTime: Date;
+    getValue() {
+        return this.currentTime;
+    }
+    constructor() {
+        this.currentTime = new Date();
+    }
+}
+</pre>
+<h2>
+    混合类型
+</h2>
+<p>
+    比如jQuery，他既是函数，也可以作为对象使用上面的属性或方法。
+</p>
+<h3>
+    定义
+</h3>
+<pre tag="javascript">
+interface jQueryType {
+    (selector: string): any;
+    version: string;
+    ajax(method: string, url: string, data: any, callback: Function): void
+}
+</pre>
+<h3>
+    使用
+</h3>
+<pre tag="javascript">
+let myJQuery = &lt;jQueryType&gt;function (selector: string): any {
+    // todo
+    return [];
+};
+myJQuery.version = '1.0.0';
+myJQuery.ajax = function (method: string, url: string, data: any, callback: Function): void {
+    // todo
+};
+</pre>
+<p>
+    这样获取的myJQuery本身是一个方法，同时有一个属性version和一个方法ajax。
+</p>

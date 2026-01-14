@@ -1,0 +1,40 @@
+<header>
+    自定义事件的触发
+</header>
+<h2>
+    dispatchEvent
+</h2>
+<p>
+    向一个指定的事件目标派发一个Event，并以合适的顺序（同步地）调用所有受影响的EventListener，语法如下：
+</p>
+<pre tag="javascript">
+    el.dispatchEvent(event);
+</pre>
+<p>
+    比如我们有一个按钮，我们给他添加了onclick事件：
+</p>
+<pre tag="html">
+<button id="mydiv" onclick="doBack(event)">按钮</button>
+&lt;script&gt;
+function doBack(event) {
+    console.log(event);
+}
+&lt;/script&gt;
+</pre>
+<p>
+    我们可以看见打印的内容：
+</p>
+<pre tag="javascript">
+    PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
+</pre>
+<p>
+    除了直接点击按钮外，你还可以dispatchEvent来模拟点击：
+</p>
+<pre tag="javascript">
+dom.dispatchEvent(new PointerEvent('click', {
+    clientX: 77,
+    clientY: 77,
+    // ...
+}));
+</pre>
+<button tag="dom-dispatchEvent">查看用例</button>

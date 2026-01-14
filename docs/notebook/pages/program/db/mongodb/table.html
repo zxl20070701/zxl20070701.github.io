@@ -1,0 +1,210 @@
+<header>
+    集合操作
+</header>
+<h2>
+    查看有哪些集合
+</h2>
+<pre>
+    show collections
+</pre>
+<h2>
+    删除集合
+</h2>
+<pre>
+    db.[集合名称].drop()
+</pre>
+<p>
+    比如我们要删除当前数据库test中的cols1，那么就是：
+</p>
+<pre>
+use test
+db.cols1.drop()
+</pre>
+<h2>
+    创建集合
+</h2>
+<pre>
+    db.createCollection(name, options)
+</pre>
+<p>
+    参数说明：
+</p>
+<ul>
+    <li>
+        name: 要创建的集合名称
+    </li>
+    <li>
+        options: 可选参数, 指定有关内存大小及索引的选项
+    </li>
+</ul>
+<p>
+    options 可以是如下参数：
+</p>
+<table>
+    <thead>
+        <tr>
+            <td>
+                字段
+            </td>
+            <td>
+                类型
+            </td>
+            <td>
+                描述
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                capped
+            </td>
+            <td>
+                布尔
+            </td>
+            <td>
+                （可选）如果为 true，则创建固定集合。固定集合是指有着固定大小的集合，当达到最大值时，它会自动覆盖最早的文档。
+                <hr />
+                当该值为 true 时，必须指定 size 参数。
+            </td>
+        </tr>
+        <tr>
+            <td>
+                size
+            </td>
+            <td>
+                数值
+            </td>
+            <td>
+                （可选）为固定集合指定一个最大值，即字节数。
+            </td>
+        </tr>
+        <tr>
+            <td>
+                max
+            </td>
+            <td>
+                数值
+            </td>
+            <td>
+                （可选）指定固定集合中包含文档的最大数量。
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    在 MongoDB 中，其实你可以不主动创建集合，当你插入一些文档时，MongoDB 会自动创建集合，如果该集合不存在。
+</div>
+<h2>
+    插入文档
+</h2>
+<pre>
+db.[集合名称].insert(document)
+</pre>
+<p>
+    若插入的数据主键<span class="warn">_id</span>已经存在，则会抛 org.springframework.dao.DuplicateKeyException 异常，提示主键重复，不保存当前数据。
+</p>
+<h2>
+    更新文档
+</h2>
+<pre>
+db.collection.update(
+    &lt;query&gt;,
+    &lt;update&gt;,
+    {
+      upsert: &lt;boolean&gt;,
+      multi: &lt;boolean&gt;,
+      writeConcern: &lt;document&gt;
+    }
+)
+</pre>
+<p>
+    参数说明：
+</p>
+<ul>
+    <li>
+        query : update的查询条件，类似sql update查询内where后面的。
+    </li>
+    <li>
+        update : update的对象和一些更新的操作符（如$,$inc...）等，也可以理解为sql update查询内set后面的。
+    </li>
+    <li>
+        upsert : 可选，这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。
+    </li>
+    <li>
+        multi : 可选，mongodb 默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。
+    </li>
+    <li>
+        writeConcern :可选，抛出异常的级别。
+    </li>
+</ul>
+<p>
+    比如现在有一条数据：
+</p>
+<pre tag="javascript">
+{ "_id" : ObjectId("661e224892fbd2b98f464351"), "name" : "李四", "age" : 19 }
+</pre>
+<p>
+    我们希望修改age为17并添加hobby为游泳：
+</p>
+<pre>
+    db.[集合名称].update({"name":"李四"},{"age":17,"hobby":"游泳"})
+</pre>
+<h2>
+    删除文档
+</h2>
+<pre>
+db.[集合名称].remove(
+   &lt;query&gt;,
+   {
+    justOne: &lt;boolean&gt;,
+    writeConcern: &lt;document&gt;
+  }
+)
+</pre>
+<p>
+    参数说明：
+</p>
+<ul>
+    <li>
+        query :（可选）删除的文档的条件。
+    </li>
+    <li>
+        justOne : （可选）如果设为 true 或 1，则只删除一个文档，如果不设置该参数，或使用默认值 false，则删除所有匹配条件的文档。
+    </li>
+    <li>
+        writeConcern :（可选）抛出异常的级别。
+    </li>
+</ul>
+<p>
+    比如我们移除name为李四的所有条目：
+</p>
+<pre>
+    db.[集合名称].remove({"name" : "李四"})
+</pre>
+<h2>
+    查询文档
+</h2>
+<pre>
+    db.[集合名称].find(query, projection)
+</pre>
+<p>
+    参数说明：
+</p>
+<ul>
+    <li>
+        query ：可选，使用查询操作符指定查询条件。
+    </li>
+    <li>
+        projection ：可选，使用投影操作符指定返回的键。查询时返回文档中所有键值， 只需省略该参数即可（默认省略）。
+    </li>
+</ul>
+<p>
+    如果你需要以易读的方式来读取数据，可以使用 pretty() 方法，语法格式如下：
+</p>
+<pre>
+    db.[集合名称].find().pretty()
+</pre>
+<p>
+    除了 find() 方法之外，还有一个 findOne() 方法，它只返回符合条件的第一个文档。
+</p>

@@ -1,0 +1,42 @@
+<header>
+    通信
+</header>
+<h2>
+    通信架构
+</h2>
+<p>
+    content script、插件功能页面、background script 之间的通信架构如下：
+</p>
+<img src="./images/chrome/message.png" width="700px" />
+<h2>
+    popup向content script发送信息
+</h2>
+<h3>
+    popup页面
+</h3>
+<pre tag="javascript">
+chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+    chrome.tabs.sendMessage(tabs[0].id, {
+        msg: "来自popup页面的数据",
+    }, res => {
+
+        // 打印内容：来自content script的数据
+        console.log(res.msg);
+
+    });
+});
+</pre>
+<h3>
+    content script
+</h3>
+<pre tag="javascript">
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+    // 打印内容：来自popup页面的数据
+    console.log(request.msg);
+
+    sendResponse({
+        msg:"来自content script的数据"
+    });
+});
+</pre>

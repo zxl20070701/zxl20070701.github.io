@@ -1,0 +1,55 @@
+<header>
+    选择图片
+</header>
+<h2>
+    选择图片
+</h2>
+<p>
+    正常来说，wx.config配置好了以后，直接通过wx.chooseImage即可：
+</p>
+<pre tag="javascript">
+wx.ready(function () {
+    wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res1) {
+            // todo
+        }
+    });
+});
+</pre>
+<p>
+    上面回调参数res1，比如你选择了一张图片，那么图片临时地址就是：res1.localIds[0]。
+</p>
+<p>
+    如果你把这个设置成image标签的src，那么很可能会显示不出来，怎么办？
+</p>
+<h2>
+    变成base64
+</h2>
+<p>
+    我们需要使用getLocalImgData来把这个地址变成base64，就像这样：
+</p>
+<pre tag="javascript">
+wx.getLocalImgData({
+    localId: res1.localIds[0],
+    success: function (res2) {
+        // todo
+    }
+});
+</pre>
+<h2>
+    兼容写法
+</h2>
+<p>
+    其中，res2.localData就是图片的base64，当然，这只是针对苹果手机的，如果是安卓手机，就不一样了。所以兼容的获取方法是：
+</p>
+<pre tag="javascript">
+let imgbase64;
+if (/^data:image/.test(res2.localData)) {
+    imgbase64 = res2.localData;
+} else {
+    imgbase64 = 'data:image/jpeg;base64,' + res2.localData;
+}
+</pre>

@@ -1,0 +1,170 @@
+<header>
+    #include &lt;string.h&gt;
+</header>
+<h2>
+    库函数
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th style="width:5%">序号</th>
+            <th>函数 &amp; 描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>
+                <div class="warn">void *memchr(const void *str, int c, size_t n)</div>在参数 <i>str</i>
+                所指向的字符串的前 n 个字节中搜索第一次出现字符 c（一个无符号字符）的位置。
+            </td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>
+                <div class="warn">int memcmp(const void *str1, const void *str2, size_t n)</div>把
+                <i>str1</i> 和 <i>str2</i> 的前 n 个字节进行比较。
+            </td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>
+                <div class="warn">void *memcpy(void *dest, const void *src, size_t n)</div>从 src 复制 n
+                个字符到 <i>dest</i>。
+            </td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>
+                <div class="warn">void *memmove(void *dest, const void *src, size_t n)</div>另一个用于从
+                <i>src</i> 复制 n 个字符到 <i>dest</i> 的函数。
+            </td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>
+                <div class="warn">void *memset(void *str, int c, size_t n)</div>复制字符 c（一个无符号字符）到参数
+                <i>str</i> 所指向的字符串的前 n 个字符。
+            </td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>
+                <div class="warn">char *strcat(char *dest, const char *src)</div>把 <i>src</i>
+                所指向的字符串追加到 <i>dest</i> 所指向的字符串的结尾。
+            </td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>
+                <div class="warn">char *strncat(char *dest, const char *src, size_t n)</div>把
+                <i>src</i> 所指向的字符串追加到 <i>dest</i> 所指向的字符串的结尾，直到 n 字符长度为止。
+            </td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>
+                <div class="warn">char *strchr(const char *str, int c)</div>在参数 <i>str</i>
+                所指向的字符串中搜索第一次出现字符 c（一个无符号字符）的位置。
+            </td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>
+                <div class="warn">int strcmp(const char *str1, const char *str2)</div>把 <i>str1</i>
+                所指向的字符串和 <i>str2</i> 所指向的字符串进行比较。
+            </td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>
+                <div class="warn">int strncmp(const char *str1, const char *str2, size_t n)</div>把
+                <i>str1</i> 和 <i>str2</i> 进行比较，最多比较前 n 个字节。
+            </td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>
+                <div class="warn">int strcoll(const char *str1, const char *str2)</div>把 <i>str1</i> 和
+                <i>str2</i> 进行比较，结果取决于 LC_COLLATE 的位置设置。
+            </td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>
+                <div class="warn">char *strcpy(char *dest, const char *src)</div>把 <i>src</i>
+                所指向的字符串复制到 <i>dest</i>。
+            </td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>
+                <div class="warn">char *strncpy(char *dest, const char *src, size_t n)</div>把
+                <i>src</i> 所指向的字符串复制到 <i>dest</i>，最多复制 n 个字符。
+            </td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td>
+                <div class="warn">size_t strcspn(const char *str1, const char *str2)</div>检索字符串 str1
+                开头连续有几个字符都不含字符串 str2 中的字符。
+            </td>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td>
+                <div class="warn">char *strerror(int errnum)</div>从内部数组中搜索错误号
+                errnum，并返回一个指向错误消息字符串的指针。
+            </td>
+        </tr>
+        <tr>
+            <td>16</td>
+            <td>
+                <div class="warn">size_t strlen(const char *str)</div>计算字符串 str 的长度，直到空结束字符，但不包括空结束字符。
+            </td>
+        </tr>
+        <tr>
+            <td>17</td>
+            <td>
+                <div class="warn">char *strpbrk(const char *str1, const char *str2)</div>检索字符串
+                <i>str1</i> 中第一个匹配字符串 <i>str2</i> 中字符的字符，不包含空结束字符。也就是说，依次检验字符串 str1 中的字符，当被检验字符在字符串 str2
+                中也包含时，则停止检验，并返回该字符位置。
+            </td>
+        </tr>
+        <tr>
+            <td>18</td>
+            <td>
+                <div class="warn">char *strrchr(const char *str, int c)</div>在参数 <i>str</i>
+                所指向的字符串中搜索最后一次出现字符 c（一个无符号字符）的位置。
+            </td>
+        </tr>
+        <tr>
+            <td>19</td>
+            <td>
+                <div class="warn">size_t strspn(const char *str1, const char *str2)</div>检索字符串
+                <i>str1</i> 中第一个不在字符串 <i>str2</i> 中出现的字符下标。
+            </td>
+        </tr>
+        <tr>
+            <td>20</td>
+            <td>
+                <div class="warn">char *strstr(const char *haystack, const char *needle)</div>在字符串
+                <i>haystack</i> 中查找第一次出现字符串 <i>needle</i>（不包含空结束字符）的位置。
+            </td>
+        </tr>
+        <tr>
+            <td>21</td>
+            <td>
+                <div class="warn">char *strtok(char *str, const char *delim)</div>分解字符串 <i>str</i>
+                为一组字符串，<i>delim</i> 为分隔符。
+            </td>
+        </tr>
+        <tr>
+            <td>22</td>
+            <td>
+                <div class="warn">size_t strxfrm(char *dest, const char *src, size_t
+                    n)</div>根据程序当前的区域选项中的 LC_COLLATE 来转换字符串 <b>src</b> 的前 <b>n</b> 个字符，并把它们放置在字符串 <b>dest</b> 中。
+            </td>
+        </tr>
+    </tbody>
+</table>

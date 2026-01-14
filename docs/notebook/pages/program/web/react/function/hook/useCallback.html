@@ -1,0 +1,20 @@
+<header>
+    useCallback
+</header>
+<p>
+    useCallback是对useMemo的特化，它可以返回一个缓存版本的函数，只有当它的依赖项改变时，函数才会被重新创建。这意味着如果依赖没有改变，函数引用保持不变，从而避免了因函数引用改变导致的不必要的重新渲染。
+</p>
+<p>
+    基本使用如下：
+</p>
+<pre tag="javascript">
+let memoizedCallback = useCallback(
+  () => {
+    // 函数体
+  },
+  [a, b, ...] // 依赖数组
+)
+</pre>
+<p>
+    只有当a、b等依赖发生改变时，函数才会重新创建。
+</p>

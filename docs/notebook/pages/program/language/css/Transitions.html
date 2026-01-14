@@ -1,0 +1,21 @@
+<header>
+    Transitions 过渡
+</header>
+<p>
+    比如，你有一个元素，本来宽是100px，鼠标悬浮的时候现在变成300px，如果你什么都不做，会突然变成300px，在你鼠标悬浮的时候，而使用此属性，可以实现慢慢改变的动画效果：
+</p>
+<pre tag="css">
+div{
+    width: 100px;
+    height: 100px;
+    background-color:#3ce5da;
+    transition-property: width background-color;
+    transition-duration: 3s;
+    transition-timing-function: linear;
+}
+
+div:hover{
+    width: 300px;
+    background-color: #7623ca;
+}
+</pre>

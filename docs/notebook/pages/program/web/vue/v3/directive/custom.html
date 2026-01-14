@@ -1,0 +1,60 @@
+<header>
+    自定义指令
+</header>
+<h2>
+    基本语法
+</h2>
+<p>
+    下面是一个例子，当一个input元素被Vue插入到DOM中后，它会被自动聚焦：
+</p>
+<pre tag="javascript">
+// focus.ts
+export default {
+    mounted: (el: HTMLElement) => el.focus()
+}
+</pre>
+<p>
+    使用起来就很简单了：
+</p>
+<pre tag="html">
+&lt;template&gt;
+    &lt;input type="text" v-focus&gt;
+&lt;/template&gt;
+&lt;script setup lang="ts"&gt;
+    import vFocus from "./focus"
+&lt;/script&gt;
+</pre>
+<h2>
+    指令钩子
+</h2>
+<p>
+    一个指令的定义对象可以提供几种钩子函数 (都是可选的)：
+</p>
+<pre tag="javascript">
+export default {
+
+    // 在绑定元素的attribute前
+    // 或事件监听器应用前调用
+    created(el, binding, vnode, prevVnode) {},
+
+    // 在元素被插入到DOM前调用
+    beforeMount(el, binding, vnode, prevVnode) {},
+
+    // 在绑定元素的父组件
+    // 及他自己的所有子节点都挂载完成后调用
+    mounted(el, binding, vnode, prevVnode) {},
+
+    // 绑定元素的父组件更新前调用
+    beforeUpdate(el, binding, vnode, prevVnode) {},
+
+    // 在绑定元素的父组件
+    // 及他自己的所有子节点都更新后调用
+    updated(el, binding, vnode, prevVnode) {},
+
+    // 绑定元素的父组件卸载前调用
+    beforeUnmount(el, binding, vnode, prevVnode) {},
+
+    // 绑定元素的父组件卸载后调用
+    unmounted(el, binding, vnode, prevVnode) {}
+}
+</pre>

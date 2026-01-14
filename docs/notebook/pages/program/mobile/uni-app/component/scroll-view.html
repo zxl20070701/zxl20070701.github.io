@@ -1,0 +1,194 @@
+<header>
+    scroll-view
+</header>
+<p>
+    可滚动视图区域。用于区域滚动。
+</p>
+<p>
+    需注意在webview渲染的页面中，区域滚动的性能不及页面滚动。
+</p>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+            <th>平台差异说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>scroll-x</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>允许横向滚动</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>scroll-y</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>允许纵向滚动</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>upper-threshold</td>
+            <td>Number/String</td>
+            <td>50</td>
+            <td>距顶部/左边多远时（单位px），触发 scrolltoupper 事件</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>lower-threshold</td>
+            <td>Number/String</td>
+            <td>50</td>
+            <td>距底部/右边多远时（单位px），触发 scrolltolower 事件</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>scroll-top</td>
+            <td>Number/String</td>
+            <td></td>
+            <td>设置竖向滚动条位置</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>scroll-left</td>
+            <td>Number/String</td>
+            <td></td>
+            <td>设置横向滚动条位置</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>scroll-into-view</td>
+            <td>String</td>
+            <td></td>
+            <td>值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>scroll-with-animation</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>在设置滚动条位置时使用动画过渡</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>enable-back-to-top</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>iOS点击顶部状态栏、安卓双击标题栏时，滚动条返回顶部，只支持竖向</td>
+            <td>app-nvue，微信小程序</td>
+        </tr>
+        <tr>
+            <td>show-scrollbar</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>控制是否出现滚动条</td>
+            <td>App-nvue 2.1.5+</td>
+        </tr>
+        <tr>
+            <td>refresher-enabled</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>开启自定义下拉刷新</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+        <tr>
+            <td>refresher-threshold</td>
+            <td>Number</td>
+            <td>45</td>
+            <td>设置自定义下拉刷新阈值</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+        <tr>
+            <td>refresher-default-style</td>
+            <td>String</td>
+            <td>"black"</td>
+            <td>设置自定义下拉刷新默认样式，支持设置 black，white，none，none 表示不使用默认样式</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+        <tr>
+            <td>refresher-background</td>
+            <td>String</td>
+            <td>"#FFF"</td>
+            <td>设置自定义下拉刷新区域背景颜色</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+        <tr>
+            <td>refresher-triggered</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>设置当前下拉刷新状态，true 表示下拉刷新已经被触发，false 表示下拉刷新未被触发</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+        <tr>
+            <td>enable-flex</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>启用 flexbox 布局。开启后，当前节点声明了 display: flex 就会成为 flex container，并作用于其孩子节点。</td>
+            <td>微信小程序 2.7.3</td>
+        </tr>
+        <tr>
+            <td>scroll-anchoring</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>开启 scroll anchoring 特性，即控制滚动位置不随内容变化而抖动，仅在 iOS 下生效，安卓下可参考 CSS overflow-anchor
+                属性。</td>
+            <td>微信小程序 2.8.2</td>
+        </tr>
+        <tr>
+            <td>@scrolltoupper</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>滚动到顶部/左边，会触发 scrolltoupper 事件</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>@scrolltolower</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>滚动到底部/右边，会触发 scrolltolower 事件</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>@scroll</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>滚动时触发，event.detail = {scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY}</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>@refresherpulling</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>自定义下拉刷新控件被下拉</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+        <tr>
+            <td>@refresherrefresh</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>自定义下拉刷新被触发</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+        <tr>
+            <td>@refresherrestore</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>自定义下拉刷新被复位</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+        <tr>
+            <td>@refresherabort</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>自定义下拉刷新被中止</td>
+            <td>H5、app-vue 2.5.12+,微信小程序基础库2.10.1+</td>
+        </tr>
+    </tbody>
+</table>

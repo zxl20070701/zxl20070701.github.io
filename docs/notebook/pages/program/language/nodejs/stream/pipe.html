@@ -1,0 +1,23 @@
+<header>
+    管道(pipe)
+</header>
+<p>
+    一种将可读流和可写流连接起来的机制。通过创建一个管道，可以将数据从一个可读流传输到一个可写流，从而实现数据的传输和转换。在管道中，数据会以流式的方式通过数据管道，直到全部数据被传输完毕。
+</p>
+<pre tag="javascript">
+const fs = require('fs');  
+
+// 创建一个可读流  
+const readableStream = fs.createReadStream('input.txt');   
+
+// 创建一个可写流
+const writableStream = fs.createWriteStream('output.txt');  
+
+// 将可读流和可写流连接起来  
+readableStream.pipe(writableStream);
+</pre>
+<p>
+    执行完毕就可以获得一个文件
+    <span class="warn">output.txt</span>，里面的内容就是
+    <span class="warn">input.txt</span>的内容。
+</p>

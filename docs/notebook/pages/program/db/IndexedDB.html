@@ -1,0 +1,193 @@
+<header>
+    IndexedDB 索引数据库
+</header>
+<p>
+    IndexedDB采用对象保存数据，和平时使用的关系型数据库的操作有比较大的区别。
+</p>
+<h2>
+    基本操作
+</h2>
+<h3>
+    打开数据库
+</h3>
+<pre tag="javascript">
+var database;
+var indexedDB = window.indexedDB||window.mozIndexedDB||window.webkitIndexedDB||window.msIndexedDB;
+var request = indexedDB.open("databaseName",1);
+//下面注册回调方法
+request.onerror = function(e) {
+    console.log(e.target.errorCode);
+};
+request.onsuccess = function(e) {
+    database = e.target.result;
+    console.log('创建或打开数据库成功');
+};
+request.onupgradeneeded = function(e) {
+    database = e.target.result;
+};
+</pre>
+<p>
+    最终返回的request是一个IDBOpenDBRequest对象，通过在其注册需要的回调方法来在其中提示错误或获取数据库连接对象。
+</p>
+<p>
+    其中需要注意的是，onsuccess和onupgradeneeded的区别在于，前者是成功回调，后者是在打开的数据库不是我们期望的最新版本时触发，简单的说触发只有两种情况：
+</p>
+<ul>
+    <li>
+        数据库不存在，第一次建立时。
+    </li>
+    <li>
+        indexedDB.open的第二个参数高于现在的数据库版本号时。
+    </li>
+</ul>
+<p>
+    indexedDB.open的第二个参数请始终使用整数，不要使用小数，可能会有问题，其次onupgradeneeded是我们唯一可以修改数据库结构（对象存储空间结构）的地方。
+</p>
+<h3>
+    删除数据库
+</h3>
+<pre tag="javascript">
+    indexedDB.deleteDatabase("databaseName");
+</pre>
+<h3>
+    关闭数据库
+</h3>
+<pre tag="javascript">
+    database.close();
+</pre>
+<h2>
+    对象存储空间
+</h2>
+<p>
+    对象存储空间就相当于关系型数据库里面的表，为了可以使用它，我们需要如下面这样来先定义它：
+</p>
+<pre tag="javascript">
+request.onupgradeneeded = function(e) {
+    database = e.target.result;
+    //创建一个对象存储空间，并且用username作为主键
+    var store = database.createObjectStore("students",{keyPath:"username"});
+    //另一种设置主键的方法
+    //var store = database.createObjectStore("students",{autoIncrement:true});
+};
+</pre>
+<h2>
+    事务
+</h2>
+<p>
+    创建对象存储空间之后，数据库中的增删改查都是通过事务transaction来完成的，在数据库对象上面调用transaction()方法就可以创建事务对象了。
+</p>
+<p>
+    上面第二步是设置对象存储空间，我们会发现最后返回了这个对象，通过这个对象，我们就可以存储这个"表"了，那如果后续我们不是创建的时候，如果想修改对象存储空间里面的数据的时候，如何获取这个对象滴，如下所示：
+</p>
+<pre tag="javascript">
+var transaction= database.transaction(["students"],'readwrite');
+var store=transaction.objectStore("students");
+</pre>
+<p>
+    transaction()中传入的第一个参数表示事务准备管理的对象存储空间，上面用的是数组，可以用很多个，用哪个下面第二行这样就取哪个，如果和这里一样就一个，也可以直接传递字符串；transaction()中传入的第二个参数为对该空间操作的方式，默认为readonly只读操作，代码中传入的是readwrite读写操作。
+</p>
+<p>
+    第二步和第三步例子里面返回的store其实是对象存储空间，操作'表'的方法就由它提供。
+</p>
+<h2>
+    操作对象存储空间
+</h2>
+<p>
+    添加数据用的是add方法（调用的时候保证主键和需要更新的一样就会实现更新），下面是例子：
+</p>
+<pre tag="javascript">
+//需要添加进去的两条数据
+const studentsData = [
+    {username: "Alice",  age: 15, hobby: "绘画" },
+    { username: "Tom",  age: 12, hobby: "跳舞" }
+];
+//添加数据，重复添加会报错
+store.add(studentsData[0]);
+store.add(studentsData[1]);
+</pre>
+<p>
+    余下的修改、获取和删除等类似，用一个例子给出，如下所示：
+</p>
+<pre tag="javascript">
+//添加数据，重复添加会更新原有数据
+store.put(studentsData[0]);
+//根据存储空间的键找到对应数据
+var data=store.get('Tom');
+//删除某一条记录
+store.delete(key);
+//删除存储空间全部记录
+store.clear();
+</pre>
+<h2>
+    索引
+</h2>
+<p>
+    在indexedDB中有两种索引，一种是自增长的int值，一种是keyPath：自己指定索引列，下面说的是第二种keyPath。
+</p>
+<pre tag="javascript">
+request.onupgradeneeded = function(e) {
+    database = e.target.result;
+    store=db.createObjectStore('students',{keyPath: 'username'});
+    store.createIndex('nameIndex','name',{unique:true});
+    store.createIndex('ageIndex','age',{unique:false});
+};
+</pre>
+<p>
+    这样我们就创建了两个索引nameIndex和ageIndex。
+</p>
+<p>
+    createIndex方法的三个参数方便表示索引名称、索引属性字段名和索引属性值是否唯一。
+</p>
+<p>
+    我们知道索引存在的目的是迅速定位数据，提高搜索速度，接着我们来通过刚刚新建立的索引来获取数据。
+</p>
+<pre tag="javascript">
+//获取指定的索引
+var index = store.index("nameIndex");
+//获取数据
+index.get('Tom').onsuccess=function(e){
+    var student=e.target.result;
+}
+</pre>
+<p>
+    这样我们可以利用索引快速获取数据，name的索引是唯一的没问题，但是对于age索引只会取到第一个匹配值，要想得到所有age符合条件的值就需要使用游标了。
+</p>
+<h2>
+    游标
+</h2>
+<p>
+    如果你想遍历每个值，你可以使用游标，下面是例子代码：
+</p>
+<pre tag="javascript">
+var request=index.openCursor();
+//var IDBKeyRange = window.IDBKeyRange ||window.webkitIDBKeyRange ||window.msIDBKeyRange;
+//var request=index.openCursor(IDBKeyRange.only(26));
+request.onsuccess=function(e){
+    var cursor=e.target.result;
+    //这里的判断是必须的，必须的，if也没有写错，不是while
+    if(cursor){
+        var student=cursor.value;
+        cursor.continue();
+    }
+}
+ </pre>
+<p>
+    这里还需要提一点的是，openCursor()或openKeyCursor()这个方法可以传递一个参数，实现对搜索进行筛选，具体有下面这些筛选方法：
+</p>
+<ol>
+    <li>
+        IDBKeyRange.only(value):只获取指定数据；
+    </li>
+    <li>
+        IDBKeyRange.lowerBound(value,isOpen)：获取最小是value的数据，第二个参数用来指示是否排除value值本身，也就是数学中的是否是开区间；
+    </li>
+    <li>
+        IDBKeyRange.upperBound(value,isOpen)：和上面类似，用于获取最大值是value的数据；
+    </li>
+    <li>
+        IDBKeyRange.bound(value1,value2,isOpen1,isOpen2)：参考上面的说明应该不言而喻了吧。
+    </li>
+</ol>
+<p>
+    需要明白的是，这里的筛选范围，指的是index而言的，就是说索引用的是哪个，改索引建立指定的字段，该字段的值是坐标，是对它进行筛选。
+</p>

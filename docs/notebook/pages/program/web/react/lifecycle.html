@@ -1,0 +1,55 @@
+<header>
+    生命周期
+</header>
+<img src="./images/lifecycle.png" width="100%" />
+<h2>
+    挂载
+</h2>
+<p>
+    当组件实例被创建并插入DOM中时会依次触发下面的历程：
+</p>
+<h3>
+    constructor
+</h3>
+<p>
+    在 React 组件挂载之前，会调用它的构造函数。
+</p>
+<h3>
+    render
+</h3>
+<h3>
+    componentDidMount
+</h3>
+<p>
+    在组件挂载后（插入DOM树中）立即调用。
+</p>
+<h2>
+    更新
+</h2>
+<p>
+    每当组件的state或props发生变化时，组件就会更新，而每一次改变都会重复经历如下历程：
+</p>
+<h3>
+    shouldComponentUpdate
+</h3>
+<p>
+    该方法会返回一个布尔值，指定React是否应该继续渲染，默认值是true，即每次state或props发生变化组件都会重新渲染。
+</p>
+<h3>
+    render
+</h3>
+<h3>
+    componentDidUpdate
+</h3>
+<p>
+    在更新后会被立即调用。
+</p>
+<h2>
+    卸载
+</h2>
+<h3>
+    componentWillUnmount
+</h3>
+<p>
+    在组件卸载及销毁之前直接调用。
+</p>

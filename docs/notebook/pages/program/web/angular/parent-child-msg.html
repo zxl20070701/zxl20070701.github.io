@@ -1,0 +1,71 @@
+<header>
+    父子组件之间的交互通讯
+</header>
+<h2>
+    通过输入型绑定把数据从父组件传到子组件
+</h2>
+<p>
+    通过@Input()可以实现父组件传递数据给子组件，下面先看看子组件代码：
+</p>
+<pre tag="javascript">
+import { Component, Input } from '@angular/core';
+            
+@Component({
+
+    selector: 'child-comp',
+    template: `&lt;section&gt;
+            &lt;header&gt;{{title}}&lt;/header&gt;
+            &lt;p&gt;{{message}}&lt;/p&gt;
+        &lt;/section&gt;`
+
+})
+export class ChildComponent {
+    @Input() title: string;
+    @Input('msg') message: string;
+}
+</pre>
+<p>
+    其中@Input('msg')是为message定义了别名，接着，在父组件中通过属性就可以传递值进来了：
+</p>
+<pre tag="javascript">
+    <child-comp title="数据传递" msg="这是数据传递演示"></child-comp>
+</pre>
+<h2>
+    父组件通过监听子组件的事件获取子组件传递的数据
+</h2>
+<p>
+    子组件传递数据给父组件是通过emit的方式，先看一下子组件代码：
+</p>
+<pre tag="javascript">
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+                
+@Component({
+
+    selector: 'child-comp',
+    template: '&lt;button (click)="doit(\'来自子组件的数据\')"&gt;按钮&lt;/button&gt;'
+
+})
+export class ChildComponent {
+
+    @Output() onDoit = new EventEmitter<string>();  
+    doit(info: string) {
+        this.onDoit.emit(info);
+    }
+}
+</pre>
+<p>
+    通过@Output()触发父组件里面定义的onDoit事件，因此，需要在父组件中注册事件处理方法：
+</p>
+<pre tag="html">
+    <child-comp (onDoit)="getInfo($event)"></child-comp>
+</pre>
+<p>
+    getInfo是定义的一个方法，$event就是子组件传递的数据，点击子组件的按钮就会触发这个方法（弹出一句话），方法代码如下：
+</p>
+<pre tag="javascript">
+......
+getInfo(info:string){
+    alert(info);
+}
+...... 
+</pre>

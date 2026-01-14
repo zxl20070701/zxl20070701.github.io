@@ -1,0 +1,37 @@
+<header>
+    tf.randomUniform
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.randomUniform(shape, minval?, maxval?, dtype?, seed?);
+</pre>
+<p>
+    创建一个随机张量，从均匀分布中随机取出指定个数的值。
+</p>
+<h3>
+    参数
+</h3>
+<ul>
+    <li>
+        <span class="important">shape</span>
+        ：输出张量的形状，必选；
+    </li>
+    <li>
+        <span class="important">minval</span>
+        ：随机值范围下限，默认0；
+    </li>
+    <li>
+        <span class="important">maxval</span>
+        ：随机值范围上限，如果 dtype 是浮点，则默认为1；
+    </li>
+    <li>
+        <span class="important">dtype</span>
+        ：输出的类型，默认为“float32”；
+    </li>
+    <li>
+        <span class="important">seed</span>
+        ：随机数种子。
+    </li>
+</ul>

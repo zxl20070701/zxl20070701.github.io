@@ -1,0 +1,48 @@
+<header>
+    列表渲染
+</header>
+<p>
+    本质上来说，列表渲染其实就是生成一个数组，比如下面的代码：
+</p>
+<pre tag="javascript">
+&lt;ul&gt;
+    {
+        [&lt;li key="1"&gt;苹果&lt;/li&gt;, &lt;li key="2"&gt;香蕉&lt;/li&gt;, &lt;li key="3"&gt;橘子&lt;/li&gt;, &lt;li key="4"&gt;火龙果&lt;/li&gt;]
+    }
+&lt;/ul&gt;
+</pre>
+<p>
+    渲染的时候就会变成：
+</p>
+<pre tag="html">
+<ul><li>苹果</li><li>香蕉</li><li>橘子</li><li>火龙果</li></ul>
+</pre>
+<p>
+    所以我们只需要返回一个数组即可实现，下面我们来举几个可行的例子。
+</p>
+<h2>
+    Map
+</h2>
+<pre tag="javascript">
+<ul>
+    {["苹果", "香蕉", "橘子", "火龙果"].map((item, index) =&gt; &lt;li key={ index }&gt;{ item }&lt;/li&gt;)}
+</ul>
+</pre>
+<h2>
+    For
+</h2>
+<pre tag="javascript">
+<ul>
+    {
+        (() =&gt; {
+            let result = [], list = ["苹果", "香蕉", "橘子", "火龙果"];
+
+            for (var i = 0; i &lt; list.length; i++) {
+                result.push(&lt;li key={ i }&gt;{ list[i] }&lt;/li&gt;)
+            }
+
+            return result
+        })()
+    }
+</ul>
+</pre>

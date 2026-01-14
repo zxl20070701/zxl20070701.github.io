@@ -1,0 +1,153 @@
+<header>
+    PDF转word文件
+</header>
+<h2>
+    单个文件
+</h2>
+<h3>
+    直接转Word
+</h3>
+<p>
+    比如我们有一个pdf文件：<span class="special">demo.pdf</span>，希望转成Word：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import pdf
+
+pdf.toWord("./demo.pdf", "./")
+</pre>
+<p>
+    运行之后，就可以看见当前目录下多了一份word文件：<span class="special">demo.docx</span>。
+</p>
+<h3>
+    修改Word名称
+</h3>
+<p>
+    那如果想自定义生成后的word文件名称怎么办？比如word文件名称希望是<span class="special">文件.docx</span>，修改代码为：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import pdf
+
+def getName(name, texts, index, total):
+    return "文件"
+pdf.toWord("./demo.pdf", "./", getName)
+</pre>
+<h3>
+    根据pdf内容确定word文件名称
+</h3>
+<p>
+    有时候，我们word文件的名称可能希望根据pdf中的内容进行确定，比如pdf截图如下：
+</p>
+<img src="./images/office/pdf-demo.jpeg" style="outline:1px solid red" />
+<p>
+    修改一下代码如下，打印一下当前pdf中的内容：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import pdf
+from py3office import handler
+
+def getName(name, texts, index, total):
+    handler.printList(texts)
+    return "picture"
+pdf.toWord("./demo.pdf", "./", getName)
+</pre>
+<p>
+    打印结果如下：
+</p>
+<pre>
+[0] 介绍
+[1] 你可以用来干什么？
+[2] VISLite 贡献指南
+[3] 你可以用来干什么？
+[4] 顾名思义，这是一个轻量级的数据可视化资源库，所以，我们的目
+[5] 标是：帮助你更快速、简单、高效的开发出任意的可视化业务产品。
+[6] 当然，这并不是一件非常容易的事情，但我们会逐步完善和改进。
+[7] 常用的算法
+[8] 我们通过提供可视化常用的算法来帮助你绘制复杂图表。比如下面
+......
+</pre>
+<p>
+    比如我们想取<span class="special">[2] VISLite 贡献指南</span>为word文件名称，那么代码就变成了：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import pdf
+from py3office import handler
+
+def getName(name, texts, index, total):
+    return texts[2]
+pdf.toWord("./demo.pdf", "./", getName)
+</pre>
+<p>
+    这样，pdf就被转成了word文件：<span class="special">VISLite 贡献指南.docx</span>。
+</p>
+<p>
+    如果需要更复杂的操作，可以查看：
+</p>
+<button tag="office-pdf-rename_word" type="explain">如何灵活设置pdf转word文件后的文件名称？</button>
+<h2>
+    批量处理
+</h2>
+<p>
+    比如当前目录下有一个文件夹pdf，里面有很多pdf文件，目录结构如下：
+</p>
+<pre>
+- pdf
+    - 身份证（正面）.pdf
+    - 身份证（正面）.pdf
+    - 银行卡
+        - 中国银行卡.pdf
+</pre>
+<p>
+    我们希望把其中的所有pdf都变成word文件（保持原来的目录结构）：
+</p>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import pdf
+from py3office import handler
+
+sourcePath = "./pdf"
+targetPath = "./word"
+
+def doit(fileInfo):
+    if fileInfo["path"].endswith(".pdf"):
+
+        def getName(name, texts, index, total):
+            return name
+
+        pdf.toWord(
+            fileInfo["path"],
+            fileInfo["folder"].replace(sourcePath, targetPath),
+            getName,
+        )
+
+
+handler.listFile(sourcePath, doit)
+</pre>
+<p>
+    运行后会在当前目录多一个文件夹word，目录结构如下：
+</p>
+<pre>
+- word
+    - 身份证（正面）.docx
+    - 身份证（正面）.docx
+    - 银行卡
+        - 中国银行卡.docx
+</pre>
+<div class="tips">
+    温馨提示：对于<span class="special">单个文件</span>中对word文件名称的说明，这里类似的，直接修改<span class="important">getName</span>返回值也是可行的。
+    <hr />
+    为了更方便，你可以直接使用： <span class="important">pdf.logInfo("./demo.pdf", False)</span> 来查看当前pdf文件内容。
+</div>

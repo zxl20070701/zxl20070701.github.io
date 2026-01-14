@@ -1,0 +1,96 @@
+<header>
+    生命周期
+</header>
+<table>
+    <thead>
+        <tr>
+            <td>
+                Vue2 Options-based API
+            </td>
+            <td>
+                Vue Composition API
+            </td>
+            <td>
+                执行时机
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>beforeCreate</td>
+            <td rowspan="2">setup()</td>
+            <td>
+                在实例初始化之后,进行数据侦听和事件/侦听器的配置之前同步调用。
+            </td>
+        </tr>
+        <tr>
+            <td>created</td>
+            <td>
+                在实例创建完成后被立即同步调用。
+            </td>
+        </tr>
+        <tr>
+            <td>beforeMount</td>
+            <td>onBeforeMount</td>
+            <td>
+                在挂载开始之前被调用，相关的 render 函数首次被调用。
+            </td>
+        </tr>
+        <tr>
+            <td>mounted</td>
+            <td>onMounted</td>
+            <td>
+                实例被挂载后调用。
+            </td>
+        </tr>
+        <tr>
+            <td>beforeUpdate</td>
+            <td>onBeforeUpdate</td>
+            <td>
+                在数据发生改变后，DOM 被更新之前被调用。
+            </td>
+        </tr>
+        <tr>
+            <td>updated</td>
+            <td>onUpdated</td>
+            <td>
+                在数据更改导致的虚拟 DOM 重新渲染和更新完毕之后被调用。
+            </td>
+        </tr>
+        <tr>
+            <td>beforeDestroy</td>
+            <td>onBeforeUnmount</td>
+            <td>
+                实例销毁之前调用。
+            </td>
+        </tr>
+        <tr>
+            <td>destroyed</td>
+            <td>onUnmounted</td>
+            <td>
+                实例销毁后调用。
+            </td>
+        </tr>
+        <tr>
+            <td>errorCaptured</td>
+            <td>onErrorCaptured</td>
+            <td>
+                在捕获一个来自后代组件的错误时被调用。
+            </td>
+        </tr>
+        <tr>
+            <td>activated</td>
+            <td>onActivated</td>
+            <td>
+                被 keep-alive 缓存的组件激活时调用。
+            </td>
+        </tr>
+        <tr>
+            <td>deactivated</td>
+            <td>onDeactivated</td>
+            <td>
+                被 keep-alive 缓存的组件失活时调用。
+            </td>
+        </tr>
+    </tbody>
+</table>

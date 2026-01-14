@@ -1,0 +1,64 @@
+<header>
+    引用
+</header>
+<p>
+    WXML 提供两种文件引用方式import和include。
+</p>
+<h2>
+    import
+</h2>
+<p>
+    可以在该文件中使用目标文件中定义的template。
+</p>
+<h3>
+    定义template
+</h3>
+<p>
+    我们首先在
+    <span class="special">item.wxml</span>
+    中定义了一个叫
+    <span class="warn">item</span>
+    的template：
+</p>
+<pre tag="html">
+&lt;template name="item"&gt;
+    &lt;text&gt;{{text}}&lt;/text&gt;
+&lt;/template&gt;
+</pre>
+<h3>
+    使用template
+</h3>
+<p>
+    在需要的wxml文件中引入
+    <span class="special">item.wxml</span>
+    后，就可以使用
+    <span class="warn">item</span>模板：
+</p>
+<pre tag="html">
+&lt;import src="item.wxml"/&gt;
+&lt;template is="item" data="{{text: 'forbar'}}"/&gt;
+</pre>
+<div class="tips">
+    import 有作用域的概念，即只会 import 目标文件中定义的 template，而不会 import 目标文件 import 的 template。
+</div>
+<h2>
+    include
+</h2>
+<p>
+    include 可以将目标文件除了 &lt;template/&gt; &lt;wxs/&gt; 外的整个代码引入，相当于是拷贝到 include 位置，如：
+</p>
+<pre tag="html">
+&lt;include src="header.wxml"/&gt;
+&lt;view&gt; body &lt;/view&gt;
+</pre>
+<pre tag="html">
+&lt;!-- header.wxml --&gt;
+&lt;view&gt; header &lt;/view&gt;
+</pre>
+<p>
+    相当于：
+</p>
+<pre tag="html">
+&lt;view&gt; header &lt;/view&gt;
+&lt;view&gt; body &lt;/view&gt;
+</pre>

@@ -1,0 +1,51 @@
+<header>
+  软链接
+</header>
+<p>
+  软链接（Symbolic Link）是一种特殊的文件类型，它包含了对另一个文件或目录的引用，而不是实际的数据。
+</p>
+<h2>
+  使用API创建
+</h2>
+<p>
+  可以使用 fs.symlink 并指定类型type为 junction（目录）或 file（文件）：
+</p>
+<pre tag="javascript">
+const fs = require('fs');
+fs.symlink(sourcePath, targetPath, type, (err) => {
+  if (err) {
+    console.error('创建软链接失败:', err);
+    return;
+  }
+  console.log('软链接创建成功');
+});
+</pre>
+<h2>
+  使用系统命令创建
+</h2>
+<h3>
+  类 Unix 系统
+</h3>
+<pre tag="javascript">
+const { exec } = require('child_process');
+exec(`ln -s "${sourcePath}" "${targetPath}"`, (error, stdout, stderr) => {
+  if (error) {
+    console.error(`执行出错: ${error}`);
+    return;
+  }
+  console.log(`软链接创建成功: ${stdout}`);
+});
+</pre>
+<h3>
+  Windows
+</h3>
+<pre tag="javascript">
+const { exec } = require('child_process');
+exec(`mklink ${targetPath} ${sourcePath}`, (error, stdout, stderr) => {
+  if (error) {
+    console.error(`执行出错: ${error}`);
+    return;
+  }
+  console.log(`软链接创建成功: ${stdout}`);
+});
+</pre>

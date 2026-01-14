@@ -1,0 +1,153 @@
+<header>
+    uni.compressImage(OBJECT)
+</header>
+<p>
+    压缩图片接口，可选压缩质量
+</p>
+<h2>
+    平台差异说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>App</th>
+            <th>H5</th>
+            <th>微信小程序</th>
+            <th>支付宝小程序</th>
+            <th>百度小程序</th>
+            <th>抖音小程序、飞书小程序</th>
+            <th>QQ小程序</th>
+            <th>快手小程序</th>
+            <th>京东小程序</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>√</td>
+            <td>x</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√(基础库版本&gt;=3.110.3)</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+            <td>√</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    OBJECT 参数说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>必填</th>
+            <th>说明</th>
+            <th>平台差异说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>src</td>
+            <td>String</td>
+            <td></td>
+            <td>是</td>
+            <td>图片路径，图片的路径，可以是相对路径、临时文件路径、存储文件路径</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>quality</td>
+            <td>Number</td>
+            <td>80</td>
+            <td>否</td>
+            <td>压缩质量，范围0～100，数值越小，质量越低，压缩率越高（仅对jpg有效）</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>width</td>
+            <td>String</td>
+            <td>auto</td>
+            <td>否</td>
+            <td>缩放图片的宽度，支持像素值（如"100px"）、百分比（如"50%"）、自动计算（如"auto"，即根据width与源图宽的缩放比例计算，若未设置width则使用源图宽度）</td>
+            <td>App 3.0.0+</td>
+        </tr>
+        <tr>
+            <td>height</td>
+            <td>String</td>
+            <td>auto</td>
+            <td>否</td>
+            <td>缩放图片的高度，支持像素值（如"100px"）、百分比（如"50%"）、自动计算（如"auto"，即根据height与源图高的缩放比例计算，若未设置height则使用源图高度）</td>
+            <td>App 3.0.0+</td>
+        </tr>
+        <tr>
+            <td>compressedWidth</td>
+            <td>Number</td>
+            <td>-</td>
+            <td>否</td>
+            <td>压缩后图片的宽度，单位为px，若不填写则默认以 compressedHeight 为准等比缩放</td>
+            <td>微信小程序2.26.0 +、App 3.7.0+</td>
+        </tr>
+        <tr>
+            <td>compressedHeight</td>
+            <td>Number</td>
+            <td>-</td>
+            <td>否</td>
+            <td>压缩后图片的高度，单位为px，若不填写则默认以 compressedWidth 为准等比缩放</td>
+            <td>微信小程序2.26.0 +、App 3.7.0+</td>
+        </tr>
+        <tr>
+            <td>rotate</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>否</td>
+            <td>旋转度数，范围0～360</td>
+            <td>App 3.0.0+</td>
+        </tr>
+        <tr>
+            <td>success</td>
+            <td>Function</td>
+            <td></td>
+            <td>否</td>
+            <td>接口调用成功的回调函数</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>fail</td>
+            <td>Function</td>
+            <td></td>
+            <td>否</td>
+            <td>接口调用失败的回调函数</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>complete</td>
+            <td>Function</td>
+            <td></td>
+            <td>否</td>
+            <td>接口调用结束的回调函数（调用成功、失败都会执行）</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    success 返回参数说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性</th>
+            <th>类型</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>tempFilePath</td>
+            <td>String</td>
+            <td>压缩后图片的临时文件路径</td>
+        </tr>
+    </tbody>
+</table>

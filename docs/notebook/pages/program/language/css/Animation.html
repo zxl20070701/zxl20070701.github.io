@@ -1,0 +1,23 @@
+<header>
+    Animation 动画
+</header>
+<p>
+    首先，我们需要定义一个动画：
+</p>
+<pre tag="css">
+@keyframes rotateLoop {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</pre>
+<p>
+    然后，使用即可，就像下面这样：
+</p>
+<pre tag="css">
+    animation: rotateLoop 5s infinite;
+</pre>

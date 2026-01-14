@@ -1,0 +1,67 @@
+<header>
+    求导法则
+</header>
+<p>
+    <span class="title">
+        定理
+    </span>
+    若函数u(x)和v(x)在点x<sub>0</sub>可导，则函数ƒ(x)=u(x)±v(x)在点x<sub>0</sub>也可导，且
+    <span class="oneline">
+        ƒ<sup>'</sup>(x<sub>0</sub>)=u<sup>'</sup>(x<sub>0</sub>)±v<sup>'</sup>(x<sub>0</sub>)
+    </span>
+</p>
+<p>
+    <span class="title">
+        定理
+    </span>
+    若函数u(x)和v(x)在点x<sub>0</sub>可导，则函数ƒ(x)=u(x)v(x)在点x<sub>0</sub>也可导，且
+    <span class="oneline">
+        ƒ<sup>'</sup>(x<sub>0</sub>)=u<sup>'</sup>(x<sub>0</sub>)v(x<sub>0)</sub>+u(x<sub>0</sub>)v<sup>'</sup>(x<sub>0</sub>)
+    </span>
+</p>
+<p>
+    <span class="title">
+        定理
+    </span>
+    若函数u(x)和v(x)在点x<sub>0</sub>都可导，且v(x<sub>0)</sub>≠0，则函数ƒ(x)=
+    <code>
+        ["division","u(x)","v(x)"]
+    </code>
+    在点x<sub>0</sub>也可导，且
+    <span class="oneline">
+        ƒ<sup>'</sup>(x<sub>0</sub>)=
+        <code>
+            ["division",
+            ["join",["rightTop","u","'"],"(",["rightBottom","x","0"],")","v(",["rightBottom","x","0"],") - u(",["rightBottom","x","0"],")",["rightTop","v","'"],"(",["rightBottom","x","0"],")"],
+            ["rightTop",["bracket",["join","v(",["rightBottom","x","0"],")"],"middle"],"2"]]
+        </code>
+    </span>
+</p>
+<h2>
+    基本初等函数导数公式
+</h2>
+<ol>
+    <li>
+        (c)<sup>'</sup>=0 (c为常数)
+    </li>
+    <li>
+        (x<sup>α</sup>)<sup>'</sup>=αx<sup>α-1</sup> (α为任意常数)
+    </li>
+    <li>
+        (sinx)<sup>'</sup>=cos , (cosx)<sup>'</sup>=-sinx , (tanx)<sup>'</sup>=sec<sup>2</sup>x ,
+        (cotx)<sup>'</sup>=-csc<sup>2</sup>x , (secx)<sup>'</sup>=secxtanx , (cscx)<sup>'</sup>=-cscxcotx
+    </li>
+    <li>
+        (arcsinx)<sup>'</sup>=<code>["division","1",["gen",["join","1 -",["rightTop","x","2"]]]]</code> ,
+        (arccosx)<sup>'</sup>= -<code>["division","1",["gen",["join","1 -",["rightTop","x","2"]]]]</code> ,
+        (arctanx)<sup>'</sup>=<code>["division","1",["join","1 +",["rightTop","x","2"]]]</code> ,
+        (arccotx)<sup>'</sup>= -<code>["division","1",["join","1 +",["rightTop","x","2"]]]</code>
+    </li>
+    <li>
+        (a<sup>x</sup>)<sup>'</sup>=a<sup>x</sup>lna , (e<sup>x</sup>)<sup>'</sup>=e<sup>x</sup>
+    </li>
+    <li>
+        (log<sub>a</sub>x)<sup>'</sup>=<code>["division","1","xlna"]</code> ,
+        (lnx)<sup>'</sup>=<code>["division","1","x"]</code>
+    </li>
+</ol>

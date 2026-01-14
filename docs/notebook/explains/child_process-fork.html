@@ -1,0 +1,64 @@
+<header>
+    fork通信
+</header>
+<p>
+    index.js
+</p>
+<pre tag="javascript">
+const { fork } = require('child_process');
+
+console.log('1. start fork');
+const child = fork('./child.js');
+
+console.log('2. start on message');
+child.on('message', data => {
+    console.log(`9. end message: ${data.y}`);
+});
+
+console.log('3. start send');
+child.send({ x: 1 });
+console.log('4. end send');
+</pre>
+<p>
+    child.js
+</p>
+<pre tag="javascript">
+console.log('5. in child - start message');
+process.on('message', data => {
+  console.log(`6. in child - end message: ${data.x}`);
+
+  console.log('7. in child - start send');
+  process.send({ y: 2 });
+  console.log('8. in child - end send');
+});
+</pre>
+<p>
+    则日志信息如下：
+</p>
+<pre>
+$ node index.js
+1. start fork
+2. start on message
+3. start send
+4. end send
+5. in child - start message
+6. in child - end message: 1
+7. in child - start send
+8. in child - end send
+9. end message: 2
+（挂住）
+</pre>
+<p>
+    fork会建立一个永久的channel，以供进程间通信，因此，以上日志打印完后，会挂住。
+</p>
+<p>
+    可以使用child.disconnect()关闭这个通道：
+</p>
+<pre tag="javascript">
+child.on('message', function () {
+    console.log('9. end message');
+
+    // 关闭channel
+    child.disconnect();
+});
+</pre>

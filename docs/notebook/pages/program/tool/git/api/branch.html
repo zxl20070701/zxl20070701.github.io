@@ -1,0 +1,67 @@
+<header>
+    分支
+</header>
+<h2>
+    查看
+</h2>
+<p>
+    查看分支状态，如果使用-r（即：git branch -r）表示查看远程分支状态，-a选项查看所有分支。
+</p>
+<pre tag>git branch</pre>
+<h2>
+    创建
+</h2>
+<p>
+    创建一个名称叫branchname的分支，此分支初始化拥有的是你创建此分支时活跃分支。
+</p>
+<pre tag>git branch branchname</pre>
+<h3>
+    基于指定分支创建
+</h3>
+<pre tag>git branch branchname oldbranchname</pre>
+<h3>
+    基于指定提交创建
+</h3>
+<pre tag>git branch branchname hashname</pre>
+<h2>
+    切换活跃分支
+</h2>
+<p>
+    切换当前活跃分支为branchname。
+</p>
+<pre tag>git checkout branchname</pre>
+<h2>
+    删除
+</h2>
+<p>
+    删除本地指定分支branchname。
+</p>
+<pre tag>git branch -d branchname</pre>
+<p>
+    删除远程指定分支branchname。
+</p>
+<pre tag>git push hostname --delete branchname</pre>
+<h2>
+    改名
+</h2>
+<p>
+    修改本地分支oldbranchname的名称为newbranchname。
+</p>
+<pre tag>git branch -m oldbranchname newbranchname</pre>
+<h2>
+    合并
+</h2>
+<p>
+    合并分支branchname到当前活跃分支。
+</p>
+<pre tag>git merge branchname</pre>
+<h2>
+    变基
+</h2>
+<p>
+    把分支branchname合并到当前活跃分支并以此为基。
+</p>
+<p class="warn">
+    温馨提示：和merge相比，不会留下合并记录。
+</p>
+<pre tag>git rebase branchname</pre>

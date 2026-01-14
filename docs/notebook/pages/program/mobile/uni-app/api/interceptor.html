@@ -1,0 +1,141 @@
+<header>
+    拦截器
+</header>
+<h2>
+    uni.addInterceptor(STRING, OBJECT)
+</h2>
+<p>
+    添加拦截器
+</p>
+<p>
+    示例：
+</p>
+<pre tag="javascript">
+uni.request({
+    url: 'request/login', //仅为示例，并非真实接口地址。
+    success: (res) => {
+        console.log(res.data);
+        // 打印： {code:1,...}
+    }
+});
+
+
+uni.addInterceptor('request', {
+    invoke(args) {
+    // request 触发前拼接 url
+    args.url = 'https://www.example.com/'+args.url
+    },
+    success(args) {
+    // 请求成功后，修改code值为1
+    args.data.code = 1
+    },
+    fail(err) {
+    console.log('interceptor-fail',err)
+    },
+    complete(res) {
+    console.log('interceptor-complete',res)
+    }
+})
+
+uni.addInterceptor({
+    returnValue(args) {
+    // 只返回 data 字段
+    return args.data
+    }
+})    
+</pre>
+<h3>
+    STRING 参数说明
+</h3>
+<p>
+    需要拦截的api名称，如：uni.addInterceptor('request', OBJECT) ，将拦截 uni.request()
+</p>
+<p>
+    注意：
+</p>
+<ul>
+    <li>
+        仅支持异步接口，如：uni.setStorage(OBJECT)，暂不支持同步接口如：uni.setStorageSync(KEY,DATA)
+    </li>
+    <li>
+        uniCloud请求云端接口时（callFunction、uploadFile等）也会使用uni.request发送请求，请确保拦截器内不错误的处理此类请求
+    </li>
+</ul>
+<h3>
+    OBJECT 参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>默认值</th>
+            <th>说明</th>
+            <th>平台差异说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>invoke</td>
+            <td>Function</td>
+            <td>否</td>
+            <td></td>
+            <td>拦截前触发</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>returnValue</td>
+            <td>Function</td>
+            <td>否</td>
+            <td></td>
+            <td>方法调用后触发，处理返回值</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>success</td>
+            <td>Function</td>
+            <td>否</td>
+            <td></td>
+            <td>成功回调拦截</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>fail</td>
+            <td>Function</td>
+            <td>否</td>
+            <td></td>
+            <td>失败回调拦截</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>complete</td>
+            <td>Function</td>
+            <td>否</td>
+            <td></td>
+            <td>完成回调拦截</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    uni.removeInterceptor(STRING)
+</h2>
+<p>
+    删除拦截器
+</p>
+<h3>
+    STRING 参数说明
+</h3>
+<p>
+    需要删除拦截器的api名称。
+</p>
+<p>
+    示例：
+</p>
+<pre tag="javascript">
+    uni.removeInterceptor('request')
+</pre>
+<div class="tips">
+    注意：拦截uni.switchTab本身没有问题。但是在微信小程序端点击tabbar的底层逻辑并不是触发uni.switchTab。所以误认为拦截无效，此类场景的解决方案是在tabbar页面的页面生命周期onShow中处理。
+</div>

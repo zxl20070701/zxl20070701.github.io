@@ -1,0 +1,126 @@
+<header>
+    浏览器自动化 puppeteer-core
+</header>
+<h2>
+    创建浏览器
+</h2>
+<pre tag="javascript">
+const puppeteer = require("puppeteer-core");
+const os = require("os");
+
+function getExecutableFilePath() {
+    return {
+        Linux: "",
+        Windows_NT: "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        Darwin: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    }[os.type()];
+}
+
+module.exports = function createBrowser(parmas = {}) {
+    return puppeteer.launch({
+        executablePath: getExecutableFilePath(),
+        args: [
+            "--disable-dev-shm-usage", // 大量渲染时候写入/tmp而非/dev/shm，防止页面内存溢出崩溃
+            "--no-sandbox", // 禁用沙盒
+        ],
+        timeout: 2000,
+        ...parmas,
+    });
+};
+</pre>
+<h2>
+    操作用例
+</h2>
+<h3>
+    下载网页到本地
+</h3>
+<pre tag="javascript">
+const fs = require("fs");
+const path = require("path");
+
+(async function () {
+    const browser = await createBrowser();
+    const page = await browser.newPage();
+    await page.goto("http://127.0.0.1:8180/example/index.html");
+    const html = await page.content();
+    fs.writeFileSync(path.join(__dirname, "../data/download.html"), html);
+    await browser.close();
+})();
+</pre>
+<h3>
+    网页截屏
+</h3>
+<pre tag="javascript">
+const path = require("path");
+
+(async function () {
+    const browser = await createBrowser();
+    const page = await browser.newPage();
+    await page.goto("http://127.0.0.1:8180/example/index.html");
+    await page.screenshot({
+        path: path.join(__dirname, "../data/screenshot.jpeg"),
+
+        // 如果设置为true，则对完整的页面（需要滚动的部分也包含在内），默认是false
+        fullPage: true,
+
+        // 指定截图类型, 可以是 jpeg 或者 png。默认 'png'
+        type: "jpeg",
+
+        // 图片质量, 可选值 0-100. png 类型不适用
+        quality: 100
+    });
+    await browser.close();
+})();
+</pre>
+<h3>
+    保存网页成pdf
+</h3>
+<pre tag="javascript">
+const path = require("path");
+
+(async function () {
+    const browser = await createBrowser();
+    const page = await browser.newPage();
+    await page.goto("http://127.0.0.1:8180/example/index.html", {
+
+        // 会一直等待，直到页面加载后不存在 0 个以上的资源请求
+        waitUntil: 'networkidle0'
+    });
+
+    // 打印前对页面进行一些调整
+    await page.evaluate(() => {
+        const div = document.createElement('div');
+        div.innerHTML = '作者：zxl20070701';
+        div.style.cssText = "position: fixed; bottom: 10px; right: 10px; background: red; z-index: 10000";
+        document.body.appendChild(div);
+    });
+
+    // 延迟等待页面加载完毕
+    await page.pdf({
+        path: path.join(__dirname, "../data/Pdf.pdf"),
+
+        // 表示 PDF 的纸张格式，a4 尺寸为 8.27 英寸 x 11.7 英寸，是传统的打印尺寸
+        format: 'a4',
+
+        // 显示页眉和页脚。默认是不显示
+        displayHeaderFooter: true,
+
+        // 页眉的html模板
+        // 可以有这些变量：date 格式化的日期、title 网页标题、url 网页地址、pageNumber 当前页码、totalPages 总页数
+        headerTemplate: `<div style="display: flex; justify-content: space-between;">
+            <span>我是页眉</span>
+            <span>我也是页眉</span>
+        </div>`,
+
+        // 页脚的html模板，和页眉模板变量相同
+        footerTemplate: `<div style="display: flex; justify-content: space-between; ">
+            <span>我是页脚</span>
+            <div><span class="pageNumber"></span> / <span class="totalPages"></span></div>
+        </div>`,
+
+        // 页面空白白边配置
+        margin: { top: 50, bottom: 50, left: 50, right: 50 }
+    });
+    await browser.close();
+})();
+</pre>

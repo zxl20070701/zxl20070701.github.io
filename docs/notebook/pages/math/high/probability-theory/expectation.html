@@ -1,0 +1,56 @@
+<header>
+    数学期望
+</header>
+<p>
+    <span class="title">
+        定义
+    </span>
+    设<span class="important">离散随机变量</span>X的分布列为
+    <span class="oneline">
+        p(x<sub>i</sub>)=P(X=x<sub>i</sub>), i=1,2,...,n,...
+    </span>
+    如果
+    <span class="oneline">
+        <code>
+            ["sum","i=1","∞",""]
+        </code>
+        |x<sub>i</sub>|p(x<sub>i</sub>)＜∞
+    </span>
+    则称
+    <span class="oneline">
+        E(x) =
+        <code>
+            ["sum","i=1","∞",""]
+        </code>
+        x<sub>i</sub>p(x<sub>i</sub>)
+    </span>
+    为随机变量X的数学期望。
+</p>
+<p class="warn">
+    特别说明：若级数
+    <code>
+        ["sum","i=1","∞",""]
+    </code>
+    |x<sub>i</sub>|p(x<sub>i</sub>)
+    不收敛，则称X的数学期望不存在，下同类似，将不再赘述。
+</p>
+<p>
+    <span class="title">
+        定义
+    </span>
+    设<span class="important">连续随机变量</span>X的密度函数p(x)。如果
+    <span class="oneline">
+        <code>
+            ["integral","|x|p(x)","dx","-∞","∞"]
+        </code>
+        ＜∞
+    </span>
+    则称
+    <span class="oneline">
+        E(x) =
+        <code>
+            ["integral","xp(x)","dx","-∞","∞"]
+        </code>
+    </span>
+    为X的数学期望。
+</p>

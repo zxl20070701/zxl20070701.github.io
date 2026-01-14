@@ -1,0 +1,48 @@
+<header>
+    useReducer
+</header>
+<p>
+    一个用于状态管理的 hook api，useState 是使用其构建的。
+</p>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+let [state, dispatch] = useReducer(reducer, initialArg, init?)
+</pre>
+<ul>
+    <li>
+        <span class="important">reducer</span>：
+        用于更新 state 的纯函数。参数为 state 和 action，返回值是更新后的 state。state 与 action 可以是任意合法值。
+    </li>
+    <li>
+        <span class="important">initialArg</span>：
+        用于初始化 state 的任意值。
+    </li>
+    <li>
+        <span class="important">init</span>：
+        可选，用于计算初始值的函数。如果存在，使用 init(initialArg) 的执行结果作为初始值，否则使用 initialArg。
+    </li>
+</ul>
+<h2>
+    一个简单的例子
+</h2>
+<p>
+    比如我们有个两个按钮，其中一个用于数据加一，一个用于数据减一：
+</p>
+<pre tag="javascript">
+import { useReducer } from 'react'
+function Demo(){
+    let [count, dispatch] = useReducer(function(state, action){
+        if(action == "increment") return state + 1
+        else if(action == "decrement") return state - 1
+        else return state
+    }, 0)
+
+    return (&lt;div&gt;
+        记数：{count}
+        &lt;button onClick={()=&gt;dispatch("increment")}&gt;增加&lt;/button&gt;
+        &lt;button onClick={()=&gt;dispatch("decrement")}&gt;减少&lt;/button&gt;
+    &lt;/div&gt;)
+}
+</pre>

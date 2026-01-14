@@ -1,0 +1,49 @@
+<header>
+    基本积分表
+</header>
+<ol>
+    <li>
+        <code>["integral","0","dx"]</code> = C
+    </li>
+    <li>
+        <code>["integral","1","dx"]</code> = x + C
+    </li>
+    <li>
+        <code>["integral",["rightTop","x","α"],"dx"]</code> = <code>["division",["rightTop","x","α+1"],"α+1"]</code>+ C
+        (α≠-1,x＞0)
+    </li>
+    <li>
+        <code>["integral",["division","1","x"],"dx"]</code> = ln|x| + C (x≠0)
+    </li>
+    <li>
+        <code>["integral",["rightTop","e","x"],"dx"]</code> = <code>["rightTop","e","x"]</code> + C
+    </li>
+    <li>
+        <code>["integral",["rightTop","a","x"],"dx"]</code> = <code>["division",["rightTop","a","x"],"lna"]</code> + C
+        (a＞0,a≠1)
+    </li>
+    <li>
+        <code>["integral","cos ax","dx"]</code> = <code>["division","1","a"]</code>sin ax + C (a≠0)
+    </li>
+    <li>
+        <code>["integral","sin ax","dx"]</code> = -<code>["division","1","a"]</code>cos ax + C (a≠0)
+    </li>
+    <li>
+        <code>["integral",["join",["rightTop","sec","2"],"x"],"dx"]</code> = tan x + C
+    </li>
+    <li>
+        <code>["integral",["join",["rightTop","csc","2"],"x"],"dx"]</code> = -cot x + C
+    </li>
+    <li>
+        <code>["integral","sec x · tan x","dx"]</code> = sec x + C
+    </li>
+    <li>
+        <code>["integral","csc x · cot x","dx"]</code> = -csc x + C
+    </li>
+    <li>
+        <code>["integral",["division","dx",["gen",["join","1 -",["rightTop","x","2"]]]],""]</code> = arcsin x + C
+    </li>
+    <li>
+        <code>["integral",["division","dx",["gen",["join","1 +",["rightTop","x","2"]]]],""]</code> = arctan x + C
+    </li>
+</ol>

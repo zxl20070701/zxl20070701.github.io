@@ -1,0 +1,92 @@
+<header>
+    证明
+</header>
+<p>
+    <span class="title">
+        定理
+    </span>
+    设α<sub>1</sub>,α<sub>2</sub>,...,α<sub>r</sub>与β<sub>1</sub>,β<sub>2</sub>,...,β<sub>s</sub>是两个向量组，如果
+</p>
+<ol>
+    <li>
+        向量组α<sub>1</sub>,α<sub>2</sub>,...,α<sub>r</sub>可以经β<sub>1</sub>,β<sub>2</sub>,...,β<sub>s</sub>线性表出；
+        <span class="toRight">①</span>
+    </li>
+    <li>
+        r＞s。
+        <span class="toRight">②</span>
+    </li>
+</ol>
+<p>
+    那么向量组α<sub>1</sub>,α<sub>2</sub>,...,α<sub>r</sub>必线性相关。
+</p>
+<h2>
+    证：
+</h2>
+<p>
+    由①式可知，必有
+    <span class="oneline">
+        α<sub>j</sub>=
+        <code>
+            ["sum","i=1","s",""]
+        </code>
+        β<sub>i</sub>
+        k<sub>ij</sub>
+        ，i=1,2,...,s
+    </span>
+    而由线性相关的定义可知，α<sub>1</sub>,α<sub>2</sub>,...,α<sub>r</sub>线性相关的等价描述为：存在x<sub>1</sub>、x<sub>2</sub>、...、x<sub>r</sub>使得：
+    <span class="oneline">
+        <code>
+            ["sum","j=1","r",""]
+        </code>
+        x<sub>j</sub>
+        α<sub>j</sub>
+        =
+        <code>
+            ["sum","j=1","r",""]
+        </code>
+        x<sub>j</sub>
+        <code>
+            ["sum","i=1","s",""]
+        </code>
+        β<sub>i</sub>
+        k<sub>ij</sub>
+        =
+        <code>
+            ["sum","i=1","s",""]
+        </code>
+        <code>
+            ["sum","j=1","r",""]
+        </code>
+        x<sub>j</sub>
+        k<sub>ij</sub>
+        β<sub>i</sub>
+        =0
+        <span class="toRight">③</span>
+    </span>
+</p>
+<p>
+    如果对所有的i=1,2,...,s都有
+    <span class="oneline">
+        <code>
+            ["sum","j=1","r",""]
+        </code>
+        x<sub>j</sub>
+        k<sub>ij</sub>=0
+        <span class="toRight">④</span>
+    </span>
+    那③式也就得证了。现在，我们用把④写开成方程组的形式：
+</p>
+<p>
+    <code>
+        ["equationSet",
+            ["join",["rightBottom","k","11"],["rightBottom","x","1"]," + ",["rightBottom","k","12"],["rightBottom","x","2"]," + ... + ",["rightBottom","k","1r"],["rightBottom","x","r"]," = 0"],
+            ["join",["rightBottom","k","21"],["rightBottom","x","1"]," + ",["rightBottom","k","22"],["rightBottom","x","2"]," + ... + ",["rightBottom","k","2r"],["rightBottom","x","r"]," = 0"],
+            "                                               ... ... ... ...",
+            ["join",["rightBottom","k","s1"],["rightBottom","x","1"]," + ",["rightBottom","k","s2"],["rightBottom","x","2"]," + ... + ",["rightBottom","k","sr"],["rightBottom","x","r"]," = 0"]
+        ]
+    </code>
+</p>
+<p>
+    s个约束条件，r个未知量，而r＜s，故方程组必有解，即此定理得证。
+</p>

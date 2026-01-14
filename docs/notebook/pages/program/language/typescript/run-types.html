@@ -1,0 +1,128 @@
+<header>
+    类型相关判断或运算
+</header>
+<h2>
+    类型断言
+</h2>
+<h3>
+    解释
+</h3>
+<p>
+    比如你定义了一个变量类型是any，可是你明确知道此处其真实的值一定是一个字符串，那么你就可以告诉编译器，"相信我，这是一个字符串"。
+</p>
+<h3>
+    使用
+</h3>
+<p>
+    类型断言有两种形式，我们以上面字符串为例来演示。
+</p>
+<h4>
+    尖括号
+</h4>
+<pre tag="javascript">
+let someValue: any = "this is a string";
+let strLength: number = (&lt;string&gt;someValue).length;
+</pre>
+<h4>
+    as语法
+</h4>
+<pre tag="javascript">
+let someValue: any = "this is a string";
+let strLength: number = (someValue as string).length;
+</pre>
+<p>
+    两种形式是等价的，至于使用哪个大多数情况下是凭个人喜好，然而，当你在TypeScript里使用JSX时，只有as语法断言是被允许的。
+</p>
+<h2>
+    运算举例
+</h2>
+<h3>
+    keyof
+</h3>
+<p>
+    Object.keys获取的是值的键，返回的是一个数组，这里的keyof获取的是类型的键，返回的是一个联合类型：
+</p>
+<pre tag="javascript">
+let PersonType = {
+    "name": string
+    "age": number
+}
+
+// 联合类型："name"|"age"
+type PersonKeyType = keyof PersonType
+</pre>
+<h3>
+    &
+</h3>
+<p>
+    比如我们定义了一个联合类型：
+</p>
+<pre tag="javascript">
+type KeyOrlType = "name" | "age" | number
+let key:KeyOrlType=10
+</pre>
+<p>
+    很明显，给key设置数字10是可以的，而如果你希望key只能是字符串，那么可以：
+</p>
+<pre tag="javascript">
+type KeyNewType = string & KeyOrlType
+
+// Type '10' is not assignable to type 'KeyNewType'.
+let newKey:KeyNewType =10
+</pre>
+<h2>
+    典型例子
+</h2>
+<h3>
+    类型的继承和拼接
+</h3>
+<p>
+    比如我们的watch函数可以传递一个JSON，然后监听其中值改变：
+</p>
+<pre tag="javascript">
+let mydata = {
+    name: "李四",
+    age: 19
+}
+
+watch(mydata).on("nameUpdate", (oldValue, newValue) => {
+    // todo
+})
+</pre>
+<p>
+    那么可以：
+</p>
+<pre tag="javascript">
+type ListenerType&lt;T&gt; = {
+
+    // 这里要求是string是因为拼接字符串的时候不能是symbol类型
+    on&lt;K extends string & keyof T&gt;(
+        eventName: `${K}Update`,
+        callback: (oldValue: K, newValue: K) =&gt; void
+    ): void
+}
+
+declare function watch&lt;T&gt;(params: T): ListenerType&lt;T&gt;
+</pre>
+<h3>
+    类型排除
+</h3>
+<p>
+    假如我们定义一个函数参数变量，可以是任意类型，就是不可以是number类型：
+</p>
+<pre tag="javascript">
+type paramType&lt;T&gt; = T extends number ? never : T
+
+function doit&lt;T&gt;(param: paramType&lt;T&gt;) { }
+
+// Argument of type 'number' is not assignable to parameter of type 'never'.
+doit(19) 
+</pre>
+<p>
+    当然，我们可以把需要排除的类型写成泛型：
+</p>
+<pre tag="javascript">
+type paramType&lt;T, K&gt; = T extends K ? never : T
+
+function doit&lt;T&gt;(param: paramType&lt;T, number&gt;) { }
+</pre>

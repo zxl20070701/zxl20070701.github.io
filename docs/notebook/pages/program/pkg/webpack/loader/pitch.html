@@ -1,0 +1,45 @@
+<header>
+    从Pitch开始聊一聊Loader的执行顺序
+</header>
+<p>
+    比如我们配置了如下loader：
+</p>
+<pre tag="javascript">
+    loader:["loader3", "loader2", "loader1"]
+</pre>
+<p>
+    平时我们感觉的执行顺序是：
+</p>
+<pre tag>
+loader1 -> loader2 -> loader3
+</pre>
+<p>
+    这是正确的，只不过，一个loader可以设置pitch方法，比如我们对loader1设置：
+</p>
+<pre tag="javascript">
+const loader1 = function(source) {
+    // loader
+};
+
+loader1.pitch = function (remainingRequest) {
+    // pitch
+};
+
+module.exports = loader1;
+</pre>
+<p>
+    实际上，如果我们对每个loader都配置了pitch后，执行顺序就应该是：
+</p>
+<pre tag>
+picth3 -&gt; pitch2 -&gt; pitch1
+
+-&gt; loader1 -&gt; loader2 -&gt; loader3
+</pre>
+<p>
+    所以，pitch先于loader执行，如果一个loader没有配置pitch就跳过。
+</p>
+<p>
+    还有一点需要明确：
+    <span class="important">如果pitch有return，会提前返回执行</span>
+    ；所以，上述的执行可能会被某个pitch中断。
+</p>

@@ -1,0 +1,35 @@
+<header>
+    postMessage
+</header>
+<p>
+    此方法可以用于实现跨源通信等，我们来演示如何实现在两个窗口之间进行通信。
+</p>
+<p>
+    假设我们现在有两个页面：page1.html和page2.html， 他们的关系是通过iframe关联起来的，就像这样（下面是page1.html的内容）：
+</p>
+<pre tag="html">
+    &lt;iframe id="receiver" src="./page2.html" width="300" height="100"&gt;&lt;/iframe&gt;
+</pre>
+<p>
+    为了实现通信，首先你需要在page2.html中注册事件监听：
+</p>
+<pre tag="javascript">
+window.addEventListener('message', function (e) {
+    console.log(e);
+});
+</pre>
+<p>
+    确保page2.html中事件监听注册好了以后，在page1.html中首先需要获取page2.html的窗口对象：
+</p>
+<pre tag="javascript">
+    var targetWindow = document.getElementById('receiver').contentWindow;
+</pre>
+<p>
+    然后，直接使用其中的postMessage即可发送：
+</p>
+<pre tag="javascript">
+    targetWindow.postMessage("你好呀！", "*");
+</pre>
+<p>
+    在实际使用中，两个页面不一定需要通过iframe关联，比如使用window.location.href等也是可以的，不过有一个基本的原则要注意：发送信息的时候，一定要确保接收方已经完成了信息接收事件的注册。
+</p>

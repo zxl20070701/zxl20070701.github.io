@@ -1,0 +1,65 @@
+<header>
+    Vue文件之mixin注入
+</header>
+<h2>
+    注入
+</h2>
+<p>
+    比如我们现在有想用mixin注入一个全局方法：
+</p>
+<pre tag="javascript">
+const app = createApp(App)
+app.mixin({
+    methods: {
+        $doit: function(info){
+            return "[内容]" + info
+        }
+    }
+})
+</pre>
+<h2>
+    定义类型
+</h2>
+<p>
+    为了可以在Vue文件中直接使用，你还需要在Vue模块下定义一下这个方法（比如在index.d.ts文件中）：
+</p>
+<pre tag="javascript">
+export { } // 防止覆盖原来的
+
+interface globalValue {
+    /**
+     * $msg方法
+     * @param key 
+     */
+    $doit(info: string): string
+}
+
+declare module 'vue' {
+    interface ComponentInternalInstance {
+        ctx: globalValue
+    }
+    
+    interface ComponentCustomProperties extends globalValue { }
+}
+</pre>
+<h2>
+    使用
+</h2>
+<h3>
+    在模板中
+</h3>
+<pre tag="html">
+<template>
+    <div>{{$doit('测试')}}</div>
+</template>
+</pre>
+<h3>
+    在代码中
+</h3>
+<pre tag="javascript">
+&lt;script setup lang="ts"&gt;  
+import { getCurrentInstance } from "vue"
+
+let info = getCurrentInstance()?.ctx.$doit("测试")
+&lt;/script&gt; 
+</pre>

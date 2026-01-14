@@ -1,0 +1,11 @@
+<header>
+    日志
+</header>
+<p>
+    查看日志（-p显示每次提交的内容差异），后面的那些可选参数是对日志过滤以后再显示，-num举个例子：-2表示查看最近2次的提交历史记录，后面的fileName和branchName方便表示查看特定文件和分支的日志，commit代表查看提交日志。
+</p>
+<pre tag>git log [-p] [-num|fileName|branchName|commit]</pre>
+<p>
+    显示整个本地仓储的commit，包括所有branch的commit，甚至包括已经撤销的commit，只要HEAD发生了变化，就会在reflog里面看得到，git log只包括当前分支的commit。
+</p>
+<pre tag>git reflog</pre>

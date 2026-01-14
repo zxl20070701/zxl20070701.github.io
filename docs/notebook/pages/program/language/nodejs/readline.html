@@ -1,0 +1,43 @@
+<header>
+    单行输入
+</header>
+<h2>
+     注册事件
+</h2>
+<pre tag="javascript">
+function inputText(msg) {
+    return function (done) {
+        process.stdout.write(msg);
+        process.stdin.setEncoding('utf8');
+        process.stdin.once('data', function (val) {
+        done(val.trim());
+        }).resume();
+    }
+}
+</pre>
+<p>
+    使用的时候：
+</p>
+<pre tag="javascript">
+inputText("输入信息：")((val) => {
+    console.log("你输入的内容是：" + val);    
+    process.exit();
+});
+</pre>
+<h2>
+    readline
+</h2>
+<pre tag="javascript">
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,  //  ( process.stdin：系统输入流 ）;
+  output: process.stdout  // ( process.stdout: 系统输出流 ）;
+})
+// 交互命令
+rl.question('输入信息：', val => {
+  console.log("你输入的内容是：" + val);
+
+  rl.close(); // readline 不会自动关闭，需要调用命令关闭
+});
+</pre>

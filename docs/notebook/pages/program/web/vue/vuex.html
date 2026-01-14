@@ -1,0 +1,134 @@
+<header>
+    Vuex
+</header>
+<h2>
+    引入和使用
+</h2>
+<p>
+    首先，你需要创建Store对象并暴露出来：
+</p>
+<pre tag="javascript">
+// store.js
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+    state:{
+        isLogin:false // 登录状态
+    },
+    getters:{},
+    mutations:{},
+    actions:{}
+});
+
+export default store;
+</pre>
+<p>
+    然后，在创建Vue对象的时候进行注册：
+</p>
+<pre tag="javascript">
+import store from './store.js';
+
+new Vue({
+    el: '#app',
+    store: store,
+    ......
+});
+</pre>
+<p>
+    到这里，就可以直接在项目中进行使用了。
+</p>
+<p>
+    比如上面的登录状态，可以直接在页面中进行获取或修改：
+</p>
+<pre tag="javascript">
+......
+methods: {
+    doit(){
+        // 调用这个方法，每次把登录状态取反
+        this.$store.state.isLogin=!this.$store.state.isLogin;
+    }
+}
+......
+</pre>
+<h2>
+    获取和修改
+</h2>
+<p>
+    虽然上面的内容已经足够使用了，不过，对于数据的修改和获取，有更良好的实践方案。
+</p>
+<h3>
+    Getters
+</h3>
+<p>
+    拿上面的登录举例子，可能我们在使用的时候进行一点点修改：
+</p>
+<pre tag="javascript">
+......
+getters: {
+    loginFlag: state => {
+        // 登录的是返回 YES，否则返回 NO
+        return state.isLogin ? "YES" : "NO"
+    }
+}
+......
+</pre>
+<p>
+    比如在页面中使用，只需要：
+</p>
+<pre tag="html">
+    &lt;div v-bind:loginFlag='$store.getters.loginFlag'&gt;&lt;/div&gt;
+</pre>
+<p>
+    可以发现，只是把state改成了getters。
+</p>
+<h3>
+    Mutations
+</h3>
+<p>
+    同样的，如果我们现在需要修改登录状态：
+</p>
+<pre tag="javascript">
+......
+mutations: {
+    changeLoginState: (state, loginFlag) => {
+        // 设置前需要先转成boolean值
+        state.isLogin = loginFlag == 'YES' ? true : false;
+    }
+}
+......
+</pre>
+<p>
+    然后使用的时候：
+</p>
+<pre tag="javascript">
+    this.$store.commit('changeLoginState', "YES");
+</pre>
+<h3>
+    Actions
+</h3>
+<p>
+    因为Mutations中必须是同步函数，如果需要异步操作：
+</p>
+<p class="warn">
+    特别说明：Mutations不可以异步的原因是为了保证devtool工具可以正确的追踪数据。
+</p>
+<pre tag="javascript">
+......
+actions: {
+    changeLoginState: (context, loginFlag) => {
+        setTimeout(()=>{
+            context.commit("changeLoginState", loginFlag);
+        }, 1000);
+    }
+}
+......
+</pre>
+<p>
+    使用的时候也很简单：
+</p>
+<pre tag="javascript">
+    this.$store.dispatch('changeLoginState', 'YES');
+</pre>

@@ -1,0 +1,85 @@
+<header>
+    创建第一个项目
+</header>
+<p>
+    使用 django-admin 来创建 HelloWorld 项目：
+</p>
+<pre>
+    django-admin startproject HelloWorld
+</pre>
+<p>
+    创建完成后我们可以查看下项目的目录结构：
+</p>
+<pre>
+HelloWorld/                  
+    manage.py                
+    HelloWorld/              
+        __init__.py         
+        settings.py          
+        urls.py             
+        asgi.py             
+        wsgi.py            
+</pre>
+<p>
+    项目根目录 (HelloWorld/)中的manage.py是Django 命令行工具入口，用于运行开发服务器、数据库迁移等操作。
+</p>
+<p>
+    主项目配置目录 (HelloWorld/HelloWorld/) ：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>文件/目录</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>__init__.py</strong></td>
+            <td>空文件，告诉 Python 该目录是一个包。</td>
+        </tr>
+        <tr>
+            <td><strong>settings.py</strong></td>
+            <td><strong>核心配置文件</strong>，包含：<br> - 数据库设置 (DATABASES)<br> - 静态文件路径
+                (STATIC_URL)<br> - 应用注册 (INSTALLED_APPS)<br> - 调试模式
+                (DEBUG=True/False)</td>
+        </tr>
+        <tr>
+            <td><strong>urls.py</strong></td>
+            <td><strong>主路由配置文件</strong>，定义 URL 路径与视图的映射关系。</td>
+        </tr>
+        <tr>
+            <td><strong>asgi.py</strong></td>
+            <td>ASGI 服务器配置（用于异步 Web 服务器，如 Daphne）。</td>
+        </tr>
+        <tr>
+            <td><strong>wsgi.py</strong></td>
+            <td>WSGI 服务器配置（用于传统 Web 服务器，如 Gunicorn、uWSGI）。</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    接下来我们进入 HelloWorld 目录输入以下命令，更新数据库结构：
+</p>
+<pre>
+    python3 manage.py migrate
+</pre>
+<p>
+    可以看见此时，项目根目录 (HelloWorld/)中多了一个db.sqlite3，其是SQLite 数据库文件（默认数据库，开发环境使用）。
+</p>
+<p>
+    现在，终于可以启动了：
+</p>
+<pre>
+    python3 manage.py runserver 0.0.0.0:8080
+</pre>
+<p>
+    启动成功会发现，主项目配置目录 (HelloWorld/HelloWorld/)中多了一个文件夹__pycache__，其是Python 字节码缓存目录（自动生成，无需手动修改）。
+</p>
+<p>
+    在浏览器中打开地址： http://127.0.0.1:8080/ 即可看见如下结果：
+</p>
+<img src="./images/django/first-app.png" width="500px">
+<p>
+    至此，第一个项目就创建和启动成功了。
+</p>

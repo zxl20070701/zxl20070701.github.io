@@ -1,0 +1,119 @@
+<header>
+    简单的数据类型
+</header>
+<h2>
+    数据类型
+</h2>
+<h3>
+    整数类型
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>存储大小</th>
+            <th>值范围</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>char</td>
+            <td>1 字节</td>
+            <td>-128 到 127 或 0 到 255</td>
+        </tr>
+        <tr>
+            <td>unsigned char</td>
+            <td>1 字节</td>
+            <td>0 到 255</td>
+        </tr>
+        <tr>
+            <td>signed char</td>
+            <td>1 字节</td>
+            <td>-128 到 127</td>
+        </tr>
+        <tr>
+            <td>int</td>
+            <td>2 或 4 字节</td>
+            <td>-32,768 到 32,767 或 -2,147,483,648 到 2,147,483,647</td>
+        </tr>
+        <tr>
+            <td>unsigned int</td>
+            <td>2 或 4 字节</td>
+            <td>0 到 65,535 或 0 到 4,294,967,295</td>
+        </tr>
+        <tr>
+            <td>short</td>
+            <td>2 字节</td>
+            <td>-32,768 到 32,767</td>
+        </tr>
+        <tr>
+            <td>unsigned short</td>
+            <td>2 字节</td>
+            <td>0 到 65,535</td>
+        </tr>
+        <tr>
+            <td>long</td>
+            <td>4 字节</td>
+            <td>-2,147,483,648 到 2,147,483,647</td>
+        </tr>
+        <tr>
+            <td>unsigned long</td>
+            <td>4 字节</td>
+            <td>0 到 4,294,967,295</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    各种类型的存储大小与系统位数有关，为了得到某个类型或某个变量在特定平台上的准确大小，可以使用 sizeof 运算符，例如我们想看一下当前double类型的大小：
+</p>
+<pre tag="javascript">
+    printf("double 存储大小 : %lu \n", sizeof(double));
+</pre>
+<h3>
+    浮点类型
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>存储大小</th>
+            <th>值范围</th>
+            <th>精度</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>float</td>
+            <td>4 字节</td>
+            <td>1.2E-38 到 3.4E+38</td>
+            <td>6 位有效位</td>
+        </tr>
+        <tr>
+            <td>double</td>
+            <td>8 字节</td>
+            <td>2.3E-308 到 1.7E+308</td>
+            <td>15 位有效位</td>
+        </tr>
+        <tr>
+            <td>long double</td>
+            <td>16 字节</td>
+            <td>3.4E-4932 到 1.1E+4932</td>
+            <td>19 位有效位</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    字符串
+</h2>
+<p>
+    在 C 语言中，字符串实际上是使用空字符 \0 结尾的一维字符数组。因此，可以这样定义一个字符串：
+</p>
+<pre tag="javascript">
+    char str[] = {'z', 'x', 'l', '2', '0', '0', '7', '0', '7', '0', '1', '\0'};
+</pre>
+<p>
+    当然，也可以直接写成：
+</p>
+<pre tag="javascript">
+    char str[] = "zxl20070701";
+</pre>

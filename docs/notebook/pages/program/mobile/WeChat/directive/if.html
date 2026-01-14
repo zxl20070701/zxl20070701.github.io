@@ -1,0 +1,17 @@
+<header>
+    条件渲染
+</header>
+<p>
+    在框架中，使用 wx:if="" 来判断是否需要渲染该代码块：
+</p>
+<pre tag="html">
+    <view wx:if="{{flag}}"></view>
+</pre>
+<p>
+    也可以用 wx:elif 和 wx:else 来添加一个 else 块：
+</p>
+<pre tag="html">
+<view wx:if="{{flag=='1'}}"></view>
+<view wx:elif="{{flag=='2'}}"></view>
+<view wx:else></view>
+</pre>

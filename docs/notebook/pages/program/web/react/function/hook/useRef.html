@@ -1,0 +1,19 @@
+<header>
+    useRef
+</header>
+<p>
+    和createRef类似，返回一个可变的 ref 对象。
+</p>
+<pre tag="javascript">
+import { useEffect, useRef } from "react"
+function Demo(){
+    const inputRef = useRef&lt;HTMLInputElement&gt;(null)
+    useEffect(() => {
+        inputRef.current && inputRef.current.focus()
+    }, [])
+    return (&lt;input ref={inputRef} /&gt;)
+}
+</pre>
+<p>
+    上面的组件，运行的时候会自动聚焦。
+</p>

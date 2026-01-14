@@ -1,0 +1,85 @@
+<header>
+    光标控制
+</header>
+<h2>
+    什么是光标?
+</h2>
+<p>
+    页面上输入区域（比如input和textarea）中闪烁的光标其实是一个选区，也就是选区的左边界和右边界直接形成的选区。
+</p>
+<h2>
+    非IE浏览器
+</h2>
+<p>
+    输入框结点input=document.getElementById('#input')有两个属性： selectionStart、selectionEnd，分别代表选区开始位置，选区结束位置。
+</p>
+<p>
+    通过修改这两个值就可以形成选区，宽度为0也就实现了光标的位置控制和获取。
+</p>
+<h2>
+    IE浏览器
+</h2>
+<p>
+    IE浏览器提供的API更加丰富：createTextRange()、 document.selection.createRange()、moveStart() 、moveEnd() 、move() 、collapse() 、text
+    、select()。
+</p>
+<h3>
+    创建选区对象
+</h3>
+<pre tag="javascript">
+    var range = input.createTextRange(); 
+</pre>
+<h3>
+    一些操作
+</h3>
+<h4>
+    collapse
+</h4>
+<pre tag="javascript">
+    range.collapse(boolean);
+</pre>
+<p>
+    可以传入一个布尔值作为参数,参数默认值为true，指示向左还是向右压缩。
+</p>
+<h4>
+    moveStart
+</h4>
+<pre tag="javascript">
+    range.moveStart(param1,param2);
+</pre>
+<p>
+    第一个参数可选值有 character、word、sentence、textedit. 比如character，即根据字符来偏移。第二个参数代表偏移的多少，正负表示方向。
+</p>
+<h4>
+    moveEnd
+</h4>
+<pre tag="javascript">
+    range.moveEnd(param1,param2);
+</pre>
+<p>
+    和上面那个方法参数一样，不同的是这是用来移动结束边界。
+</p>
+<h3>
+    选中当前选区
+</h3>
+<pre tag="javascript">
+    range.select();  //将range包含的区域选中。
+</pre>
+<p>
+    需要注意的是：在调用range.select()方法之前，选区对象的内容并不会被添加选中效果。
+</p>
+<h3>
+    补充
+</h3>
+<pre tag="javascript">
+    var range = document.selection.createRange();
+</pre>
+<p>
+    这个方法根据当前页面中的选中文字区域来创建一个选区对象，这个选区对象与createTextRange方法的到选区对象的区别在于，它的选区范围为页面选中文字的区域，即它的左右边界不再是默认的左最小右最大。
+</p>
+<pre tag="javascript">
+    range.move(param1,param2);
+</pre>
+<p>
+    和moveStart参数一样，对于移动光标比较友好。
+</p>

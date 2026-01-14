@@ -1,0 +1,48 @@
+<header>
+    事件绑定
+</header>
+<h2>
+    绑定事件
+</h2>
+<h3>
+    普通函数
+</h3>
+<pre tag="javascript">
+function doit() {
+    alert('你点击了我')
+}
+class MyComponent extends React.Component {
+    render() {
+        return (&lt;button onClick={doit}&gt;点击我&lt;/button&gt;)
+    }
+}
+</pre>
+<h3>
+    对象上的方法
+</h3>
+<pre tag="javascript">
+class MyComponent extends React.Component {
+    doit() {
+        alert('你点击了我')
+    }
+    render() {
+        return (&lt;button onClick={this.doit}&gt;点击我&lt;/button&gt;)
+    }
+}
+</pre>
+<h2>
+    传递参数
+</h2>
+<p>
+    比如我们对象上有一个方法，点击触发的时候需要传递一个参数：
+</p>
+<pre tag="javascript">
+class MyComponent extends React.Component {
+    doit(info) {
+        console.log('打印：'+info)
+    }
+    render() {
+        return (&lt;button onClick={() => this.doit.call(this, "来自按钮上的信息")}&gt;点击我&lt;/button&gt;)
+    }
+}
+</pre>

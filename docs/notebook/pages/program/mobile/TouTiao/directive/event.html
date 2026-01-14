@@ -1,0 +1,50 @@
+<header>
+    事件
+</header>
+<h2>
+    绑定
+</h2>
+<p>
+    事件绑定的写法同组件的属性，以 key、value 的形式。
+</p>
+<p>
+    key 以 bind或 catch或 capture-bind开头，然后跟上事件的类型，如 bindtap、catchtap。比如tap事件：
+</p>
+<pre tag="html">
+<button bindtap="doit" data-tips="一些数据">点击我</button>
+</pre>
+<p>
+    上面点击的时候就会触发doit方法：
+</p>
+<pre tag="javascript">
+doit(event){
+    console.log("tips:"+event.target.dataset.tips);
+}
+</pre>
+<p>
+    也可以在 bind 、 catch 和 capture-bind后紧跟一个冒号，其功能不变：
+</p>
+<pre tag="html">
+<button bind:tap="doit" data-tips="一些数据">点击我</button>
+</pre>
+<h2>
+    冒泡
+</h2>
+<p>
+    使用catch代替bind即可完成事件绑定并阻止事件冒泡：
+</p>
+<pre tag="html">
+<button catch:tap="doit" data-tips="一些数据">点击我</button>
+</pre>
+<h2>
+    捕获
+</h2>
+<p>
+    如果需要在捕获阶段触发doit2事件，可以：
+</p>
+<pre tag="html">
+<button bind:tap="doit1" capture-bind:tap="doit2">点击我</button>
+</pre>
+<p>
+    点击的时候会先触发doit2，再触发doit1（先一层层捕获，然后再一层层冒泡，和H5的事件机制类似）。
+</p>

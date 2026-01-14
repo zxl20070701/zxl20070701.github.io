@@ -1,0 +1,27 @@
+<style type="text/css">
+    .box {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #aaaaaa;
+    }
+</style>
+<script>
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData("sourceId", event.target.id);
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        var data = event.dataTransfer.getData("sourceId");
+        event.target.appendChild(document.getElementById(data));
+    }
+</script>
+
+
+<h2>拖动图片到框中:</h2>
+<div class="box" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<img id="source" src="./images/logo.png" draggable="true" ondragstart="drag(event)" width="100" height="100">

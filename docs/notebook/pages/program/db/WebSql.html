@@ -1,0 +1,96 @@
+<header>
+    Web SQL 关系数据库
+</header>
+<p>
+    关系型数据库，使用的方言是SQLlite。
+</p>
+<p class="warn">
+    温馨提示：目前很多浏览器都支持，不过这却是一个规范上被废弃的功能。
+</p>
+<h2>
+    连接数据库
+</h2>
+<p>
+    使用现有数据库或新建数据库来创建数据库对象：
+</p>
+<pre tag="javascript">
+var dataBase = openDatabase("hobby", "1.0", "个人业余爱好储存数据库", 1024 * 1024,
+    function() {
+        console.log('数据库创建成功');
+    }
+);
+</pre>
+<ul>
+    <li>
+        第一个参数代表数据库名称；
+    </li>
+    <li>
+        第二个参数代表版本号,目前为1.0；
+    </li>
+    <li>
+        第三个参数代表对数据库的描述；
+    </li>
+    <li>
+        第四个参数是用来设置数据的大小；
+    </li>
+    <li>
+        第五个参数是回调函数(可省略)。
+    </li>
+</ul>
+<p>
+    openDatabase方法打开一个已经存在的数据库，如果数据库不存在，它还可以创建数据库。
+</p>
+<h2>
+    事务
+</h2>
+<p>
+    transaction方法用以处理事务，当一条语句执行失败的时候，整个事务回滚，方法包含三个参数：
+</p>
+<ul>
+    <li>
+        包含事务内容的一个方法；
+    </li>
+    <li>
+        成功回调函数（可选）；
+    </li>
+    <li>
+        失败回调函数（可选）。
+    </li>
+</ul>
+<pre tag="javascript">
+dataBase.transaction(function(context){
+    context.executeSql('sql语句一');
+    context.executeSql('sql语句二');
+    context.executeSql('sql语句三');
+},function(){
+    console.log('执行成功');
+},function(){
+    console.log('执行失败');
+});
+</pre>
+<p>
+    上面一共执行了三条sql语句，其中任何一条sql执行如果遇到错误，整个事务都会回滚。
+</p>
+<h2>
+    执行SQL语句
+</h2>
+<p>
+    从上面的事务例子代码应该已经看出来，是在事务里面用executeSql方法来执行sql语句，其中有四个参数：
+</p>
+<ul>
+    <li>
+        字符串类型的sql语句；
+    </li>
+    <li>
+        用以替换查询字符串中问号的参数，是一个数组；
+    </li>
+    <li>
+        执行成功回调函数（可选），返回两个参数：context和执行的结果；
+    </li>
+    <li>
+        执行失败回调函数（可选），context和失败的错误信息。
+    </li>
+</ul>
+<p>
+    使用的SQL语言是SQLite，如果要创建表，执行对数据的增删改查，使用对应的sql语句就可以了。
+</p>

@@ -1,0 +1,16 @@
+<header>
+    运维相关
+</header>
+<h2>
+    后台运行
+</h2>
+<p>
+    执行一个命令的时候，比如启动node服务器，如果希望到后台运行，可以在原命令结尾追加一个“&”符号：
+</p>
+<pre>
+    npm run dev &
+</pre>
+<div class="tips">
+    温馨提示：如果是Linux系统，推荐直接：<span class="important">nohup npm run dev &</span>，对于ssh连接的命令行，记得使用
+    <span class="important">exit</span>命令退出登录。
+</div>

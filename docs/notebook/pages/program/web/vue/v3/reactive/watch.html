@@ -1,0 +1,97 @@
+<header>
+    侦听器
+</header>
+<h2>
+    watchEffect()
+</h2>
+<p>
+    立即运行一个<span class="warn">副作用函数</span>，同时响应式地追踪其依赖，并在依赖更改时重新执行。
+</p>
+<h3>
+    基本写法
+</h3>
+<pre tag="javascript">
+import { watchEffect } from "vue";
+
+const count = ref(0);
+watchEffect(() => console.log(count.value)); // -> 输出 0
+count.value++; // -> 输出 1
+</pre>
+<h3>
+    回调函数
+</h3>
+<pre tag="javascript">
+let val1 = ref("apple");
+
+watchEffect((registryBack) => {
+    console.log(val1.value)
+    registryBack(() => console.log("stop"));
+});
+
+val1.value="watermelon";
+</pre>
+<p>
+    运行结果如下：
+</p>
+<pre>
+apple
+stop
+watermelon
+</pre>
+<p>
+    上面的形参registryBack就是一个函数，用来注册清理回调，它会在每次<span class="warn">副作用函数</span>再次被调用的时候执行注册的回调函数。
+</p>
+<h3>
+    停止侦听器
+</h3>
+<p>
+    如果我们明确不再需要监听器运行了，可以类似这样：
+</p>
+<pre tag="javascript">
+let stop = watchEffect(() => {});
+
+// 当不再需要此侦听器时
+stop();
+</pre>
+<h2>
+    watch()
+</h2>
+<p>
+    侦听一个或多个响应式数据源，并在数据源变化时调用所给的回调函数，其默认是懒侦听的，即仅在侦听源发生变化时才执行回调函数。
+</p>
+<pre tag="javascript">
+let stop = watch(source, callback, options);
+</pre>
+<p>
+    第一个参数是侦听器的源。这个来源可以是以下几种：
+</p>
+<ol>
+    <li>
+        一个函数，返回一个值
+    </li>
+    <li>
+        一个 ref
+    </li>
+    <li>
+        一个响应式对象
+    </li>
+    <li>
+        由以上类型的值组成的数组
+    </li>
+</ol>
+<p>
+    第二个参数是在发生变化时要调用的回调函数。这个回调函数接受三个参数：新值、旧值，以及一个用于注册清理回调的函数。
+</p>
+<p>
+    第三个可选的参数是一个对象，支持以下这些选项：
+</p>
+<ul>
+    <li>
+        <span class="important">immediate</span>：
+        boolean类型，设置在侦听器创建时立即触发回调。
+    </li>
+    <li>
+        <span class="important">once</span>：
+        boolean类型，设置侦听器在回调函数首次运行后是否自动停止监听。
+    </li>
+</ul>

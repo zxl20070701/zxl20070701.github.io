@@ -1,0 +1,234 @@
+<header>
+    Grid 网格布局
+</header>
+<p>
+    设置一个元素为网格容器只需要：
+</p>
+<pre tag="css">
+{
+    display: grid;
+}
+</pre>
+<p>
+    对于元素本身而言，上面的是一个块元素，如果希望是行元素，只需要：
+</p>
+<pre tag="css">
+{
+    display: inline-grid;
+}
+</pre>
+<p>
+    如果容器本身就是网格布局的一个条目，就可以：
+</p>
+<pre tag="css">
+{
+    display: subgrid;
+}
+</pre>
+<p class="warn">
+    温馨提示：设为 Grid 布局以后，子元素的column, float, clear, 以及 vertical-align属性将失效。
+</p>
+<h2>
+    容器的属性
+</h2>
+<h3>
+    grid-template-columns / grid-template-rows
+</h3>
+<p>
+    定义网格的列和行，比如：
+</p>
+<pre tag="css">
+{
+    grid-template-columns: 40px 50px auto 50px 40px;
+    grid-template-rows: 25% 100px auto;
+}
+</pre>
+<img src="./images/grid-template-columns_rows.png">
+<h3>
+    grid-template-areas
+</h3>
+<p>
+    简单的描述就是：把之前定义的表格通过“合并组合”来标记一块块的，例如：
+</p>
+<pre>
+{
+    grid-template-areas: 
+        "header header header header"
+        "main main . sidebar"
+        "footer footer footer footer";
+}
+</pre>
+<img src="./images/grid-template-areas.jpeg">
+<p class="warn">
+    温馨提示：其中点号代表一个空网格单元。
+</p>
+<button tag="grid-template-areas">查看用例</button>
+<h3>
+    grid-column-gap / grid-row-gap
+</h3>
+<p>
+    指定网格线的大小，你可以把它想象为设置列/行之间的间距的宽度。
+</p>
+<p>
+    例如我们有一个3*3的网格，希望行与行之间间距是15px，列与列之间间距是10px：
+</p>
+<pre tag="css">
+{
+    grid-column-gap: 10px;
+    grid-row-gap: 15px;
+}
+</pre>
+<img src="./images/grid-column_row-gap.webp">
+<p class="warn">
+    温馨提示：是在列/行之间创建缝隙，而不是在外部边缘创建。
+</p>
+<button tag="grid-column_row-gap">查看用例</button>
+<h3>
+    justify-items
+</h3>
+<p>
+    沿着行轴对齐网格内的内容（水平方向），可选值有：
+</p>
+<ul>
+    <li>
+        start: 内容与网格区域的左端对齐。
+    </li>
+    <li>
+        end: 内容与网格区域的右端对齐。
+    </li>
+    <li>
+        center: 内容位于网格区域的中间位置。
+    </li>
+    <li>
+        stretch: 内容宽度占据整个网格区域空间(这是默认值)。
+    </li>
+</ul>
+<h3>
+    align-items
+</h3>
+<p>
+    沿着列轴对齐条目里的内容（垂直方向），可选值有：
+</p>
+<ul>
+    <li>
+        start: 内容与网格区域的顶端对齐。
+    </li>
+    <li>
+        end: 内容与网格区域的底部对齐。
+    </li>
+    <li>
+        center: 内容位于网格区域的垂直中心位置。
+    </li>
+    <li>
+        stretch: 内容高度占据整个网格区域空间(这是默认值)。
+    </li>
+</ul>
+<h3>
+    justify-content
+</h3>
+<p>
+    也就是网格在其容器中沿着行轴上的对齐方式（水平方向），可选值有：
+</p>
+<ul>
+    <li>
+        start: 网格与网格容器的左边对齐。
+    </li>
+    <li>
+        center: 网格与网格容器的中间对齐。
+    </li>
+    <li>
+        stretch: 调整条目的大小，让宽度填充整个网格容器。
+    </li>
+    <li>
+        space-around: 在条目之间设置均等宽度的空白间隙，其外边缘间隙大小为中间空白间隙宽度的一半。
+    </li>
+    <li>
+        space-between: 在条目之间设置均等宽度空白间隙，其外边缘无间隙。
+    </li>
+    <li>
+        space-evenly: 在每个条目之间设置均等宽度的空白间隙，包括外边缘。
+    </li>
+</ul>
+<h3>
+    align-content
+</h3>
+<p>
+    也就是网格在其容器中沿着列轴上的对齐方式（垂直方向），可选值有：
+</p>
+<ul>
+    <li>
+        start: 网格与网格容器的顶部对齐。
+    </li>
+    <li>
+        end: 网格与网格容器的底部对齐。
+    </li>
+    <li>
+        center: 网格与网格容器的中间对齐。
+    </li>
+    <li>
+        stretch: 调整条目的大小，让高度填充整个网格容器。
+    </li>
+    <li>
+        space-around: 在条目之间设置均等宽度的空白间隙，其外边缘间隙大小为中间空白间隙宽度的一半。
+    </li>
+    <li>
+        space-between: 在条目之间设置均等宽度空白间隙，其外边缘无间隙。
+    </li>
+    <li>
+        space-evenly: 在每个条目之间设置均等宽度的空白间隙，包括外边缘。
+    </li>
+</ul>
+<h2>
+    条目的属性
+</h2>
+<h3>
+    grid-area
+</h3>
+<p>
+    给条目进行命名，最简单的就是给一个网格项命名：
+</p>
+<pre tag="css">
+{
+    grid-area: header;
+}
+</pre>
+<h3>
+    justify-self
+</h3>
+<p>
+    沿着行轴对齐条目里的内容（水平方向）：
+</p>
+<ul>
+    <li>
+        start: 将内容对齐到网格区域的左端。
+    </li>
+    <li>
+        end: 将内容对齐到网格区域的右端。
+    </li>
+    <li>
+        center: 将内容对齐到网格区域的中间。
+    </li>
+    <li>
+        stretch: 填充网格区域的宽度 (这是默认值)。
+    </li>
+</ul>
+<h3>
+    align-self
+</h3>
+<p>
+    沿着列轴对齐条目里的内容（垂直方向）：
+</p>
+<ul>
+    <li>
+        start: 将内容对齐到网格区域的顶部。
+    </li>
+    <li>
+        end: 将内容对齐到网格区域的底部。
+    </li>
+    <li>
+        center: 将内容对齐到网格区域的中间。
+    </li>
+    <li>
+        stretch: 填充网格区域的高度 (这是默认值)。
+    </li>
+</ul>

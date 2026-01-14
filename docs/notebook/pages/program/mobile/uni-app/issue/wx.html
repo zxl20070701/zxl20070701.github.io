@@ -1,0 +1,24 @@
+<header>
+    打包成微信小程序
+</header>
+<h2>
+    存在代码忽略
+</h2>
+<p class="important">
+    xxx.js已被代码依赖分析忽略，无法被其他模块引用。你可根据控制台中的【代码依赖分析】告警信息修改代码，或关闭【过滤无依赖文件】功能。
+</p>
+<p>
+    如果希望不要忽略，解决方法：
+</p>
+<p>
+    在uni-app的manifest.json文件中添加如下配置：
+</p>
+<pre tag="javascript">
+{
+    "mp-weixin" : {
+        "setting" : {
+            "ignoreDevUnusedFiles" : false
+        }
+    }
+}
+</pre>

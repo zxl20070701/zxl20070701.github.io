@@ -1,0 +1,91 @@
+<header>
+    什么是逆？如何计算等
+</header>
+<p>
+    <span class="title">
+        定义
+    </span>
+    n级方阵A称为可逆的，如果有n级方阵B，使得
+    <span class="oneline">
+        AB = BA = E ，
+    </span>
+    这里E是n级单位矩阵。
+</p>
+<p>
+    上面的矩阵B就是矩阵A的逆(反过来也成立),记作A<sup>-1</sup>=B，当然，一个矩阵有逆矩阵的前提一定是其本身是一个方阵。
+</p>
+<h2>
+    如何求一个矩阵的逆矩阵？
+</h2>
+<p>
+    先来看一个定义。
+</p>
+<p>
+    <span class="title">
+        定义
+    </span>
+    设A<sub>ij</sub>是矩阵
+    <span class="oneline">
+        A =
+        <code>
+            ["matrix",[
+                [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                [["rightBottom","a","21"],["rightBottom","a","22"],"...",["rightBottom","a","2n"]],
+                ["⁝","⁝"," ","⁝"],
+                [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+            ]]
+        </code>
+    </span>
+    中元素a<sub>ij</sub>的代数余子式，矩阵
+    <span class="oneline">
+        A<sup>*</sup> =
+        <code>
+            ["matrix",[
+                [["rightBottom","A","11"],["rightBottom","A","21"],"...",["rightBottom","A","n1"]],
+                [["rightBottom","A","12"],["rightBottom","A","22"],"...",["rightBottom","A","n2"]],
+                ["⁝","⁝"," ","⁝"],
+                [["rightBottom","A","1n"],["rightBottom","A","2n"],"...",["rightBottom","A","nn"]]
+            ]]
+        </code>
+    </span>
+    称为A的
+    <span class="important">伴随矩阵</span>。
+</p>
+<p>
+    下面我们就来说如何求解逆的。由行列式按一行（列）展开的公式可以知道：
+    <span class="oneline">
+        AA<sup>*</sup> = A<sup>*</sup>A =
+        <code>
+            ["matrix",[
+                ["d","0","...","0"],
+                ["0","d","...","0"],
+                ["⁝","⁝"," ","⁝"],
+                ["0","0","...","d"]
+            ]]
+        </code>
+        = dE ，
+    </span>
+    其中d = |A|，
+</p>
+<p>
+    如果d≠0，那么逆存在，且知道：
+    <span class="oneline">
+        A<sup>-1</sup> =
+        <code>
+            ["division","1","d"]
+        </code>
+        A<sup>*</sup>
+    </span>
+</p>
+<h2>
+    相关定理
+</h2>
+<p>
+    <span class="title">
+        定理
+    </span>
+    A是一个s×n矩阵，如果P是一个s×s可逆矩阵，Q是一个n×n可逆矩阵，那么
+    <span class="oneline">
+        秩(A) = 秩(PA) = 秩(AQ)
+    </span>
+</p>

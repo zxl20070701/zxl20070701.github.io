@@ -1,0 +1,45 @@
+<header>
+    React
+</header>
+<h2>
+    Fiber架构的理解？解决了什么问题？
+</h2>
+<p>
+    在 React 16 之前，VirtualDOM 的更新采用的是Stack架构实现的，也就是循环递归方式。不过，这种对比方式有明显的缺陷，就是一旦任务开始进行就无法中断，如果遇到应用中组件数量比较庞大，那么VirtualDOM
+    的层级就会比较深，带来的结果就是主线程被长期占用，进而阻塞渲染、造成卡顿现象。
+</p>
+<p>
+    为了避免出现卡顿等问题，我们必须保障在执行更新操作时计算时不能超过16ms（即1000/60），如果超过16ms，就需要先暂停，让给浏览器进行渲染，后续再继续执行更新计算。而Fiber架构就是为了支持“可中断渲染”而创建的。
+    解决了react在渲染大量dom节点出现丢帧的问题。
+</p>
+<p>
+    在 Fiber 架构中，React 将组件的更新过程分为两个阶段：reconciliation 和 commit。其中 reconciliation 阶段主要负责计算出更新后的 Virtual DOM
+    树，并确定哪些组件需要进行重新渲染，而 commit 阶段则负责将 Virtual DOM 树的变化映射到真实的 DOM 上。
+</p>
+<p>
+    相比传统的Stack架构，Fiber 将工作划分为多个工作单元，每个工作单元在执行完成后依据剩余时间决定是否让出控制权给浏览器执行渲染。 并且它设置每个工作单元的优先级，暂停、重用和中止工作单元。 每个Fiber节点都是fiber
+    tree上的一个节点，通过子、兄弟和返回引用连接，形成一个完整的fiber tree。
+</p>
+<h2>
+    为什么react元素有一个$$type属性？
+</h2>
+<p>
+    目的是为了防止
+    <a href="./index.html#/program/safe/web/XSS?model=full" target="_blank">XSS 攻击</a>
+    。因为 Synbol 无法被序列化，所以 React 可以通过有没有 $$typeof 属性来断出当前的 element 对象是从数据库来的还是自己生成的。如果没有 $$typeof 这个属性，react 会拒绝处理该元素。
+</p>
+<div class="tips">
+    比如这样的代码：&lt;div dangerouslySetInnerHTML={{__html: render}} /&gt;，如果render是用户输入的json，就很危险。
+</div>
+<h2>
+    为什么useEffect 支持 async/await？
+</h2>
+<p>
+    effect function 应该返回一个销毁函数（return返回的 cleanup 函数），如果 useEffect 第一个参数传入 async，返回值则变成了 Promise，会导致 react 在调用销毁函数的时候报错。
+</p>
+<h2>
+    shouldComponentUpdate有什么作用？
+</h2>
+<p>
+    可以理解为是否触发渲染的阀门，当状态发生改变时会走到该生命周期，其接收两个参数props，state分别是更新前和更新后的状态，可以判断前后是否发生改变返回true和false，来决定是否往下执行。
+</p>

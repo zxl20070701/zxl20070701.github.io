@@ -1,0 +1,135 @@
+<header>
+    按一行（列）展开
+</header>
+<p>
+    对于n级行列式，比如我们可以规定按i行展开有：
+    <span class="oneline">
+        <code>
+            ["join",
+                ["matrix",[
+                    [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","i1"],["rightBottom","a","i2"],"...",["rightBottom","a","in"]],
+                    ["⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+                ],true],
+                " = ",
+                ["rightBottom","a","i1"],["rightBottom","A","i1"]," + ",
+                ["rightBottom","a","i2"],["rightBottom","A","i2"]," + ",
+                " ... + ",
+                ["rightBottom","a","in"],["rightBottom","A","in"]
+            ]
+        </code>
+    </span>
+    那么，比如
+    <code>
+        ["rightBottom","A","ij"]
+    </code>
+    究竟是什么？
+</p>
+<p>
+    对于上式，我们可以令除
+    <code>
+        ["rightBottom","a","ij"]
+    </code>
+    为1外，别的
+    <code>
+        ["rightBottom","a","i1"]
+    </code>,
+    <code>
+        ["rightBottom","a","i2"]
+    </code>,...,
+    <code>
+        ["rightBottom","a","in"]
+    </code>
+    等都为0，那么就可以得到：
+    <span class="oneline">
+        <code>
+            ["join",
+                ["matrix",[
+                    [["rightBottom","a","11"],"...",["rightBottom","a","1,j-1"],["rightBottom","a","1j"],["rightBottom","a","1,j+1"],"...",["rightBottom","a","1n"]],
+                    ["⁝","","⁝","⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","i-1,1"],"...",["rightBottom","a","i-1,j-1"],["rightBottom","a","i-1,j"],["rightBottom","a","i-1,j+1"],"...",["rightBottom","a","i-1,n"]],
+                    ["0","...","0",1,"0","...","0"],
+                    [["rightBottom","a","i+1,1"],"...",["rightBottom","a","i+1,j-1"],["rightBottom","a","i+1,j"],["rightBottom","a","i+1,j+1"],"...",["rightBottom","a","i+1,n"]],
+                    ["⁝","","⁝","⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","n1"],"...",["rightBottom","a","n,j-1"],["rightBottom","a","nj"],["rightBottom","a","n,j+1"],"...",["rightBottom","a","nn"]]
+                ],true],
+                " = ",
+                ["rightBottom","A","ij"]
+            ]
+        </code>
+    </span>
+    上式右边的内容
+    <code>
+        ["rightBottom","A","ij"]
+    </code>
+    我们称为元素
+    <code>
+        ["rightBottom","a","ij"]
+    </code>
+    的<span class="important">代数余子式</span>。
+</p>
+<p>
+    进一步，根据行列式的性质，可以把上式左边i行元素依次和i+1,i+2,...,n行依次进行互换，然后再把j列元素依次和j+1,j+2,...,n列依次进行互换，则进一步得到：
+    <span class="oneline">
+        <code>
+            ["join",
+                ["rightTop","(-1)","i+j"],  
+                ["matrix",[
+                    [["rightBottom","a","11"],"...",["rightBottom","a","1,j-1"],["rightBottom","a","1,j+1"],"...",["rightBottom","a","1n"],["rightBottom","a","1j"]],
+                    ["⁝","","⁝","⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","i-1,1"],"...",["rightBottom","a","i-1,j-1"],["rightBottom","a","i-1,j+1"],"...",["rightBottom","a","i-1,n"],["rightBottom","a","i-1,j"]],
+                    [["rightBottom","a","i+1,1"],"...",["rightBottom","a","i+1,j-1"],["rightBottom","a","i+1,j+1"],"...",["rightBottom","a","i+1,n"],["rightBottom","a","i+1,j"]],
+                    ["⁝","","⁝","⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","n1"],"...",["rightBottom","a","n,j-1"],["rightBottom","a","n,j+1"],"...",["rightBottom","a","nn"],["rightBottom","a","nj"]],
+                    ["0","...","0","0","...","0",1]
+                ],true],
+                " = ",
+                ["rightBottom","A","ij"]
+            ]
+        </code>
+    </span>
+    根据行列式的定义，上式进一步可以简化：
+    <span class="oneline">
+        <code>
+            ["join",
+                ["rightTop","(-1)","i+j"],  
+                ["matrix",[
+                    [["rightBottom","a","11"],"...",["rightBottom","a","1,j-1"],["rightBottom","a","1,j+1"],"...",["rightBottom","a","1n"]],
+                    ["⁝","","⁝","⁝","⁝"," ","⁝"],
+                    [["rightBottom","a","i-1,1"],"...",["rightBottom","a","i-1,j-1"],["rightBottom","a","i-1,j+1"],"...",["rightBottom","a","i-1,n"]],
+                    [["rightBottom","a","i+1,1"],"...",["rightBottom","a","i+1,j-1"],["rightBottom","a","i+1,j+1"],"...",["rightBottom","a","i+1,n"]],
+                    ["⁝","","⁝","⁝","⁝"," "],
+                    [["rightBottom","a","n1"],"...",["rightBottom","a","n,j-1"],["rightBottom","a","n,j+1"],"...",["rightBottom","a","nn"]]
+                ],true],
+                " = ",
+                ["rightBottom","A","ij"]
+            ]
+        </code>
+    </span>
+    我们把上式中的
+    <code>
+            ["matrix",[
+                [["rightBottom","a","11"],"...",["rightBottom","a","1,j-1"],["rightBottom","a","1,j+1"],"...",["rightBottom","a","1n"]],
+                ["⁝","","⁝","⁝","⁝"," ","⁝"],
+                [["rightBottom","a","i-1,1"],"...",["rightBottom","a","i-1,j-1"],["rightBottom","a","i-1,j+1"],"...",["rightBottom","a","i-1,n"]],
+                [["rightBottom","a","i+1,1"],"...",["rightBottom","a","i+1,j-1"],["rightBottom","a","i+1,j+1"],"...",["rightBottom","a","i+1,n"]],
+                ["⁝","","⁝","⁝","⁝"," "],
+                [["rightBottom","a","n1"],"...",["rightBottom","a","n,j-1"],["rightBottom","a","n,j+1"],"...",["rightBottom","a","nn"]]
+            ],true]
+        </code>
+    称为元素
+    <code>["rightBottom","a","ij"]</code>的<span class="important">余子式</span>，记为<code>["rightBottom","M","ij"]</code>。
+</p>
+<p>
+    所以，我们可以知道：
+    <code>
+        ["join",
+            ["rightBottom","A","ij"],
+            "=",
+            ["rightTop","(-1)","i+j"],
+            ["rightBottom","M","ij"]
+        ]
+    </code>
+</p>

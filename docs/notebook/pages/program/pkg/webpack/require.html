@@ -1,0 +1,35 @@
+<header>
+    require相关
+</header>
+<h2>
+    require.context
+</h2>
+<p>
+    通过该函数可以获取一个上下文，从而实现工程自动化（遍历文件夹下的文件，从中获取指定文件，自动导入模块）：
+</p>
+<pre tag="javascript">
+require.context(dirname, useSubdirectories, RegExp)；
+</pre>
+<ul>
+    <li>
+        <span class="important">
+            dirname
+        </span>：string，需要读取模块文件的所在目录。
+    </li>
+    <li>
+        <span class="important">
+            useSubdirectories
+        </span>：boolean，是否遍历子目录。
+    </li>
+    <li>
+        <span class="important">
+            RegExp
+        </span>：匹配的规则（正则表达式）。
+    </li>
+</ul>
+<p>
+    比如当前目录下有个文件夹data里面有很多json文件，那么可以这样来获取这些json内容：
+</p>
+<pre tag="javascript">
+let jsondatas = requireModule(require.context('./data/', true, /\.json$/));
+</pre>

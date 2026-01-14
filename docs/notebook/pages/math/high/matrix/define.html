@@ -1,0 +1,59 @@
+<header>
+    什么是矩阵？
+</header>
+<p>
+    在平面坐标系中，有一个点
+    <code>
+        ["join",["rightTop","p","'"],"(",["rightTop","x","'"],",",["rightTop","y","'"],")"]
+    </code>
+    经过逆时针旋转θ度，那么坐标变换公式就是：
+</p>
+<p>
+    <code>
+        ["equationSet",
+            ["join","x=",["rightTop","x","'"],"cosθ - ",["rightTop","y","'"],"sinθ"],
+            ["join","y=",["rightTop","x","'"],"sinθ + ",["rightTop","y","'"],"cosθ"]
+        ]
+    </code>
+</p>
+<button tag="rotate_x_y" type="explain">查看证明</button>
+<p>
+    显然，新旧坐标之间的关系完全可以通过公式中系数所排成的2ㄨ2的块：
+</p>
+<p>
+    <code>
+        ["matrix",[["cos","-sinθ"],["sinθ","cosθ"]]]
+    </code>
+</p>
+<p>
+    来表示，而这种块，我们就称为矩阵。
+</p>
+<p>
+    当然，矩阵可以有任意行或列，这里举的例子是一个2行2列的矩阵。
+</p>
+<h2>
+    如何表示矩阵？
+</h2>
+<p>
+    我们用大写的拉丁字母A,B,...，或者(a<sub>ij</sub>),(b<sub>ij</sub>),...来表示矩阵。
+</p>
+<p>
+    为了指明所讨论的矩阵的级数，可以把sㄨn矩阵写成A<sub>sn</sub>,B<sub>sn</sub>,...，或者(a<sub>ij</sub>)<sub>sn</sub>,(b<sub>ij</sub>)<sub>sn</sub>,...
+</p>
+<h2>
+    如何判断矩阵相等？
+</h2>
+<p>
+    设 A = (a<sub>ij</sub>)<sub>mn</sub>，B = (b<sub>ij</sub>)<sub>lk</sub>，如果满足下面两个条件：
+</p>
+<ol>
+    <li>
+        m = l 且 n = k；
+    </li>
+    <li>
+        a<sub>ij</sub> = b<sub>ij</sub> ，对i=1,2,...,m;j=1,2,...,n都成立。
+    </li>
+</ol>
+<p>
+    我们就说A=B，即只有完全一样的矩阵才叫做相等矩阵。
+</p>

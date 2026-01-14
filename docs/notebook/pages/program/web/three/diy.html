@@ -1,0 +1,207 @@
+<header>
+    如何直接使用顶点、法向量等绘制？
+</header>
+<p>
+    我们看见的东西，就是场景，场景中可以有很多东西，比如几何体。
+</p>
+<p>
+    你已经知道可以通过下面的方法获得一个立方体：
+</p>
+<pre tag="javascript">
+    var geometry = new THREE.BoxGeometry(100, 100, 100);
+</pre>
+<p>
+    而这里，我们将说明如何通过更底层的方法来实现一个几何体的定义。
+</p>
+<h2>
+    定义几何体
+</h2>
+<p>
+    什么是几何体？这在现实生活中当然没有什么疑惑，而在这里，我们需要明确一下：
+</p>
+<p>
+    三维中的物体，最基本的是点，其次是线，最后是面，无论多么复杂的几何体，都由这三种组合而成。
+</p>
+<h3>
+    点
+</h3>
+<p>
+    首先，我们需要创建一个几何体空对象：
+</p>
+<pre tag="javascript">
+    var geometry = new THREE.BufferGeometry();
+</pre>
+<p>
+    接下来，我们准备好点：
+</p>
+<pre tag="javascript">
+var vertices = new Float32Array([
+    0, 0, 0,
+    50, 0, 0,
+    0, 100, 0,
+    0, 0, 10,
+    0, 0, 100,
+    50, 0, 10
+]);
+</pre>
+<p>
+    我们需要把几何体的点设置成上面我们准备的：
+</p>
+<pre tag="javascript">
+// 3个为一组，表示一个顶点的xyz坐标
+geometry.attributes.position = new THREE.BufferAttribute(vertices, 3); 
+</pre>
+<p>
+    点准备好了，可是一个几何体还有颜色或者贴图等，所以，还需要准备好材质：
+</p>
+<pre tag="javascript">
+var material = new THREE.PointsMaterial({
+    color: 0x0000ff,
+    size: 10.0 //点对象像素尺寸
+});
+</pre>
+<p>
+    点、线或者面材质对象不一样，上面我们用的是点点材质对象。
+</p>
+<p>
+    一切准备好了以后，生成最终的几何体或者说模型：
+</p>
+<pre tag="javascript">
+    var mesh = new THREE.Points(geometry, material);
+</pre>
+<button tag="three-diy_Points">查看用例</button>
+<h3>
+    线
+</h3>
+<p>
+    和点类似的，只是材质和生成最终几何体的时候需要调整一下：
+</p>
+<pre tag="javascript">
+var material = new THREE.LineBasicMaterial({
+    color: 0x0000ff
+});
+
+var mesh = new THREE.Line(geometry, material);
+</pre>
+<button tag="three-diy_Line">查看用例</button>
+<h3>
+    面
+</h3>
+<p>
+    同样的：
+</p>
+<pre tag="javascript">
+var material = new THREE.MeshBasicMaterial({
+    color: 0x0000ff,
+    side: THREE.DoubleSide // 两面可见
+});
+
+var mesh = new THREE.Mesh(geometry, material);
+</pre>
+<button tag="three-diy_Mesh">查看用例</button>
+<h2>
+    更多属性
+</h2>
+<p>
+    一个几何体，除了点的位置外，还可以设置每个点的颜色，包括法向量以支持光照等，我们来一一说明。
+</p>
+<h3>
+    颜色
+</h3>
+<p>
+    和前面的绘制相比，就是多设置一个color属性，当然，首先还是要准备好每个点的颜色数据：
+</p>
+<pre tag="javascript">
+var colors = new Float32Array([
+    1, 0, 0,
+    0, 1, 0,
+    0, 0, 1,
+    1, 1, 0,
+    0, 1, 1,
+    1, 0, 1
+]);
+</pre>
+<p>
+    一共六个点，所以是六个颜色。比如第一个颜色是[1, 0, 0]，也就是红色，这里颜色格式和webgl中着色器是一致的。然后我们设置一下：
+</p>
+<pre tag="javascript">
+geometry.attributes.color = new THREE.BufferAttribute(colors, 3);
+</pre>
+<p>
+    此时，每个点都设置好了颜色，材质的话，也需要同步调整一下，告诉他使用我们设置的点的颜色：
+</p>
+<pre tag="javascript">
+var material = new THREE.MeshBasicMaterial({
+    vertexColors: true,
+    side: THREE.DoubleSide
+});
+</pre>
+<button tag="three-diy_Colors">查看用例</button>
+<h3>
+    法向量
+</h3>
+<p>
+    如果我们现在添加一个光照，比如：
+</p>
+<pre tag="javascript">
+//点光源
+var point = new THREE.PointLight("yellow");
+point.position.set(400, 200, 300);
+scene.add(point);
+</pre>
+<p>
+    由于光照的计算依赖法向量，所以下面的例子多了法向量的设置，和前面的类似，直接看代码：
+</p>
+<pre tag="javascript">
+var normals = new Float32Array([
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 1, 0,
+    0, 1, 0,
+    0, 1, 0
+]);
+
+geometry.attributes.normal = new THREE.BufferAttribute(normals, 3);
+</pre>
+<p>
+    同时，不是所有材质都支持光照的，所以我们选择了对光敏感的材质：
+</p>
+<pre tag="javascript">
+var material = new THREE.MeshLambertMaterial({
+    color: "white",
+    side: THREE.DoubleSide
+});
+</pre>
+<button tag="three-diy_Noraml">查看用例</button>
+<h2>
+    索引
+</h2>
+<p>
+    比如我们想绘制一个矩形，其实就是两个三角形拼接的，也就是六个点，而事实上，只有四个点，如何可以节约资源？
+</p>
+<p>
+    我们先设置好四个点：
+</p>
+<pre tag="javascript">
+var vertices = new Float32Array([
+    -40, 0, 0,
+    70, 0, 0,
+    70, 80, 0,
+    -40, 80, 0
+]);
+
+geometry.attributes.position = new THREE.BufferAttribute(vertices, 3);
+</pre>
+<p>
+    其实现在我们相当于有了四个点，而索引的意思就是，用这四个点作为基础，标记真正需要的六个点：
+</p>
+<pre tag="javascript">
+var indexes = new Uint16Array([
+    0, 1, 2, // 第0、1、2点围成第一个三角形
+    0, 2, 3 // 第0、2、3点围成第二个三角形
+]);
+
+geometry.index = new THREE.BufferAttribute(indexes, 1);
+</pre>
+<button tag="three-diy_Indexes">查看用例</button>

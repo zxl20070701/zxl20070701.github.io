@@ -1,0 +1,62 @@
+<header>
+    全局配置 app.json
+</header>
+<pre tag="javascript">
+{
+    "pages": [
+        "pages/index/index",
+        "pages/logs/logs"
+    ],
+    "window": {
+        "defaultTitle": "支付宝小程序"
+    },
+    "behavior": {}
+}
+</pre>
+<h2>
+    entryPagePath
+</h2>
+<p>
+    指定小程序的默认启动路径（首页）。如果不填，将默认为 pages 列表的第一项。不支持带页面路径参数。
+</p>
+<h2>
+    pages
+</h2>
+<p>
+    类型是数组，数组中每一项都是字符串，用于指定小程序的页面。
+</p>
+<h2>
+    usingComponents
+</h2>
+<p>
+    在 app.json 中声明的自定义组件将会认为成全局自定义组件，在小程序各页面或自定义组件中可以直接使用无需额外声明。
+</p>
+<p>
+    例如：
+</p>
+<pre tag="javascript">
+{
+    "usingComponents": {
+        "com1": "/components/com1/index",
+        ......
+    }
+}
+</pre>
+<h2>
+    window
+</h2>
+<p>
+    用于设置小程序的状态栏、导航条、标题、窗口背景色等。
+</p>
+<h3>
+    allowsBounceVertical
+</h3>
+<p>
+    字符串类型，是否允许向下拉拽。默认“YES”表示允许，设置为“NO”表示不允许。
+</p>
+<h3>
+    defaultTitle
+</h3>
+<p>
+    页面默认标题。
+</p>

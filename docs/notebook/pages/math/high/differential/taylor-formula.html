@@ -1,0 +1,48 @@
+<header>
+    泰勒公式
+</header>
+<p>
+    如果函数ƒ在点x<sub>0</sub>可导，则有
+    <span class="oneline">
+        ƒ(x)=ƒ(x<sub>0</sub>)+ƒ<sup>'</sup>(x<sub>0</sub>)(x-x<sub>0</sub>)+o(x-x<sub>0</sub>)
+    </span>
+    也就是在点x<sub>0</sub>附件，用一次多项式ƒ(x<sub>0</sub>)+ƒ<sup>'</sup>(x<sub>0</sub>)(x-x<sub>0</sub>)逼近函数ƒ(x)的时的误差是(x-x<sub>0</sub>)的高阶无穷小。
+</p>
+<p>
+    现在考虑任意n次多项式
+    <span class="oneline">
+        p<sub>n</sub>(x)=a<sub>0</sub>+a<sub>1</sub>(x-x<sub>0</sub>)+a<sub>2</sub>(x-x<sub>0</sub>)<sup>2</sup>+ ...
+        +a<sub>n</sub>(x-x<sub>0</sub>)<sup>n</sup>
+    </span>
+    逐次求它在点x<sub>0</sub>处的各阶导数，得到
+    <span class="oneline">
+        p<sub>n</sub>(x<sub>0</sub>)=a<sub>0</sub> ,
+        p<sup>'</sup><sub>n</sub>(x<sub>0</sub>)=a<sub>1</sub> ,
+        p<sup>"</sup><sub>n</sub>(x<sub>0</sub>)=2!a<sub>2</sub> , ... ,
+        p<sup>(n)</sup><sub>n</sub>(x<sub>0</sub>)=n!a<sub>n</sub>
+    </span>
+    即
+    <span class="oneline">
+        a<sub>0</sub>=p<sub>n</sub>(x<sub>0</sub>) ,
+        a<sub>1</sub>=<code>["division",["join",["rightBottom",["rightTop","p","'"],"n"],"(",["rightBottom","x","0"],")"],"1!"]</code>
+        ,
+        a<sub>2</sub>=<code>["division",["join",["rightBottom",["rightTop","p","\""],"n"],"(",["rightBottom","x","0"],")"],"2!"]</code>
+        , ... ,
+        a<sub>n</sub>=<code>["division",["join",["rightBottom",["rightTop","p","(n)"],"n"],"(",["rightBottom","x","0"],")"],"n!"]</code>
+    </span>
+    由此可见，多项式p<sub>n</sub>(x)的各项系数由其在点x<sub>0</sub>的各阶导数值所唯一确定。
+</p>
+<p>
+    <span class="title">
+        定理（带有佩亚诺型余项的泰勒公式）
+    </span>
+    若函数ƒ在点x<sub>0</sub>存在直到n阶导数，则有：
+    <span class="oneline">
+        ƒ(x)=ƒ(x<sub>0</sub>)+f<sup>'</sup>(x<sub>0</sub>)(x-x<sub>0</sub>)+
+        <code>["division",["join",["rightTop","ƒ","\""],"(",["rightBottom","x","0"],")"],"2!"]</code>(x-x<sub>0</sub>)<sup>2</sup>
+        + ... +
+        <code>["division",["join",["rightTop","ƒ","(n)"],"(",["rightBottom","x","0"],")"],"n!"]</code>(x-x<sub>0</sub>)<sup>n</sup>
+        +
+        o((x-x<sub>0</sub>)<sup>n</sup>)
+    </span>
+</p>

@@ -1,0 +1,91 @@
+<header>
+    Redux
+</header>
+<h2>
+    引入和定义
+</h2>
+<p>
+    首先，你需要创建Store实例并暴露出来：
+</p>
+<pre tag="javascript">
+// stores/login.store.js
+const loginInstance = (preState, action) => {
+    switch (action.type) {
+
+        // 修改状态
+        case "changeLoginState":
+            preState.isLogin = action.loginFlag == 'YES' ? true : false
+            return preState
+        
+        default:
+            return preState || { isLogin:false }
+    }
+}
+</pre>
+<div class="tips">
+    具体的时候可以更灵活，我们这里只是按照个人开发习惯演示。
+</div>
+<p>
+    然后使用redux提供的方法创建即可：
+</p>
+<pre tag="javascript">
+// stores/index.js
+import { legacy_createStore as createStore, combineReducers } from 'redux'
+import loginInstance from './login.store'
+
+let store = createStore(combineReducers({
+    loginInstance
+}))
+
+export default store
+</pre>
+<p>
+    现在，就准备好可以使用了。
+</p>
+<h2>
+    修改
+</h2>
+<p>
+    如果我们需要触发“changeLoginState”对
+    <span class="warn">isLogin</span>进行修改，可以这样：
+</p>
+<pre tag="javascript">
+import store from './stores/index'
+
+store.dispatch({
+    type: "changeLoginState",
+    loginFlag: "YES"
+})
+</pre>
+<p>
+    事实上，类似
+    <span class="special">login.store.js</span>
+    的对象可以挂载多个，每次类似上面的行为，在所有的<span class="warn">Store</span>中都会触发，具体的
+    <span class="warn">Store</span>根据自己的情况进行处理即可。
+</p>
+<h2>
+    监听&获取
+</h2>
+<p>
+    比如上面
+    <span class="warn">isLogin</span>
+    改变了，那么页面就应该进行相应的处理，所以需要在处理的地方进行监听：
+</p>
+<pre tag="javascript">
+import store from './stores/index'
+
+store.subscribe(() => {
+    console.log(store.getState()["loginInstance"]);
+})
+</pre>
+<p>
+    每次修改都会触发
+    <span class="warn">subscribe</span>
+    回调，使用
+    <span class="warn">getState</span>
+    可以获取所有定义的
+    <span class="warn">Store</span>
+    的<span class="warn">state</span>数据，上面我们打印了
+    <span class="warn">loginInstance</span>
+    的<span class="warn">state</span>。
+</p>

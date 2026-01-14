@@ -1,0 +1,80 @@
+<header>
+    几何体
+</header>
+<p>
+    内置的你可以查看
+    <a href="https://threejs.org/docs/index.html#api/zh/geometries/BoxGeometry" target="_blank">几何体文档</a>
+    ，下面我们主要介绍的是一些基础对象。
+</p>
+<h2>
+    BufferGeometry
+</h2>
+<p>
+    是点、线、面几何体的有效表述，包括顶点位置，面片索引、法相量、颜色值、UV 坐标和自定义缓存属性值。
+</p>
+<pre tag="javascript">
+    var geometry = new THREE.BufferGeometry();
+</pre>
+<h3>
+    属性
+</h3>
+<h4>
+    attributes
+</h4>
+<p>
+    比如：position、color、normal分别表示几何体点的坐标、颜色、法向量。
+</p>
+<h4>
+    index
+</h4>
+<p>
+    表示点的索引值，借助索引定义的时候需要设置。
+</p>
+<h3>
+    方法
+</h3>
+<h4>
+    translate
+</h4>
+<pre tag="javascript">
+    geometry.translate(x, y, z); 
+</pre>
+<p>
+    移动几何体。
+</p>
+<h4>
+    scale
+</h4>
+<pre tag="javascript">
+    geometry.scale(x, y, z); 
+</pre>
+<p>
+    缩放几何体。
+</p>
+<h4>
+    rotateX
+</h4>
+<pre tag="javascript">
+    geometry.rotateX(deg); 
+</pre>
+<p>
+    在X轴上旋转几何体。
+</p>
+<h4>
+    rotateY
+</h4>
+<pre tag="javascript">
+    geometry.rotateY(deg); 
+</pre>
+<p>
+    在Y轴上旋转几何体。
+</p>
+<h4>
+    rotateZ
+</h4>
+<pre tag="javascript">
+    geometry.rotateZ(deg); 
+</pre>
+<p>
+    在Z轴上旋转几何体。
+</p>

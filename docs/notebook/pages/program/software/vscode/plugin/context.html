@@ -1,0 +1,65 @@
+<header>
+    添加右键菜单
+</header>
+<h2>
+    效果展示
+</h2>
+<p>
+    最终效果如下（以编辑器界面显示菜单为例）：
+</p>
+<img src="./images/vscode/context1.png">
+<h2>
+    配置
+</h2>
+<h3>
+    定义子菜单
+</h3>
+<p>
+    比如 “Auxiliary” -> "CSS" -> "iPhone中的安全显示区域" 这个菜单链中，有两个子菜单（“Auxiliary”、"CSS"）和一个按钮（"iPhone中的安全显示区域"），所以我们这里需要定义两个子菜单：
+</p>
+<pre tag="javascript">
+"contributes": {
+    "submenus": [{
+        "id": "vscode-auxiliary.codeSnippet",
+        "label": "Auxiliary"
+    },
+    {
+        "id": "vscode-auxiliary.codeSnippet.css",
+        "label": "CSS"
+    }]
+}
+</pre>
+<h3>
+    定义菜单
+</h3>
+<p>
+    子菜单准备好了一会，直接定义菜单，并挂载好子菜单直接的关系即可：
+</p>
+<pre tag="javascript">
+"contributes": {
+    "menus": {
+        "editor/context": [{
+          "submenu": "vscode-auxiliary.codeSnippet",
+          "group": "navigation"
+        }],
+        "vscode-auxiliary.codeSnippet": [{
+          "submenu": "vscode-auxiliary.codeSnippet.css"
+        }],
+        "vscode-auxiliary.codeSnippet.css": [{
+          "command": "vscode-auxiliary.codeSnippet.css.iphone-safe-view"
+        }]
+    }
+}
+</pre>
+<p>
+    叶子按钮是定义的一个命令。
+</p>
+<h2>
+    显示位置
+</h2>
+<h3>
+    界面
+</h3>
+<p>
+    editor/context（编辑器界面）、explorer/context（文件目录界面）、terminal/context（命令行界面）等。
+</p>

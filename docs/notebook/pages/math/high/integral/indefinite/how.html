@@ -1,0 +1,36 @@
+<header>
+    积分法
+</header>
+<h2>
+    换元积分法
+</h2>
+<p>
+    设函数f(x)在区间I上有定义，φ(t)在区间J上可导，且φ(J)⊆I。
+</p>
+<ol>
+    <li>
+        如果不定积分<code>["integral","ƒ(x)","dx"]</code>=F(x)+C在I上存在，则不定积分<code>["integral","ƒ(φ(t))φ'(t)","dt"]</code>在J上也存在，且
+        <span class="oneline">
+            <code>["integral","ƒ(φ(t))φ'(t)","dt"]</code> = F(φ(t)) + C
+        </span>
+    </li>
+    <li>
+        如果x=φ(t)在J上存在反函数t=φ<sup>-1</sup>(x)，x∈I，且不定积分<code>["integral","ƒ(x)","dx"]</code>在I上存在，则当不定积分
+        <code>["integral","ƒ(φ(t))φ'(t)","dt"]</code>=G(t)+C在J上存在时，在I上有
+        <span class="oneline">
+            <code>["integral","ƒ(x)","dx"]</code>=G(φ<sup>-1</sup>(x))+C。
+        </span>
+    </li>
+</ol>
+<p>
+    上面的两个公式反映了正、逆两种换元方式，习惯上分别称为<span class="important">第一换元积分法</span>和<span class="important">第二换元积分法</span>。
+</p>
+<h2>
+    分部积分法
+</h2>
+<p>
+    若u(x)与v(x)可导，不定积分<code>["integral","u'(x)v(x)","dx"]</code>存在，则<code>["integral","u(x)v'(x)","dx"]</code>也存在，并有
+    <span class="oneline">
+        <code>["integral","u(x)v'(x)","dx"]</code> = u(x)v(x) - <code>["integral","u'(x)v(x)","dx"]</code>
+    </span>
+</p>

@@ -1,0 +1,95 @@
+<header>
+    节点 path / 方法
+</header>
+<ul>
+    <li>
+        assertXxx(opts): 同 isXxx，但是不返回布尔值，而是抛出异常。
+    </li>
+    <li>
+        set(key+ , node): 设置某个属性的值。
+    </li>
+    <li>
+        inList():判断节点是否在数组中，如果 container 为数组，也就是有 listkey 的时候，返回 true。
+    </li>
+    <li>
+        get(key): 获取某个属性的 path。
+    </li>
+    <li>
+        getSibling(key): 获取某个下标的兄弟节点。
+    </li>
+    <li>
+        getNextSibling(): 获取下一个兄弟节点。
+    </li>
+    <li>
+        getPrevSibling(): 获取上一个兄弟节点。
+    </li>
+    <li>
+        getAllPrevSiblings(): 获取之前的所有兄弟节点。
+    </li>
+    <li>
+        getAllNextSiblings(): 获取之后的所有兄弟节点。
+    </li>
+    <li>
+        getSource(): 获取当前节点的源代码字符串表示。
+    </li>
+    <li>
+        getStatementParent(): 获取当前节点的语句父级节点。
+    </li>
+    <li>
+        getTypeAnnotation(): 获得声明时的类型。
+    </li>
+    <li>
+        find(callback): 从当前节点到根节点来查找节点（包括当前节点），调用 callback（传入 path）来决定是否终止查找。
+    </li>
+    <li>
+        findParent(callback): 从当前节点到根节点来查找节点（不包括当前节点），调用 callback（传入 path）来决定是否终止查找。
+    </li>
+    <li>
+        inList(nodes): 判断节点是否在数组中，如果 container 为数组，也就是有 listkey 的时候，返回 true。
+    </li>
+    <li>
+        isXxx(opts): 判断当前节点是否是某个类型，可以传入属性和属性值进一步判断，比如 path.isIdentifier({name: 'a'})。
+    </li>
+    <li>
+        insertBefore(nodes): 在当前节点前插入新的 AST 节点，可以是单个节点或者节点数组。
+    </li>
+    <li>
+        insertAfter(nodes): 在当前节点后插入新的 AST 节点可以是单个节点或者节点数组。
+    </li>
+    <li>
+        remove(): 移除当前节点
+    </li>
+    <li>
+        replaceWith(replacement): 用某个节点替换当前节点。
+    </li>
+    <li>
+        replaceWithMultiple(nodes): 用多个节点替换当前节点。
+    </li>
+    <li>
+        replaceWithSourceString(replacement): 解析源码成 AST，然后替换当前节点。
+    </li>
+    <li>
+        traverse(visitor, state): 遍历当前节点及其子节点，并对它们应用访问者对象中定义的操作。
+    </li>
+    <li>
+        skip(): 跳过当前节点的子节点的遍历。
+    </li>
+    <li>
+        stop(): 结束所有遍历。
+    </li>
+    <li>
+        buildCodeFrameError(message, ErrorConstructor): 创建带有代码框架的错误对象。
+    </li>
+    <li>
+        get('xxx').toString(): 获取 AST（抽象语法树）中某个节点的标识符（identifier）部分的源代码表示形式。
+    </li>
+    <li>
+        get('params'): 获取函数的参数列表
+    </li>
+    <li>
+        get('id'): 获取变量声明的标识符
+    </li>
+    <li>
+        get('init'): 获取初始赋值的变量
+    </li>
+</ul>

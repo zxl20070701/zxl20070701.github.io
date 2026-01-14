@@ -1,0 +1,44 @@
+<script src="https://fastly.jsdelivr.net/npm/echarts@5.4.0"></script>
+<div></div>
+<style>
+    div {
+        width: 400px;
+        height: 300px;
+        outline: 1px solid black;
+    }
+</style>
+<script>
+
+    var mychart = echarts.init(document.getElementsByTagName('div')[0]);
+
+    mychart.setOption({
+        xAxis: {
+            data: [' 苹果', '香蕉', '火龙果']
+        },
+        yAxis: {},
+        series: [{
+            type: 'custom',
+            renderItem: function (params, api) {
+
+                // api.value(0)和api.value(1) 记录着数据
+                // api.coord把其转化成坐标
+                var point = api.coord([api.value(0), api.value(1)])
+
+                return {
+                    type: "circle",
+                    shape: {
+                        cx: point[0],
+                        cy: point[1],
+                        r: 50
+                    },
+                    style: api.style({
+                        fill: "red"
+                    })
+                };
+
+            },
+            data: [13, 22, 10]
+        }]
+    });
+
+</script>

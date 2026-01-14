@@ -1,0 +1,90 @@
+<header>
+    关于ES6中的异步处理
+</header>
+<h2>
+    await
+</h2>
+<pre tag="javascript">
+var dataPromise = new Promise(function(resolve, reject){
+    resolve("一段内容");
+});
+</pre>
+<p>
+    正常来说，应该这样获取最终的值：
+</p>
+<pre tag="javascript">
+dataPromise.then(function(data){
+    console.log(data);
+});
+</pre>
+<p>
+    借助await就可以改成：
+</p>
+<pre tag="javascript">
+console.log(await dataPromise);
+</pre>
+<p>
+    和上面运行的效果“一样”，都是打印"一段内容"。
+</p>
+<p>
+    await后面可以是任意值，当是Promise对象，会暂停<span class="special">async function</span>执行，返回resolve的值，如果是别的，直接返回。
+</p>
+<h2>
+    async
+</h2>
+<pre tag="javascript">
+async function doit(){
+    return "一段内容";
+}
+</pre>
+<p>
+    如果是普通的函数，获取返回的值只需要执行一下函数即可：
+</p>
+<pre tag="javascript">
+var data = doit();
+</pre>
+<p>
+    而在这里，你需要修改一下：
+</p>
+<pre tag="javascript">
+doit().then(function(data){
+    // data 就是返回的值
+});
+</pre>
+<p>
+    简单的理解就是：把一个函数的返回值用Promise封装一下再返回。那么，如果函数的返回值就是Promise会怎么样？是的，就什么也不干，直接返回这个Promise即可。
+</p>
+<p>
+    总而言之，最终要保重返回的是Promise且少干事。
+</p>
+<p>
+    还需要补充一点，比如下面的例子：
+</p>
+<pre tag="javascript">
+var fetchData = function () {
+    return new Promise(function (resolve, reject) {
+        resolve("这是数据");
+    });
+}
+
+async function doit() {
+    var _data = await fetchData();
+    return "返回的数据是：" + _data;
+}
+
+doit().then(function (data) {
+    console.log(data);
+})
+</pre>
+<p>
+    doit()返回的是一个Promise没有问题，毕竟加了async修饰符了。
+</p>
+<p>
+    而doit定义的函数体里面，用了await，所以呀，这个函数会等fetchData()处理完毕后再接着往下走，而不是和普通的函数一样，直接返回，异步操作你干你的。
+</p>
+<p>
+    所以这里最后的结果就是打印“返回的数据是：这是数据”。
+</p>
+<p class="warn">
+     温馨提示：特别要注意，这里的“_data”是值，而不是Promise，这非常重要。
+</p>

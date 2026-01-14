@@ -1,0 +1,77 @@
+<header>
+    useEffect
+</header>
+<p>
+    你可以把useEffect看做componentDidMount，componentDidUpdate和componentWillUnmount这三个函数的组合。
+</p>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+useEffect(setup, dependencies?)
+</pre>
+<h3>
+    参数说明
+</h3>
+<ul>
+    <li>
+        <span class="warn">setup</span>：
+        处理 Effect 的函数。setup 函数选择性返回一个 清理（cleanup） 函数。当组件被添加到 DOM 的时候，React 将运行 setup 函数。在每次依赖项变更重新渲染后，React 将首先使用旧值运行
+        cleanup 函数（如果你提供了该函数），然后使用新值运行 setup 函数。在组件从 DOM 中移除后，React 将最后一次运行 cleanup 函数。
+    </li>
+    <li>
+        <span class="warn">dependencies</span>：
+        可选，就是一个数组，如果省略此参数，则在每次重新渲染组件之后，将重新运行Effect函数。
+    </li>
+</ul>
+<h2>
+    使用说明和举例
+</h2>
+<h3>
+    挂载和更新
+</h3>
+<p>
+    如果希望在componentDidMount和componentDidUpdate的时候触发：
+</p>
+<pre tag="javascript">
+useEffect(()=>{
+    // todo
+})
+</pre>
+<p>
+    有时候，你可能希望更新发生在某个变量改变的时候，可以考虑使用第二个参数，比如监听变量count：
+</p>
+<pre tag="javascript">
+useEffect(()=>{
+    // todo
+},[count])
+</pre>
+<div class="tips">
+    这个参数是一个数组，元素是要被观察的 state 或 props，只有指定的这个变量发生变化时，才会触发 useEffect 中的第一个参数匿名函数的执行。
+</div>
+<p>
+    所以可以猜想到，如果希望只在componentDidMount的时候触发，那就可以：
+</p>
+<pre tag="javascript">
+useEffect(()=>{
+    // todo
+},[])
+</pre>
+<h3>
+    卸载
+</h3>
+<p>
+    类似componentWillUnmount的时候触发：
+</p>
+<pre tag="javascript">
+useEffect(()=>{
+    // todo
+
+    return ()=>{
+        // todo
+    }
+})
+</pre>
+<p>
+    可以看见上面返回了一个函数，在每次更新前（包括页面销毁前）触发此返回的函数。
+</p>

@@ -1,0 +1,36 @@
+<header>
+    style 穿透
+</header>
+<h2>
+    >>>
+</h2>
+<p>
+    如果项目使用的是css原生样式，那么可以直接使用 >>> 穿透修改：
+</p>
+<pre tag="css">
+div >>> .cla {
+    color: red;
+}
+</pre>
+<h2>
+    /deep/
+</h2>
+<p>
+    项目中用到了预处理器 scss 、sass、less 操作符 >>> 可能会因为无法编译而报错，可以使用 /deep/ ：
+</p>
+<pre tag="css">
+div /deep/ .cla {
+    color: red;
+}
+</pre>
+<p class="warn">
+    温馨提示：vue-cli3以上版本不可以。
+</p>
+<h2>
+    ::v-deep
+</h2>
+<pre tag="css">
+div ::v-deep .cla {
+    color: red;
+}
+</pre>

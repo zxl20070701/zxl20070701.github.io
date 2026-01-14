@@ -1,0 +1,24 @@
+<header>
+    键盘事件
+</header>
+<pre tag="javascript">
+// 让可读流process.stdin接收用户键盘事件，并可以发射接收到的键盘事件
+//（也就是被后续的keypress监听到）
+require('readline').emitKeypressEvents(process.stdin);
+
+// 设置成原始输入模式，每次输入都会触发事件，而不是憋大，等回车来了一下子触发一大堆
+process.stdin.setRawMode(true);
+
+// 监听键盘按下事件
+process.stdin.on('keypress', (str, key) => {
+
+    console.log(str);
+    console.log(key);
+
+    //按住ctrl+d退出
+    if (key.ctrl === true && key.name === 'd') {
+        process.exit(0);
+    }
+
+});
+</pre>

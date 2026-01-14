@@ -1,0 +1,320 @@
+<header>
+    数学公式等特殊符号
+</header>
+<p>
+    对于普通文字或特殊符号等，直接输入或复制即可，而对于类似下面的语句：
+</p>
+<img width="500" src="./images/formula.jpeg" />
+<p>
+    可能就需要借助我们提供的特殊录入方式。
+</p>
+<p>
+    非常简单，你只需要把本来输入内容的地方按照如下语法录入：
+</p>
+<pre tag="html">
+&lt;code&gt;
+    [公式生成方法名,公式对象或字符串1,公式对象或字符串2,...]
+&lt;/code&gt;
+</pre>
+<p>
+    下面列举出所有『公式生成方法』。
+</p>
+<h2>
+    拼接
+</h2>
+<p>
+    从左到右，拼接起来。
+</p>
+<pre tag="html">
+&lt;code&gt;
+    ["join","p1","p2","p3",...]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["join","p1","p2","p3","..."]
+    </code>
+</p>
+<h2>
+    根号
+</h2>
+<pre tag="html">
+&lt;code&gt;
+    ["gen","p1"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["gen","p1"]
+    </code>
+</p>
+<h2>
+    极限
+</h2>
+<p>
+    p1表示趋向，p2是计算结果的表达式。
+</p>
+<pre tag="html">
+&lt;code&gt;
+    ["limt","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["limt","p1","p2"]
+    </code>
+</p>
+<h2>
+    求和
+</h2>
+<p>
+    p1表示开始，p2是结束的值，p3是需要求和的表达式。
+</p>
+<pre tag="html">
+&lt;code&gt;
+    ["sum","p1","p2","p3"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["sum","p1","p2","p3"]
+    </code>
+</p>
+<h2>
+    矩阵和行列式
+</h2>
+<p>
+    p1是一个二维数组，p2默认false，表示矩阵，可选，如果是true，表示行列式。
+</p>
+<pre tag="html">
+&lt;code&gt;
+    ["matrix","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["matrix","p1","p2"]
+    </code>
+</p>
+<h2>
+    除
+</h2>
+<pre tag="html">
+&lt;code&gt;
+    ["division","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["division","p1","p2"]
+    </code>
+</p>
+<h2>
+    括号
+</h2>
+<p>
+    p2表示括号的类型，可选的有：small、middle、big，分别表示，小括号、中括号、大括号。
+</p>
+<pre tag="html">
+&lt;code&gt;
+    ["bracket","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["bracket","p1","small"]
+    </code>、
+    <code>
+        ["bracket","p1","middle"]
+    </code>、
+    <code>
+        ["bracket","p1","big"]
+    </code>
+</p>
+<h2>
+    特殊位置
+</h2>
+<h3>
+    p2在右上角
+</h3>
+<pre tag="html">
+&lt;code&gt;
+    ["rightTop","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["rightTop","p1","p2"]
+    </code>
+</p>
+<h3>
+    p2在右下角
+</h3>
+<pre tag="html">
+&lt;code&gt;
+    ["rightBottom","p1","p2"]
+&lt;/code&gt;
+    </pre>
+<p>
+    运行效果：
+    <code>
+            ["rightBottom","p1","p2"]
+        </code>
+</p>
+<h2>
+    方程组
+</h2>
+<pre tag="html">
+&lt;code&gt;
+    ["equationSet","p1","p2","p3",...]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["equationSet","p1","p2","p3","..."]
+    </code>
+</p>
+<h2>
+    上下线
+</h2>
+<h3>
+    p1上面有线条
+</h3>
+<pre tag="html">
+&lt;code&gt;
+    ["upLine","p1"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["upLine","p1"]
+    </code>
+</p>
+<h3>
+    p1下面有线条
+</h3>
+<pre tag="html">
+&lt;code&gt;
+    ["downLine","p1"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+            ["downLine","p1"]
+        </code>
+</p>
+<h2>
+    向量
+</h2>
+<pre tag="html">
+&lt;code&gt;
+    ["vector","p1"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["vector","p1"]
+    </code>
+</p>
+<h2>
+    绝对值
+</h2>
+<pre tag="html">
+&lt;code&gt;
+    ["abs","p1"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["abs","p1"]
+    </code>
+</p>
+<h2>
+    定积分和不定积分
+</h2>
+<p>
+    p1是表达式，p2表示对谁积分，p3和p4可选，表示定积分积分范围（下、上）。
+</p>
+<pre tag="html">
+&lt;code&gt;
+    ["integral","p1","p2","p3","p4"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["integral","p1","p2","p3","p4"]
+    </code>
+</p>
+<h2>
+    可列交和可列并
+</h2>
+<h3>
+    可列交
+</h3>
+<pre tag="html">
+&lt;code&gt;
+    ["listedAnd","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["listedAnd","p1","p2"]
+    </code>
+</p>
+<h3>
+    可列并
+</h3>
+<pre tag="html">
+&lt;code&gt;
+    ["listedOr","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["listedOr","p1","p2"]
+    </code>
+</p>
+<h2>
+    组合
+</h2>
+<pre tag="html">
+&lt;code&gt;
+    ["C","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["C","p1","p2"]
+    </code>
+</p>
+<h2>
+    排列
+</h2>
+<pre tag="html">
+&lt;code&gt;
+    ["A","p1","p2"]
+&lt;/code&gt;
+</pre>
+<p>
+    运行效果：
+    <code>
+        ["A","p1","p2"]
+    </code>
+</p>

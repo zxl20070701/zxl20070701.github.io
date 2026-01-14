@@ -1,0 +1,73 @@
+<header>
+    事件和数据传递
+</header>
+<p class="warn">
+    无论是何种方式，事件传播都需要保证先注册监听再发送，否则接收方会接收不到。
+</p>
+<h2>
+    异步
+</h2>
+<h3>
+    渲染层 → 主进程
+</h3>
+<h4>
+    主进程注册监听
+</h4>
+<pre tag="javascript">
+ipcMain.on('eventName', function (evnet, data) {
+    // todo
+});
+</pre>
+<h4>
+    渲染层发送事件
+</h4>
+<p class="warn">
+    nodeRequire就是require，我们默认重新定义node.js暴露和web冲突的名称，执行了 window.nodeRequire = require 下同。
+</p>
+<pre tag="javascript">
+window.nodeRequire("electron").ipcRenderer.send("eventName", data);
+</pre>
+<h3>
+    主进程 → 渲染层
+</h3>
+<h4>
+    渲染层注册监听
+</h4>
+<pre tag="javascript">
+window.nodeRequire("electron").ipcRenderer .on("eventName", function(event, data){
+    // todo
+});
+</pre>
+<h4>
+    主进程发送事件
+</h4>
+<p class="warn">
+    win就是 new BrowserWindow() 返回的窗口实例，下同。
+</p>
+<pre tag="javascript">
+win.webContents.send("eventName", data);
+</pre>
+<h2>
+    同步
+</h2>
+<h3>
+    渲染层 → 主进程
+</h3>
+<p class="warn">
+    温馨提示：在主进程响应前，渲染线程会处于‘卡死’状态。
+</p>
+<h4>
+    主进程注册监听
+</h4>
+<pre tag="javascript">
+ipcMain.on("eventName", function (event, data) {
+    // todo
+    event.returnValue = returnData;
+});
+</pre>
+<h4>
+    渲染层发送事件
+</h4>
+<pre tag="javascript">
+var returnData = window.nodeRequire("electron").ipcRenderer.sendSync("eventName",data);
+</pre>

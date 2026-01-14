@@ -1,0 +1,86 @@
+<header>
+    OpenGL ES 着色器语言
+</header>
+<h2>
+    变量
+</h2>
+<h3>
+    命名规范
+</h3>
+<ol>
+    <li>
+        只包含a-z，A-Z，0-9和下划线“_”。
+    </li>
+    <li>
+        变量名的首字母不能是数字。
+    </li>
+    <li>
+        不能是关键字或者保留字。
+    </li>
+    <li>
+        对于gl_、webgl_或_webgl_开头的，这些前缀已经被OpenGL ES保留，也不能作为变量。
+    </li>
+</ol>
+<h2>
+    数据类型
+</h2>
+<h3>
+    基本类型
+</h3>
+<p>
+    支持的基本类型如下：
+</p>
+<img src="./images/opengl-es/type.jpg">
+<p>
+    因为GLSL ES是强类型语言，赋值语句的左右两边类型需要保持一致，有如下的类型转换方法：
+</p>
+<img src="./images/opengl-es/type-trans.jpg">
+<h3>
+    失量和矩阵
+</h3>
+<img src="./images/opengl-es/type-matrix.jpg">
+<p class="warn">
+    温馨提示：矩阵采用列优先存储。
+</p>
+<h2>
+    限定字
+</h2>
+<h3>
+    attribute
+</h3>
+<p>
+    只能出现在
+    <span class="warn">顶点着色器</span>
+    中，需要声明为全局变量，用来表示逐顶点信息。
+</p>
+<h3>
+    uniform
+</h3>
+<p>
+    可以出现在
+    <span class="warn">顶点着色器</span>
+    和
+    <span class="warn">片元着色器</span>
+    ，必须为全局变量，可以是数组和结构体外的任意类型，如果两个色器声明了同命的uniform变量，那么它就会被两个着色器共享。
+</p>
+<h3>
+    varying
+</h3>
+<p>
+    必须为全局变量，它的任务是从
+    <span class="warn"> 顶点着色器</span>
+    传递数据给
+    <span class="warn">片元着色器</span>
+    ，我们必须在两个着色器中声明同命、同类型的varying变量。
+</p>
+<h3>
+    precision
+</h3>
+<p>
+    也就是精度限定字，支持的类型如下：
+</p>
+<img src="./images/opengl-es/precision.jpg">
+<h2>
+    内置函数
+</h2>
+<img src="./images/opengl-es/function.jpg">

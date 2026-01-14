@@ -1,0 +1,86 @@
+<header>
+    列表渲染
+</header>
+<h2>
+    a:for
+</h2>
+<p>
+    在组件上使用 a:for 控制属性绑定一个数组，即可使用数组中各项的数据重复渲染该组件：
+</p>
+<pre tag="html">
+&lt;view a:for="{{array}}"&gt;
+    {{index}}: {{item}}
+&lt;/view&gt;
+</pre>
+<p>
+    默认数组的当前项的下标变量名默认为 index，数组当前项的变量名默认为 item。
+</p>
+<p>
+    当然，可以使用
+    <span class="special">a:for-item</span>
+    和
+    <span class="special">a:for-index</span>
+    进行修改：
+</p>
+<pre tag="html">
+&lt;view a:for="{{array}}" a:for-index="idx" a:for-item="itemName"&gt;
+    {{idx}}: {{itemName}}
+&lt;/view&gt;
+</pre>
+<h2>
+    a:key
+</h2>
+<p>
+    如果列表中项目的位置会动态改变或者有新的项目添加到列表中，并且希望列表中的项目保持自己的特征和状态（如 input 中的输入内容，switch 的选中状态），需要使用 a:key 来指定列表中项目的唯一的标识符。
+</p>
+<p>
+    a:key 的值以两种形式提供。
+</p>
+<h3>
+    字符串
+</h3>
+<p>
+    代表在 for 循环的 array 中 item 的某个 property，该 property 的值需要是列表中唯一的字符串或数字，且不能动态改变。
+</p>
+<pre tag="html">
+&lt;view a:for="{{objectArray}}" a:key="unique"&gt;
+    {{index}}: {{item}}
+&lt;/view&gt;
+</pre>
+<p>
+    上述数据objectArray定义如下：
+</p>
+<pre tag="javascript">
+Page({
+    data:{
+        objectArray:[{
+            {id: 0, unique: 'unique_0'},
+        },...]
+    }
+});
+</pre>
+<h3>
+    *this
+</h3>
+<p>
+    保留关键字 *this 代表在 for 循环中的 item 本身，这种表示需要 item 本身是一个唯一的字符串或者数字。
+</p>
+<pre tag="html">
+&lt;view a:for="{{array}}" a:key="*this"&gt;
+    {{index}}: {{item}}
+&lt;/view&gt;
+</pre>
+<h2>
+    key
+</h2>
+<p>
+    key 是比 a:key 更通用的写法，里面可以填充任意表达式和字符串。
+</p>
+<div class="tips">
+    key 不能设置在 block 上。
+</div>
+<pre tag="html">
+&lt;view a:for="{{array}}" key="{{item}}"&gt;
+    {{index}}: {{item}}
+&lt;/view&gt;
+</pre>

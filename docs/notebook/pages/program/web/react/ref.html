@@ -1,0 +1,73 @@
+<header>
+    受控组件与非受控组件
+</header>
+<h2>
+    受控组件
+</h2>
+<p>
+    首先，我们定义了数据info：
+</p>
+<pre tag="javascript">
+constructor(props) {
+    super(props)
+    this.state = {
+        info: "初始化的值"
+    }
+}
+</pre>
+<h3>
+    单向绑定
+</h3>
+<pre tag="javascript">
+render(){
+    return (&lt;div&gt;{this.state.info}&lt;/div&gt;)
+}
+</pre>
+<h3>
+    一次绑定
+</h3>
+<pre tag="javascript">
+render(){
+    return (&lt;input defaultValue={this.state.info} /&gt;)
+}
+</pre>
+<h3>
+    双向绑定
+</h3>
+<pre tag="javascript">
+render(){
+    return (&lt;input value={this.state.info} name='info' onChange={this.handlerUpdate} /&gt;)
+</pre>
+<p>
+    当然，函数 handlerUpdate 需要我们定义：
+</p>
+<pre tag="javascript">
+handlerUpdate = event => {
+
+    // 通过把绑定的key写活，可以复用，避免过多的垃圾代码
+    // 当然，比如多选按钮，使用的不是value而是checked，因此值的获取也可以根据输入组件类型动态修改
+    this.setState({
+        [event.target.name]: event.target.value
+    })
+}
+</pre>
+<h2>
+    非受控组件
+</h2>
+<pre tag="javascript">
+class MyComponent extends React.Component {
+    constructor(props) {
+        super(props)
+        this.refDemo = React.createRef() // 创建ref对象
+    }
+    doit = () => {
+        console.log(this.refDemo.current.value) // 不推荐，其实就是DOM操作
+    }
+    render() {
+        return (&lt;div&gt;
+            &lt;input ref={this.refDemo} /&gt;
+            &lt;button onClick={this.doit}&gt;点击查看输入框的值&lt;/button&gt;
+        &lt;/div&gt;)
+    }
+}
+</pre>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <style>
+        body>div>div {
+            display: inline-block;
+        }
+
+        div.inner {
+            padding-top: 50%;
+        }
+
+        div.content {
+            background-color: blue;
+            height: 100%;
+            position: absolute;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 试试修改外层div的宽试试 -->
+    <div style='width:300px;border:1px solid red;position: relative;'>
+        <div class='inner'></div>
+        <div class="content">
+            这是文字哦！
+        </div>
+    </div>
+
+</body>
+
+</html>

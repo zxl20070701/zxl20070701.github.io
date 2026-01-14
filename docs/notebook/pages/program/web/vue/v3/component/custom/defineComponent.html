@@ -1,0 +1,46 @@
+<header>
+    defineComponent
+</header>
+<p>
+    文件index.vue：
+</p>
+<pre tag="html">
+&lt;template&gt;
+    &lt;!-- 模板 --&gt;  
+&lt;/template&gt;
+&lt;script lang="ts"&gt;  
+import { defineComponent } from "vue";
+
+export default defineComponent({
+    setup() {
+        // 代码
+        return {};
+    };
+});
+&lt;/script&gt;  
+&lt;style lang="scss" scoped&gt;  
+    /* 样式 */
+&lt;/style&gt;  
+</pre>
+<h2>
+    emit
+</h2>
+<pre tag="html">
+&lt;script lang="ts"&gt;  
+import { defineComponent } from "vue";
+
+export default defineComponent({
+    emits:{
+        xxx: () => undefined
+    },
+    setup(props, ctx) {
+        let doit = () => {
+            ctx.emit("xxx");
+        };
+        return {
+            doit
+        };
+    };
+});
+&lt;/script&gt;  
+</pre>

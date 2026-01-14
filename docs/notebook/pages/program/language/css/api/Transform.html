@@ -1,0 +1,165 @@
+<header>
+    Transform 转换
+</header>
+<h2>
+    transform: none | transform-functions;
+</h2>
+<p>
+    通过设置该属性的值，我们可以对元素使用转换，下面是具体的属性值。
+</p>
+<p>
+    定义 2D 转换，使用六个值的矩阵：
+</p>
+<pre tag="css">
+    matrix(a,b,c,d,e,f)
+</pre>
+<p>
+    定义 3D 转换，使用 16 个值的 4x4 矩阵：
+</p>
+<pre tag="css">
+    matrix3d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+</pre>
+<p>
+    定义 2D 转换：
+</p>
+<pre tag="css">
+    translate(x,y)
+</pre>
+<p>
+    定义 3D 转换：
+</p>
+<pre tag="css">
+    translate3d(x,y,z)
+</pre>
+<p>
+    定义转换，只是用 X 轴的值：
+</p>
+<pre tag="css">
+    translateX(x)
+</pre>
+<p>
+    定义转换，只是用 Y 轴的值：
+</p>
+<pre tag="css">
+    translateY(y)
+</pre>
+<p>
+    定义 3D 转换，只是用 Z 轴的值：
+</p>
+<pre tag="css">
+    translateZ(z)
+</pre>
+<p>
+    定义 2D 缩放转换：
+</p>
+<pre tag="css">
+    scale(x,y)
+</pre>
+<p>
+    定义 3D 缩放转换：
+</p>
+<pre tag="css">
+    scale3d(x,y,z)：
+</pre>
+<p>
+    通过设置 X 轴的值来定义缩放转换：
+</p>
+<pre tag="css">
+    scaleX(x)
+</pre>
+<p>
+    通过设置 Y 轴的值来定义缩放转换：
+</p>
+<pre tag="css">
+    scaleY(y)
+</pre>
+<p>
+    通过设置 Z 轴的值来定义 3D 缩放转换：
+</p>
+<pre tag="css">
+    scaleZ(z)
+</pre>
+<p>
+    定义 2D 旋转，在参数中规定角度：
+</p>
+<pre tag="css">
+    rotate(angle)
+</pre>
+<p>
+    定义 3D 旋转：
+</p>
+<pre tag="css">
+    rotate3d(x,y,z,angle)
+</pre>
+<p>
+    定义沿着 X 轴的 3D 旋转：
+</p>
+<pre tag="css">
+    rotateX(angle)
+</pre>
+<p>
+    定义沿着 Y 轴的 3D 旋转：
+</p>
+<pre tag="css">
+    rotateY(angle)
+</pre>
+<p>
+    定义沿着 Z 轴的 3D 旋转：
+</p>
+<pre tag="css">
+    rotateZ(angle)
+</pre>
+<p>
+    定义沿着 X 和 Y 轴的 2D 倾斜转换：
+</p>
+<pre tag="css">
+    skew(x-angle,y-angle)
+</pre>
+<p>
+    定义沿着 X 轴的 2D 倾斜转换：
+</p>
+<pre tag="css">
+    skewX(angle)
+</pre>
+<p>
+    定义沿着 Y 轴的 2D 倾斜转换：
+</p>
+<pre tag="css">
+    skewY(angle)
+</pre>
+<p>
+    为 3D 转换元素定义透视视图：
+</p>
+<pre tag="css">
+    perspective(n)
+</pre>
+<h2>
+    transform-origin: x-axis y-axis z-axis;
+</h2>
+<p>
+    设置元素转换的中心点，最直观的例子旋转图片，改变图片选择依赖的旋转中心。
+</p>
+<h2>
+    transform-style: flat | preserve-3d;
+</h2>
+<p>
+    定义里面转换的元素是在2D平面呈现还是在3D空间呈现，讲的直白些，就是这个元素里面的空间维度是二维还是三维。
+</p>
+<h2>
+    perspective: number | none;
+</h2>
+<p>
+    属性是定义3D元素距试图的距离，设置以后，其子元素会获得透视效果，需要注意的是该值只对3D转换有效，这也是很容易理解的。此外，还可以通过Transform的属性值的方式设置，两者是有一定区别的，你可以认为，前者是把整个看成一个舞台，后者是每一个都是一个舞台。
+</p>
+<h2>
+    perspective-origin: x-axis y-axis;
+</h2>
+<p>
+    必须和perspective一起使用，只对3D转换元素有效，简单的理解就是你的眼睛看的焦点。
+</p>
+<h2>
+    backface-visibility:hidden | visible;
+</h2>
+<p>
+    这个很简单，设置当元素背对着屏幕时候，是否是可见的。
+</p>

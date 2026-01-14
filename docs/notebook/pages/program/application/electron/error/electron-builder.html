@@ -1,0 +1,52 @@
+<header>
+    electron-builder 打包常见问题
+</header>
+<h2>
+    一直提示下载错误
+</h2>
+<p class="important">
+    ⨯ Get "https://github.com/electron/electron/releases/download/v22.1.0/electron-v22.1.0-darwin-x64.zip": EOF
+</p>
+<p>
+    在
+    <a href="https://npm.taobao.org/mirrors/electron/" target="_blank">https://npm.taobao.org/mirrors/electron/</a>
+    下载指定版本，然后将文件移动到下述对应文件夹中：
+</p>
+<ul>
+    <li>
+        Linux： $XDG_CACHE_HOME 或 ~/.cache/electron/  
+    </li>
+    <li>
+        MacOS：~/Library/Caches/electron/
+    </li>
+    <li>
+        Windows：$LOCALAPPDATA/electron/Cache 或~/AppData/Local/electron/Cache/
+    </li>
+</ul>
+<h2>
+    python命令找不到
+</h2>
+<p class="important">
+    ⨯ Exit code: ENOENT. spawn /usr/bin/python ENOENT
+</p>
+<h3>
+    安装python2
+</h3>
+<p>
+    首先，确定安装了python2，如果已经安装了，Mac电脑可以使用此命令打印程序位置：
+</p>
+<pre tag>
+    which python2
+</pre>
+<p>
+    例如，我的位置就是：
+</p>
+<pre tag>
+    /Library/Frameworks/Python.framework/Versions/2.7/bin/python2
+</pre>
+<h3>
+    dmg.js文件修改
+</h3>
+<p>
+    打开文件 "/node_modules/dmg-builder/out/dmg.js" ，把里面的 "/usr/bin/python" 替换成你的python2路径即可。
+</p>

@@ -1,0 +1,36 @@
+<header>
+    数组
+</header>
+<h2>
+    声明数组
+</h2>
+<pre tag="javascript">
+    type arrayName [ arraySize ];
+</pre>
+<p>
+    这叫做一维数组。
+    <span class="important">arraySize</span>必须是一个大于零的整数常量，
+    <span class="important">type</span>可以是任意有效的 C 数据类型。例如，要声明一个类型为 double 的包含 10 个元素的数组
+    <span class="important">balance</span>，声明语句如下：
+</p>
+<pre tag="javascript">
+    double balance[10];
+</pre>
+<h2>
+    初始化数组
+</h2>
+<pre tag="javascript">
+    double balance[5] = {1000.0, 2.0, 3.4, 7.0, 50.0};
+</pre>
+<p>
+    大括号 { } 之间的值的数目不能大于我们在数组声明时在方括号 [ ] 中指定的元素数目。如果省略掉了数组的大小，数组的大小则为初始化时元素的个数，因此也可以：
+</p>
+<pre tag="javascript">
+    double balance[] = {1000.0, 2.0, 3.4, 7.0, 50.0};
+</pre>
+<h2>
+    获取数组长度
+</h2>
+<pre tag="javascript">
+    int length = sizeof(balance);
+</pre>

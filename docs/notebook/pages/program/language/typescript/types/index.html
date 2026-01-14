@@ -1,0 +1,57 @@
+<header>
+    总体描述
+</header>
+<h2>
+    /// &lt;reference path="..." /&gt;
+</h2>
+<p>
+    它是一种注释，告诉typescript编译器，当前文件使用了哪些声明文件，以帮助编辑器提示信息，及编译器检查类型。
+</p>
+<h2>
+    declare module
+</h2>
+<p>
+    在 declare module 后，你可以跟着模块名或文件名。
+</p>
+<h3>
+    文件名
+</h3>
+<p>
+    在一个 Vue 项目中，shims-vue.d.ts 文件内容可能如下：
+</p>
+<pre tag="javascript">
+declare module "*.vue" {
+  import { DefineComponent } from "vue"
+  const component: DefineComponent&lt;{}, {}, any&gt;
+  export default component
+}
+</pre>
+<p>
+    这里，我们使用 declare module '*.vue' 告诉 TypeScript 编译器，所有以 .vue 结尾的文件都应该被视为 Vue 的单文件组件。我们导入了 DefineComponent
+    类型，并将其作为默认导出，使得其他 TypeScript 文件可以正确地识别 .vue 文件的类型信息。
+</p>
+<h3>
+    模块名
+</h3>
+<p>
+    例如，假设你有一个名为 my-js-module.js 的 JavaScript 文件：
+</p>
+<pre tag="javascript">
+export let greet = function(name) {
+    return 'Hello, ' + name;
+}
+</pre>
+<p>
+    然后你在 TypeScript 项目中引入这个模块：
+</p>
+<pre tag="javascript">
+    import { greet } from 'my-js-module'
+</pre>
+<p>
+    为了让 TypeScript 编译器能正确理解 my-js-module 模块的类型信息，你需要创建一个名为 my-js-module.d.ts 的类型声明文件，如下所示：
+</p>
+<pre tag="javascript">
+declare module 'my-js-module' {
+    export function greet(name: string): string
+}
+</pre>

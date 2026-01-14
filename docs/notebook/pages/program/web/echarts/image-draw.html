@@ -1,0 +1,72 @@
+<header>
+    和图片等配合使用
+</header>
+<p>
+    比如我们现在有一张图片，如下：
+</p>
+<img src="./images/china.jpeg">
+<p>
+    我们希望绘制一个台湾到北京的飞机飞行示意图，怎么办？
+</p>
+<p>
+    当然，在实际绘制中，不一定是图片，也可能是WebGL、Canvas绘制的等，基本的流程都可以参考下面的例子：
+</p>
+<h2>
+    Echarts环境准备
+</h2>
+<p>
+    首先，需要把grid等边距设置好，比如这里我们归0（如果不设置0，别的地方对应调整即可）：
+</p>
+<pre tag="javascript">
+grid: {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0
+}
+</pre>
+<p>
+    然后，把水平垂直的原点设置为左下角，坐标计算的尺度和画布的宽和高保持一致：
+</p>
+<pre tag="javascript">
+xAxis: {
+    type: 'value',
+    min: 0,
+    max: el.clientWidth,
+    show: false
+},
+yAxis: {
+    type: 'value',
+    min: 0,
+    max: el.clientHeight,
+    show: false
+}
+</pre>
+<h2>
+    手工采点
+</h2>
+<p>
+    比如，我们这里涉及到图片中北京和台湾的位置，值分别是：[200, 250]、 [245, 160]。
+</p>
+<p class="warn">
+    温馨提示：点的坐标原点是图片的左下角，而不是左上角。
+</p>
+<h2>
+    绘制
+</h2>
+<p>
+    我们在使用ECharts绘制的时候，只需要配置坐标系统如下：
+</p>
+<pre tag="javascript">
+coordinateSystem: "cartesian2d"
+</pre>
+<p>
+    也就是计算坐标的时候使用xOy坐标系，而此刻xOy坐标系的尺寸又和图片保持了一致，因此上面采的点可以直接使用。
+</p>
+<p class="warn">
+    这非常类似 coordinateSystem: 'geo' 的情况。
+</p>
+<p>
+    下面是最终完整的代码，你可以进行查看：
+</p>
+<button tag="echarts-image-draw">查看用例</button>

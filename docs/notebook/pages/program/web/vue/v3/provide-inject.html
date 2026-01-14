@@ -1,0 +1,36 @@
+<header>
+    依赖注入
+</header>
+<p>
+    支持组件为后代组件提供数据或方法等，比如我们有如下两个自定义组件的用法：
+</p>
+<pre tag="html">
+&lt;p-demo&gt;
+    &lt;c-demo&gt;&lt;/c-demo&gt;
+&lt;/p-demo&gt;
+</pre>
+<p>
+    我们现在希望通过依赖注入实现
+    <span class="warn">p-demo</span>给<span class="warn">c-demo</span>
+    传递数据，怎么办？
+</p>
+<h2>
+    Provide (提供)
+</h2>
+<p>
+    很明显，<span class="warn">p-demo</span>提供数据，大致写法如下：
+</p>
+<pre tag="javascript">
+import { provide } from 'vue';
+provide("key", "来自PDemo的数据");
+</pre>
+<h2>
+    Inject (注入)
+</h2>
+<p>
+    现在，就可以在<span class="warn">c-demo</span>消费这个数据了：
+</p>
+<pre tag="javascript">
+import { inject } from 'vue';
+let value = inject("key");
+</pre>

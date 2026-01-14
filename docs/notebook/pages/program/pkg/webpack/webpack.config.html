@@ -1,0 +1,66 @@
+<header>
+    webpack.config.js
+</header>
+<h2>
+    devServer
+</h2>
+<h3>
+    基本配置项
+</h3>
+<pre tag="javascript">
+"devServer": {
+    "host": "0.0.0.0",
+    "port": 20000,
+    "proxy": {}
+}
+</pre>
+<h3>
+    overlay
+</h3>
+<p>
+    控制是否在浏览器页面中全屏显示错误信息：
+</p>
+<pre tag="javascript">
+"devServer": {
+    "client": {
+        "overlay": false
+    }
+}
+</pre>
+<h3>
+    proxy
+</h3>
+<p>
+    比如，我们希望本地的请求
+    <span class="special">/api/users</span>
+    转发到
+    <span class="special">http://www.example.tech:8080/api/users</span>
+    就可以：
+</p>
+<pre tag="javascript">
+"devServer": {
+    "proxy": {
+        "/api": {
+            "target": "http://www.example.tech:8080/",
+
+            // 表示是否更新代理后请求的headers中host地址
+            "changeOrigin": true
+        }
+    }
+}
+</pre>
+<p>
+    而如果你希望转发后没有前缀<span class="warn">api</span>，也就是直接是：
+    <span class="special">http://www.example.tech:8080/users</span>，需要添加一个配置：
+</p>
+<pre tag="javascript">
+"devServer": {
+    "proxy": {
+        "/api": {
+            "target": "http://www.example.tech:8080/",
+            "changeOrigin": true,
+            "pathRewrite": { '^/api': '' },
+        }
+    }
+}
+</pre>

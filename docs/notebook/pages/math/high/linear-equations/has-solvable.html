@@ -1,0 +1,99 @@
+<header>
+    判断是否有解？
+</header>
+<p>
+    设线性方程组为
+    <span class="oneline">
+        <code>
+            ["equationSet",
+                ["join",["rightBottom","a","11"],["rightBottom","x","1"]," + ",["rightBottom","a","12"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","1n"],["rightBottom","x","n"]," = ",["rightBottom","b","1"]],
+                ["join",["rightBottom","a","21"],["rightBottom","x","1"]," + ",["rightBottom","a","22"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","2n"],["rightBottom","x","n"]," = ",["rightBottom","b","2"]],
+                "                                               ... ... ... ...",
+                ["join",["rightBottom","a","s1"],["rightBottom","x","1"]," + ",["rightBottom","a","s2"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","sn"],["rightBottom","x","n"]," = ",["rightBottom","b","s"]]
+            ]
+        </code>
+    </span>
+    引入向量
+    <span class="oneline">
+        <code>
+            ["join",
+                ["rightBottom","α","1"],
+                " = ",
+                ["matrix",[
+                    [["rightBottom","a","11"]],
+                    [["rightBottom","a","21"]],
+                    ["⁝"],
+                    [["rightBottom","a","s1"]]
+                ]],
+                " , ",
+                ["rightBottom","α","2"],
+                " = ",
+                ["matrix",[
+                    [["rightBottom","a","12"]],
+                    [["rightBottom","a","22"]],
+                    ["⁝"],
+                    [["rightBottom","a","s2"]]
+                ]],
+                " , ... ,",
+                ["rightBottom","α","n"],
+                " = ",
+                ["matrix",[
+                    [["rightBottom","a","1n"]],
+                    [["rightBottom","a","2n"]],
+                    ["⁝"],
+                    [["rightBottom","a","sn"]]
+                ]],
+                " , ",
+                " β = ",
+                ["matrix",[
+                    [["rightBottom","b","1"]],
+                    [["rightBottom","b","2"]],
+                    ["⁝"],
+                    [["rightBottom","b","s"]]
+                ]]
+            ]
+        </code>
+    </span>
+    于是线性方程组可以改写成向量组
+    <span class="oneline">
+        x<sub>1</sub>α<sub>1</sub> +
+        x<sub>2</sub>α<sub>2</sub> + ... +
+        x<sub>n</sub>α<sub>n</sub> = β
+    </span>
+    显然，线性方程组有解的充分必要条件为向量β可以表出向量组
+    α<sub>1</sub>,α<sub>2</sub>, ... ,α<sub>n</sub>
+    的一个线性组合。
+</p>
+<p>
+    用秩的概念，可以表述为：
+</p>
+<p>
+    <span class="title">
+        定理（线性方程组有解判别定理）
+    </span>
+    线性方程组有解的充分必要条件为它的系数矩阵
+    <span class="oneline">
+        A =
+        <code>
+            ["matrix",[
+                [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                [["rightBottom","a","21"],["rightBottom","a","22"],"...",["rightBottom","a","2n"]],
+                ["⁝","⁝"," ","⁝"],
+                [["rightBottom","a","s1"],["rightBottom","a","s2"],"...",["rightBottom","a","sn"]]
+            ]]
+        </code>
+    </span>
+    与增广矩阵
+    <span class="oneline">
+        <code>["upLine","A"]</code> =
+        <code>
+            ["matrix",[
+                [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"],["rightBottom","b","1"]],
+                [["rightBottom","a","21"],["rightBottom","a","22"],"...",["rightBottom","a","2n"],["rightBottom","b","2"]],
+                ["⁝","⁝"," ","⁝"],
+                [["rightBottom","a","s1"],["rightBottom","a","s2"],"...",["rightBottom","a","sn"],["rightBottom","b","s"]]
+            ]]
+        </code>
+    </span>
+    有相同的秩。
+</p>

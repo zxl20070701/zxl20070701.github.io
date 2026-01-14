@@ -1,0 +1,53 @@
+<header>
+    克拉默法则
+</header>
+<p>
+    这里考虑的是方程个数和未知量个数相等的情况下，只是判断是否一定有唯一解，而非是否有解。
+</p>
+<p>
+    <span class="title">
+        定理
+    </span>
+    如果线性方程组
+    <span class="oneline">
+        <code>
+            ["equationSet",
+                ["join",["rightBottom","a","11"],["rightBottom","x","1"]," + ",["rightBottom","a","12"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","1n"],["rightBottom","x","n"]," = ",["rightBottom","b","1"]],
+                ["join",["rightBottom","a","21"],["rightBottom","x","1"]," + ",["rightBottom","a","22"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","2n"],["rightBottom","x","n"]," = ",["rightBottom","b","2"]],
+                "                                               ... ... ... ...",
+                ["join",["rightBottom","a","n1"],["rightBottom","x","1"]," + ",["rightBottom","a","n2"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","nn"],["rightBottom","x","n"]," = ",["rightBottom","b","n"]]
+            ]
+        </code>
+    </span>
+    的系数矩阵
+    <span class="oneline">
+        A =
+        <code>
+            ["matrix",[
+                [["rightBottom","a","11"],["rightBottom","a","12"],"...",["rightBottom","a","1n"]],
+                [["rightBottom","a","21"],["rightBottom","a","22"],"...",["rightBottom","a","2n"]],
+                ["⁝","⁝"," ","⁝"],
+                [["rightBottom","a","n1"],["rightBottom","a","n2"],"...",["rightBottom","a","nn"]]
+            ]]
+        </code>
+    </span>
+    的行列式
+    <span class="oneline">
+        d = |A| ≠ 0 ,
+    </span>
+    那么上述线性方程组有解，并且解是唯一的，解可以通过系数表为
+    <span class="oneline">
+        <code>
+            ["join",
+                ["rightBottom","x","1"]," = ",
+                ["division",["rightBottom","d","1"],"d"]," , ",
+                ["rightBottom","x","2"]," = ",
+                ["division",["rightBottom","d","2"],"d"]," , ",
+                " ... , ",
+                ["rightBottom","x","n"]," = ",
+                ["division",["rightBottom","d","n"],"d"]
+            ]
+        </code>
+    </span>
+    其中d<sub>j</sub>是把矩阵A中第j列换成方程组的常数项b<sub>1</sub>,b<sub>2</sub>,...,b<sub>n</sub>所成的矩阵的行列式。
+</p>

@@ -1,0 +1,96 @@
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from src.py3office import handler
+
+sourcePath = "./source"
+targetPath = "./result"
+
+filelist = ["身份证", "学位证", "毕业证"]
+foldername = "劳动合同"
+
+report = ""
+
+
+def doit(folderInfo):
+    global report
+
+    # 获取当前文件夹下的子文件
+    files = handler.getFiles(folderInfo["path"])
+
+    # 如果存在子文件，那么就认为遇到了一个“目标文件夹”，我们进行分析
+    if len(files) > 0:
+        report = report + "\n\n>>> " + folderInfo["path"]
+
+        filemap = {}
+        for item in files:
+            filemap[item["onlyname"]] = item
+
+        # 一个个检查我们需要的文件
+        for filename in filelist:
+
+            # 文件存在
+            if filename in filemap:
+
+                # 保存
+                handler.copy(
+                    filemap[filename]["path"],
+                    filemap[filename]["path"].replace(sourcePath, targetPath),
+                )
+
+            # 文件不存在
+            else:
+
+                # 日志记录文件缺失
+                report = report + "\n - 缺失《" + filename + "》"
+
+        # 现在，我们看看“劳动合同”文件夹下内容
+        files_contract = handler.getFiles(folderInfo["path"] + "/" + foldername)
+
+        # 如果“劳动合同”文件夹下没有文件，直接日志记录缺失合同即可
+        if len(files_contract) < 1:
+            report = report + "\n - 缺失《" + foldername + "》"
+
+        # 否则，要判断文件对不对
+        else:
+
+            # 合同需要的是前2页和最后一页
+            needPages = [1, 2, len(files_contract)]
+
+            # 登录是否确定存在
+            needPagesResult = [False, False, False]
+
+            # 遍历合同文件
+            for item_contract in files_contract:
+
+                # 遍历需要的合同列表
+                for index in range(len(needPages)):
+
+                    # 如果当前是我们需要的
+                    if item["onlyname"] == str(needPages[index]):
+
+                        # 保存起来
+                        handler.copy(
+                            item_contract["path"],
+                            item_contract["path"].replace(sourcePath, targetPath),
+                        )
+
+                        # 登记存在
+                        needPagesResult[index] = True
+
+            # 获取缺失的合同
+            for index in range(len(needPagesResult)):
+                if not needPagesResult[index]:
+                    report = (report + "\n - 缺失《" + foldername + "》第" + str(index + 1) + "页")
+
+        return True
+
+# 遍历所有文件夹，并交给函数doit处理
+handler.listFolder(sourcePath, doit)
+
+# 日志写入磁盘
+handler.write(
+    "./report.txt", sourcePath + " 转 " + targetPath + " 生成日志\n" + report
+)    
+</pre>

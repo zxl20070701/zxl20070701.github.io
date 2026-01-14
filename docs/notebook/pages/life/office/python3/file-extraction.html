@@ -1,0 +1,201 @@
+<header>
+    文件提取或整理
+</header>
+<p>
+    比如我们有一个文件夹source，目录结构大体如下：
+</p>
+<pre>
+- source
+    - 2019年
+        - 1月
+            - 李四
+                - 毕业证.jpg
+                - 学位证.jpg
+                - 身份证.jpg
+                - 劳动合同
+                    - 1.jpg
+                    - 2.jpg
+                    ......
+            - 张三
+            ......
+        - 2月
+        ......
+    - 2020年
+    ......
+</pre>
+<p>
+    现在，我们希望把里面每个人的毕业证、学位证、身份证和劳动合同的前2页和最后一页提取出来。
+</p>
+<p>
+    当然，因为有些人的可能不全，比如缺少了身份证或者劳动合同少了第1页等，所以，同时需要得到一个报告，明确列出具体谁缺失了什么，以方便后续快速补充相关文件。
+</p>
+<h2>
+    代码主体
+</h2>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+from py3office import handler
+
+sourcePath = "./source"
+targetPath = "./result"
+
+filelist = ["身份证", "学位证", "毕业证"]
+foldername = "劳动合同"
+
+def doit(folderInfo):
+
+    # 获取当前文件夹下的子文件
+    files = handler.getFiles(folderInfo["path"])
+
+    # 如果存在子文件，那么就认为遇到了一个“目标文件夹”，我们进行分析
+    if len(files) > 0:
+        print("\n>>> "+folderInfo["path"])
+
+        # 先打印一下看看
+        print(folderInfo["path"])
+        return True    
+
+handler.listFolder(sourcePath, doit)
+</pre>
+<div class="tips">
+    温馨提示：因为代码较长，接下来我们只展示修改的部分，文章结尾会有完整的代码。
+</div>
+<p>
+    运行后，打印结果如下：
+</p>
+<pre>
+./source/2020年/1月/李四
+./source/2020年/2月/张三
+./source/2020年/3月/王五
+......
+</pre>
+<p>
+    至此，我们就确定了我们的“目标文件夹”，可喜可贺。
+</p>
+<h2>
+    判断文件是否存在
+</h2>
+<p>
+    上面我们获取的当前文件夹下的子文件列表files格式大体如下：
+</p>
+<pre tag>
+[{
+    "path":"./source/2019年/3月/李四/身份证.jpg",
+    "onlyname":"身份证"
+},......]
+</pre>
+<p>
+    为了后续方便，我们希望转成这样的格式：
+</p>
+<pre tag>
+{
+    "身份证":{"path":"./source/2019年/3月/李四/身份证.jpg","onlyname":"身份证"},
+    ......
+}
+</pre>
+<p>
+    代码如下：
+</p>
+<pre tag>
+filemap = {}
+for item in files:
+    filemap[item["onlyname"]] = item
+</pre>
+<p>
+    然后，判断文件（就是 filelist = ["身份证", "学位证", "毕业证"] 这些文件）是否存在就很简单了：
+</p>
+<pre tag>
+# 一个个检查我们需要的文件
+for filename in filelist:
+    # 文件存在
+    if filename in filemap:
+        # 保存
+        handler.copy(
+            filemap[filename]["path"],
+            filemap[filename]["path"].replace(sourcePath, targetPath),
+        )
+
+    # 文件不存在
+    else:
+        print("文件不存在："+filename)
+</pre>
+<p>
+    怎么样？是不是很好理解！
+</p>
+<h2>
+    判断合同文件夹
+</h2>
+<p>
+    首先，我们需要获取"劳动合同"文件下有哪些文件（如果没有文件，直接不用判断了）：
+</p>
+<pre tag>
+files_contract = handler.getFiles(folderInfo["path"] + "/" + foldername)
+
+# 如果“劳动合同”文件夹下没有文件，直接日志记录缺失合同即可
+if len(files_contract) < 1:
+    print("劳动合同缺失")
+
+# 否则，要判断文件对不对
+else:
+    print(files_contract)
+</pre>
+<p>
+    我们首先确定一下合同的页，并初始化登记都没有确定存在：
+</p>
+<pre tag>
+# 合同需要的是前2页和最后一页
+needPages = [1, 2, len(files_contract)]
+
+# 登录是否确定存在
+needPagesResult = [False, False, False]
+</pre>
+<p>
+    然后，我们遍历合同文件，如果遇到我们要的，就把对应的标记为存在：
+</p>
+<pre tag>
+# 遍历合同文件
+for item_contract in files_contract:
+
+    # 遍历需要的合同列表
+    for index in range(len(needPages)):
+
+        # 如果当前是我们需要的
+        if item["onlyname"] == str(needPages[index]):
+            # 保存起来
+            handler.copy(item_contract["path"],item_contract["path"].replace(sourcePath, targetPath),)
+
+            # 登记存在
+            needPagesResult[index] = True
+</pre>
+<p>
+    然后，needPagesResult里面就记录了合同需要的相关内容是否，存在，基于此，我们整理一下缺失的合同内容：
+</p>
+<pre tag>
+# 获取缺失的合同
+for index in range(len(needPagesResult)):
+    if not needPagesResult[index]:
+        print("缺失合同第" + str(index + 1) + "页")
+</pre>
+<p>
+    然后，上面的代码运行后，大概效果如下：
+</p>
+<pre>
+>>> ./source/2020年/1月/李四
+劳动合同缺失
+
+>>> ./source/2020年/2月/张三
+文件不存在：毕业证
+劳动合同缺失
+
+>>> ./source/2019年/3月/王五
+文件不存在：毕业证
+缺失合同第1页
+缺失合同第2页
+缺失合同第3页
+</pre>
+<p>
+    当然，因为文件可能很多，更好的选择是日志用一个文件保存，比如下面完整的代码：
+</p>
+<button tag="office_python3_file-extraction" type="explain">点击我查看完整代码</button>

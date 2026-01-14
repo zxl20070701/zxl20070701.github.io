@@ -1,0 +1,97 @@
+<header>
+    从JQuery出发总结的关于原型使用上的一些浅薄理解
+</header>
+<p>
+    比如我们现在的需求如下。
+</p>
+<p>
+    有一个函数MyObj，支持如下功能：
+</p>
+<ol>
+    <li>
+        可以通过MyObj()的方式返回一个对象，这个对象和new MyObj()是等价的
+    </li>
+    <li>
+        MyObj本身是一个对象，可以通过MyObj.doit()的方式调用其上的方法或属性
+    </li>
+</ol>
+<p>
+    为了实现需求，第一反应是：
+</p>
+<pre tag="javascript">
+var MyObj=function(){
+    return new MyObj();
+};
+</pre>
+<p>
+    然后在MyObj上挂载静态方法，在MyObj.prototype上挂载对象方法。
+</p>
+<p>
+    看起来稳的很，其实这明显是一个死循环：
+</p>
+<pre tag="javascript">
+// VM160:2 Uncaught RangeError: Maximum call stack size exceeded
+MyObj();
+</pre>
+<p>
+    为了解决这个问题，我们在MyObj的原型上定义了一个方法：
+</p>
+<pre tag="javascript">
+MyObj.prototype.init=function(){
+    return this;
+};
+</pre>
+<p>
+    执行下面的方法：
+</p>
+<pre tag="javascript">
+    var temp=MyObj.prototype.init();
+</pre>
+<p>
+    上面返回的temp很明显就是MyObj.prototype，其实就是MyObj对象（例如：new A()，其实就是取A.prototype，这样对比就很好理解了）。
+</p>
+<p>
+    因此可以改造代码如下：
+</p>
+<pre tag="javascript">
+var MyObj = function (param) {
+    return MyObj.prototype.init();
+};
+</pre>
+<p>
+    这样MyObj和new MyObj()就分别表示类和对象。
+</p>
+<pre>
+问：看起来是不是实现了？
+答：是的，实现了。
+问：可是总感觉有点不好，说不出为什么。
+答：是不是感觉MyObj()打印出来的东西有点多？
+问：是的。
+</pre>
+<p>
+    事实上，因为直接取MyObj.prototype作为new MyObj()，理论上说，使用上区别不大，唯一不足的是，挂载在MyObj.prototype上的方法会在打印MyObj对象的时候看见，不舒服。
+</p>
+<p>
+    为了看起来好看些，代码再次改造：
+</p>
+<pre tag="javascript">
+var MyObj = function () {
+    return new MyObj.prototype.init();
+};
+
+// 为了让MyObj()返回的是MyObj对象，需要修改MyObj.prototype.init的原型
+MyObj.prototype.init.prototype = MyObj.prototype;
+</pre>
+<p>
+    此刻的原型关系变成了：
+</p>
+<pre tag="javascript">
+MyObj() ==
+return new MyObj.prototype.init() ==
+MyObj.prototype.init.prototype ==
+MyObj.prototype ==
+new MyObj()
+</pre>
+<p>
+    此时需求就实现了，而且打印MyObj()的时候，对象上的方法都在原型上，看起来就比较舒服了。
+</p>

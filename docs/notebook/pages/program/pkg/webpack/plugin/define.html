@@ -1,0 +1,43 @@
+<header>
+    基本语法
+</header>
+<h2>
+    定义
+</h2>
+<p>
+    比如我们要开发一个插件
+    <span class="important">DemoPlugin</span>
+    ，直接新建文件 demp-plugin.js后写入如下代码：
+</p>
+<pre tag="javascript">
+class DemoPlugin{
+    constructor(options) {
+
+        // 用户传递的参数
+        this.options = options;
+    }
+    apply(compiler) {
+        // 在这里写具体的业务代码
+    }
+}
+module.exports = DemoPlugin;
+</pre>
+<h2>
+    使用
+</h2>
+<p>
+    定义好了以后，就和普通的插件一样使用即可，比如在
+    <span class="important">webpack.config.js</span>
+    文件中：
+</p>
+<pre tag="javascript">
+const DemoPlugin = require('./demo-plugin.js');
+
+module.exports = {
+    plugins: [
+        new DemoPlugin({
+            // 也就是options
+        })
+    ]
+};
+</pre>

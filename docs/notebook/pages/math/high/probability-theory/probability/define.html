@@ -1,0 +1,72 @@
+<header>
+    基本概念与性质
+</header>
+<p>
+    <span class="title">
+        定义
+    </span>
+    设Ω为一个样本空间，ℱ为Ω的某些子集组成的一个事件域。如果对任一事件A∈ℱ，定义在ℱ上的一个实值函数P(A)满足：
+</p>
+<ol>
+    <li>
+        <span class="important">非负性公理</span> 若A∈ℱ，则P(A)≥0
+    </li>
+    <li>
+        <span class="important">正则性公理</span> P(Ω)=1
+    </li>
+    <li>
+        <span class="important">可列可加性公理</span> 若A<sub>1</sub>，A<sub>2</sub>，...，A<sub>n</sub>，...互不相容，则
+    </li>
+</ol>
+<p>
+    <code>
+        ["join","p",["bracket",["join",["listedOr","i=1","∞"],["rightBottom","A","i"]],"small"],"=",["sum","i=1","∞",["join","P(",["rightBottom","A","i"],")"]]]
+    </code>
+</p>
+<p>
+    则称P(A)为事件A的<span class="important">概率</span>，称三元素（Ω，ℱ，P）为<span class="important">概率空间</span>。
+</p>
+<h2>
+    常用性质
+</h2>
+<p>
+    <span class="title">
+        性质（有限可加性）
+    </span>
+    若有限个事件A<sub>1</sub>,A<sub>2</sub>,...,A<sub>n</sub>互不相容，则有
+    <span class="oneline">
+        <code>
+            ["join","p",["bracket",["join",["listedOr","i=1","n"],["rightBottom","A","i"]],"small"],"=",["sum","i=1","n",["join","P(",["rightBottom","A","i"],")"]]]
+        </code>
+    </span>
+</p>
+<p>
+    <span class="title">
+        性质
+    </span>
+    若A⊃B，则
+    <span class="oneline">
+        P(A-B) = p(A) - P(B)
+    </span>
+</p>
+<p>
+    <span class="title">
+        性质（加法公式）
+    </span>
+    对任意两个事件A,B，有
+    <span class="oneline">
+        P(A∪B) = P(A) + P(B) - P(AB)
+    </span>
+    对任意n个事件A<sub>1</sub>,A<sub>2</sub>,...,A<sub>n</sub>，有
+    <span class="oneline">
+        <code>
+            ["join",
+                "p",["bracket",["join",["listedOr","i=1","n"],["rightBottom","A","i"]],"small"],"=",
+                ["sum","i=1","n",["join","P(",["rightBottom","A","i"],")"]],"-",
+                ["sum","1≤i＜j≤n","",["join","P(",["rightBottom","A","i"],")","P(",["rightBottom","A","j"],")"]],"+",
+                ["sum","1≤i＜j＜k≤n","",["join","P(",["rightBottom","A","i"],")","P(",["rightBottom","A","j"],")","P(",["rightBottom","A","k"],")"]]
+            ]
+        </code><br />
+        + ... + (-1)<sup>n-1</sup>P(A<sub>1</sub>A<sub>2</sub>...A<sub>n</sub>)
+    </span>
+</p>

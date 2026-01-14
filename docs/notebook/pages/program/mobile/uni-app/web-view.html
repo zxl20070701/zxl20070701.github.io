@@ -1,0 +1,61 @@
+<header>
+    WebView
+</header>
+<h2>
+    网页向应用发送消息
+</h2>
+<h3>
+    微信小程序
+</h3>
+<pre tag="html">
+    <web-view src="http://127.0.0.1:8080/index.html" @message="doit"></web-view>
+</pre>
+<p>
+    index.html内容大概如下：
+</p>
+<pre tag="html">
+<script src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+<script>
+    // 一：数据
+    wx.miniProgram.postMessage({
+        data: "Hello from child"
+    });
+
+    // 二：触发回退
+    // （在特定时机（后退、组件销毁、分享）触发并收到消息）
+    wx.miniProgram.navigateBack({
+        detail: 0
+    });
+</script>
+</pre>
+<p>
+    而在uniapp页面的doit如下：
+</p>
+<pre tag="javascript">
+function doit(event){
+    // event.detail.data[0] 就是其中第一条数据
+}
+</pre>
+<h3>
+    web端
+</h3>
+<pre tag="html">
+    <web-view src="http://127.0.0.1:8080/index.html"></web-view>
+</pre>
+<p>
+    index.html内容大概如下：
+</p>
+<pre tag="html">
+<script src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+<script>
+    window.parent.postMessage({ data: "Hello from child" }, "*");
+</script>
+</pre>
+<p>
+    而在uniapp页面通过如下代码接收数据：
+</p>
+<pre tag="javascript">
+window.addEventListener("message", function (event) {
+    // event.data.data 就是数据
+}, false);
+</pre>

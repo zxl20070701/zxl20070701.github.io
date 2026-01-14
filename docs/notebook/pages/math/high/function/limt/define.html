@@ -1,0 +1,97 @@
+<header>
+    基本概念与性质
+</header>
+<p>
+    <span class="title">
+        定义（趋向正无穷大）
+    </span>
+    设ƒ为定义在[a,+∞)上的函数，A为定数。若对任给的ε＞0，存在正数M（≥ a），使得当x＞M时有
+    <span class="oneline">
+        |ƒ(x) - A|＜ε
+    </span>
+    则称函数ƒ当x趋于+∞时以A为极限，记作
+    <span class="oneline">
+        <code> ["limt","x→+∞","ƒ(x)"]</code> = A
+    </span>
+</p>
+<p class="warn">
+    温馨提示：趋向负无穷大类似的。
+</p>
+<p>
+    <span class="title">
+        定义（趋向x<sub>0</sub>）
+    </span>
+    设函数ƒ在点x<sub>0</sub>的某个空心领域U<sup>o</sup>(x<sub>0</sub>;δ<sup>'</sup>)内有定义，A为定数。若对任给的ε＞0，存在正数δ（＜δ<sup>'</sup>），使得当0＜|x-x<sub>0</sub>|＜δ时有
+    <span class="oneline">
+        |ƒ(x) - A|＜ε
+    </span>
+    则称函数ƒ当x趋于x<sub>0</sub>时以A为极限，记作
+    <span class="oneline">
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code> = A
+    </span>
+</p>
+<p class="warn">
+    温馨提示：单侧极限类似的。
+</p>
+<h2>
+    四则运算法则
+</h2>
+<p>
+    若极限<code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>与
+    <code> ["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]</code>
+    都存在，则函数ƒ±g,ƒ·g当x→x<sub>0</sub>时极限也存在，且
+    <span class="oneline">
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)±g(x)"]</code>=
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>±
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]</code>
+    </span>
+    <span class="oneline">
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)g(x)"]</code>=
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>·
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]</code>
+    </span>
+    又若 <code> ["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]</code>≠0，则ƒ/g当x→x<sub>0</sub>时极限也存在，且有
+    <span class="oneline">
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],["division","ƒ(x)","g(x)"]]</code>=
+        <code>
+            ["division",["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"], ["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]]
+        </code>
+    </span>
+</p>
+<h2>
+    重要性质
+</h2>
+<p>
+    <span class="title">
+        定理（唯一性）
+    </span>
+    若极限<code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>存在，则此极限是唯一的。
+</p>
+<p>
+    <span class="title">
+        定理（局部有界性）
+    </span>
+    若极限<code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>存在，则ƒ在x<sub>0</sub>在某领域U<sup>o</sup>(x<sub>0</sub>;δ<sup>'</sup>)内有界。
+</p>
+<p>
+    <span class="title">
+        定理（保不等式性）
+    </span>
+    设<code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>与<code> ["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]</code>都存在，
+    且在某领域U<sup>o</sup>(x<sub>0</sub>;δ<sup>'</sup>)内有ƒ(x)≤g(x)，则
+    <span class="oneline">
+        <code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>≤<code> ["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]</code>
+    </span>
+</p>
+<p>
+    <span class="title">
+        定理（迫敛性）
+    </span>
+    设
+    <code> ["limt",["join","x→",["rightBottom","x","0"]],"ƒ(x)"]</code>=<code> ["limt",["join","x→",["rightBottom","x","0"]],"g(x)"]</code></span>=
+    A，且在某领域U<sup>o</sup>(x<sub>0</sub>;δ<sup>'</sup>)内有
+    <span class="oneline">
+        ƒ(x) ≤ h(x) ≤ g(x)
+    </span>
+    则<code> ["limt",["join","x→",["rightBottom","x","0"]],"h(x)"]</code>= A
+</p>

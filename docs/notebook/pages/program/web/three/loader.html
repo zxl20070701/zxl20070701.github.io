@@ -1,0 +1,43 @@
+<header>
+    加载模型
+</header>
+<h2>
+    加载模型并显示
+</h2>
+<p>
+    我们选择最常用的gltf文件来演示，所以首先需要引入<span class="important">GLTFLoader</span>加载器。
+</p>
+<p>
+    然后实例化加载器：
+</p>
+<pre tag="javascript">
+    var gltfLoader = new THREE.GLTFLoader();
+</pre>
+<p>
+    然后我们解释一下：其实模型里面的就是一个个"几何体"。
+</p>
+<p>
+    当然，这个是包含了几何体的结构、颜色或者纹理等属性的，聪明的你一定想到了：只需要把这些"几何体"加入到场景即可。
+</p>
+<pre tag="javascript">
+gltfLoader.load("./examples/MachineRoom/machineRoom.gltf", function (data) {
+
+    // 其实就是把模型数据的模型对象（例如mesh）添加到场景中去
+    scene.add(...data.scene.children);
+});
+</pre>
+<button tag="three-MachineRoom">查看用例</button>
+<h2>
+    优化材质对象
+</h2>
+<p>
+    因为默认使用的是MeshStandardMaterial，这里渲染有一些问题，我们修改成MeshBasicMaterial再看看效果：
+</p>
+<button tag="three-MachineRoom-v2">查看用例</button>
+<h2>
+    添加交互
+</h2>
+<p>
+    现在，我们再加上交互事件：
+</p>
+<button tag="three-MachineRoom-v3">查看用例</button>

@@ -1,0 +1,48 @@
+<header>
+    定位
+</header>
+<p>
+    更多信息可以
+    <a href="https://uniapp.dcloud.net.cn/api/location/location.html" target="_blank">点击此处</a>
+    查看官方文档。
+</p>
+<h2>
+    获取位置信息
+</h2>
+<pre tag="javascript">
+// 授权
+uni.authorize({
+    scope: 'scope.userLocation',
+    success() {
+
+        // 获取
+        uni.getLocation({
+            type: 'gcj02',
+            success: function(res) {
+                console.log(res)
+            }
+        })
+    }
+})
+</pre>
+<h3>
+    配置权限
+</h3>
+<p>
+    针对不同端，如果希望上面的方法调用成功，还需要在
+    <span class="special">manifest.json</span>
+    中进行权限配置。
+</p>
+<h4>
+    微信小程序
+</h4>
+<pre tag="javascript">
+"mp-weixin": {
+    "permission": {
+        "scope.userLocation": {
+            "desc": "您的位置信息将用于小程序页面"
+        }
+    },
+    "requiredPrivateInfos": ["getLocation"]
+}
+</pre>

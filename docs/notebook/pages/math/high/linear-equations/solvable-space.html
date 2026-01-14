@@ -1,0 +1,91 @@
+<header>
+    解结构
+</header>
+<p>
+    在方程组的解是唯一的情况下，不存在结构问题，因此，这里主要讨论多个解的情况下，解与解之间的关系问题。
+</p>
+<h2>
+    齐次线性方程组
+</h2>
+<p>
+    设
+    <span class="oneline">
+        <code>
+            ["equationSet",
+                ["join",["rightBottom","a","11"],["rightBottom","x","1"]," + ",["rightBottom","a","12"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","1n"],["rightBottom","x","n"]," = 0"],
+                ["join",["rightBottom","a","21"],["rightBottom","x","1"]," + ",["rightBottom","a","22"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","2n"],["rightBottom","x","n"]," = 0"],
+                "                                               ... ... ... ...",
+                ["join",["rightBottom","a","s1"],["rightBottom","x","1"]," + ",["rightBottom","a","s2"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","sn"],["rightBottom","x","n"]," = 0"]
+            ]
+        </code>
+    </span>
+    是一齐次线性方程组，它的解所成的集合具有下面的两个重要性质：
+</p>
+<ol>
+    <li>
+        两个解的和还是方程组的解；
+    </li>
+    <li>
+        一个解的倍数还是方程组的解。
+    </li>
+</ol>
+<p>
+    <span class="title">
+        定义
+    </span>
+    齐次线性方程组的一组解
+    η<sub>1</sub>, η<sub>2</sub>, ... , η<sub>t</sub>
+    称为其的一个基础解系，如果
+</p>
+<ol>
+    <li>
+        方程组的任一个解都能表成
+        η<sub>1</sub>, η<sub>2</sub>, ... , η<sub>t</sub>
+        的线性组合；
+    </li>
+    <li>
+        η<sub>1</sub>, η<sub>2</sub>, ... , η<sub>t</sub>线性无关。
+    </li>
+</ol>
+<p>
+    <span class="title">
+        定理
+    </span>
+    在齐次线性方程组有非零解的情况下，它有基础解系，并且基础解系所含解的个数等于n-r，这里r表示系数矩阵的秩。
+</p>
+<h2>
+    一般情况
+</h2>
+<p>
+    现在，我们来讨论更一般的情况。如果把一般的线性方程组
+    <span class="oneline">
+        <code>
+            ["equationSet",
+                ["join",["rightBottom","a","11"],["rightBottom","x","1"]," + ",["rightBottom","a","12"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","1n"],["rightBottom","x","n"]," = ",["rightBottom","b","1"]],
+                ["join",["rightBottom","a","21"],["rightBottom","x","1"]," + ",["rightBottom","a","22"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","2n"],["rightBottom","x","n"]," = ",["rightBottom","b","2"]],
+                "                                               ... ... ... ...",
+                ["join",["rightBottom","a","s1"],["rightBottom","x","1"]," + ",["rightBottom","a","s2"],["rightBottom","x","2"]," + ... + ",["rightBottom","a","sn"],["rightBottom","x","n"]," = ",["rightBottom","b","s"]]
+            ]
+        </code>
+    </span>
+    的常数项换成0，就得到了一个齐次方程组，这个齐次方程组称为上述方程组的
+    <span class="important">
+        导出组
+    </span>，这两个方程组的解之间有密切的关系：
+</p>
+<ol>
+    <li>
+        线性方程组的两个解的差是它的导出组的解；
+    </li>
+    <li>
+        线性方程组的一个解与它的导出组的一个解之和还是这个线性方程组的解。
+    </li>
+</ol>
+<p>
+    所以，对于一般的情况，如果γ<sub>0</sub>是方程组的一个特解，
+    η<sub>1</sub>, η<sub>2</sub>, ... , η<sub>n-r</sub>是其导出组的一个基础解系，那么方程组的任一个解γ都可以表成
+    <span class="oneline">
+        γ = γ<sub>0</sub> + k<sub>1</sub>η<sub>1</sub> + k<sub>2</sub>η<sub>2</sub> + ... +
+        k<sub>n-r</sub>η<sub>n-r</sub>
+    </span>
+</p>

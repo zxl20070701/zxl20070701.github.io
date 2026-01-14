@@ -1,0 +1,33 @@
+<header>
+    事件event相关
+</header>
+<p>
+    以click为例，对于定义的组件，如果希望其上的click触发，比如：
+</p>
+<pre tag="html">
+    &lt;ui-demo @click="doit" &gt; &lt;/ui-demo&gt;
+</pre>
+<p>
+    如果组件内部什么也不干，是会触发原生事件的，而如果组件内部有类似如下语句：
+</p>
+<pre tag="javascript">
+    let emit = defineEmits(["click"])
+</pre>
+<p>
+    那除非组件内部再有类似如下语句：
+</p>
+<pre tag="javascript">
+    emit("click")
+</pre>
+<p>
+    来触发自定义click事件，否则什么也不会触发。
+</p>
+<p>
+    此外，组件内部的stop有效，比如组件里面的一个按钮大概如下：
+</p>
+<pre tag="html">
+    &lt;button @click.stop &gt;按钮&lt;/button&gt;
+</pre>
+<p>
+    那点击这个按钮，什么也不会触发。
+</p>

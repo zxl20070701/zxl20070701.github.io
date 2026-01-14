@@ -1,0 +1,24 @@
+<header>
+    如何自定义Hook？
+</header>
+<p>
+    比如我们使用useReducer来自定义一个useMyState：
+</p>
+<pre tag="javascript">
+export function useMyState(initValue){
+    let [state, dispatch] = useReducer(function(state, action){
+            return action
+    }, initValue)
+    return [state,function(newValue){
+        dispatch(newValue)
+    }]
+}
+</pre>
+<p>
+    使用：
+</p>
+<pre tag="javascript">
+import { useMyState } from "./useMyState.js"
+
+let [val, setVal] = useMyState("apple")
+</pre>

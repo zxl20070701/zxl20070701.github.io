@@ -1,0 +1,132 @@
+<header>
+    Array 数组
+</header>
+<h2>
+    slice()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+    array.slice(start, end)
+</pre>
+<p>
+    从数组中选择元素（start~end，不包括 end ）后返回一个新的数组（不会改变原始数组）。
+</p>
+<h2>
+    splice()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+    array.splice(index, howmany, item1, ....., itemX)
+</pre>
+<p>
+    把数组 index~index+howmany（不包括 index+howmany ）位置的内容替换成 item1, ....., itemX，并返回删除的项目（会改变原始数组）。
+</p>
+<h2>
+    push()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+    array.push(item1, item2, ..., itemX)
+</pre>
+<p>
+    向数组末尾添加新项目，并返回新长度。
+</p>
+<h2>
+    pop()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+    array.pop()
+</pre>
+<p>
+    移除数组的最后一个元素，并返回该元素。
+</p>
+<h2>
+    unshift()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+    array.unshift(item1, item2, ..., itemX)
+</pre>
+<p>
+
+    将新项添加到数组的开头，并返回新的长度。
+</p>
+<h2>
+    shift()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+    array.shift()
+</pre>
+<p>
+    移除数组的第一项，并返回该元素。
+</p>
+<h2>
+    some()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+let result = array.some(function(currentValue, index, arr){
+    // 如果当前满足，返回true
+}, thisValue)
+</pre>
+<p>
+    如果有一个元素满足条件，则表达式返回true , 剩余的元素不会再执行检测。
+</p>
+<h2>
+    every()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+let result = array.every(function(currentValue, index, arr){
+    // 如果当前满足，返回true
+}, thisValue)
+</pre>
+<p>
+    如果所有元素满足条件，则表达式返回true。
+</p>
+<h2>
+    filter()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+let result = array.filter(function(currentValue,index,arr){
+    // 如果当前满足，返回true
+}, thisValue)
+</pre>
+<p>
+    创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
+</p>
+<h2>
+    map()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+let result = array.map(function(currentValue,index,arr){
+    // 处理后返回一个新值
+}, thisValue)
+</pre>
+<p>
+    返回一个新数组，数组中的元素为原始数组元素调用函数处理后的值。
+</p>

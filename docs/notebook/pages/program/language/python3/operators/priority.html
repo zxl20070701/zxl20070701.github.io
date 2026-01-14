@@ -1,0 +1,181 @@
+<header>
+    运算符优先级
+</header>
+<p>
+    以下表格列出了从最高到最低优先级的所有运算符， 相同单元格内的运算符具有相同优先级。 运算符均指二元运算，除非特别指出。 相同单元格内的运算符从左至右分组（除了幂运算是从右至左分组）：
+</p>
+<table class="reference">
+    <colgroup>
+        <col style="width: 56%">
+        <col style="width: 44%">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>
+                <p>运算符</p>
+            </th>
+            <th>
+                <p>描述</p>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p><span>(expressions...)</span>,</p>
+                <p><span>[expressions...]</span>,
+                    <span>{key:</span> <span>value...}</span>,
+                    <span>{expressions...}</span>
+                </p>
+            </td>
+            <td>
+                <p>圆括号的表达式</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>x[index]</span>, <span>x[index:index]</span>,
+                    <span>x(arguments...)</span>, <span>x.attribute</span>
+                </p>
+            </td>
+            <td>
+                <p>读取，切片，调用，属性引用</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>await</span> <span>x</span></p>
+            </td>
+            <td>
+                <p>await 表达式</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>**</span></p>
+            </td>
+            <td>
+                <p>乘方(指数)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>+x</span>, <span>-x</span>, <span>~x</span></p>
+            </td>
+            <td>
+                <p>正，负，按位非 NOT</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>*</span>, <span>@</span>, <span>/</span>,
+                    <span>//</span>, <span>%</span>
+                </p>
+            </td>
+            <td>
+                <p>乘，矩阵乘，除，整除，取余</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>+</span>, <span>-</span></p>
+            </td>
+            <td>
+                <p>加和减</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>&lt;&lt;</span>, <span>&gt;&gt;</span></p>
+            </td>
+            <td>
+                <p>移位</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>&amp;</span></p>
+            </td>
+            <td>
+                <p>按位与 AND</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>^</span></p>
+            </td>
+            <td>
+                <p>按位异或 XOR</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>|</span></p>
+            </td>
+            <td>
+                <p>按位或 OR</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>in</span>,<span>not</span> <span>in</span>,
+                    <span>is</span>,<span>is</span> <span>not</span>,
+                    <span>&lt;</span>,
+                    <span>&lt;=</span>, <span>&gt;</span>, <span>&gt;=</span>,
+                    <span>!=</span>, <span>==</span>
+                </p>
+            </td>
+            <td>
+                <p>比较运算，包括成员检测和标识号检测</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>not</span> <span>x</span></p>
+            </td>
+            <td>
+                <p>逻辑非 NOT</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>and</span></p>
+            </td>
+            <td>
+                <p>逻辑与 AND</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>or</span></p>
+            </td>
+            <td>
+                <p>逻辑或 OR</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>if</span> -- <span>else</span></p>
+            </td>
+            <td>
+                <p>条件表达式</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>lambda</span></p>
+            </td>
+            <td>
+                <p>lambda 表达式</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><span>:=</span></p>
+            </td>
+            <td>
+                <p>赋值表达式</p>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,120 @@
+<header>
+    本地存储 Storage
+</header>
+<p>
+    H5提供了两种非常好用的本地存储方法：sessionStorage和localStorage，下面分别介绍一下：
+</p>
+<ul>
+    <li>
+        sessionStorage：保存的是一个会话的数据，也就是说只在一次会话中有效，关闭就会销毁数据，不是持久的本地数据存储，只是一个会话的存储；
+    </li>
+    <li>
+        localStorage：本地数据持久化存储，在操作上和第一种没有什么区别，只是存储时间上不同。
+    </li>
+</ul>
+<h2>
+    基本操作
+</h2>
+<h3>
+    setItem
+</h3>
+<p>
+    把value存储到key字段：
+</p>
+<pre tag="javascript">
+sessionStorage.setItem("key", "value");
+localStorage.setItem("key", "value");
+</pre>
+<h3>
+    getItem
+</h3>
+<p>
+    获取指定key本地存储的值：
+</p>
+<pre tag="javascript">
+var value=sessionStorage.getItem("key");
+var value=localStorage.getItem("key");
+</pre>
+<h3>
+    removeItem
+</h3>
+<p>
+    删除指定key本地存储的值：
+</p>
+<pre tag="javascript">
+sessionStorage.removeItem("key");
+localStorage.removeItem("key");
+</pre>
+<h3>
+    clear
+</h3>
+<p>
+    清除所有的key/value：
+</p>
+<pre tag="javascript">
+sessionStorage.clear();
+localStorage.clear();
+</pre>
+<h2>
+    其它操作
+</h2>
+<p>
+    storage除了可以用上面说到的方法获取和存储数据，还可以和普通的对象一样，使用点操作和[]来控制数据（下面以localStorage为例子）：
+</p>
+<pre tag="javascript">
+var storage = window.localStorage;
+storage.info='通过点设置数据';
+
+//通过[]获取数据
+var infoValue=storage['info'];
+</pre>
+<p>
+    还可以通过storage的key()和length实现数据的遍历：
+</p>
+<pre tag="javascript">
+var storage = window.localStorage;
+for (var i = 0, len = storage.length; i < len; i++) {
+
+    var key = storage.key(i);
+    var value = storage.getItem(key);
+    console.log(key + "=" + value);
+
+}
+</pre>
+<h2>
+    storage事件
+</h2>
+<p>
+    localStorage提供了一个事件storage，当键值改变或者clear的时候，就可以触发storage事件（注册storage和改变值要在不跨域的情况下存在于两个页面），如下面的例子：
+</p>
+<pre tag="javascript">
+//页面A.html里面的js代码（为了简化代码，注册事件没有考虑兼容性）
+window.addEventListener("storage", function (event) {
+    alert(event.newValue);
+});
+
+//页面B.html里面的js代码
+localStorage.clear();
+
+localStorage.setItem('key', 'value');
+</pre>
+<p>
+    把页面A.html和B.html放正同一个域名下的HTTP服务器里，先打开A.html页面，再打开B.html页面，就可以看见效果了。
+</p>
+<p>
+    上面A.html注册事件的event对象一共有下面几个属性：
+</p>
+<ul>
+    <li>
+        key：字符串类型，表示被修改，删除或添加的条目的key值；
+    </li>
+    <li>
+        oldValue：表示之前的值，如果是添加一个条目就返回null；
+    </li>
+    <li>
+        newValue：表示现在的新值，如果是添加一个条目就返回null；
+    </li>
+    <li>
+        url/uri：字符串类型，表示触发这个事件的页面地址。
+    </li>
+</ul>

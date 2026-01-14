@@ -1,0 +1,33 @@
+<header>
+    常见问题
+</header>
+<h2>
+    session丢失问题
+</h2>
+<h3>
+    发生情况
+</h3>
+<p>
+    转发的时候，如果只是host、端口转换，则session不会丢失，如果路径也变化了，则需要设置cookie的路径转换，不然session会发生丢失。
+</p>
+<h3>
+    解决方案
+</h3>
+<p>
+    通过设置cookie的路径转换就可以解决了，具体例子如下：
+</p>
+<pre tag>
+location /pre-url/ {
+    proxy_pass http://serverProxy/new-url;
+    proxy_cookie_path  /new-url /pre-url;
+}
+</pre>
+<h2>
+    跨域请求
+</h2>
+<pre tag>
+location /demo/ {
+   add_header Access-Control-Allow-Origin * always;
+   # 其他配置
+}
+</pre>

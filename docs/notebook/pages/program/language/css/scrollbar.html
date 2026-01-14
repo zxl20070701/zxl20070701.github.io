@@ -1,0 +1,83 @@
+<header>
+     滚动条样式
+</header>
+<h2>
+    webkit系列浏览器
+</h2>
+<h3>
+    整体
+</h3>
+<pre tag="css">
+::-webkit-scrollbar{
+    /*样式代码*/   
+}
+</pre>
+<h3>
+    按钮
+</h3>
+<p>
+    滚动条按钮会稍微麻烦点，首先提供下面的选择器可以选中按钮：
+</p>
+<pre tag="css">
+::-webkit-scrollbar-button{
+    /*样式代码*/
+} 
+</pre>
+<p>
+    然而，按钮其实一共有八个，可以借组下面的六个组合来进行更准确的选择，他们分别是：
+</p>
+<ul>
+    <li>
+        :vertical和:horizontal方便表示垂直还是水平按钮
+    </li>
+    <li>
+        :start和:end方便表示是开始位置的还是结束位置的按钮
+    </li>
+    <li>
+        :decrement和:increment方便表示点击是触发减小还是增加的按钮
+    </li>
+</ul>
+<p>
+    举例子，比如现在要选择垂直方向，在开始位置，点击上滑的滚动条样式，设置为红色，代码如下：
+</p>
+<pre tag="css">
+::-webkit-scrollbar-button:vertical:start:decrement {
+    background-color: red;
+}
+</pre>
+<p>
+    一般设置display: block;
+</p>
+<h3>
+    滑块
+</h3>
+<pre tag="css">
+::-webkit-scrollbar-thumb{
+    /*样式代码*/
+}
+</pre>
+<p>
+    当然，你可以提供:horizontal和:vertical来进行更准确的选择。
+</p>
+<h3>
+    轨道
+</h3>
+<pre tag="css">
+::-webkit-scrollbar-track {
+    /*样式代码*/
+}
+</pre>
+<p>
+    当然，你可以提供:horizontal和:vertical来进行更准确的选择。
+</p>
+<h3>
+    边角
+</h3>
+<p>
+    也就是两个滚动条的交汇处：
+</p>
+<pre tag="css">
+::-webkit-scrollbar-corner{
+    /*样式代码*/
+}
+</pre>

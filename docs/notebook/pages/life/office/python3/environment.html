@@ -1,0 +1,92 @@
+<header>
+    环境和准备工作
+</header>
+<h2>
+    安装Python3
+</h2>
+<p>
+    我们来说明<span class="special">Windows电脑</span>中如何安装。
+</p>
+<p>
+    打开 WEB 浏览器访问
+    <a href="https://www.python.org/downloads/windows/" target="_blank">
+        https://www.python.org/downloads/windows/
+    </a>
+    ，页面截图如下：
+</p>
+<img src="./images/office/py-windows.jpeg" />
+<p>
+    上面截图显示，当前的最新版本（Stable Releases）是
+    <span class="special">Python 3.12.1 - Dec. 8, 2023</span>
+</p>
+<p>
+    然后直接下载其中的 <span class="special">Download <span style="color:rgb(8, 123, 180)">Windows installer
+            (64-bit)</span></span>安装包。下载好以后，和普通软件一样，进行安装即可。
+</p>
+<p>
+    在安装过程中，你会遇到类似下面的界面：
+</p>
+<img src="./images/office/py-install.jpeg" />
+<p>
+    此时，一定要记得勾选类似
+    <span class="special">Add Python 3.6 to PATH</span>
+    的选项哦，这非常重要。
+</p>
+<h2>
+    安装依赖包
+</h2>
+<p>
+    对于<span class="special">Windows电脑</span>，直接打开<span class="special">CMD</span>窗口：
+</p>
+<img src="./images/office/open-cmd.jpeg" />
+<p>
+    然后在窗口输入下面命令并回车：
+</p>
+<pre>
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple/ py3office
+</pre>
+<p>
+    运行效果大致如下：
+</p>
+<img src="./images/office/cmd-install.jpeg" />
+<p>
+    如果后续的一些功能运行出错了，可能是<span class="special">py3office</span>版本过低，可以运行下面命令进行升级即可：
+</p>
+<pre>
+    pip3 install -i https://mirrors.aliyun.com/pypi/simple/ --upgrade py3office
+</pre>
+<h2>
+    编辑&运行
+</h2>
+<p>
+    新建一个文本文件，取名<span class="special">index.py</span>并输入如下内容：
+</p>
+<div class="tips">
+    特别说明：后续我们的“代码”也就是指<span class="special">index.py</span>中的内容，如何运行都一样，就不再赘述了。
+</div>
+<pre tag>
+#!/usr/bin/python3
+# coding=utf-8
+
+print("你好呀！")
+</pre>
+<p>
+    实际截图如下：
+</p>
+<img src="./images/office/code-demo.jpeg" />
+<p>
+    如何在命令行输入下面命令运行：
+</p>
+<pre>
+    python3 ./index.py
+</pre>
+<p>
+    运行效果如下：
+</p>
+<img src="./images/office/demo-run.jpeg" />
+<p>
+    可以看见，命令行打印了“你好呀！”几个字。
+</p>
+<p>
+    至此，环境就准备好了。
+</p>

@@ -1,0 +1,109 @@
+<header>
+    XSS（Cross Site Scripting）跨站脚本攻击
+</header>
+<h2>
+    原理
+</h2>
+<p>
+    页面渲染的数据中包含可运行的脚本。
+</p>
+<h2>
+    类型
+</h2>
+<p>
+    攻击的基础类型包括：反射型（url参数直接注入）和存储型（存储到DB后读取时注入）。
+</p>
+<h2>
+    注入点
+</h2>
+<h3>
+    HTML节点内容注入
+</h3>
+<pre tag="javascript">
+    el.innerHTML = "&lt;script&gt;alert(1);&lt;\/script&gt;";
+</pre>
+<p>
+    上面的代码不会生效，如果你在浏览器控制台运行就会看见：
+</p>
+<pre tag="javascript">
+    '\x3Cscript>alert(1);\x3C/script>'
+</pre>
+<p>
+    应该是对script这种特殊的标签进行了转义。
+</p>
+<h3>
+    引诱用户触发
+</h3>
+<pre tag="javascript">
+    el.innerHTML = "&lt;button onclick='alert(1)'&gt;点击我&lt;/button&gt;";
+</pre>
+<p>
+    和很多方法类似，如果用户主动触发一次，就可以了（有些操作需要主动用户触发，不然没有权限）。
+</p>
+<h3>
+    DOM属性注入
+</h3>
+<p>
+    比如，在加载图片失败的时候，会调用该元素上的onerror事件，那么我们就可以利用图片加载失败的回调触发：
+</p>
+<pre tag="javascript">
+    el.innerHTML = "&lt;img src='/images-404.png' onerror='alert(\"图片加载失败，该我触发了～\");'&gt;";
+</pre>
+<h2>
+    防御
+</h2>
+<h3>
+    X-XSS-Protection
+</h3>
+<p>
+    浏览器自带防御机制，现在主流浏览器都支持，并且默认都开启了XSS保护，用这个header可以关闭它。它有几种配置：
+</p>
+<ul>
+    <li>
+        0：禁用XSS保护；
+    </li>
+    <li>
+        1：启用XSS保护；
+    </li>
+    <li>
+        1：mode=block：启用XSS保护，并在检查到XSS攻击时，停止渲染页面（例如IE8中，检查到攻击时，整个页面会被一个#替换）。
+    </li>
+</ul>
+<h3>
+    对特定字符做转义
+</h3>
+<p>
+    比如如果需要innerHTML的模板中包含script等敏感标签，就把标签转义。
+</p>
+<h3>
+    内容安全策略
+</h3>
+<p>
+    也就是CSP（Content Security Policy），用于指定哪些内容可执行。
+</p>
+<p>
+    我们可以在http响应头中设置Content-Security-Policy，比如，我们有如下的需求：
+</p>
+<ol>
+    <li>
+        图片可以从任何地方加载(注意 "*" 通配符)
+    </li>
+    <li>
+        多媒体文件仅允许从 media1.com 和 media2.com 加载(不允许从这些站点的子域名)
+    </li>
+    <li>
+        可运行脚本仅允许来自于 userscripts.example.com
+    </li>
+</ol>
+<p>
+    如此就可以这样设置：
+</p>
+<pre tag="javascript">
+    Content-Security-Policy: default-src 'self'; img-src *; media-src media1.com media2.com; script-src userscripts.example.com
+</pre>
+<p>
+    同时meta中也支持设置Content-Security-Policy：
+</p>
+<pre tag="html">
+    &lt;meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://*; child-src 'none';"&gt;
+</pre>

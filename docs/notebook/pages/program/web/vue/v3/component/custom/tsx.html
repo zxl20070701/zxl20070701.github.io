@@ -1,0 +1,20 @@
+<header>
+    TSX
+</header>
+<p>
+    文件index.tsx：
+</p>
+<pre tag="javascript">
+import { defineComponent } from 'vue'
+export default defineComponent({
+    props: {},
+    setup(props, ctx) {
+        return () =&gt; {
+            return (&lt;div&gt;&lt;/div&gt;)
+        }
+    }
+});
+</pre>
+<p>
+    ctx中包含：attrs、slots、emit、expose等内容。
+</p>

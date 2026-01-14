@@ -1,0 +1,19 @@
+<header>
+    打包成支付宝小程序
+</header>
+<h2>
+    navigationStyle
+</h2>
+<p>
+    不支持
+    <span class="special">{navigationStyle:"custom"}</span>
+    怎么办？修改：
+</p>
+<pre tag="javascript">
+"globalStyle": {
+    "mp-alipay": {
+        "transparentTitle": "always",
+        "titlePenetrate": "YES"
+    }
+}
+</pre>
