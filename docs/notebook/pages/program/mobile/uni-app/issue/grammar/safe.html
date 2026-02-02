@@ -89,3 +89,24 @@ export default {
     "slotMultipleInstance": true
 }
 </pre>
+<h2>
+    virtualHost
+</h2>
+<p>
+    之前这样设置：
+</p>
+<pre>
+export default {
+  options: {
+    virtualHost: true
+  }
+}
+</pre>
+<p>
+    最新的uniapp需要改为：
+</p>
+<pre tag="javascript">
+defineOptions({
+  virtualHost: true
+});
+</pre>

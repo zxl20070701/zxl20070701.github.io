@@ -11,6 +11,9 @@ const fs = require('fs');
 const { log, error } = require('../nodejs/log');
 const { fullPath } = require('../nodejs/path');
 const responseFileList = require('./responseFileList');
+const { network, openBrowser } = require('./tool');
+
+let startTime = new Date().valueOf();
 
 // 获取命令行参数
 const parsed = require('../nodejs/option')({}, process.argv);
@@ -81,10 +84,23 @@ let server = http.createServer(function (request, response) {
 // npm run dev 20000
 let port = parsed.config[1] || config.devServer.port;
 server.listen(port);
-log('Server running on port:' + port);
+
+// 获取网络信息
+let networkValue = network();
+
+// 打印成功提示
+const name = "zxl20070701.github.io-http-server";
+console.log('<i> \x1b[1m\x1b[32m[' + name + '] Project is running at:\x1b[0m');
+console.log('<i> \x1b[1m\x1b[32m[' + name + '] Loopback: \x1b[36mhttp://localhost:' + port + '/\x1b[0m');
+for (let ipv4Item of networkValue.IPv4) console.log('<i> \x1b[1m\x1b[32m[' + name + '] On Your Network (IPv4):\x1b[36m http://' + ipv4Item.address + ':' + port + '/\x1b[0m');
+for (let ipv6Item of networkValue.IPv6) console.log('<i> \x1b[1m\x1b[32m[' + name + '] On Your Network (IPv6): \x1b[36mhttp://[' + ipv6Item.address + ']:' + port + '/\x1b[0m');
+console.log('<i> \x1b[1m\x1b[32m[' + name + '] Content is served from \x1b[36m"' + process.cwd() + '" \x1b[0mdirectory\n');
+console.log('\n' + name + ' compiled \x1b[1m\x1b[32msuccessfully\x1b[0m in ' + (new Date().valueOf() - startTime) + ' ms\n');
 
 if (config.devServer.hot) {
 
     // 启动ws服务器
     require('./WebSocket/index')();
 }
+
+openBrowser('http://localhost:' + port + '/notebook/index.html#/program/language/html/canvas/globalCompositeOperation');

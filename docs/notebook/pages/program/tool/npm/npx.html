@@ -17,7 +17,7 @@
     例如：
 </p>
 <pre tag>
-    npx devby -v
+    npx oipage-cli -v
 </pre>
 <h2>
     运行Github上项目
@@ -27,9 +27,12 @@
 </pre>
 <p>
     例如有个项目：
-    <a href="https://github.com/fragement-contrib/devby" target="_blank">https://github.com/fragement-contrib/devby</a>
-    ，只需要：
+    <a href="https://github.com/oi-contrib/OIPage" target="_blank">https://github.com/oi-contrib/OIPage</a>
+    （OIPage项目可能不支持这样执行，因为缺乏入口脚本，只是一个例子），只需要：
 </p>
 <pre tag>
-    npx github:fragement-contrib/devby -v
+    npx github:oi-contrib/OIPage -v
 </pre>
+<div class="tips">
+    注意，远程代码必须是一个模块，即必须包含package.json和入口脚本。
+</div>
