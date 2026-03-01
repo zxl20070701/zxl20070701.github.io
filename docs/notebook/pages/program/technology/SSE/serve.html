@@ -1,0 +1,92 @@
+<header>
+    服务端实现
+</header>
+<h2>
+    数据格式
+</h2>
+<p>
+    服务器向浏览器发送的 SSE 数据，必须是 UTF-8 编码的文本，具有如下的 HTTP 头信息。
+</p>
+<pre>
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+</pre>
+<p>
+    每一次发送的信息，由若干个message组成，每个message之间用\n\n分隔。每个message内部由若干行组成，每一行都是如下格式：
+</p>
+<pre>
+[field]: value\n
+</pre>
+<p>
+    上面的field可以取
+    <span class="important">data</span>、
+    <span class="important">event</span>、
+    <span class="important">id</span>
+    和<span class="important">retry</span>四个值。
+</p>
+<p>
+    此外，还可以有冒号开头的行，表示注释。通常，服务器每隔一段时间就会向浏览器发送一个注释，保持连接不中断。
+</p>
+<pre>
+: 这是一些注释
+</pre>
+<h3>
+    data 字段
+</h3>
+<p>
+    数据内容用data字段表示。
+</p>
+<pre>
+    data:  message\n\n
+</pre>
+<p>
+    如果数据很长，可以分成多行，最后一行用\n\n结尾，前面行都用\n结尾。
+</p>
+<pre>
+data: begin message\n
+data: continue message\n\n
+</pre>
+<h3>
+    id 字段
+</h3>
+<p>
+    数据标识符用id字段表示，相当于每一条数据的编号：
+</p>
+<pre>
+id: msg1\n
+data: message\n\n
+</pre>
+<p>
+    浏览器用lastEventId属性读取这个值。一旦连接断线，浏览器会发送一个 HTTP 头，里面包含一个特殊的Last-Event-ID头信息，将这个值发送回来，用来帮助服务器端重建连接。因此，这个头信息可以被视为一种同步机制。
+</p>
+<h3>
+    event 字段
+</h3>
+<p>
+    event字段表示自定义的事件类型，默认是message事件：
+</p>
+<pre>
+event: my_event1\n
+data: a my_event event\n\n
+
+data: an unnamed event\n\n
+
+event: my_event2\n
+data: a my_event event\n\n
+</pre>
+<p>
+    上面的代码创造了三条信息。第一条的名字是my_event1，触发浏览器的my_event1事件；第二条未取名，表示默认类型，触发浏览器的message事件；第三条是my_event2，触发浏览器的my_event2事件。
+</p>
+<h3>
+    retry 字段
+</h3>
+<p>
+    服务器可以用retry字段，指定浏览器重新发起连接的时间间隔：
+</p>
+<pre>
+retry: 10000\n
+</pre>
+<p>
+    两种情况会导致浏览器重新发起连接：一种是时间间隔到期，二是由于网络错误等原因，导致连接出错。
+</p>

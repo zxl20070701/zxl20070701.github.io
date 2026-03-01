@@ -1,0 +1,36 @@
+<header>
+    运行模型
+</header>
+<h2>
+    通过命令行运行模型
+</h2>
+<p>
+    例如我们要运行 Llama 3.2 并与该模型对话可以使用以下命令：
+</p>
+<pre>
+    ollama run llama3.2
+</pre>
+<p>
+    执行以上命令如果没有该模型会去下载 llama3.2 模型（需要耐心等待会，不要急）。等待下载完成后，就可以在终端中与 LLama3.2 模型进行交互，比如：
+</p>
+<pre>
+zxl20070701@MacBook Air ~ % ollama run llama3.2
+>>> 你好的英文是什么
+Hello.
+
+>>> Send a message (/? for help)
+</pre>
+<p>
+    结束对话可以输入 /bye 或按 Ctrl+d 按键来结束。
+</p>
+<p>
+    我们可以使用 ollama list，查看已安装的模型：
+</p>
+<pre>
+zxl20070701@MacBook Air ~ % ollama list
+NAME               ID              SIZE      MODIFIED    
+llama3.2:latest    a80c4f17acd5    2.0 GB    2 hours ago 
+</pre>
+<p>
+    Ollama 支持的模型可以访问：<a href="https://ollama.com/library" target="_blank">https://ollama.com/library</a>
+</p>

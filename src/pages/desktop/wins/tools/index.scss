@@ -1,12 +1,13 @@
 [win-view="tools"] {
     right: 0;
-    bottom: 35px;
-    width: 360px;
-    height: calc(100vh - 35px);
-    background-color: rgb(91 90 90 / 10%);
+    bottom: 55px;
+    width: 326px;
+    height: 382px;
+    margin-right: 20px;
     z-index: 1;
-    font-size: 12px;
+    font-size: 16px;
     box-shadow: none;
+    border-radius: 10px;
 
     &>div {
         box-shadow: 0 0 15px 3px #000000ab;
@@ -18,7 +19,7 @@
             text-align: center;
             color: white;
             position: absolute;
-            bottom: 20px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
             background-color: #382f1d;
@@ -83,6 +84,7 @@
                         &.today {
                             background-color: #55c8fb;
                             color: black;
+                            font-size: 18px;
 
                             &:hover {
                                 background-color: #60bae1;

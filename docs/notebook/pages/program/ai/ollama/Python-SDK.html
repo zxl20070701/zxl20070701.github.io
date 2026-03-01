@@ -1,0 +1,41 @@
+<header>
+    通过 Python SDK 使用模型
+</header>
+<p>
+    如果你希望将 Ollama 与 Python 代码集成，可以使用 Ollama 的 Python SDK 来加载和运行模型。
+</p>
+<h2>
+    安装
+</h2>
+<p>
+    首先，需要安装 Ollama 的 Python SDK，打开终端，执行以下命令：
+</p>
+<pre>
+    pip3 install ollama
+</pre>
+<h2>
+    加载模型并与之交互
+</h2>
+<p>
+    接下来，你可以使用 Python 代码来加载和与模型交互。比如有个
+    <span class="warn">index.py</span>
+    的文件，内容如下：
+</p>
+<pre tag="javascript">
+#!/usr/bin/python3
+# coding=utf-8
+
+import ollama
+result = ollama.generate(
+    model="llama3.2",  # 模型名称
+    prompt="你好吗？"  # 提示文本
+)
+print(result.response)
+</pre>
+<p>
+    执行以上代码，如果模型已经安装并且 Ollama 服务正在运行，你将会看到模型的响应输出，比如：
+</p>
+<pre>
+zxl20070701@MacBook Air % python3 index.py
+好的！我是机器人，什么时候可以帮助您呢？
+</pre>

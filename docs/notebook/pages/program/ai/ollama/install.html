@@ -1,0 +1,92 @@
+<header>
+    安装
+</header>
+<p>
+    支持多种操作系统，包括 macOS、Windows、Linux 以及通过 Docker 容器运行。
+</p>
+<h2>
+    macOS 系统安装
+</h2>
+<p>
+    打开浏览器，访问 Ollama 官方网站：
+    <a href="https://ollama.com/download" target="_blank">https://ollama.com/download</a>
+    ，下载适用于 macOS 的安装程序。
+</p>
+<p>
+    下载地址为：
+    <a href="https://ollama.com/download/Ollama-darwin.zip"
+        target="_blank">https://ollama.com/download/Ollama-darwin.zip</a>。
+</p>
+<p>
+    下载完成后，双击安装包并按照提示完成安装。
+</p>
+<p>
+    安装完成后，通过以下命令验证：
+</p>
+<pre>
+    ollama --version
+</pre>
+<p>
+    如果显示版本号，则说明安装成功。
+</p>
+<div class="tips">
+    实际使用macOS 12.7.6 版本进行测试，安装的Ollama版本
+    <a href="https://github.com/ollama/ollama/releases/tag/v0.4.7" target="_blank" rel="noopener noreferrer">v0.4.7</a>。
+</div>
+<h2>
+    Linux 系统安装
+</h2>
+<p>
+    使用一键安装脚本，我们打开终端，运行以下命令：
+</p>
+<pre>
+    curl -fsSL https://ollama.com/install.sh | bash
+</pre>
+<h2>
+    Windows 系统安装
+</h2>
+<p>
+    下载地址为：
+    <a href="https://ollama.com/download/OllamaSetup.exe"
+        target="_blank">https://ollama.com/download/OllamaSetup.exe</a>。
+</p>
+<p>
+    下载完成后，双击安装包并按照提示完成安装。
+</p>
+<h3>
+    更改安装路径（可选）
+</h3>
+<p>
+    如果需要将 Ollama 安装到非默认路径，可以在安装时通过命令行指定路径，例如：
+</p>
+<pre>
+    OllamaSetup.exe /DIR="d:\some\location"
+</pre>
+<p>
+    这样可以将 Ollama 安装到指定的目录。
+</p>
+<h2>
+    Docker 安装
+</h2>
+<p>
+    如果你熟悉 Docker，也可以通过 Docker 安装 Ollama。
+</p>
+<p>
+    官方 Docker 镜像 ollama/ollama 可在 Docker Hub 上获取：
+    <a href="https://hub.docker.com/r/ollama/ollama" target="_blank">https://hub.docker.com/r/ollama/ollama</a>。
+</p>
+<p>
+    拉取 Docker 镜像：
+</p>
+<pre>
+    docker pull ollama/ollama
+</pre>
+<p>
+    运行容器：
+</p>
+<pre>
+    docker run -p 11434:11434 ollama/ollama
+</pre>
+<p>
+    访问 http://localhost:11434 即可使用 Ollama。
+</p>

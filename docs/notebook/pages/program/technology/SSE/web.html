@@ -1,0 +1,101 @@
+<header>
+    客户端代码（Web）
+</header>
+<h2>
+    创建EventSource实例
+</h2>
+<p>
+    首先需要创建一个EventSource：
+</p>
+<pre tag="javascript">
+let source = new EventSource(url, { withCredentials: true });
+</pre>
+<div class="tips">
+    上面的url可以与当前网址同域，也可以跨域；第二个参数withCredentials可选，跨域时表示是否一起发送 Cookie。
+</div>
+<p>
+    EventSource实例的readyState属性，表明连接的当前状态。该属性只读，可以取以下值：
+</p>
+<ul>
+    <li>
+        <span class="warn">0</span>：相当于常量EventSource.CONNECTING，表示连接还未建立，或者断线正在重连。
+    </li>
+    <li>
+        <span class="warn">1</span>：相当于常量EventSource.OPEN，表示连接已经建立，可以接受数据。
+    </li>
+    <li>
+        <span class="warn">2</span>：相当于常量EventSource.CLOSED，表示连接已断，且不会重连。
+    </li>
+</ul>
+<h2>
+    事件监听
+</h2>
+<h3>
+    open事件
+</h3>
+<p>
+    连接一旦建立，就会触发open事件，可以在onopen属性定义回调函数。
+</p>
+<pre tag="javascript">
+source.onopen = function (event) {
+  // todo
+};
+</pre>
+<p>
+    或者使用addEventListener方法（下同，不再赘述）：
+</p>
+<pre tag="javascript">
+source.addEventListener('open', function (event) {
+  // todo
+}, false);
+</pre>
+<h3>
+    message事件
+</h3>
+<p>
+    客户端收到服务器发来的数据，就会触发message事件，可以在onmessage属性的回调函数。
+</p>
+<pre tag="javascript">
+source.onmessage = function (event) {
+  let data = event.data;
+  // todo
+};
+</pre>
+<p>
+    上面代码中，事件对象的data属性就是服务器端传回的数据（文本格式）。
+</p>
+<h3>
+    error事件
+</h3>
+<p>
+    如果发生通信错误（比如连接中断），就会触发error事件，可以在onerror属性定义回调函数。
+</p>
+<pre tag="javascript">
+source.onerror = function (event) {
+  // todo
+};
+</pre>
+<h3>
+    自定义事件
+</h3>
+<p>
+    默认情况下，服务器发来的数据，总是触发浏览器EventSource实例的message事件。开发者还可以自定义 SSE 事件，这种情况下，发送回来的数据不会触发message事件。
+</p>
+<pre tag="javascript">
+source.addEventListener('my_event', function (event) {
+  let data = event.data;
+  // todo
+}, false);
+</pre>
+<h2>
+    实例方法
+</h2>
+<h3>
+    close()方法
+</h3>
+<p>
+    该方法用于关闭连接。
+</p>
+<pre tag="javascript">
+source.close();
+</pre>

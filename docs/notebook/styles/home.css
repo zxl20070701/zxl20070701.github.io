@@ -13,10 +13,6 @@
     padding: 10px 0;
 }
 
-.sponsors:hover {
-    z-index: 1;
-}
-
 .sponsors>.item {
     width: 100%;
     background-repeat: no-repeat;
@@ -90,7 +86,7 @@ nav {
     padding: 10px 0;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 2;
     box-shadow: 0px 5px 12px 6px white;
 }
 
@@ -285,7 +281,7 @@ footer a:hover {
     font-weight: 800;
 }
 
-.journals-content {
+.pageview-content {
     display: none;
     position: fixed;
     left: 0;
@@ -299,7 +295,7 @@ footer a:hover {
 }
 
 
-.journals-content>.close {
+.pageview-content>.close {
     position: absolute;
     width: 50px;
     height: 50px;
@@ -316,11 +312,11 @@ footer a:hover {
     z-index: 1;
 }
 
-.journals-content>.close:hover {
+.pageview-content>.close:hover {
     font-weight: 400;
 }
 
-.journals-content>.item {
+.pageview-content>.item {
     height: calc(100vh - 130px);
     display: inline-block;
     text-align: left;
@@ -328,71 +324,242 @@ footer a:hover {
     font-size: 16px;
     overflow: auto;
     margin-top: 65px;
+    border-radius: 10px;
 }
 
-.journals-content>.item.nav {
+.pageview-content>.item.nav {
     width: 220px;
     background-color: rgb(232, 228, 228);
     padding: 10px;
 }
 
-.journals-content>.item.doc {
+.pageview-content>.item.doc {
     width: calc(100vw - 300px);
     background-color: white;
 }
 
-.journals-content>.item::-webkit-scrollbar {
+.pageview-content>.item::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
 
-.journals-content>.item.nav>h1 {
+.pageview-content>.item.nav>h1 {
     padding: 10px 0;
     font-size: 16px;
     border-bottom: 1px solid rgb(205, 203, 203);
 }
 
-.journals-content>.item.nav>h2,
-.journals-content>.item.nav>h3,
-.journals-content>.item.nav>h4 {
+.pageview-content>.item.nav>h2,
+.pageview-content>.item.nav>h3,
+.pageview-content>.item.nav>h4 {
     font-size: 12px;
     cursor: pointer;
     margin-top: 10px;
     font-weight: 400;
 }
 
-.journals-content>.item.nav>h2:hover,
-.journals-content>.item.nav>h3:hover,
-.journals-content>.item.nav>h4:hover {
+.pageview-content>.item.nav>h2:hover,
+.pageview-content>.item.nav>h3:hover,
+.pageview-content>.item.nav>h4:hover {
     text-decoration: underline;
 }
 
-.journals-content>.item.nav>h2 {
+.pageview-content>.item.nav>h2 {
     padding-left: 1em;
 }
 
-.journals-content>.item.nav>h3 {
+.pageview-content>.item.nav>h3 {
     padding-left: 2em;
 }
 
-.journals-content>.item.nav>h4 {
+.pageview-content>.item.nav>h4 {
     padding-left: 3em;
 }
 
-.journals-content p {
+.pageview-content p {
     text-indent: 2em;
     line-height: 1.6em;
     font-size: 14px;
     color: rgb(16, 15, 15);
 }
 
-.journals-content p.mark {
+.pageview-content p.mark {
     text-indent: 0;
     margin: 30px 0;
     color: gray;
 }
 
-.journals-content p.mark>span {
+.pageview-content p.mark>span {
     display: block;
     text-align: right;
+}
+
+/* 移动端响应式样式 */
+@media screen and (max-width: 768px) {
+    .body {
+        min-width: auto;
+        overflow-x: hidden;
+    }
+
+    nav {
+        padding: 10px 5px;
+        white-space: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    nav>a {
+        display: inline-block;
+        padding: 8px 12px;
+        font-size: 14px;
+        margin: 0 5px;
+        white-space: nowrap;
+    }
+
+    .view {
+        width: 100%;
+        margin: 10px 0;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .view>h2 {
+        padding-top: 120px;
+        background-position: center top;
+        background-size: cover;
+        padding-left: 20px;
+        padding-right: 20px;
+        line-height: 40px;
+    }
+
+    .view>h2>a {
+        width: 60px;
+        height: 60px;
+        bottom: 10px;
+        left: 20px;
+    }
+
+    .view>h2 form {
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .view>h2 input {
+        position: static;
+        width: calc(100% - 100px);
+        margin: 10px 0 10px 100px;
+        box-sizing: border-box;
+    }
+
+    .view>.containter {
+        min-height: auto;
+        padding: 15px 0;
+    }
+
+    .view>.containter>.content {
+        width: 100%;
+        margin-left: 0;
+        padding: 20px 15px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    .view>.containter>.right {
+        width: 100%;
+        height: auto;
+        display: block;
+        padding: 15px;
+        margin-top: 20px;
+        box-sizing: border-box;
+    }
+
+    .sponsors {
+        display: flex;
+        justify-content: center;
+        position: static;
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+        left: auto;
+    }
+
+    .sponsors>.item {
+        width: 150px;
+        background-size: 150px auto;
+        margin: 10px;
+        display: inline-block;
+    }
+
+    .sponsors>.item.zfb {
+        height: 237px;
+    }
+
+    .sponsors>.item.wx {
+        height: 167px;
+    }
+
+    .cat {
+        position: relative;
+        left: 0;
+        width: 100%;
+        max-width: 300px;
+        height: 225px;
+        margin: 100px auto 20px auto;
+        transform: none;
+        background-size: contain;
+    }
+
+    .cat>button {
+        position: absolute;
+        display: block;
+        margin: 0 auto 10px;
+        text-align: center;
+        width: 100%;
+    }
+
+    footer {
+        min-width: auto;
+        padding: 15px 10px;
+        font-size: 12px;
+    }
+
+    .dream {
+        display: none;
+    }
+
+    .pageview-content>.close {
+        right: 20px;
+        top: 45px;
+    }
+
+    .pageview-content>.item.doc {
+        width: calc(100% - 40px);
+        margin-top: 50px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .view>h2 {
+        padding-top: 100px;
+    }
+
+    .view>h2>a {
+        width: 50px;
+        height: 50px;
+    }
+
+    .view>.containter>.content {
+        padding: 15px 10px;
+        font-size: 13px;
+    }
+
+    .view>.containter>.content>.title {
+        font-size: 16px;
+    }
+
+    nav>a {
+        padding: 6px 8px;
+        font-size: 12px;
+        margin: 0 3px;
+    }
 }

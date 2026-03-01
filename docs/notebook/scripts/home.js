@@ -4,8 +4,8 @@ var urlObj = urlFormat(window.location.href);
 function initMenu() {
     var menusEl = document.getElementsByName("dialog-btn");
 
-    var contentEl = document.getElementById("journals-content-id");
-    var viewEl = document.getElementById("journals-content-view-id");
+    var contentEl = document.getElementById("pageview-content-id");
+    var viewEl = document.getElementById("pageview-content-view-id");
 
     var routerTag = Array.isArray(urlObj.router) ? urlObj.router.join("/") : "";
     for (var i = 0; i < menusEl.length; i++) {
@@ -31,7 +31,7 @@ function initMenu() {
         })(menusEl[i]);
     }
 
-    document.getElementById("journals-content-close-id").addEventListener("click", function () {
+    document.getElementById("pageview-content-close-id").addEventListener("click", function () {
         urlObj.router = [];
         updateUrl();
 
