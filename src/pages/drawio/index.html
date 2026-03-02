@@ -7,5 +7,81 @@
         draw.io
     </h2>
 </header>
+<div class="toolbar">
+    <div class="tool-group">
+        <label>工具:</label>
+        <button ui-bind:class="'tool-btn ' + (currentTool === 'select' ? 'active' : '')" data-tool="select" ui-on:click="setTool">
+            <i class="icon-select"></i> 选择
+        </button>
+        <button ui-bind:class="'tool-btn ' + (currentTool === 'rectangle' ? 'active' : '')" data-tool="rectangle" ui-on:click="setTool">
+            <i class="icon-rectangle"></i> 矩形
+        </button>
+        <button ui-bind:class="'tool-btn ' + (currentTool === 'circle' ? 'active' : '')" data-tool="circle" ui-on:click="setTool">
+            <i class="icon-circle"></i> 圆形
+        </button>
+        <button ui-bind:class="'tool-btn ' + (currentTool === 'diamond' ? 'active' : '')" data-tool="diamond" ui-on:click="setTool">
+            <i class="icon-diamond"></i> 菱形
+        </button>
+        <button ui-bind:class="'tool-btn ' + (currentTool === 'line' ? 'active' : '')" data-tool="line" ui-on:click="setTool">
+            <i class="icon-line"></i> 连接线
+        </button>
+        <button ui-bind:class="'tool-btn ' + (currentTool === 'text' ? 'active' : '')" data-tool="text" ui-on:click="setTool">
+            <i class="icon-text"></i> 文本
+        </button>
+    </div>
+    <div class="tool-group">
+        <label>颜色:</label>
+        <div class="color-palette">
+            <div ui-bind:class="'color-item ' + (currentColor === '#000000' ? 'active' : '')"
+                style="background-color: #000000" data-value="#000000" ui-on:click="setColor">
+            </div>
+            <div ui-bind:class="'color-item ' + (currentColor === '#FF0000' ? 'active' : '')"
+                style="background-color: #FF0000" data-value="#FF0000" ui-on:click="setColor">
+            </div>
+            <div ui-bind:class="'color-item ' + (currentColor === '#00FF00' ? 'active' : '')"
+                style="background-color: #00FF00" data-value="#00FF00" ui-on:click="setColor">
+            </div>
+            <div ui-bind:class="'color-item ' + (currentColor === '#0000FF' ? 'active' : '')"
+                style="background-color: #0000FF" data-value="#0000FF" ui-on:click="setColor">
+            </div>
+            <div ui-bind:class="'color-item ' + (currentColor === '#FFFF00' ? 'active' : '')"
+                style="background-color: #FFFF00" data-value="#FFFF00" ui-on:click="setColor">
+            </div>
+            <div ui-bind:class="'color-item ' + (currentColor === '#FF00FF' ? 'active' : '')"
+                style="background-color: #FF00FF" data-value="#FF00FF" ui-on:click="setColor">
+            </div>
+            <div ui-bind:class="'color-item ' + (currentColor === '#00FFFF' ? 'active' : '')"
+                style="background-color: #00FFFF" data-value="#00FFFF" ui-on:click="setColor">
+            </div>
+        </div>
+    </div>
+    <div class="tool-group">
+        <label>样式:</label>
+        <select ui-bind:value="currentLineWidth" ui-on:change="setLineWidth">
+            <option value="1">1px</option>
+            <option value="2">2px</option>
+            <option value="3">3px</option>
+            <option value="4">4px</option>
+            <option value="5">5px</option>
+        </select>
+    </div>
+    <div class="tool-group">
+        <button class="clear-btn" ui-on:click="clearCanvas">
+            <i class="icon-clear"></i> 清空
+        </button>
+    </div>
+    <div class="tool-group">
+        <button class="save-btn" ui-on:click="saveCanvas">
+            <i class="icon-save"></i> 保存图片
+        </button>
+        <button class="export-btn" ui-on:click="saveData">
+            <i class="icon-export"></i> 导出数据
+        </button>
+        <button class="import-btn" ui-on:click="openData">
+            <i class="icon-import"></i> 导入数据
+        </button>
+    </div>
+</div>
 <div class="content">
+    <canvas style="width: 100%; height: 100%;" ref="mycanvas">非常抱歉，您的浏览器不支持canvas!</canvas>
 </div>
