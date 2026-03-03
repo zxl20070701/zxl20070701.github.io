@@ -1,0 +1,95 @@
+<header>
+    weex调试技巧
+</header>
+<h3>Weex调试工具</h3>
+<ul>
+    <li><strong>Weex Playground App</strong>: 官方提供的调试App，可以扫码预览页面</li>
+    <li><strong>Weex Devtools</strong>: 基于Chrome DevTools的调试工具，支持元素查看、网络请求、日志输出等</li>
+    <li><strong>Vue Devtools</strong>: 可以集成Vue Devtools进行调试，但功能有限</li>
+</ul>
+
+<h3>日志调试</h3>
+<pre tag="javascript">
+// 使用console输出日志
+console.log('普通日志');
+console.info('信息日志');
+console.warn('警告日志');
+console.error('错误日志');
+
+// 使用modal.toast显示简短信息
+const modal = weex.requireModule('modal');
+modal.toast({
+  message: '调试信息',
+  duration: 1
+});
+</pre>
+
+<h3>网络请求调试</h3>
+<pre tag="javascript">
+const stream = weex.requireModule('stream');
+
+stream.fetch({
+  method: 'GET',
+  url: 'https://api.example.com/data',
+  type: 'json'
+}, function(ret) {
+  if (ret.ok) {
+    console.log('请求成功:', ret.data);
+  } else {
+    console.log('请求失败:', ret);
+  }
+});
+</pre>
+
+<h3>元素调试</h3>
+<pre tag="javascript">
+// 获取元素引用
+const element = this.$refs.myElement;
+
+// 检查元素是否存在
+if (element) {
+  console.log('元素存在');
+  
+  // 获取元素样式
+  console.log('元素样式:', element.style);
+  
+  // 获取元素属性
+  console.log('元素属性:', element.attr);
+}
+
+// 动态修改样式
+this.$refs.myElement.style.backgroundColor = '#ff0000';
+</pre>
+
+<h3>性能调试</h3>
+<pre tag="javascript">
+// 性能监控
+const performance = weex.requireModule('performance');
+
+// 开始性能监控
+performance.start();
+
+// 执行某些操作
+// ...
+
+// 结束性能监控并获取结果
+const result = performance.end();
+console.log('性能数据:', result);
+</pre>
+
+<h3>常见问题调试</h3>
+<ul>
+    <li><strong>白屏问题</strong>: 检查JS Bundle是否正确加载，查看控制台是否有错误信息</li>
+    <li><strong>样式不生效</strong>: 检查样式属性名是否正确，Weex不支持简写属性</li>
+    <li><strong>网络请求失败</strong>: 检查网络权限、请求URL是否正确，以及跨域问题</li>
+    <li><strong>组件不显示</strong>: 检查组件标签名是否正确，Weex只支持特定的组件</li>
+</ul>
+
+<h3>调试建议</h3>
+<ol>
+    <li>使用console.log输出关键变量和状态</li>
+    <li>利用Weex Playground快速预览页面效果</li>
+    <li>使用try-catch捕获异常，避免应用崩溃</li>
+    <li>合理使用modal.toast显示简短调试信息</li>
+    <li>在开发环境中增加详细的日志输出</li>
+</ol>

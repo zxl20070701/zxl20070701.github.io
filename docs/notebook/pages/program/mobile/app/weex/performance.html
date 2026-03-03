@@ -1,0 +1,139 @@
+<header>
+  weex性能优化
+</header>
+<h3>渲染性能优化</h3>
+<ul>
+  <li><strong>减少节点数量</strong>: 过多的DOM节点会影响渲染性能，尽量简化页面结构</li>
+  <li><strong>使用list组件</strong>: 对于长列表，使用list组件而不是scroller，list支持单元格复用</li>
+  <li><strong>避免深层嵌套</strong>: 减少组件嵌套层级，提高渲染效率</li>
+  <li><strong>合理使用v-if和v-show</strong>: 频繁切换显示的元素使用v-show，条件性渲染使用v-if</li>
+</ul>
+
+<h3>内存优化</h3>
+<ul>
+  <li><strong>及时清理资源</strong>: 页面销毁时清理定时器、事件监听器等资源</li>
+  <li><strong>避免内存泄漏</strong>: 注意闭包、事件监听等可能导致内存泄漏的情况</li>
+  <li><strong>合理使用图片</strong>: 及时释放不需要的图片资源，避免加载过大图片</li>
+</ul>
+
+<h3>网络优化</h3>
+<ul>
+  <li><strong>减少请求数量</strong>: 合并请求，减少网络开销</li>
+  <li><strong>使用缓存</strong>: 合理使用storage模块缓存数据</li>
+  <li><strong>压缩数据</strong>: 传输前压缩数据，减少传输量</li>
+  <li><strong>预加载</strong>: 提前加载用户可能访问的页面资源</li>
+</ul>
+
+<h3>代码优化</h3>
+<pre tag="html">
+// 避免在模板中使用复杂表达式
+// 不好的做法
+&lt;text&gt;{{ items.filter(item => item.active).length }}&lt;/text&gt;
+
+// 好的做法
+&lt;text&gt;{{ activeCount }}&lt;/text&gt;
+
+// 在computed中计算
+computed: {
+  activeCount() {
+    return this.items.filter(item => item.active).length;
+  }
+}
+
+// 避免在循环中使用复杂方法
+// 不好的做法
+&lt;div v-for="item in items"&gt;
+  &lt;text&gt;{{ formatDate(item.date) }}&lt;/text&gt;
+&lt;/div&gt;
+
+// 好的做法
+&lt;div v-for="item in formattedItems"&gt;
+  &lt;text&gt;{{ item.formattedDate }}&lt;/text&gt;
+&lt;/div&gt;
+
+// 在computed中预处理数据
+computed: {
+  formattedItems() {
+    return this.items.map(item => ({
+      ...item,
+      formattedDate: this.formatDate(item.date)
+    }));
+  }
+}
+</pre>
+
+<h3>图片优化</h3>
+<pre tag="html">
+// 使用合适的图片尺寸
+&lt;image class="thumb" src="{{item.thumb}}"&gt;&lt;/image&gt;
+
+// 样式中指定尺寸
+.thumb {
+  width: 200px;
+  height: 200px;
+}
+
+// 使用占位图
+&lt;image class="thumb" 
+       src="{{item.thumb}}" 
+       placeholder="{{placeholderImage}}"&gt;&lt;/image&gt;
+
+// 懒加载图片
+&lt;list&gt;
+  &lt;cell v-for="(item, index) in items"&gt;
+    &lt;image class="thumb" 
+           src="{{item.thumb}}" 
+           @load="onImageLoad"&gt;&lt;/image&gt;
+  &lt;/cell&gt;
+&lt;/list&gt;
+</pre>
+
+<h3>列表性能优化</h3>
+<pre tag="html">
+// 使用list组件而不是scroller
+&lt;list class="list" @loadmore="loadMore"&gt;
+  &lt;cell v-for="(item, index) in items" :key="item.id"&gt;
+    &lt;div class="item">
+      &lt;image class="image" :src="item.image"/&gt;
+      &lt;text class="title"&gt;{{item.title}}&lt;/text&gt;
+    &lt;/div&gt;
+  &lt;/cell&gt;
+  &lt;loading @loading="onLoading" :display="showLoading"&gt;
+    &lt;text&gt;加载中...&lt;/text&gt;
+  &lt;/loading&gt;
+&lt;/list&gt;
+
+// 实现分页加载
+methods: {
+  loadMore() {
+    if (this.loading) return;
+    
+    this.loading = true;
+    this.showLoading = 'show';
+    
+    fetchData(this.page + 1).then(data => {
+      this.items = this.items.concat(data.items);
+      this.page++;
+      this.loading = false;
+      this.showLoading = 'hide';
+    });
+  }
+}
+</pre>
+
+<h3>性能监控</h3>
+<pre tag="javascript">
+// 监控页面加载时间
+const startTime = Date.now();
+
+// 页面加载完成后
+this.$nextTick(() => {
+  const loadTime = Date.now() - startTime;
+  console.log(`页面加载时间: ${loadTime}ms`);
+});
+
+// 监控内存使用
+const deviceInfo = weex.requireModule('deviceInfo');
+const memInfo = deviceInfo.getMemoryInfo();
+console.log('内存信息:', memInfo);
+</pre>
