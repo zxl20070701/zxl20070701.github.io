@@ -1,0 +1,199 @@
+<header>
+    ICMP 协议
+</header>
+<p>
+    ICMP（Internet Control Message Protocol，互联网控制消息协议）是 TCP/IP 协议族的一个子协议，用于在 IP 主机、路由器之间传递控制消息。
+</p>
+<p>
+    ICMP 协议主要用于网络诊断和错误报告，不传输用户数据。它封装在 IP 数据报中，使用 IP 协议进行传输，协议号为 1。
+</p>
+<h2>
+    ICMP 报文类型
+</h2>
+<p>
+    ICMP 报文分为两大类：
+</p>
+<ul>
+    <li><span class="special">差错报告报文</span>：报告网络错误</li>
+    <li><span class="special">询问报文</span>：用于网络诊断</li>
+</ul>
+<h3>
+    常见的 ICMP 报文类型
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>代码</th>
+            <th>描述</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>Echo Reply（回显应答）</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>0-15</td>
+            <td>Destination Unreachable（目的不可达）</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>0</td>
+            <td>Source Quench（源站抑制）</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>0-3</td>
+            <td>Redirect（重定向）</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>0</td>
+            <td>Echo Request（回显请求）</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>0-1</td>
+            <td>Time Exceeded（超时）</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>0-1</td>
+            <td>Parameter Problem（参数问题）</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>0</td>
+            <td>Timestamp Request（时间戳请求）</td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td>0</td>
+            <td>Timestamp Reply（时间戳应答）</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    ICMP 报文格式
+</h2>
+<p>
+    ICMP 报文包含以下字段：
+</p>
+<ul>
+    <li><span class="important">类型</span>（8 位）：指明 ICMP 报文的类型</li>
+    <li><span class="important">代码</span>（8 位）：进一步描述 ICMP 报文</li>
+    <li><span class="important">校验和</span>（16 位）：检验整个 ICMP 报文</li>
+    <li><span class="important">数据部分</span>：根据类型和代码的不同而不同</li>
+</ul>
+<h2>
+    常见 ICMP 应用
+</h2>
+<h3>
+    Ping
+</h3>
+<p>
+    Ping 程序使用 ICMP Echo Request 和 Echo Reply 报文：
+</p>
+<ol>
+    <li>源主机发送 ICMP Echo Request 报文</li>
+    <li>目标主机收到后返回 ICMP Echo Reply 报文</li>
+    <li>源主机计算往返时间，判断网络连通性</li>
+</ol>
+<h3>
+    Traceroute
+</h3>
+<p>
+    Traceroute 程序使用 ICMP 超时报文：
+</p>
+<ol>
+    <li>发送 TTL 为 1 的 UDP 数据报</li>
+    <li>第一个路由器返回 ICMP 超时报文</li>
+    <li>逐渐增加 TTL 值，直到到达目标主机</li>
+    <li>记录每一跳的路由信息</li>
+</ol>
+<h2>
+    ICMP 错误报告
+</h2>
+<p>
+    ICMP 错误报告的类型：
+</p>
+<ul>
+    <li><span class="important">目的不可达</span>：网络不可达、主机不可达、协议不可达、端口不可达等</li>
+    <li><span class="important">超时</span>：TTL 超时或分片重组超时</li>
+    <li><span class="important">参数问题</span>：IP 首部参数错误</li>
+    <li><span class="important">源站抑制</span>：路由器拥塞，要求源主机降低发送速率</li>
+</ul>
+<h2>
+    ICMP 重定向
+</h2>
+<p>
+    当路由器发现更好的路由路径时，发送重定向报文：
+</p>
+<ul>
+    <li><span class="important">网络重定向</span>：针对整个网络的重定向</li>
+    <li><span class="important">主机重定向</span>：针对特定主机的重定向</li>
+    <li><span class="important">服务类型和网络重定向</span>：基于服务类型的网络重定向</li>
+    <li><span class="important">服务类型和主机重定向</span>：基于服务类型的主机重定向</li>
+</ul>
+<h2>
+    ICMP 安全问题
+</h2>
+<p>
+    ICMP 面临的安全威胁：
+</p>
+<ul>
+    <li><span class="warn">ICMP 洪水攻击</span>：发送大量 ICMP 报文消耗目标资源</li>
+    <li><span class="warn">Ping of Death</span>：发送超大 ICMP 报文导致系统崩溃</li>
+    <li><span class="warn">Smurf 攻击</span>：利用 ICMP 广播放大攻击效果</li>
+    <li><span class="warn">ICMP 重定向攻击</span>：伪造重定向报文改变路由路径</li>
+</ul>
+<h2>
+    防御措施
+</h2>
+<p>
+    防御 ICMP 攻击的措施：
+</p>
+<ul>
+    <li><span class="important">限制 ICMP 报文速率</span>：防止洪水攻击</li>
+    <li><span class="important">过滤 ICMP 报文</span>：阻止不必要的 ICMP 报文</li>
+    <li><span class="important">禁用 ICMP 重定向</span>：防止重定向攻击</li>
+    <li><span class="important">使用防火墙</span>：控制 ICMP 报文的进出</li>
+</ul>
+<h2>
+    常见应用场景
+</h2>
+<p>
+    ICMP 的常见应用场景：
+</p>
+<ul>
+    <li><span class="important">网络连通性测试</span>：使用 ping 命令测试网络连接</li>
+    <li><span class="important">路由跟踪</span>：使用 traceroute 命令查看路由路径</li>
+    <li><span class="important">网络故障诊断</span>：分析 ICMP 错误信息定位网络问题</li>
+    <li><span class="important">网络性能测试</span>：测量网络延迟和丢包率</li>
+</ul>
+<h2>
+    常用网络命令
+</h2>
+<p>
+    常用的网络诊断命令：
+</p>
+<ul>
+    <li><span class="special">ping</span>：测试网络连通性</li>
+    <li><span class="special">traceroute/tracert</span>：跟踪路由路径</li>
+    <li><span class="special">pathping</span>：结合 ping 和 traceroute 的功能</li>
+    <li><span class="special">mtr</span>：实时显示网络路径和性能</li>
+</ul>
+<h2>
+    与 IP 协议的关系
+</h2>
+<p>
+    ICMP 是 IP 协议的伴随协议：
+</p>
+<ul>
+    <li>ICMP 报文封装在 IP 数据报中</li>
+    <li>ICMP 使用 IP 进行传输</li>
+    <li>ICMP 不保证可靠传输</li>
+</ul>

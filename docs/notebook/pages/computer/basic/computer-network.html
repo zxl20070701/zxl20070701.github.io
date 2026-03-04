@@ -1,0 +1,179 @@
+<header>
+    计算机网络基础
+</header>
+<p>
+    计算机网络是将多台计算机通过通信线路连接起来，实现资源共享和信息交换的系统。理解计算机网络的基础知识对于现代信息技术领域至关重要。
+</p>
+<h2>
+    1. 计算机网络概述
+</h2>
+<p>
+    计算机网络的基本概念和分类是理解网络技术的基础。
+</p>
+<h3>
+    1.1 网络分类
+</h3>
+<ul>
+    <li><span class="special">局域网 (LAN)</span>：覆盖范围小，通常在建筑物或校园内</li>
+    <li><span class="special">城域网 (MAN)</span>：覆盖一个城市范围</li>
+    <li><span class="special">广域网 (WAN)</span>：覆盖范围大，如互联网</li>
+    <li><span class="special">个人区域网 (PAN)</span>：个人设备间的短距离通信</li>
+</ul>
+<h3>
+    1.2 网络拓扑结构
+</h3>
+<ul>
+    <li><span class="special">总线型</span>：所有设备连接到一条主干线</li>
+    <li><span class="special">星型</span>：所有设备连接到一个中心节点</li>
+    <li><span class="special">环型</span>：设备连接成环状</li>
+    <li><span class="special">网状</span>：设备间有多条连接路径</li>
+</ul>
+<h2>
+    2. OSI七层模型
+</h2>
+<p>
+    OSI（开放系统互联）参考模型将网络通信分为七个层次，每一层都有特定的功能和协议。
+</p>
+<ol>
+    <li><span class="important">物理层</span>：传输比特流，定义物理连接标准</li>
+    <li><span class="important">数据链路层</span>：提供可靠的数据传输，处理错误检测和纠正</li>
+    <li><span class="important">网络层</span>：负责数据包的路由选择和转发</li>
+    <li><span class="important">传输层</span>：提供端到端的通信服务，确保数据完整传输</li>
+    <li><span class="important">会话层</span>：建立、管理和终止会话</li>
+    <li><span class="important">表示层</span>：处理数据格式转换、加密解密</li>
+    <li><span class="important">应用层</span>：为应用程序提供网络服务接口</li>
+</ol>
+<h2>
+    3. TCP/IP四层模型
+</h2>
+<p>
+    TCP/IP模型是实际应用中更常用的网络模型，由以下四层组成：
+</p>
+<ol>
+    <li><span class="important">网络接口层</span>：对应OSI的物理层和数据链路层</li>
+    <li><span class="important">网络层</span>：主要协议是IP，负责寻址和路由</li>
+    <li><span class="important">传输层</span>：主要协议是TCP和UDP</li>
+    <li><span class="important">应用层</span>：包含各种应用协议如HTTP、FTP、SMTP等</li>
+</ol>
+<h2>
+    4. IP地址与子网划分
+</h2>
+<h3>
+    4.1 IP地址分类
+</h3>
+<ul>
+    <li><span class="special">IPv4</span>：32位地址，通常表示为四个十进制数（如192.168.1.1）</li>
+    <li><span class="special">IPv6</span>：128位地址，解决IPv4地址耗尽问题</li>
+</ul>
+<h3>
+    4.2 子网掩码
+</h3>
+<p>
+    子网掩码用于划分网络地址和主机地址，如<span class="important">255.255.255.0</span>表示前24位是网络地址。
+</p>
+<h3>
+    4.3 CIDR表示法
+</h3>
+<p>
+    CIDR（无类别域间路由）使用斜线表示法，如<span class="important">192.168.1.0/24</span>表示前24位为网络地址。
+</p>
+<h2>
+    5. 网络设备
+</h2>
+<h3>
+    5.1 常见网络设备
+</h3>
+<ul>
+    <li><span class="special">集线器 (Hub)</span>：物理层设备，简单转发数据</li>
+    <li><span class="special">交换机 (Switch)</span>：数据链路层设备，根据MAC地址转发数据</li>
+    <li><span class="special">路由器 (Router)</span>：网络层设备，根据IP地址进行路由选择</li>
+    <li><span class="special">网关 (Gateway)</span>：连接不同网络的设备</li>
+    <li><span class="special">防火墙 (Firewall)</span>：网络安全设备，控制网络访问</li>
+</ul>
+<h2>
+    6. 网络安全基础
+</h2>
+<h3>
+    6.1 常见安全威胁
+</h3>
+<ul>
+    <li><span class="special">病毒和恶意软件</span>：破坏系统或窃取信息</li>
+    <li><span class="special">拒绝服务攻击 (DoS/DDoS)</span>：使网络服务不可用</li>
+    <li><span class="special">中间人攻击</span>：窃听或篡改通信内容</li>
+    <li><span class="special">钓鱼攻击</span>：诱骗用户提供敏感信息</li>
+</ul>
+<h3>
+    6.2 安全防护措施
+</h3>
+<ul>
+    <li><span class="special">防火墙</span>：控制进出网络的数据流</li>
+    <li><span class="special">加密技术</span>：保护数据传输安全</li>
+    <li><span class="special">身份认证</span>：验证用户身份</li>
+    <li><span class="special">访问控制</span>：限制资源访问权限</li>
+</ul>
+<h2>
+    7. 无线网络技术
+</h2>
+<h3>
+    7.1 Wi-Fi标准
+</h3>
+<ul>
+    <li><span class="special">802.11a/b/g</span>：早期Wi-Fi标准</li>
+    <li><span class="special">802.11n</span>：支持MIMO技术，提高传输速率</li>
+    <li><span class="special">802.11ac</span>：5GHz频段，更高速度</li>
+    <li><span class="special">802.11ax (Wi-Fi 6)</span>：最新标准，提高效率</li>
+</ul>
+<h3>
+    7.2 无线安全
+</h3>
+<ul>
+    <li><span class="special">WEP</span>：早期加密标准，安全性较低</li>
+    <li><span class="special">WPA/WPA2</span>：目前主流的安全标准</li>
+    <li><span class="special">WPA3</span>：最新安全标准，增强保护</li>
+</ul>
+<h2>
+    8. 网络性能指标
+</h2>
+<h3>
+    8.1 关键性能指标
+</h3>
+<ul>
+    <li><span class="special">带宽</span>：网络传输数据的能力，单位通常为Mbps或Gbps</li>
+    <li><span class="special">延迟</span>：数据从发送到接收所需的时间</li>
+    <li><span class="special">吞吐量</span>：实际数据传输速率</li>
+    <li><span class="special">丢包率</span>：传输过程中丢失数据包的比例</li>
+    <li><span class="special">抖动</span>：延迟的变化程度</li>
+</ul>
+<h2>
+    9. 网络管理基础
+</h2>
+<h3>
+    9.1 网络管理功能
+</h3>
+<ul>
+    <li><span class="special">配置管理</span>：管理网络设备配置</li>
+    <li><span class="special">性能管理</span>：监控网络性能指标</li>
+    <li><span class="special">故障管理</span>：检测和处理网络故障</li>
+    <li><span class="special">安全管理</span>：保护网络安全</li>
+    <li><span class="special">计费管理</span>：记录网络资源使用情况</li>
+</ul>
+<h2>
+    10. 云计算与网络
+</h2>
+<h3>
+    10.1 云服务模型
+</h3>
+<ul>
+    <li><span class="special">IaaS</span>：基础设施即服务，提供虚拟化的计算资源</li>
+    <li><span class="special">PaaS</span>：平台即服务，提供开发和部署环境</li>
+    <li><span class="special">SaaS</span>：软件即服务，提供应用程序服务</li>
+</ul>
+<h3>
+    10.2 云网络特点
+</h3>
+<ul>
+    <li><span class="special">虚拟化</span>：网络资源虚拟化，提高灵活性</li>
+    <li><span class="special">弹性扩展</span>：根据需求动态调整资源</li>
+    <li><span class="special">按需服务</span>：按使用量付费</li>
+    <li><span class="special">广泛接入</span>：通过互联网随时随地访问</li>
+</ul>

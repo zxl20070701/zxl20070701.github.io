@@ -1,0 +1,83 @@
+<header>
+    进程与线程
+</header>
+<h2>
+    进程的基本概念
+</h2>
+<p>
+    <span class="important">进程（Process）</span>
+    是程序的一次执行过程，是系统进行资源分配和调度的基本单位。每个进程都有独立的内存空间、数据栈以及其他用于跟踪进程执行的辅助数据。
+</p>
+<h2>
+    进程的状态
+</h2>
+<p>
+    进程在其生命周期中会经历不同的状态：
+</p>
+<ul>
+    <li><span class="special">创建（New）</span>：进程正在被创建</li>
+    <li><span class="special">就绪（Ready）</span>：进程已准备好，等待分配CPU</li>
+    <li><span class="special">运行（Running）</span>：进程正在CPU上执行</li>
+    <li><span class="special">阻塞（Blocked）</span>：进程等待某个事件（如I/O完成）</li>
+    <li><span class="special">终止（Terminated）</span>：进程执行完毕</li>
+</ul>
+<h2>
+    线程的基本概念
+</h2>
+<p>
+    <span class="important">线程（Thread）</span>
+    是进程内的一个执行单元，是CPU调度和分派的基本单位。一个进程可以包含多个线程，这些线程共享进程的资源，但有自己的栈空间和程序计数器。
+</p>
+<h2>
+    进程与线程的区别
+</h2>
+<p>
+    进程和线程的主要区别：
+</p>
+<ul>
+    <li><span class="special">资源拥有</span>：进程是资源分配的基本单位，线程不拥有系统资源</li>
+    <li><span class="special">独立性</span>：进程间相互独立，线程间共享进程资源</li>
+    <li><span class="special">开销</span>：创建和销毁进程的开销远大于线程</li>
+    <li><span class="special">通信</span>：进程间通信需要特殊机制，线程间可以直接通信</li>
+    <li><span class="special">健壮性</span>：一个进程崩溃不会影响其他进程，一个线程崩溃可能导致整个进程崩溃</li>
+</ul>
+<h2>
+    进程调度算法
+</h2>
+<p>
+    操作系统使用不同的算法来决定哪个进程获得CPU时间：
+</p>
+<ul>
+    <li><span class="special">先来先服务（FCFS）</span>：按照进程到达的顺序进行调度</li>
+    <li><span class="special">短作业优先（SJF）</span>：优先调度执行时间短的进程</li>
+    <li><span class="special">时间片轮转（RR）</span>：每个进程分配一个时间片，轮流执行</li>
+    <li><span class="special">优先级调度</span>：根据进程的优先级进行调度</li>
+    <li><span class="special">多级反馈队列</span>：结合时间片轮转和优先级调度的优点</li>
+</ul>
+<h2>
+    进程间通信（IPC）
+</h2>
+<p>
+    进程间通信是指在不同进程之间传递信息或信号的机制：
+</p>
+<ul>
+    <li><span class="special">管道（Pipe）</span>：单向通信，用于父子进程间通信</li>
+    <li><span class="special">命名管道（Named Pipe）</span>：可以在无亲缘关系的进程间通信</li>
+    <li><span class="special">消息队列（Message Queue）</span>：存储在内核中的消息链表</li>
+    <li><span class="special">共享内存（Shared Memory）</span>：多个进程共享同一块内存区域</li>
+    <li><span class="special">信号量（Semaphore）</span>：用于进程间同步和互斥</li>
+    <li><span class="special">套接字（Socket）</span>：可用于不同主机间的进程通信</li>
+</ul>
+<h2>
+    线程同步机制
+</h2>
+<p>
+    为了防止多个线程同时访问共享资源造成冲突，需要使用同步机制：
+</p>
+<ul>
+    <li><span class="special">互斥锁（Mutex）</span>：确保同一时间只有一个线程访问共享资源</li>
+    <li><span class="special">读写锁（Read-Write Lock）</span>：允许多个读线程同时访问，但写线程独占</li>
+    <li><span class="special">条件变量（Condition Variable）</span>：线程可以等待特定条件满足</li>
+    <li><span class="special">信号量（Semaphore）</span>：控制同时访问共享资源的线程数量</li>
+    <li><span class="special">自旋锁（Spinlock）</span>：线程循环等待锁的释放</li>
+</ul>

@@ -1,0 +1,109 @@
+<header>
+    SMTP 协议
+</header>
+<p>
+    SMTP（Simple Mail Transfer Protocol，简单邮件传输协议）是一组用于从源地址到目的地址传输邮件的规范，用来控制邮件的中转方式。
+</p>
+<p>
+    SMTP 协议属于 TCP/IP 协议族，使用 TCP 的 25 端口进行通信。它帮助每台计算机在发送或中转信件时找到下一个目的地。
+</p>
+<h2>
+    邮件传输过程
+</h2>
+<p>
+    邮件传输的基本流程：
+</p>
+<ol>
+    <li>用户代理（UA）创建邮件并发送到本地邮件服务器</li>
+    <li>本地邮件服务器将邮件放入邮件队列</li>
+    <li>本地邮件服务器通过 SMTP 协议将邮件发送到接收方邮件服务器</li>
+    <li>接收方邮件服务器将邮件放入用户邮箱</li>
+    <li>接收方用户代理从邮件服务器获取邮件</li>
+</ol>
+<h2>
+    SMTP 命令
+</h2>
+<p>
+    常用的 SMTP 命令包括：
+</p>
+<ul>
+    <li><span class="important">HELO/EHLO</span>：向服务器标识用户身份</li>
+    <li><span class="important">MAIL FROM</span>：指定发件人地址</li>
+    <li><span class="important">RCPT TO</span>：指定收件人地址</li>
+    <li><span class="important">DATA</span>：开始邮件内容传输</li>
+    <li><span class="important">QUIT</span>：结束会话</li>
+    <li><span class="important">RSET</span>：重置会话</li>
+    <li><span class="important">VRFY</span>：验证用户名</li>
+    <li><span class="important">EXPN</span>：扩展邮件列表</li>
+    <li><span class="important">HELP</span>：获取帮助信息</li>
+</ul>
+<h2>
+    SMTP 响应码
+</h2>
+<p>
+    SMTP 响应码的含义：
+</p>
+<ul>
+    <li><span class="important">2xx</span>：成功</li>
+    <li><span class="important">3xx</span>：中间状态，需要更多信息</li>
+    <li><span class="important">4xx</span>：暂时失败，可以重试</li>
+    <li><span class="important">5xx</span>：永久失败，不应重试</li>
+</ul>
+<h2>
+    邮件格式
+</h2>
+<p>
+    邮件包含以下三个部分：
+</p>
+<ul>
+    <li><span class="important">信封</span>：包含 MAIL FROM 和 RCPT TO 信息</li>
+    <li><span class="important">首部</span>：包含 From、To、Subject、Date 等字段</li>
+    <li><span class="important">正文</span>：邮件的实际内容</li>
+</ul>
+<h2>
+    扩展 SMTP（ESMTP）
+</h2>
+<p>
+    ESMTP 是对 SMTP 的扩展，支持更多功能：
+</p>
+<ul>
+    <li><span class="important">身份验证</span>：AUTH 命令支持多种认证机制</li>
+    <li><span class="important">管道化</span>：允许多个命令连续发送</li>
+    <li><span class="important">消息大小声明</span>：SIZE 参数声明消息大小</li>
+    <li><span class="important">增强状态码</span>：更详细的错误信息</li>
+</ul>
+<h2>
+    安全性问题
+</h2>
+<p>
+    传统 SMTP 存在以下安全问题：
+</p>
+<ul>
+    <li><span class="warn">明文传输</span>：邮件内容以明文传输</li>
+    <li><span class="warn">缺乏身份验证</span>：容易被伪造发件人</li>
+    <li><span class="warn">缺乏完整性保护</span>：邮件内容可能被篡改</li>
+</ul>
+<h2>
+    安全解决方案
+</h2>
+<p>
+    为了解决 SMTP 的安全问题，可以使用以下方案：
+</p>
+<ul>
+    <li><span class="important">SMTPS</span>：SMTP over SSL/TLS，使用 465 端口</li>
+    <li><span class="important">STARTTLS</span>：在现有连接上升级到 TLS 加密</li>
+    <li><span class="important">SPF</span>：发件人策略框架，防止邮件伪造</li>
+    <li><span class="important">DKIM</span>：域名密钥识别邮件，验证邮件完整性</li>
+    <li><span class="important">DMARC</span>：基于域的消息认证、报告和一致性</li>
+</ul>
+<h2>
+    常见应用场景
+</h2>
+<p>
+    SMTP 的常见应用场景：
+</p>
+<ul>
+    <li><span class="important">邮件发送</span>：用户发送邮件到邮件服务器</li>
+    <li><span class="important">邮件中继</span>：邮件服务器之间转发邮件</li>
+    <li><span class="important">邮件列表</span>：批量发送邮件给多个收件人</li>
+</ul>

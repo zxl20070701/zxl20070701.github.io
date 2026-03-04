@@ -1,0 +1,97 @@
+<header>
+    内存管理
+</header>
+<h2>
+    内存管理的基本概念
+</h2>
+<p>
+    <span class="important">内存管理（Memory Management）</span>
+    是操作系统的重要功能之一，负责管理计算机的主存储器，包括内存的分配、回收、保护和扩充等。
+</p>
+<h2>
+    内存分配方式
+</h2>
+<p>
+    操作系统采用不同的内存分配方式：
+</p>
+<ul>
+    <li><span class="special">连续分配</span>：为每个进程分配连续的内存空间
+        <ul>
+            <li>单一连续分配：整个内存只分配给一个进程</li>
+            <li>固定分区分配：将内存划分为固定大小的分区</li>
+            <li>动态分区分配：根据进程需求动态划分内存</li>
+        </ul>
+    </li>
+    <li><span class="special">非连续分配</span>：允许进程使用不连续的内存空间
+        <ul>
+            <li>分页存储管理：将内存划分为固定大小的页面</li>
+            <li>分段存储管理：将内存按逻辑单元划分为段</li>
+            <li>段页式存储管理：结合分段和分页的优点</li>
+        </ul>
+    </li>
+</ul>
+<h2>
+    分页存储管理
+</h2>
+<p>
+    分页存储管理将内存划分为固定大小的页面（Page），同时将进程的逻辑地址空间也划分为相同大小的页：
+</p>
+<ul>
+    <li><span class="special">页面（Page）</span>：逻辑地址空间中的固定大小块</li>
+    <li><span class="special">页框（Frame）</span>：物理内存中的固定大小块</li>
+    <li><span class="special">页表（Page Table）</span>：记录逻辑页面到物理页框的映射关系</li>
+    <li><span class="special">地址转换</span>：通过页表将逻辑地址转换为物理地址</li>
+</ul>
+<h2>
+    分段存储管理
+</h2>
+<p>
+    分段存储管理按照程序的逻辑结构将地址空间划分为若干段：
+</p>
+<ul>
+    <li><span class="special">代码段</span>：存放程序的可执行代码</li>
+    <li><span class="special">数据段</span>：存放程序的全局变量和静态变量</li>
+    <li><span class="special">堆段</span>：存放动态分配的内存</li>
+    <li><span class="special">栈段</span>：存放函数调用的参数、返回地址和局部变量</li>
+</ul>
+<h2>
+    虚拟内存
+</h2>
+<p>
+    <span class="important">虚拟内存（Virtual Memory）</span>
+    技术允许程序使用比实际物理内存更大的地址空间：
+</p>
+<ul>
+    <li><span class="special">请求分页</span>：只在需要时才将页面调入内存</li>
+    <li><span class="special">页面置换</span>：当内存不足时，选择页面换出到磁盘</li>
+    <li><span class="special">页面置换算法</span>：决定哪些页面应该被换出
+        <ul>
+            <li>最佳置换算法（OPT）</li>
+            <li>先进先出算法（FIFO）</li>
+            <li>最近最久未使用算法（LRU）</li>
+            <li>时钟置换算法（Clock）</li>
+        </ul>
+    </li>
+</ul>
+<h2>
+    内存保护
+</h2>
+<p>
+    内存保护机制确保进程只能访问自己的内存空间，防止相互干扰：
+</p>
+<ul>
+    <li><span class="special">界地址保护</span>：设置内存的上界和下界寄存器</li>
+    <li><span class="special">存储键保护</span>：为每个存储块分配保护键</li>
+    <li><span class="special">环保护</span>：将系统分为不同特权级别的环</li>
+</ul>
+<h2>
+    内存碎片
+</h2>
+<p>
+    内存碎片是指内存中无法被利用的小块空闲空间：
+</p>
+<ul>
+    <li><span class="special">外部碎片</span>：分区间的碎片，可以通过紧凑技术解决</li>
+    <li><span class="special">内部碎片</span>：分区内的碎片，分配给进程但未使用</li>
+    <li><span class="special">紧凑技术</span>：通过移动内存中的进程来合并碎片</li>
+</ul>

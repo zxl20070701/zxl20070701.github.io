@@ -1,0 +1,63 @@
+<header>
+    HTTPS 协议
+</header>
+<p>
+    HTTPS（HyperText Transfer Protocol Secure，安全超文本传输协议）是 HTTP 协议的安全版本，通过在 HTTP 和 TCP 之间加入 SSL/TLS 安全层来实现数据加密传输。
+</p>
+<p>
+    HTTPS 在 HTTP 的基础上加入了 SSL/TLS 协议，SSL/TLS 依靠证书来验证服务器的身份，并为浏览器和服务器之间的通信加密。
+</p>
+<h2>
+    SSL/TLS 握手过程
+</h2>
+<p>
+    SSL/TLS 握手是建立安全连接的关键步骤，过程如下：
+</p>
+<ol>
+    <li>客户端向服务器发送<span class="special">Client Hello</span>消息</li>
+    <li>服务器回应<span class="special">Server Hello</span>消息，并发送数字证书</li>
+    <li>客户端验证证书有效性</li>
+    <li>客户端生成随机密钥，用服务器公钥加密后发送给服务器</li>
+    <li>服务器用私钥解密获得密钥</li>
+    <li>双方使用此密钥进行对称加密通信</li>
+</ol>
+<h2>
+    HTTPS 的优势
+</h2>
+<p>
+    HTTPS 相比 HTTP 提供了以下安全优势：
+</p>
+<ul>
+    <li><span class="important">数据加密</span>：防止数据在传输过程中被窃听</li>
+    <li><span class="important">身份验证</span>：确保通信双方的身份真实性</li>
+    <li><span class="important">数据完整性</span>：防止数据在传输过程中被篡改</li>
+</ul>
+<h2>
+    证书类型
+</h2>
+<p>
+    SSL/TLS 证书根据验证级别分为三种类型：
+</p>
+<ul>
+    <li><span class="important">DV 证书</span>（域名验证）：验证域名所有权</li>
+    <li><span class="important">OV 证书</span>（组织验证）：验证组织身份</li>
+    <li><span class="important">EV 证书</span>（扩展验证）：最严格的验证方式</li>
+</ul>
+<h2>
+    HTTPS 端口号
+</h2>
+<p>
+    HTTPS 默认使用 <span class="special">443</span> 端口，区别于 HTTP 的 <span class="special">80</span> 端口。
+</p>
+<h2>
+    常见应用场景
+</h2>
+<p>
+    HTTPS 广泛应用于需要保护数据安全的场景：
+</p>
+<ul>
+    <li>网上银行</li>
+    <li>电子商务网站</li>
+    <li>用户登录页面</li>
+    <li>涉及敏感信息传输的所有网站</li>
+</ul>

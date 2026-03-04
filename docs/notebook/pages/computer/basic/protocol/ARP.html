@@ -1,0 +1,139 @@
+<header>
+    ARP 协议
+</header>
+<p>
+    ARP（Address Resolution Protocol，地址解析协议）是根据 IP 地址获取物理地址（MAC 地址）的一个 TCP/IP 协议。
+</p>
+<p>
+    ARP 协议工作在数据链路层和网络层之间，用于将网络层的 32 位 IP 地址解析为数据链路层的 48 位 MAC 地址。
+</p>
+<h2>
+    ARP 工作流程
+</h2>
+<h3>
+    1. ARP 请求
+</h3>
+<p>
+    当主机需要发送数据包到某个 IP 地址时：
+</p>
+<ol>
+    <li>检查本地 ARP 缓存是否有该 IP 对应的 MAC 地址</li>
+    <li>如果没有，构造 ARP 请求报文</li>
+    <li>广播 ARP 请求到本地网络</li>
+</ol>
+<h3>
+    2. ARP 响应
+</h3>
+<p>
+    目标主机收到 ARP 请求后：
+</p>
+<ol>
+    <li>检查请求中的目标 IP 地址是否为自己的 IP</li>
+    <li>如果是，构造 ARP 响应报文</li>
+    <li>单播 ARP 响应给请求主机</li>
+</ol>
+<h3>
+    3. 更新 ARP 缓存
+</h3>
+<p>
+    请求主机收到响应后：
+</p>
+<ol>
+    <li>将 IP-MAC 映射关系存入 ARP 缓存</li>
+    <li>使用获得的 MAC 地址发送数据包</li>
+</ol>
+<h2>
+    ARP 报文格式
+</h2>
+<p>
+    ARP 报文包含以下字段：
+</p>
+<ul>
+    <li><span class="important">硬件类型</span>：如以太网（值为 1）</li>
+    <li><span class="important">协议类型</span>：如 IPv4（值为 0x0800）</li>
+    <li><span class="important">硬件地址长度</span>：MAC 地址长度（6 字节）</li>
+    <li><span class="important">协议地址长度</span>：IP 地址长度（4 字节）</li>
+    <li><span class="important">操作码</span>：1 表示请求，2 表示响应</li>
+    <li><span class="important">发送方 MAC 地址</span></li>
+    <li><span class="important">发送方 IP 地址</span></li>
+    <li><span class="important">目标 MAC 地址</span></li>
+    <li><span class="important">目标 IP 地址</span></li>
+</ul>
+<h2>
+    ARP 缓存
+</h2>
+<p>
+    ARP 缓存存储 IP 地址到 MAC 地址的映射关系：
+</p>
+<ul>
+    <li><span class="special">动态条目</span>：通过 ARP 协议学习获得，有超时时间</li>
+    <li><span class="special">静态条目</span>：手动配置，不会过期</li>
+    <li><span class="special">查看 ARP 缓存</span>：使用 <span class="warn">arp -a</span> 命令</li>
+</ul>
+<h2>
+    ARP 代理
+</h2>
+<p>
+    当网络被路由器分隔时，路由器可以作为 ARP 代理：
+</p>
+<ul>
+    <li>路由器响应不同子网主机的 ARP 请求</li>
+    <li>代替远程主机回答 ARP 请求</li>
+    <li>使主机能够通信而不需要知道路由器的存在</li>
+</ul>
+<h2>
+    反向 ARP（RARP）
+</h2>
+<p>
+    RARP 与 ARP 相反，是根据 MAC 地址获取 IP 地址：
+</p>
+<ul>
+    <li>主要用于无盘工作站获取 IP 地址</li>
+    <li>已被 DHCP 协议取代</li>
+</ul>
+<h2>
+    ARP 欺骗（ARP Spoofing）
+</h2>
+<p>
+    ARP 协议的安全问题：
+</p>
+<ul>
+    <li><span class="warn">攻击原理</span>：攻击者发送伪造的 ARP 响应，将自己的 MAC 地址与他人的 IP 地址关联</li>
+    <li><span class="warn">攻击后果</span>：数据包被重定向到攻击者机器</li>
+    <li><span class="warn">攻击类型</span>：中间人攻击、拒绝服务攻击</li>
+</ul>
+<h2>
+    防御 ARP 欺骗
+</h2>
+<p>
+    防御 ARP 欺骗的方法：
+</p>
+<ul>
+    <li><span class="important">静态 ARP 表</span>：手动配置 IP-MAC 映射</li>
+    <li><span class="important">ARP 检测工具</span>：监控网络中的 ARP 活动</li>
+    <li><span class="important">端口安全</span>：交换机限制每个端口的 MAC 地址</li>
+    <li><span class="important">动态 ARP 检测</span>：交换机验证 ARP 报文的合法性</li>
+</ul>
+<h2>
+    常见应用场景
+</h2>
+<p>
+    ARP 的常见应用场景：
+</p>
+<ul>
+    <li><span class="important">局域网通信</span>：主机间通过 MAC 地址通信</li>
+    <li><span class="important">网关发现</span>：获取默认网关的 MAC 地址</li>
+    <li><span class="important">网络诊断</span>：排查网络连接问题</li>
+    <li><span class="important">负载均衡</span>：某些负载均衡技术使用 ARP</li>
+</ul>
+<h2>
+    ARP 命令
+</h2>
+<p>
+    常用的 ARP 命令：
+</p>
+<ul>
+    <li><span class="special">arp -a</span>：显示 ARP 缓存表</li>
+    <li><span class="special">arp -d</span>：删除 ARP 缓存条目</li>
+    <li><span class="special">arp -s</span>：添加静态 ARP 条目</li>
+</ul>

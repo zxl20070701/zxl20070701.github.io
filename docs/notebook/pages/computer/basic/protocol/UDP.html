@@ -1,0 +1,115 @@
+<header>
+    UDP 协议
+</header>
+<p>
+    UDP（User Datagram Protocol，用户数据报协议）是一种无连接的传输层协议，提供面向事务的简单不可靠信息传送服务。
+</p>
+<h2>
+    协议特点
+</h2>
+<p>
+    UDP 具有以下主要特点：
+</p>
+<ul>
+    <li><span class="special">无连接</span>：发送数据前不需要建立连接</li>
+    <li><span class="special">不可靠</span>：不保证数据报一定到达，也不保证按顺序到达</li>
+    <li><span class="special">面向报文</span>：对应用层交下来的报文不合并、不拆分</li>
+    <li><span class="special">无拥塞控制</span>：网络拥塞时不会降低发送速率</li>
+    <li><span class="special">支持一对一、一对多、多对一和多对多交互通信</span></li>
+    <li><span class="special">首部开销小</span>：只有8个字节，比 TCP 的20个字节要小</li>
+</ul>
+<h2>
+    UDP 报文结构
+</h2>
+<p>
+    UDP 报文由首部和数据两部分组成，首部包含以下字段：
+</p>
+<ul>
+    <li><span class="important">源端口号</span>（16位）</li>
+    <li><span class="important">目的端口号</span>（16位）</li>
+    <li><span class="important">长度</span>（16位）：UDP 用户数据报的长度</li>
+    <li><span class="important">检验和</span>（16位）：用于差错检测</li>
+    <li><span class="important">数据</span>：应用层数据</li>
+</ul>
+<h2>
+    与 TCP 的对比
+</h2>
+<p>
+    UDP 与 TCP 的主要区别如下：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>特性</th>
+            <th>UDP</th>
+            <th>TCP</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>连接</td>
+            <td>无连接</td>
+            <td>面向连接</td>
+        </tr>
+        <tr>
+            <td>可靠性</td>
+            <td>不可靠</td>
+            <td>可靠</td>
+        </tr>
+        <tr>
+            <td>传输速度</td>
+            <td>快</td>
+            <td>相对较慢</td>
+        </tr>
+        <tr>
+            <td>首部开销</td>
+            <td>8字节</td>
+            <td>20字节</td>
+        </tr>
+        <tr>
+            <td>流量控制</td>
+            <td>无</td>
+            <td>有</td>
+        </tr>
+        <tr>
+            <td>拥塞控制</td>
+            <td>无</td>
+            <td>有</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    常见应用场景
+</h2>
+<p>
+    UDP 适用于以下场景：
+</p>
+<ul>
+    <li><span class="important">DNS 查询</span>：域名解析</li>
+    <li><span class="important">视频/音频流媒体</span>：实时性要求高，可容忍少量丢包</li>
+    <li><span class="important">在线游戏</span>：实时交互，需要低延迟</li>
+    <li><span class="important">VoIP 语音通话</span>：实时语音传输</li>
+    <li><span class="important">TFTP 文件传输</span>：简单文件传输协议</li>
+    <li><span class="important">SNMP 网络管理</span>：简单网络管理协议</li>
+    <li><span class="important">DHCP 动态主机配置</span>：IP 地址分配</li>
+</ul>
+<h2>
+    优缺点
+</h2>
+<h3>
+    优点
+</h3>
+<ul>
+    <li>传输速度快</li>
+    <li>首部开销小</li>
+    <li>无连接建立和释放过程</li>
+    <li>支持广播和多播</li>
+</ul>
+<h3>
+    缺点
+</h3>
+<ul>
+    <li>不可靠传输</li>
+    <li>可能出现丢包、重复、乱序</li>
+    <li>无流量控制和拥塞控制</li>
+</ul>
