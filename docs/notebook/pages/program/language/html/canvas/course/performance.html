@@ -1,0 +1,283 @@
+<header>
+    性能优化
+</header>
+<h2>
+    性能优化的重要性
+</h2>
+<p>
+    Canvas应用，特别是游戏和数据可视化，对性能要求很高。优化Canvas性能可以显著提升用户体验，特别是在移动设备上。
+</p>
+
+<h2>
+    减少绘制调用
+</h2>
+<h3>
+    批量绘制
+</h3>
+<pre tag="javascript">
+// 不好的做法：多次调用fillRect
+for (let i = 0; i < 1000; i++) {
+    ctx.fillStyle = colors[i];
+    ctx.fillRect(x[i], y[i], width[i], height[i]);
+}
+
+// 好的做法：先按颜色分组，再批量绘制
+const colorGroups = {};
+for (let i = 0; i < 1000; i++) {
+    const color = colors[i];
+    if (!colorGroups[color]) {
+        colorGroups[color] = [];
+    }
+    colorGroups[color].push({x: x[i], y: y[i], w: width[i], h: height[i]});
+}
+
+for (const color in colorGroups) {
+    ctx.fillStyle = color;
+    const rects = colorGroups[color];
+    for (const rect of rects) {
+        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+    }
+}
+</pre>
+
+<h2>
+    使用离屏Canvas
+</h2>
+<pre tag="javascript">
+// 创建离屏Canvas
+const offscreenCanvas = document.createElement('canvas');
+offscreenCanvas.width = 1000;
+offscreenCanvas.height = 1000;
+const offCtx = offscreenCanvas.getContext('2d');
+
+// 在离屏Canvas上绘制复杂图形
+drawComplexShape(offCtx);
+
+// 在主Canvas上重用
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 直接复制离屏Canvas的内容
+    ctx.drawImage(offscreenCanvas, 0, 0);
+    
+    // 添加动态元素
+    drawDynamicElements();
+    
+    requestAnimationFrame(draw);
+}
+</pre>
+
+<h2>
+    脏矩形优化
+</h2>
+<pre tag="javascript">
+let dirtyRect = null;
+
+function markDirty(x, y, width, height) {
+    if (!dirtyRect) {
+        dirtyRect = {x, y, width, height};
+    } else {
+        // 扩展脏矩形以包含新区域
+        const right = Math.max(dirtyRect.x + dirtyRect.width, x + width);
+        const bottom = Math.max(dirtyRect.y + dirtyRect.height, y + height);
+        
+        dirtyRect.x = Math.min(dirtyRect.x, x);
+        dirtyRect.y = Math.min(dirtyRect.y, y);
+        dirtyRect.width = right - dirtyRect.x;
+        dirtyRect.height = bottom - dirtyRect.y;
+    }
+}
+
+function draw() {
+    if (dirtyRect) {
+        // 只清除脏矩形区域
+        ctx.clearRect(dirtyRect.x, dirtyRect.y, dirtyRect.width, dirtyRect.height);
+        
+        // 只重绘脏矩形区域内的内容
+        redrawInRect(dirtyRect);
+        
+        dirtyRect = null;
+    }
+    
+    requestAnimationFrame(draw);
+}
+</pre>
+
+<h2>
+    避免不必要的计算
+</h2>
+<pre tag="javascript">
+// 缓存计算结果
+const cache = {};
+
+function calculateExpensiveValue(input) {
+    if (cache[input]) {
+        return cache[input];
+    }
+    
+    const result = performExpensiveCalculation(input);
+    cache[input] = result;
+    return result;
+}
+
+// 预计算常用值
+const sinCache = [];
+const cosCache = [];
+for (let i = 0; i < 360; i++) {
+    const rad = i * Math.PI / 180;
+    sinCache[i] = Math.sin(rad);
+    cosCache[i] = Math.cos(rad);
+}
+
+function fastSin(degrees) {
+    return sinCache[Math.round(degrees) % 360];
+}
+
+function fastCos(degrees) {
+    return cosCache[Math.round(degrees) % 360];
+}
+</pre>
+
+<h2>
+    优化图像渲染
+</h2>
+<pre tag="javascript">
+// 使用整数坐标避免子像素渲染
+ctx.drawImage(img, Math.floor(x), Math.floor(y));
+
+// 缩放图像时使用整数尺寸
+ctx.drawImage(img, x, y, Math.floor(width), Math.floor(height));
+
+// 对于静态背景，预先渲染到离屏Canvas
+const backgroundCanvas = document.createElement('canvas');
+backgroundCanvas.width = canvas.width;
+backgroundCanvas.height = canvas.height;
+const bgCtx = backgroundCanvas.getContext('2d');
+drawStaticBackground(bgCtx);
+
+function draw() {
+    // 直接复制静态背景
+    ctx.drawImage(backgroundCanvas, 0, 0);
+    
+    // 绘制动态元素
+    drawDynamicElements();
+}
+</pre>
+
+<h2>
+    减少状态改变
+</h2>
+<pre tag="javascript">
+// 不好的做法：频繁改变状态
+ctx.fillStyle = 'red';
+ctx.fillRect(10, 10, 50, 50);
+ctx.fillStyle = 'blue';
+ctx.fillRect(70, 10, 50, 50);
+ctx.fillStyle = 'red';
+ctx.fillRect(130, 10, 50, 50);
+
+// 好的做法：批量处理相同状态的对象
+ctx.fillStyle = 'red';
+ctx.fillRect(10, 10, 50, 50);
+ctx.fillRect(130, 10, 50, 50);
+
+ctx.fillStyle = 'blue';
+ctx.fillRect(70, 10, 50, 50);
+</pre>
+
+<h2>
+    使用Web Workers
+</h2>
+<pre tag="javascript">
+// 主线程
+const worker = new Worker('calculation-worker.js');
+
+worker.onmessage = function(e) {
+    const result = e.data;
+    drawResult(result);
+};
+
+function updateComplexSimulation() {
+    // 将计算密集型任务交给Web Worker
+    worker.postMessage({type: 'calculate', data: simulationData});
+}
+
+// calculation-worker.js
+self.onmessage = function(e) {
+    if (e.data.type === 'calculate') {
+        const result = performComplexCalculation(e.data.data);
+        self.postMessage(result);
+    }
+};
+</pre>
+
+<h2>
+    内存管理
+</h2>
+<pre tag="javascript">
+// 及时释放资源
+function cleanup() {
+    // 清除引用
+    imageCache = {};
+    particleArray = [];
+    
+    // 取消动画
+    cancelAnimationFrame(animationId);
+    
+    // 移除事件监听器
+    canvas.removeEventListener('mousedown', handleMouseDown);
+}
+
+// 避免内存泄漏
+function createParticleSystem() {
+    // 使用对象池模式
+    const particlePool = [];
+    
+    function getParticle() {
+        if (particlePool.length > 0) {
+            return particlePool.pop();
+        }
+        return new Particle();
+    }
+    
+    function returnParticle(particle) {
+        particle.reset();
+        particlePool.push(particle);
+    }
+    
+    return {
+        getParticle,
+        returnParticle
+    };
+}
+</pre>
+
+<h2>
+    性能监控
+</h2>
+<pre tag="javascript">
+let frameCount = 0;
+let lastTime = performance.now();
+let fps = 0;
+
+function calculateFPS() {
+    frameCount++;
+    const currentTime = performance.now();
+    
+    if (currentTime >= lastTime + 1000) {
+        fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+        frameCount = 0;
+        lastTime = currentTime;
+        
+        console.log(`FPS: ${fps}`);
+    }
+}
+
+function draw() {
+    calculateFPS();
+    
+    // 绘制逻辑...
+    
+    requestAnimationFrame(draw);
+}
+</pre>

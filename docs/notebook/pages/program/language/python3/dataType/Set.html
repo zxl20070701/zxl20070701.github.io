@@ -2,28 +2,236 @@
     Set（集合）
 </header>
 <p>
-    和Java的集合类似，一个
-    <span class="special">无序不重复</span>
-    元素集（与列表和元组不同，集合是无序的，也无法通过数字进行索引）。
+    集合是Python中的一种无序、不重复的元素集合。集合中的元素是唯一的，不允许重复。集合支持数学集合操作，如并集、交集、差集等。集合用花括号{}表示，元素之间用逗号分隔，或者可以使用set()函数创建。
 </p>
-<p>
-    可以使用大括号 { } 创建集合，元素之间用逗号 , 分隔， 或者也可以使用 set() 函数创建集合。
-</p>
-<h3>
-    创建格式
-</h3>
-<pre tag>
-parame = {value01,value02,...}
-# 或者
-set(value)
+
+<h2>
+    集合创建
+</h2>
+<pre tag="python">
+# 空集合
+empty_set = set()
+# 注意：{} 创建的是空字典，不是空集合
+empty_dict = {}
+
+# 使用花括号创建集合
+numbers = {1, 2, 3, 4, 5}
+colors = {"red", "green", "blue", "red"}  # 重复元素会被自动去除
+print(f"颜色集合: {colors}")  # {'red', 'green', 'blue'}
+
+# 使用set()函数创建集合
+from_list = set([1, 2, 3, 4, 5, 5, 5])  # 从列表创建，自动去重
+from_string = set("hello")  # 从字符串创建
+from_tuple = set((1, 2, 3, 2, 1))  # 从元组创建
+
+print(f"从列表创建: {from_list}")  # {1, 2, 3, 4, 5}
+print(f"从字符串创建: {from_string}")  # {'h', 'e', 'l', 'o'}
+print(f"从元组创建: {from_tuple}")  # {1, 2, 3}
+
+# 集合推导式
+squares = {x**2 for x in range(5)}  # {0, 1, 4, 9, 16}
+even_squares = {x**2 for x in range(10) if x % 2 == 0}  # {0, 4, 16, 36, 64}
+print(f"平方数集合: {squares}")
+print(f"偶数平方集合: {even_squares}")
 </pre>
-<p>
-    以下是一个简单实例：
-</p>
-<pre tag>
-set1 = {1, 2, 3, 4} # 直接使用大括号创建集合
-set2 = set([4, 5, 6, 7]) # 使用 set() 函数从列表创建集合
+
+<h2>
+    集合基本操作
+</h2>
+<pre tag="python">
+# 添加元素
+fruits = {"苹果", "香蕉"}
+fruits.add("橙子")  # 添加单个元素
+print(f"添加橙子后: {fruits}")
+
+# 批量添加
+fruits.update(["葡萄", "草莓", "苹果"])  # 添加多个元素，重复元素会被忽略
+print(f"批量添加后: {fruits}")
+
+# 删除元素
+fruits.remove("香蕉")  # 删除元素，如果不存在会抛出KeyError
+print(f"删除香蕉后: {fruits}")
+
+fruits.discard("梨")  # 删除元素，如果不存在不会报错
+print(f"尝试删除梨后: {fruits}")
+
+# 随机删除并返回一个元素
+if fruits:
+    removed = fruits.pop()
+    print(f"随机删除: {removed}")
+    print(f"删除后: {fruits}")
+
+# 清空集合
+fruits.clear()
+print(f"清空后: {fruits}")
 </pre>
-<p class="warn">
-    特别注意：创建一个空集合必须用 set() 而不是 { }，因为 { } 是用来创建一个空字典。
-</p>
+
+<h2>
+    集合运算
+</h2>
+<pre tag="python">
+# 定义集合
+set_a = {1, 2, 3, 4, 5}
+set_b = {4, 5, 6, 7, 8}
+
+# 并集 - 两个集合的所有元素
+union1 = set_a | set_b  # 使用运算符
+union2 = set_a.union(set_b)  # 使用方法
+print(f"A ∪ B: {union1}")  # {1, 2, 3, 4, 5, 6, 7, 8}
+
+# 交集 - 两个集合共有的元素
+intersection1 = set_a & set_b  # 使用运算符
+intersection2 = set_a.intersection(set_b)  # 使用方法
+print(f"A ∩ B: {intersection1}")  # {4, 5}
+
+# 差集 - 在A中但不在B中的元素
+difference1 = set_a - set_b  # 使用运算符
+difference2 = set_a.difference(set_b)  # 使用方法
+print(f"A - B: {difference1}")  # {1, 2, 3}
+
+# 对称差集 - 在A或B中但不同时在两者中的元素
+sym_diff1 = set_a ^ set_b  # 使用运算符
+sym_diff2 = set_a.symmetric_difference(set_b)  # 使用方法
+print(f"A △ B: {sym_diff1}")  # {1, 2, 3, 6, 7, 8}
+
+# 子集和超集检查
+set_c = {1, 2}
+set_d = {1, 2, 3, 4, 5}
+
+print(f"C 是 D 的子集: {set_c <= set_d}")  # True
+print(f"C 是 D 的真子集: {set_c < set_d}")  # True
+print(f"D 是 C 的超集: {set_d >= set_c}")  # True
+print(f"D 是 C 的真超集: {set_d > set_c}")  # True
+
+# 使用issubset()和issuperset()方法
+print(f"C 是 D 的子集: {set_c.issubset(set_d)}")  # True
+print(f"D 是 C 的超集: {set_d.issuperset(set_c)}")  # True
+
+# 检查是否没有交集
+set_e = {1, 2}
+set_f = {3, 4}
+print(f"E 和 F 没有交集: {set_e.isdisjoint(set_f)}")  # True
+</pre>
+
+<h2>
+    集合方法详解
+</h2>
+<pre tag="python">
+# 创建示例集合
+set1 = {1, 2, 3, 4, 5}
+set2 = {4, 5, 6, 7, 8}
+
+# update() - 更新集合，添加多个元素
+set1_copy = set1.copy()
+set1_copy.update([6, 7, 8, 9])
+print(f"update后: {set1_copy}")  # {1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+# intersection_update() - 保留交集元素
+set1_copy = set1.copy()
+set1_copy.intersection_update(set2)
+print(f"intersection_update后: {set1_copy}")  # {4, 5}
+
+# difference_update() - 删除也在另一个集合中的元素
+set1_copy = set1.copy()
+set1_copy.difference_update(set2)
+print(f"difference_update后: {set1_copy}")  # {1, 2, 3}
+
+# symmetric_difference_update() - 保留对称差集
+set1_copy = set1.copy()
+set1_copy.symmetric_difference_update(set2)
+print(f"symmetric_difference_update后: {set1_copy}")  # {1, 2, 3, 6, 7, 8}
+
+# copy() - 复制集合
+set_copy = set1.copy()
+print(f"原始集合: {set1}")
+print(f"复制集合: {set_copy}")
+print(f"是否为同一对象: {set1 is set_copy}")  # False
+
+# frozenset - 不可变集合
+frozen = frozenset([1, 2, 3, 4, 5])
+print(f"不可变集合: {frozen}")
+print(f"类型: {type(frozen)}")  # <class 'frozenset'>
+
+# frozenset支持所有集合运算，但不能修改
+try:
+    frozen.add(6)
+except AttributeError as e:
+    print(f"错误: {e}")  # 'frozenset' object has no attribute 'add'
+</pre>
+
+<h2>
+    集合的实际应用
+</h2>
+<pre tag="python">
+# 1. 去除重复元素
+numbers_with_duplicates = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+unique_numbers = list(set(numbers_with_duplicates))
+print(f"去重后的列表: {sorted(unique_numbers)}")  # [1, 2, 3, 4]
+
+# 2. 查找共同好友
+alice_friends = {"Bob", "Charlie", "David", "Eve"}
+bob_friends = {"Alice", "Charlie", "David", "Frank"}
+
+common_friends = alice_friends & bob_friends
+print(f"共同好友: {common_friends}")  # {'Charlie', 'David'}
+
+# 3. 查找Alice有但Bob没有的好友
+alice_only = alice_friends - bob_friends
+print(f"Alice独有的好友: {alice_only}")  # {'Bob', 'Eve'}
+
+# 4. 查找所有好友（不重复）
+all_friends = alice_friends | bob_friends
+print(f"所有好友: {all_friends}")
+
+# 5. 统计文本中不同单词的数量
+text = "this is a sample text with some words this text has some repeated words"
+words = text.lower().split()
+unique_words = set(words)
+print(f"总单词数: {len(words)}")
+print(f"不同单词数: {len(unique_words)}")
+print(f"不同单词: {sorted(unique_words)}")
+
+# 6. 快速查找元素是否存在
+large_list = list(range(100000))
+large_set = set(range(100000))
+
+import time
+
+# 列表查找
+start = time.time()
+99999 in large_list
+list_time = time.time() - start
+
+# 集合查找
+start = time.time()
+99999 in large_set
+set_time = time.time() - start
+
+print(f"列表查找时间: {list_time:.6f}秒")
+print(f"集合查找时间: {set_time:.6f}秒")
+print(f"集合比列表快约 {list_time/set_time:.0f} 倍")
+</pre>
+
+<h2>
+    集合推导式
+</h2>
+<pre tag="python">
+# 基本集合推导式
+squares = {x**2 for x in range(10)}
+print(f"0-9的平方集合: {squares}")  # {0, 1, 4, 9, 16, 25, 36, 49, 64, 81}
+
+# 带条件的集合推导式
+even_squares = {x**2 for x in range(10) if x % 2 == 0}
+print(f"偶数的平方集合: {even_squares}")  # {0, 4, 16, 36, 64}
+
+# 从字符串中提取唯一字符
+text = "hello world"
+unique_chars = {char for char in text if char.isalpha()}
+print(f"文本中的唯一字母: {sorted(unique_chars)}")  # ['d', 'e', 'h', 'l', 'o', 'r', 'w']
+
+# 复杂的集合推导式
+# 找出1-100中既是3的倍数又是5的倍数的数字的平方根
+import math
+special_numbers = {int(math.sqrt(x)) for x in range(1, 101) if x % 3 == 0 and x % 5 == 0}
+print(f"特殊数字: {sorted(special_numbers)}")  # [3, 4, 5, 6, 7, 8, 9]
+</pre>

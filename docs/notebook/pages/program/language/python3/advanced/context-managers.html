@@ -1,0 +1,363 @@
+<header>
+    上下文管理器 (Context Managers)
+</header>
+<p>
+    上下文管理器是一种用于管理资源的对象，它定义了在进入和退出特定代码块时要执行的操作。上下文管理器通常与with语句一起使用，确保资源（如文件、网络连接、锁等）的正确获取和释放。
+</p>
+
+<h2>
+    基本用法
+</h2>
+<pre tag="python">
+# 使用with语句管理文件
+# 传统方式
+file = open('example.txt', 'w')
+try:
+    file.write('Hello, World!')
+finally:
+    file.close()
+
+# 使用上下文管理器
+with open('example.txt', 'w') as file:
+    file.write('Hello, World!')
+# 文件会在with块结束时自动关闭
+
+# 多个上下文管理器
+with open('input.txt', 'r') as infile, open('output.txt', 'w') as outfile:
+    content = infile.read()
+    outfile.write(content.upper())
+
+# 异常处理
+try:
+    with open('nonexistent.txt', 'r') as file:
+        content = file.read()
+except FileNotFoundError as e:
+    print(f"文件未找到: {e}")
+</pre>
+
+<h2>
+    自定义上下文管理器
+</h2>
+<pre tag="python">
+# 使用类实现上下文管理器
+class ManagedFile:
+    def __init__(self, filename, mode):
+        self.filename = filename
+        self.mode = mode
+        self.file = None
+    
+    def __enter__(self):
+        print(f"打开文件: {self.filename}")
+        self.file = open(self.filename, self.mode)
+        return self.file
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file:
+            self.file.close()
+            print(f"关闭文件: {self.filename}")
+        
+        # 处理异常
+        if exc_type is not None:
+            print(f"发生异常: {exc_type.__name__}: {exc_val}")
+            # 返回True表示异常已被处理，不会向上传播
+            # 返回False表示异常未被处理，会继续向上传播
+        
+        return False
+
+# 使用自定义上下文管理器
+with ManagedFile('test.txt', 'w') as file:
+    file.write('测试内容')
+    # 如果这里发生异常，__exit__会被调用
+
+# 使用生成器实现上下文管理器
+from contextlib import contextmanager
+
+@contextmanager
+def managed_file(filename, mode):
+    print(f"打开文件: {filename}")
+    file = open(filename, mode)
+    try:
+        yield file
+    finally:
+        file.close()
+        print(f"关闭文件: {filename}")
+
+# 使用生成器上下文管理器
+with managed_file('test2.txt', 'w') as file:
+    file.write('更多测试内容')
+</pre>
+
+<h2>
+    上下文管理器实际应用
+</h2>
+<pre tag="python">
+# 1. 数据库连接管理
+import sqlite3
+from contextlib import contextmanager
+
+@contextmanager
+def database_connection(db_path):
+    """管理数据库连接"""
+    conn = sqlite3.connect(db_path)
+    try:
+        yield conn
+    finally:
+        conn.close()
+
+# 使用数据库连接
+with database_connection('example.db') as conn:
+    cursor = conn.cursor()
+    cursor.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)')
+    cursor.execute('INSERT INTO users (name) VALUES (?)', ('Alice',))
+    conn.commit()
+
+# 2. 计时器上下文管理器
+import time
+from contextlib import contextmanager
+
+@contextmanager
+def timer(description="操作"):
+    """计时器上下文管理器"""
+    start_time = time.time()
+    print(f"开始 {description}")
+    try:
+        yield
+    finally:
+        end_time = time.time()
+        print(f"{description} 耗时: {end_time - start_time:.4f}秒")
+
+# 使用计时器
+with timer("计算操作"):
+    # 模拟耗时操作
+    time.sleep(1)
+    result = sum(range(1000000))
+    print(f"计算结果: {result}")
+
+# 3. 临时目录管理
+import tempfile
+import os
+from contextlib import contextmanager
+
+@contextmanager
+def temp_directory():
+    """临时目录管理器"""
+    temp_dir = tempfile.mkdtemp()
+    try:
+        yield temp_dir
+    finally:
+        # 清理临时目录
+        import shutil
+        shutil.rmtree(temp_dir)
+
+# 使用临时目录
+with temp_directory() as temp_dir:
+    print(f"临时目录: {temp_dir}")
+    temp_file = os.path.join(temp_dir, 'test.txt')
+    with open(temp_file, 'w') as f:
+        f.write('临时文件内容')
+    print(f"文件已创建: {temp_file}")
+
+# 4. 锁管理器
+import threading
+from contextlib import contextmanager
+
+@contextmanager
+def acquire_lock(lock):
+    """锁管理器"""
+    lock.acquire()
+    try:
+        yield
+    finally:
+        lock.release()
+
+# 使用锁
+lock = threading.Lock()
+
+def thread_safe_operation():
+    with acquire_lock(lock):
+        print(f"线程 {threading.current_thread().name} 获得锁")
+        # 执行线程安全操作
+        time.sleep(0.1)
+        print(f"线程 {threading.current_thread().name} 释放锁")
+
+# 测试多线程
+import threading
+threads = []
+for i in range(3):
+    t = threading.Thread(target=thread_safe_operation, name=f"Thread-{i}")
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
+
+# 5. 重定向输出
+import sys
+from contextlib import redirect_stdout, redirect_stderr
+import io
+
+# 重定向标准输出
+output = io.StringIO()
+with redirect_stdout(output):
+    print("这条消息会被重定向到StringIO")
+    print("不会被打印到控制台")
+
+print("实际输出:", output.getvalue())
+
+# 重定向到文件
+with open('output.log', 'w') as log_file:
+    with redirect_stdout(log_file):
+        print("这条消息会被写入文件")
+        print("而不是显示在控制台")
+
+# 6. 忽略异常
+from contextlib import suppress
+
+# 传统方式
+try:
+    os.remove('nonexistent_file.txt')
+except FileNotFoundError:
+    pass
+
+# 使用suppress
+with suppress(FileNotFoundError):
+    os.remove('nonexistent_file.txt')
+    print("文件删除成功（如果存在）")
+
+# 7. 嵌套上下文管理器
+from contextlib import ExitStack
+
+def process_files(file_list):
+    """处理多个文件"""
+    with ExitStack() as stack:
+        files = [stack.enter_context(open(filename, 'r')) for filename in file_list]
+        # 所有文件现在都已打开
+        contents = [file.read() for file in files]
+        return contents
+
+# 使用示例
+try:
+    contents = process_files(['file1.txt', 'file2.txt'])
+    for i, content in enumerate(contents):
+        print(f"文件{i+1}内容: {content[:50]}...")
+except FileNotFoundError as e:
+    print(f"文件未找到: {e}")
+
+# 8. 上下文管理器类
+class Timer:
+    """计时器类"""
+    def __init__(self, name="操作"):
+        self.name = name
+        self.start_time = None
+    
+    def __enter__(self):
+        self.start_time = time.time()
+        print(f"开始 {self.name}")
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        end_time = time.time()
+        elapsed = end_time - self.start_time
+        print(f"{self.name} 耗时: {elapsed:.4f}秒")
+    
+    def elapsed(self):
+        """获取已用时间"""
+        if self.start_time is None:
+            return 0
+        return time.time() - self.start_time
+
+# 使用计时器类
+with Timer("数据处理") as timer:
+    # 模拟数据处理
+    time.sleep(0.5)
+    print(f"处理中，已用时: {timer.elapsed():.2f}秒")
+    time.sleep(0.5)
+    print(f"处理完成，总用时: {timer.elapsed():.2f}秒")
+</pre>
+
+<h2>
+    高级上下文管理器
+</h2>
+<pre tag="python">
+# 1. 条件上下文管理器
+from contextlib import contextmanager
+
+@contextmanager
+def conditional_context(condition, context_manager):
+    """条件上下文管理器"""
+    if condition:
+        with context_manager as cm:
+            yield cm
+    else:
+        yield None
+
+# 使用条件上下文管理器
+debug_mode = True
+with conditional_context(debug_mode, open('debug.log', 'w')) as log:
+    if log:
+        log.write("调试信息\n")
+    print("执行操作")
+
+# 2. 上下文管理器组合
+class DatabaseTransaction:
+    """数据库事务管理器"""
+    def __init__(self, connection):
+        self.connection = connection
+        self.cursor = None
+    
+    def __enter__(self):
+        self.cursor = self.connection.cursor()
+        self.connection.execute("BEGIN")
+        return self.cursor
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.connection.execute("COMMIT")
+        else:
+            self.connection.execute("ROLLBACK")
+        if self.cursor:
+            self.cursor.close()
+
+# 使用数据库事务
+import sqlite3
+
+conn = sqlite3.connect(':memory:')  # 内存数据库
+with DatabaseTransaction(conn) as cursor:
+    cursor.execute('CREATE TABLE users (id INTEGER, name TEXT)')
+    cursor.execute('INSERT INTO users VALUES (1, "Alice")')
+    cursor.execute('INSERT INTO users VALUES (2, "Bob")')
+    # 如果这里发生异常，事务会自动回滚
+
+# 验证数据
+cursor = conn.cursor()
+cursor.execute('SELECT * FROM users')
+print("用户数据:", cursor.fetchall())
+
+# 3. 异步上下文管理器（Python 3.7+）
+import asyncio
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def async_database_connection(db_path):
+    """异步数据库连接管理器"""
+    # 模拟异步连接
+    print(f"异步连接到数据库: {db_path}")
+    await asyncio.sleep(0.1)  # 模拟连接时间
+    connection = f"连接对象({db_path})"
+    
+    try:
+        yield connection
+    finally:
+        print(f"异步关闭数据库连接: {db_path}")
+        await asyncio.sleep(0.1)  # 模拟关闭时间
+
+# 使用异步上下文管理器
+async def main():
+    async with async_database_connection('async_db.db') as conn:
+        print(f"使用连接: {conn}")
+        # 模拟异步操作
+        await asyncio.sleep(0.2)
+
+# 运行异步示例
+# asyncio.run(main())
+</pre>

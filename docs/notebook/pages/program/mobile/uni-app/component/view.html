@@ -1,0 +1,71 @@
+<header>
+    view
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>hover-class</td>
+            <td>String</td>
+            <td>none</td>
+            <td>指定按下去的样式类。当 hover-class="none" 时，没有点击态效果</td>
+        </tr>
+        <tr>
+            <td>hover-stop-propagation</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>指定是否阻止本节点的祖先节点出现点击态</td>
+        </tr>
+        <tr>
+            <td>hover-start-time</td>
+            <td>Number</td>
+            <td>50</td>
+            <td>按住后多久出现点击态，单位毫秒</td>
+        </tr>
+        <tr>
+            <td>hover-stay-time</td>
+            <td>Number</td>
+            <td>400</td>
+            <td>手指松开后点击态保留时间，单位毫秒</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <view class="item" hover-class="hover">
+      <text>点击我</text>
+    </view>
+  </view>
+</template>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.item {
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.hover {
+  background-color: #ddd;
+}
+</style>
+</pre>

@@ -253,8 +253,11 @@ body>header>.github:hover {
 
 .main-view>div:not(:last-child) {
     border-right: 1px solid rgb(188, 186, 186);
-    border-bottom: 1px solid rgb(188, 186, 186);
     user-select: none;
+}
+
+.main-view>div:first-child {
+    border-bottom: 1px solid rgb(188, 186, 186);
 }
 
 .main-view>div:not(:last-child)>h2 {
@@ -711,4 +714,19 @@ body>header>.github:hover {
 
 .fixed-view>.menu>h4 {
     padding-left: 3em;
+}
+
+.link-btns {
+    padding: 10px;
+    padding-right: 0;
+}
+
+.link-btns>a {
+    text-decoration: underline;
+    margin-right: 10px;
+    color: #555555;
+}
+
+.link-btns>a:hover {
+    color: #000000;
 }

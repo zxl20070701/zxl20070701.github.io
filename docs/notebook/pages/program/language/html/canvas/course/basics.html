@@ -1,0 +1,92 @@
+<header>
+    基础入门
+</header>
+<h2>
+    什么是Canvas？
+</h2>
+<p>
+    <span class="important">HTML5 Canvas</span> 是一个可以使用JavaScript绘制图形的HTML元素。它提供了一个空白的画布，开发者可以在上面绘制各种图形、文字、图像等。
+</p>
+
+<h2>
+    Canvas的基本结构
+</h2>
+<p>
+    Canvas元素本身只是一个容器，所有的绘图工作都需要通过JavaScript来完成：
+</p>
+<pre tag="html">
+<canvas id="myCanvas" width="300" height="150">
+    您的浏览器不支持Canvas
+</canvas>
+
+<script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    // 在这里进行绘图操作
+    ctx.fillStyle = 'red';
+    ctx.fillRect(10, 10, 50, 50);
+</script>
+</pre>
+
+<h2>
+    获取Canvas上下文
+</h2>
+<p>
+    要在Canvas上绘图，首先需要获取绘图上下文：
+</p>
+<pre tag="javascript">
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d'); // 获取2D绘图上下文
+</pre>
+
+<h2>
+    Canvas坐标系统
+</h2>
+<p>
+    Canvas使用一个二维坐标系统：
+</p>
+<ul>
+    <li>原点(0,0)在Canvas的左上角</li>
+    <li>X轴向右增加</li>
+    <li>Y轴向下增加</li>
+</ul>
+<p>
+    坐标单位是像素(px)。
+</p>
+
+<h2>
+    Canvas常用属性
+</h2>
+<table>
+    <tr>
+        <th>属性</th>
+        <th>说明</th>
+    </tr>
+    <tr>
+        <td>width</td>
+        <td>Canvas的宽度，默认为300像素</td>
+    </tr>
+    <tr>
+        <td>height</td>
+        <td>Canvas的高度，默认为150像素</td>
+    </tr>
+    <tr>
+        <td>id</td>
+        <td>Canvas的唯一标识符</td>
+    </tr>
+</table>
+
+<h2>
+    浏览器兼容性
+</h2>
+<div class="tips">
+    虽然现代浏览器都支持Canvas，但在使用时最好检查浏览器是否支持：
+</div>
+<pre tag="javascript">
+if (canvas.getContext) {
+    // 支持Canvas
+    const ctx = canvas.getContext('2d');
+} else {
+    // 不支持Canvas，提供降级方案
+}
+</pre>

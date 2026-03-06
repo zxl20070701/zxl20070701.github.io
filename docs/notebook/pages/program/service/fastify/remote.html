@@ -1,0 +1,122 @@
+<header>
+    Fastify路由和请求处理
+</header>
+<h2>
+    基础路由
+</h2>
+<h3>
+    GET请求
+</h3>
+<pre tag="javascript">
+const fastify = require('fastify')({ logger: true });
+
+fastify.get('/users', async (request, reply) => {
+    return { users: [] };
+});
+</pre>
+<p>
+    其中request.query包含GET请求的查询参数。
+</p>
+<h3>
+    POST请求
+</h3>
+<pre tag="javascript">
+fastify.post('/users', async (request, reply) => {
+    const body = request.body;
+    return { success: true };
+});
+</pre>
+<p>
+    其中request.body包含POST请求的请求体数据。
+</p>
+<h2>
+    插件系统
+</h2>
+<h3>
+    解析JSON
+</h3>
+<pre tag="javascript">
+fastify.register(require('@fastify/formbody'));
+</pre>
+<h3>
+    设置响应头
+</h3>
+<pre tag="javascript">
+fastify.addHook('onSend', (request, reply, payload, done) => {
+    reply.header('Content-Type', 'application/json; charset=utf-8');
+    done();
+});
+</pre>
+<h2>
+    路由参数
+</h2>
+<pre tag="javascript">
+fastify.get('/users/:id', async (request, reply) => {
+    const userId = request.params.id;
+    return { id: userId };
+});
+</pre>
+<h2>
+    常用插件
+</h2>
+<h3>
+    CORS跨域支持
+</h3>
+<pre tag="javascript">
+await fastify.register(require('@fastify/cors'), {
+    origin: true
+});
+</pre>
+<h3>
+    日志记录
+</h3>
+<pre tag="javascript">
+// Fastify内置日志
+const fastify = require('fastify')({ logger: true });
+</pre>
+<h3>
+    静态文件服务
+</h3>
+<pre tag="javascript">
+await fastify.register(require('@fastify/static'), {
+    root: path.join(__dirname, 'public'),
+    prefix: '/public/'
+});
+</pre>
+<h2>
+    错误处理
+</h2>
+<pre tag="javascript">
+fastify.setErrorHandler(function (error, request, reply) {
+    reply.status(500).send({ error: 'Something went wrong!' });
+});
+</pre>
+<h2>
+    环境变量配置
+</h2>
+<pre tag="javascript">
+require('dotenv').config();
+const port = process.env.PORT || 3000;
+
+fastify.listen({ port }, (err, address) => {
+    if (err) {
+        fastify.log.error(err);
+        process.exit(1);
+    }
+    fastify.log.info(`Server listening on ${address}`);
+});
+</pre>
+<h2>
+    路由分组
+</h2>
+<pre tag="javascript">
+fastify.register(async function (fastify) {
+    fastify.get('/users', async (request, reply) => {
+        return { users: [] };
+    });
+
+    fastify.get('/users/:id', async (request, reply) => {
+        return { id: request.params.id };
+    });
+}, { prefix: '/api' });
+</pre>

@@ -1,46 +1,327 @@
 <header>
     比较运算符
 </header>
+<p>
+    比较运算符用于比较两个值之间的关系，返回布尔值True或False。Python支持链式比较，如a < b < c，这在其他许多编程语言中是不常见的。
+</p>
+
+<h2>
+    基本比较运算符
+</h2>
 <table>
     <thead>
         <tr>
-            <th width="10%">运算符</th>
+            <th>运算符</th>
             <th>描述</th>
-            <th>实例</th>
+            <th>示例</th>
+            <th>结果</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>==</td>
-            <td> 等于 - 比较对象是否相等</td>
-            <td> (a == b) 返回 False。 </td>
+            <td>等于：比较两个对象是否相等</td>
+            <td>5 == 5</td>
+            <td>True</td>
         </tr>
         <tr>
             <td>!=</td>
-            <td> 不等于 - 比较两个对象是否不相等</td>
-            <td> (a != b) 返回 True。 </td>
-        </tr>
-
-        <tr>
-            <td>&gt;</td>
-            <td> 大于 - 返回x是否大于y</td>
-            <td> (a &gt; b) 返回 False。</td>
+            <td>不等于：比较两个对象是否不相等</td>
+            <td>5 != 3</td>
+            <td>True</td>
         </tr>
         <tr>
-            <td>&lt;</td>
-            <td> 小于 - 返回x是否小于y。所有比较运算符返回1表示真，返回0表示假。这分别与特殊的变量True和False等价。注意，这些变量名的大写。</td>
-            <td> (a &lt; b) 返回 True。 </td>
+            <td>></td>
+            <td>大于：返回x是否大于y</td>
+            <td>5 > 3</td>
+            <td>True</td>
         </tr>
         <tr>
-            <td>&gt;=</td>
-            <td> 大于等于 - 返回x是否大于等于y。</td>
-            <td> (a &gt;= b) 返回 False。</td>
-
+            <td><</td>
+            <td>小于：返回x是否小于y</td>
+            <td>3 < 5</td>
+            <td>True</td>
         </tr>
         <tr>
-            <td>&lt;=</td>
-            <td> 小于等于 - 返回x是否小于等于y。</td>
-            <td> (a &lt;= b) 返回 True。 </td>
+            <td>>=</td>
+            <td>大于等于：返回x是否大于等于y</td>
+            <td>5 >= 5</td>
+            <td>True</td>
+        </tr>
+        <tr>
+            <td><=</td>
+            <td>小于等于：返回x是否小于等于y</td>
+            <td>3 <= 5</td>
+            <td>True</td>
         </tr>
     </tbody>
 </table>
+
+<h2>
+    比较运算符详细示例
+</h2>
+<pre tag="python">
+# 数字比较
+a = 10
+b = 20
+c = 10
+
+print(f"a = {a}, b = {b}, c = {c}")
+print(f"a == b: {a == b}")    # False
+print(f"a != b: {a != b}")    # True
+print(f"a > b: {a > b}")      # False
+print(f"a < b: {a < b}")      # True
+print(f"a >= c: {a >= c}")    # True
+print(f"a <= c: {a <= c}")    # True
+
+# 字符串比较（字典序）
+str1 = "apple"
+str2 = "banana"
+str3 = "apple"
+
+print(f"\n字符串比较:")
+print(f"'{str1}' == '{str3}': {str1 == str3}")  # True
+print(f"'{str1}' != '{str2}': {str1 != str2}")  # True
+print(f"'{str1}' < '{str2}': {str1 < str2}")    # True (按字母顺序)
+print(f"'{str1}' > '{str2}': {str1 > str2}")    # False
+
+# 列表比较（逐元素比较）
+list1 = [1, 2, 3]
+list2 = [1, 2, 4]
+list3 = [1, 2, 3]
+
+print(f"\n列表比较:")
+print(f"{list1} == {list3}: {list1 == list3}")  # True
+print(f"{list1} != {list2}: {list1 != list2}")  # True
+print(f"{list1} < {list2}: {list1 < list2}")    # True
+
+# 链式比较（Python特有）
+print(f"\n链式比较:")
+print(f"1 < 2 < 3: {1 < 2 < 3}")        # True
+print(f"1 < 3 > 2: {1 < 3 > 2}")        # True
+print(f"5 == 5 == 5: {5 == 5 == 5}")    # True
+print(f"a == c == 10: {a == c == 10}")  # True
+
+# 等价于
+print(f"(1 < 2) and (2 < 3): {(1 < 2) and (2 < 3)}")  # True
+</pre>
+
+<h2>
+    不同类型之间的比较
+</h2>
+<pre tag="python">
+# 数字比较
+print("数字比较:")
+print(f"5 == 5.0: {5 == 5.0}")    # True
+print(f"5 == 5+0j: {5 == 5+0j}")  # True
+
+# 字符串和数字不能直接比较（Python 3中）
+try:
+    result = 5 == "5"
+    print(f"5 == '5': {result}")  # False
+except Exception as e:
+    print(f"错误: {e}")
+
+# None比较
+print(f"\nNone比较:")
+print(f"None == None: {None == None}")  # True
+print(f"None != 0: {None != 0}")        # True
+print(f"None is None: {None is None}")  # True (推荐使用is)
+
+# 布尔值比较
+print(f"\n布尔值比较:")
+print(f"True == 1: {True == 1}")      # True
+print(f"False == 0: {False == 0}")    # True
+print(f"True is 1: {True is 1}")      # False (值相等但对象不同)
+</pre>
+
+<h2>
+    对象比较 vs 身份比较
+</h2>
+<pre tag="python">
+# 值比较 (==) vs 身份比较 (is)
+a = [1, 2, 3]
+b = [1, 2, 3]
+c = a
+
+print("值比较 vs 身份比较:")
+print(f"a: {a}")
+print(f"b: {b}")
+print(f"c: {c}")
+print(f"a == b: {a == b}")    # True (值相等)
+print(f"a is b: {a is b}")    # False (不同对象)
+print(f"a is c: {a is c}")    # True (同一对象)
+
+# 字符串驻留（string interning）
+s1 = "hello"
+s2 = "hello"
+s3 = "hello world"
+s4 = "hello world"
+
+print(f"\n字符串驻留:")
+print(f"s1 == s2: {s1 == s2}")  # True
+print(f"s1 is s2: {s1 is s2}")  # True (短字符串会被驻留)
+print(f"s3 == s4: {s3 == s4}")  # True
+print(f"s3 is s4: {s3 is s4}")  # False (长字符串通常不被驻留)
+
+# 数字驻留
+x = 256
+y = 256
+z = 257
+w = 257
+
+print(f"\n数字驻留:")
+print(f"x is y: {x is y}")  # True (-5到256的整数会被驻留)
+print(f"z is w: {z is w}")  # False (超出范围的整数不被驻留)
+</pre>
+
+<h2>
+    自定义对象比较
+</h2>
+<pre tag="python">
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __eq__(self, other):
+        """定义等于比较"""
+        if isinstance(other, Person):
+            return self.name == other.name and self.age == other.age
+        return False
+    
+    def __lt__(self, other):
+        """定义小于比较（用于排序）"""
+        if isinstance(other, Person):
+            return self.age < other.age
+        return NotImplemented
+    
+    def __repr__(self):
+        return f"Person('{self.name}', {self.age})"
+
+# 创建Person对象
+p1 = Person("Alice", 25)
+p2 = Person("Bob", 30)
+p3 = Person("Alice", 25)
+
+print("自定义对象比较:")
+print(f"p1: {p1}")
+print(f"p2: {p2}")
+print(f"p3: {p3}")
+print(f"p1 == p3: {p1 == p3}")  # True
+print(f"p1 == p2: {p1 == p2}")  # False
+print(f"p1 < p2: {p1 < p2}")    # True
+print(f"p1 > p2: {p1 > p2}")    # False (自动推断)
+
+# 排序自定义对象
+people = [p2, p1, Person("Charlie", 20)]
+sorted_people = sorted(people)
+print(f"\n按年龄排序: {sorted_people}")
+</pre>
+
+<h2>
+    实际应用示例
+</h2>
+<pre tag="python">
+# 1. 成绩等级判断
+def get_grade(score):
+    """根据分数返回等级"""
+    if score >= 90:
+        return "A"
+    elif score >= 80:
+        return "B"
+    elif score >= 70:
+        return "C"
+    elif score >= 60:
+        return "D"
+    else:
+        return "F"
+
+scores = [95, 87, 76, 65, 45, 92]
+print("成绩等级:")
+for score in scores:
+    grade = get_grade(score)
+    print(f"  {score}分: {grade}")
+
+# 2. 范围检查
+def is_valid_age(age):
+    """检查年龄是否在有效范围内"""
+    return 0 <= age <= 120  # 链式比较
+
+ages = [25, 150, -5, 0, 120, 121]
+print(f"\n年龄有效性检查:")
+for age in ages:
+    valid = is_valid_age(age)
+    print(f"  {age}岁: {'有效' if valid else '无效'}")
+
+# 3. 字符串验证
+def is_valid_email(email):
+    """简单的邮箱格式验证"""
+    return "@" in email and "." in email and email.index("@") < email.index(".")
+
+emails = ["user@example.com", "invalid.email", "@example.com", "user@.com"]
+print(f"\n邮箱格式验证:")
+for email in emails:
+    valid = is_valid_email(email)
+    print(f"  {email}: {'有效' if valid else '无效'}")
+
+# 4. 列表元素查找
+def find_index(lst, target):
+    """查找元素在列表中的索引"""
+    for i, item in enumerate(lst):
+        if item == target:
+            return i
+    return -1
+
+fruits = ["苹果", "香蕉", "橙子", "葡萄"]
+target = "橙子"
+index = find_index(fruits, target)
+print(f"\n在{fruits}中查找'{target}': 索引{index}")
+
+# 5. 边界值测试
+def test_boundary(value, min_val, max_val):
+    """测试边界值"""
+    results = {
+        "等于最小值": value == min_val,
+        "等于最大值": value == max_val,
+        "在范围内": min_val <= value <= max_val,
+        "小于最小值": value < min_val,
+        "大于最大值": value > max_val
+    }
+    return results
+
+test_value = 50
+min_val, max_val = 0, 100
+results = test_boundary(test_value, min_val, max_val)
+print(f"\n边界值测试 (值={test_value}, 范围=[{min_val}, {max_val}]):")
+for test, result in results.items():
+    print(f"  {test}: {result}")
+</pre>
+
+<h2>
+    比较运算符优先级
+</h2>
+<pre tag="python">
+# 比较运算符优先级低于算术运算符
+result1 = 2 + 3 > 4  # 等价于 (2 + 3) > 4
+result2 = 2 + (3 > 4)  # 先比较，再加法
+
+print("运算符优先级:")
+print(f"2 + 3 > 4 = {result1}")      # True
+print(f"2 + (3 > 4) = {result2}")    # 2 (False转换为0)
+
+# 链式比较的结合性
+# a < b < c 等价于 (a < b) and (b < c)
+a, b, c = 1, 2, 3
+chain1 = a < b < c
+chain2 = (a < b) and (b < c)
+print(f"\n链式比较:")
+print(f"a < b < c: {chain1}")          # True
+print(f"(a < b) and (b < c): {chain2}")  # True
+print(f"等价: {chain1 == chain2}")     # True
+
+# 复杂的链式比较
+x = 5
+complex_chain = 1 < x <= 5 != 6
+print(f"1 < {x} <= 5 != 6: {complex_chain}")  # True
+</pre>

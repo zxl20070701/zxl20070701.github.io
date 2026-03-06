@@ -1,0 +1,286 @@
+<header>
+    link标签
+</header>
+<p>
+    link标签用于在HTML文档中定义外部资源的关系，最常见的用途是链接CSS样式表，但它也可以用于预加载资源、定义网站图标等。link标签是空元素，只包含属性，没有结束标签。
+</p>
+<h2>
+    基本用法
+</h2>
+<pre tag='html'>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Link标签示例</title>
+    
+    <!-- 链接CSS样式表 -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- 网站图标 -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- 预加载资源 -->
+    <link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin>
+</head>
+<body>
+    <h1>欢迎来到我的网页</h1>
+</body>
+</html>
+</pre>
+<h2>
+    属性详解
+</h2>
+<h3>
+    rel属性
+</h3>
+<p>
+    rel属性定义当前文档与链接资源之间的关系，是最重要的属性之一。
+</p>
+<h4>
+    常用rel值
+</h4>
+<ul>
+    <li><strong>stylesheet</strong>：链接CSS样式表</li>
+    <li><strong>icon</strong>：定义网站图标（favicon）</li>
+    <li><strong>preload</strong>：预加载资源</li>
+    <li><strong>prefetch</strong>：预获取资源</li>
+    <li><strong>dns-prefetch</strong>：DNS预解析</li>
+    <li><strong>preconnect</strong>：预连接</li>
+    <li><strong>canonical</strong>：规范URL</li>
+    <li><strong>alternate</strong>：替代版本（如RSS、移动版）</li>
+</ul>
+<pre tag='html'>
+<!-- CSS样式表 -->
+<link rel="stylesheet" href="styles.css">
+
+<!-- 网站图标 -->
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- 预加载关键资源 -->
+<link rel="preload" href="critical.css" as="style">
+<link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin>
+
+<!-- DNS预解析 -->
+<link rel="dns-prefetch" href="//example.com">
+
+<!-- 预连接 -->
+<link rel="preconnect" href="https://cdn.example.com">
+
+<!-- 规范URL -->
+<link rel="canonical" href="https://example.com/page">
+
+<!-- 替代版本 -->
+<link rel="alternate" type="application/rss+xml" href="feed.xml">
+<link rel="alternate" media="only screen and (max-width: 640px)" href="mobile.html">
+</pre>
+<h3>
+    href属性
+</h3>
+<p>
+    href属性指定链接资源的URL。
+</p>
+<pre tag='html'>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdn.example.com/bootstrap.min.css">
+<link rel="icon" href="/favicon.ico">
+</pre>
+<h3>
+    type属性
+</h3>
+<p>
+    type属性指定链接资源的MIME类型。对于CSS样式表，通常是"text/css"。
+</p>
+<pre tag='html'>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+</pre>
+<h3>
+    media属性
+</h3>
+<p>
+    media属性指定样式表适用的媒体类型或媒体查询。
+</p>
+<pre tag='html'>
+<!-- 仅适用于屏幕显示 -->
+<link rel="stylesheet" href="screen.css" media="screen">
+
+<!-- 仅适用于打印 -->
+<link rel="stylesheet" href="print.css" media="print">
+
+<!-- 响应式设计 -->
+<link rel="stylesheet" href="mobile.css" media="(max-width: 768px)">
+<link rel="stylesheet" href="desktop.css" media="(min-width: 769px)">
+</pre>
+<h3>
+    hreflang属性
+</h3>
+<p>
+    hreflang属性指定链接资源的语言。
+</p>
+<pre tag='html'>
+<link rel="alternate" href="https://example.com/en" hreflang="en">
+<link rel="alternate" href="https://example.com/zh" hreflang="zh">
+</pre>
+<h3>
+    sizes属性
+</h3>
+<p>
+    sizes属性指定图标的大小，主要用于不同尺寸的favicon。
+</p>
+<pre tag='html'>
+<link rel="icon" href="favicon-16x16.png" sizes="16x16">
+<link rel="icon" href="favicon-32x32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+</pre>
+<h3>
+    crossorigin属性
+</h3>
+<p>
+    crossorigin属性用于配置CORS（跨域资源共享）请求。
+</p>
+<pre tag='html'>
+<link rel="stylesheet" href="https://cdn.example.com/styles.css" crossorigin="anonymous">
+<link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin>
+</pre>
+<h3>
+    integrity属性
+</h3>
+<p>
+    integrity属性允许浏览器检查获取的资源是否被篡改，提供了额外的安全性。
+</p>
+<pre tag='html'>
+<link rel="stylesheet" 
+      href="https://cdn.example.com/bootstrap.min.css" 
+      integrity="sha384-..." 
+      crossorigin="anonymous">
+</pre>
+<h3>
+    as属性
+</h3>
+<p>
+    as属性与rel="preload"一起使用，指定预加载资源的类型。
+</p>
+<pre tag='html'>
+<link rel="preload" href="style.css" as="style">
+<link rel="preload" href="script.js" as="script">
+<link rel="preload" href="font.woff2" as="font">
+<link rel="preload" href="image.jpg" as="image">
+</pre>
+<h2>
+    性能优化
+</h2>
+<h3>
+    预加载关键资源
+</h3>
+<pre tag='html'>
+<!-- 预加载关键CSS -->
+<link rel="preload" href="critical.css" as="style">
+
+<!-- 预加载关键JavaScript -->
+<link rel="preload" href="critical.js" as="script">
+
+<!-- 预加载字体文件 -->
+<link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin>
+</pre>
+<h3>
+    DNS预解析和预连接
+</h3>
+<pre tag='html'>
+<!-- DNS预解析 -->
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//cdn.example.com">
+
+<!-- 预连接 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</pre>
+<h3>
+    预获取资源
+</h3>
+<pre tag='html'>
+<!-- 预获取下一页可能需要的资源 -->
+<link rel="prefetch" href="next-page.html">
+<link rel="prefetch" href="next-page.css">
+</pre>
+<h2>
+    响应式设计
+</h2>
+<p>
+    使用link标签和media属性实现响应式设计：
+</p>
+<pre tag='html'>
+<!-- 默认样式 -->
+<link rel="stylesheet" href="main.css">
+
+<!-- 平板样式 -->
+<link rel="stylesheet" href="tablet.css" media="(max-width: 1024px)">
+
+<!-- 手机样式 -->
+<link rel="stylesheet" href="mobile.css" media="(max-width: 768px)">
+
+<!-- 打印样式 -->
+<link rel="stylesheet" href="print.css" media="print">
+</pre>
+<h2>
+    网站图标
+</h2>
+<p>
+    为网站添加各种尺寸的图标：
+</p>
+<pre tag='html'>
+<!-- 标准favicon -->
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- PNG格式favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<!-- Apple Touch Icon -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<!-- Android Chrome -->
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+
+<!-- Safari Pinned Tab -->
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<!-- MS Tile -->
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+</pre>
+<h2>
+    最佳实践
+</h2>
+<h3>
+    CSS加载策略
+</h3>
+<pre tag='html'>
+<!-- 关键CSS内联 -->
+<style>
+    /* 关键样式 */
+    body { margin: 0; font-family: Arial, sans-serif; }
+</style>
+
+<!-- 非关键CSS异步加载 -->
+<link rel="preload" href="non-critical.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="non-critical.css"></noscript>
+</pre>
+<h3>
+    资源预加载
+</h3>
+<pre tag='html'>
+<!-- 预加载关键资源 -->
+<link rel="preload" href="hero-image.jpg" as="image">
+<link rel="preload" href="main-font.woff2" as="font" type="font/woff2" crossorigin>
+</pre>
+<h2>
+    注意事项
+</h2>
+<ul>
+    <li>link标签应该放在head部分</li>
+    <li>对于CSS样式表，应该尽早加载以避免页面闪烁</li>
+    <li>使用integrity属性可以提高安全性，但需要定期更新哈希值</li>
+    <li>预加载资源时要谨慎，避免浪费带宽</li>
+    <li>对于第三方资源，考虑使用crossorigin属性</li>
+</ul>

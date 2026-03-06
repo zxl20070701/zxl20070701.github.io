@@ -1,0 +1,230 @@
+<header>
+    进程管理
+</header>
+<h2>
+    查看进程
+</h2>
+<h3>
+    ps
+</h3>
+<p>
+    查看当前终端的进程：
+</p>
+<pre>
+    ps
+</pre>
+<p>
+    查看所有进程：
+</p>
+<pre>
+ps aux
+# 或者
+ps -ef
+</pre>
+<p>
+    查看特定用户的进程：
+</p>
+<pre>
+    ps -u username
+</pre>
+<h3>
+    top / htop
+</h3>
+<p>
+    实时查看进程信息：
+</p>
+<pre>
+    top
+</pre>
+<p>
+    更友好的进程查看器：
+</p>
+<pre>
+    htop
+</pre>
+<h3>
+    pgrep
+</h3>
+<p>
+    根据进程名查找进程 ID：
+</p>
+<pre>
+    pgrep process_name
+</pre>
+<h2>
+    进程控制
+</h2>
+<h3>
+    kill
+</h3>
+<p>
+    发送信号给进程：
+</p>
+<pre>
+    kill PID
+</pre>
+<p>
+    发送特定信号：
+</p>
+<pre>
+kill -SIGTERM PID
+kill -9 PID  # 强制终止
+</pre>
+<p>
+    常用信号：
+</p>
+<pre>
+1 (HUP) - 挂起，重新读取配置文件
+9 (KILL) - 强制终止
+15 (TERM) - 正常终止（默认）
+</pre>
+<h3>
+    pkill
+</h3>
+<p>
+    根据进程名终止进程：
+</p>
+<pre>
+    pkill process_name
+</pre>
+<p>
+    发送特定信号：
+</p>
+<pre>
+    pkill -9 process_name
+</pre>
+<h3>
+    killall
+</h3>
+<p>
+    终止所有同名进程：
+</p>
+<pre>
+    killall process_name
+</pre>
+<h2>
+    后台进程管理
+</h2>
+<h3>
+    jobs
+</h3>
+<p>
+    查看后台作业：
+</p>
+<pre>
+    jobs
+</pre>
+<h3>
+    fg 和 bg
+</h3>
+<p>
+    将后台作业放到前台：
+</p>
+<pre>
+    fg %1
+</pre>
+<p>
+    将作业放到后台运行：
+</p>
+<pre>
+    bg %1
+</pre>
+<h3>
+    nohup
+</h3>
+<p>
+    让进程在后台持续运行：
+</p>
+<pre>
+    nohup command &
+</pre>
+<h2>
+    系统服务和守护进程
+</h2>
+<h3>
+    systemctl (systemd)
+</h3>
+<p>
+    查看所有服务状态：
+</p>
+<pre>
+    systemctl list-units --type=service
+</pre>
+<p>
+    启动服务：
+</p>
+<pre>
+    sudo systemctl start service_name
+</pre>
+<p>
+    停止服务：
+</p>
+<pre>
+    sudo systemctl stop service_name
+</pre>
+<p>
+    重启服务：
+</p>
+<pre>
+    sudo systemctl restart service_name
+</pre>
+<p>
+    查看服务状态：
+</p>
+<pre>
+    systemctl status service_name
+</pre>
+<p>
+    设置开机启动：
+</p>
+<pre>
+    sudo systemctl enable service_name
+</pre>
+<p>
+    禁用开机启动：
+</p>
+<pre>
+    sudo systemctl disable service_name
+</pre>
+<h3>
+    service (SysVinit)
+</h3>
+<p>
+    传统服务管理命令：
+</p>
+<pre>
+sudo service service_name start
+sudo service service_name stop
+sudo service service_name restart
+sudo service service_name status
+</pre>
+<h2>
+    计划任务
+</h2>
+<h3>
+    crontab
+</h3>
+<p>
+    编辑当前用户的计划任务：
+</p>
+<pre>
+    crontab -e
+</pre>
+<p>
+    查看当前用户的计划任务：
+</p>
+<pre>
+    crontab -l
+</pre>
+<p>
+    删除当前用户的计划任务：
+</p>
+<pre>
+    crontab -r
+</pre>
+<p>
+    查看系统计划任务：
+</p>
+<pre>
+    sudo crontab -e
+</pre>

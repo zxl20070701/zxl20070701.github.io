@@ -1,0 +1,138 @@
+<header>
+    文件操作
+</header>
+<h2>
+    文件和目录操作
+</h2>
+<h3>
+    基本文件操作
+</h3>
+<p>
+    创建目录：
+</p>
+<pre>
+    mkdir new_folder
+</pre>
+<p>
+    创建多级目录：
+</p>
+<pre>
+    mkdir -p parent/child/grandchild
+</pre>
+<p>
+    复制文件：
+</p>
+<pre>
+    cp source.txt destination.txt
+</pre>
+<p>
+    复制目录：
+</p>
+<pre>
+    cp -r source_folder destination_folder
+</pre>
+<p>
+    移动或重命名文件：
+</p>
+<pre>
+    mv old_name.txt new_name.txt
+</pre>
+<p>
+    删除文件：
+</p>
+<pre>
+    rm file.txt
+</pre>
+<p>
+    删除目录：
+</p>
+<pre>
+    rm -r folder_name
+</pre>
+<h3>
+    查找文件
+</h3>
+<p>
+    使用 find 命令查找文件：
+</p>
+<pre>
+    find /path/to/search -name "filename.txt"
+</pre>
+<p>
+    查找特定类型的文件：
+</p>
+<pre>
+    find . -name "*.txt"
+</pre>
+<p>
+    使用 locate 命令快速查找（需要先更新数据库）：
+</p>
+<pre>
+sudo /usr/libexec/locate.updatedb
+locate filename.txt
+</pre>
+<h2>
+    文件内容查看和编辑
+</h2>
+<h3>
+    cat
+</h3>
+<p>
+    查看文件内容：
+</p>
+<pre>
+    cat file.txt
+</pre>
+<h3>
+    less 和 more
+</h3>
+<p>
+    分页查看文件内容：
+</p>
+<pre>
+less large_file.txt
+more large_file.txt
+</pre>
+<h3>
+    head 和 tail
+</h3>
+<p>
+    查看文件开头部分：
+</p>
+<pre>
+    head -n 20 file.txt
+</pre>
+<p>
+    查看文件末尾部分：
+</p>
+<pre>
+    tail -n 20 file.txt
+</pre>
+<p>
+    实时查看文件更新：
+</p>
+<pre>
+    tail -f log_file.txt
+</pre>
+<h2>
+    权限和属性
+</h2>
+<h3>
+    chown
+</h3>
+<p>
+    更改文件所有者：
+</p>
+<pre>
+    sudo chown username file.txt
+</pre>
+<h3>
+    chmod
+</h3>
+<p>
+    更改文件权限：
+</p>
+<pre>
+chmod 755 script.sh
+chmod +x script.sh
+</pre>

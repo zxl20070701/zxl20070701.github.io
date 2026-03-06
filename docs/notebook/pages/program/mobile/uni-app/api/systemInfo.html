@@ -1,0 +1,182 @@
+<header>
+    获取系统信息
+</header>
+<h2>
+    uni.getSystemInfo(OBJECT)
+</h2>
+<p>
+    异步获取系统信息。
+</p>
+<pre tag="javascript">
+uni.getSystemInfo({
+    success: function (res) {
+        console.log(res.model);
+        console.log(res.pixelRatio);
+        console.log(res.windowWidth);
+        console.log(res.windowHeight);
+        console.log(res.language);
+        console.log(res.version);
+        console.log(res.platform);
+    }
+});
+</pre>
+<h2>
+    uni.getSystemInfoSync()
+</h2>
+<p>
+    同步获取系统信息。
+</p>
+<pre tag="javascript">
+try {
+    const res = uni.getSystemInfoSync();
+    console.log(res.model);
+    console.log(res.pixelRatio);
+    console.log(res.windowWidth);
+    console.log(res.windowHeight);
+    console.log(res.language);
+    console.log(res.version);
+    console.log(res.platform);
+} catch (e) {
+    // error
+}
+</pre>
+<h2>
+    返回值说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>brand</td>
+            <td>手机品牌</td>
+        </tr>
+        <tr>
+            <td>model</td>
+            <td>手机型号</td>
+        </tr>
+        <tr>
+            <td>pixelRatio</td>
+            <td>设备像素比</td>
+        </tr>
+        <tr>
+            <td>screenWidth</td>
+            <td>屏幕宽度</td>
+        </tr>
+        <tr>
+            <td>screenHeight</td>
+            <td>屏幕高度</td>
+        </tr>
+        <tr>
+            <td>windowWidth</td>
+            <td>可使用窗口宽度</td>
+        </tr>
+        <tr>
+            <td>windowHeight</td>
+            <td>可使用窗口高度</td>
+        </tr>
+        <tr>
+            <td>statusBarHeight</td>
+            <td>状态栏的高度</td>
+        </tr>
+        <tr>
+            <td>language</td>
+            <td>应用设置的语言</td>
+        </tr>
+        <tr>
+            <td>version</td>
+            <td>引擎版本号</td>
+        </tr>
+        <tr>
+            <td>system</td>
+            <td>操作系统及版本</td>
+        </tr>
+        <tr>
+            <td>platform</td>
+            <td>客户端平台</td>
+        </tr>
+        <tr>
+            <td>fontSizeSetting</td>
+            <td>用户字体大小设置。以"我"为示例，当用户设置字体大小为"标准"时，返回 16，当用户设置字体大小为"放大"时，返回 18，当用户设置字体大小为"特大"时，返回 20</td>
+        </tr>
+        <tr>
+            <td>SDKVersion</td>
+            <td>客户端基础库版本</td>
+        </tr>
+        <tr>
+            <td>deviceId</td>
+            <td>设备ID</td>
+        </tr>
+        <tr>
+            <td>deviceType</td>
+            <td>设备类型</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <button @click="getSystemInfo">获取系统信息</button>
+    <view class="info-list">
+      <view class="info-item" v-for="(value, key) in systemInfo" :key="key">
+        <text class="info-key">{{key}}:</text>
+        <text class="info-value">{{value}}</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      systemInfo: {}
+    }
+  },
+  methods: {
+    getSystemInfo() {
+      uni.getSystemInfo({
+        success: (res) => {
+          this.systemInfo = res;
+        }
+      });
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.info-list {
+  margin-top: 20px;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.info-key {
+  font-weight: bold;
+  margin-right: 10px;
+  min-width: 150px;
+}
+
+.info-value {
+  flex: 1;
+}
+</style>
+</pre>

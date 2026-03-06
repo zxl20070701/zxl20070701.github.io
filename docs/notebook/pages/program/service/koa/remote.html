@@ -1,0 +1,138 @@
+<header>
+    Koa路由和请求处理
+</header>
+<h2>
+    基础路由
+</h2>
+<h3>
+    GET请求
+</h3>
+<pre tag="javascript">
+const Koa = require('koa');
+const Router = require('koa-router');
+
+const app = new Koa();
+const router = new Router();
+
+router.get('/users', (ctx) => {
+    ctx.body = { users: [] };
+});
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+</pre>
+<p>
+    其中ctx.query包含GET请求的查询参数。
+</p>
+<h3>
+    POST请求
+</h3>
+<pre tag="javascript">
+router.post('/users', (ctx) => {
+    const body = ctx.request.body;
+    ctx.body = { success: true };
+});
+</pre>
+<p>
+    其中ctx.request.body包含POST请求的请求体数据。
+</p>
+<h2>
+    中间件
+</h2>
+<h3>
+    解析JSON
+</h3>
+<pre tag="javascript">
+const bodyParser = require('koa-bodyparser');
+app.use(bodyParser());
+</pre>
+<h3>
+    设置响应头
+</h3>
+<pre tag="javascript">
+app.use(async (ctx, next) => {
+    ctx.set('Content-Type', 'application/json; charset=utf-8');
+    await next();
+});
+</pre>
+<h2>
+    路由参数
+</h2>
+<pre tag="javascript">
+router.get('/users/:id', (ctx) => {
+    const userId = ctx.params.id;
+    ctx.body = { id: userId };
+});
+</pre>
+<h2>
+    常用中间件
+</h2>
+<h3>
+    CORS跨域支持
+</h3>
+<pre tag="javascript">
+const cors = require('@koa/cors');
+app.use(cors());
+</pre>
+<h3>
+    日志记录
+</h3>
+<pre tag="javascript">
+app.use(async (ctx, next) => {
+    console.log(`${ctx.method} ${ctx.url}`);
+    await next();
+});
+</pre>
+<h3>
+    静态文件服务
+</h3>
+<pre tag="javascript">
+const serve = require('koa-static');
+app.use(serve('public'));
+</pre>
+<h2>
+    错误处理
+</h2>
+<pre tag="javascript">
+app.on('error', (err, ctx) => {
+    console.error('server error', err);
+});
+
+app.use(async (ctx, next) => {
+    try {
+        await next();
+    } catch (err) {
+        ctx.status = err.status || 500;
+        ctx.body = { error: 'Something went wrong!' };
+        ctx.app.emit('error', err, ctx);
+    }
+});
+</pre>
+<h2>
+    环境变量配置
+</h2>
+<pre tag="javascript">
+require('dotenv').config();
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
+</pre>
+<h2>
+    路由分组
+</h2>
+<pre tag="javascript">
+const userRouter = new Router({ prefix: '/api/users' });
+
+userRouter.get('/', (ctx) => {
+    ctx.body = { users: [] };
+});
+
+userRouter.get('/:id', (ctx) => {
+    ctx.body = { id: ctx.params.id };
+});
+
+app.use(userRouter.routes());
+app.use(userRouter.allowedMethods());
+</pre>

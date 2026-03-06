@@ -1,0 +1,120 @@
+<header>
+    渐变
+</header>
+<h2>
+    线性渐变 &lt;linearGradient&gt;
+</h2>
+<p>
+    线性渐变沿着一条直线从一个颜色过渡到另一个颜色。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <linearGradient id="linearGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="red" />
+            <stop offset="100%" stop-color="blue" />
+        </linearGradient>
+    </defs>
+    <rect x="10" y="10" width="180" height="180" fill="url(#linearGrad)" />
+</svg>
+</pre>
+<h3>
+    线性渐变属性
+</h3>
+<ul>
+    <li><span class="important">x1, y1</span>: 渐变起点的坐标</li>
+    <li><span class="important">x2, y2</span>: 渐变终点的坐标</li>
+    <li><span class="important">gradientUnits</span>: 坐标系统（userSpaceOnUse或objectBoundingBox）</li>
+    <li><span class="important">gradientTransform</span>: 渐变变换</li>
+</ul>
+<h2>
+    径向渐变 &lt;radialGradient&gt;
+</h2>
+<p>
+    径向渐变从一个中心点向外扩散。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <radialGradient id="radialGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="yellow" />
+            <stop offset="100%" stop-color="red" />
+        </radialGradient>
+    </defs>
+    <rect x="10" y="10" width="180" height="180" fill="url(#radialGrad)" />
+</svg>
+</pre>
+<h3>
+    径向渐变属性
+</h3>
+<ul>
+    <li><span class="important">cx, cy</span>: 渐变中心点的坐标</li>
+    <li><span class="important">r</span>: 渐变的半径</li>
+    <li><span class="important">fx, fy</span>: 渐变的焦点坐标</li>
+    <li><span class="important">gradientUnits</span>: 坐标系统</li>
+</ul>
+<h2>
+    渐变停止点 &lt;stop&gt;
+</h2>
+<p>
+    stop元素定义渐变的颜色和位置。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <linearGradient id="multiStopGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="red" />
+            <stop offset="50%" stop-color="green" />
+            <stop offset="100%" stop-color="blue" />
+        </linearGradient>
+    </defs>
+    <rect x="10" y="10" width="180" height="180" fill="url(#multiStopGrad)" />
+</svg>
+</pre>
+<h3>
+    stop属性
+</h3>
+<ul>
+    <li><span class="important">offset</span>: 停止点的位置（0%到100%）</li>
+    <li><span class="important">stop-color</span>: 停止点的颜色</li>
+    <li><span class="important">stop-opacity</span>: 停止点的不透明度</li>
+</ul>
+<h2>
+    渐变变换
+</h2>
+<p>
+    可以对渐变应用变换。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <linearGradient id="transformedGrad" x1="0%" y1="0%" x2="100%" y2="0%" 
+                        gradientTransform="rotate(45)">
+            <stop offset="0%" stop-color="red" />
+            <stop offset="100%" stop-color="blue" />
+        </linearGradient>
+    </defs>
+    <rect x="10" y="10" width="180" height="180" fill="url(#transformedGrad)" />
+</svg>
+</pre>
+<h2>
+    渐变重用
+</h2>
+<p>
+    定义在&lt;defs&gt;中的渐变可以被多个元素使用。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <linearGradient id="reusableGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="purple" />
+            <stop offset="100%" stop-color="pink" />
+        </linearGradient>
+    </defs>
+    <rect x="10" y="10" width="80" height="80" fill="url(#reusableGrad)" />
+    <circle cx="150" cy="50" r="40" fill="url(#reusableGrad)" />
+</svg>
+</pre>
+<div class="tips">
+    渐变是SVG中创建复杂视觉效果的重要工具。通过组合不同的渐变类型和停止点，可以实现丰富的色彩效果。
+</div>

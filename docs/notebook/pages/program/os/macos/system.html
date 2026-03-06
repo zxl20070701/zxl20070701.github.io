@@ -1,0 +1,111 @@
+<header>
+    系统信息
+</header>
+<h2>
+    系统基本信息
+</h2>
+<h3>
+    system_profiler
+</h3>
+<p>
+    查看详细的系统硬件和软件信息：
+</p>
+<pre>
+    system_profiler
+</pre>
+<p>
+    查看特定类型的信息（如硬件）：
+</p>
+<pre>
+    system_profiler SPHardwareDataType
+</pre>
+<h3>
+    sw_vers
+</h3>
+<p>
+    查看 macOS 版本信息：
+</p>
+<pre>
+    sw_vers
+</pre>
+<h2>
+    硬件信息
+</h2>
+<h3>
+    sysctl
+</h3>
+<p>
+    查看 CPU 信息：
+</p>
+<pre>
+    sysctl -n machdep.cpu.brand_string
+</pre>
+<p>
+    查看内存信息：
+</p>
+<pre>
+    sysctl -n hw.memsize
+</pre>
+<h3>
+    system_profiler 硬件信息
+</h3>
+<p>
+    查看 CPU 信息：
+</p>
+<pre>
+    system_profiler SPHardwareDataType | grep "Processor Name"
+</pre>
+<p>
+    查看内存信息：
+</p>
+<pre>
+    system_profiler SPHardwareDataType | grep "Memory"
+</pre>
+<h2>
+    磁盘和存储
+</h2>
+<h3>
+    df
+</h3>
+<p>
+    查看磁盘使用情况：
+</p>
+<pre>
+    df -h
+</pre>
+<h3>
+    diskutil
+</h3>
+<p>
+    查看磁盘列表：
+</p>
+<pre>
+    diskutil list
+</pre>
+<p>
+    查看特定磁盘信息：
+</p>
+<pre>
+    diskutil info disk0
+</pre>
+<h2>
+    系统运行状态
+</h2>
+<h3>
+    uptime
+</h3>
+<p>
+    查看系统运行时间和负载：
+</p>
+<pre>
+    uptime
+</pre>
+<h3>
+    top
+</h3>
+<p>
+    实时查看系统资源使用情况：
+</p>
+<pre>
+    top
+</pre>

@@ -1,0 +1,230 @@
+<header>
+    构造函数与析构函数
+</header>
+<h2>
+    构造函数 __init__()
+</h2>
+<p>
+    <span class="important">__init__()</span>方法是Python中的构造函数，在创建对象时自动调用。它用于初始化对象的属性。
+</p>
+<pre tag="python">
+class Person:
+    def __init__(self, name, age):
+        """构造函数，初始化对象属性"""
+        self.name = name
+        self.age = age
+        print(f"创建了Person对象: {name}, {age}岁")
+
+# 创建对象时自动调用__init__方法
+person1 = Person("Alice", 25)
+person2 = Person("Bob", 30)
+</pre>
+<h2>
+    析构函数 __del__()
+</h2>
+<p>
+    <span class="important">__del__()</span>方法是Python中的析构函数，在对象被销毁时自动调用。它用于清理资源。
+</p>
+<pre tag="python">
+class FileHandler:
+    def __init__(self, filename):
+        self.filename = filename
+        self.file = open(filename, 'w')
+        print(f"打开文件: {filename}")
+    
+    def write(self, content):
+        self.file.write(content)
+    
+    def __del__(self):
+        """析构函数，关闭文件"""
+        self.file.close()
+        print(f"关闭文件: {self.filename}")
+
+# 创建对象
+handler = FileHandler("test.txt")
+handler.write("Hello, World!")
+
+# 当对象被销毁时，__del__方法会被调用
+del handler  # 显式删除对象
+</pre>
+<div class="tips">
+    注意：在Python中，__del__方法的调用时机不确定，依赖于垃圾回收器。对于资源管理，推荐使用上下文管理器（with语句）。
+</div>
+<h2>
+    默认参数和可变参数
+</h2>
+<h3>
+    带默认参数的构造函数
+</h3>
+<pre tag="python">
+class Student:
+    def __init__(self, name, age=18, grade="大一"):
+        self.name = name
+        self.age = age
+        self.grade = grade
+    
+    def display_info(self):
+        return f"姓名: {self.name}, 年龄: {self.age}, 年级: {self.grade}"
+
+# 使用默认参数
+student1 = Student("张三")
+student2 = Student("李四", 20)
+student3 = Student("王五", 19, "大二")
+
+print(student1.display_info())  # 姓名: 张三, 年龄: 18, 年级: 大一
+print(student2.display_info())  # 姓名: 李四, 年龄: 20, 年级: 大一
+print(student3.display_info())  # 姓名: 王五, 年龄: 19, 年级: 大二
+</pre>
+<h3>
+    可变参数的构造函数
+</h3>
+<pre tag="python">
+class Calculator:
+    def __init__(self, *numbers):
+        """接受任意数量的数字"""
+        self.numbers = numbers
+    
+    def sum_all(self):
+        return sum(self.numbers)
+    
+    def average(self):
+        if self.numbers:
+            return sum(self.numbers) / len(self.numbers)
+        return 0
+
+# 创建不同参数数量的对象
+calc1 = Calculator(1, 2, 3, 4, 5)
+calc2 = Calculator(10, 20, 30)
+calc3 = Calculator(100)
+
+print(calc1.sum_all())    # 输出: 15
+print(calc2.average())    # 输出: 20.0
+print(calc3.sum_all())    # 输出: 100
+</pre>
+<h2>
+    构造函数的继承
+</h2>
+<p>
+    在继承关系中，子类可以调用父类的构造函数：
+</p>
+<pre tag="python">
+class Animal:
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+    
+    def make_sound(self):
+        return "Some generic sound"
+
+class Dog(Animal):
+    def __init__(self, name, breed):
+        # 调用父类的构造函数
+        super().__init__(name, "Dog")
+        self.breed = breed
+    
+    def make_sound(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def __init__(self, name, color):
+        super().__init__(name, "Cat")
+        self.color = color
+    
+    def make_sound(self):
+        return "Meow!"
+
+# 创建对象
+dog = Dog("Buddy", "Golden Retriever")
+cat = Cat("Whiskers", "Orange")
+
+print(f"{dog.name} is a {dog.breed} {dog.species}")  # Buddy is a Golden Retriever Dog
+print(f"{cat.name} is a {cat.color} {cat.species}")   # Whiskers is a Orange Cat
+print(dog.make_sound())  # Woof!
+print(cat.make_sound())  # Meow!
+</pre>
+<h2>
+    工厂方法和替代构造函数
+</h2>
+<p>
+    有时我们需要提供不同的方式来创建对象，可以使用类方法作为替代构造函数：
+</p>
+<pre tag="python">
+from datetime import datetime
+
+class Person:
+    def __init__(self, name, birth_year):
+        self.name = name
+        self.birth_year = birth_year
+    
+    @classmethod
+    def from_age(cls, name, age):
+        """根据年龄创建Person对象"""
+        current_year = datetime.now().year
+        birth_year = current_year - age
+        return cls(name, birth_year)
+    
+    @classmethod
+    def from_birthdate(cls, name, birthdate):
+        """根据出生日期创建Person对象"""
+        # 假设birthdate格式为 "YYYY-MM-DD"
+        birth_year = int(birthdate.split('-')[0])
+        return cls(name, birth_year)
+    
+    def get_age(self):
+        current_year = datetime.now().year
+        return current_year - self.birth_year
+    
+    def __str__(self):
+        return f"{self.name}, born in {self.birth_year}"
+
+# 使用不同的构造函数
+person1 = Person("Alice", 1990)
+person2 = Person.from_age("Bob", 25)
+person3 = Person.from_birthdate("Charlie", "1985-06-15")
+
+print(person1)  # Alice, born in 1990
+print(person2)  # Bob, born in 1999
+print(person3)  # Charlie, born in 1985
+
+print(f"{person1.name} is {person1.get_age()} years old")
+</pre>
+<h2>
+    构造函数中的异常处理
+</h2>
+<p>
+    在构造函数中进行参数验证和异常处理：
+</p>
+<pre tag="python">
+class BankAccount:
+    def __init__(self, account_number, balance=0):
+        if not isinstance(account_number, str) or len(account_number) != 10:
+            raise ValueError("账号必须是10位字符串")
+        
+        if not isinstance(balance, (int, float)) or balance < 0:
+            raise ValueError("余额必须是非负数")
+        
+        self.account_number = account_number
+        self.balance = balance
+    
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError("存款金额必须大于0")
+        self.balance += amount
+    
+    def withdraw(self, amount):
+        if amount <= 0:
+            raise ValueError("取款金额必须大于0")
+        if amount > self.balance:
+            raise ValueError("余额不足")
+        self.balance -= amount
+
+# 正确使用
+try:
+    account1 = BankAccount("1234567890", 1000)
+    print(f"账户创建成功，余额: {account1.balance}")
+    
+    # 错误使用示例
+    account2 = BankAccount("123", -100)  # 会抛出异常
+except ValueError as e:
+    print(f"错误: {e}")
+</pre>

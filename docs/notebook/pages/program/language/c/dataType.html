@@ -66,7 +66,7 @@
 <p>
     各种类型的存储大小与系统位数有关，为了得到某个类型或某个变量在特定平台上的准确大小，可以使用 sizeof 运算符，例如我们想看一下当前double类型的大小：
 </p>
-<pre tag="javascript">
+<pre tag="c">
     printf("double 存储大小 : %lu \n", sizeof(double));
 </pre>
 <h3>
@@ -108,12 +108,12 @@
 <p>
     在 C 语言中，字符串实际上是使用空字符 \0 结尾的一维字符数组。因此，可以这样定义一个字符串：
 </p>
-<pre tag="javascript">
+<pre tag="c">
     char str[] = {'z', 'x', 'l', '2', '0', '0', '7', '0', '7', '0', '1', '\0'};
 </pre>
 <p>
     当然，也可以直接写成：
 </p>
-<pre tag="javascript">
+<pre tag="c">
     char str[] = "zxl20070701";
 </pre>

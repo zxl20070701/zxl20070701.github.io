@@ -1,0 +1,124 @@
+<header>
+    Express路由和请求处理
+</header>
+<h2>
+    基础路由
+</h2>
+<h3>
+    GET请求
+</h3>
+<pre tag="javascript">
+const express = require('express');
+const app = express();
+
+app.get('/users', (req, res) => {
+    res.json({ users: [] });
+});
+</pre>
+<p>
+    其中req.query包含GET请求的查询参数。
+</p>
+<h3>
+    POST请求
+</h3>
+<pre tag="javascript">
+app.post('/users', (req, res) => {
+    const body = req.body;
+    res.json({ success: true });
+});
+</pre>
+<p>
+    其中req.body包含POST请求的请求体数据。
+</p>
+<h2>
+    中间件
+</h2>
+<h3>
+    解析JSON
+</h3>
+<pre tag="javascript">
+app.use(express.json());
+</pre>
+<h3>
+    解析表单数据
+</h3>
+<pre tag="javascript">
+app.use(express.urlencoded({ extended: true }));
+</pre>
+<h3>
+    设置响应头
+</h3>
+<pre tag="javascript">
+app.use((req, res, next) => {
+    res.header('Content-Type', 'application/json; charset=utf-8');
+    next();
+});
+</pre>
+<h2>
+    路由参数
+</h2>
+<pre tag="javascript">
+app.get('/users/:id', (req, res) => {
+    const userId = req.params.id;
+    res.json({ id: userId });
+});
+</pre>
+<h2>
+    常用中间件
+</h2>
+<h3>
+    CORS跨域支持
+</h3>
+<pre tag="javascript">
+const cors = require('cors');
+app.use(cors());
+</pre>
+<h3>
+    日志记录
+</h3>
+<pre tag="javascript">
+const morgan = require('morgan');
+app.use(morgan('combined'));
+</pre>
+<h3>
+    静态文件服务
+</h3>
+<pre tag="javascript">
+app.use(express.static('public'));
+</pre>
+<h2>
+    错误处理
+</h2>
+<pre tag="javascript">
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Something went wrong!' });
+});
+</pre>
+<h2>
+    环境变量配置
+</h2>
+<pre tag="javascript">
+require('dotenv').config();
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
+</pre>
+<h2>
+    路由分组
+</h2>
+<pre tag="javascript">
+const userRouter = express.Router();
+
+userRouter.get('/', (req, res) => {
+    res.json({ users: [] });
+});
+
+userRouter.get('/:id', (req, res) => {
+    res.json({ id: req.params.id });
+});
+
+app.use('/api/users', userRouter);
+</pre>

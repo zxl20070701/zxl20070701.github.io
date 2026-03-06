@@ -2,53 +2,287 @@
     Tuple（元组）
 </header>
 <p>
-    元组与列表类似，不同之处在于元组的元素不能修改，元组使用小括号，列表使用方括号。
-</p>
-<h2>
-    创建
-</h2>
-<p>
-    元组创建很简单，只需要在括号中添加元素，并使用逗号隔开即可：
-</p>
-<pre tag>
-tup1 = ('notebook', 'zxl20070701', 1997, 2000)
-tup2 = "a", "b", "c", "d" # 不需要括号也可以
-
-print(tup1) #('notebook', 'zxl20070701', 1997, 2000)
-print(tup2) #('a', 'b', 'c', 'd')
-</pre>
-<p>
-    元组中只包含一个元素时，需要在元素后面添加逗号，否则括号会被当作运算符使用：
-</p>
-<pre tag>
-tup1 = (50,)
-</pre>
-<p>
-    元组与字符串类似，下标索引从 0 开始，可以进行截取，组合等：
+    元组是Python中的一种不可变序列类型，与列表类似，但元组一旦创建就不能修改。元组使用小括号()表示，元素之间用逗号分隔。由于元组的不可变性，它们通常用于存储不应更改的数据，并且比列表更节省内存。
 </p>
 <img src="./images/python/tuple-index.jpeg">
 <h2>
-    访问元组
+    元组创建
 </h2>
-<p>
-    元组可以使用下标索引来访问元组中的值，如下：
-</p>
-<pre tag>
-tup1 = ('notebook', 'zxl20070701', 1997, 2000)
+<pre tag="python">
+# 空元组
+empty_tuple = ()
+empty_tuple2 = tuple()
 
-print (tup1[1:3]) # ('zxl20070701', 1997)
+# 包含多个元素的元组
+person = ("张三", 25, "工程师")
+coordinates = (10.5, 20.3, -5.8)
+mixed = (1, "hello", [1, 2, 3], {"key": "value"})
+
+# 单元素元组（注意逗号）
+single = (42,)  # 必须有逗号，否则会被当作普通括号
+not_tuple = (42)  # 这不是元组，只是整数42
+
+# 不使用括号创建元组（元组打包）
+colors = "red", "green", "blue"  # 等价于 ("red", "green", "blue")
+point = 3, 4  # 等价于 (3, 4)
+
+print(f"人员信息: {person}")
+print(f"坐标: {coordinates}")
+print(f"单元素元组: {single}")
+print(f"类型: {type(single)}")  # <class 'tuple'>
+print(f"非元组: {not_tuple}")
+print(f"类型: {type(not_tuple)}")  # <class 'int'>
 </pre>
+
 <h2>
-    修改元组
+    元组访问和解包
 </h2>
-<p>
-    元组中的元素值是不允许修改的，但我们可以对元组进行连接组合，如下：
-</p>
-<pre tag>
-tup1 = ('notebook', 'zxl20070701', 1997, 2000)
-tup2 = "a", "b", "c", "d"
+<pre tag="python">
+# 访问元组元素
+person = ("李四", 30, "教师")
 
-tup3 = tup1+tup2
+# 索引访问
+print(f"姓名: {person[0]}")
+print(f"年龄: {person[1]}")
+print(f"职业: {person[2]}")
 
-print (tup3) # ('notebook', 'zxl20070701', 1997, 2000, 'a', 'b', 'c', 'd')
+# 负索引
+print(f"最后元素: {person[-1]}")  # 职业
+
+# 切片操作
+print(f"前两个元素: {person[:2]}")  # ('李四', 30)
+
+# 元组解包（序列解包）
+name, age, job = person
+print(f"解包 - 姓名: {name}, 年龄: {age}, 职业: {job}")
+
+# 部分解包
+first, *rest = person
+print(f"第一个: {first}, 其余: {rest}")  # 李四, [30, '教师']
+
+# 交换变量（元组解包的经典应用）
+a, b = 10, 20
+print(f"交换前: a={a}, b={b}")
+a, b = b, a  # 交换
+print(f"交换后: a={a}, b={b}")
+
+# 函数返回多个值
+def get_name_age():
+    return "王五", 28
+
+name, age = get_name_age()
+print(f"函数返回值 - 姓名: {name}, 年龄: {age}")
+</pre>
+
+<h2>
+    元组操作
+</h2>
+<pre tag="python">
+# 元组连接
+tuple1 = (1, 2, 3)
+tuple2 = (4, 5, 6)
+combined = tuple1 + tuple2
+print(f"连接结果: {combined}")  # (1, 2, 3, 4, 5, 6)
+
+# 元组重复
+repeated = tuple1 * 3
+print(f"重复结果: {repeated}")  # (1, 2, 3, 1, 2, 3, 1, 2, 3)
+
+# 成员检查
+print(f"2 是否在元组中: {2 in tuple1}")  # True
+print(f"5 是否在元组中: {5 in tuple1}")  # False
+
+# 元组长度
+print(f"元组长度: {len(tuple1)}")  # 3
+
+# 元组遍历
+colors = ("red", "green", "blue")
+for color in colors:
+    print(f"颜色: {color}")
+
+# 带索引遍历
+for i, color in enumerate(colors):
+    print(f"索引 {i}: {color}")
+
+# 元组作为字典键（因为不可变）
+locations = {
+    (40.7128, -74.0060): "纽约",
+    (34.0522, -118.2437): "洛杉矶",
+    (51.5074, -0.1278): "伦敦"
+}
+
+print(f"纽约坐标: {locations[(40.7128, -74.0060)]}")
+</pre>
+
+<h2>
+    元组方法
+</h2>
+<pre tag="python">
+numbers = (1, 2, 3, 2, 4, 2, 5)
+
+# count() - 统计元素出现次数
+count_2 = numbers.count(2)
+print(f"数字2出现的次数: {count_2}")  # 3
+
+# index() - 查找元素索引
+index_3 = numbers.index(3)
+print(f"数字3的索引: {index_3}")  # 2
+
+# 指定范围查找
+index_2_from_3 = numbers.index(2, 3)  # 从索引3开始查找
+print(f"从索引3开始查找2的索引: {index_2_from_3}")  # 5
+
+# 元组比较
+tuple1 = (1, 2, 3)
+tuple2 = (1, 2, 4)
+tuple3 = (1, 2, 3)
+
+print(f"tuple1 == tuple3: {tuple1 == tuple3}")  # True
+print(f"tuple1 < tuple2: {tuple1 < tuple2}")    # True (字典序比较)
+print(f"tuple1 > tuple2: {tuple1 > tuple2}")    # False
+</pre>
+
+<h2>
+    元组与列表的转换
+</h2>
+<pre tag="python">
+# 列表转元组
+my_list = [1, 2, 3, 4, 5]
+my_tuple = tuple(my_list)
+print(f"列表转元组: {my_tuple}")  # (1, 2, 3, 4, 5)
+print(f"类型: {type(my_tuple)}")  # <class 'tuple'>
+
+# 元组转列表
+another_tuple = ("a", "b", "c")
+another_list = list(another_tuple)
+print(f"元组转列表: {another_list}")  # ['a', 'b', 'c']
+print(f"类型: {type(another_list)}")  # <class 'list'>
+
+# 注意：转换后创建的是新对象
+original_list = [1, 2, 3]
+converted_tuple = tuple(original_list)
+converted_list = list(converted_tuple)
+
+print(f"原始列表: {original_list}")
+print(f"转换的元组: {converted_tuple}")
+print(f"再转换的列表: {converted_list}")
+
+# 修改原始列表不影响转换后的元组
+original_list.append(4)
+print(f"修改原始列表后: {original_list}")  # [1, 2, 3, 4]
+print(f"元组不变: {converted_tuple}")      # (1, 2, 3)
+</pre>
+
+<h2>
+    命名元组 (namedtuple)
+</h2>
+<pre tag="python">
+from collections import namedtuple
+
+# 创建命名元组类
+Person = namedtuple('Person', ['name', 'age', 'job'])
+# 或者 Person = namedtuple('Person', 'name age job')
+
+# 创建命名元组实例
+person1 = Person("张三", 25, "工程师")
+person2 = Person(name="李四", age=30, job="教师")
+
+print(f"人员1: {person1}")
+print(f"人员2: {person2}")
+
+# 访问字段（可以通过名称或索引）
+print(f"姓名: {person1.name}")  # 张三
+print(f"年龄: {person1.age}")   # 25
+print(f"职业: {person1[2]}")    # 工程师
+
+# 命名元组的特殊属性
+print(f"字段名: {person1._fields}")  # ('name', 'age', 'job')
+print(f"转换为字典: {person1._asdict()}")  # {'name': '张三', 'age': 25, 'job': '工程师'}
+
+# 替换字段值（返回新实例）
+person3 = person1._replace(age=26)
+print(f"原实例: {person1}")  # 不变
+print(f"新实例: {person3}")  # Person(name='张三', age=26, job='工程师')
+
+# 从字典创建命名元组
+person_dict = {"name": "王五", "age": 28, "job": "医生"}
+person4 = Person(**person_dict)
+print(f"从字典创建: {person4}")
+</pre>
+
+<h2>
+    元组的应用场景
+</h2>
+<pre tag="python">
+# 1. 函数返回多个值
+def get_min_max(numbers):
+    return min(numbers), max(numbers)
+
+data = [3, 1, 4, 1, 5, 9, 2, 6]
+minimum, maximum = get_min_max(data)
+print(f"最小值: {minimum}, 最大值: {maximum}")
+
+# 2. 作为字典键
+config = {
+    ("localhost", 8080): "开发环境",
+    ("localhost", 80): "生产环境"
+}
+print(f"8080端口配置: {config[('localhost', 8080)]}")
+
+# 3. 函数参数打包和解包
+def print_coordinates(x, y, z):
+    print(f"坐标: ({x}, {y}, {z})")
+
+coordinates = (10, 20, 30)
+print_coordinates(*coordinates)  # 解包元组
+
+# 4. 记录固定结构的数据
+students = [
+    ("张三", 20, "计算机科学"),
+    ("李四", 21, "数学"),
+    ("王五", 19, "物理")
+]
+
+for name, age, major in students:
+    print(f"学生: {name}, 年龄: {age}, 专业: {major}")
+
+# 5. 枚举值
+HTTP_STATUS = (
+    (200, "OK"),
+    (404, "Not Found"),
+    (500, "Internal Server Error")
+)
+
+for code, message in HTTP_STATUS:
+    print(f"状态码 {code}: {message}")
+</pre>
+
+<h2>
+    元组不可变性的深入理解
+</h2>
+<pre tag="python">
+# 元组本身不可变，但如果包含可变对象，这些对象可以改变
+mixed_tuple = (1, 2, [3, 4], {"a": 1})
+
+# 不能修改元组本身
+try:
+    mixed_tuple[0] = 10
+except TypeError as e:
+    print(f"错误: {e}")  # 'tuple' object does not support item assignment
+
+# 但可以修改元组中的可变对象
+mixed_tuple[2].append(5)  # 修改列表
+mixed_tuple[3]["b"] = 2   # 修改字典
+print(f"修改后: {mixed_tuple}")  # (1, 2, [3, 4, 5], {'a': 1, 'b': 2})
+
+# 创建真正不可变的元组
+from types import MappingProxyType
+immutable_dict = MappingProxyType({"a": 1, "b": 2})
+truly_immutable = (1, 2, immutable_dict)
+print(f"不可变字典: {truly_immutable}")
+
+try:
+    truly_immutable[2]["c"] = 3  # 这会失败
+except TypeError as e:
+    print(f"不可变字典错误: {e}")
 </pre>

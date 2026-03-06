@@ -1,0 +1,66 @@
+<header>
+    text
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>selectable</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>文本是否可选</td>
+        </tr>
+        <tr>
+            <td>space</td>
+            <td>String</td>
+            <td></td>
+            <td>显示连续空格，可选值：ensp、emsp、nbsp</td>
+        </tr>
+        <tr>
+            <td>decode</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否解码</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <text class="title">这是标题</text>
+    <text class="content" selectable>这是一段可选中的文本内容</text>
+    <text space="emsp">这 是 一 段 带 空 格 的 文 本</text>
+  </view>
+</template>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.content {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+</style>
+</pre>

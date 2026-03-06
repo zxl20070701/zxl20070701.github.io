@@ -1,0 +1,128 @@
+<header>
+    变换
+</header>
+<h2>
+    变换基础
+</h2>
+<p>
+    SVG变换允许你对元素进行平移、旋转、缩放和倾斜操作。
+</p>
+<h2>
+    translate 平移
+</h2>
+<p>
+    translate变换用于移动元素的位置。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="10" y="10" width="50" height="50" fill="red" />
+    <rect x="10" y="10" width="50" height="50" fill="blue" transform="translate(60, 60)" />
+</svg>
+</pre>
+<h2>
+    rotate 旋转
+</h2>
+<p>
+    rotate变换用于旋转元素。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="50" height="50" fill="red" />
+    <rect x="50" y="50" width="50" height="50" fill="blue" transform="rotate(45)" />
+</svg>
+</pre>
+<p>
+    也可以指定旋转中心点：
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="50" height="50" fill="red" />
+    <rect x="50" y="50" width="50" height="50" fill="blue" transform="rotate(45 75 75)" />
+</svg>
+</pre>
+<h2>
+    scale 缩放
+</h2>
+<p>
+    scale变换用于缩放元素。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="30" height="30" fill="red" />
+    <rect x="50" y="50" width="30" height="30" fill="blue" transform="scale(2)" />
+</svg>
+</pre>
+<p>
+    可以分别指定x和y方向的缩放比例：
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="30" height="30" fill="red" />
+    <rect x="50" y="50" width="30" height="30" fill="blue" transform="scale(2, 0.5)" />
+</svg>
+</pre>
+<h2>
+    skew 倾斜
+</h2>
+<p>
+    skewX和skewY变换用于倾斜元素。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="50" height="50" fill="red" />
+    <rect x="50" y="50" width="50" height="50" fill="blue" transform="skewX(20)" />
+</svg>
+</pre>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="50" height="50" fill="red" />
+    <rect x="50" y="50" width="50" height="50" fill="blue" transform="skewY(20)" />
+</svg>
+</pre>
+<h2>
+    矩阵变换 (matrix)
+</h2>
+<p>
+    matrix变换使用6个参数定义2D变换矩阵。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="50" height="50" fill="red" />
+    <rect x="50" y="50" width="50" height="50" fill="blue" transform="matrix(1, 0.5, -0.5, 1, 30, 10)" />
+</svg>
+</pre>
+<p>
+    matrix(a, b, c, d, e, f)对应变换矩阵：
+</p>
+<pre tag="html">
+| a c e |
+| b d f |
+| 0 0 1 |
+</pre>
+<h2>
+    组合变换
+</h2>
+<p>
+    多个变换可以组合使用，按从左到右的顺序应用。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="30" height="30" fill="red" />
+    <rect x="50" y="50" width="30" height="30" fill="blue" transform="translate(50, 50) rotate(45) scale(1.5)" />
+</svg>
+</pre>
+<h2>
+    transform-origin
+</h2>
+<p>
+    transform-origin属性可以指定变换的原点。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="50" y="50" width="50" height="50" fill="red" />
+    <rect x="50" y="50" width="50" height="50" fill="blue" transform="rotate(45)" transform-origin="75 75" />
+</svg>
+</pre>
+<div class="tips">
+    变换可以应用于任何SVG元素，包括形状、文本和组。组合变换时要注意顺序，不同的顺序会产生不同的结果。
+</div>

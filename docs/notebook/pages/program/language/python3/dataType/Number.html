@@ -2,61 +2,305 @@
     Number（数字）
 </header>
 <p>
-    数字类型是顾名思义是用来存储数值的，需要记住的是，有点和Java的字符串味道差不多，如果改变了数字数据类型的值，将重新分配内存空间。
+    数字类型是Python中的基本数据类型，用于存储数值。Python 3中的数字类型是不可变对象，当值改变时会创建新的对象。Python支持多种数字类型，包括整数、浮点数、复数等。
 </p>
-<p>
-    可以使用del语句删除一些数字对象的引用：
-</p>
-<pre tag>
-    del var1[,var2[,var3[....,varN]]]]
-</pre>
-<p>
-    Python 支持三种不同的数值类型：
-</p>
+
+<h2>
+    数字类型分类
+</h2>
+
 <h3>
     整型(Int)
 </h3>
 <p>
-    通常被称为是整型或整数，是正或负整数，不带小数点。Python3 整型是没有限制大小的，可以当作 Long 类型使用，所以 Python3 没有 Python2 的 Long 类型。
+    Python 3中的整数类型没有大小限制，可以表示任意大的整数。整数可以是正数、负数或零。
 </p>
+<pre tag="python">
+# 整数示例
+positive = 42
+negative = -17
+zero = 0
+large_number = 123456789012345678901234567890
+
+# 不同进制表示
+binary = 0b1010      # 二进制，等于10
+octal = 0o12         # 八进制，等于10
+hexadecimal = 0xA    # 十六进制，等于10
+
+print(f"十进制: {positive}")
+print(f"二进制: {binary}")
+print(f"八进制: {octal}")
+print(f"十六进制: {hexadecimal}")
+</pre>
+
 <h3>
     浮点型(float)
 </h3>
 <p>
-    浮点型由整数部分与小数部分组成，浮点型也可以使用科学计数法表示（2.5e2 = 2.5 x 10<sup>2</sup> = 250）。
+    浮点数用于表示小数，支持科学计数法表示。Python的浮点数遵循IEEE 754双精度标准。
 </p>
+<pre tag="python">
+# 浮点数示例
+pi = 3.14159
+negative_float = -2.5
+scientific = 2.5e2    # 2.5 × 10² = 250
+small_number = 1.23e-4  # 0.000123
+
+print(f"圆周率: {pi}")
+print(f"科学计数法: {scientific}")
+print(f"小数: {small_number}")
+
+# 浮点数精度问题
+print(0.1 + 0.2)  # 输出: 0.30000000000000004
+print(0.1 + 0.2 == 0.3)  # 输出: False
+
+# 使用round处理精度
+print(round(0.1 + 0.2, 1))  # 输出: 0.3
+</pre>
+
 <h3>
     复数(complex)
 </h3>
 <p>
-    复数由实数部分和虚数部分构成，可以用a + bj,或者complex(a,b)表示， 复数的实部a和虚部b都是浮点型。
+    复数由实部和虚部组成，格式为a + bj，其中a是实部，b是虚部，j表示虚数单位（复数的实部a和虚部b都是浮点型）。
 </p>
+<pre tag="python">
+# 复数示例
+z1 = 3 + 4j
+z2 = complex(2, -1)  # 2 - 1j
+z3 = 5j              # 纯虚数
+
+print(f"复数z1: {z1}")
+print(f"实部: {z1.real}")
+print(f"虚部: {z1.imag}")
+print(f"共轭复数: {z1.conjugate()}")
+
+# 复数运算
+print(f"z1 + z2 = {z1 + z2}")
+print(f"z1 * z2 = {z1 * z2}")
+print(f"abs(z1) = {abs(z1)}")  # 模长
+</pre>
+
+<h3>
+    布尔型(bool)
+</h3>
+<p>
+    布尔型是整型的子类，True对应1，False对应0。
+</p>
+<pre tag="python">
+is_true = True
+is_false = False
+
+print(f"True + 1 = {True + 1}")      # 输出: 2
+print(f"False * 10 = {False * 10}")  # 输出: 0
+
+# 布尔转换
+print(bool(0))       # False
+print(bool(1))       # True
+print(bool(""))      # False
+print(bool("Hello")) # True
+print(bool([]))      # False
+print(bool([1,2,3])) # True
+</pre>
+
 <h2>
     数字类型转换
 </h2>
-<ul>
-    <li>
-        <span class="special">
-            int(x)
-        </span>
-        将x转换为一个整数。
-    </li>
-    <li>
-        <span class="special">
-            float(x)
-        </span>
-        将x转换到一个浮点数。
-    </li>
-    <li>
-        <span class="special">
-            complex(x)
-        </span>
-        将x转换到一个复数，实数部分为 x，虚数部分为 0。
-    </li>
-    <li>
-        <span class="special">
-            complex(x, y)
-        </span>
-        将 x 和 y 转换到一个复数，实数部分为 x，虚数部分为 y。x 和 y 是数字表达式。
-    </li>
-</ul>
+<p>
+    Python提供了内置函数进行数字类型之间的转换：
+</p>
+<pre tag="python">
+# int() - 转换为整数
+print(int(3.14))      # 3
+print(int("42"))      # 42
+print(int(0b1010))    # 10
+print(int("1010", 2)) # 10 (二进制字符串转整数)
+print(int(2.9))       # 2 (向零截断)
+
+# float() - 转换为浮点数
+print(float(42))      # 42.0
+print(float("3.14"))  # 3.14
+print(float("inf"))   # inf (无穷大)
+print(float("-inf"))  # -inf
+
+# complex() - 转换为复数
+print(complex(3))     # 3+0j
+print(complex(3, 4))  # 3+4j
+print(complex("3+4j"))# 3+4j
+print(complex("3"))   # 3+0j
+
+# bool() - 转换为布尔值
+print(bool(1))        # True
+print(bool(0))        # False
+print(bool(0.0))      # False
+print(bool(0.1))      # True
+</pre>
+
+<h2>
+    数字运算
+</h2>
+<pre tag="python">
+# 算术运算
+a, b = 10, 3
+print(f"加法: {a} + {b} = {a + b}")
+print(f"减法: {a} - {b} = {a - b}")
+print(f"乘法: {a} * {b} = {a * b}")
+print(f"除法: {a} / {b} = {a / b}")      # 浮点除法
+print(f"整除: {a} // {b} = {a // b}")    # 整数除法
+print(f"取余: {a} % {b} = {a % b}")
+print(f"幂运算: {a} ** {b} = {a ** b}")
+
+# 复合赋值运算
+x = 5
+x += 3   # 等价于 x = x + 3
+print(x) # 8
+
+x *= 2
+print(x) # 16
+
+# 比较运算
+print(5 > 3)    # True
+print(5 < 3)    # False
+print(5 == 5)   # True
+print(5 != 3)   # True
+print(5 >= 5)   # True
+print(5 <= 4)   # False
+
+# 数学函数
+import math
+
+print(f"绝对值: abs(-5) = {abs(-5)}")
+print(f"最大值: max(1, 5, 3) = {max(1, 5, 3)}")
+print(f"最小值: min(1, 5, 3) = {min(1, 5, 3)}")
+print(f"幂运算: pow(2, 3) = {pow(2, 3)}")
+print(f"四舍五入: round(3.14159, 2) = {round(3.14159, 2)}")
+
+# 数学常量和函数
+print(f"圆周率: {math.pi}")
+print(f"自然对数底: {math.e}")
+print(f"平方根: {math.sqrt(16)}")
+print(f"对数: {math.log(100, 10)}")
+print(f"三角函数: {math.sin(math.pi/2)}")
+print(f"阶乘: {math.factorial(5)}")
+</pre>
+
+<h2>
+    随机数生成
+</h2>
+<pre tag="python">
+import random
+
+# 基本随机数
+print(f"0-1之间的随机浮点数: {random.random()}")
+print(f"1-10之间的随机整数: {random.randint(1, 10)}")
+print(f"0-100之间的随机浮点数: {random.uniform(0, 100)}")
+
+# 从序列中随机选择
+fruits = ["苹果", "香蕉", "橙子", "葡萄"]
+print(f"随机选择一种水果: {random.choice(fruits)}")
+print(f"随机选择两种水果: {random.sample(fruits, 2)}")
+
+# 打乱序列
+numbers = [1, 2, 3, 4, 5]
+random.shuffle(numbers)
+print(f"打乱后的列表: {numbers}")
+
+# 设置随机种子（用于重现结果）
+random.seed(42)
+print(f"设置种子后的随机数: {random.random()}")
+</pre>
+
+<h2>
+    数字格式化
+</h2>
+<pre tag="python">
+# 基本格式化
+pi = 3.14159265359
+print(f"π的值: {pi:.2f}")           # 保留2位小数
+print(f"π的值: {pi:.4f}")           # 保留4位小数
+print(f"科学计数法: {pi:.2e}")      # 科学计数法
+print(f"百分比: {0.756:.2%}")     # 百分比格式
+
+# 千位分隔符
+large_number = 1234567.89
+print(f"千位分隔符: {large_number:,.2f}")  # 1,234,567.89
+
+# 对齐和填充
+number = 42
+print(f"右对齐: {number:>10}")      # 总宽度10，右对齐
+print(f"左对齐: {number:<10}")      # 总宽度10，左对齐
+print(f"居中对齐: {number:^10}")    # 总宽度10，居中
+print(f"零填充: {number:010}")      # 总宽度10，零填充
+
+# 进制格式化
+num = 255
+print(f"二进制: {num:b}")           # 11111111
+print(f"八进制: {num:o}")           # 377
+print(f"十六进制: {num:x}")         # ff
+print(f"大写十六进制: {num:X}")     # FF
+</pre>
+
+<h2>
+    特殊数值
+</h2>
+<pre tag="python">
+import math
+
+# 无穷大和NaN
+positive_inf = float('inf')
+negative_inf = float('-inf')
+nan = float('nan')
+
+print(f"正无穷: {positive_inf}")
+print(f"负无穷: {negative_inf}")
+print(f"NaN: {nan}")
+
+# 检查特殊数值
+print(f"是否为无穷大: {math.isinf(positive_inf)}")
+print(f"是否为NaN: {math.isnan(nan)}")
+
+# 比较无穷大
+print(f"无穷大比较: {positive_inf > 1000000}")  # True
+
+# 计算中的无穷大
+print(f"1/0 的结果: {float('inf')}")  # inf
+print(f"0/0 的结果: {float('nan')}")  # nan
+</pre>
+
+<h2>
+    数学模块进阶
+</h2>
+<pre tag="python">
+import math
+import cmath
+import decimal
+import fractions
+
+# 复数数学函数
+complex_num = 3 + 4j
+print(f"复数模: {abs(complex_num)}")           # 5.0
+print(f"复数相位: {cmath.phase(complex_num)}") # 0.927...
+
+# 高精度计算
+from decimal import Decimal, getcontext
+
+# 设置精度
+getcontext().prec = 50
+high_precision = Decimal('1') / Decimal('7')
+print(f"高精度除法: {high_precision}")
+
+# 分数运算
+from fractions import Fraction
+frac1 = Fraction(1, 3)
+frac2 = Fraction(1, 6)
+print(f"分数加法: {frac1 + frac2}")  # 1/2
+print(f"分数乘法: {frac1 * frac2}")  # 1/18
+
+# 统计函数
+import statistics
+data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+print(f"平均值: {statistics.mean(data)}")
+print(f"中位数: {statistics.median(data)}")
+print(f"众数: {statistics.mode([1, 2, 2, 3, 3, 3, 4])}")
+print(f"标准差: {statistics.stdev(data)}")
+</pre>

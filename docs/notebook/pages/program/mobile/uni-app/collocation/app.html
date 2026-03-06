@@ -1,0 +1,96 @@
+<header>
+    app.vue 应用配置
+</header>
+<h2>
+    应用生命周期
+</h2>
+<pre tag="html">
+&lt;script&gt;
+export default {
+  onLaunch: function() {
+    console.log('App Launch')
+    // 应用初始化完成时触发（全局只触发一次）
+  },
+  onShow: function() {
+    console.log('App Show')
+    // 应用启动，或从后台进入前台显示时触发
+  },
+  onHide: function() {
+    console.log('App Hide')
+    // 应用从前台进入后台时触发
+  },
+  onError: function(err) {
+    console.log('App Error', err)
+    // 应用报错时触发
+  },
+  onUniNViewMessage: function(e) {
+    console.log('App onUniNViewMessage', e)
+    // 对 nvue 页面发送的数据进行监听
+  },
+  // 入口组件不需要实现 render 函数，即使实现了也会被 taro 所覆盖
+}
+&lt;/script&gt;
+
+<style>
+/* 每个页面公共css */
+.container {
+  padding: 20px;
+}
+</style>
+</pre>
+<h2>
+    全局样式
+</h2>
+<p>
+    在 app.vue 中定义的样式为全局样式，作用于每一个页面。
+</p>
+<pre tag="css">
+/* 全局样式示例 */
+page {
+  background-color: #f5f5f5;
+  font-size: 16px;
+}
+
+.container {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.text-primary {
+  color: #007aff;
+}
+
+.text-center {
+  text-align: center;
+}
+</pre>
+<h2>
+    全局数据和方法
+</h2>
+<p>
+    可以在 app.vue 中定义全局数据和方法，通过 getApp() 方法获取应用实例。
+</p>
+<pre tag="javascript">
+// app.vue
+<script>
+export default {
+  globalData: {
+    userInfo: null,
+    baseUrl: 'https://api.example.com'
+  },
+  methods: {
+    getUserInfo() {
+      return this.globalData.userInfo
+    },
+    setUserInfo(userInfo) {
+      this.globalData.userInfo = userInfo
+    }
+  }
+}
+</script>
+
+// 在其他页面中使用
+// const app = getApp()
+// console.log(app.globalData.userInfo)
+// app.setUserInfo({name: '张三'})
+</pre>

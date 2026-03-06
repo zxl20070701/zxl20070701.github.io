@@ -1,0 +1,176 @@
+<header>
+    script标签
+</header>
+<p>
+    script标签用于在HTML文档中嵌入或引用JavaScript代码，是前端开发中最重要的标签之一。通过script标签，我们可以为网页添加交互功能。
+</p>
+<h2>
+    基本用法
+</h2>
+<pre tag='html'>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Script标签示例</title>
+</head>
+<body>
+    <h1>欢迎来到我的网页</h1>
+    
+    <!-- 内联JavaScript -->
+    <script>
+        console.log('这是内联JavaScript代码');
+        document.getElementById('demo').innerHTML = 'Hello World!';
+    </script>
+    
+    <!-- 外部JavaScript文件 -->
+    <script src="script.js"></script>
+</body>
+</html>
+</pre>
+<h2>
+    属性详解
+</h2>
+<h3>
+    src属性
+</h3>
+<p>
+    src属性用于指定外部JavaScript文件的URL。当设置了src属性时，script标签内部的内容将被忽略。
+</p>
+<pre tag='html'>
+<script src="path/to/script.js"></script>
+</pre>
+<h3>
+    async属性
+</h3>
+<p>
+    async属性是布尔属性，表示脚本应该异步执行。当浏览器遇到带有async属性的script标签时，会立即开始下载脚本，同时在后台继续解析HTML。脚本下载完成后会立即执行，可能会中断HTML解析。
+</p>
+<pre tag='html'>
+<script src="script.js" async></script>
+</pre>
+<p>
+    使用场景：适用于独立脚本，不依赖其他脚本，也不被其他脚本依赖的情况。
+</p>
+<h3>
+    defer属性
+</h3>
+<p>
+    defer属性也是布尔属性，表示脚本应该延迟执行。带有defer属性的脚本会等到HTML解析完成后再执行，并且按照它们在文档中出现的顺序执行。
+</p>
+<pre tag='html'>
+<script src="script.js" defer></script>
+</pre>
+<p>
+    使用场景：适用于需要等待DOM加载完成的脚本，或者需要按照顺序执行的脚本。
+</p>
+<h3>
+    type属性
+</h3>
+<p>
+    type属性指定脚本的MIME类型。对于JavaScript，通常是"text/javascript"或"application/javascript"。在现代HTML中，这个属性可以省略。
+</p>
+<pre tag='html'>
+<script type="text/javascript">
+    // JavaScript代码
+</script>
+</pre>
+<h3>
+    charset属性
+</h3>
+<p>
+    charset属性指定外部脚本的字符编码。这个属性很少使用，因为大多数服务器都会正确设置HTTP响应头。
+</p>
+<pre tag='html'>
+<script src="script.js" charset="UTF-8"></script>
+</pre>
+<h3>
+    crossorigin属性
+</h3>
+<p>
+    crossorigin属性用于配置CORS（跨域资源共享）请求。当脚本来自不同的源时，这个属性很有用。
+</p>
+<pre tag='html'>
+<script src="https://example.com/script.js" crossorigin="anonymous"></script>
+</pre>
+<h3>
+    integrity属性
+</h3>
+<p>
+    integrity属性允许浏览器检查获取的资源是否被篡改，提供了额外的安全性。通常与crossorigin属性一起使用。
+</p>
+<pre tag='html'>
+<script src="https://cdn.example.com/library.js" 
+        integrity="sha384-..." 
+        crossorigin="anonymous"></script>
+</pre>
+<h2>
+    加载策略对比
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>策略</th>
+            <th>加载时机</th>
+            <th>执行时机</th>
+            <th>执行顺序</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>普通script</td>
+            <td>立即加载</td>
+            <td>立即执行，阻塞HTML解析</td>
+            <td>按出现顺序</td>
+            <td>简单页面，无特殊要求</td>
+        </tr>
+        <tr>
+            <td>async</td>
+            <td>异步加载</td>
+            <td>加载完成后立即执行</td>
+            <td>不确定，取决于加载完成顺序</td>
+            <td>独立脚本，如统计代码</td>
+        </tr>
+        <tr>
+            <td>defer</td>
+            <td>异步加载</td>
+            <td>HTML解析完成后执行</td>
+            <td>按出现顺序</td>
+            <td>依赖DOM的脚本</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    最佳实践
+</h2>
+<h3>
+    放置位置
+</h3>
+<p>
+    传统上，script标签通常放在body结束标签之前，这样可以确保DOM已经完全加载。但是，现代做法更倾向于将script标签放在head中，并使用defer属性。
+</p>
+<pre tag='html'>
+<head>
+    <meta charset="UTF-8">
+    <title>最佳实践</title>
+    <script src="script.js" defer></script>
+</head>
+</pre>
+<h3>
+    性能优化
+</h3>
+<ul>
+    <li>对于关键脚本，使用普通的script标签并放在页面底部</li>
+    <li>对于非关键脚本，使用async或defer属性</li>
+    <li>对于第三方脚本（如分析工具），优先使用async属性</li>
+    <li>对于依赖DOM的脚本，使用defer属性</li>
+</ul>
+<h2>
+    注意事项
+</h2>
+<ul>
+    <li>内联脚本不能使用async或defer属性</li>
+    <li>async和defer属性仅对外部脚本有效</li>
+    <li>不要在同一个script标签上同时使用async和defer属性</li>
+    <li>动态创建的script标签默认是async的</li>
+</ul>

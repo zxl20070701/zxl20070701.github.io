@@ -1,0 +1,148 @@
+<header>
+    页面跳转
+</header>
+<h2>
+    uni.navigateTo(OBJECT)
+</h2>
+<p>
+    保留当前页面，跳转到应用内的某个页面，使用 uni.navigateBack 可以返回到原页面。
+</p>
+<pre tag="javascript">
+uni.navigateTo({
+    url: '/pages/detail/detail?id=1'
+});
+</pre>
+<h2>
+    uni.redirectTo(OBJECT)
+</h2>
+<p>
+    关闭当前页面，跳转到应用内的某个页面。
+</p>
+<pre tag="javascript">
+uni.redirectTo({
+    url: '/pages/login/login'
+});
+</pre>
+<h2>
+    uni.reLaunch(OBJECT)
+</h2>
+<p>
+    关闭所有页面，打开到应用内的某个页面。
+</p>
+<pre tag="javascript">
+uni.reLaunch({
+    url: '/pages/index/index'
+});
+</pre>
+<h2>
+    uni.switchTab(OBJECT)
+</h2>
+<p>
+    跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面。
+</p>
+<pre tag="javascript">
+uni.switchTab({
+    url: '/pages/home/home'
+});
+</pre>
+<h2>
+    uni.navigateBack(OBJECT)
+</h2>
+<p>
+    关闭当前页面，返回上一页面或多级页面。
+</p>
+<pre tag="javascript">
+// 返回上一页
+uni.navigateBack();
+
+// 返回多级页面
+uni.navigateBack({
+    delta: 2
+});
+</pre>
+<h2>
+    参数说明
+</h2>
+<p>
+    各跳转方法的参数说明：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>url</td>
+            <td>String</td>
+            <td>是</td>
+            <td>需要跳转的应用内页面路径，路径后可以带参数</td>
+        </tr>
+        <tr>
+            <td>delta</td>
+            <td>Number</td>
+            <td>否（navigateBack）</td>
+            <td>返回的页面数，如果 delta 大于现有页面数，则返回到首页</td>
+        </tr>
+        <tr>
+            <td>animationType</td>
+            <td>String</td>
+            <td>否</td>
+            <td>窗口动画类型，仅 APP 支持</td>
+        </tr>
+        <tr>
+            <td>animationDuration</td>
+            <td>Number</td>
+            <td>否</td>
+            <td>窗口动画持续时间，单位为 ms，仅 APP 支持</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <button @click="navigateToDetail">跳转到详情页</button>
+    <button @click="redirectToLogin">重定向到登录页</button>
+    <button @click="reLaunchToHome">重启到首页</button>
+    <button @click="switchTab">切换 Tab</button>
+    <button @click="navigateBack">返回上一页</button>
+  </view>
+</template>
+
+<script>
+export default {
+  methods: {
+    navigateToDetail() {
+      uni.navigateTo({
+        url: '/pages/detail/detail?id=123&name=测试'
+      });
+    },
+    redirectToLogin() {
+      uni.redirectTo({
+        url: '/pages/login/login'
+      });
+    },
+    reLaunchToHome() {
+      uni.reLaunch({
+        url: '/pages/index/index'
+      });
+    },
+    switchTab() {
+      uni.switchTab({
+        url: '/pages/home/home'
+      });
+    },
+    navigateBack() {
+      uni.navigateBack();
+    }
+  }
+}
+</script>
+</pre>

@@ -1,0 +1,147 @@
+<header>
+    绘图基础
+</header>
+<h2>
+    基本绘图方法
+</h2>
+<p>
+    Canvas提供了丰富的绘图API，可以绘制各种基本图形：
+</p>
+
+<h3>
+    矩形绘制
+</h3>
+<pre tag="javascript">
+// 填充矩形
+ctx.fillStyle = 'blue';
+ctx.fillRect(x, y, width, height);
+
+// 描边矩形
+ctx.strokeStyle = 'red';
+ctx.lineWidth = 2;
+ctx.strokeRect(x, y, width, height);
+
+// 清除矩形区域
+ctx.clearRect(x, y, width, height);
+</pre>
+
+<h3>
+    路径绘制
+</h3>
+<pre tag="javascript">
+// 开始新路径
+ctx.beginPath();
+
+// 移动到起始点
+ctx.moveTo(x, y);
+
+// 绘制直线
+ctx.lineTo(x, y);
+
+// 绘制圆弧
+ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+
+// 绘制贝塞尔曲线
+ctx.quadraticCurveTo(cp1x, cp1y, x, y); // 二次贝塞尔曲线
+ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y); // 三次贝塞尔曲线
+
+// 闭合路径
+ctx.closePath();
+
+// 填充路径
+ctx.fill();
+
+// 描边路径
+ctx.stroke();
+</pre>
+
+<h3>
+    样式设置
+</h3>
+<pre tag="javascript">
+// 填充样式
+ctx.fillStyle = 'color'; // 可以是颜色值、渐变、图案
+
+// 描边样式
+ctx.strokeStyle = 'color';
+
+// 线条宽度
+ctx.lineWidth = 5;
+
+// 线条端点样式
+ctx.lineCap = 'butt|round|square';
+
+// 线条连接样式
+ctx.lineJoin = 'miter|round|bevel';
+</pre>
+
+<h2>
+    文本绘制
+</h2>
+<pre tag="javascript">
+// 设置文本样式
+ctx.font = '30px Arial';
+ctx.textAlign = 'start|end|left|right|center';
+ctx.textBaseline = 'top|hanging|middle|alphabetic|ideographic|bottom';
+
+// 绘制填充文本
+ctx.fillText(text, x, y, maxWidth);
+
+// 绘制描边文本
+ctx.strokeText(text, x, y, maxWidth);
+
+// 测量文本宽度
+const width = ctx.measureText(text).width;
+</pre>
+
+<h2>
+    图像绘制
+</h2>
+<pre tag="javascript">
+// 绘制图像
+const img = new Image();
+img.onload = function() {
+    ctx.drawImage(img, x, y);
+    ctx.drawImage(img, x, y, width, height); // 缩放绘制
+    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); // 裁剪绘制
+};
+img.src = 'image.jpg';
+</pre>
+
+<h2>
+    渐变和图案
+</h2>
+<h3>
+    线性渐变
+</h3>
+<pre tag="javascript">
+const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
+gradient.addColorStop(0, 'red');
+gradient.addColorStop(1, 'blue');
+ctx.fillStyle = gradient;
+ctx.fillRect(0, 0, 100, 100);
+</pre>
+
+<h3>
+    径向渐变
+</h3>
+<pre tag="javascript">
+const gradient = ctx.createRadialGradient(x0, y0, r0, x1, y1, r1);
+gradient.addColorStop(0, 'red');
+gradient.addColorStop(1, 'blue');
+ctx.fillStyle = gradient;
+ctx.fillRect(0, 0, 100, 100);
+</pre>
+
+<h3>
+    图案填充
+</h3>
+<pre tag="javascript">
+const img = new Image();
+img.onload = function() {
+    const pattern = ctx.createPattern(img, 'repeat|repeat-x|repeat-y|no-repeat');
+    ctx.fillStyle = pattern;
+    ctx.fillRect(0, 0, 200, 200);
+};
+img.src = 'pattern.png';
+</pre>

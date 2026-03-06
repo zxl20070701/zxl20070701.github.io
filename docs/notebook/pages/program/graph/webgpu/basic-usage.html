@@ -1,0 +1,204 @@
+<header>
+    WebGPU基础用法
+</header>
+<p>
+    WebGPU是现代浏览器的图形API，提供了比WebGL更底层的硬件控制和更好的性能。本篇文章介绍WebGPU的基础使用方法。
+</p>
+<h2>
+    WebGPU与WebGL的区别
+</h2>
+<p>
+    WebGPU相比WebGL的主要优势：
+</p>
+<ul>
+    <li>
+        更接近底层硬件，性能更好
+    </li>
+    <li>
+        支持计算着色器
+    </li>
+    <li>
+        更好的多线程支持
+    </li>
+    <li>
+        更现代的API设计
+    </li>
+</ul>
+<h2>
+    初始化WebGPU
+</h2>
+<p>
+    首先需要请求WebGPU适配器和设备：
+</p>
+<pre tag="javascript">
+// 请求WebGPU适配器
+const adapter = await navigator.gpu.requestAdapter();
+if (!adapter) {
+    console.error('WebGPU not supported');
+    return;
+}
+
+// 请求设备
+const device = await adapter.requestDevice();
+</pre>
+<h2>
+    创建渲染管线
+</h2>
+<h3>
+    着色器模块
+</h3>
+<p>
+    WebGPU使用WGSL着色器语言：
+</p>
+<pre tag="javascript">
+// 顶点着色器
+const vertexShaderCode = `
+    struct VertexOutput {
+        @builtin(position) position: vec4&lt;f32&gt;,
+        @location(0) color: vec4&lt;f32&gt;,
+    };
+
+    @vertex
+    fn main(@location(0) position: vec3&lt;f32&gt;,
+            @location(1) color: vec3&lt;f32&gt;) -> VertexOutput {
+        var output: VertexOutput;
+        output.position = vec4&lt;f32&gt;(position, 1.0);
+        output.color = vec4&lt;f32&gt;(color, 1.0);
+        return output;
+    }
+`;
+
+// 片段着色器
+const fragmentShaderCode = `
+    @fragment
+    fn main(@location(0) color: vec4&lt;f32&gt;) -> @location(0) vec4&lt;f32&gt; {
+        return color;
+    }
+`;
+</pre>
+<h3>
+    创建着色器模块
+</h3>
+<pre tag="javascript">
+const vertexShaderModule = device.createShaderModule({
+    code: vertexShaderCode
+});
+
+const fragmentShaderModule = device.createShaderModule({
+    code: fragmentShaderCode
+});
+</pre>
+<h3>
+    配置渲染管线
+</h3>
+<pre tag="javascript">
+const pipeline = device.createRenderPipeline({
+    layout: 'auto',
+    vertex: {
+        module: vertexShaderModule,
+        entryPoint: 'main',
+        buffers: [{
+            arrayStride: 6 * 4, // 6 floats * 4 bytes each
+            attributes: [
+                { shaderLocation: 0, offset: 0, format: 'float32x3' }, // position
+                { shaderLocation: 1, offset: 3 * 4, format: 'float32x3' } // color
+            ]
+        }]
+    },
+    fragment: {
+        module: fragmentShaderModule,
+        entryPoint: 'main',
+        targets: [{ format: presentationFormat }]
+    },
+    primitive: {
+        topology: 'triangle-list'
+    }
+});
+</pre>
+<h2>
+    创建缓冲区
+</h2>
+<p>
+    创建顶点缓冲区：
+</p>
+<pre tag="javascript">
+// 顶点数据 (位置和颜色)
+const vertices = new Float32Array([
+    // 位置 (x, y, z) 颜色 (r, g, b)
+    -0.5, -0.5, 0.0,  1.0, 0.0, 0.0, // 左下角 - 红色
+     0.5, -0.5, 0.0,  0.0, 1.0, 0.0, // 右下角 - 绿色
+     0.0,  0.5, 0.0,  0.0, 0.0, 1.0  // 顶部 - 蓝色
+]);
+
+const vertexBuffer = device.createBuffer({
+    size: vertices.byteLength,
+    usage: GPUBufferUsage.VERTEX,
+    mappedAtCreation: true,
+});
+new Float32Array(vertexBuffer.getMappedRange()).set(vertices);
+vertexBuffer.unmap();
+</pre>
+<h2>
+    渲染循环
+</h2>
+<p>
+    WebGPU的渲染命令通过命令编码器提交：
+</p>
+<pre tag="javascript">
+function render() {
+    // 获取当前纹理视图
+    const textureView = context.getCurrentTexture().createView();
+    
+    // 创建命令编码器
+    const commandEncoder = device.createCommandEncoder();
+    
+    // 创建渲染通道
+    const renderPass = commandEncoder.beginRenderPass({
+        colorAttachments: [{
+            view: textureView,
+            loadOp: 'clear',
+            clearValue: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 },
+            storeOp: 'store'
+        }]
+    });
+    
+    // 设置渲染管线
+    renderPass.setPipeline(pipeline);
+    
+    // 设置顶点缓冲区
+    renderPass.setVertexBuffer(0, vertexBuffer);
+    
+    // 绘制
+    renderPass.draw(3);
+    
+    // 结束渲染通道
+    renderPass.end();
+    
+    // 提交命令
+    device.queue.submit([commandEncoder.finish()]);
+    
+    // 请求下一帧
+    requestAnimationFrame(render);
+}
+
+// 开始渲染循环
+requestAnimationFrame(render);
+</pre>
+<h2>
+    创建交换链
+</h2>
+<p>
+    配置画布和交换链：
+</p>
+<pre tag="javascript">
+// 获取画布上下文
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext('webgpu');
+
+// 配置上下文
+const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+context.configure({
+    device: device,
+    format: presentationFormat,
+});
+</pre>

@@ -2,14 +2,406 @@
     Dictionary（字典）
 </header>
 <p>
-    字典是另一种可变容器模型，且可存储任意类型对象，和ES中的JSON类似。
+    字典是Python中的一种键值对数据结构，用于存储具有映射关系的数据。字典中的每个元素都是一个键值对，键必须是唯一的且不可变类型（如字符串、数字、元组），值可以是任意类型。字典用花括号{}表示，键值对之间用逗号分隔，键和值之间用冒号分隔。
+</p>
+<p>
+    是另一种可变容器模型，且可存储任意类型对象，和ES中的JSON类似。
 </p>
 <p>
     格式如下：
 </p>
-<pre tag>
+<pre tag="python">
     tinydict = {key1 : value1, key2 : value2, key3 : value3 }
 </pre>
 <p class="warn">
     注意：dict 作为 Python 的关键字和内置函数，变量名不建议命名为 dict。
 </p>
+<h2>
+    字典创建和初始化
+</h2>
+<pre tag="python">
+# 空字典
+empty_dict = {}
+empty_dict2 = dict()
+
+# 使用花括号创建字典
+person = {"name": "张三", "age": 25, "city": "北京"}
+scores = {"数学": 95, "语文": 88, "英语": 92}
+
+# 使用dict()函数创建字典
+person2 = dict(name="李四", age=30, city="上海")
+person3 = dict([("name", "王五"), ("age", 28), ("city", "广州")])
+
+# 从键值对列表创建
+keys = ["a", "b", "c"]
+values = [1, 2, 3]
+dict_from_zip = dict(zip(keys, values))
+print(f"从zip创建: {dict_from_zip}")  # {'a': 1, 'b': 2, 'c': 3}
+
+# 字典推导式
+squares = {x: x**2 for x in range(5)}  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+even_squares = {x: x**2 for x in range(10) if x % 2 == 0}  # {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+
+print(f"人员信息: {person}")
+print(f"成绩: {scores}")
+print(f"字典推导式: {squares}")
+</pre>
+
+<h2>
+    字典访问和修改
+</h2>
+<pre tag="python">
+# 创建字典
+student = {"name": "小明", "age": 20, "grade": "大二", "scores": {"数学": 95, "语文": 88}}
+
+# 访问字典元素
+print(f"姓名: {student['name']}")
+print(f"年龄: {student['age']}")
+
+# 使用get()方法访问（键不存在时返回默认值）
+print(f"专业: {student.get('major', '未指定')}")  # 未指定
+print(f"姓名: {student.get('name')}")  # 小明
+
+# 修改字典元素
+student['age'] = 21
+student['major'] = "计算机科学"
+print(f"修改后: {student}")
+
+# 添加新元素
+student['email'] = "xiaoming@example.com"
+student['scores']['英语'] = 92
+print(f"添加后: {student}")
+
+# 更新多个元素
+student.update({"age": 22, "grade": "大三", "gpa": 3.8})
+print(f"批量更新后: {student}")
+
+# 删除元素
+del student['gpa']  # 删除指定键
+print(f"删除gpa后: {student}")
+
+removed_score = student['scores'].pop('语文', None)  # 删除并返回值
+print(f"删除的语文成绩: {removed_score}")
+print(f"删除语文后: {student['scores']}")
+
+# 清空字典
+student['scores'].clear()
+print(f"清空成绩后: {student}")
+</pre>
+
+<h2>
+    字典遍历
+</h2>
+<pre tag="python">
+# 创建示例字典
+inventory = {
+    "苹果": 50,
+    "香蕉": 30,
+    "橙子": 25,
+    "葡萄": 40
+}
+
+# 遍历键
+print("遍历键:")
+for fruit in inventory:
+    print(f"水果: {fruit}")
+
+print("\n遍历键（显式）:")
+for fruit in inventory.keys():
+    print(f"水果: {fruit}")
+
+# 遍历值
+print("\n遍历值:")
+for quantity in inventory.values():
+    print(f"数量: {quantity}")
+
+# 遍历键值对
+print("\n遍历键值对:")
+for fruit, quantity in inventory.items():
+    print(f"{fruit}: {quantity}")
+
+# 带索引遍历
+print("\n带索引遍历:")
+for i, (fruit, quantity) in enumerate(inventory.items()):
+    print(f"{i+1}. {fruit}: {quantity}")
+
+# 条件遍历
+print("\n库存大于30的水果:")
+for fruit, quantity in inventory.items():
+    if quantity > 30:
+        print(f"{fruit}: {quantity}")
+</pre>
+
+<h2>
+    字典常用方法
+</h2>
+<pre tag="python">
+# 创建示例字典
+data = {"a": 1, "b": 2, "c": 3, "d": 4}
+
+# keys() - 返回所有键的视图
+keys = data.keys()
+print(f"所有键: {list(keys)}")  # ['a', 'b', 'c', 'd']
+
+# values() - 返回所有值的视图
+values = data.values()
+print(f"所有值: {list(values)}")  # [1, 2, 3, 4]
+
+# items() - 返回所有键值对的视图
+items = data.items()
+print(f"所有项: {list(items)}")  # [('a', 1), ('b', 2), ('c', 3), ('d', 4)]
+
+# pop() - 删除并返回指定键的值
+removed_value = data.pop("b")
+print(f"删除的值: {removed_value}")  # 2
+print(f"删除后: {data}")  # {'a': 1, 'c': 3, 'd': 4}
+
+# popitem() - 删除并返回最后一个键值对（Python 3.7+保证顺序）
+last_item = data.popitem()
+print(f"删除的最后一项: {last_item}")  # ('d', 4)
+print(f"删除最后一项后: {data}")  # {'a': 1, 'c': 3}
+
+# setdefault() - 如果键存在返回其值，否则设置默认值并返回
+value = data.setdefault("e", 5)
+print(f"设置默认值: {value}")  # 5
+print(f"设置后: {data}")  # {'a': 1, 'c': 3, 'e': 5}
+
+# fromkeys() - 创建新字典，所有键有相同的值
+keys = ["x", "y", "z"]
+new_dict = dict.fromkeys(keys, 0)
+print(f"fromkeys创建: {new_dict}")  # {'x': 0, 'y': 0, 'z': 0}
+
+# copy() - 浅拷贝字典
+original = {"a": 1, "b": [1, 2, 3]}
+copied = original.copy()
+copied["a"] = 100
+copied["b"].append(4)
+print(f"原始: {original}")  # {'a': 1, 'b': [1, 2, 3, 4]}
+print(f"拷贝: {copied}")  # {'a': 100, 'b': [1, 2, 3, 4]}
+</pre>
+
+<h2>
+    嵌套字典
+</h2>
+<pre tag="python">
+# 创建嵌套字典
+school = {
+    "class1": {
+        "students": {
+            "Alice": {"age": 20, "grades": {"math": 95, "english": 88}},
+            "Bob": {"age": 19, "grades": {"math": 92, "english": 90}}
+        },
+        "teacher": "Mr. Smith"
+    },
+    "class2": {
+        "students": {
+            "Charlie": {"age": 21, "grades": {"math": 89, "english": 94}},
+            "David": {"age": 20, "grades": {"math": 96, "english": 87}}
+        },
+        "teacher": "Ms. Johnson"
+    }
+}
+
+# 访问嵌套字典
+print(f"Class1的老师: {school['class1']['teacher']}")
+print(f"Alice的数学成绩: {school['class1']['students']['Alice']['grades']['math']}")
+
+# 安全访问嵌套字典
+def safe_get(dictionary, *keys, default=None):
+    """安全获取嵌套字典的值"""
+    for key in keys:
+        if isinstance(dictionary, dict) and key in dictionary:
+            dictionary = dictionary[key]
+        else:
+            return default
+    return dictionary
+
+# 使用安全访问
+math_grade = safe_get(school, 'class1', 'students', 'Alice', 'grades', 'math')
+print(f"Alice的数学成绩(安全访问): {math_grade}")
+
+# 修改嵌套字典
+school["class1"]["students"]["Alice"]["grades"]["science"] = 93
+print(f"添加科学成绩后: {school['class1']['students']['Alice']}")
+
+# 遍历嵌套字典
+print("\n遍历所有学生成绩:")
+for class_name, class_info in school.items():
+    print(f"\n{class_name} (老师: {class_info['teacher']})")
+    for student, info in class_info["students"].items():
+        print(f"  {student}: 年龄 {info['age']}")
+        for subject, grade in info["grades"].items():
+            print(f"    {subject}: {grade}")
+</pre>
+
+<h2>
+    字典推导式
+</h2>
+<pre tag="python">
+# 基本字典推导式
+squares = {x: x**2 for x in range(5)}
+print(f"平方数字典: {squares}")  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# 带条件的字典推导式
+even_squares = {x: x**2 for x in range(10) if x % 2 == 0}
+print(f"偶数平方字典: {even_squares}")  # {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+
+# 从列表创建字典
+names = ["Alice", "Bob", "Charlie"]
+name_lengths = {name: len(name) for name in names}
+print(f"姓名长度字典: {name_lengths}")  # {'Alice': 5, 'Bob': 3, 'Charlie': 7}
+
+# 交换键值对
+original = {"a": 1, "b": 2, "c": 3}
+swapped = {v: k for k, v in original.items()}
+print(f"交换键值: {swapped}")  # {1: 'a', 2: 'b', 3: 'c'}
+
+# 复杂示例：统计字符频率
+text = "hello world"
+char_count = {char: text.count(char) for char in set(text) if char != ' '}
+print(f"字符频率: {char_count}")  # {'h': 1, 'e': 1, 'l': 3, 'o': 2, 'w': 1, 'r': 1, 'd': 1}
+
+# 分组示例
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+grouped = {"even": [n for n in numbers if n % 2 == 0],
+           "odd": [n for n in numbers if n % 2 == 1]}
+print(f"奇偶分组: {grouped}")  # {'even': [2, 4, 6, 8, 10], 'odd': [1, 3, 5, 7, 9]}
+</pre>
+
+<h2>
+    字典的实际应用
+</h2>
+<pre tag="python">
+# 1. 配置管理
+config = {
+    "database": {
+        "host": "localhost",
+        "port": 3306,
+        "username": "root",
+        "password": "password"
+    },
+    "logging": {
+        "level": "INFO",
+        "file": "app.log",
+        "format": "%(asctime)s - %(levelname)s - %(message)s"
+    }
+}
+
+print(f"数据库主机: {config['database']['host']}")
+print(f"日志级别: {config['logging']['level']}")
+
+# 2. 计数器
+text = "this is a sample text with some words this text has some repeated words"
+word_count = {}
+for word in text.split():
+    word_count[word] = word_count.get(word, 0) + 1
+
+print("单词计数:")
+for word, count in sorted(word_count.items()):
+    print(f"  {word}: {count}")
+
+# 3. 缓存/记忆化
+def fibonacci_memo(n, memo={}):
+    """使用字典缓存斐波那契数列计算结果"""
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    memo[n] = fibonacci_memo(n-1, memo) + fibonacci_memo(n-2, memo)
+    return memo[n]
+
+print(f"斐波那契数列前10项: {[fibonacci_memo(i) for i in range(10)]}")
+
+# 4. 查找表
+grade_map = {
+    "A": 90,
+    "B": 80,
+    "C": 70,
+    "D": 60,
+    "F": 0
+}
+
+def get_grade(score):
+    """根据分数返回等级"""
+    for grade, min_score in grade_map.items():
+        if score >= min_score:
+            return grade
+    return "F"
+
+print(f"95分等级: {get_grade(95)}")  # A
+print(f"75分等级: {get_grade(75)}")  # C
+
+# 5. 分组数据
+students = [
+    {"name": "Alice", "grade": "A", "subject": "Math"},
+    {"name": "Bob", "grade": "B", "subject": "Math"},
+    {"name": "Charlie", "grade": "A", "subject": "Science"},
+    {"name": "David", "grade": "B", "subject": "Science"}
+]
+
+# 按等级分组
+grouped_by_grade = {}
+for student in students:
+    grade = student["grade"]
+    if grade not in grouped_by_grade:
+        grouped_by_grade[grade] = []
+    grouped_by_grade[grade].append(student)
+
+print("按等级分组:")
+for grade, students_list in grouped_by_grade.items():
+    print(f"  {grade}级学生:")
+    for student in students_list:
+        print(f"    {student['name']} - {student['subject']}")
+</pre>
+
+<h2>
+    字典的性能考虑
+</h2>
+<pre tag="python">
+import time
+
+# 比较列表和字典的查找性能
+data_size = 100000
+
+# 创建测试数据
+keys = [f"key_{i}" for i in range(data_size)]
+values = [i for i in range(data_size)]
+
+# 列表查找（线性搜索）
+list_data = list(zip(keys, values))
+
+start = time.time()
+for key in keys[:1000]:  # 查找前1000个键
+    for k, v in list_data:
+        if k == key:
+            break
+list_time = time.time() - start
+
+# 字典查找（哈希表）
+dict_data = dict(zip(keys, values))
+
+start = time.time()
+for key in keys[:1000]:  # 查找前1000个键
+    value = dict_data[key]
+dict_time = time.time() - start
+
+print(f"列表查找1000个元素耗时: {list_time:.4f}秒")
+print(f"字典查找1000个元素耗时: {dict_time:.6f}秒")
+print(f"字典比列表快约 {list_time/dict_time:.0f} 倍")
+
+# 字典键的类型影响
+# 不可变类型作为键
+valid_keys = {
+    "string": "字符串键",
+    42: "整数键",
+    (1, 2, 3): "元组键",
+    frozenset([1, 2, 3]): "冻结集合键"
+}
+print(f"有效键类型: {list(valid_keys.keys())}")
+
+# 可变类型不能作为键
+try:
+    invalid_dict = {[1, 2, 3]: "列表不能作为键"}
+except TypeError as e:
+    print(f"错误: {e}")  # unhashable type: 'list'
+</pre>

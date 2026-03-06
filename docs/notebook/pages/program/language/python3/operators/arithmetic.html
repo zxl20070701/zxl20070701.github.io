@@ -1,49 +1,301 @@
 <header>
     算术运算符
 </header>
+<p>
+    算术运算符用于执行基本的数学运算，包括加、减、乘、除等。Python中的算术运算符不仅适用于数字类型，还可以用于字符串、列表等序列类型的特定操作。
+</p>
+
+<h2>
+    基本算术运算符
+</h2>
 <table>
     <thead>
         <tr>
             <th>运算符</th>
             <th>描述</th>
-            <th>实例</th>
+            <th>示例</th>
+            <th>结果</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>+</td>
-            <td>加 - 两个对象相加</td>
-            <td> a + b 输出结果 31</td>
+            <td>加法：两个对象相加</td>
+            <td>5 + 3</td>
+            <td>8</td>
         </tr>
         <tr>
             <td>-</td>
-            <td>减 - 得到负数或是一个数减去另一个数</td>
-            <td> a - b 输出结果 -11</td>
+            <td>减法：得到负数或一个数减去另一个数</td>
+            <td>10 - 4</td>
+            <td>6</td>
         </tr>
         <tr>
             <td>*</td>
-            <td>乘 - 两个数相乘或是返回一个被重复若干次的字符串</td>
-            <td> a * b 输出结果 210</td>
+            <td>乘法：两个数相乘或字符串重复</td>
+            <td>3 * 4</td>
+            <td>12</td>
         </tr>
         <tr>
             <td>/</td>
-            <td>除 - x 除以 y</td>
-            <td> b / a 输出结果 2.1</td>
-        </tr>
-        <tr>
-            <td>%</td>
-            <td>取模 - 返回除法的余数</td>
-            <td> b % a 输出结果 1</td>
-        </tr>
-        <tr>
-            <td>**</td>
-            <td>幂 - 返回x的y次幂</td>
-            <td> a**b 为10的21次方</td>
+            <td>除法：返回浮点数结果</td>
+            <td>7 / 2</td>
+            <td>3.5</td>
         </tr>
         <tr>
             <td>//</td>
-            <td>取整除 - 往小的方向取整数</td>
-            <td></td>
+            <td>整除：向下取整的除法</td>
+            <td>7 // 2</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>%</td>
+            <td>取模：返回除法的余数</td>
+            <td>7 % 3</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>**</td>
+            <td>幂运算：返回x的y次幂</td>
+            <td>2 ** 3</td>
+            <td>8</td>
         </tr>
     </tbody>
 </table>
+
+<h2>
+    运算符详细示例
+</h2>
+<pre tag="python">
+# 基本算术运算
+a = 10
+b = 3
+
+print(f"a = {a}, b = {b}")
+print(f"a + b = {a + b}")    # 13
+print(f"a - b = {a - b}")    # 7
+print(f"a * b = {a * b}")    # 30
+print(f"a / b = {a / b}")    # 3.333...
+print(f"a // b = {a // b}")  # 3 (整除)
+print(f"a % b = {a % b}")    # 1 (取模)
+print(f"a ** b = {a ** b}")  # 1000 (10的3次方)
+
+# 字符串操作
+str1 = "Hello"
+str2 = "World"
+
+print(f"\n字符串操作:")
+print(f"str1 + str2 = {str1 + ' ' + str2}")  # Hello World
+print(f"str1 * 3 = {str1 * 3}")  # HelloHelloHello
+
+# 列表操作
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]
+
+print(f"\n列表操作:")
+print(f"list1 + list2 = {list1 + list2}")  # [1, 2, 3, 4, 5, 6]
+print(f"list1 * 2 = {list1 * 2}")  # [1, 2, 3, 1, 2, 3]
+
+# 复合赋值运算符
+x = 5
+print(f"\n复合赋值运算:")
+x += 3   # 等价于 x = x + 3
+print(f"x += 3 -> x = {x}")  # 8
+
+x -= 2   # 等价于 x = x - 2
+print(f"x -= 2 -> x = {x}")  # 6
+
+x *= 4   # 等价于 x = x * 4
+print(f"x *= 4 -> x = {x}")  # 24
+
+x //= 3  # 等价于 x = x // 3
+print(f"x //= 3 -> x = {x}")  # 8
+
+x %= 5   # 等价于 x = x % 5
+print(f"x %= 5 -> x = {x}")  # 3
+
+x **= 2  # 等价于 x = x ** 2
+print(f"x **= 2 -> x = {x}")  # 9
+</pre>
+
+<h2>
+    浮点数精度问题
+</h2>
+<pre tag="python">
+# 浮点数精度问题
+a = 0.1
+b = 0.2
+c = a + b
+
+print(f"0.1 + 0.2 = {c}")  # 0.30000000000000004
+print(f"0.1 + 0.2 == 0.3: {c == 0.3}")  # False
+
+# 解决方案1：使用round()
+print(f"round(0.1 + 0.2, 1) == 0.3: {round(c, 1) == 0.3}")  # True
+
+# 解决方案2：使用decimal模块
+from decimal import Decimal
+d1 = Decimal('0.1')
+d2 = Decimal('0.2')
+d3 = d1 + d2
+print(f"Decimal: 0.1 + 0.2 = {d3}")  # 0.3
+print(f"Decimal: 0.1 + 0.2 == 0.3: {d3 == Decimal('0.3')}")  # True
+
+# 解决方案3：使用math.isclose()
+import math
+print(f"math.isclose(0.1 + 0.2, 0.3): {math.isclose(0.1 + 0.2, 0.3)}")  # True
+</pre>
+
+<h2>
+    数学函数和常量
+</h2>
+<pre tag="python">
+import math
+
+# 常用数学函数
+print("常用数学函数:")
+print(f"abs(-5) = {abs(-5)}")  # 绝对值
+print(f"round(3.14159, 2) = {round(3.14159, 2)}")  # 四舍五入
+print(f"max(1, 5, 3, 9, 2) = {max(1, 5, 3, 9, 2)}")  # 最大值
+print(f"min(1, 5, 3, 9, 2) = {min(1, 5, 3, 9, 2)}")  # 最小值
+print(f"sum([1, 2, 3, 4, 5]) = {sum([1, 2, 3, 4, 5])}")  # 求和
+
+# 数学常量
+print("\n数学常量:")
+print(f"π = {math.pi}")
+print(f"e = {math.e}")
+print(f"∞ = {math.inf}")
+print(f"-∞ = {-math.inf}")
+print(f"NaN = {math.nan}")
+
+# 数学函数
+print("\n高级数学函数:")
+print(f"sqrt(16) = {math.sqrt(16)}")  # 平方根
+print(f"pow(2, 3) = {math.pow(2, 3)}")  # 幂运算
+print(f"ceil(3.2) = {math.ceil(3.2)}")  # 向上取整
+print(f"floor(3.8) = {math.floor(3.8)}")  # 向下取整
+print(f"trunc(3.8) = {math.trunc(3.8)}")  # 截断小数部分
+</pre>
+
+<h2>
+    实际应用示例
+</h2>
+<pre tag="python">
+# 1. 计算圆的面积和周长
+def circle_properties(radius):
+    """计算圆的面积和周长"""
+    area = math.pi * radius ** 2
+    circumference = 2 * math.pi * radius
+    return area, circumference
+
+radius = 5
+area, circumference = circle_properties(radius)
+print(f"半径为{radius}的圆:")
+print(f"面积: {area:.2f}")
+print(f"周长: {circumference:.2f}")
+
+# 2. 温度转换
+def celsius_to_fahrenheit(celsius):
+    """摄氏温度转华氏温度"""
+    return celsius * 9/5 + 32
+
+def fahrenheit_to_celsius(fahrenheit):
+    """华氏温度转摄氏温度"""
+    return (fahrenheit - 32) * 5/9
+
+temperatures = [0, 20, 37, 100]
+print("\n温度转换:")
+for c in temperatures:
+    f = celsius_to_fahrenheit(c)
+    print(f"{c}°C = {f:.1f}°F")
+
+# 3. 计算平均值、方差和标准差
+def statistics(numbers):
+    """计算基本统计信息"""
+    n = len(numbers)
+    mean = sum(numbers) / n
+    variance = sum((x - mean) ** 2 for x in numbers) / n
+    std_dev = math.sqrt(variance)
+    return mean, variance, std_dev
+
+scores = [85, 90, 78, 92, 88, 76, 95, 89]
+mean, variance, std_dev = statistics(scores)
+print(f"\n成绩统计:")
+print(f"平均分: {mean:.2f}")
+print(f"方差: {variance:.2f}")
+print(f"标准差: {std_dev:.2f}")
+
+# 4. 复利计算
+def compound_interest(principal, rate, time, n=1):
+    """计算复利
+    principal: 本金
+    rate: 年利率（小数）
+    time: 时间（年）
+    n: 每年复利次数
+    """
+    amount = principal * (1 + rate/n) ** (n*time)
+    return amount
+
+principal = 10000  # 本金10000元
+rate = 0.05       # 年利率5%
+time = 10         # 10年
+
+# 不同复利频率的比较
+frequencies = [1, 2, 4, 12, 365]
+print(f"\n{principal}元投资{time}年，年利率{rate*100}%:")
+for n in frequencies:
+    amount = compound_interest(principal, rate, time, n)
+    interest = amount - principal
+    print(f"每年{n}次复利: 总额={amount:.2f}, 利息={interest:.2f}")
+
+# 5. 生成斐波那契数列
+def fibonacci(n):
+    """生成前n个斐波那契数"""
+    fib_sequence = []
+    a, b = 0, 1
+    for _ in range(n):
+        fib_sequence.append(a)
+        a, b = b, a + b
+    return fib_sequence
+
+fib_numbers = fibonacci(10)
+print(f"\n前10个斐波那契数: {fib_numbers}")
+
+# 6. 计算两点间距离
+def distance(x1, y1, x2, y2):
+    """计算两点间欧几里得距离"""
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+point1 = (0, 0)
+point2 = (3, 4)
+dist = distance(*point1, *point2)
+print(f"\n点{point1}到点{point2}的距离: {dist}")  # 5.0
+</pre>
+
+<h2>
+    运算符优先级
+</h2>
+<pre tag="python">
+# 运算符优先级示例
+result1 = 2 + 3 * 4  # 先乘后加
+result2 = (2 + 3) * 4  # 括号改变优先级
+
+print(f"2 + 3 * 4 = {result1}")  # 14
+print(f"(2 + 3) * 4 = {result2}")  # 20
+
+# 复杂表达式
+complex_expr = 2 + 3 * 4 ** 2 / 2 - 1
+print(f"2 + 3 * 4 ** 2 / 2 - 1 = {complex_expr}")  # 25.0
+
+# 使用括号明确优先级
+explicit = 2 + ((3 * (4 ** 2)) / 2) - 1
+print(f"显式括号: {explicit}")  # 25.0
+
+# 运算符优先级表（从高到低）
+precedence = """
+** (指数运算)
+*, /, //, % (乘、除、整除、取模)
++, - (加、减)
+"""
+print(f"\n运算符优先级（从高到低）:\n{precedence}")
+</pre>

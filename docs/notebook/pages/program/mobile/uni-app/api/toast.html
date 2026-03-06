@@ -1,0 +1,162 @@
+<header>
+    消息提示框
+</header>
+<h2>
+    uni.showToast(OBJECT)
+</h2>
+<p>
+    显示消息提示框。
+</p>
+<pre tag="javascript">
+uni.showToast({
+    title: '操作成功',
+    icon: 'success',
+    duration: 2000
+});
+
+// 显示加载中
+uni.showToast({
+    title: '加载中',
+    icon: 'loading',
+    duration: 2000
+});
+
+// 不显示图标
+uni.showToast({
+    title: '提示信息',
+    icon: 'none',
+    duration: 2000
+});
+</pre>
+<h3>
+    参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>title</td>
+            <td>String</td>
+            <td>是</td>
+            <td>提示的内容，长度与 icon 取值有关</td>
+        </tr>
+        <tr>
+            <td>icon</td>
+            <td>String</td>
+            <td>否</td>
+            <td>图标，有效值详见下方说明</td>
+        </tr>
+        <tr>
+            <td>image</td>
+            <td>String</td>
+            <td>否</td>
+            <td>自定义图标的本地路径，image 的优先级高于 icon</td>
+        </tr>
+        <tr>
+            <td>duration</td>
+            <td>Number</td>
+            <td>否</td>
+            <td>提示的延迟时间，单位毫秒，默认：1500</td>
+        </tr>
+        <tr>
+            <td>mask</td>
+            <td>Boolean</td>
+            <td>否</td>
+            <td>是否显示透明蒙层，防止触摸穿透，默认：false</td>
+        </tr>
+        <tr>
+            <td>position</td>
+            <td>String</td>
+            <td>否</td>
+            <td>纯文本轻提示显示位置，有效值：top, center, bottom，默认：bottom</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    uni.hideToast()
+</h2>
+<p>
+    隐藏消息提示框。
+</p>
+<pre tag="javascript">
+uni.hideToast();
+</pre>
+<h2>
+    uni.showLoading(OBJECT)
+</h2>
+<p>
+    显示 loading 提示框, 需主动调用 uni.hideLoading 才能关闭提示框。
+</p>
+<pre tag="javascript">
+uni.showLoading({
+    title: '加载中'
+});
+
+// 隐藏 loading
+setTimeout(function () {
+    uni.hideLoading();
+}, 2000);
+</pre>
+<h2>
+    uni.hideLoading()
+</h2>
+<p>
+    隐藏 loading 提示框。
+</p>
+<pre tag="javascript">
+uni.hideLoading();
+</pre>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <button @click="showSuccess">显示成功提示</button>
+    <button @click="showLoading">显示加载提示</button>
+    <button @click="showCustom">显示自定义提示</button>
+  </view>
+</template>
+
+<script>
+export default {
+  methods: {
+    showSuccess() {
+      uni.showToast({
+        title: '操作成功',
+        icon: 'success',
+        duration: 2000
+      });
+    },
+    showLoading() {
+      uni.showLoading({
+        title: '加载中'
+      });
+      
+      // 模拟异步操作
+      setTimeout(() => {
+        uni.hideLoading();
+        uni.showToast({
+          title: '加载完成',
+          icon: 'success'
+        });
+      }, 2000);
+    },
+    showCustom() {
+      uni.showToast({
+        title: '这是一个自定义提示',
+        icon: 'none',
+        duration: 2000
+      });
+    }
+  }
+}
+</script>
+</pre>

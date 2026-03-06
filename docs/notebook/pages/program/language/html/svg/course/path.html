@@ -1,0 +1,103 @@
+<header>
+    路径
+</header>
+<h2>
+    路径基础
+</h2>
+<p>
+    SVG路径是使用&lt;path&gt;标签创建的，通过d属性定义路径数据。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M10 10 L100 100" stroke="black" stroke-width="2" />
+</svg>
+</pre>
+<h2>
+    路径命令
+</h2>
+<h3>
+    移动命令 (M, m)
+</h3>
+<p>
+    M命令用于移动画笔到指定位置，不绘制线条。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M10 10 L100 100 M150 50 L200 100" stroke="black" stroke-width="2" />
+</svg>
+</pre>
+<h3>
+    直线命令 (L, l, H, h, V, v)
+</h3>
+<p>
+    L命令绘制直线到指定坐标，H命令绘制水平线，V命令绘制垂直线。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M10 10 L100 100 H150 V150" stroke="black" stroke-width="2" fill="none" />
+</svg>
+</pre>
+<h3>
+    曲线命令 (C, c, S, s, Q, q, T, t)
+</h3>
+<h4>
+    三次贝塞尔曲线 (C)
+</h4>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M10 100 C30 10 170 10 190 100" stroke="black" stroke-width="2" fill="none" />
+</svg>
+</pre>
+<h4>
+    二次贝塞尔曲线 (Q)
+</h4>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M10 100 Q100 10 190 100" stroke="black" stroke-width="2" fill="none" />
+</svg>
+</pre>
+<h3>
+    弧线命令 (A, a)
+</h3>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M50 150 A50 50 0 1 1 150 150" stroke="black" stroke-width="2" fill="none" />
+</svg>
+</pre>
+<p>
+    弧线命令的参数：
+</p>
+<ul>
+    <li><span class="important">rx</span>: x轴半径</li>
+    <li><span class="important">ry</span>: y轴半径</li>
+    <li><span class="important">x-axis-rotation</span>: 椭圆的旋转角度</li>
+    <li><span class="important">large-arc-flag</span>: 大弧标志（0或1）</li>
+    <li><span class="important">sweep-flag</span>: 顺时针标志（0或1）</li>
+    <li><span class="important">x</span>: 终点x坐标</li>
+    <li><span class="important">y</span>: 终点y坐标</li>
+</ul>
+<h2>
+    闭合路径 (Z, z)
+</h2>
+<p>
+    Z命令用于闭合当前路径。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M10 10 L100 10 L100 100 L10 100 Z" stroke="black" stroke-width="2" fill="lightblue" />
+</svg>
+</pre>
+<h2>
+    相对坐标与绝对坐标
+</h2>
+<p>
+    大写字母命令使用绝对坐标，小写字母命令使用相对坐标。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M10 10 l90 0 l0 90 l-90 0 Z" stroke="black" stroke-width="2" fill="lightgreen" />
+</svg>
+</pre>
+<div class="tips">
+    路径命令可以组合使用，创建复杂的图形。理解每个命令的参数是掌握SVG路径的关键。
+</div>

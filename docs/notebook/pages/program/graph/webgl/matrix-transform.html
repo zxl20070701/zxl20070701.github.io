@@ -1,0 +1,173 @@
+<header>
+    矩阵变换
+</header>
+<p>
+    在WebGL中，矩阵变换是实现3D效果的核心概念。通过矩阵运算，我们可以实现物体的平移、旋转和缩放等变换。
+</p>
+<h2>
+    变换类型
+</h2>
+<h3>
+    平移变换
+</h3>
+<p>
+    平移变换将物体从一个位置移动到另一个位置。在3D空间中，平移矩阵如下：
+</p>
+<pre tag="javascript">
+// 平移矩阵 (tx, ty, tz 为平移距离)
+const translationMatrix = [
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    tx, ty, tz, 1
+];
+</pre>
+<h3>
+    旋转变换
+</h3>
+<p>
+    旋转变换围绕某个轴旋转物体。以下是绕各轴旋转的矩阵：
+</p>
+<h4>
+    绕X轴旋转
+</h4>
+<pre tag="javascript">
+// 绕X轴旋转矩阵 (angle为旋转角度)
+const rotationXMatrix = [
+    1, 0, 0, 0,
+    0, Math.cos(angle), Math.sin(angle), 0,
+    0, -Math.sin(angle), Math.cos(angle), 0,
+    0, 0, 0, 1
+];
+</pre>
+<h4>
+    绕Y轴旋转
+</h4>
+<pre tag="javascript">
+// 绕Y轴旋转矩阵
+const rotationYMatrix = [
+    Math.cos(angle), 0, -Math.sin(angle), 0,
+    0, 1, 0, 0,
+    Math.sin(angle), 0, Math.cos(angle), 0,
+    0, 0, 0, 1
+];
+</pre>
+<h4>
+    绕Z轴旋转
+</h4>
+<pre tag="javascript">
+// 绕Z轴旋转矩阵
+const rotationZMatrix = [
+    Math.cos(angle), Math.sin(angle), 0, 0,
+    -Math.sin(angle), Math.cos(angle), 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1
+];
+</pre>
+<h3>
+    缩放变换
+</h3>
+<p>
+    缩放变换改变物体的大小：
+</p>
+<pre tag="javascript">
+// 缩放矩阵 (sx, sy, sz 为缩放因子)
+const scaleMatrix = [
+    sx, 0, 0, 0,
+    0, sy, 0, 0,
+    0, 0, sz, 0,
+    0, 0, 0, 1
+];
+</pre>
+<h2>
+    矩阵乘法
+</h2>
+<p>
+    多个变换可以通过矩阵乘法组合在一起。注意矩阵乘法的顺序很重要：
+</p>
+<pre tag="javascript">
+// 组合变换：先缩放，再旋转，最后平移
+const modelMatrix = multiplyMatrices(
+    translationMatrix,
+    multiplyMatrices(rotationMatrix, scaleMatrix)
+);
+</pre>
+<div class="tips">
+    矩阵乘法的顺序是从右到左，即右边的矩阵先应用。
+</div>
+<h2>
+    在着色器中使用矩阵
+</h2>
+<p>
+    在顶点着色器中，我们通常将变换矩阵作为uniform变量传入：
+</p>
+<pre tag="javascript">
+// 顶点着色器
+attribute vec4 a_position;
+uniform mat4 u_modelMatrix;
+uniform mat4 u_viewMatrix;
+uniform mat4 u_projectionMatrix;
+
+void main() {
+    gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * a_position;
+}
+</pre>
+<h2>
+    视图矩阵和投影矩阵
+</h2>
+<h3>
+    视图矩阵
+</h3>
+<p>
+    视图矩阵定义了摄像机的位置和方向：
+</p>
+<pre tag="javascript">
+// 简单的视图矩阵 (摄像机在(0,0,-5)位置看向原点)
+function lookAt(eye, center, up) {
+    // 实现摄像机矩阵计算
+    // 这里简化处理
+    return [
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        -eye[0], -eye[1], -eye[2], 1
+    ];
+}
+</pre>
+<h3>
+    投影矩阵
+</h3>
+<p>
+    投影矩阵将3D坐标转换为2D屏幕坐标：
+</p>
+<h4>
+    透视投影
+</h4>
+<pre tag="javascript">
+// 透视投影矩阵
+function perspective(fov, aspect, near, far) {
+    const f = 1.0 / Math.tan(fov / 2);
+    const rangeInv = 1 / (near - far);
+    
+    return [
+        f / aspect, 0, 0, 0,
+        0, f, 0, 0,
+        0, 0, (near + far) * rangeInv, -1,
+        0, 0, near * far * rangeInv * 2, 0
+    ];
+}
+</pre>
+<h4>
+    正交投影
+</h4>
+<pre tag="javascript">
+// 正交投影矩阵
+function ortho(left, right, bottom, top, near, far) {
+    return [
+        2 / (right - left), 0, 0, 0,
+        0, 2 / (top - bottom), 0, 0,
+        0, 0, -2 / (far - near), 0,
+        -(right + left) / (right - left), -(top + bottom) / (top - bottom), -(far + near) / (far - near), 1
+    ];
+}
+</pre>

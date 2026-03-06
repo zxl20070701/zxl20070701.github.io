@@ -1,0 +1,82 @@
+<header>
+    icon
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>type</td>
+            <td>String</td>
+            <td></td>
+            <td>icon的类型，有效值：success, success_no_circle, info, warn, waiting, cancel, download, search, clear</td>
+        </tr>
+        <tr>
+            <td>size</td>
+            <td>Number/String</td>
+            <td>23</td>
+            <td>icon的大小，单位px</td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>String</td>
+            <td></td>
+            <td>icon的颜色，同css的color</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <view class="icon-item">
+      <icon type="success" size="26"/>
+      <text>success</text>
+    </view>
+    <view class="icon-item">
+      <icon type="info" size="26"/>
+      <text>info</text>
+    </view>
+    <view class="icon-item">
+      <icon type="warn" size="26"/>
+      <text>warn</text>
+    </view>
+    <view class="icon-item">
+      <icon type="waiting" size="26"/>
+      <text>waiting</text>
+    </view>
+    <view class="icon-item">
+      <icon type="success" size="26" color="#007aff"/>
+      <text>自定义颜色</text>
+    </view>
+  </view>
+</template>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.icon-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.icon-item text {
+  margin-left: 10px;
+  font-size: 16px;
+}
+</style>
+</pre>

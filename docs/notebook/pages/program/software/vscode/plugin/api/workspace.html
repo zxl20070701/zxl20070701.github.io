@@ -1,0 +1,95 @@
+<header>
+    workspace
+</header>
+<h2>
+    工作区信息
+</h2>
+<h3>
+    获取工作区文件夹
+</h3>
+<pre tag="javascript">
+const workspaceFolders = vscode.workspace.workspaceFolders;
+if (workspaceFolders) {
+    workspaceFolders.forEach(folder => {
+        console.log('工作区:', folder.name, folder.uri.fsPath);
+    });
+}
+</pre>
+<h3>
+    监听工作区变化
+</h3>
+<pre tag="javascript">
+// 监听工作区文件夹变化
+vscode.workspace.onDidChangeWorkspaceFolders(event => {
+    console.log('工作区已更改');
+    event.added.forEach(folder => console.log('添加:', folder.uri.fsPath));
+    event.removed.forEach(folder => console.log('移除:', folder.uri.fsPath));
+});
+</pre>
+<h2>
+    文件操作
+</h2>
+<h3>
+    打开文本文件
+</h3>
+<pre tag="javascript">
+// 打开文件并显示在编辑器中
+const document = await vscode.workspace.openTextDocument(fileUri);
+await vscode.window.showTextDocument(document);
+</pre>
+<h3>
+    保存所有文件
+</h3>
+<pre tag="javascript">
+// 保存所有未保存的文件
+await vscode.workspace.saveAll();
+</pre>
+<h2>
+    配置管理
+</h2>
+<h3>
+    获取配置
+</h3>
+<pre tag="javascript">
+// 获取扩展配置
+const config = vscode.workspace.getConfiguration('myExtension');
+const enabled = config.get('enabled', true);
+</pre>
+<h3>
+    更新配置
+</h3>
+<pre tag="javascript">
+// 更新配置
+const config = vscode.workspace.getConfiguration('myExtension');
+await config.update('enabled', false, vscode.ConfigurationTarget.Global);
+</pre>
+<h2>
+    文件系统监听
+</h2>
+<h3>
+    创建文件监听器
+</h3>
+<pre tag="javascript">
+// 监听特定模式的文件变化
+const watcher = vscode.workspace.createFileSystemWatcher('**/*.js');
+watcher.onDidCreate(uri => console.log('文件创建:', uri.fsPath));
+watcher.onDidChange(uri => console.log('文件修改:', uri.fsPath));
+watcher.onDidDelete(uri => console.log('文件删除:', uri.fsPath));
+</pre>
+<h2>
+    查找文件
+</h2>
+<h3>
+    查找文件内容
+</h3>
+<pre tag="javascript">
+// 在工作区中查找文本
+const files = await vscode.workspace.findFiles('**/*.js', '**/node_modules/**');
+for (const file of files) {
+    const document = await vscode.workspace.openTextDocument(file);
+    const text = document.getText();
+    if (text.includes('searchText')) {
+        console.log('在文件中找到:', file.fsPath);
+    }
+}
+</pre>

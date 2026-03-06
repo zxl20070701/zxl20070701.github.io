@@ -1,0 +1,137 @@
+<header>
+    progress
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>percent</td>
+            <td>Number</td>
+            <td>无</td>
+            <td>百分比0~100</td>
+        </tr>
+        <tr>
+            <td>show-info</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>在进度条右侧显示百分比</td>
+        </tr>
+        <tr>
+            <td>stroke-width</td>
+            <td>Number/String</td>
+            <td>6</td>
+            <td>进度条线的宽度，单位px</td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>String</td>
+            <td>#09BB07</td>
+            <td>进度条颜色（请使用activeColor）</td>
+        </tr>
+        <tr>
+            <td>activeColor</td>
+            <td>String</td>
+            <td>#09BB07</td>
+            <td>已选择的进度条的颜色</td>
+        </tr>
+        <tr>
+            <td>backgroundColor</td>
+            <td>String</td>
+            <td>#EBEBEB</td>
+            <td>未选择的进度条的颜色</td>
+        </tr>
+        <tr>
+            <td>active</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>进度条从左往右的动画</td>
+        </tr>
+        <tr>
+            <td>active-mode</td>
+            <td>String</td>
+            <td>backwards</td>
+            <td>backwards: 动画从头播；forwards：动画从上次结束点接着播</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <view class="progress-item">
+      <text>基础进度条</text>
+      <progress percent="20" show-info />
+    </view>
+    <view class="progress-item">
+      <text>自定义颜色</text>
+      <progress percent="40" stroke-width="8" activeColor="#ff5500" />
+    </view>
+    <view class="progress-item">
+      <text>带动画效果</text>
+      <progress percent="60" active />
+    </view>
+    <view class="progress-item">
+      <text>自定义样式</text>
+      <progress percent="80" stroke-width="12" activeColor="#007aff" backgroundColor="#f0f0f0" show-info />
+    </view>
+    <view class="progress-item">
+      <text>动态进度条</text>
+      <progress :percent="currentProgress" show-info active />
+      <button @click="increaseProgress">增加进度</button>
+      <button @click="resetProgress">重置进度</button>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      currentProgress: 0
+    }
+  },
+  methods: {
+    increaseProgress() {
+      if (this.currentProgress < 100) {
+        this.currentProgress += 10;
+      }
+    },
+    resetProgress() {
+      this.currentProgress = 0;
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.progress-item {
+  margin-bottom: 20px;
+}
+
+.progress-item text {
+  display: block;
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+</style>
+</pre>

@@ -1,0 +1,157 @@
+<header>
+    模态弹窗
+</header>
+<h2>
+    uni.showModal(OBJECT)
+</h2>
+<p>
+    显示模态弹窗。
+</p>
+<pre tag="javascript">
+uni.showModal({
+    title: '提示',
+    content: '这是一个模态弹窗',
+    success: function (res) {
+        if (res.confirm) {
+            console.log('用户点击确定');
+        } else if (res.cancel) {
+            console.log('用户点击取消');
+        }
+    }
+});
+
+// 带有输入框的弹窗
+uni.showModal({
+    title: '输入',
+    content: '请输入内容',
+    editable: true,
+    placeholderText: '请输入',
+    success: function (res) {
+        if (res.confirm) {
+            console.log('用户输入的内容：' + res.content);
+        }
+    }
+});
+</pre>
+<h3>
+    参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>title</td>
+            <td>String</td>
+            <td>否</td>
+            <td>提示的标题</td>
+        </tr>
+        <tr>
+            <td>content</td>
+            <td>String</td>
+            <td>否</td>
+            <td>提示的内容</td>
+        </tr>
+        <tr>
+            <td>showCancel</td>
+            <td>Boolean</td>
+            <td>否</td>
+            <td>是否显示取消按钮，默认为 true</td>
+        </tr>
+        <tr>
+            <td>cancelText</td>
+            <td>String</td>
+            <td>否</td>
+            <td>取消按钮的文字，默认为"取消"</td>
+        </tr>
+        <tr>
+            <td>cancelColor</td>
+            <td>String</td>
+            <td>否</td>
+            <td>取消按钮的文字颜色，默认为"#000000"</td>
+        </tr>
+        <tr>
+            <td>confirmText</td>
+            <td>String</td>
+            <td>否</td>
+            <td>确定按钮的文字，默认为"确定"</td>
+        </tr>
+        <tr>
+            <td>confirmColor</td>
+            <td>String</td>
+            <td>否</td>
+            <td>确定按钮的文字颜色，默认为"#007aff"</td>
+        </tr>
+        <tr>
+            <td>editable</td>
+            <td>Boolean</td>
+            <td>否</td>
+            <td>是否显示输入框</td>
+        </tr>
+        <tr>
+            <td>placeholderText</td>
+            <td>String</td>
+            <td>否</td>
+            <td>显示输入框时的提示文本</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <button @click="showModal">显示模态弹窗</button>
+    <button @click="showInputModal">显示输入弹窗</button>
+  </view>
+</template>
+
+<script>
+export default {
+  methods: {
+    showModal() {
+      uni.showModal({
+        title: '提示',
+        content: '确定要执行此操作吗？',
+        success: (res) => {
+          if (res.confirm) {
+            uni.showToast({
+              title: '已确认',
+              icon: 'success'
+            });
+          } else {
+            uni.showToast({
+              title: '已取消',
+              icon: 'none'
+            });
+          }
+        }
+      });
+    },
+    showInputModal() {
+      uni.showModal({
+        title: '输入',
+        content: '请输入您的姓名',
+        editable: true,
+        placeholderText: '请输入姓名',
+        success: (res) => {
+          if (res.confirm) {
+            uni.showToast({
+              title: '您输入的是：' + res.content,
+              icon: 'none'
+            });
+          }
+        }
+      });
+    }
+  }
+}
+</script>
+</pre>

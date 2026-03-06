@@ -1,0 +1,86 @@
+<header>
+    文件下载
+</header>
+<h2>
+    uni.downloadFile(OBJECT)
+</h2>
+<p>
+    下载文件资源到本地，客户端直接发起一个 HTTPS GET 请求，返回文件的本地临时路径。
+</p>
+<pre tag="javascript">
+uni.downloadFile({
+    url: 'https://www.example.com/file/test.pdf', //仅为示例，并非真实的资源
+    success: (res) => {
+        if (res.statusCode === 200) {
+            console.log('下载成功');
+            console.log('临时路径：', res.tempFilePath);
+            
+            // 打开文件
+            uni.openDocument({
+                filePath: res.tempFilePath,
+                success: function (res) {
+                    console.log('打开文档成功');
+                }
+            });
+        }
+    }
+});
+</pre>
+<h3>
+    参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>url</td>
+            <td>String</td>
+            <td>是</td>
+            <td>下载资源的 url</td>
+        </tr>
+        <tr>
+            <td>header</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>HTTP 请求 Header，header 中不能设置 Referer</td>
+        </tr>
+        <tr>
+            <td>timeout</td>
+            <td>Number</td>
+            <td>否</td>
+            <td>超时时间，单位 ms</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    返回值
+</h2>
+<p>
+    返回一个 downloadTask 对象，通过 downloadTask，可监听下载进度变化事件，以及取消下载任务。
+</p>
+<pre tag="javascript">
+const downloadTask = uni.downloadFile({
+    url: 'https://www.example.com/file/test.pdf',
+    success: (res) => {
+        if (res.statusCode === 200) {
+            console.log('下载成功');
+        }
+    }
+});
+
+downloadTask.onProgressUpdate((res) => {
+    console.log('下载进度', res.progress);
+    console.log('已经下载的数据长度', res.totalBytesWritten);
+    console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite);
+});
+
+// 取消下载任务
+// downloadTask.abort();
+</pre>

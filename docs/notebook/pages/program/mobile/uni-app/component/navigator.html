@@ -1,0 +1,108 @@
+<header>
+    navigator
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>url</td>
+            <td>String</td>
+            <td></td>
+            <td>应用内的跳转链接</td>
+        </tr>
+        <tr>
+            <td>open-type</td>
+            <td>String</td>
+            <td>navigate</td>
+            <td>跳转方式，有效值：navigate, redirect, switchTab, reLaunch, navigateBack, exit</td>
+        </tr>
+        <tr>
+            <td>delta</td>
+            <td>Number</td>
+            <td>1</td>
+            <td>当 open-type 为 'navigateBack' 时有效，表示回退的层数</td>
+        </tr>
+        <tr>
+            <td>hover-class</td>
+            <td>String</td>
+            <td>navigator-hover</td>
+            <td>指定点击时的样式类，当hover-class="none"时，没有点击态效果</td>
+        </tr>
+        <tr>
+            <td>hover-stop-propagation</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>指定是否阻止本节点的祖先节点出现点击态</td>
+        </tr>
+        <tr>
+            <td>hover-start-time</td>
+            <td>Number</td>
+            <td>50</td>
+            <td>按住后多久出现点击态，单位毫秒</td>
+        </tr>
+        <tr>
+            <td>hover-stay-time</td>
+            <td>Number</td>
+            <td>600</td>
+            <td>手指松开后点击态保留时间，单位毫秒</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <view class="nav-item">
+      <navigator url="/pages/detail/detail?id=1">
+        <button>跳转到详情页</button>
+      </navigator>
+    </view>
+    <view class="nav-item">
+      <navigator url="/pages/home/home" open-type="switchTab">
+        <button>切换到首页</button>
+      </navigator>
+    </view>
+    <view class="nav-item">
+      <navigator open-type="navigateBack" delta="1">
+        <button>返回上一页</button>
+      </navigator>
+    </view>
+    <view class="nav-item">
+      <navigator url="/pages/index/index" open-type="reLaunch">
+        <button>重启到首页</button>
+      </navigator>
+    </view>
+  </view>
+</template>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.nav-item {
+  margin-bottom: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+</style>
+</pre>

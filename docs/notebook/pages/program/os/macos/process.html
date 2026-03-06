@@ -1,0 +1,144 @@
+<header>
+    进程管理
+</header>
+<h2>
+    查看进程
+</h2>
+<h3>
+    ps
+</h3>
+<p>
+    查看当前用户的进程：
+</p>
+<pre>
+    ps
+</pre>
+<p>
+    查看所有进程：
+</p>
+<pre>
+    ps aux
+</pre>
+<p>
+    查看特定进程：
+</p>
+<pre>
+    ps aux | grep process_name
+</pre>
+<h3>
+    top
+</h3>
+<p>
+    实时查看进程信息：
+</p>
+<pre>
+    top
+</pre>
+<h3>
+    htop
+</h3>
+<p>
+    更友好的进程查看器（需要安装）：
+</p>
+<pre>
+    htop
+</pre>
+<h2>
+    进程控制
+</h2>
+<h3>
+    kill
+</h3>
+<p>
+    终止进程：
+</p>
+<pre>
+    kill PID
+</pre>
+<p>
+    强制终止进程：
+</p>
+<pre>
+    kill -9 PID
+</pre>
+<p>
+    根据进程名终止：
+</p>
+<pre>
+    pkill process_name
+</pre>
+<p>
+    强制根据进程名终止：
+</p>
+<pre>
+    pkill -9 process_name
+</pre>
+<h3>
+    killall
+</h3>
+<p>
+    终止所有同名进程：
+</p>
+<pre>
+    killall process_name
+</pre>
+<h2>
+    后台进程管理
+</h2>
+<h3>
+    jobs
+</h3>
+<p>
+    查看后台作业：
+</p>
+<pre>
+    jobs
+</pre>
+<h3>
+    fg 和 bg
+</h3>
+<p>
+    将后台作业放到前台：
+</p>
+<pre>
+    fg %1
+</pre>
+<p>
+    将作业放到后台运行：
+</p>
+<pre>
+    bg %1
+</pre>
+<h3>
+    nohup
+</h3>
+<p>
+    让进程在后台持续运行：
+</p>
+<pre>
+    nohup command &
+</pre>
+<h2>
+    系统服务管理
+</h2>
+<h3>
+    launchctl
+</h3>
+<p>
+    查看所有服务：
+</p>
+<pre>
+    launchctl list
+</pre>
+<p>
+    启动服务：
+</p>
+<pre>
+    launchctl load /Library/LaunchDaemons/com.example.service.plist
+</pre>
+<p>
+    停止服务：
+</p>
+<pre>
+    launchctl unload /Library/LaunchDaemons/com.example.service.plist
+</pre>

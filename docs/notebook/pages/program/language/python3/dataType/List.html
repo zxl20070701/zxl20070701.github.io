@@ -2,13 +2,41 @@
     List（列表）
 </header>
 <p>
-    序列是Python中最基本的数据结构。序列中的每个元素都分配一个数字 - 它的位置，或索引，第一个索引是0，第二个索引是1，依此类推。非常类似数组，具体的一些操作就很像字符串（类似ES中数组和字符串的关系）。
+    列表是Python中最常用的数据结构之一，是一个有序、可变、可重复的元素集合。列表用方括号[]表示，元素之间用逗号分隔。列表可以存储不同类型的元素，包括数字、字符串、列表、字典等。
 </p>
 <p class="warn">
     Python有6个序列的内置类型（列表、元组、字符串、Unicode字符串、buffer对象和xrange对象）。
 </p>
+
 <h2>
-    访问列表中的值
+    列表创建和初始化
+</h2>
+<pre tag="python">
+# 空列表
+empty_list = []
+empty_list2 = list()
+
+# 创建包含元素的列表
+fruits = ["苹果", "香蕉", "橙子", "葡萄"]
+numbers = [1, 2, 3, 4, 5]
+mixed = [1, "hello", 3.14, True, [1, 2, 3]]
+
+# 使用range创建列表
+range_list = list(range(5))        # [0, 1, 2, 3, 4]
+range_list2 = list(range(2, 10, 2)) # [2, 4, 6, 8]
+
+# 列表推导式创建列表
+squares = [x**2 for x in range(5)]  # [0, 1, 4, 9, 16]
+even_numbers = [x for x in range(10) if x % 2 == 0]  # [0, 2, 4, 6, 8]
+
+print(f"水果列表: {fruits}")
+print(f"数字列表: {numbers}")
+print(f"混合列表: {mixed}")
+print(f"平方数列表: {squares}")
+</pre>
+
+<h2>
+    访问列表元素
 </h2>
 <p>
     列表索引从 0 开始，第二个索引是 1，依此类推：
@@ -17,7 +45,7 @@
 <p>
     比如我们想打印第4个条目：
 </p>
-<pre tag>
+<pre tag="python">
 list = ['red', 'green', 'blue', 'yellow', 'white', 'black']
 print( list[3] ) # yellow
 </pre>
@@ -28,7 +56,263 @@ print( list[3] ) # yellow
 <p>
     比如我们想截取除最后两个的条目：
 </p>
-<pre tag>
+<pre tag="python">
 list = ['red', 'green', 'blue', 'yellow', 'white', 'black']
 print( list[:-2] ) # ['red', 'green', 'blue', 'yellow']
+</pre>
+<p>
+    下面是更多例子：
+</p>
+<pre tag="python">
+colors = ['red', 'green', 'blue', 'yellow', 'white', 'black']
+
+# 正向索引
+print(f"第一个元素: {colors[0]}")    # red
+print(f"第四个元素: {colors[3]}")    # yellow
+print(f"最后一个元素: {colors[5]}")  # black
+
+# 负向索引
+print(f"最后一个元素: {colors[-1]}")   # black
+print(f"倒数第二个元素: {colors[-2]}") # white
+
+# 切片操作
+print(f"前三个元素: {colors[:3]}")     # ['red', 'green', 'blue']
+print(f"后三个元素: {colors[-3:]}")    # ['yellow', 'white', 'black']
+print(f"中间三个元素: {colors[1:4]}")  # ['green', 'blue', 'yellow']
+print(f"每隔一个元素: {colors[::2]}")  # ['red', 'blue', 'white']
+print(f"反转列表: {colors[::-1]}")    # ['black', 'white', 'yellow', 'blue', 'green', 'red']
+
+# 获取列表长度
+print(f"列表长度: {len(colors)}")  # 6
+
+# 检查元素是否存在
+print(f"'blue' 是否在列表中: {'blue' in colors}")  # True
+print(f"'purple' 是否在列表中: {'purple' in colors}")  # False
+</pre>
+
+<h2>
+    列表修改操作
+</h2>
+<pre tag="python">
+# 创建列表
+fruits = ["苹果", "香蕉", "橙子"]
+
+# 修改元素
+fruits[0] = "红苹果"
+print(f"修改后: {fruits}")  # ['红苹果', '香蕉', '橙子']
+
+# 添加元素
+fruits.append("葡萄")        # 在末尾添加
+print(f"添加后: {fruits}")   # ['红苹果', '香蕉', '橙子', '葡萄']
+
+fruits.insert(1, "梨子")     # 在指定位置插入
+print(f"插入后: {fruits}")   # ['红苹果', '梨子', '香蕉', '橙子', '葡萄']
+
+# 扩展列表
+more_fruits = ["芒果", "荔枝"]
+fruits.extend(more_fruits)   # 或者 fruits += more_fruits
+print(f"扩展后: {fruits}")   # ['红苹果', '梨子', '香蕉', '橙子', '葡萄', '芒果', '荔枝']
+
+# 删除元素
+removed = fruits.pop()       # 删除并返回最后一个元素
+print(f"删除的元素: {removed}")  # 荔枝
+print(f"删除后: {fruits}")   # ['红苹果', '梨子', '香蕉', '橙子', '葡萄', '芒果']
+
+removed = fruits.pop(1)      # 删除并返回指定位置的元素
+print(f"删除的元素: {removed}")  # 梨子
+print(f"删除后: {fruits}")   # ['红苹果', '香蕉', '橙子', '葡萄', '芒果']
+
+fruits.remove("橙子")        # 删除指定值的第一个匹配项
+print(f"删除橙子后: {fruits}") # ['红苹果', '香蕉', '葡萄', '芒果']
+
+# 清空列表
+fruits.clear()
+print(f"清空后: {fruits}")   # []
+</pre>
+
+<h2>
+    列表常用方法
+</h2>
+<pre tag="python">
+numbers = [3, 1, 4, 1, 5, 9, 2, 6]
+
+# 排序
+numbers.sort()               # 原地排序
+print(f"排序后: {numbers}")  # [1, 1, 2, 3, 4, 5, 6, 9]
+
+numbers.sort(reverse=True)   # 降序排序
+print(f"降序排序: {numbers}") # [9, 6, 5, 4, 3, 2, 1, 1]
+
+# 返回排序后的新列表（不修改原列表）
+original = [3, 1, 4, 1, 5]
+sorted_list = sorted(original)
+print(f"原列表: {original}")     # [3, 1, 4, 1, 5]
+print(f"排序后新列表: {sorted_list}")  # [1, 1, 3, 4, 5]
+
+# 反转列表
+numbers.reverse()            # 原地反转
+print(f"反转后: {numbers}")  # [1, 1, 2, 3, 4, 5, 6, 9]
+
+# 统计元素出现次数
+print(f"数字1出现的次数: {numbers.count(1)}")  # 2
+
+# 查找元素索引
+print(f"数字5的索引: {numbers.index(5)}")    # 5
+
+# 复制列表
+original = [1, 2, 3]
+copy1 = original.copy()      # 浅拷贝
+copy2 = original[:]          # 切片拷贝
+copy3 = list(original)       # 构造函数拷贝
+
+print(f"原始列表: {original}")
+print(f"拷贝1: {copy1}")
+print(f"拷贝2: {copy2}")
+print(f"拷贝3: {copy3}")
+</pre>
+
+<h2>
+    列表推导式
+</h2>
+<pre tag="python">
+# 基本列表推导式
+squares = [x**2 for x in range(10)]
+print(f"0-9的平方: {squares}")  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# 带条件的列表推导式
+even_squares = [x**2 for x in range(10) if x % 2 == 0]
+print(f"偶数的平方: {even_squares}")  # [0, 4, 16, 36, 64]
+
+# 嵌套列表推导式
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flattened = [item for row in matrix for item in row]
+print(f"展平矩阵: {flattened}")  # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# 复杂示例：生成乘法表
+multiplication_table = [[i*j for j in range(1, 6)] for i in range(1, 6)]
+for row in multiplication_table:
+    print(row)
+# [1, 2, 3, 4, 5]
+# [2, 4, 6, 8, 10]
+# [3, 6, 9, 12, 15]
+# [4, 8, 12, 16, 20]
+# [5, 10, 15, 20, 25]
+</pre>
+
+<h2>
+    列表嵌套
+</h2>
+<pre tag="python">
+# 创建二维列表
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# 访问嵌套列表元素
+print(f"第一行: {matrix[0]}")        # [1, 2, 3]
+print(f"第一行第二列: {matrix[0][1]}")  # 2
+print(f"最后一行最后一列: {matrix[-1][-1]}")  # 9
+
+# 修改嵌套列表元素
+matrix[1][1] = 0
+print(f"修改后: {matrix}")  # [[1, 2, 3], [4, 0, 6], [7, 8, 9]]
+
+# 遍历二维列表
+for i, row in enumerate(matrix):
+    for j, value in enumerate(row):
+        print(f"matrix[{i}][{j}] = {value}")
+
+# 创建不规则的嵌套列表
+jagged = [
+    [1, 2, 3],
+    [4, 5],
+    [6, 7, 8, 9]
+]
+
+print(f"不规则列表长度: {len(jagged)}")  # 3
+print(f"第一行长度: {len(jagged[0])}")   # 3
+print(f"第二行长度: {len(jagged[1])}")   # 2
+</pre>
+
+<h2>
+    列表与函数
+</h2>
+<pre tag="python">
+# 列表作为函数参数
+def add_item(lst, item):
+    lst.append(item)
+    return lst
+
+my_list = [1, 2, 3]
+result = add_item(my_list, 4)
+print(f"原列表被修改: {my_list}")  # [1, 2, 3, 4]
+print(f"返回的列表: {result}")    # [1, 2, 3, 4]
+
+# 返回多个值的函数
+def min_max(numbers):
+    return min(numbers), max(numbers)
+
+data = [3, 1, 4, 1, 5, 9, 2, 6]
+minimum, maximum = min_max(data)
+print(f"最小值: {minimum}, 最大值: {maximum}")  # 最小值: 1, 最大值: 9
+
+# 可变参数函数
+def sum_all(*args):
+    return sum(args)
+
+result = sum_all(1, 2, 3, 4, 5)
+print(f"所有参数的和: {result}")  # 15
+
+# 将列表作为参数传递
+numbers = [1, 2, 3, 4, 5]
+result = sum_all(*numbers)  # 解包列表
+print(f"解包后的和: {result}")  # 15
+</pre>
+
+<h2>
+    列表性能考虑
+</h2>
+<pre tag="python">
+import time
+
+# 列表末尾添加元素（高效）
+start = time.time()
+lst = []
+for i in range(100000):
+    lst.append(i)
+end = time.time()
+print(f"append 100000个元素耗时: {end - start:.4f}秒")
+
+# 列表开头插入元素（低效）
+start = time.time()
+lst = []
+for i in range(10000):
+    lst.insert(0, i)  # 在开头插入
+end = time.time()
+print(f"insert 10000个元素耗时: {end - start:.4f}秒")
+
+# 使用deque进行高效的双端操作
+from collections import deque
+start = time.time()
+dq = deque()
+for i in range(10000):
+    dq.appendleft(i)  # 高效地在左端添加
+end = time.time()
+print(f"deque左端添加10000个元素耗时: {end - start:.4f}秒")
+
+# 列表推导式 vs 循环
+# 列表推导式通常更快
+start = time.time()
+squares_loop = []
+for i in range(100000):
+    squares_loop.append(i**2)
+end = time.time()
+print(f"循环方式耗时: {end - start:.4f}秒")
+
+start = time.time()
+squares_comp = [i**2 for i in range(100000)]
+end = time.time()
+print(f"列表推导式耗时: {end - start:.4f}秒")
 </pre>

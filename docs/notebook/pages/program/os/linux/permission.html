@@ -1,0 +1,182 @@
+<header>
+    权限管理
+</header>
+<h2>
+    文件权限基础
+</h2>
+<h3>
+    ls -l
+</h3>
+<p>
+    查看文件权限：
+</p>
+<pre>
+    ls -l file.txt
+</pre>
+<p>
+    查看目录权限：
+</p>
+<pre>
+    ls -ld directory/
+</pre>
+<h3>
+    权限表示法
+</h3>
+<p>
+    权限由三组字符表示：所有者、组、其他用户
+</p>
+<pre>
+-rwxr-xr-x  1 user group  1234 Jan 1 12:00 file.txt
+</pre>
+<p>
+    权限字符含义：
+</p>
+<pre>
+r - 读权限 (read)
+w - 写权限 (write)
+x - 执行权限 (execute)
+- - 无权限
+</pre>
+<h2>
+    修改权限
+</h2>
+<h3>
+    chmod
+</h3>
+<p>
+    使用数字方式修改权限：
+</p>
+<pre>
+    chmod 755 file.txt
+</pre>
+<p>
+    权限数字对应关系：
+</p>
+<pre>
+7 = rwx (4+2+1)
+6 = rw- (4+2)
+5 = r-x (4+1)
+4 = r-- (4)
+0 = --- (0)
+</pre>
+<p>
+    使用符号方式修改权限：
+</p>
+<pre>
+chmod u+x file.txt    # 给所有者添加执行权限
+chmod g-w file.txt    # 移除组的写权限
+chmod o=r file.txt    # 设置其他用户只有读权限
+chmod a+r file.txt    # 给所有用户添加读权限
+</pre>
+<h3>
+    递归修改权限
+</h3>
+<p>
+    递归修改目录及其内容权限：
+</p>
+<pre>
+    chmod -R 755 directory/
+</pre>
+<h2>
+    文件所有者和组
+</h2>
+<h3>
+    chown
+</h3>
+<p>
+    修改文件所有者：
+</p>
+<pre>
+    chown username file.txt
+</pre>
+<p>
+    同时修改所有者和组：
+</p>
+<pre>
+    chown username:groupname file.txt
+</pre>
+<p>
+    只修改组：
+</p>
+<pre>
+    chown :groupname file.txt
+</pre>
+<h3>
+    chgrp
+</h3>
+<p>
+    修改文件组（专门用于修改组）：
+</p>
+<pre>
+    chgrp groupname file.txt
+</pre>
+<h3>
+    递归修改
+</h3>
+<p>
+    递归修改目录及其内容的所有者和组：
+</p>
+<pre>
+    chown -R username:groupname directory/
+</pre>
+<h2>
+    特殊权限
+</h2>
+<h3>
+    SUID (Set User ID)
+</h3>
+<p>
+    设置 SUID 权限：
+</p>
+<pre>
+    chmod u+s file.txt
+</pre>
+<h3>
+    SGID (Set Group ID)
+</h3>
+<p>
+    设置 SGID 权限：
+</p>
+<pre>
+    chmod g+s file.txt
+</pre>
+<p>
+    设置目录的 SGID，使新建文件继承目录的组：
+</p>
+<pre>
+    chmod g+s directory/
+</pre>
+<h3>
+    Sticky Bit
+</h3>
+<p>
+    设置粘滞位（通常用于 /tmp 目录）：
+</p>
+<pre>
+    chmod +t directory/
+</pre>
+<h2>
+    查看和修改默认权限
+</h2>
+<h3>
+    umask
+</h3>
+<p>
+    查看当前 umask：
+</p>
+<pre>
+    umask
+</pre>
+<p>
+    设置 umask：
+</p>
+<pre>
+    umask 022
+</pre>
+<p>
+    umask 值与默认权限的关系：
+</p>
+<pre>
+文件默认权限 = 666 - umask
+目录默认权限 = 777 - umask
+</pre>

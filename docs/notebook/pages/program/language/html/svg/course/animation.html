@@ -1,0 +1,144 @@
+<header>
+    动画
+</header>
+<h2>
+    动画基础
+</h2>
+<p>
+    SVG提供了多种方式创建动画，包括SMIL动画、CSS动画和JavaScript动画。
+</p>
+<h2>
+    &lt;animate&gt; 元素
+</h2>
+<p>
+    使用&t;animate&gt;元素可以动画化元素的属性。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <circle cx="50" cy="100" r="20" fill="red">
+        <animate attributeName="cx" from="50" to="150" dur="2s" repeatCount="indefinite" />
+    </circle>
+</svg>
+</pre>
+<h3>
+    animate属性
+</h3>
+<ul>
+    <li><span class="important">attributeName</span>: 要动画化的属性名</li>
+    <li><span class="important">from</span>: 起始值</li>
+    <li><span class="important">to</span>: 结束值</li>
+    <li><span class="important">dur</span>: 动画持续时间</li>
+    <li><span class="important">repeatCount</span>: 重复次数（indefinite表示无限循环）</li>
+    <li><span class="important">begin</span>: 动画开始时间</li>
+    <li><span class="important">fill</span>: 动画结束后的状态（freeze保持最后状态）</li>
+</ul>
+<h2>
+    &lt;animateTransform&gt; 元素
+</h2>
+<p>
+    用于动画化transform变换。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="75" y="75" width="50" height="50" fill="blue">
+        <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="2s" repeatCount="indefinite" />
+    </rect>
+</svg>
+</pre>
+<h2>
+    &lt;animateMotion&gt; 元素
+</h2>
+<p>
+    使元素沿着路径移动。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <path d="M20,100 Q100,20 180,100 T340,100" stroke="lightgray" fill="none" />
+    <circle r="10" fill="red">
+        <animateMotion dur="3s" repeatCount="indefinite">
+            <mpath href="#motionPath" />
+        </animateMotion>
+    </circle>
+</svg>
+</pre>
+<h2>
+    关键帧动画
+</h2>
+<p>
+    使用values属性定义多个关键帧。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <circle cx="100" cy="100" r="20" fill="green">
+        <animate attributeName="r" values="20;40;20" dur="2s" repeatCount="indefinite" />
+    </circle>
+</svg>
+</pre>
+<h2>
+    CSS动画
+</h2>
+<p>
+    使用CSS动画控制SVG元素。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <style>
+        .animated-circle {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { r: 20; fill: blue; }
+            50% { r: 30; fill: red; }
+            100% { r: 20; fill: blue; }
+        }
+    </style>
+    <circle cx="100" cy="100" r="20" class="animated-circle" />
+</svg>
+</pre>
+<h2>
+    路径动画
+</h2>
+<p>
+    使用path属性定义动画路径。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <path id="motionPath" d="M20,100 Q100,20 180,100" stroke="lightgray" fill="none" />
+    <circle r="10" fill="purple">
+        <animateMotion dur="3s" repeatCount="indefinite">
+            <mpath href="#motionPath" />
+        </animateMotion>
+    </circle>
+</svg>
+</pre>
+<h2>
+    组合动画
+</h2>
+<p>
+    多个动画可以同时应用于一个元素。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="75" y="75" width="50" height="50" fill="orange">
+        <animate attributeName="x" from="75" to="125" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="fill" from="orange" to="red" dur="2s" repeatCount="indefinite" />
+    </rect>
+</svg>
+</pre>
+<h2>
+    事件触发动画
+</h2>
+<p>
+    使用事件触发动画。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <circle cx="100" cy="100" r="20" fill="teal">
+        <animate attributeName="r" begin="click" from="20" to="40" dur="0.5s" fill="freeze" />
+    </circle>
+</svg>
+</pre>
+<div class="tips">
+    SVG动画提供了丰富的功能，可以创建复杂的交互式图形。SMIL动画在现代浏览器中得到广泛支持，但对于更复杂的动画需求，JavaScript动画可能更加灵活。
+</div>

@@ -1,0 +1,127 @@
+<header>
+    radio
+</header>
+<h2>
+    radio-group 属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@change</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>radio-group中的选中项发生变化时触发 change 事件，event.detail = {value: 选中项radio的value}</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    radio 属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>value</td>
+            <td>String</td>
+            <td></td>
+            <td>radio 标识。当该radio 选中时，radio-group 的 change 事件会携带radio的value</td>
+        </tr>
+        <tr>
+            <td>checked</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>当前是否选中</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁用</td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>String</td>
+            <td>#09BB07</td>
+            <td>radio的颜色，同css的color</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <radio-group @change="radioChange">
+      <label class="radio-item" v-for="(item, index) in items" :key="item.name">
+        <radio :value="item.name" :checked="item.checked" />
+        <text>{{item.value}}</text>
+      </label>
+    </radio-group>
+    <view class="result">
+      <text>选中的项：{{selectedItem}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      items: [
+        {name: 'USA', value: '美国'},
+        {name: 'CHN', value: '中国', checked: true},
+        {name: 'BRA', value: '巴西'},
+        {name: 'JPN', value: '日本'}
+      ],
+      selectedItem: '中国'
+    }
+  },
+  methods: {
+    radioChange(e) {
+      const value = e.detail.value;
+      const selected = this.items.find(item => item.name === value);
+      this.selectedItem = selected ? selected.value : '';
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.radio-item text {
+  margin-left: 10px;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+</style>
+</pre>

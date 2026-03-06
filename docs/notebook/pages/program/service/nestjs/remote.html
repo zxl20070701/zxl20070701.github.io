@@ -87,3 +87,132 @@ import { Post, Header } from '@nestjs/common'
 <p>
     如果需要设置的响应头参数有多个，同样写多个Header装饰器即可。
 </p>
+<h2>
+    更多常用装饰器
+</h2>
+<h3>
+    @Param(name?: string)
+</h3>
+<p>
+    获取路由参数：
+</p>
+<pre tag="javascript">
+import { Get, Param } from '@nestjs/common'
+
+...
+    @Get('/users/:id')
+    getUser(@Param('id') id: string) {
+        return { id };
+    }
+...
+</pre>
+<h3>
+    @HttpCode(statusCode: number)
+</h3>
+<p>
+    设置响应状态码：
+</p>
+<pre tag="javascript">
+import { Post, HttpCode } from '@nestjs/common'
+
+...
+    @Post()
+    @HttpCode(201)
+    create() {
+        return 'This action adds a new user';
+    }
+...
+</pre>
+<h3>
+    @Redirect(url?: string, statusCode?: number)
+</h3>
+<p>
+    重定向到指定URL：
+</p>
+<pre tag="javascript">
+import { Get, Redirect } from '@nestjs/common'
+
+...
+    @Get('docs')
+    @Redirect('https://docs.nestjs.com', 301)
+    getDocs() {
+        return { url: 'https://docs.nestjs.com' };
+    }
+...
+</pre>
+<h2>
+    模块和依赖注入
+</h2>
+<h3>
+    创建服务
+</h3>
+<pre tag="javascript">
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class UsersService {
+    private readonly users = [];
+
+    create(user: any) {
+        this.users.push(user);
+    }
+
+    findAll(): any[] {
+        return this.users;
+    }
+}
+</pre>
+<h3>
+    在控制器中使用服务
+</h3>
+<pre tag="javascript">
+import { Controller, Get, Post, Body } from '@nestjs/common';
+import { UsersService } from './users.service';
+
+@Controller('users')
+export class UsersController {
+    constructor(private readonly usersService: UsersService) {}
+
+    @Post()
+    create(@Body() user: any) {
+        return this.usersService.create(user);
+    }
+
+    @Get()
+    findAll() {
+        return this.usersService.findAll();
+    }
+}
+</pre>
+<h2>
+    异常处理
+</h2>
+<pre tag="javascript">
+import { HttpException, HttpStatus } from '@nestjs/common';
+
+...
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        const user = this.usersService.findOne(id);
+        if (!user) {
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+        return user;
+    }
+...
+</pre>
+<h2>
+    中间件
+</h2>
+<pre tag="javascript">
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
+
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+    use(req: Request, res: Response, next: NextFunction) {
+        console.log('Request...');
+        next();
+    }
+}
+</pre>

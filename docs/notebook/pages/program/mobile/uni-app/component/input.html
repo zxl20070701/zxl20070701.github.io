@@ -1,0 +1,164 @@
+<header>
+    input
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>value</td>
+            <td>String</td>
+            <td></td>
+            <td>输入框的初始内容</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String</td>
+            <td>text</td>
+            <td>input 的类型，有效值：text, number, idcard, digit, tel, email, url</td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否是密码类型</td>
+        </tr>
+        <tr>
+            <td>placeholder</td>
+            <td>String</td>
+            <td></td>
+            <td>输入框为空时占位符</td>
+        </tr>
+        <tr>
+            <td>placeholder-style</td>
+            <td>String</td>
+            <td></td>
+            <td>指定 placeholder 的样式</td>
+        </tr>
+        <tr>
+            <td>placeholder-class</td>
+            <td>String</td>
+            <td>input-placeholder</td>
+            <td>指定 placeholder 的样式类</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁用</td>
+        </tr>
+        <tr>
+            <td>maxlength</td>
+            <td>Number</td>
+            <td>140</td>
+            <td>最大输入长度，设置为 -1 的时候不限制最大长度</td>
+        </tr>
+        <tr>
+            <td>cursor-spacing</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>指定光标与键盘的距离，单位 px</td>
+        </tr>
+        <tr>
+            <td>focus</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>获取焦点</td>
+        </tr>
+        <tr>
+            <td>confirm-type</td>
+            <td>String</td>
+            <td>done</td>
+            <td>设置键盘右下角按钮的文字，有效值：send, search, next, go, done</td>
+        </tr>
+        <tr>
+            <td>confirm-hold</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>点击键盘右下角按钮时是否保持键盘不收起</td>
+        </tr>
+        <tr>
+            <td>@input</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>当键盘输入时，触发 input 事件，event.detail = {value, cursor, keyCode}</td>
+        </tr>
+        <tr>
+            <td>@focus</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>输入框聚焦时触发，event.detail = { value, height }</td>
+        </tr>
+        <tr>
+            <td>@blur</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>输入框失去焦点时触发，event.detail = {value: value}</td>
+        </tr>
+        <tr>
+            <td>@confirm</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>点击完成按钮时触发，event.detail = {value: value}</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <view class="form-item">
+      <text>用户名：</text>
+      <input class="input" v-model="username" placeholder="请输入用户名" />
+    </view>
+    <view class="form-item">
+      <text>密码：</text>
+      <input class="input" v-model="password" type="password" placeholder="请输入密码" />
+    </view>
+    <view class="form-item">
+      <text>手机号：</text>
+      <input class="input" v-model="phone" type="number" placeholder="请输入手机号" maxlength="11" />
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      phone: ''
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.form-item {
+  margin-bottom: 15px;
+}
+
+.input {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+</style>
+</pre>

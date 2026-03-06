@@ -1,0 +1,563 @@
+<header>
+    文件操作 (File I/O)
+</header>
+<p>
+    文件操作是Python编程中的重要部分，用于读取、写入和管理文件系统中的数据。Python提供了多种方式来处理文件操作，包括文本文件、二进制文件、JSON、CSV等格式的处理。
+</p>
+
+<h2>
+    基本文件操作
+</h2>
+<pre tag="python">
+# 打开和关闭文件
+# 传统方式
+file = open('example.txt', 'w')
+file.write('Hello, World!')
+file.close()
+
+# 推荐方式：使用上下文管理器
+with open('example.txt', 'w') as file:
+    file.write('Hello, World!')
+
+# 文件打开模式
+# 'r' - 读取（默认）
+# 'w' - 写入（覆盖）
+# 'a' - 追加
+# 'x' - 独占创建
+# 'b' - 二进制模式
+# 't' - 文本模式（默认）
+# '+' - 读写模式
+
+# 读取文件
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print(content)
+
+# 逐行读取
+with open('example.txt', 'r') as file:
+    for line in file:
+        print(line.strip())
+
+# 读取所有行到列表
+with open('example.txt', 'r') as file:
+    lines = file.readlines()
+    print(lines)
+</pre>
+
+<h2>
+    文本文件处理
+</h2>
+<pre tag="python">
+# 写入文本文件
+with open('story.txt', 'w', encoding='utf-8') as file:
+    file.write("这是一个故事\n")
+    file.write("从前有座山\n")
+    file.write("山里有座庙\n")
+
+# 追加文本
+with open('story.txt', 'a', encoding='utf-8') as file:
+    file.write("庙里有个老和尚\n")
+
+# 读取文本文件
+with open('story.txt', 'r', encoding='utf-8') as file:
+    content = file.read()
+    print("文件内容:")
+    print(content)
+
+# 逐行处理
+with open('story.txt', 'r', encoding='utf-8') as file:
+    for i, line in enumerate(file, 1):
+        print(f"第{i}行: {line.strip()}")
+
+# 使用seek和tell
+with open('story.txt', 'r', encoding='utf-8') as file:
+    print(f"当前位置: {file.tell()}")
+    line = file.readline()
+    print(f"读取一行后位置: {file.tell()}")
+    file.seek(0)  # 回到文件开头
+    print(f"回到开头后位置: {file.tell()}")
+</pre>
+
+<h2>
+    二进制文件处理
+</h2>
+<pre tag="python">
+# 写入二进制文件
+data = bytes([120, 3, 255, 0, 100])
+with open('binary.dat', 'wb') as file:
+    file.write(data)
+
+# 读取二进制文件
+with open('binary.dat', 'rb') as file:
+    binary_content = file.read()
+    print(f"二进制内容: {binary_content}")
+    print(f"十六进制: {binary_content.hex()}")
+
+# 处理图片文件
+from PIL import Image
+import io
+
+# 创建简单图片数据
+image_data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\x0cIDATx\x9cc\xf8\xff\xff?\x00\x05\xfe\x02\xfe\xa75\x81\x84\x00\x00\x00\x00IEND\xaeB`\x82'
+
+# 写入图片文件
+with open('test.png', 'wb') as file:
+    file.write(image_data)
+
+# 读取图片文件
+with open('test.png', 'rb') as file:
+    image_content = file.read()
+    print(f"图片大小: {len(image_content)} 字节")
+
+# 使用BytesIO进行内存操作
+buffer = io.BytesIO()
+buffer.write(b"Hello, BytesIO!")
+buffer.seek(0)
+content = buffer.read()
+print(f"内存缓冲区内容: {content}")
+</pre>
+
+<h2>
+    CSV文件处理
+</h2>
+<pre tag="python">
+import csv
+
+# 写入CSV文件
+data = [
+    ['姓名', '年龄', '城市'],
+    ['张三', 25, '北京'],
+    ['李四', 30, '上海'],
+    ['王五', 28, '广州']
+]
+
+with open('people.csv', 'w', newline='', encoding='utf-8') as file:
+    writer = csv.writer(file)
+    writer.writerows(data)
+
+# 读取CSV文件
+with open('people.csv', 'r', encoding='utf-8') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        print(row)
+
+# 使用DictReader和DictWriter
+with open('people.csv', 'r', encoding='utf-8') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        print(f"{row['姓名']}，{row['年龄']}岁，来自{row['城市']}")
+
+# 写入字典数据
+people = [
+    {'姓名': '赵六', '年龄': 35, '城市': '深圳'},
+    {'姓名': '钱七', '年龄': 22, '城市': '杭州'}
+]
+
+with open('people2.csv', 'w', newline='', encoding='utf-8') as file:
+    fieldnames = ['姓名', '年龄', '城市']
+    writer = csv.DictWriter(file, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(people)
+</pre>
+
+<h2>
+    JSON文件处理
+</h2>
+<pre tag="python">
+import json
+
+# 写入JSON文件
+data = {
+    "name": "张三",
+    "age": 25,
+    "skills": ["Python", "JavaScript", "SQL"],
+    "address": {
+        "city": "北京",
+        "district": "朝阳区"
+    },
+    "married": False
+}
+
+with open('person.json', 'w', encoding='utf-8') as file:
+    json.dump(data, file, ensure_ascii=False, indent=2)
+
+# 读取JSON文件
+with open('person.json', 'r', encoding='utf-8') as file:
+    loaded_data = json.load(file)
+    print("读取的JSON数据:")
+    print(json.dumps(loaded_data, ensure_ascii=False, indent=2))
+
+# 处理JSON字符串
+json_string = '{"name": "李四", "age": 30}'
+parsed_data = json.loads(json_string)
+print(f"解析的姓名: {parsed_data['name']}")
+
+# 生成JSON字符串
+python_dict = {"name": "王五", "age": 28}
+json_str = json.dumps(python_dict, ensure_ascii=False)
+print(f"生成的JSON: {json_str}")
+</pre>
+
+<h2>
+    文件和目录操作
+</h2>
+<pre tag="python">
+import os
+import shutil
+import glob
+from pathlib import Path
+
+# 获取当前工作目录
+current_dir = os.getcwd()
+print(f"当前目录: {current_dir}")
+
+# 创建目录
+os.makedirs('new_folder/subfolder', exist_ok=True)
+
+# 检查文件或目录是否存在
+print(f"文件存在: {os.path.exists('example.txt')}")
+print(f"是文件: {os.path.isfile('example.txt')}")
+print(f"是目录: {os.path.isdir('new_folder')}")
+
+# 获取文件信息
+if os.path.exists('example.txt'):
+    print(f"文件大小: {os.path.getsize('example.txt')} 字节")
+    print(f"最后修改时间: {os.path.getmtime('example.txt')}")
+
+# 重命名文件
+if os.path.exists('example.txt'):
+    os.rename('example.txt', 'renamed_example.txt')
+
+# 复制文件
+if os.path.exists('renamed_example.txt'):
+    shutil.copy('renamed_example.txt', 'copy_example.txt')
+
+# 移动文件
+if os.path.exists('copy_example.txt'):
+    shutil.move('copy_example.txt', 'new_folder/moved_example.txt')
+
+# 删除文件
+if os.path.exists('renamed_example.txt'):
+    os.remove('renamed_example.txt')
+
+# 删除目录
+if os.path.exists('new_folder'):
+    shutil.rmtree('new_folder')
+
+# 使用pathlib（更现代的方式）
+path = Path('test_directory')
+path.mkdir(exist_ok=True)
+
+file_path = path / 'test_file.txt'
+file_path.write_text('使用pathlib创建的文件', encoding='utf-8')
+
+print(f"文件内容: {file_path.read_text(encoding='utf-8')}")
+print(f"文件父目录: {file_path.parent}")
+print(f"文件后缀: {file_path.suffix}")
+print(f"文件stem: {file_path.stem}")
+
+# 清理
+if file_path.exists():
+    file_path.unlink()
+if path.exists():
+    path.rmdir()
+</pre>
+
+<h2>
+    文件搜索和模式匹配
+</h2>
+<pre tag="python">
+import glob
+import fnmatch
+from pathlib import Path
+
+# 创建测试文件
+test_files = ['test1.txt', 'test2.py', 'data.csv', 'config.json']
+for filename in test_files:
+    with open(filename, 'w') as f:
+        f.write(f'这是 {filename} 文件')
+
+# 使用glob搜索文件
+txt_files = glob.glob('*.txt')
+print(f"文本文件: {txt_files}")
+
+py_files = glob.glob('*.py')
+print(f"Python文件: {py_files}")
+
+# 递归搜索
+all_files = glob.glob('**/*', recursive=True)
+print(f"所有文件: {all_files[:5]}...")  # 只显示前5个
+
+# 使用fnmatch进行模式匹配
+files = ['document.txt', 'image.jpg', 'script.py', 'data.csv']
+txt_files = [f for f in files if fnmatch.fnmatch(f, '*.txt')]
+print(f"匹配的文本文件: {txt_files}")
+
+# 使用pathlib进行搜索
+current_path = Path('.')
+python_files = list(current_path.glob('*.py'))
+print(f"Python文件: {python_files}")
+
+# 递归搜索
+all_python_files = list(current_path.rglob('*.py'))
+print(f"所有Python文件: {all_python_files}")
+
+# 清理测试文件
+for filename in test_files:
+    if os.path.exists(filename):
+        os.remove(filename)
+</pre>
+
+<h2>
+    配置文件处理
+</h2>
+<pre tag="python">
+import configparser
+import json
+import yaml  # 需要安装: pip install PyYAML
+
+# 处理INI配置文件
+config = configparser.ConfigParser()
+config['DEFAULT'] = {
+    'debug': 'False',
+    'log_level': 'INFO'
+}
+config['database'] = {
+    'host': 'localhost',
+    'port': '5432',
+    'username': 'admin',
+    'password': 'secret'
+}
+config['api'] = {
+    'base_url': 'https://api.example.com',
+    'timeout': '30'
+}
+
+# 写入配置文件
+with open('config.ini', 'w') as configfile:
+    config.write(configfile)
+
+# 读取配置文件
+config_read = configparser.ConfigParser()
+config_read.read('config.ini')
+
+print(f"数据库主机: {config_read['database']['host']}")
+print(f"调试模式: {config_read['DEFAULT'].getboolean('debug')}")
+print(f"API超时: {config_read['api'].getint('timeout')}")
+
+# 处理JSON配置文件
+json_config = {
+    "app": {
+        "name": "MyApp",
+        "version": "1.0.0"
+    },
+    "database": {
+        "host": "localhost",
+        "port": 5432,
+        "credentials": {
+            "username": "admin",
+            "password": "secret"
+        }
+    }
+}
+
+with open('config.json', 'w') as f:
+    json.dump(json_config, f, indent=2)
+
+# 读取JSON配置
+with open('config.json', 'r') as f:
+    loaded_config = json.load(f)
+    print(f"应用名称: {loaded_config['app']['name']}")
+
+# 处理YAML配置文件（如果安装了PyYAML）
+try:
+    yaml_config = {
+        'server': {
+            'host': 'localhost',
+            'port': 8080,
+            'debug': True
+        },
+        'database': {
+            'url': 'postgresql://localhost/mydb',
+            'pool_size': 10
+        }
+    }
+    
+    with open('config.yaml', 'w') as f:
+        yaml.dump(yaml_config, f, default_flow_style=False)
+    
+    with open('config.yaml', 'r') as f:
+        loaded_yaml = yaml.safe_load(f)
+        print(f"YAML配置: {loaded_yaml}")
+        
+except ImportError:
+    print("PyYAML未安装，跳过YAML示例")
+
+# 清理配置文件
+for filename in ['config.ini', 'config.json', 'config.yaml']:
+    if os.path.exists(filename):
+        os.remove(filename)
+</pre>
+
+<h2>
+    大文件处理
+</h2>
+<pre tag="python">
+# 创建大文件用于测试
+def create_large_file(filename, size_mb=10):
+    """创建指定大小的测试文件"""
+    chunk_size = 1024 * 1024  # 1MB
+    chunk = b'x' * chunk_size
+    
+    with open(filename, 'wb') as f:
+        for _ in range(size_mb):
+            f.write(chunk)
+    print(f"创建了 {size_mb}MB 的文件: {filename}")
+
+# 逐行读取大文件
+def read_large_file_line_by_line(filename):
+    """逐行读取大文件"""
+    line_count = 0
+    with open(filename, 'r', encoding='utf-8', errors='ignore') as f:
+        for line in f:
+            line_count += 1
+            if line_count % 100000 == 0:
+                print(f"已读取 {line_count} 行")
+    return line_count
+
+# 分块读取大文件
+def read_large_file_in_chunks(filename, chunk_size=8192):
+    """分块读取大文件"""
+    total_bytes = 0
+    with open(filename, 'rb') as f:
+        while True:
+            chunk = f.read(chunk_size)
+            if not chunk:
+                break
+            total_bytes += len(chunk)
+            # 处理chunk数据
+    return total_bytes
+
+# 使用生成器处理大文件
+def process_large_file(filename):
+    """使用生成器逐行处理大文件"""
+    def line_generator(filename):
+        with open(filename, 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                yield line.strip()
+    
+    # 处理每一行
+    for i, line in enumerate(line_generator(filename)):
+        if i % 10000 == 0:
+            print(f"处理第 {i} 行: {line[:50]}...")
+
+# 内存映射文件（适用于超大文件）
+import mmap
+
+def process_with_mmap(filename):
+    """使用内存映射处理大文件"""
+    with open(filename, 'r+b') as f:
+        # 内存映射整个文件
+        with mmap.mmap(f.fileno(), 0) as mm:
+            # 可以像处理字符串一样处理内存映射
+            lines = 0
+            while True:
+                line = mm.readline()
+                if not line:
+                    break
+                lines += 1
+                if lines % 100000 == 0:
+                    print(f"内存映射方式处理第 {lines} 行")
+            return lines
+
+# 创建测试文件
+test_file = 'large_test.txt'
+create_large_file(test_file, 1)  # 创建1MB文件
+
+# 测试不同的读取方式
+print("测试大文件处理:")
+size = os.path.getsize(test_file)
+print(f"文件大小: {size} 字节")
+
+# 清理测试文件
+if os.path.exists(test_file):
+    os.remove(test_file)
+</pre>
+
+<h2>
+    文件操作实用工具
+</h2>
+<pre tag="python">
+import tempfile
+import shutil
+import hashlib
+import zipfile
+import tarfile
+
+# 创建临时文件
+with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.txt') as temp:
+    temp.write('临时文件内容')
+    temp_path = temp.name
+    print(f"临时文件路径: {temp_path}")
+
+# 读取临时文件
+with open(temp_path, 'r') as f:
+    print(f"临时文件内容: {f.read()}")
+
+# 清理临时文件
+os.unlink(temp_path)
+
+# 创建临时目录
+with tempfile.TemporaryDirectory() as temp_dir:
+    print(f"临时目录: {temp_dir}")
+    
+    # 在临时目录中创建文件
+    temp_file = os.path.join(temp_dir, 'temp.txt')
+    with open(temp_file, 'w') as f:
+        f.write('临时目录中的文件')
+    
+    # 目录会在with块结束时自动清理
+
+# 计算文件哈希值
+def calculate_file_hash(filename, algorithm='sha256'):
+    """计算文件的哈希值"""
+    hash_obj = hashlib.new(algorithm)
+    with open(filename, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_obj.update(chunk)
+    return hash_obj.hexdigest()
+
+# 创建测试文件
+with open('test_hash.txt', 'w') as f:
+    f.write('测试哈希值的文件内容')
+
+# 计算哈希值
+file_hash = calculate_file_hash('test_hash.txt')
+print(f"文件哈希值: {file_hash}")
+
+# 创建压缩文件
+files_to_compress = ['test_hash.txt', 'config.ini']
+
+# 创建ZIP文件
+with zipfile.ZipFile('archive.zip', 'w') as zipf:
+    for file in files_to_compress:
+        if os.path.exists(file):
+            zipf.write(file)
+
+# 创建TAR文件
+with tarfile.open('archive.tar.gz', 'w:gz') as tarf:
+    for file in files_to_compress:
+        if os.path.exists(file):
+            tarf.add(file)
+
+# 解压文件
+with zipfile.ZipFile('archive.zip', 'r') as zipf:
+    zipf.extractall('extracted_zip')
+
+# 清理测试文件
+for filename in ['test_hash.txt', 'config.ini', 'archive.zip', 'archive.tar.gz']:
+    if os.path.exists(filename):
+        os.remove(filename)
+if os.path.exists('extracted_zip'):
+    shutil.rmtree('extracted_zip')
+</pre>

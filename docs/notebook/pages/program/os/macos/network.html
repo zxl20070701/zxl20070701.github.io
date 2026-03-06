@@ -1,0 +1,90 @@
+<header>
+    网络
+</header>
+<h2>
+    网络配置查看
+</h2>
+<h3>
+    ifconfig
+</h3>
+<p>
+    查看网络接口配置信息：
+</p>
+<pre>
+    ifconfig
+</pre>
+<p>
+    查看特定网络接口（如 en0）：
+</p>
+<pre>
+    ifconfig en0
+</pre>
+<h3>
+    networksetup
+</h3>
+<p>
+    列出所有网络服务：
+</p>
+<pre>
+    networksetup -listallnetworkservices
+</pre>
+<p>
+    查看特定服务的详细信息：
+</p>
+<pre>
+    networksetup -getinfo "Wi-Fi"
+</pre>
+<h2>
+    网络连接测试
+</h2>
+<h3>
+    ping
+</h3>
+<p>
+    测试网络连通性：
+</p>
+<pre>
+    ping www.baidu.com
+</pre>
+<p>
+    指定 ping 次数：
+</p>
+<pre>
+    ping -c 4 www.baidu.com
+</pre>
+<h3>
+    traceroute
+</h3>
+<p>
+    跟踪数据包路径：
+</p>
+<pre>
+    traceroute www.baidu.com
+</pre>
+<h2>
+    端口和网络服务
+</h2>
+<h3>
+    lsof
+</h3>
+<p>
+    查看端口占用情况：
+</p>
+<pre>
+    lsof -i :8080
+</pre>
+<p>
+    查看所有监听端口：
+</p>
+<pre>
+    lsof -i -P | grep LISTEN
+</pre>
+<h3>
+    netstat
+</h3>
+<p>
+    查看网络连接状态：
+</p>
+<pre>
+    netstat -an | grep LISTEN
+</pre>

@@ -1,0 +1,681 @@
+<header>
+    属性与数据绑定
+</header>
+<h2>
+    组件属性的基本概念
+</h2>
+<p>
+    Web Components中的属性（Attributes）是HTML元素的标准特性，用于传递静态数据到组件。属性在HTML中设置，并且可以通过<span class="special">getAttribute()</span>和<span class="special">setAttribute()</span>方法进行读取和修改。
+</p>
+<div class="tips">
+    属性主要用于初始配置，而属性（Properties）则用于动态数据交互。
+</div>
+
+<h2>
+    基本的属性使用
+</h2>
+<pre tag="javascript">
+class AttributeComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-family: Arial, sans-serif;
+                }
+                
+                .title {
+                    color: #007acc;
+                    font-size: 20px;
+                    margin-bottom: 12px;
+                }
+                
+                .info {
+                    background: #f8f9fa;
+                    padding: 12px;
+                    border-radius: 4px;
+                    margin: 8px 0;
+                }
+            </style>
+            
+            <div class="title">属性组件</div>
+            <div class="info">
+                <p><strong>标题:</strong> <span id="title">未设置</span></p>
+                <p><strong>颜色:</strong> <span id="color">未设置</span></p>
+                <p><strong>大小:</strong> <span id="size">未设置</span></p>
+                <p><strong>是否启用:</strong> <span id="enabled">未设置</span></p>
+            </div>
+        `;
+        
+        this.updateContent();
+    }
+    
+    // 当组件被插入到DOM时调用
+    connectedCallback() {
+        this.updateContent();
+    }
+    
+    // 更新组件内容
+    updateContent() {
+        const title = this.getAttribute('title') || '默认标题';
+        const color = this.getAttribute('color') || 'black';
+        const size = this.getAttribute('size') || 'medium';
+        const enabled = this.hasAttribute('enabled');
+        
+        const shadow = this.shadowRoot;
+        shadow.getElementById('title').textContent = title;
+        shadow.getElementById('color').textContent = color;
+        shadow.getElementById('size').textContent = size;
+        shadow.getElementById('enabled').textContent = enabled ? '是' : '否';
+        
+        // 应用颜色样式
+        shadow.getElementById('color').style.color = color;
+    }
+    
+    // 监听属性变化
+    static get observedAttributes() {
+        return ['title', 'color', 'size'];
+    }
+    
+    // 当观察的属性变化时调用
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (oldValue !== newValue) {
+            this.updateContent();
+        }
+    }
+}
+
+customElements.define('attribute-component', AttributeComponent);
+</pre>
+<h2>
+    属性与属性的区别
+</h2>
+<p>
+    在Web Components中，属性（Attributes）和属性（Properties）是两个不同的概念：
+</p>
+<ul>
+    <li>
+        <span class="special">属性（Attributes）</span>
+        ：HTML元素上的特性，始终是字符串类型
+    </li>
+    <li>
+        <span class="special">属性（Properties）</span>
+        ：JavaScript对象上的属性，可以是任何类型
+    </li>
+</ul>
+
+<pre tag="javascript">
+class PropertyComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-family: Arial, sans-serif;
+                }
+                
+                .info {
+                    background: #f8f9fa;
+                    padding: 12px;
+                    border-radius: 4px;
+                    margin: 8px 0;
+                }
+                
+                input, button {
+                    margin: 4px;
+                    padding: 8px;
+                }
+            </style>
+            
+            <div>
+                <h3>属性与属性对比</h3>
+                <div class="info">
+                    <p><strong>属性值 (attribute):</strong> <span id="attr-value">未设置</span></p>
+                    <p><strong>属性值 (property):</strong> <span id="prop-value">未设置</span></p>
+                </div>
+                
+                <div>
+                    <input type="text" id="attr-input" placeholder="设置属性">
+                    <button id="set-attr">设置属性</button>
+                </div>
+                
+                <div>
+                    <input type="text" id="prop-input" placeholder="设置属性">
+                    <button id="set-prop">设置属性</button>
+                </div>
+            </div>
+        `;
+        
+        this.bindEvents();
+    }
+    
+    bindEvents() {
+        const shadow = this.shadowRoot;
+        
+        shadow.getElementById('set-attr').addEventListener('click', () => {
+            const value = shadow.getElementById('attr-input').value;
+            this.setAttribute('data-value', value);
+        });
+        
+        shadow.getElementById('set-prop').addEventListener('click', () => {
+            const value = shadow.getElementById('prop-input').value;
+            this.dataValue = value;
+        });
+    }
+    
+    // 观察的属性
+    static get observedAttributes() {
+        return ['data-value'];
+    }
+    
+    // 属性变化回调
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'data-value') {
+            this.shadowRoot.getElementById('attr-value').textContent = newValue || '未设置';
+        }
+    }
+    
+    // 定义属性
+    get dataValue() {
+        return this._dataValue;
+    }
+    
+    set dataValue(value) {
+        this._dataValue = value;
+        this.shadowRoot.getElementById('prop-value').textContent = value || '未设置';
+    }
+}
+
+customElements.define('property-component', PropertyComponent);
+</pre>
+<h2>
+    数据绑定
+</h2>
+<p>
+    数据绑定是将组件的属性或属性与UI元素关联起来的过程。当数据变化时，UI会自动更新。
+</p>
+
+<pre tag="javascript">
+class DataBindingComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-family: Arial, sans-serif;
+                }
+                
+                .form-group {
+                    margin-bottom: 12px;
+                }
+                
+                label {
+                    display: block;
+                    margin-bottom: 4px;
+                    font-weight: bold;
+                }
+                
+                input, select, textarea {
+                    width: 100%;
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                }
+                
+                .preview {
+                    background: #f8f9fa;
+                    padding: 16px;
+                    border-radius: 4px;
+                    margin-top: 16px;
+                }
+                
+                .preview-header {
+                    color: #007acc;
+                    font-size: 18px;
+                    margin-bottom: 8px;
+                }
+            </style>
+            
+            <div>
+                <h3>数据绑定示例</h3>
+                
+                <div class="form-group">
+                    <label>姓名:</label>
+                    <input type="text" id="name" placeholder="请输入姓名">
+                </div>
+                
+                <div class="form-group">
+                    <label>邮箱:</label>
+                    <input type="email" id="email" placeholder="请输入邮箱">
+                </div>
+                
+                <div class="form-group">
+                    <label>年龄:</label>
+                    <input type="number" id="age" placeholder="请输入年龄" min="1" max="120">
+                </div>
+                
+                <div class="form-group">
+                    <label>性别:</label>
+                    <select id="gender">
+                        <option value="">请选择</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>个人简介:</label>
+                    <textarea id="bio" rows="3" placeholder="请输入个人简介"></textarea>
+                </div>
+                
+                <div class="preview">
+                    <div class="preview-header">预览:</div>
+                    <div id="preview-content">
+                        请填写上面的表单...
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        this.data = {
+            name: '',
+            email: '',
+            age: '',
+            gender: '',
+            bio: ''
+        };
+        
+        this.bindEvents();
+        this.updatePreview();
+    }
+    
+    bindEvents() {
+        const shadow = this.shadowRoot;
+        
+        // 绑定所有输入框的事件
+        const inputs = shadow.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const key = e.target.id;
+                const value = e.target.value;
+                this.data[key] = value;
+                this.updatePreview();
+            });
+        });
+    }
+    
+    updatePreview() {
+        const shadow = this.shadowRoot;
+        const preview = shadow.getElementById('preview-content');
+        
+        if (Object.values(this.data).every(value => !value)) {
+            preview.innerHTML = '请填写上面的表单...';
+            return;
+        }
+        
+        let html = '';
+        
+        if (this.data.name) {
+            html += `<p><strong>姓名:</strong> ${this.data.name}</p>`;
+        }
+        
+        if (this.data.email) {
+            html += `<p><strong>邮箱:</strong> ${this.data.email}</p>`;
+        }
+        
+        if (this.data.age) {
+            html += `<p><strong>年龄:</strong> ${this.data.age}岁</p>`;
+        }
+        
+        if (this.data.gender) {
+            const genderMap = {
+                'male': '男',
+                'female': '女',
+                'other': '其他'
+            };
+            html += `<p><strong>性别:</strong> ${genderMap[this.data.gender]}</p>`;
+        }
+        
+        if (this.data.bio) {
+            html += `<p><strong>个人简介:</strong> ${this.data.bio}</p>`;
+        }
+        
+        preview.innerHTML = html;
+    }
+}
+
+customElements.define('data-binding-component', DataBindingComponent);
+</pre>
+<h2>
+    双向数据绑定
+</h2>
+<p>
+    双向数据绑定是指数据变化会更新UI，UI变化也会更新数据。
+</p>
+
+<pre tag="javascript">
+class TwoWayBindingComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-family: Arial, sans-serif;
+                }
+                
+                .counter {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                
+                .count {
+                    font-size: 48px;
+                    font-weight: bold;
+                    color: #007acc;
+                    margin: 10px 0;
+                }
+                
+                .controls {
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                }
+                
+                button {
+                    background: #007acc;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+                
+                button:hover {
+                    background: #005a9e;
+                }
+                
+                .input-section {
+                    margin-top: 20px;
+                    text-align: center;
+                }
+                
+                input {
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    width: 100px;
+                    text-align: center;
+                }
+            </style>
+            
+            <div>
+                <div class="counter">
+                    <h3>双向数据绑定计数器</h3>
+                    <div class="count" id="count">0</div>
+                </div>
+                
+                <div class="controls">
+                    <button id="decrease">-1</button>
+                    <button id="reset">重置</button>
+                    <button id="increase">+1</button>
+                </div>
+                
+                <div class="input-section">
+                    <label>直接输入数值: </label>
+                    <input type="number" id="count-input" value="0">
+                </div>
+            </div>
+        `;
+        
+        this.count = 0;
+        this.bindEvents();
+        this.updateUI();
+    }
+    
+    bindEvents() {
+        const shadow = this.shadowRoot;
+        
+        // 按钮事件
+        shadow.getElementById('decrease').addEventListener('click', () => {
+            this.count--;
+            this.updateUI();
+        });
+        
+        shadow.getElementById('increase').addEventListener('click', () => {
+            this.count++;
+            this.updateUI();
+        });
+        
+        shadow.getElementById('reset').addEventListener('click', () => {
+            this.count = 0;
+            this.updateUI();
+        });
+        
+        // 输入框事件
+        shadow.getElementById('count-input').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value) || 0;
+            this.count = value;
+            this.updateUI();
+        });
+    }
+    
+    updateUI() {
+        const shadow = this.shadowRoot;
+        shadow.getElementById('count').textContent = this.count;
+        shadow.getElementById('count-input').value = this.count;
+        
+        // 触发自定义事件
+        this.dispatchEvent(new CustomEvent('count-changed', {
+            detail: { count: this.count },
+            bubbles: true
+        }));
+    }
+    
+    // 提供属性访问器
+    get value() {
+        return this.count;
+    }
+    
+    set value(newValue) {
+        this.count = parseInt(newValue) || 0;
+        this.updateUI();
+    }
+}
+
+customElements.define('two-way-binding-component', TwoWayBindingComponent);
+</pre>
+<h2>
+    高级属性处理
+</h2>
+<p>
+    处理复杂的数据类型和属性验证：
+</p>
+
+<pre tag="javascript">
+class AdvancedAttributeComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-family: Arial, sans-serif;
+                }
+                
+                .config {
+                    background: #f8f9fa;
+                    padding: 12px;
+                    border-radius: 4px;
+                    margin-bottom: 12px;
+                }
+                
+                .json-output {
+                    background: #f5f5f5;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    padding: 12px;
+                    font-family: monospace;
+                    white-space: pre-wrap;
+                    font-size: 14px;
+                }
+                
+                .error {
+                    color: #dc3545;
+                    background: #f8d7da;
+                    border: 1px solid #f5c6cb;
+                    padding: 8px;
+                    border-radius: 4px;
+                    margin-top: 8px;
+                }
+            </style>
+            
+            <div>
+                <h3>高级属性处理</h3>
+                
+                <div class="config">
+                    <p><strong>配置数据:</strong></p>
+                    <div id="config-display">未设置</div>
+                </div>
+                
+                <div>
+                    <p><strong>JSON输出:</strong></p>
+                    <div class="json-output" id="json-output">{}</div>
+                </div>
+                
+                <div id="error-message"></div>
+            </div>
+        `;
+        
+        this._config = {};
+        this.updateDisplay();
+    }
+    
+    // 观察的属性
+    static get observedAttributes() {
+        return ['config', 'theme', 'features'];
+    }
+    
+    // 属性变化回调
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (oldValue !== newValue) {
+            this.updateProperty(name, newValue);
+        }
+    }
+    
+    // 更新属性值
+    updateProperty(name, value) {
+        try {
+            switch (name) {
+                case 'config':
+                    this._config = value ? JSON.parse(value) : {};
+                    break;
+                case 'theme':
+                    this._theme = value || 'default';
+                    break;
+                case 'features':
+                    this._features = value ? value.split(',').map(f => f.trim()) : [];
+                    break;
+            }
+            this.updateDisplay();
+            this.clearError();
+        } catch (error) {
+            this.showError(`解析 ${name} 失败: ${error.message}`);
+        }
+    }
+    
+    updateDisplay() {
+        const shadow = this.shadowRoot;
+        
+        // 显示配置
+        const configDisplay = shadow.getElementById('config-display');
+        configDisplay.innerHTML = `
+            <p>主题: ${this._theme || 'default'}</p>
+            <p>功能: ${(this._features || []).join(', ') || '无'}</p>
+            <p>配置项数: ${Object.keys(this._config).length}</p>
+        `;
+        
+        // 显示JSON
+        const jsonOutput = shadow.getElementById('json-output');
+        const fullConfig = {
+            theme: this._theme || 'default',
+            features: this._features || [],
+            config: this._config
+        };
+        jsonOutput.textContent = JSON.stringify(fullConfig, null, 2);
+    }
+    
+    showError(message) {
+        const shadow = this.shadowRoot;
+        const errorElement = shadow.getElementById('error-message');
+        errorElement.innerHTML = `<div class="error">${message}</div>`;
+    }
+    
+    clearError() {
+        const shadow = this.shadowRoot;
+        const errorElement = shadow.getElementById('error-message');
+        errorElement.innerHTML = '';
+    }
+    
+    // 属性访问器
+    get config() {
+        return this._config;
+    }
+    
+    set config(value) {
+        this._config = value;
+        this.setAttribute('config', JSON.stringify(value));
+    }
+    
+    get theme() {
+        return this._theme;
+    }
+    
+    set theme(value) {
+        this._theme = value;
+        this.setAttribute('theme', value);
+    }
+    
+    get features() {
+        return this._features;
+    }
+    
+    set features(value) {
+        this._features = Array.isArray(value) ? value : [];
+        this.setAttribute('features', this._features.join(','));
+    }
+}
+
+customElements.define('advanced-attribute-component', AdvancedAttributeComponent);
+</pre>

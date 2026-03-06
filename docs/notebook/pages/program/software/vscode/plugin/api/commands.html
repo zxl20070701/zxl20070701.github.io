@@ -1,0 +1,107 @@
+<header>
+    commands
+</header>
+<h2>
+    注册命令
+</h2>
+<h3>
+    注册普通命令
+</h3>
+<pre tag="javascript">
+// 注册一个简单命令
+const disposable = vscode.commands.registerCommand('myExtension.helloWorld', () => {
+    vscode.window.showInformationMessage('Hello World!');
+});
+
+context.subscriptions.push(disposable);
+</pre>
+<h3>
+    注册带参数命令
+</h3>
+<pre tag="javascript">
+// 注册带参数的命令
+const disposable = vscode.commands.registerCommand('myExtension.greet', (name: string) => {
+    vscode.window.showInformationMessage(`Hello, ${name}!`);
+});
+
+context.subscriptions.push(disposable);
+</pre>
+<h2>
+    执行命令
+</h2>
+<h3>
+    执行VSCode内置命令
+</h3>
+<pre tag="javascript">
+// 执行内置命令打开设置
+await vscode.commands.executeCommand('workbench.action.openSettings');
+
+// 执行内置命令打开新文件
+await vscode.commands.executeCommand('workbench.action.files.newUntitledFile');
+</pre>
+<h3>
+    执行自定义命令
+</h3>
+<pre tag="javascript">
+// 执行自定义命令
+await vscode.commands.executeCommand('myExtension.helloWorld');
+
+// 执行带参数的自定义命令
+await vscode.commands.executeCommand('myExtension.greet', 'VS Code');
+</pre>
+<h2>
+    获取命令信息
+</h2>
+<h3>
+    获取所有命令
+</h3>
+<pre tag="javascript">
+// 获取所有命令
+const commands = await vscode.commands.getCommands();
+console.log('所有可用命令:', commands);
+</pre>
+<h3>
+    获取特定命令
+</h3>
+<pre tag="javascript">
+// 检查命令是否存在
+const hasCommand = await vscode.commands.getCommands(true);
+const commandExists = hasCommand.includes('myExtension.helloWorld');
+console.log('命令存在:', commandExists);
+</pre>
+<h2>
+    文本编辑器命令
+</h2>
+<h3>
+    编辑器操作命令
+</h3>
+<pre tag="javascript">
+// 执行编辑器命令
+const editor = vscode.window.activeTextEditor;
+if (editor) {
+    // 全选
+    await vscode.commands.executeCommand('editor.action.selectAll');
+    
+    // 格式化文档
+    await vscode.commands.executeCommand('editor.action.formatDocument');
+    
+    // 注释选中行
+    await vscode.commands.executeCommand('editor.action.commentLine');
+}
+</pre>
+<h2>
+    工作区命令
+</h2>
+<h3>
+    文件操作命令
+</h3>
+<pre tag="javascript">
+// 保存当前文件
+await vscode.commands.executeCommand('workbench.action.files.save');
+
+// 关闭当前编辑器
+await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+
+// 在资源管理器中显示文件
+await vscode.commands.executeCommand('revealFileInOS', fileUri);
+</pre>

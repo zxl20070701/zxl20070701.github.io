@@ -2,12 +2,14 @@
     height: 100vh;
     overflow: auto;
     min-width: 980px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .sponsors {
     text-align: center;
     position: absolute;
-    top: 130px;
+    top: 180px;
     left: 50px;
     width: 180px;
     padding: 10px 0;
@@ -75,41 +77,57 @@
     background-image: url(../images/dream.png);
     background-repeat: no-repeat;
     background-position: center center;
-    top: 40px;
-    right: 310px;
+    top: 60px;
+    right: 320px;
     z-index: 1;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.dream:hover {
+    opacity: 1;
 }
 
 nav {
     text-align: center;
-    background-color: #8ab891;
-    padding: 10px 0;
+    background: linear-gradient(90deg, #2c3e50 0%, #3498db 100%);
+    padding: 15px 0;
     position: sticky;
     top: 0;
     z-index: 2;
-    box-shadow: 0px 5px 12px 6px white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
 }
 
 nav>a {
     display: inline-block;
-    padding: 5px 10px;
-    font-weight: 400;
-    font-size: 14px;
-    background-color: #bee2c4;
+    padding: 8px 20px;
+    font-weight: 500;
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    margin: 0 10px;
-    color: rgb(0, 0, 0);
+    margin: 0 8px;
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 nav>a:hover {
-    text-decoration: underline;
-    font-weight: 800;
+    text-decoration: none;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 nav>a.active {
     text-decoration: none;
-    background-color: white;
-    font-weight: 800;
+    background: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+    color: #2c3e50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .view {
@@ -118,78 +136,112 @@ nav>a.active {
 }
 
 .view>h2 {
-    padding-top: 179px;
+    padding-top: 120px;
     background-image: url('../images/banner.jpg');
     background-repeat: no-repeat;
-    background-color: #8ab891;
-    line-height: 50px;
+    background-size: cover;
+    background-position: center;
+    line-height: 60px;
     position: relative;
     padding-left: 150px;
-    font-family: cursive;
+    font-family: 'Georgia', serif;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .view>h2>a {
     position: absolute;
     width: 100px;
     height: 100px;
-    background-size: 100% auto;
+    background-size: cover;
     background-image: url('../../images/zxl20070701.jpg');
     background-color: #ffffff;
-    bottom: 23px;
+    bottom: 30px;
     left: 25px;
-    outline: 1px solid #000000;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
 }
 
 .view>h2 input {
-    height: 30px;
+    height: 40px;
     border: none;
     outline: none;
-    padding: 0 10px;
-    padding-right: 35px;
+    padding: 0 16px;
+    padding-right: 42px;
     background-image: url('../images/search.svg');
-    background-position: center right;
+    background-position: right 12px center;
     background-repeat: no-repeat;
-    border-radius: 3px;
-    background-color: #f3f0f0;
+    background-size: 18px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
     margin: 10px;
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 10px;
+    right: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.view>h2 input:focus {
+    background-color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
 }
 
 .view>.containter {
-    background-color: #dceffe;
-    min-height: calc(100vh - 705px);
+    background: transparent;
+    min-height: calc(100vh - 720px);
     position: relative;
-    padding: 30px 0;
+    padding: 40px 0;
     font-size: 0;
 }
 
 .view>.containter>.content {
     width: 600px;
-    background-color: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
     margin-left: 45px;
     display: inline-block;
-    font-size: 14px;
+    font-size: 16px;
     position: relative;
-    padding: 70px 50px 30px 50px;
-    color: #223036;
+    padding: 80px 60px 40px 60px;
+    color: #2c3e50;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .view>.containter>.content>.title {
     text-align: center;
-    font-size: 18px;
-    font-weight: 800;
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-family: 'Georgia', serif;
+    letter-spacing: 2px;
 }
 
 .view>.containter>.content>.author {
     text-align: center;
-    padding: 20px 0;
+    padding: 15px 0 25px 0;
+    font-size: 18px;
+    color: #7f8c8d;
+    font-style: italic;
+    font-family: 'Georgia', serif;
 }
 
 .view>.containter>.content>.line {
     text-indent: 2em;
-    line-height: 1.8em;
+    line-height: 2.2em;
+    margin-bottom: 16px;
+    color: #34495e;
+    font-weight: 400;
 }
 
 .view>.containter>.right {
@@ -202,10 +254,13 @@ nav>a.active {
 }
 
 .view>.containter>.right>h2 {
-    font-size: 18px;
-    font-family: cursive;
-    color: #116274;
-    font-weight: 800;
+    font-size: 20px;
+    font-family: 'Georgia', serif;
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 1px;
 }
 
 .view>.containter>.right>ul {
@@ -213,12 +268,17 @@ nav>a.active {
 }
 
 .view>.containter>.right>ul>li {
-    margin-top: 10px;
-    background-color: white;
-    padding: 10px;
-    background-size: 50px auto;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    background-size: 60px auto;
     background-repeat: no-repeat;
-    background-position: right bottom;
+    background-position: right 20px bottom 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view>.containter>.right>ul>li.vislite {
@@ -226,59 +286,65 @@ nav>a.active {
 }
 
 .view>.containter>.right>ul>li>.content {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
 }
 
 .view>.containter>.right>ul>li>.content>h3 {
     display: inline-block;
+    font-size: 16px;
+    color: #2c3e50;
 }
 
 .view>.containter>.right>ul>li>.link {
-    padding-top: 5px;
+    padding-top: 8px;
 }
 
 .view>.containter>.right>ul>li>.link>a {
-    height: 30px;
-    border-radius: 15px;
-    width: 50px;
-    margin-top: 10px;
+    height: 36px;
+    border-radius: 18px;
+    width: 60px;
+    margin-top: 12px;
     display: inline-block;
-    border: 1px solid #b2b2bd;
+    border: none;
     text-align: center;
-    line-height: 30px;
+    line-height: 36px;
     vertical-align: top;
     font-size: 14px;
-    background-color: #e9e9e9;
-    color: #4e4e4e;
-    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .view>.containter>.right>ul>li>.link>a:hover {
-    background-color: #a7a4a4;
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
 }
 
 footer {
     height: 97px;
     text-align: center;
-    background-color: #fafafa;
-    border-top: 1px solid #d3d0d0;
+    background: linear-gradient(90deg, #2c3e50 0%, #3498db 100%);
+    color: rgba(255, 255, 255, 0.9);
     line-height: 2em;
-    padding: 20px 0;
+    padding: 25px 0;
     font-size: 14px;
     min-width: 980px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
 }
 
 footer a {
     padding: 0 5px;
-    color: rgb(5, 100, 117);
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: underline;
-
 }
 
 footer a:hover {
-    color: rgb(3, 61, 71);
-    font-weight: 800;
+    color: rgba(255, 255, 255, 1);
+    font-weight: 600;
 }
 
 .pageview-content {
@@ -410,9 +476,9 @@ footer a:hover {
 
     nav>a {
         display: inline-block;
-        padding: 8px 12px;
+        padding: 8px;
         font-size: 14px;
-        margin: 0 5px;
+        margin: 0 2px;
         white-space: nowrap;
     }
 
@@ -424,7 +490,7 @@ footer a:hover {
     }
 
     .view>h2 {
-        padding-top: 120px;
+        padding-top: 0;
         background-position: center top;
         background-size: cover;
         padding-left: 20px;
@@ -517,6 +583,47 @@ footer a:hover {
         width: 100%;
     }
 
+    /* 动画效果 */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .view>.containter>.content {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .view>.containter>.right>ul>li:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 头像悬停效果 */
+    .view>h2>a:hover {
+        transform: scale(1.05);
+    }
+
+    /* 猫图片区域增强 */
+    .cat {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cat>button {
+        top: 240px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
     footer {
         min-width: auto;
         padding: 15px 10px;
@@ -535,31 +642,5 @@ footer a:hover {
     .pageview-content>.item.doc {
         width: calc(100% - 40px);
         margin-top: 50px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .view>h2 {
-        padding-top: 100px;
-    }
-
-    .view>h2>a {
-        width: 50px;
-        height: 50px;
-    }
-
-    .view>.containter>.content {
-        padding: 15px 10px;
-        font-size: 13px;
-    }
-
-    .view>.containter>.content>.title {
-        font-size: 16px;
-    }
-
-    nav>a {
-        padding: 6px 8px;
-        font-size: 12px;
-        margin: 0 3px;
     }
 }

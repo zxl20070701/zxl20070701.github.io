@@ -1,0 +1,127 @@
+<header>
+    操作菜单
+</header>
+<h2>
+    uni.showActionSheet(OBJECT)
+</h2>
+<p>
+    显示操作菜单。
+</p>
+<pre tag="javascript">
+uni.showActionSheet({
+    itemList: ['A', 'B', 'C'],
+    success: function (res) {
+        console.log('选中了第' + (res.tapIndex + 1) + '个按钮');
+    },
+    fail: function (res) {
+        console.log(res.errMsg);
+    }
+});
+</pre>
+<h3>
+    参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>title</td>
+            <td>String</td>
+            <td>否</td>
+            <td>菜单标题</td>
+        </tr>
+        <tr>
+            <td>itemList</td>
+            <td>Array&lt;String&gt;</td>
+            <td>是</td>
+            <td>按钮的文字数组，数组长度最大为6个</td>
+        </tr>
+        <tr>
+            <td>itemColor</td>
+            <td>String</td>
+            <td>否</td>
+            <td>按钮的文字颜色，默认为"#000000"</td>
+        </tr>
+        <tr>
+            <td>alertText</td>
+            <td>String</td>
+            <td>否</td>
+            <td>警示文案（同 itemList 一起显示）</td>
+        </tr>
+        <tr>
+            <td>popover</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>大屏设备弹出原生选择按钮框的指示区域，默认居中显示</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <button @click="showActionSheet">显示操作菜单</button>
+    <button @click="showActionSheetWithTitle">带标题的操作菜单</button>
+  </view>
+</template>
+
+<script>
+export default {
+  methods: {
+    showActionSheet() {
+      uni.showActionSheet({
+        itemList: ['拍照', '从相册选择', '取消'],
+        success: (res) => {
+          switch (res.tapIndex) {
+            case 0:
+              uni.showToast({
+                title: '选择了拍照',
+                icon: 'none'
+              });
+              break;
+            case 1:
+              uni.showToast({
+                title: '选择了从相册选择',
+                icon: 'none'
+              });
+              break;
+            case 2:
+              uni.showToast({
+                title: '选择了取消',
+                icon: 'none'
+              });
+              break;
+          }
+        },
+        fail: (res) => {
+          console.log(res.errMsg);
+        }
+      });
+    },
+    showActionSheetWithTitle() {
+      uni.showActionSheet({
+        title: '请选择操作',
+        itemList: ['编辑', '删除', '分享'],
+        itemColor: '#007aff',
+        success: (res) => {
+          const actions = ['编辑', '删除', '分享'];
+          uni.showToast({
+            title: '选择了：' + actions[res.tapIndex],
+            icon: 'none'
+          });
+        }
+      });
+    }
+  }
+}
+</script>
+</pre>

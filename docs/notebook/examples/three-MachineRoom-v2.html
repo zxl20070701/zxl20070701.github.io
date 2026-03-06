@@ -25,15 +25,15 @@
 
         new THREE.OrbitControls(camera, renderer.domElement);
 
-        // 记录纹理
+        // 缓存纹理，避免重复加载
         var textures = {};
         var crtTexture = function (imgName) {
             var curTexture = textures[imgName];
             if (!curTexture) {
                 curTexture = new THREE.TextureLoader().load('./data/MachineRoom/' + imgName);
                 curTexture.flipY = false;
-                curTexture.wrapS = 1000;
-                curTexture.wrapT = 1000;
+                curTexture.wrapS = THREE.RepeatWrapping;
+                curTexture.wrapT = THREE.RepeatWrapping;
                 textures[imgName] = curTexture;
             }
             return curTexture;

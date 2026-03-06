@@ -13,7 +13,7 @@
 <h3>
     if条件控制
 </h3>
-<pre tag>
+<pre tag="python">
 if 表达式:
 语句
 if 表达式:
@@ -26,7 +26,7 @@ else:
 <h3>
     while循环
 </h3>
-<pre tag>
+<pre tag="python">
 while 判断条件:
     语句
 else:
@@ -38,7 +38,7 @@ else:
 <h3>
     for语句
 </h3>
-<pre tag>
+<pre tag="python">
 for &lt;variable&gt; in &lt;sequence&gt;:
     &lt;statements&gt;
 else:
@@ -59,7 +59,7 @@ else:
 <p>
     下面先简单演示一下这两个方法的用法：
 </p>
-<pre tag>
+<pre tag="python">
 list=['中国','美国','俄罗斯','埃塞俄比亚']
 
 #1.使用iter()方法获取迭代器对象
@@ -75,7 +75,7 @@ print (next(it)) #打印结果是'美国'
 <p>
     当然，到末尾了已经没有可以取的数据的时候，再次调用会抛出异常，因此我们可以借助这个来实现迭代全部的数据，如下：
 </p>
-<pre tag>
+<pre tag="python">
 list=['中国','美国','俄罗斯','埃塞俄比亚']
 
 it = iter(list)  
@@ -94,7 +94,7 @@ while flag:
 <p>
     除此之外，使用for可以实现类似的效果，如下：
 </p>
-<pre tag>
+<pre tag="python">
 list=['中国','美国','俄罗斯','埃塞俄比亚']
 
 it = iter(list)
@@ -105,9 +105,41 @@ for x in it:
 <p>
     因此，迭代全部的数据肯定不是迭代器存在的全部意义，更多的时候，你可以把它看成一个管理一列数据的对象，需要的时候告诉他一下，他就会给你下一个数据，不像for循环那样一下子迭代结束，你可以在任何需要的时候获取下一个数据。
 </p>
+<h3>
+    自定义迭代器类
+</h3>
 <p>
-    记住这一个特点，特别是在设计算法或者模式的时候，会很有用的（当然，具体用好他从来都是经验的事情，祝你好运）。
+    迭代器实现了迭代器协议，包含两个核心方法：__iter__()和__next__()。
 </p>
+<h4>
+    定义
+</h4>
+<pre tag="python">
+class CountDown:
+    def __init__(self, start):
+        self.start = start
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.start <= 0:
+            raise StopIteration
+        current = self.start
+        self.start -= 1
+        return current
+</pre>
+<h4>
+    使用
+</h4>
+<pre tag="python">
+for num in CountDown(5):
+    print(num)  # 输出: 5, 4, 3, 2, 1
+</pre>
+
+<h3>
+    生成器
+</h3>
 <h3>
     生成器
 </h3>
@@ -123,7 +155,7 @@ for x in it:
 <p>
     生成器就是一个可以自定义一个生成迭代器对象函数的概念，生成的迭代器对象每次被询问返回下一个数据的时候，自定义的如果返回，使用的就是yield函数，先看下下面的例子：
 </p>
-<pre tag>
+<pre tag="python">
 #定义一下可以生成迭代器对象的函数，类似上面例子中的iter()方法
 def generatorDemo(array):
     index=0
@@ -159,18 +191,114 @@ while flag:
 <p>
     如果你问我什么时候使用他，这具体看业务需求，就好比if语句一样，他就在那里，需要用的时候可以记起来他，就够了。
 </p>
+<h4>
+    简单的生成器函数
+</h4>
+<pre tag="python">
+def simple_generator():
+    yield 1
+    yield 2
+    yield 3
+
+# 使用生成器
+gen = simple_generator()
+print(next(gen))  # 输出: 1
+print(next(gen))  # 输出: 2
+print(next(gen))  # 输出: 3
+
+# 生成器表达式（类似列表推导式）
+squares = (x**2 for x in range(5))
+print(list(squares))  # 输出: [0, 1, 4, 9, 16]
+
+# 实用的生成器示例：生成斐波那契数列
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+# 使用斐波那契生成器
+for num in fibonacci(10):
+    print(num, end=' ')  # 输出: 0 1 1 2 3 5 8 13 21 34
+</pre>
+<h4>
+    生成器的高级用法
+</h4>
+<pre tag="python">
+# 带状态的生成器
+def counter(start=0):
+    count = start
+    while True:
+        received = yield count
+        if received is not None:
+            count = received
+        else:
+            count += 1
+
+# 使用带状态的生成器
+c = counter(5)
+print(next(c))      # 输出: 5
+print(next(c))      # 输出: 6
+print(c.send(10))   # 输出: 10 (重置计数器)
+print(next(c))      # 输出: 11
+
+# 生成器关闭
+g = simple_generator()
+print(next(g))  # 输出: 1
+g.close()       # 关闭生成器
+# print(next(g))  # 这会抛出StopIteration异常
+</pre>
+
 <h2>
     函数
 </h2>
 <p>
-    具体就不用多说明了，直接给出定义，然后说几个重要的问题。
+    函数是Python中的基本构建块，用于封装可重用的代码。函数可以接受参数并返回值。
 </p>
-<pre tag>
+<h3>
+    语法
+</h3>
+<pre tag="python">
 def 函数名（参数列表）:
     函数体
 </pre>
 <h3>
-    参数传递
+    函数定义和调用
+</h3>
+<h4>
+    基本函数定义
+</h4>
+<pre tag="python">
+def greet(name):
+    """这是一个简单的问候函数"""
+    return f"Hello, {name}!"
+
+message = greet("Alice")
+print(message)  # 输出: Hello, Alice!
+
+</pre>
+<pre tag="python">
+def print_info(name, age):
+    print(f"姓名: {name}, 年龄: {age}")
+
+print_info("Bob", 25)  # 输出: 姓名: Bob, 年龄: 25
+</pre>
+<h4>
+    没有返回值的函数
+</h4>
+<h4>
+    返回多个值的函数
+</h4>
+<pre tag="python">
+def get_name_and_age():
+    return "Charlie", 30
+
+name, age = get_name_and_age()
+print(name, age)  # 输出: Charlie 30
+</pre>
+
+<h3>
+    参数传递机制
 </h3>
 <p>
     在 python 中，strings, tuples, 和 numbers 是不可更改的对象，而 list,dict 等则是可以修改的对象。
@@ -181,39 +309,184 @@ def 函数名（参数列表）:
 <p>
     python 中一切都是对象，严格意义我们不能说值传递还是引用传递，我们应该说传不可变对象和传可变对象。
 </p>
+<pre tag="python">
+# 不可变对象（数字、字符串、元组）
+def modify_immutable(x):
+    x = 100  # 创建新对象，不影响原始变量
+    print(f"函数内: {x}")
+
+a = 50
+modify_immutable(a)
+print(f"函数外: {a}")  # 输出仍然是50
+
+# 可变对象（列表、字典、集合）
+def modify_mutable(lst):
+    lst.append(100)  # 修改原始对象
+    print(f"函数内: {lst}")
+
+my_list = [1, 2, 3]
+modify_mutable(my_list)
+print(f"函数外: {my_list}")  # 输出: [1, 2, 3, 100]
+</pre>
+
 <h3>
-    参数类型
+    参数类型详解
 </h3>
-<p>
-    参数有四种，具体的很多和ES很像，不过在第一点上和ES区别很大，下面来简单说明一下：
-</p>
 <h4>
     必需参数
 </h4>
 <p>
     就是你定义函数的时候，定义了几个参数，调用的时候就要传递几个，当然是普通定义方法，不包括下面的不定长参数，这点ES就很随意了。
 </p>
+<pre tag="python">
+def power(base, exponent):
+    return base ** exponent
+
+# 必须提供所有必需参数
+result = power(2, 3)  # 正确
+# result = power(2)   # 错误！缺少参数
+print(result)  # 输出: 8
+</pre>
+
 <h4>
     关键字参数
 </h4>
 <p>
     举个例子，比如你定义了一个函数有两个参数age和name，函数名称是getInfo，正常调用是依次传递参数：getInfo(7,'zxl20070701')，当然你可以不这样，你还可以这样：
 </p>
-<pre tag>
+<pre tag="python">
     getInfo(name='zxl20070701',age=7)；
 </pre>
+<p>
+    混合使用时，位置参数必须在关键字参数之前：
+</p>
+<pre tag="python">
+def introduce(name, age, city):
+    return f"我是{name}，{age}岁，来自{city}"
+
+print(introduce("Alice", city="北京", age=25))
+</pre>
+
 <h4>
     默认参数
 </h4>
-<p>
-    这个就和ES6差不多意思，举例，定义函数时（没有写全，值写函数头部）：
-</p>
-<pre tag>
-    getInfo(age,name='默认名称');
+<pre tag="python">
+def create_profile(name, age, city="未知", country="中国"):
+    return f"{name}, {age}岁, {city}, {country}"
+
+print(create_profile("张三", 30))  # 使用默认参数
+print(create_profile("李四", 25, "上海"))  # 覆盖一个默认参数
+print(create_profile("王五", 35, "广州", "中国"))  # 覆盖所有参数
+
+# 注意：默认参数应该是不可变对象
+def add_item(item, items=None):
+    if items is None:
+        items = []
+    items.append(item)
+    return items
+
+print(add_item("苹果"))  # 输出: ['苹果']
+print(add_item("香蕉"))  # 输出: ['香蕉']，而不是['苹果', '香蕉']
 </pre>
+
 <h4>
     不定长参数
 </h4>
 <p>
     定义方法：getInfo(age,name,*vartuple)，这样多传递的数据就全部在vartuple中，调用前它是一个空元组。
 </p>
+<pre tag="python">
+# *args接收任意数量的位置参数（元组形式）
+def sum_all(*args):
+    return sum(args)
+
+print(sum_all(1, 2, 3, 4, 5))  # 输出: 15
+print(sum_all(10, 20))         # 输出: 30
+
+# **kwargs接收任意数量的关键字参数（字典形式）
+def print_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+print_info(name="Alice", age=25, city="北京")
+# 输出:
+# name: Alice
+# age: 25
+# city: 北京
+
+# 同时使用*args和**kwargs
+def flexible_function(*args, **kwargs):
+    print("位置参数:", args)
+    print("关键字参数:", kwargs)
+
+flexible_function(1, 2, 3, name="Bob", age=30)
+</pre>
+
+<h3>
+    参数解包
+</h3>
+<pre tag="python">
+# 列表解包
+numbers = [1, 2, 3]
+print(*numbers)  # 输出: 1 2 3
+
+# 字典解包
+config = {"host": "localhost", "port": 8080}
+connect(**config)  # 等价于 connect(host="localhost", port=8080)
+
+# 函数调用时的解包
+def add(a, b, c):
+    return a + b + c
+
+args = [1, 2, 3]
+print(add(*args))  # 输出: 6
+
+kwargs = {"a": 1, "b": 2, "c": 3}
+print(add(**kwargs))  # 输出: 6
+</pre>
+
+<h3>
+    匿名函数（Lambda）
+</h3>
+<pre tag="python">
+# 简单lambda函数
+square = lambda x: x ** 2
+print(square(5))  # 输出: 25
+
+# 在排序中使用lambda
+students = [("Alice", 85), ("Bob", 90), ("Charlie", 78)]
+students.sort(key=lambda student: student[1])  # 按分数排序
+print(students)  # 输出: [('Charlie', 78), ('Alice', 85), ('Bob', 90)]
+
+# 在map、filter中使用lambda
+numbers = [1, 2, 3, 4, 5]
+squares = list(map(lambda x: x**2, numbers))
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+print(squares)  # 输出: [1, 4, 9, 16, 25]
+print(evens)    # 输出: [2, 4]
+</pre>
+
+<h3>
+    函数注解和文档字符串
+</h3>
+<pre tag="python">
+def calculate_area(length: float, width: float) -> float:
+    """
+    计算矩形的面积
+    
+    参数:
+        length (float): 矩形的长度
+        width (float): 矩形的宽度
+    
+    返回:
+        float: 矩形的面积
+    """
+    return length * width
+
+# 查看函数注解
+print(calculate_area.__annotations__)
+# 输出: {'length': &lt;class 'float'&gt;, 'width': &lt;class 'float'&gt;, 'return': &lt;class 'float'&gt;}
+
+# 查看文档字符串
+print(calculate_area.__doc__)
+</pre>

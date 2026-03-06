@@ -1,0 +1,149 @@
+<header>
+    系统信息
+</header>
+<h2>
+    系统基本信息
+</h2>
+<h3>
+    uname
+</h3>
+<p>
+    查看系统内核信息：
+</p>
+<pre>
+    uname -a
+</pre>
+<p>
+    查看内核版本：
+</p>
+<pre>
+    uname -r
+</pre>
+<h3>
+    lsb_release
+</h3>
+<p>
+    查看 Linux 发行版信息：
+</p>
+<pre>
+    lsb_release -a
+</pre>
+<h3>
+    cat /etc/os-release
+</h3>
+<p>
+    查看操作系统详细信息：
+</p>
+<pre>
+    cat /etc/os-release
+</pre>
+<h2>
+    硬件信息
+</h2>
+<h3>
+    lscpu
+</h3>
+<p>
+    查看 CPU 信息：
+</p>
+<pre>
+    lscpu
+</pre>
+<h3>
+    free
+</h3>
+<p>
+    查看内存使用情况：
+</p>
+<pre>
+    free -h
+</pre>
+<h3>
+    lsblk
+</h3>
+<p>
+    查看块设备信息：
+</p>
+<pre>
+    lsblk
+</pre>
+<h3>
+    lspci
+</h3>
+<p>
+    查看 PCI 设备：
+</p>
+<pre>
+    lspci
+</pre>
+<h3>
+    lsusb
+</h3>
+<p>
+    查看 USB 设备：
+</p>
+<pre>
+    lsusb
+</pre>
+<h2>
+    磁盘和存储
+</h2>
+<h3>
+    df
+</h3>
+<p>
+    查看磁盘使用情况：
+</p>
+<pre>
+    df -h
+</pre>
+<h3>
+    du
+</h3>
+<p>
+    查看目录大小：
+</p>
+<pre>
+    du -sh /path/to/directory
+</pre>
+<h3>
+    fdisk
+</h3>
+<p>
+    查看磁盘分区：
+</p>
+<pre>
+    sudo fdisk -l
+</pre>
+<h2>
+    系统运行状态
+</h2>
+<h3>
+    uptime
+</h3>
+<p>
+    查看系统运行时间和负载：
+</p>
+<pre>
+    uptime
+</pre>
+<h3>
+    top / htop
+</h3>
+<p>
+    实时查看系统资源使用情况：
+</p>
+<pre>
+top
+# 或者安装 htop
+htop
+</pre>
+<h3>
+    vmstat
+</h3>
+<p>
+    查看虚拟内存统计：
+</p>
+<pre>
+    vmstat 1 5
+</pre>

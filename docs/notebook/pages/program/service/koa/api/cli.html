@@ -1,0 +1,21 @@
+<header>
+    Koa常用命令
+</header>
+<pre>
+npm install koa --save
+npm install koa-router --save
+npm install koa-bodyparser --save
+</pre>
+<h2>
+    基础使用
+</h2>
+<pre tag="javascript">
+const Koa = require('koa');
+const app = new Koa();
+
+app.use(async ctx => {
+    ctx.body = 'Hello World';
+});
+
+app.listen(3000);
+</pre>
