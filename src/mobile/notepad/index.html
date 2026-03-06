@@ -5,3 +5,44 @@
         <button class="close" ui-on:click.stop="$closeView">关闭</button>
     </div>
 </header>
+<div class="notepad-container">
+    <!-- 笔记列表视图 -->
+    <div class="notes-list-view" ref="notesListView">
+        <div class="notes-header">
+            <h3>我的笔记</h3>
+            <button class="new-note-btn" ui-on:click="createNewNote">
+                <span>+</span> 新建笔记
+            </button>
+        </div>
+        <div class="notes-list" ref="notesList">
+            <!-- 笔记列表将在这里动态生成 -->
+        </div>
+        
+        <!-- 空状态提示 -->
+        <div class="empty-state" ref="emptyState">
+            <div class="empty-icon">📝</div>
+            <h3>暂无笔记</h3>
+            <p>点击右上角按钮创建你的第一条笔记</p>
+            <button class="create-first-note-btn" ui-on:click="createNewNote">
+                创建第一条笔记
+            </button>
+        </div>
+    </div>
+    
+    <!-- 笔记编辑视图 -->
+    <div class="note-editor-view" ref="noteEditorView" style="display: none;">
+        <div class="editor-header">
+            <button class="back-btn" ui-on:click="backToList">返回</button>
+            <div class="editor-title">
+                <input type="text" ref="noteTitleInput" placeholder="请输入标题" />
+            </div>
+            <button class="save-btn" ui-on:click="saveNote">保存</button>
+        </div>
+        <div class="editor-content">
+            <div ref="editorContainer"></div>
+        </div>
+        <div class="editor-footer">
+            <button class="delete-btn" ui-on:click="deleteNote">删除笔记</button>
+        </div>
+    </div>
+</div>

@@ -1,1 +1,29 @@
-[page-view="browser"] {}
+[page-view="browser"] {
+    .developing-notice {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 60px);
+        padding: 20px;
+        text-align: center;
+        
+        .notice-content {
+            max-width: 280px;
+            width: 100%;
+            
+            h3 {
+                color: #666;
+                font-size: 18px;
+                margin: 0 0 10px 0;
+                font-weight: 500;
+            }
+            
+            p {
+                color: #999;
+                font-size: 14px;
+                margin: 0;
+                line-height: 1.4;
+            }
+        }
+    }
+}

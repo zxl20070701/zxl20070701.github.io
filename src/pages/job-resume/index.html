@@ -7,5 +7,90 @@
         简历制作
     </h2>
 </header>
-<div class="content">
+<div class="resume-container">
+    <div class="resume-editor">
+        <div class="editor-section">
+            <h3>个人信息</h3>
+            <div class="form-group">
+                <label>姓名</label>
+                <input type="text" id="name" placeholder="请输入姓名">
+            </div>
+            <div class="form-group">
+                <label>职位</label>
+                <input type="text" id="position" placeholder="请输入应聘职位">
+            </div>
+            <div class="form-group">
+                <label>电话</label>
+                <input type="text" id="phone" placeholder="请输入联系电话">
+            </div>
+            <div class="form-group">
+                <label>邮箱</label>
+                <input type="email" id="email" placeholder="请输入邮箱地址">
+            </div>
+            <div class="form-group">
+                <label>个人简介</label>
+                <textarea id="summary" placeholder="请输入个人简介"></textarea>
+            </div>
+        </div>
+
+        <div class="editor-section">
+            <h3>教育经历 <button class="add-btn" id="add-education">+ 添加</button></h3>
+            <div id="education-list"></div>
+        </div>
+
+        <div class="editor-section">
+            <h3>工作经历 <button class="add-btn" id="add-work">+ 添加</button></h3>
+            <div id="work-list"></div>
+        </div>
+
+        <div class="editor-section">
+            <h3>技能展示 <button class="add-btn" id="add-skill">+ 添加</button></h3>
+            <div id="skill-list"></div>
+        </div>
+
+        <div class="editor-section">
+            <h3>项目经历 <button class="add-btn" id="add-project">+ 添加</button></h3>
+            <div id="project-list"></div>
+        </div>
+    </div>
+    
+    <div class="resume-preview">
+        <h3>简历预览</h3>
+        <div class="preview-content" id="resume-preview">
+            <div class="preview-header">
+                <h1 id="preview-name">姓名</h1>
+                <p id="preview-position">应聘职位</p>
+                <div class="contact-info">
+                    <span id="preview-phone">电话</span> |
+                    <span id="preview-email">邮箱</span>
+                </div>
+            </div>
+            
+            <div class="preview-section">
+                <h3>个人简介</h3>
+                <p id="preview-summary">个人简介内容...</p>
+            </div>
+            
+            <div class="preview-section">
+                <h3>教育经历</h3>
+                <div id="preview-education"></div>
+            </div>
+            
+            <div class="preview-section">
+                <h3>工作经历</h3>
+                <div id="preview-work"></div>
+            </div>
+            
+            <div class="preview-section">
+                <h3>技能展示</h3>
+                <div id="preview-skills"></div>
+            </div>
+            
+            <div class="preview-section">
+                <h3>项目经历</h3>
+                <div id="preview-projects"></div>
+            </div>
+        </div>
+        <button class="export-btn" id="export-resume">导出PDF</button>
+    </div>
 </div>
