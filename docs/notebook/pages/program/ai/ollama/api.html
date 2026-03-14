@@ -1,0 +1,130 @@
+<header>
+    API 交互
+</header>
+<h2>
+    启动 Ollama 服务
+</h2>
+<p>
+    在使用 API 之前，需要确保 Ollama 服务正在运行。可以通过以下命令启动服务：
+</p>
+<pre>
+    ollama serve
+</pre>
+<p>
+    默认情况下，服务会运行在 http://localhost:11434/
+</p>
+<div class="tips">
+    如果是和OpenAI组合使用，地址应该改成 http://localhost:11434/v1/
+</div>
+<h2>
+    API请求
+</h2>
+<h3>
+    /api/generate
+</h3>
+<p>
+    向模型发送提示词（prompt），并获取生成的文本，POST请求：
+</p>
+<h4>
+    请求格式
+</h4>
+<pre tag="json">
+{
+  "model": "&lt;model-name&gt;",  // 模型名称
+  "prompt": "&lt;input-text&gt;", // 输入的提示词
+  "stream": false,          // 是否启用流式响应（默认 false）
+  "options": {              // 可选参数
+    "temperature": 0.7,     // 温度参数
+    "max_tokens": 100       // 最大 token 数
+  }
+}
+</pre>
+<h4>
+    响应格式
+</h4>
+<pre tag="json">
+{
+  "response": "&lt;generated-text&gt;", // 生成的文本
+  "done": true                    // 是否完成
+}
+</pre>
+<h3>
+    /api/chat
+</h3>
+<p>
+    支持多轮对话，模型会记住上下文，POST请求：
+</p>
+<h4>
+    请求格式
+</h4>
+<pre tag="json">
+{
+  "model": "&lt;model-name&gt;",  // 模型名称
+  "messages": [             // 消息列表
+    {
+      "role": "user",       // 角色(user 用户、assistant 助手、tool 工具)
+      "content": "&lt;input-text&gt;" // 用户输入
+    }
+  ],
+  "stream": false,          // 是否启用流式响应
+  "options": {              // 可选参数
+    "temperature": 0.7,
+    "max_tokens": 100
+  }
+}
+</pre>
+<h4>
+    响应格式
+</h4>
+<pre tag="json">
+{
+  "message": {
+    "role": "assistant",    // 角色
+    "content": "&lt;generated-text&gt;" // 生成的文本
+  },
+  "done": true
+}
+</pre>
+<h3>
+    /api/tags
+</h3>
+<p>
+    列出本地已下载的模型，GET请求：
+</p>
+<h4>
+    响应格式
+</h4>
+<pre tag="json">
+{
+  "models": [
+    {
+      "name": "&lt;model-name&gt;", // 模型名称
+      "size": "&lt;model-size&gt;", // 模型大小
+      "modified_at": "&lt;timestamp&gt;" // 修改时间
+    }
+  ]
+}
+</pre>
+<h3>
+    /api/pull
+</h3>
+<p>
+    从模型库中拉取模型，POST请求：
+</p>
+<h4>
+    请求格式
+</h4>
+<pre tag="json">
+{
+  "name": "&lt;model-name&gt;" // 模型名称
+}
+</pre>
+<h4>
+    响应格式
+</h4>
+<pre tag="json">
+{
+  "status": "downloading", // 下载状态
+  "digest": "&lt;model-digest&gt;" // 模型摘要
+}
+</pre>

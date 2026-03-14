@@ -7,30 +7,330 @@
         https://sass-lang.com/documentation/modules/
     </a>
 </p>
+
 <h2>
     颜色操作
 </h2>
-<h3>
-    lighten
-</h3>
-<p>
-    使颜色变淡：
-</p>
-<pre tag="css">
-    lighten($color, $amount)
-</pre>
-<p>
-    例如：
-</p>
-<pre tag="css">
-    color: lighten(#6b717f, 20%);
-</pre>
-<h3>
-    darken
-</h3>
-<p>
-    使颜色变暗：
-</p>
-<pre tag="css">
-    darken($color, $amount)
-</pre>
+
+<h3>lighten</h3>
+<p>使颜色变淡：</p>
+<pre tag="css">lighten($color, $amount)</pre>
+<p>例如：</p>
+<pre tag="css">color: lighten(#6b717f, 20%);</pre>
+
+<h3>darken</h3>
+<p>使颜色变暗：</p>
+<pre tag="css">darken($color, $amount)</pre>
+<p>例如：</p>
+<pre tag="css">color: darken(#6b717f, 20%);</pre>
+
+<h3>saturate</h3>
+<p>增加颜色的饱和度：</p>
+<pre tag="css">saturate($color, $amount)</pre>
+<p>例如：</p>
+<pre tag="css">color: saturate(#6b717f, 20%);</pre>
+
+<h3>desaturate</h3>
+<p>降低颜色的饱和度：</p>
+<pre tag="css">desaturate($color, $amount)</pre>
+<p>例如：</p>
+<pre tag="css">color: desaturate(#6b717f, 20%);</pre>
+
+<h3>adjust-hue</h3>
+<p>调整颜色的色相：</p>
+<pre tag="css">adjust-hue($color, $degrees)</pre>
+<p>例如：</p>
+<pre tag="css">color: adjust-hue(#6b717f, 180deg);</pre>
+
+<h3>rgba</h3>
+<p>设置颜色的透明度：</p>
+<pre tag="css">rgba($color, $alpha)</pre>
+<p>例如：</p>
+<pre tag="css">color: rgba(#6b717f, 0.5);</pre>
+
+<h3>mix</h3>
+<p>混合两种颜色：</p>
+<pre tag="css">mix($color1, $color2, $weight: 50%)</pre>
+<p>例如：</p>
+<pre tag="css">color: mix(#6b717f, #ffffff, 30%);</pre>
+
+<h3>complement</h3>
+<p>返回颜色的补色：</p>
+<pre tag="css">complement($color)</pre>
+<p>例如：</p>
+<pre tag="css">color: complement(#6b717f);</pre>
+
+<h3>invert</h3>
+<p>返回颜色的反色：</p>
+<pre tag="css">invert($color, $weight: 100%)</pre>
+<p>例如：</p>
+<pre tag="css">color: invert(#6b717f);</pre>
+
+<h2>字符串操作</h2>
+
+<h3>quote</h3>
+<p>给字符串添加引号：</p>
+<pre tag="css">quote($string)</pre>
+<p>例如：</p>
+<pre tag="css">content: quote(Hello World);</pre>
+
+<h3>unquote</h3>
+<p>移除字符串的引号：</p>
+<pre tag="css">unquote($string)</pre>
+<p>例如：</p>
+<pre tag="css">font-family: unquote("Arial, sans-serif");</pre>
+
+<h3>str-length</h3>
+<p>返回字符串的长度：</p>
+<pre tag="css">str-length($string)</pre>
+<p>例如：</p>
+<pre tag="css">width: str-length("Hello") * 10px;</pre>
+
+<h3>str-insert</h3>
+<p>在字符串指定位置插入子字符串：</p>
+<pre tag="css">str-insert($string, $insert, $index)</pre>
+<p>例如：</p>
+<pre tag="css">content: str-insert("Hello", " World", 6);</pre>
+
+<h3>str-index</h3>
+<p>返回子字符串在字符串中的索引位置：</p>
+<pre tag="css">str-index($string, $substring)</pre>
+<p>例如：</p>
+<pre tag="css">position: str-index("Hello World", "World");</pre>
+
+<h3>str-slice</h3>
+<p>提取字符串的片段：</p>
+<pre tag="css">str-slice($string, $start-at, $end-at: -1)</pre>
+<p>例如：</p>
+<pre tag="css">content: str-slice("Hello World", 1, 5);</pre>
+
+<h2>数字操作</h2>
+
+<h3>percentage</h3>
+<p>将无单位数字转换为百分比：</p>
+<pre tag="css">percentage($number)</pre>
+<p>例如：</p>
+<pre tag="css">width: percentage(0.5);</pre>
+
+<h3>round</h3>
+<p>四舍五入数字：</p>
+<pre tag="css">round($number)</pre>
+<p>例如：</p>
+<pre tag="css">width: round(15.6px);</pre>
+
+<h3>ceil</h3>
+<p>向上取整：</p>
+<pre tag="css">ceil($number)</pre>
+<p>例如：</p>
+<pre tag="css">width: ceil(15.2px);</pre>
+
+<h3>floor</h3>
+<p>向下取整：</p>
+<pre tag="css">floor($number)</pre>
+<p>例如：</p>
+<pre tag="css">width: floor(15.8px);</pre>
+
+<h3>abs</h3>
+<p>返回数字的绝对值：</p>
+<pre tag="css">abs($number)</pre>
+<p>例如：</p>
+<pre tag="css">margin: abs(-10px);</pre>
+
+<h3>min</h3>
+<p>返回一组数字中的最小值：</p>
+<pre tag="css">min($numbers...)</pre>
+<p>例如：</p>
+<pre tag="css">width: min(100px, 200px, 150px);</pre>
+
+<h3>max</h3>
+<p>返回一组数字中的最大值：</p>
+<pre tag="css">max($numbers...)</pre>
+<p>例如：</p>
+<pre tag="css">width: max(100px, 200px, 150px);</pre>
+
+<h3>random</h3>
+<p>返回随机数：</p>
+<pre tag="css">random($limit: null)</pre>
+<p>例如：</p>
+<pre tag="css">opacity: random();</pre>
+
+<h2>列表操作</h2>
+
+<h3>length</h3>
+<p>返回列表的长度：</p>
+<pre tag="css">length($list)</pre>
+<p>例如：</p>
+<pre tag="css">items: length(1px 2px 3px);</pre>
+
+<h3>nth</h3>
+<p>返回列表中的第n个元素：</p>
+<pre tag="css">nth($list, $n)</pre>
+<p>例如：</p>
+<pre tag="css">margin: nth(10px 20px 30px, 2);</pre>
+
+<h3>append</h3>
+<p>向列表添加元素：</p>
+<pre tag="css">append($list, $val, $separator: auto)</pre>
+<p>例如：</p>
+<pre tag="css">list: append(10px 20px, 30px);</pre>
+
+<h3>join</h3>
+<p>合并两个列表：</p>
+<pre tag="css">join($list1, $list2, $separator: auto, $bracketed: auto)</pre>
+<p>例如：</p>
+<pre tag="css">list: join(10px 20px, 30px 40px);</pre>
+
+<h3>zip</h3>
+<p>将多个列表合并为一个多维列表：</p>
+<pre tag="css">zip($lists...)</pre>
+<p>例如：</p>
+<pre tag="css">list: zip(1px 2px 3px, solid dashed dotted, red green blue);</pre>
+
+<h3>index</h3>
+<p>返回元素在列表中的位置：</p>
+<pre tag="css">index($list, $value)</pre>
+<p>例如：</p>
+<pre tag="css">position: index(1px 2px 3px, 2px);</pre>
+
+<h3>list-separator</h3>
+<p>返回列表的分隔符：</p>
+<pre tag="css">list-separator($list)</pre>
+<p>例如：</p>
+<pre tag="css">separator: list-separator(1px, 2px, 3px);</pre>
+
+<h2>映射操作</h2>
+
+<h3>map-get</h3>
+<p>从映射中获取值：</p>
+<pre tag="css">map-get($map, $key)</pre>
+<p>例如：</p>
+<pre tag="css">$font-weights: ("regular": 400, "medium": 500, "bold": 700);
+font-weight: map-get($font-weights, bold);</pre>
+
+<h3>map-merge</h3>
+<p>合并两个映射：</p>
+<pre tag="css">map-merge($map1, $map2)</pre>
+<p>例如：</p>
+<pre tag="css">$map1: ("a": 1, "b": 2);
+$map2: ("c": 3, "d": 4);
+$merged: map-merge($map1, $map2);</pre>
+
+<h3>map-remove</h3>
+<p>从映射中移除键值对：</p>
+<pre tag="css">map-remove($map, $keys...)</pre>
+<p>例如：</p>
+<pre tag="css">$font-weights: map-remove($font-weights, "regular");</pre>
+
+<h3>map-keys</h3>
+<p>返回映射中所有键的列表：</p>
+<pre tag="css">map-keys($map)</pre>
+<p>例如：</p>
+<pre tag="css">keys: map-keys(("a": 1, "b": 2, "c": 3));</pre>
+
+<h3>map-values</h3>
+<p>返回映射中所有值的列表：</p>
+<pre tag="css">map-values($map)</pre>
+<p>例如：</p>
+<pre tag="css">values: map-values(("a": 1, "b": 2, "c": 3));</pre>
+
+<h3>map-has-key</h3>
+<p>检查映射是否包含指定的键：</p>
+<pre tag="css">map-has-key($map, $key)</pre>
+<p>例如：</p>
+<pre tag="css">has-bold: map-has-key($font-weights, bold);</pre>
+
+<h2>选择器操作</h2>
+
+<h3>selector-append</h3>
+<p>将选择器附加到其他选择器：</p>
+<pre tag="css">selector-append($selectors...)</pre>
+<p>例如：</p>
+<pre tag="css">selector: selector-append(".btn", ":hover");</pre>
+
+<h3>selector-extend</h3>
+<p>扩展选择器：</p>
+<pre tag="css">selector-extend($selector, $extendee, $extender)</pre>
+<p>例如：</p>
+<pre tag="css">selector: selector-extend(".btn", ".btn-primary", ".btn-large");</pre>
+
+<h3>selector-replace</h3>
+<p>替换选择器中的部分：</p>
+<pre tag="css">selector-replace($selector, $original, $replacement)</pre>
+<p>例如：</p>
+<pre tag="css">selector: selector-replace(".btn-primary", "primary", "secondary");</pre>
+
+<h3>selector-nest</h3>
+<p>嵌套选择器：</p>
+<pre tag="css">selector-nest($selectors...)</pre>
+<p>例如：</p>
+<pre tag="css">selector: selector-nest(".card", ".header", "h1");</pre>
+
+<h3>selector-parse</h3>
+<p>解析选择器字符串：</p>
+<pre tag="css">selector-parse($selector)</pre>
+<p>例如：</p>
+<pre tag="css">parsed: selector-parse(".btn.btn-primary:hover");</pre>
+
+<h3>is-superselector</h3>
+<p>检查一个选择器是否匹配另一个选择器的所有元素：</p>
+<pre tag="css">is-superselector($super, $sub)</pre>
+<p>例如：</p>
+<pre tag="css">result: is-superselector(".btn", ".btn-primary");</pre>
+
+<h3>simple-selectors</h3>
+<p>将复杂选择器分解为简单选择器：</p>
+<pre tag="css">simple-selectors($selector)</pre>
+<p>例如：</p>
+<pre tag="css">selectors: simple-selectors(".btn.btn-primary:hover");</pre>
+
+<h2>自检函数</h2>
+
+<h3>feature-exists</h3>
+<p>检查某个特性是否存在：</p>
+<pre tag="css">feature-exists($feature)</pre>
+<p>例如：</p>
+<pre tag="css">has-feature: feature-exists("global-variable-shadowing");</pre>
+
+<h3>variable-exists</h3>
+<p>检查变量是否存在：</p>
+<pre tag="css">variable-exists($name)</pre>
+<p>例如：</p>
+<pre tag="css">exists: variable-exists(my-variable);</pre>
+
+<h3>global-variable-exists</h3>
+<p>检查全局变量是否存在：</p>
+<pre tag="css">global-variable-exists($name)</pre>
+<p>例如：</p>
+<pre tag="css">exists: global-variable-exists(my-global-variable);</pre>
+
+<h3>function-exists</h3>
+<p>检查函数是否存在：</p>
+<pre tag="css">function-exists($name)</pre>
+<p>例如：</p>
+<pre tag="css">exists: function-exists(my-function);</pre>
+
+<h3>mixin-exists</h3>
+<p>检查混合宏是否存在：</p>
+<pre tag="css">mixin-exists($name)</pre>
+<p>例如：</p>
+<pre tag="css">exists: mixin-exists(my-mixin);</pre>
+
+<h2>其他实用函数</h2>
+
+<h3>if</h3>
+<p>条件判断函数：</p>
+<pre tag="css">if($condition, $if-true, $if-false)</pre>
+<p>例如：</p>
+<pre tag="css">color: if($theme == dark, #fff, #000);</pre>
+
+<h3>unique-id</h3>
+<p>生成唯一标识符：</p>
+<pre tag="css">unique-id()</pre>
+<p>例如：</p>
+<pre tag="css">id: unique-id();</pre>
+
+<h3>call</h3>
+<p>动态调用函数：</p>
+<pre tag="css">call($name, $args...)</pre>
+<p>例如：</p>
+<pre tag="css">result: call(lighten, #000, 50%);</pre>

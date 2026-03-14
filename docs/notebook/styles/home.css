@@ -174,9 +174,9 @@ nav>a.active {
     padding: 0 16px;
     padding-right: 42px;
     background-image: url('../images/search.svg');
-    background-position: right 12px center;
+    background-position: right center;
     background-repeat: no-repeat;
-    background-size: 18px;
+    background-size: 45px;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.9);
     margin: 10px;

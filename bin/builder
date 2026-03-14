@@ -46,6 +46,7 @@ fs.writeFileSync(fullPath('index.html', targetFolder), (template + "").replace('
 <script>
 (function () {
 
+    /*
     try {
 
         // 定时运行调试
@@ -62,29 +63,36 @@ fs.writeFileSync(fullPath('index.html', targetFolder), (template + "").replace('
         }, 50);
 
     } catch (err) {
-        console.log("[调试工具错误]", err);
+        console.log("[禁止调试出错]", err);
     }
+    */
 
 })();
 </script>
 
 <!-- 安装应用 -->
 <script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-        navigator.serviceWorker.register('./ServiceWorker.js', { scope: window.location.origin + window.location.pathname })
-            .then(function (registration) {
+/*
+try {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('./ServiceWorker.js', { scope: window.location.origin + window.location.pathname })
+                .then(function (registration) {
 
-                // 注册成功
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            })
-            .catch(function (err) {
+                    // 注册成功
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(function (err) {
 
-                // 注册失败:(
-                console.log('ServiceWorker registration failed: ', err);
-            });
-    });
+                    // 注册失败:(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+} catch (err) {
+    console.log("[安装应用出错]", err);
 }
+*/
 </script>`);
 fs.mkdirSync(fullPath("../", global._output));
 

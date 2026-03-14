@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="manifest" href="./manifest.json">
+    <!-- <link rel="manifest" href="./manifest.json"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="zxl20070701 1904314465@qq.com toolbox">
     <link rel="shortcut icon" id="icon-logo" href="./logo.png">
@@ -92,6 +92,7 @@
 <script>
 (function () {
 
+    /*
     try {
 
         // 定时运行调试
@@ -108,27 +109,34 @@
         }, 50);
 
     } catch (err) {
-        console.log("[调试工具错误]", err);
+        console.log("[禁止调试出错]", err);
     }
+    */
 
 })();
 </script>
 
 <!-- 安装应用 -->
 <script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-        navigator.serviceWorker.register('./ServiceWorker.js', { scope: window.location.origin + window.location.pathname })
-            .then(function (registration) {
+/*
+try {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('./ServiceWorker.js', { scope: window.location.origin + window.location.pathname })
+                .then(function (registration) {
 
-                // 注册成功
-                console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            })
-            .catch(function (err) {
+                    // 注册成功
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(function (err) {
 
-                // 注册失败:(
-                console.log('ServiceWorker registration failed: ', err);
-            });
-    });
+                    // 注册失败:(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+} catch (err) {
+    console.log("[安装应用出错]", err);
 }
+*/
 </script>

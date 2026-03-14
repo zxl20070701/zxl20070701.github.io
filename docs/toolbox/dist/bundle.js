@@ -1773,6 +1773,15 @@ window.__pkg__bundleSrc__['18']=function(){
         }
     }
 
+    // 多选
+    else if (type == 'checkbox') {
+        if (el.checked || (typeof value === "boolean" && value) || (typeof value === "Array" && value.indexOf(el.getAttribute("value")))) {
+            el.setAttribute("checked", "checked");
+        } else {
+            el.removeAttribute("checked");
+        }
+    }
+
     // 普通的
     else {
         if (el.value !== value || el.textContent !== value) {
@@ -1793,6 +1802,7 @@ window.__pkg__bundleSrc__['19']=function(){
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('6');
 var setValue=__pkg__scope_args__.setValue;
+var evalExpress=__pkg__scope_args__.evalExpress;
 
 __pkg__scope_args__=window.__pkg__getBundle('18');
 var updateValue =__pkg__scope_args__.default;
@@ -1802,6 +1812,29 @@ __pkg__scope_bundle__.default= {
     inserted: function (el, binding) {
         updateValue(el, binding.value);
         el.addEventListener('input', function () {
+            let type = el.getAttribute('type'), elValue = el.value
+
+            // 多选
+            if (type == 'checkbox') {
+                let value = el.getAttribute("value"), bindingValue = evalExpress(binding.target, binding.exp)
+
+                // 有value属性，说明是复选框标签多选功能
+                if (value) {
+                    let index = bindingValue.indexOf(value)
+                    if (index > -1) {
+                        elValue = bindingValue.slice(0, index).concat(bindingValue.slice(index + 1))
+                    } else {
+                        bindingValue.push(value)
+                        elValue = bindingValue
+                    }
+                }
+
+                // 否则，说明是复选框标签单选功能
+                else {
+                    elValue = el.checked
+                }
+            }
+
             setValue(binding.target, "." + binding.exp, el.value);
         }, false);
     },

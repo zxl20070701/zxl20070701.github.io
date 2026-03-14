@@ -10,7 +10,7 @@
 <p>
     首先，需要安装 Ollama 的 Python SDK，打开终端，执行以下命令：
 </p>
-<pre>
+<pre tag="python">
     pip3 install ollama
 </pre>
 <h2>
@@ -21,12 +21,10 @@
     <span class="warn">index.py</span>
     的文件，内容如下：
 </p>
-<pre tag="javascript">
-#!/usr/bin/python3
-# coding=utf-8
+<pre tag="python">
+from ollama import generate
 
-import ollama
-result = ollama.generate(
+result = generate(
     model="llama3.2",  # 模型名称
     prompt="你好吗？"  # 提示文本
 )
@@ -35,7 +33,128 @@ print(result.response)
 <p>
     执行以上代码，如果模型已经安装并且 Ollama 服务正在运行，你将会看到模型的响应输出，比如：
 </p>
-<pre>
+<pre tag="python">
 zxl20070701@MacBook Air % python3 index.py
 好的！我是机器人，什么时候可以帮助您呢？
+</pre>
+<p>
+    还支持流式响应，我们可以在发送请求时通过设置 stream=True 来启用响应流式传输：
+</p>
+<pre tag="python">
+from ollama import chat
+
+stream = chat(
+    model='llama3.2',
+    messages=[{'role': 'user', 'content': '你是谁？'}],
+    stream=True,
+)
+
+# 逐块打印响应内容
+for chunk in stream:
+    print(chunk['message']['content'], end='', flush=True)
+</pre>
+<h2>
+    常用 API 方法
+</h2>
+<p>
+    一些常用的 API 方法，用于操作和管理模型：
+</p>
+<h3>
+    1. chat 方法
+</h3>
+<p>
+    与模型进行对话生成，发送用户消息并获取模型响应：
+</p>
+<pre tag="python">
+    ollama.chat(model='llama3.2', messages=[{'role': 'user', 'content': 'Why is the sky blue?'}])
+</pre>
+<h3>
+    2. generate 方法
+</h3>
+<p>
+    用于文本生成任务。与 chat 方法类似，但是它只需要一个 prompt 参数：
+</p>
+<pre tag="python">
+    ollama.generate(model='llama3.2', prompt='Why is the sky blue?')
+</pre>
+<h3>
+    3. list 方法
+</h3>
+<p>
+    列出所有可用的模型：
+</p>
+<pre tag="python">
+    ollama.list()
+</pre>
+<h3>
+    4. show 方法
+</h3>
+<p>
+    显示指定模型的详细信息：
+</p>
+<pre tag="python">
+    ollama.show('llama3.2')
+</pre>
+<h3>
+    5. create 方法
+</h3>
+<p>
+    从现有模型创建新的模型：
+</p>
+<pre tag="python">
+    ollama.create(model='example', from_='llama3.2', system="You are Mario from Super Mario Bros.")
+</pre>
+<h3>
+    6. copy 方法
+</h3>
+<p>
+    复制模型到另一个位置：
+</p>
+<pre tag="python">
+    ollama.copy('llama3.2', 'user/llama3.2')
+</pre>
+<h3>
+    7. delete 方法
+</h3>
+<p>
+    删除指定模型：
+</p>
+<pre tag="python">
+    ollama.delete('llama3.2')
+</pre>
+<h3>
+    8. pull 方法
+</h3>
+<p>
+    从远程仓库拉取模型：
+</p>
+<pre tag="python">
+    ollama.pull('llama3.2')
+</pre>
+<h3>
+    9. push 方法
+</h3>
+<p>
+    将本地模型推送到远程仓库：
+</p>
+<pre tag="python">
+    ollama.push('user/llama3.2')
+</pre>
+<h3>
+    10. embed 方法
+</h3>
+<p>
+    生成文本嵌入：
+</p>
+<pre tag="python">
+    ollama.embed(model='llama3.2', input='The sky is blue because of rayleigh scattering')
+</pre>
+<h3>
+    11. ps 方法
+</h3>
+<p>
+    查看正在运行的模型列表：
+</p>
+<pre tag="python">
+    ollama.ps()
 </pre>

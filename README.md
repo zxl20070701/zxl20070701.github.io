@@ -1,6 +1,4 @@
-<div style="overflow:hidden;width:300px;height:300px;border-radius:50%;border:5px solid black;">
-<img src='https://zxl20070701.github.io/images/zxl20070701.jpg' height='100%' width='100%' />
-</div>
+<img src='https://zxl20070701.github.io/images/zxl20070701.jpg' height='300px' width='300px'/>
 
 # [开源主页](https://zxl20070701.github.io)
 
@@ -69,66 +67,66 @@ npm run build
 <table style="text-align:center;">
     <tbody>
         <tr>
-            <td>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/code-editor.jpeg">
                 代码编辑器
-            </td>
-            <td>
+            </th>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/image-editor.jpeg">
                 图片编辑器
-            </td>
-            <td>
+            </th>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/recorder-screen.jpeg">
                 录屏软件
-            </td>
+            </th>
         </tr>
         <tr>
-            <td>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/regexper-visualization.jpeg">
                 正则表达式可视化
-            </td>
-            <td>
+            </th>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/audio-editor.jpeg">
                 音频编辑器
-            </td>
-            <td>
+            </th>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/snipping-tool.jpeg">
                 截图工具
-            </td>
+            </th>
         </tr>
         <tr>
-            <td>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/model-editor.jpeg">
                 3D模型编辑器
-            </td>
-            <td>
+            </th>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/excel.jpeg">
                 Excel 表格
-            </td>
-            <td>
+            </th>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/geo-json.jpeg">
                 geoJSON查看器
-            </td>
+            </th>
         </tr>
         <tr>
-            <td>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/drawio.jpeg">
                 draw.io
-            </td>
-            <td>
+            </th>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/type-practice.jpeg">
                 金山打字通
-            </td>
-            <td>
+            </th>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/job-resume.jpeg">
                 简历制作
-            </td>
+            </th>
         </tr>
         <tr>
-            <td>
+            <th>
                 <img src="https://zxl20070701.github.io/images/snipping/echarts.jpeg">
                 可视化图表
-            </td>
+            </th>
         </tr>
     </tbody>
 </table>

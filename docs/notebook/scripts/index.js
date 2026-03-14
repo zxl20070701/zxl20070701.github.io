@@ -108,11 +108,14 @@ var initSearchObj = function () {
                                 }
                             }
 
-                            searchObj.push({
-                                name: secordLevelSpan.innerText.trim(),
-                                path: firstRemarkArray.join("/") + "/" + secordRemarkArray.join("/") + "/" + secordLevelSpan.innerText.trim(),
-                                url: firstLevelUrl + "/" + secordLevelSpan.getAttribute("tag")
-                            });
+                            var urlTemp = firstLevelUrl + "/" + secordLevelSpan.getAttribute("tag");
+                            if (!/\.\./.test(urlTemp)) {
+                                searchObj.push({
+                                    name: secordLevelSpan.innerText.trim(),
+                                    path: firstRemarkArray.join("/") + "/" + secordRemarkArray.join("/") + "/" + secordLevelSpan.innerText.trim(),
+                                    url: urlTemp
+                                });
+                            }
 
                             if (!totalValueEl) totalValueEl = document.getElementById("total-value");
                             totalValueEl.innerText = searchObj.length;
