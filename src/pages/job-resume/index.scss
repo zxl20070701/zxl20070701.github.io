@@ -43,27 +43,41 @@
 
         .editor-section {
             background: white;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
 
             &:hover {
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+                transform: translateY(-2px);
             }
 
             h3 {
                 margin-top: 0;
-                margin-bottom: 15px;
-                color: #333;
-                border-bottom: 1px solid #eee;
-                padding-bottom: 10px;
+                margin-bottom: 20px;
+                color: #2c3e50;
+                border-bottom: 2px solid #3498db;
+                padding-bottom: 12px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                font-size: 18px;
-                font-weight: 600;
+                font-size: 20px;
+                font-weight: 700;
+                position: relative;
+                
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -2px;
+                    left: 0;
+                    width: 50px;
+                    height: 2px;
+                    background: linear-gradient(90deg, #3498db, #2c3e50);
+                    border-radius: 2px;
+                }
             }
 
             .form-group {
@@ -172,125 +186,349 @@
         width: 60%;
         padding: 20px;
         overflow-y: auto;
-        background-color: white;
-
-        h3 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #333;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            font-size: 20px;
-            font-weight: 600;
-        }
+        background-color: #f5f7fa;
 
         .preview-content {
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
             min-height: 500px;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .resume-layout {
+            display: flex;
+            min-height: 100%;
+        }
+
+        .resume-sidebar {
+            width: 35%;
+            background: linear-gradient(135deg, #2c3e50, #1a2530);
+            color: white;
+            padding: 40px 30px;
+
+            .sidebar-header {
+                text-align: center;
+                margin-bottom: 30px;
+                padding-bottom: 25px;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+
+                h1 {
+                    margin: 0 0 10px 0;
+                    font-size: 32px;
+                    font-weight: 700;
+                    color: white;
+                }
+
+                #preview-position {
+                    font-size: 18px;
+                    color: #3498db;
+                    margin: 0 0 20px 0;
+                    font-weight: 500;
+                }
+
+                .contact-info {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    font-size: 14px;
+                    color: rgba(255,255,255,0.9);
+
+                    .contact-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        
+                        i {
+                            width: 16px;
+                            height: 16px;
+                            background-color: #3498db;
+                            border-radius: 50%;
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+
+            .sidebar-section {
+                margin-bottom: 30px;
+
+                h3 {
+                    color: #3498db;
+                    font-size: 18px;
+                    margin: 0 0 15px 0;
+                    padding-bottom: 8px;
+                    border-bottom: 1px solid rgba(255,255,255,0.2);
+                    font-weight: 600;
+                }
+
+                p {
+                    line-height: 1.7;
+                    color: rgba(255,255,255,0.9);
+                    margin-bottom: 15px;
+                }
+
+                #preview-skills {
+                    ul {
+                        padding: 0;
+                        list-style: none;
+                        
+                        li {
+                            background: rgba(52,152,219,0.2);
+                            padding: 8px 12px;
+                            margin-bottom: 8px;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+
+        .resume-main {
+            width: 65%;
+            padding: 40px;
+
+            .experience-section {
+                margin-bottom: 35px;
+
+                h3 {
+                    color: #2c3e50;
+                    font-size: 22px;
+                    margin: 0 0 20px 0;
+                    padding-bottom: 10px;
+                    border-bottom: 2px solid #3498db;
+                    font-weight: 700;
+                }
+
+                .experience-list {
+                    position: relative;
+                }
+
+                .education-item, .work-item, .project-item {
+                    margin-bottom: 25px;
+                    padding: 25px;
+                    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,249,250,0.95));
+                    border-radius: 16px;
+                    position: relative;
+                    border: 1px solid #dfdfdf;
+                    transition: all 0.3s ease;
+                    
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" fill="none"/><path d="M10,10 L50,10 L50,50 L10,50 Z" fill="none" stroke="rgba(52,152,219,0.03)" stroke-width="0.5"/></svg>');
+                        opacity: 0.4;
+                        border-radius: 16px;
+                        pointer-events: none;
+                    }
+                    
+                    h4 {
+                        color: #2c3e50;
+                        font-size: 18px;
+                        margin: 0 0 10px 0;
+                        font-weight: 600;
+                        position: relative;
+                        z-index: 1;
+                    }
+                    
+                    p {
+                        margin: 8px 0;
+                        color: #555;
+                        line-height: 1.6;
+                        position: relative;
+                        z-index: 1;
+                    }
+                    
+                    strong {
+                        color: #333;
+                        font-weight: 600;
+                    }
+                    
+                    &:hover {
+                        transform: translateY(-3px);
+                        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                        transition: all 0.3s ease;
+                    }
+                }
+            }
+        }
+
+        .daochu-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            align-items: center;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .daochu-pdf-btn {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 200px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            letter-spacing: 0.5px;
             position: relative;
-            
+            overflow: hidden;
+
+            &:hover {
+                background: linear-gradient(135deg, #1e7e34, #155724);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+            }
+
+            &:active {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            }
+
             &::before {
                 content: '';
                 position: absolute;
                 top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: linear-gradient(90deg, #007bff, #00c6ff);
-                border-radius: 8px 8px 0 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s;
+            }
+
+            &:hover::before {
+                left: 100%;
             }
         }
 
-        .preview-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #007bff;
-
-            h1 {
-                margin: 0 0 10px 0;
-                color: #333;
-                font-size: 32px;
-                font-weight: 700;
-            }
-
-            .contact-info {
-                color: #666;
-                font-size: 16px;
-                margin-top: 10px;
-            }
-        }
-
-        .preview-section {
-            margin-bottom: 30px;
-
-            h3 {
-                color: #007bff;
-                border-bottom: 1px solid #eee;
-                padding-bottom: 8px;
-                margin-bottom: 15px;
-                font-size: 20px;
-                font-weight: 600;
-            }
-
-            p, li {
-                line-height: 1.7;
-                color: #333;
-                margin-bottom: 8px;
-            }
-
-            ul {
-                padding-left: 20px;
-            }
-            
-            .education-item, .work-item, .project-item {
-                margin-bottom: 20px;
-                
-                h4 {
-                    color: #333;
-                    font-size: 18px;
-                    margin: 0 0 8px 0;
-                    font-weight: 600;
-                }
-                
-                p {
-                    margin: 5px 0;
-                    color: #555;
-                }
-                
-                strong {
-                    color: #444;
-                }
-            }
-        }
-
-        .export-btn {
-            background: linear-gradient(135deg, #28a745, #1e7e34);
+        .daochu-btn {
+            background: linear-gradient(135deg, #17a2b8, #138496);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 12px 24px;
+            border-radius: 12px;
+            padding: 14px 28px;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 200px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
 
             &:hover {
-                background: linear-gradient(135deg, #1e7e34, #155724);
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                background: linear-gradient(135deg, #138496, #0c6c77);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(23, 162, 184, 0.4);
             }
 
             &:active {
-                transform: translateY(0);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s;
+            }
+
+            &:hover::before {
+                left: 100%;
             }
         }
+
+        .daoru-btn {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+            color: #212529;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 200px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+
+            &:hover {
+                background: linear-gradient(135deg, #e0a800, #c69500);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+            }
+
+            &:active {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+                transition: left 0.5s;
+            }
+
+            &:hover::before {
+                left: 100%;
+            }
+        }   
+    }
+
+    // 添加图标样式
+    .icon-phone, .icon-email {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-color: #3498db;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+    
+    .icon-phone::before {
+        content: "📞";
+        font-size: 10px;
+        color: white;
+    }
+    
+    .icon-email::before {
+        content: "✉️";
+        font-size: 10px;
+        color: white;
     }
 
     // 响应式设计
@@ -308,6 +546,50 @@
         .resume-editor {
             border-right: none;
             border-bottom: 1px solid #e9ecef;
+        }
+        
+        .resume-preview {
+            .resume-layout {
+                flex-direction: column;
+            }
+            
+            .resume-sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .resume-main {
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .resume-preview {
+            .resume-sidebar {
+                padding: 15px;
+                
+                .sidebar-header {
+                    h1 {
+                        font-size: 24px;
+                    }
+                    
+                    .position {
+                        font-size: 16px;
+                    }
+                }
+            }
+            
+            .resume-main {
+                padding: 15px;
+                
+                .main-section {
+                    h3 {
+                        font-size: 18px;
+                    }
+                }
+            }
         }
     }
 }

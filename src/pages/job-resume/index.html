@@ -28,6 +28,10 @@
                 <input type="email" id="email" placeholder="请输入邮箱地址">
             </div>
             <div class="form-group">
+                <label>WebSite</label>
+                <input type="text" id="website" placeholder="请输入WebSite链接">
+            </div>
+            <div class="form-group">
                 <label>个人简介</label>
                 <textarea id="summary" placeholder="请输入个人简介"></textarea>
             </div>
@@ -53,44 +57,72 @@
             <div id="project-list"></div>
         </div>
     </div>
-    
+
     <div class="resume-preview">
-        <h3>简历预览</h3>
         <div class="preview-content" id="resume-preview">
-            <div class="preview-header">
-                <h1 id="preview-name">姓名</h1>
-                <p id="preview-position">应聘职位</p>
-                <div class="contact-info">
-                    <span id="preview-phone">电话</span> |
-                    <span id="preview-email">邮箱</span>
+            <div class="resume-layout">
+                <!-- 左侧栏：个人信息和技能 -->
+                <div class="resume-sidebar">
+                    <div class="sidebar-header">
+                        <h1 id="preview-name">姓名</h1>
+                        <p id="preview-position">应聘职位</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <span>📞</span>
+                                <span id="preview-phone">电话</span>
+                            </div>
+                            <div class="contact-item">
+                                <span>✉️</span>
+                                <span id="preview-email">邮箱</span>
+                            </div>
+                            <div class="contact-item">
+                                <span>🔗</span>
+                                <span id="preview-website">WebSite</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>个人简介</h3>
+                        <p id="preview-summary">个人简介内容...</p>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>技能展示</h3>
+                        <div id="preview-skills"></div>
+                    </div>
+                </div>
+
+                <!-- 右侧栏：主要内容 -->
+                <div class="resume-main">
+                    <div class="main-section experience-section">
+                        <h3>教育经历</h3>
+                        <div id="preview-education" class="experience-list"></div>
+                    </div>
+
+                    <div class="main-section experience-section">
+                        <h3>工作经历</h3>
+                        <div id="preview-work" class="experience-list"></div>
+                    </div>
+
+                    <div class="main-section experience-section">
+                        <h3>项目经历</h3>
+                        <div id="preview-projects" class="experience-list"></div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="preview-section">
-                <h3>个人简介</h3>
-                <p id="preview-summary">个人简介内容...</p>
-            </div>
-            
-            <div class="preview-section">
-                <h3>教育经历</h3>
-                <div id="preview-education"></div>
-            </div>
-            
-            <div class="preview-section">
-                <h3>工作经历</h3>
-                <div id="preview-work"></div>
-            </div>
-            
-            <div class="preview-section">
-                <h3>技能展示</h3>
-                <div id="preview-skills"></div>
-            </div>
-            
-            <div class="preview-section">
-                <h3>项目经历</h3>
-                <div id="preview-projects"></div>
-            </div>
         </div>
-        <button class="export-btn" id="export-resume">导出PDF</button>
+        <input type="file" id="daoru-file" accept=".json" style="display: none;">
+        <div class="daochu-buttons">
+            <button class="daochu-pdf-btn" id="daochu-pdf-resume">
+                导出PDF
+            </button>
+            <button class="daoru-btn" id="daoru-resume">
+                导入简历
+            </button>
+            <button class="daochu-btn" id="daochu-resume">
+                导出简历
+            </button>
+        </div>
     </div>
 </div>
