@@ -1,0 +1,310 @@
+<header>
+    代码分析与重构
+</header>
+<h2>
+    什么是代码分析
+</h2>
+<p>
+    代码分析是指通过静态分析技术检查代码质量、发现潜在问题、提取代码指标等。Babel的AST工具使得代码分析变得简单而强大。
+</p>
+<h2>
+    代码复杂度分析
+</h2>
+<p>
+    通过分析AST，我们可以计算代码的复杂度指标：
+</p>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+
+function analyzeComplexity(code) {
+  const ast = parser.parse(code);
+  
+  let complexity = 1; // 基础复杂度
+  
+  traverse(ast, {
+    IfStatement() { complexity++; },
+    SwitchCase() { complexity++; },
+    ForStatement() { complexity++; },
+    WhileStatement() { complexity++; },
+    DoWhileStatement() { complexity++; },
+    ForInStatement() { complexity++; },
+    ForOfStatement() { complexity++; },
+    CatchClause() { complexity++; },
+    ConditionalExpression() { complexity++; },
+    LogicalExpression(path) {
+      if (path.node.operator === '&&' || path.node.operator === '||') {
+        complexity++;
+      }
+    }
+  });
+  
+  return complexity;
+}
+
+const code = `
+  function test(x) {
+    if (x > 0) {
+      for (let i = 0; i < x; i++) {
+        if (i % 2 === 0) {
+          console.log(i);
+        }
+      }
+    } else {
+      console.log('x is not positive');
+    }
+  }
+`;
+
+console.log('代码复杂度:', analyzeComplexity(code));
+</pre>
+<h2>
+    代码重复检测
+</h2>
+<p>
+    通过分析AST，我们可以检测代码中的重复模式：
+</p>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+const generate = require('@babel/generator').default;
+
+function findDuplicates(code) {
+  const ast = parser.parse(code);
+  const statements = [];
+  
+  traverse(ast, {
+    Statement(path) {
+      // 忽略某些类型的语句
+      if (path.node.type === 'VariableDeclaration' || 
+          path.node.type === 'ExpressionStatement') {
+        const code = generate(path.node).code;
+        statements.push({
+          code: code,
+          loc: path.node.loc
+        });
+      }
+    }
+  });
+  
+  // 简单重复检测
+  const duplicates = [];
+  for (let i = 0; i < statements.length; i++) {
+    for (let j = i + 1; j < statements.length; j++) {
+      if (statements[i].code === statements[j].code) {
+        duplicates.push({
+          code: statements[i].code,
+          locations: [statements[i].loc, statements[j].loc]
+        });
+      }
+    }
+  }
+  
+  return duplicates;
+}
+
+const code = `
+  const x = 1;
+  const y = 2;
+  console.log(x);
+  console.log(x);
+  const z = 3;
+`;
+
+const duplicates = findDuplicates(code);
+console.log('重复代码:', duplicates);
+</pre>
+<h2>
+    代码重构
+</h2>
+<h3>
+    提取函数
+</h3>
+<p>
+    通过AST分析，我们可以自动提取重复的代码块为函数：
+</p>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+const t = require('@babel/types');
+const generate = require('@babel/generator').default;
+
+function extractFunction(code, startLine, endLine) {
+  const ast = parser.parse(code);
+  
+  traverse(ast, {
+    Program(path) {
+      // 找到要提取的语句
+      const statements = [];
+      for (let i = 0; i < path.node.body.length; i++) {
+        const stmt = path.node.body[i];
+        if (stmt.loc && 
+            stmt.loc.start.line >= startLine && 
+            stmt.loc.end.line <= endLine) {
+          statements.push(stmt);
+        }
+      }
+      
+      if (statements.length > 0) {
+        // 创建新函数
+        const functionName = t.identifier('extractedFunction');
+        const functionDecl = t.functionDeclaration(
+          functionName,
+          [], // 参数
+          t.blockStatement(statements)
+        );
+        
+        // 在原位置插入函数调用
+        const callExpression = t.expressionStatement(
+          t.callExpression(functionName, [])
+        );
+        
+        // 替换原语句
+        const firstStatement = statements[0];
+        const lastStatement = statements[statements.length - 1];
+        
+        // 找到第一个和最后一个语句的位置
+        let firstIndex = -1;
+        let lastIndex = -1;
+        
+        for (let i = 0; i < path.node.body.length; i++) {
+          if (path.node.body[i] === firstStatement) {
+            firstIndex = i;
+          }
+          if (path.node.body[i] === lastStatement) {
+            lastIndex = i;
+          }
+        }
+        
+        if (firstIndex !== -1 && lastIndex !== -1) {
+          // 移除原语句
+          path.node.body.splice(firstIndex, lastIndex - firstIndex + 1);
+          
+          // 插入函数声明和调用
+          path.node.body.unshift(functionDecl);
+          path.node.body.splice(firstIndex + 1, 0, callExpression);
+        }
+      }
+    }
+  });
+  
+  return generate(ast).code;
+}
+
+const code = `
+  console.log('开始处理');
+  const x = 1;
+  const y = 2;
+  const sum = x + y;
+  console.log('结果:', sum);
+  console.log('处理完成');
+`;
+
+const refactoredCode = extractFunction(code, 3, 5);
+console.log('重构后的代码:');
+console.log(refactoredCode);
+</pre>
+<h2>
+    代码质量检查
+</h2>
+<h3>
+    检测未使用的变量
+</h3>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+
+function findUnusedVariables(code) {
+  const ast = parser.parse(code);
+  const declaredVariables = new Map();
+  const usedVariables = new Set();
+  
+  traverse(ast, {
+    VariableDeclarator(path) {
+      declaredVariables.set(path.node.id.name, path.node.loc);
+    },
+    Identifier(path) {
+      // 检查是否是变量使用
+      if (path.isReferencedIdentifier()) {
+        usedVariables.add(path.node.name);
+      }
+    }
+  });
+  
+  const unusedVariables = [];
+  for (const [name, loc] of declaredVariables) {
+    if (!usedVariables.has(name)) {
+      unusedVariables.push({ name, loc });
+    }
+  }
+  
+  return unusedVariables;
+}
+
+const code = `
+  const usedVar = 1;
+  const unusedVar = 2;
+  console.log(usedVar);
+`;
+
+const unused = findUnusedVariables(code);
+console.log('未使用的变量:', unused);
+</pre>
+<h2>
+    自动化重构工具
+</h2>
+<p>
+    结合上述技术，我们可以创建一个简单的自动化重构工具：
+</p>
+<pre tag="javascript">
+class CodeRefactorer {
+  constructor() {
+    this.parser = require('@babel/parser');
+    this.traverse = require('@babel/traverse').default;
+    this.generate = require('@babel/generator').default;
+    this.types = require('@babel/types');
+  }
+  
+  refactor(code) {
+    const ast = this.parser.parse(code);
+    
+    // 移除未使用的变量
+    this.removeUnusedVariables(ast);
+    
+    // 简化条件表达式
+    this.simplifyConditions(ast);
+    
+    // 提取重复代码
+    this.extractDuplicates(ast);
+    
+    return this.generate(ast).code;
+  }
+  
+  removeUnusedVariables(ast) {
+    // 实现移除未使用变量的逻辑
+  }
+  
+  simplifyConditions(ast) {
+    // 实现简化条件表达式的逻辑
+  }
+  
+  extractDuplicates(ast) {
+    // 实现提取重复代码的逻辑
+  }
+}
+
+// 使用示例
+const refactorer = new CodeRefactorer();
+const originalCode = `
+  const x = 1;
+  const y = 2;
+  const z = 3; // 未使用
+  
+  if (true) {
+    console.log(x + y);
+  }
+`;
+
+const refactoredCode = refactorer.refactor(originalCode);
+console.log('重构后的代码:', refactoredCode);
+</pre>

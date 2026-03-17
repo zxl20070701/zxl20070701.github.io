@@ -1,0 +1,225 @@
+<header>
+    @babel/traverse - AST 遍历
+</header>
+<p>
+    官方文档地址：
+    <a href="https://babel.dev/docs/babel-traverse" target="_blank">
+        https://babel.dev/docs/babel-traverse
+    </a>
+</p>
+<h2>
+    什么是@babel/traverse
+</h2>
+<p>
+    @babel/traverse是Babel提供的一个用于遍历和修改AST的工具。它允许你访问AST中的每个节点，并对它们进行操作。
+</p>
+<h2>
+    安装与使用
+</h2>
+<pre tag="bash">
+npm install --save-dev @babel/traverse
+</pre>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+
+const code = 'const x = 1 + 2;';
+const ast = parser.parse(code);
+
+traverse(ast, {
+  enter(path) {
+    console.log('进入节点:', path.node.type);
+  },
+  exit(path) {
+    console.log('离开节点:', path.node.type);
+  }
+});
+</pre>
+<p>
+    每种节点类型对应一个 Visitor 函数，这些函数会在 Babel 遍历 AST 时被调用，允许开发者对节点进行分析、修改或替换操作。以下是一些常见的 Visitor 函数及其作用：
+</p>
+<button tag="babel-traverse-visitor" type="explain">点击我查看</button>
+<h2>
+    路径（Path）概念
+</h2>
+<p>
+    在@babel/traverse中，<span class="important">Path</span>是一个对象，它表示两个节点之间的连接，并包含关于这个节点的各种信息。
+</p>
+<pre tag="javascript">
+traverse(ast, {
+  Identifier(path) {
+    // path.node 是当前节点
+    // path.parent 是父节点
+    // path.scope 是当前作用域
+    console.log(`找到标识符: ${path.node.name}`);
+  }
+});
+</pre>
+<p>
+    下面是其部分属性（不同类型的节点拥有的属性可能有差异）：
+</p>
+<ul>
+    <li>
+        node: 当前 AST 节点。
+        <ul>
+            <li>
+                leadingComments:访问 AST 中某个节点之前的注释信息。
+            </li>
+        </ul>
+    </li>
+    <li>
+        parent: 当前 AST 父节点。
+    </li>
+    <li>
+        parentPath: 父 AST 节点的 path。
+    </li>
+    <li>
+        scope: 当前节点的作用域对象，提供了有关变量绑定和作用域链的信息。
+    </li>
+    <li>
+        context: 提供了有关当前节点的上下文信息，包括插件的配置选项等。
+    </li>
+    <li>
+        hub: 提供了与 Babel 编译过程相关的核心方法和工具，可以通过 path.hub.file 拿到最外层 File 对象， path.hub.getScope 拿到最外层作用域，path.hub.getCode
+        拿到源码字符串。
+    </li>
+    <li>
+        type: 当前 AST 节点的类型，可以用来识别节点的具体种类（如 Identifier、FunctionDeclaration 等）。
+    </li>
+    <li>
+        container: 当前 AST 节点所在的父节点属性的属性值。
+    </li>
+    <li>
+        key: 当前 AST 节点所在父节点属性的属性名或所在数组的下标。
+    </li>
+    <li>
+        listKey: 当前 AST 节点所在父节点属性的属性值为数组时 listkey 为该属性名，否则为 undefined
+    </li>
+</ul>
+<p>
+    此外，其上还有若干有用的方法：
+</p>
+<button tag="babel-traverse-path-function" type="explain">点击我查看</button>
+<h2>
+    访问者模式
+</h2>
+<p>
+    @babel/traverse使用访问者模式来遍历AST。你可以为不同类型的节点指定不同的处理函数：
+</p>
+<pre tag="javascript">
+traverse(ast, {
+  VariableDeclaration(path) {
+    console.log('找到变量声明');
+  },
+  FunctionDeclaration(path) {
+    console.log('找到函数声明');
+  },
+  CallExpression(path) {
+    console.log('找到函数调用');
+  }
+});
+</pre>
+<h2>
+    节点操作
+</h2>
+<h3>
+    替换节点
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  BinaryExpression(path) {
+    // 将 a + b 替换为 a * b
+    if (path.node.operator === '+') {
+      path.node.operator = '*';
+    }
+  }
+});
+</pre>
+<h3>
+    删除节点
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  VariableDeclarator(path) {
+    // 删除名为 'temp' 的变量声明
+    if (path.node.id.name === 'temp') {
+      path.remove();
+    }
+  }
+});
+</pre>
+<h3>
+    插入节点
+</h3>
+<pre tag="javascript">
+const t = require('@babel/types');
+
+traverse(ast, {
+  Program(path) {
+    // 在程序开头插入一个新的变量声明
+    const newDeclaration = t.variableDeclaration('const', [
+      t.variableDeclarator(
+        t.identifier('newVar'),
+        t.stringLiteral('Hello')
+      )
+    ]);
+    path.unshiftContainer('body', newDeclaration);
+  }
+});
+</pre>
+<h2>
+    作用域处理
+</h2>
+<p>
+    @babel/traverse提供了强大的作用域处理功能：
+</p>
+<pre tag="javascript">
+traverse(ast, {
+  FunctionDeclaration(path) {
+    // 获取函数作用域
+    const scope = path.scope;
+
+    // 检查变量是否已绑定
+    if (scope.hasBinding('x')) {
+      console.log('变量 x 已绑定');
+    }
+
+    // 生成唯一标识符
+    const uniqueId = scope.generateUidIdentifier('temp');
+    console.log('生成唯一标识符:', uniqueId.name);
+  }
+});
+</pre>
+<h2>
+    实际应用示例
+</h2>
+<p>
+    下面是一个示例，展示如何使用@babel/traverse将所有的<span class="important">var</span>声明转换为<span class="important">let</span>：
+</p>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+const generate = require('@babel/generator').default;
+
+const code = `
+  var x = 1;
+  var y = 2;
+  function test() {
+    var z = 3;
+    return x + y + z;
+  }
+`;
+
+const ast = parser.parse(code);
+
+traverse(ast, {
+  VariableDeclaration(path) {
+    if (path.node.kind === 'var') {
+      path.node.kind = 'let';
+    }
+  }
+});
+
+const output = generate(ast);
+console.log(output.code);
+</pre>

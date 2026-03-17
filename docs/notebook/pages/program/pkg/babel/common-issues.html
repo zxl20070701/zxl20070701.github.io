@@ -1,0 +1,341 @@
+<header>
+    常见问题与解决方案
+</header>
+<h2>
+    解析错误
+</h2>
+<h3>
+    语法错误
+</h3>
+<p>
+    问题：@babel/parser无法解析包含语法错误的代码。
+</p>
+<pre tag="javascript">
+// 错误代码
+const code = 'const x = ;'; // 语法错误
+</pre>
+<p>
+    解决方案：使用try-catch捕获错误并提供有意义的错误信息：
+</p>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+
+function safeParse(code) {
+  try {
+    return parser.parse(code);
+  } catch (error) {
+    console.error('解析错误:', error.message);
+    console.error('错误位置:', error.loc);
+    return null;
+  }
+}
+</pre>
+<h3>
+    不支持的语法
+</h3>
+<p>
+    问题：使用了@babel/parser不支持的语法特性。
+</p>
+<p>
+    解决方案：启用相应的插件：
+</p>
+<pre tag="javascript">
+const ast = parser.parse(code, {
+  plugins: [
+    'jsx',           // 支持JSX
+    'typescript',    // 支持TypeScript
+    'decorators',    // 支持装饰器
+    'classProperties' // 支持类属性
+  ]
+});
+</pre>
+<h2>
+    作用域问题
+</h2>
+<h3>
+    变量未定义
+</h3>
+<p>
+    问题：在插件中使用了未定义的变量。
+</p>
+<pre tag="javascript">
+// 错误示例
+traverse(ast, {
+  Identifier(path) {
+    if (path.node.name === targetName) { // targetName未定义
+      // ...
+    }
+  }
+});
+</pre>
+<p>
+    解决方案：确保所有变量都已正确定义：
+</p>
+<pre tag="javascript">
+traverse(ast, {
+  Identifier(path) {
+    const targetName = 'target'; // 正确定义变量
+    if (path.node.name === targetName) {
+      // ...
+    }
+  }
+});
+</pre>
+<h3>
+    作用域冲突
+</h3>
+<p>
+    问题：插件修改导致变量名冲突。
+</p>
+<p>
+    解决方案：使用作用域API生成唯一变量名：
+</p>
+<pre tag="javascript">
+traverse(ast, {
+  FunctionDeclaration(path) {
+    // 生成唯一变量名
+    const uniqueId = path.scope.generateUidIdentifier('temp');
+    
+    // 使用唯一变量名
+    const declaration = t.variableDeclaration('const', [
+      t.variableDeclarator(uniqueId, t.numericLiteral(42))
+    ]);
+    
+    path.get('body').unshiftContainer('body', declaration);
+  }
+});
+</pre>
+<h2>
+    路径操作问题
+</h2>
+<h3>
+    无效的路径操作
+</h3>
+<p>
+    问题：尝试对无效路径进行操作。
+</p>
+<pre tag="javascript">
+// 错误示例
+traverse(ast, {
+  Program(path) {
+    const node = path.node;
+    node.body = null; // 直接赋值可能导致问题
+  }
+});
+</pre>
+<p>
+    解决方案：使用路径API进行安全的操作：
+</p>
+<pre tag="javascript">
+traverse(ast, {
+  Program(path) {
+    // 清空程序体
+    path.get('body').forEach(statementPath => {
+      statementPath.remove();
+    });
+  }
+});
+</pre>
+<h3>
+    节点替换问题
+</h3>
+<p>
+    问题：替换节点时类型不匹配。
+</p>
+<pre tag="javascript">
+// 错误示例
+traverse(ast, {
+  ExpressionStatement(path) {
+    // 错误：用表达式替换语句
+    path.replaceWith(t.identifier('x'));
+  }
+});
+</pre>
+<p>
+    解决方案：确保替换的节点类型正确：
+</p>
+<pre tag="javascript">
+traverse(ast, {
+  ExpressionStatement(path) {
+    // 正确：用表达式语句替换表达式语句
+    path.replaceWith(
+      t.expressionStatement(t.identifier('x'))
+    );
+  }
+});
+</pre>
+<h2>
+    性能问题
+</h2>
+<h3>
+    内存泄漏
+</h3>
+<p>
+    问题：插件导致内存泄漏。
+</p>
+<p>
+    解决方案：及时清理引用和使用WeakMap：
+</p>
+<pre tag="javascript">
+const nodeCache = new WeakMap(); // 使用WeakMap避免内存泄漏
+
+function processNode(node) {
+  if (nodeCache.has(node)) {
+    return nodeCache.get(node);
+  }
+  
+  const result = expensiveOperation(node);
+  nodeCache.set(node, result);
+  return result;
+}
+</pre>
+<h3>
+    性能瓶颈
+</h3>
+<p>
+    问题：插件执行缓慢。
+</p>
+<p>
+    解决方案：优化遍历策略：
+</p>
+<pre tag="javascript">
+// 不推荐：遍历所有节点
+traverse(ast, {
+  enter(path) {
+    if (path.isIdentifier() && path.node.name === 'target') {
+      // 处理
+    }
+  }
+});
+
+// 推荐：只遍历标识符
+traverse(ast, {
+  Identifier(path) {
+    if (path.node.name === 'target') {
+      // 处理
+    }
+  }
+});
+</pre>
+<h2>
+    兼容性问题
+</h2>
+<h3>
+    Babel版本不兼容
+</h3>
+<p>
+    问题：插件与Babel版本不兼容。
+</p>
+<p>
+    解决方案：检查Babel版本并做兼容性处理：
+</p>
+<pre tag="javascript">
+module.exports = function(babel) {
+  const { types: t } = babel;
+  
+  // 检查Babel版本
+  const babelVersion = babel.version;
+  console.log('Babel版本:', babelVersion);
+  
+  return {
+    name: 'compatible-plugin',
+    visitor: {
+      // 插件逻辑
+    }
+  };
+};
+</pre>
+<h3>
+    不同环境的差异
+</h3>
+<p>
+    问题：插件在不同环境下表现不一致。
+</p>
+<p>
+    解决方案：添加环境检测和适配：
+</p>
+<pre tag="javascript">
+function isNodeEnvironment() {
+  return typeof process !== 'undefined' && 
+         process.versions && 
+         process.versions.node;
+}
+
+function isBrowserEnvironment() {
+  return typeof window !== 'undefined';
+}
+
+module.exports = function(babel) {
+  return {
+    visitor: {
+      Program(path) {
+        if (isNodeEnvironment()) {
+          // Node.js环境特定逻辑
+        } else if (isBrowserEnvironment()) {
+          // 浏览器环境特定逻辑
+        }
+      }
+    }
+  };
+};
+</pre>
+<h2>
+    调试技巧
+</h2>
+<h3>
+    使用console.table
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  VariableDeclarator(path) {
+    console.table({
+      name: path.node.id.name,
+      type: path.node.init?.type,
+      loc: `${path.node.loc.start.line}:${path.node.loc.start.column}`
+    });
+  }
+});
+</pre>
+<h3>
+    条件断点
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  CallExpression(path) {
+    // 只在特定条件下断点
+    if (path.node.callee.name === 'debugMe') {
+      debugger; // 断点
+    }
+  }
+});
+</pre>
+<h2>
+    常见错误信息及解决方案
+</h2>
+<table>
+    <tr>
+        <th>错误信息</th>
+        <th>原因</th>
+        <th>解决方案</th>
+    </tr>
+    <tr>
+        <td>"Cannot read property 'xxx' of undefined"</td>
+        <td>访问了未定义的属性</td>
+        <td>添加空值检查</td>
+    </tr>
+    <tr>
+        <td>"You gave us a visitor for the node type xxx but it's not a valid type"</td>
+        <td>使用了无效的访问者类型</td>
+        <td>检查访问者类型名称拼写</td>
+    </tr>
+    <tr>
+        <td>"Replacing expression with statement"</td>
+        <td>试图用语句替换表达式</td>
+        <td>确保节点类型匹配</td>
+    </tr>
+    <tr>
+        <td>"This is an error on internal Babel state"</td>
+        <td>Babel内部状态错误</td>
+        <td>检查路径操作是否正确</td>
+    </tr>
+</table>

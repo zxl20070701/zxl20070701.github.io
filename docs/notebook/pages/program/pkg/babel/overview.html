@@ -1,0 +1,76 @@
+<header>
+    Babel 生态系统概述
+</header>
+<h2>
+    什么是Babel
+</h2>
+<p>
+    Babel是一个JavaScript编译器，主要用于将ES6+代码转换为向后兼容的JavaScript版本，以便在当前和旧版本的浏览器或其他环境中运行。
+</p>
+<h2>
+    Babel的核心功能
+</h2>
+<ul>
+    <li>语法转换：将新的JavaScript语法转换为旧版本浏览器支持的语法</li>
+    <li>Polyfill：通过core-js添加缺失的特性</li>
+    <li>源码转换：使用插件进行代码转换和优化</li>
+</ul>
+<h2>
+    Babel生态系统组成
+</h2>
+<h3>
+    核心包
+</h3>
+<ul>
+    <li><span class="important">@babel/core</span>：Babel的核心编译器，提供编译API</li>
+    <li><span class="important">@babel/cli</span>：命令行工具，用于从终端编译文件</li>
+</ul>
+<h3>
+    解析与生成
+</h3>
+<ul>
+    <li><span class="important">@babel/parser</span>：将源代码解析为AST</li>
+    <li><span class="important">@babel/generator</span>：将AST转换回源代码</li>
+</ul>
+<h3>
+    转换工具
+</h3>
+<ul>
+    <li><span class="important">@babel/traverse</span>：遍历和修改AST</li>
+    <li><span class="important">@babel/types</span>：创建、验证和转换AST节点</li>
+</ul>
+<h3>
+    预设与插件
+</h3>
+<ul>
+    <li><span class="important">@babel/preset-env</span>：智能预设，根据目标环境自动确定需要的插件</li>
+    <li><span class="important">@babel/plugin-*</span>：各种转换插件</li>
+</ul>
+<h2>
+    Babel工作流程
+</h2>
+<ol>
+    <li>解析（Parsing）：使用@babel/parser将源代码转换为AST</li>
+    <li>转换（Transforming）：使用插件遍历和修改AST</li>
+    <li>生成（Generating）：使用@babel/generator将修改后的AST转换回代码</li>
+</ol>
+<h2>
+    配置Babel
+</h2>
+<p>
+    Babel可以通过多种方式配置，最常用的是在项目根目录创建<span class="important">babel.config.js</span>或<span class="important">.babelrc</span>文件：
+</p>
+<pre tag="javascript">
+module.exports = {
+  presets: [
+    ['@babel/preset-env', {
+      targets: {
+        browsers: ['> 1%', 'last 2 versions']
+      }
+    }]
+  ],
+  plugins: [
+    // 插件列表
+  ]
+}
+</pre>

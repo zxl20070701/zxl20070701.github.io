@@ -1,0 +1,141 @@
+<header>
+    @babel/types - AST 节点类型
+</header>
+<p>
+    官方文档地址：
+    <a href="https://babel.dev/docs/babel-types" target="_blank">
+        https://babel.dev/docs/babel-types
+    </a>
+</p>
+<h2>
+    什么是@babel/types
+</h2>
+<p>
+    @babel/types是一个用于创建、验证和转换AST节点的工具库。它提供了大量的工具函数来处理Babel AST节点。
+</p>
+<h2>
+    安装与使用
+</h2>
+<pre tag="bash">
+npm install --save-dev @babel/types
+</pre>
+<pre tag="javascript">
+const types = require('@babel/types');
+
+// 创建一个变量声明
+const variableDeclaration = types.variableDeclaration('const', [
+  types.variableDeclarator(
+    types.identifier('x'),
+    types.numericLiteral(42)
+  )
+]);
+</pre>
+<h2>
+    节点创建
+</h2>
+<p>
+    @babel/types提供了创建各种AST节点的方法：
+</p>
+<pre tag="javascript">
+// 创建标识符
+const id = types.identifier('myVariable');
+
+// 创建字符串字面量
+const str = types.stringLiteral('Hello, World!');
+
+// 创建数字字面量
+const num = types.numericLiteral(123);
+
+// 创建函数表达式
+const func = types.functionExpression(
+  null, // 函数名
+  [types.identifier('param1'), types.identifier('param2')], // 参数
+  types.blockStatement([]) // 函数体
+);
+
+// 创建箭头函数
+const arrowFunc = types.arrowFunctionExpression(
+  [types.identifier('x')],
+  types.binaryExpression('+', types.identifier('x'), types.numericLiteral(1))
+);
+</pre>
+<p>
+    更多创建方法可以：
+</p>
+<button tag="babel-ast-types" type="explain">点击我查看</button>
+<h2>
+    节点验证
+</h2>
+<p>
+    可以使用验证函数检查节点类型：
+</p>
+<pre tag="javascript">
+const node = types.identifier('x');
+
+// 检查是否为标识符
+if (types.isIdentifier(node)) {
+  console.log('这是一个标识符');
+}
+
+// 检查是否为字符串字面量
+if (types.isStringLiteral(node)) {
+  console.log('这是一个字符串字面量');
+}
+</pre>
+<h2>
+    节点断言
+</h2>
+<p>
+    除了验证函数外，还有断言函数，如果类型不匹配会抛出错误：
+</p>
+<pre tag="javascript">
+const node = types.identifier('x');
+
+// 断言这是一个标识符，如果不是会抛出错误
+types.assertIdentifier(node);
+</pre>
+<h2>
+    实用工具函数
+</h2>
+<h3>
+    获取节点信息
+</h3>
+<pre tag="javascript">
+// 获取节点类型
+const type = node.type;
+
+// 检查节点是否有特定属性
+const hasProperty = types.has(node, 'name');
+</pre>
+<h3>
+    节点克隆
+</h3>
+<pre tag="javascript">
+// 克隆节点
+const clonedNode = types.cloneNode(node);
+
+// 克隆节点并添加额外属性
+const clonedNodeWithProps = types.cloneNode(node, false, { extra: 'data' });
+</pre>
+<h2>
+    实际应用示例
+</h2>
+<p>
+    下面是一个示例，展示如何使用@babel/types创建一个复杂的AST节点：
+</p>
+<pre tag="javascript">
+const types = require('@babel/types');
+
+// 创建一个函数声明：function add(a, b) { return a + b; }
+const functionDeclaration = types.functionDeclaration(
+  types.identifier('add'), // 函数名
+  [types.identifier('a'), types.identifier('b')], // 参数列表
+  types.blockStatement([ // 函数体
+    types.returnStatement(
+      types.binaryExpression('+', types.identifier('a'), types.identifier('b')) // return a + b
+    )
+  ])
+);
+
+console.log(JSON.stringify(functionDeclaration, null, 2));
+</pre>
