@@ -1,0 +1,368 @@
+<header>
+    FTP协议
+</header>
+<p>
+    FTP（File Transfer Protocol，文件传输协议）是用于在网络上进行文件传输的标准协议。FTP提供可靠的文件上传、下载、管理和共享功能，支持多种文件类型和传输模式。尽管现代网络中出现了更安全的替代方案，FTP仍在许多场景中被广泛使用。
+</p>
+<h2>
+    FTP协议基础
+</h2>
+<h3>
+    1. FTP协议特点
+</h3>
+<ul>
+    <li><span class="special">双通道设计</span>：控制连接和数据连接分离</li>
+    <li><span class="special">支持多种传输模式</span>：ASCII、二进制、EBCDIC</li>
+    <li><span class="special">支持断点续传</span>：可从中断处继续传输</li>
+    <li><span class="special">目录操作</span>：支持文件和目录管理</li>
+    <li><span class="special">用户认证</span>：支持用户名密码认证</li>
+    <li><span class="special">明文传输</span>：传统FTP不加密数据</li>
+</ul>
+<h3>
+    2. FTP工作模式
+</h3>
+<h4>
+    2.1 主动模式 (Active Mode)
+</h4>
+<ul>
+    <li><span class="special">控制连接</span>：客户端连接到服务器的21端口</li>
+    <li><span class="special">数据连接</span>：服务器主动连接到客户端的数据端口</li>
+    <li><span class="special">端口计算</span>：客户端通过PORT命令告知数据端口</li>
+    <li><span class="special">问题</span>：客户端防火墙可能阻止入站连接</li>
+</ul>
+<h4>
+    2.2 被动模式 (Passive Mode)
+</h4>
+<ul>
+    <li><span class="special">控制连接</span>：客户端连接到服务器的21端口</li>
+    <li><span class="special">数据连接</span>：客户端主动连接到服务器的数据端口</li>
+    <li><span class="special">端口获取</span>：客户端通过PASV命令获取数据端口</li>
+    <li><span class="special">优势</span>：更适合客户端在防火墙后的场景</li>
+</ul>
+<h2>
+    FTP连接建立
+</h2>
+<h3>
+    1. 控制连接
+</h3>
+<ul>
+    <li><span class="special">建立过程</span>：客户端连接到服务器21端口</li>
+    <li><span class="special">连接保持</span>：整个会话期间保持连接</li>
+    <li><span class="special">命令传输</span>：传输FTP命令和响应</li>
+</ul>
+<h3>
+    2. 数据连接
+</h3>
+<ul>
+    <li><span class="special">按需建立</span>：需要传输数据时建立</li>
+    <li><span class="special">传输完成</span>：数据传输完成后关闭</li>
+    <li><span class="special">多路复用</span>：一个控制连接可建立多个数据连接</li>
+</ul>
+<h3>
+    3. 连接示例
+</h3>
+<h4>
+    3.1 主动模式示例
+</h4>
+<ol>
+    <li><span class="special">客户端</span>：连接到服务器21端口</li>
+    <li><span class="special">服务器</span>：响应220服务就绪</li>
+    <li><span class="special">客户端</span>：发送PORT命令告知数据端口</li>
+    <li><span class="special">服务器</span>：主动连接到客户端数据端口</li>
+</ol>
+<h4>
+    3.2 被动模式示例
+</h4>
+<ol>
+    <li><span class="special">客户端</span>：连接到服务器21端口</li>
+    <li><span class="special">服务器</span>：响应220服务就绪</li>
+    <li><span class="special">客户端</span>：发送PASV命令请求被动模式</li>
+    <li><span class="special">服务器</span>：返回数据端口信息</li>
+    <li><span class="special">客户端</span>：主动连接到服务器数据端口</li>
+</ol>
+<h2>
+    FTP命令与响应
+</h2>
+<h3>
+    1. FTP命令分类
+</h3>
+<h4>
+    1.1 访问控制命令
+</h4>
+<ul>
+    <li><span class="special">USER</span>：用户名</li>
+    <li><span class="special">PASS</span>：密码</li>
+    <li><span class="special">ACCT</span>：账户信息</li>
+    <li><span class="special">CWD</span>：改变工作目录</li>
+    <li><span class="special">CDUP</span>：返回上级目录</li>
+    <li><span class="special">QUIT</span>：退出</li>
+</ul>
+<h4>
+    1.2 传输参数命令
+</h4>
+<ul>
+    <li><span class="special">PORT</span>：数据端口（主动模式）</li>
+    <li><span class="special">PASV</span>：被动模式</li>
+    <li><span class="special">TYPE</span>：传输类型（A/I/E/L）</li>
+    <li><span class="special">MODE</span>：传输模式（S/B/C）</li>
+    <li><span class="special">STRU</span>：文件结构（F/R/P）</li>
+</ul>
+<h4>
+    1.3 服务命令
+</h4>
+<ul>
+    <li><span class="special">RETR</span>：下载文件</li>
+    <li><span class="special">STOR</span>：上传文件</li>
+    <li><span class="special">STOU</span>：唯一上传</li>
+    <li><span class="special">APPE</span>：追加文件</li>
+    <li><span class="special">DELE</span>：删除文件</li>
+    <li><span class="special">LIST</span>：列出目录</li>
+    <li><span class="special">NLST</span>：列出文件名</li>
+    <li><span class="special">MKD</span>：创建目录</li>
+    <li><span class="special">RMD</span>：删除目录</li>
+    <li><span class="special">PWD</span>：显示当前目录</li>
+    <li><span class="special">SIZE</span>：获取文件大小</li>
+    <li><span class="special">MDTM</span>：获取文件修改时间</li>
+</ul>
+<h3>
+    2. FTP响应码
+</h3>
+<h4>
+    2.1 响应码分类
+</h4>
+<ul>
+    <li><span class="special">1xx</span>：正面初步回复</li>
+    <li><span class="special">2xx</span>：正面完成回复</li>
+    <li><span class="special">3xx</span>：正面中间回复</li>
+    <li><span class="special">4xx</span>：暂时负面完成回复</li>
+    <li><span class="special">5xx</span>：永久负面完成回复</li>
+</ul>
+<h4>
+    2.2 常用响应码
+</h4>
+<ul>
+    <li><span class="special">220</span>：服务就绪</li>
+    <li><span class="special">331</span>：用户名正确，需要密码</li>
+    <li><span class="special">230</span>：用户登录成功</li>
+    <li><span class="special">227</span>：进入被动模式</li>
+    <li><span class="special">226</span>：关闭数据连接，请求文件操作成功</li>
+    <li><span class="special">425</span>：无法打开数据连接</li>
+    <li><span class="special">550</span>：请求的操作未执行，文件不可用</li>
+</ul>
+<h2>
+    FTP传输模式
+</h2>
+<h3>
+    1. 传输类型 (TYPE)
+</h3>
+<ul>
+    <li><span class="special">ASCII (A)</span>：文本文件传输，自动转换行结束符</li>
+    <li><span class="special">Image/Binary (I)</span>：二进制文件传输，无转换</li>
+    <li><span class="special">EBCDIC (E)</span>：EBCDIC编码文件传输</li>
+    <li><span class="special">Local (L)</span>：本地字节大小传输</li>
+</ul>
+<h3>
+    2. 传输模式 (MODE)
+</h3>
+<ul>
+    <li><span class="special">Stream (S)</span>：流模式，默认模式</li>
+    <li><span class="special">Block (B)</span>：块模式，带头部信息</li>
+    <li><span class="special">Compressed (C)</span>：压缩模式</li>
+</ul>
+<h3>
+    3. 文件结构 (STRU)
+</h3>
+<ul>
+    <li><span class="special">File (F)</span>：文件结构，无内部结构</li>
+    <li><span class="special">Record (R)</span>：记录结构，有记录边界</li>
+    <li><span class="special">Page (P)</span>：页面结构，带页面号</li>
+</ul>
+<h2>
+    FTP安全扩展
+</h2>
+<h3>
+    1. FTPS (FTP over SSL/TLS)
+</h3>
+<h4>
+    1.1 显式FTPS (FTPES)
+</h4>
+<ul>
+    <li><span class="special">AUTH TLS</span>：客户端发送AUTH TLS命令</li>
+    <li><span class="special">协商加密</span>：协商TLS/SSL加密参数</li>
+    <li><span class="special">加密传输</span>：后续通信使用TLS加密</li>
+    <li><span class="special">端口</span>：仍使用21端口</li>
+</ul>
+<h4>
+    1.2 隐式FTPS
+</h4>
+<ul>
+    <li><span class="special">立即加密</span>：连接建立后立即开始TLS握手</li>
+    <li><span class="special">端口</span>：通常使用990端口</li>
+    <li><span class="special">兼容性</span>：较少使用</li>
+</ul>
+<h3>
+    2. SFTP (SSH File Transfer Protocol)
+</h4>
+<ul>
+    <li><span class="special">基于SSH</span>：使用SSH协议进行文件传输</li>
+    <li><span class="special">单连接</span>：控制和数据使用同一连接</li>
+    <li><span class="special">安全性</span>：内置加密和认证</li>
+    <li><span class="special">端口</span>：使用SSH的22端口</li>
+</ul>
+<h2>
+    FTP客户端与服务器
+</h2>
+<h3>
+    1. 常用FTP服务器软件
+</h3>
+<ul>
+    <li><span class="special">vsftpd</span>：Very Secure FTP Daemon，Linux平台</li>
+    <li><span class="special">ProFTPD</span>：可配置的FTP服务器</li>
+    <li><span class="special">Pure-FTPd</span>：轻量级FTP服务器</li>
+    <li><span class="special">FileZilla Server</span>：Windows平台FTP服务器</li>
+    <li><span class="special">IIS FTP</span>：Windows IIS内置FTP服务</li>
+</ul>
+<h3>
+    2. 常用FTP客户端软件
+</h3>
+<ul>
+    <li><span class="special">FileZilla</span>：跨平台图形界面客户端</li>
+    <li><span class="special">WinSCP</span>：Windows平台，支持SFTP</li>
+    <li><span class="special">lftp</span>：命令行FTP客户端，功能强大</li>
+    <li><span class="special">ncftp</span>：增强的命令行FTP客户端</li>
+    <li><span class="special">curl</span>：支持FTP协议的命令行工具</li>
+</ul>
+<h2>
+    FTP配置与管理
+</h2>
+<h3>
+    1. 用户管理
+</h3>
+<h4>
+    1.1 系统用户
+</h4>
+<ul>
+    <li><span class="special">本地用户</span>：使用系统用户账户</li>
+    <li><span class="special">chroot</span>：限制用户访问目录</li>
+    <li><span class="special">权限控制</span>：基于文件系统权限</li>
+</ul>
+<h4>
+    1.2 虚拟用户
+</h4>
+<ul>
+    <li><span class="special">独立账户</span>：不依赖系统用户</li>
+    <li><span class="special">数据库支持</span>：可存储在数据库中</li>
+    <li><span class="special">灵活管理</span>：便于大规模部署</li>
+</ul>
+<h3>
+    2. 权限控制
+</h3>
+<ul>
+    <li><span class="special">读权限</span>：下载文件、列出目录</li>
+    <li><span class="special">写权限</span>：上传文件、创建目录</li>
+    <li><span class="special">删除权限</span>：删除文件和目录</li>
+    <li><span class="special">执行权限</span>：执行文件（较少使用）</li>
+</ul>
+<h3>
+    3. 日志管理
+</h3>
+<ul>
+    <li><span class="special">传输日志</span>：记录文件传输操作</li>
+    <li><span class="special">系统日志</span>：记录系统事件和错误</li>
+    <li><span class="special">安全日志</span>：记录登录尝试和访问控制</li>
+</ul>
+<h2>
+    FTP性能优化
+</h2>
+<h3>
+    1. 传输优化
+</h3>
+<ul>
+    <li><span class="special">并发传输</span>：同时传输多个文件</li>
+    <li><span class="special">大文件优化</span>：调整缓冲区大小</li>
+    <li><span class="special">压缩传输</span>：启用压缩模式</li>
+</ul>
+<h3>
+    2. 网络优化
+</h3>
+<ul>
+    <li><span class="special">被动模式</span>：避免防火墙问题</li>
+    <li><span class="special">端口范围</span>：限制被动模式端口范围</li>
+    <li><span class="special">连接限制</span>：限制并发连接数</li>
+</ul>
+<h3>
+    3. 服务器优化
+</h3>
+<ul>
+    <li><span class="special">负载均衡</span>：多台FTP服务器负载分担</li>
+    <li><span class="special">缓存</span>：缓存频繁访问的文件</li>
+    <li><span class="special">限流</span>：限制用户带宽使用</li>
+</ul>
+<h2>
+    FTP安全考虑
+</h2>
+<h3>
+    1. 安全风险
+</h3>
+<ul>
+    <li><span class="special">明文传输</span>：用户名、密码、数据未加密</li>
+    <li><span class="special">匿名访问</span>：可能被滥用</li>
+    <li><span class="special">目录遍历</span>：可能访问未授权目录</li>
+    <li><span class="special">拒绝服务</span>：连接耗尽攻击</li>
+</ul>
+<h3>
+    2. 安全最佳实践
+</h3>
+<ul>
+    <li><span class="special">禁用匿名访问</span>：除非必要</li>
+    <li><span class="special">使用FTPS/SFTP</span>：加密传输</li>
+    <li><span class="special">强密码策略</span>：要求复杂密码</li>
+    <li><span class="special">访问控制</span>：限制用户访问范围</li>
+    <li><span class="special">日志监控</span>：监控异常活动</li>
+    <li><span class="special">定期更新</span>：及时更新FTP软件</li>
+</ul>
+<h3>
+    3. 替代方案
+</h3>
+<ul>
+    <li><span class="special">SFTP</span>：基于SSH的安全文件传输</li>
+    <li><span class="special">SCP</span>：安全复制协议</li>
+    <li><span class="special">RSYNC</span>：高效的文件同步工具</li>
+    <li><span class="special">WebDAV</span>：基于HTTP的文件管理协议</li>
+</ul>
+<h2>
+    FTP故障排除
+</h2>
+<h3>
+    1. 连接问题
+</h3>
+<ul>
+    <li><span class="special">无法连接</span>：检查服务器地址、端口、防火墙</li>
+    <li><span class="special">连接超时</span>：检查网络连通性、服务器负载</li>
+    <li><span class="special">被动模式问题</span>：检查服务器被动端口范围</li>
+</ul>
+<h3>
+    2. 认证问题
+</h3>
+<ul>
+    <li><span class="special">登录失败</span>：检查用户名密码、账户状态</li>
+    <li><span class="special">权限不足</span>：检查用户权限设置</li>
+    <li><span class="special">chroot问题</span>：检查目录访问限制</li>
+</ul>
+<h3>
+    3. 传输问题
+</h3>
+<ul>
+    <li><span class="special">传输中断</span>：检查网络稳定性</li>
+    <li><span class="special">传输速度慢</span>：检查网络带宽、服务器性能</li>
+    <li><span class="special">文件损坏</span>：检查传输模式设置</li>
+</ul>
+<h3>
+    4. 诊断工具
+</h3>
+<ul>
+    <li><span class="special">ftp命令</span>：交互式FTP客户端</li>
+    <li><span class="special">telnet</span>：测试FTP控制端口</li>
+    <li><span class="special">tcpdump</span>：抓包分析FTP通信</li>
+    <li><span class="special">日志分析</span>：查看FTP服务器日志</li>
+</ul>

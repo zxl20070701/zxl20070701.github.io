@@ -1,0 +1,495 @@
+<header>
+    HTTP协议
+</header>
+<p>
+    HTTP（HyperText Transfer
+    Protocol，超文本传输协议）是Web应用的基础协议，用于在客户端和服务器之间传输超文本内容。HTTP协议经历了多个版本的发展，从HTTP/0.9到HTTP/3，不断优化性能、安全性和功能。理解HTTP协议对于Web开发、网络优化和安全防护具有重要意义。
+</p>
+<h2>
+    HTTP协议基础
+</h2>
+<h3>
+    1. HTTP协议特点
+</h3>
+<ul>
+    <li><span class="special">无状态</span>：服务器不保存客户端状态信息</li>
+    <li><span class="special">请求-响应模型</span>：客户端发起请求，服务器返回响应</li>
+    <li><span class="special">基于文本</span>：协议消息使用可读文本格式</li>
+    <li><span class="special">灵活扩展</span>：支持自定义头部和方法</li>
+    <li><span class="special">明文传输</span>：HTTP/1.x版本内容未加密</li>
+</ul>
+<h3>
+    2. HTTP版本演进
+</h3>
+<ul>
+    <li><span class="special">HTTP/0.9</span>：1991年，仅支持GET方法，无头部信息</li>
+    <li><span class="special">HTTP/1.0</span>：1996年，增加头部、状态码、多种方法</li>
+    <li><span class="special">HTTP/1.1</span>：1997年，持久连接、管道化、缓存控制</li>
+    <li><span class="special">HTTP/2</span>：2015年，二进制分帧、多路复用、头部压缩</li>
+    <li><span class="special">HTTP/3</span>：2022年，基于QUIC协议，UDP传输</li>
+</ul>
+<h2>
+    HTTP消息格式
+</h2>
+<h3>
+    1. 请求消息格式
+</h3>
+<pre>
+请求行
+请求头部
+空行
+请求体（可选）
+
+示例：
+GET /index.html HTTP/1.1
+Host: www.example.com
+User-Agent: Mozilla/5.0
+Accept: text/html
+Connection: keep-alive
+
+请求体（POST请求时）
+</pre>
+<h3>
+    2. 响应消息格式
+</h3>
+<pre>
+状态行
+响应头部
+空行
+响应体
+
+示例：
+HTTP/1.1 200 OK
+Date: Mon, 27 Jul 2009 12:28:53 GMT
+Server: Apache/2.2.14
+Content-Length: 88
+Content-Type: text/html
+
+<html>
+<body>Hello World</body>
+</html>
+</pre>
+<h3>
+    3. 请求行与状态行
+</h3>
+<h4>
+    3.1 请求行格式
+</h4>
+<ul>
+    <li><span class="special">格式</span>：Method Request-URI HTTP-Version</li>
+    <li><span class="special">示例</span>：GET /index.html HTTP/1.1</li>
+</ul>
+<h4>
+    3.2 状态行格式
+</h4>
+<ul>
+    <li><span class="special">格式</span>：HTTP-Version Status-Code Reason-Phrase</li>
+    <li><span class="special">示例</span>：HTTP/1.1 200 OK</li>
+</ul>
+<h2>
+    HTTP方法
+</h2>
+<h3>
+    1. 常用方法
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>方法</th>
+            <th>描述</th>
+            <th>是否安全</th>
+            <th>是否幂等</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GET</td>
+            <td>获取资源</td>
+            <td>是</td>
+            <td>是</td>
+        </tr>
+        <tr>
+            <td>POST</td>
+            <td>提交数据</td>
+            <td>否</td>
+            <td>否</td>
+        </tr>
+        <tr>
+            <td>PUT</td>
+            <td>更新资源</td>
+            <td>否</td>
+            <td>是</td>
+        </tr>
+        <tr>
+            <td>DELETE</td>
+            <td>删除资源</td>
+            <td>否</td>
+            <td>是</td>
+        </tr>
+        <tr>
+            <td>HEAD</td>
+            <td>获取响应头</td>
+            <td>是</td>
+            <td>是</td>
+        </tr>
+        <tr>
+            <td>OPTIONS</td>
+            <td>获取支持的方法</td>
+            <td>是</td>
+            <td>是</td>
+        </tr>
+        <tr>
+            <td>PATCH</td>
+            <td>部分更新资源</td>
+            <td>否</td>
+            <td>否</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    2. 方法特性
+</h3>
+<ul>
+    <li><span class="special">安全方法</span>：不修改服务器状态，如GET、HEAD</li>
+    <li><span class="special">幂等方法</span>：多次执行与一次执行效果相同</li>
+    <li><span class="special">缓存</span>：安全方法通常可被缓存</li>
+</ul>
+<h2>
+    HTTP状态码
+</h2>
+<h3>
+    1. 状态码分类
+</h3>
+<ul>
+    <li><span class="special">1xx</span>：信息性状态码，如100 Continue</li>
+    <li><span class="special">2xx</span>：成功状态码，如200 OK</li>
+    <li><span class="special">3xx</span>：重定向状态码，如301 Moved Permanently</li>
+    <li><span class="special">4xx</span>：客户端错误状态码，如404 Not Found</li>
+    <li><span class="special">5xx</span>：服务器错误状态码，如500 Internal Server Error</li>
+</ul>
+<h3>
+    2. 常用状态码
+</h3>
+<h4>
+    2.1 成功状态码 (2xx)
+</h4>
+<ul>
+    <li><span class="special">200 OK</span>：请求成功</li>
+    <li><span class="special">201 Created</span>：资源创建成功</li>
+    <li><span class="special">204 No Content</span>：请求成功但无响应体</li>
+</ul>
+<h4>
+    2.2 重定向状态码 (3xx)
+</h4>
+<ul>
+    <li><span class="special">301 Moved Permanently</span>：永久重定向</li>
+    <li><span class="special">302 Found</span>：临时重定向</li>
+    <li><span class="special">304 Not Modified</span>：资源未修改，使用缓存</li>
+</ul>
+<h4>
+    2.3 客户端错误状态码 (4xx)
+</h4>
+<ul>
+    <li><span class="special">400 Bad Request</span>：请求语法错误</li>
+    <li><span class="special">401 Unauthorized</span>：需要认证</li>
+    <li><span class="special">403 Forbidden</span>：禁止访问</li>
+    <li><span class="special">404 Not Found</span>：资源不存在</li>
+</ul>
+<h4>
+    2.4 服务器错误状态码 (5xx)
+</h4>
+<ul>
+    <li><span class="special">500 Internal Server Error</span>：服务器内部错误</li>
+    <li><span class="special">502 Bad Gateway</span>：网关错误</li>
+    <li><span class="special">503 Service Unavailable</span>：服务不可用</li>
+    <li><span class="special">504 Gateway Timeout</span>：网关超时</li>
+</ul>
+<h2>
+    HTTP头部字段
+</h2>
+<h3>
+    1. 通用头部
+</h3>
+<ul>
+    <li><span class="special">Cache-Control</span>：缓存控制指令</li>
+    <li><span class="special">Connection</span>：连接管理选项</li>
+    <li><span class="special">Date</span>：消息创建时间</li>
+    <li><span class="special">Transfer-Encoding</span>：传输编码方式</li>
+</ul>
+<h3>
+    2. 请求头部
+</h3>
+<ul>
+    <li><span class="special">Host</span>：请求的主机名和端口</li>
+    <li><span class="special">User-Agent</span>：客户端软件信息</li>
+    <li><span class="special">Accept</span>：可接受的媒体类型</li>
+    <li><span class="special">Accept-Encoding</span>：可接受的内容编码</li>
+    <li><span class="special">Authorization</span>：认证信息</li>
+    <li><span class="special">Cookie</span>：Cookie数据</li>
+</ul>
+<h3>
+    3. 响应头部
+</h3>
+<ul>
+    <li><span class="special">Server</span>：服务器软件信息</li>
+    <li><span class="special">Content-Type</span>：响应内容的媒体类型</li>
+    <li><span class="special">Content-Length</span>：响应内容长度</li>
+    <li><span class="special">Set-Cookie</span>：设置Cookie</li>
+    <li><span class="special">Location</span>：重定向目标</li>
+    <li><span class="special">WWW-Authenticate</span>：认证挑战</li>
+</ul>
+<h3>
+    4. 实体头部
+</h3>
+<ul>
+    <li><span class="special">Content-Encoding</span>：内容编码方式</li>
+    <li><span class="special">Content-Language</span>：内容语言</li>
+    <li><span class="special">Content-Range</span>：内容范围（部分响应）</li>
+    <li><span class="special">Expires</span>：过期时间</li>
+    <li><span class="special">Last-Modified</span>：最后修改时间</li>
+</ul>
+<h2>
+    HTTP连接管理
+</h2>
+<h3>
+    1. 持久连接 (Keep-Alive)
+</h3>
+<h4>
+    1.1 HTTP/1.0
+</h4>
+<ul>
+    <li><span class="special">默认行为</span>：每个请求/响应对使用独立连接</li>
+    <li><span class="special">Connection: Keep-Alive</span>：显式请求持久连接</li>
+</ul>
+<h4>
+    1.2 HTTP/1.1
+</h4>
+<ul>
+    <li><span class="special">默认持久</span>：连接默认保持打开</li>
+    <li><span class="special">Connection: close</span>：显式关闭连接</li>
+    <li><span class="special">管道化</span>：允许在未收到响应前发送多个请求</li>
+</ul>
+<h3>
+    2. 连接复用
+</h3>
+<ul>
+    <li><span class="special">优势</span>：减少连接建立开销，提高性能</li>
+    <li><span class="special">限制</span>：HTTP/1.1存在队头阻塞问题</li>
+    <li><span class="special">超时</span>：空闲连接超时关闭</li>
+</ul>
+<h2>
+    HTTP缓存机制
+</h2>
+<h3>
+    1. 缓存控制
+</h3>
+<h4>
+    1.1 缓存指令
+</h4>
+<ul>
+    <li><span class="special">Cache-Control</span>：现代缓存控制机制</li>
+    <li><span class="special">Pragma</span>：HTTP/1.0遗留指令</li>
+    <li><span class="special">Expires</span>：过期时间（绝对时间）</li>
+</ul>
+<h4>
+    1.2 Cache-Control指令
+</h4>
+<ul>
+    <li><span class="special">public</span>：可被任何缓存存储</li>
+    <li><span class="special">private</span>：仅客户端缓存</li>
+    <li><span class="special">no-cache</span>：使用前必须验证</li>
+    <li><span class="special">no-store</span>：不存储响应</li>
+    <li><span class="special">max-age</span>：最大缓存时间（相对时间）</li>
+</ul>
+<h3>
+    2. 缓存验证
+</h3>
+<h4>
+    2.1 验证机制
+</h4>
+<ul>
+    <li><span class="special">Last-Modified</span>：基于最后修改时间</li>
+    <li><span class="special">ETag</span>：基于实体标签</li>
+</ul>
+<h4>
+    2.2 验证请求
+</h4>
+<ul>
+    <li><span class="special">If-Modified-Since</span>：基于最后修改时间</li>
+    <li><span class="special">If-None-Match</span>：基于ETag</li>
+</ul>
+<h2>
+    HTTP安全机制
+</h2>
+<h3>
+    1. 基本认证
+</h3>
+<ul>
+    <li><span class="special">机制</span>：用户名密码Base64编码传输</li>
+    <li><span class="special">问题</span>：明文传输，安全性低</li>
+    <li><span class="special">状态</span>：已很少使用</li>
+</ul>
+<h3>
+    2. Cookie与Session
+</h3>
+<h4>
+    2.1 Cookie机制
+</h4>
+<ul>
+    <li><span class="special">Set-Cookie</span>：服务器设置Cookie</li>
+    <li><span class="special">Cookie</span>：客户端发送Cookie</li>
+    <li><span class="special">属性</span>：Domain、Path、Expires、Secure、HttpOnly</li>
+</ul>
+<h4>
+    2.2 Session机制
+</h4>
+<ul>
+    <li><span class="special">服务器端状态</span>：在服务器维护用户状态</li>
+    <li><span class="special">Session ID</span>：通过Cookie或URL传递</li>
+    <li><span class="special">安全性</span>：比Cookie更安全</li>
+</ul>
+<h3>
+    3. HTTPS
+</h3>
+<h4>
+    3.1 SSL/TLS协议
+</h4>
+<ul>
+    <li><span class="special">加密</span>：保护数据传输安全</li>
+    <li><span class="special">认证</span>：验证服务器身份</li>
+    <li><span class="special">完整性</span>：确保数据未被篡改</li>
+</ul>
+<h4>
+    3.2 HTTPS握手
+</h4>
+<ul>
+    <li><span class="special">TCP连接</span>：首先建立TCP连接</li>
+    <li><span class="special">TLS握手</span>：协商加密参数</li>
+    <li><span class="special">证书验证</span>：验证服务器证书</li>
+    <li><span class="special">密钥交换</span>：建立会话密钥</li>
+</ul>
+<h2>
+    HTTP/2与HTTP/3
+</h2>
+<h3>
+    1. HTTP/2特性
+</h3>
+<h4>
+    1.1 二进制分帧
+</h4>
+<ul>
+    <li><span class="special">帧结构</span>：将消息分解为独立的帧</li>
+    <li><span class="special">帧类型</span>：HEADERS、DATA、SETTINGS等</li>
+    <li><span class="special">优势</span>：解析更高效，错误更少</li>
+</ul>
+<h4>
+    1.2 多路复用
+</h4>
+<ul>
+    <li><span class="special">并行传输</span>：多个请求响应并行传输</li>
+    <li><span class="special">消除队头阻塞</span>：解决HTTP/1.1的队头阻塞问题</li>
+    <li><span class="special">流标识</span>：每个流有唯一标识符</li>
+</ul>
+<h4>
+    1.3 头部压缩
+</h4>
+<ul>
+    <li><span class="special">HPACK算法</span>：静态表+动态表+Huffman编码</li>
+    <li><span class="special">优势</span>：减少头部开销，提高效率</li>
+</ul>
+<h4>
+    1.4 服务器推送
+</h4>
+<ul>
+    <li><span class="special">主动推送</span>：服务器主动推送资源</li>
+    <li><span class="special">优势</span>：减少往返时间，提高加载速度</li>
+</ul>
+<h3>
+    2. HTTP/3特性
+</h3>
+<h4>
+    2.1 基于QUIC
+</h4>
+<ul>
+    <li><span class="special">传输层</span>：基于UDP而非TCP</li>
+    <li><span class="special">优势</span>：减少握手延迟，避免队头阻塞</li>
+</ul>
+<h4>
+    2.2 连接迁移
+</h4>
+<ul>
+    <li><span class="special">网络切换</span>：支持IP地址变化时保持连接</li>
+    <li><span class="special">移动性</span>：适合移动网络环境</li>
+</ul>
+<h4>
+    2.3 内置加密
+</h4>
+<ul>
+    <li><span class="special">TLS 1.3</span>：集成TLS加密</li>
+    <li><span class="special">安全性</span>：提高传输安全性</li>
+</ul>
+<h2>
+    HTTP性能优化
+</h2>
+<h3>
+    1. 前端优化
+</h3>
+<ul>
+    <li><span class="special">资源合并</span>：减少HTTP请求数量</li>
+    <li><span class="special">资源压缩</span>：压缩文本资源</li>
+    <li><span class="special">缓存利用</span>：合理设置缓存策略</li>
+    <li><span class="special">CDN使用</span>：使用内容分发网络</li>
+</ul>
+<h3>
+    2. 后端优化
+</h3>
+<ul>
+    <li><span class="special">服务器配置</span>：优化Web服务器参数</li>
+    <li><span class="special">数据库优化</span>：减少数据库查询时间</li>
+    <li><span class="special">负载均衡</span>：分散请求负载</li>
+    <li><span class="special">异步处理</span>：异步处理耗时操作</li>
+</ul>
+<h3>
+    3. 协议优化
+</h3>
+<ul>
+    <li><span class="special">HTTP/2</span>：启用HTTP/2协议</li>
+    <li><span class="special">连接复用</span>：复用TCP连接</li>
+    <li><span class="special">预加载</span>：提前加载关键资源</li>
+    <li><span class="special">服务端推送</span>：主动推送资源</li>
+</ul>
+<h2>
+    HTTP诊断工具
+</h2>
+<h3>
+    1. curl
+</h3>
+<ul>
+    <li><span class="special">功能</span>：命令行HTTP客户端</li>
+    <li><span class="special">特点</span>：功能强大，支持各种HTTP特性</li>
+    <li><span class="special">用法</span>：curl [options] URL</li>
+</ul>
+<h3>
+    2. wget
+</h3>
+<ul>
+    <li><span class="special">功能</span>：网络下载工具</li>
+    <li><span class="special">特点</span>：支持递归下载、断点续传</li>
+    <li><span class="special">用法</span>：wget [options] URL</li>
+</ul>
+<h3>
+    3. 浏览器开发者工具
+</h3>
+<ul>
+    <li><span class="special">Network面板</span>：查看HTTP请求响应详情</li>
+    <li><span class="special">性能分析</span>：分析页面加载性能</li>
+    <li><span class="special">安全信息</span>：查看HTTPS证书信息</li>
+</ul>
+<h3>
+    4. 网络抓包工具
+</h3>
+<ul>
+    <li><span class="special">tcpdump</span>：命令行抓包工具</li>
+    <li><span class="special">Wireshark</span>：图形化抓包分析工具</li>
+    <li><span class="special">Fiddler</span>：HTTP专用抓包工具</li>
+</ul>

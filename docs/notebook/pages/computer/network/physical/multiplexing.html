@@ -1,0 +1,334 @@
+<header>
+    复用技术
+</header>
+<p>
+    复用技术是多路信号共享同一传输介质的关键技术，通过在时间、频率、波长等不同维度上分割信道资源，实现高效的信道利用。复用技术是现代通信网络的基础，极大地提高了传输效率和系统容量。
+</p>
+<h2>
+    复用技术的基本原理
+</h2>
+<p>
+    复用技术的核心思想是将多个低速信号合并成一个高速信号进行传输，在接收端再进行分离。主要解决以下问题：
+</p>
+<ul>
+    <li><span class="special">资源共享</span>：多个用户共享昂贵的传输介质</li>
+    <li><span class="special">成本降低</span>：减少传输线路和设备投资</li>
+    <li><span class="special">容量提升</span>：提高单个传输系统的总容量</li>
+    <li><span class="special">灵活性增强</span>：支持动态资源分配</li>
+</ul>
+<h2>
+    频分复用技术 (FDM - Frequency Division Multiplexing)
+</h2>
+<h3>
+    1. 基本原理
+</h3>
+<p>
+    频分复用将总带宽划分为多个互不重叠的频带，每个信号占用一个独立的频带进行传输。
+</p>
+<ul>
+    <li><span class="special">技术特点</span>：频谱分割，各信号同时传输</li>
+    <li><span class="special">保护间隔</span>：相邻频带间设置保护频带防止干扰</li>
+    <li><span class="special">调制方式</span>：每个信号使用不同的载波频率</li>
+</ul>
+<h3>
+    2. 传统FDM应用
+</h3>
+<h4>
+    2.1 模拟电话系统
+</h4>
+<ul>
+    <li><span class="special">语音信道</span>：每个语音信道占用4kHz带宽（300-3400Hz语音+保护带）</li>
+    <li><span class="special">分级复用</span>：
+        <ul>
+            <li>12路语音 → 1个基群(48kHz)</li>
+            <li>5个基群 → 1个超群(240kHz)</li>
+            <li>5个超群 → 1个主群(1232kHz)</li>
+            <li>3个主群 → 1个超主群(5520kHz)</li>
+        </ul>
+    </li>
+</ul>
+<h4>
+    2.2 广播电视系统
+</h4>
+<ul>
+    <li><span class="special">频道分配</span>：每个电视频道占用6-8MHz带宽</li>
+    <li><span class="special">频段划分</span>：VHF(30-300MHz)、UHF(300-3000MHz)</li>
+    <li><span class="special">调制方式</span>：AM调制图像信号，FM调制伴音信号</li>
+</ul>
+<h3>
+    3. 现代FDM技术
+</h3>
+<h4>
+    3.1 正交频分复用 (OFDM - Orthogonal FDM)
+</h4>
+<ul>
+    <li><span class="special">技术原理</span>：子载波间正交重叠，提高频谱利用率</li>
+    <li><span class="special">技术特点</span>：
+        <ul>
+            <li>抗多径干扰能力强</li>
+            <li>频谱利用率高达90%</li>
+            <li>支持自适应调制</li>
+            <li>实现复杂度较高</li>
+        </ul>
+    </li>
+    <li><span class="special">应用</span>：WiFi(802.11a/g/n/ac)、4G LTE、5G、ADSL</li>
+</ul>
+<h4>
+    3.2 波分复用 (WDM - Wavelength Division Multiplexing)
+</h4>
+<ul>
+    <li><span class="special">技术原理</span>：在光纤中同时传输不同波长的光信号</li>
+    <li><span class="special">分类</span>：
+        <ul>
+            <li>CWDM (粗波分复用)：信道间隔20nm，支持8-16个波长</li>
+            <li>DWDM (密集波分复用)：信道间隔0.8nm或0.4nm，支持40-160个波长</li>
+        </ul>
+    </li>
+    <li><span class="special">关键技术</span>：
+        <ul>
+            <li>波长稳定激光器</li>
+            <li>光复用/解复用器</li>
+            <li>光放大器(EDFA)</li>
+            <li>色散补偿技术</li>
+        </ul>
+    </li>
+    <li><span class="special">应用</span>：长途光纤通信、数据中心互连、5G前传</li>
+</ul>
+<h2>
+    时分复用技术 (TDM - Time Division Multiplexing)
+</h2>
+<h3>
+    1. 同步时分复用 (Synchronous TDM)
+</h3>
+<p>
+    同步TDM将时间划分为固定长度的时隙，每个信号源分配固定的时隙。
+</p>
+<ul>
+    <li><span class="special">工作原理</span>：周期性为每个输入信道分配时隙</li>
+    <li><span class="special">特点</span>：时隙固定分配，即使某信道无数据也占用时隙</li>
+    <li><span class="special">帧结构</span>：包含帧同步信息和多个时隙</li>
+    <li><span class="special">应用</span>：传统电话系统、E1/T1线路</li>
+</ul>
+<h3>
+    2. 统计时分复用 (Statistical TDM)
+</h3>
+<p>
+    统计TDM根据实际需求动态分配时隙，提高信道利用率。
+</p>
+<ul>
+    <li><span class="special">工作原理</span>：只为有数据的信道分配时隙</li>
+    <li><span class="special">特点</span>：需要添加地址信息标识数据来源</li>
+    <li><span class="special">优势</span>：信道利用率高，适合数据通信</li>
+    <li><span class="special">应用</span>：分组交换网络、ATM网络</li>
+</ul>
+<h3>
+    3. TDM标准体系
+</h3>
+<h4>
+    3.1 PDH (准同步数字体系)
+</h4>
+<ul>
+    <li><span class="special">E体系</span>（欧洲/中国）：
+        <ul>
+            <li>E1：2.048Mbps，32个时隙(30语音+2控制)</li>
+            <li>E2：8.448Mbps，4个E1</li>
+            <li>E3：34.368Mbps，16个E1</li>
+            <li>E4：139.264Mbps，64个E1</li>
+        </ul>
+    </li>
+    <li><span class="special">T体系</span>（北美/日本）：
+        <ul>
+            <li>T1：1.544Mbps，24个时隙</li>
+            <li>T2：6.312Mbps，4个T1</li>
+            <li>T3：44.736Mbps，28个T1</li>
+            <li>T4：274.176Mbps，168个T1</li>
+        </ul>
+    </li>
+</ul>
+<h4>
+    3.2 SDH/SONET (同步数字体系)
+</h4>
+<ul>
+    <li><span class="special">技术特点</span>：全球统一的同步传输标准</li>
+    <li><span class="special">SONET等级</span>（北美）：
+        <ul>
+            <li>OC-1：51.84Mbps</li>
+            <li>OC-3：155.52Mbps</li>
+            <li>OC-12：622.08Mbps</li>
+            <li>OC-48：2.488Gbps</li>
+            <li>OC-192：9.953Gbps</li>
+            <li>OC-768：39.813Gbps</li>
+        </ul>
+    </li>
+    <li><span class="special">SDH等级</span>（国际）：
+        <ul>
+            <li>STM-1：155.52Mbps</li>
+            <li>STM-4：622.08Mbps</li>
+            <li>STM-16：2.488Gbps</li>
+            <li>STM-64：9.953Gbps</li>
+            <li>STM-256：39.813Gbps</li>
+        </ul>
+    </li>
+    <li><span class="special">优势</span>：统一标准、同步复用、强大的网络管理</li>
+</ul>
+<h2>
+    码分复用技术 (CDM - Code Division Multiplexing)
+</h2>
+<h3>
+    1. 基本原理
+</h3>
+<p>
+    码分复用通过扩频技术，使多个信号在同一频带内同时传输，通过不同的编码序列区分。
+    p>
+<ul>
+    <li><span class="special">扩频技术</span>：使用高速编码序列扩展信号带宽</li>
+    <li><span class="special">正交性</span>：不同用户的编码序列相互正交</li>
+    <li><span class="special">处理增益</span>：扩频带来的抗干扰能力增强</li>
+</ul>
+<h3>
+    2. 直接序列扩频 (DSSS - Direct Sequence Spread Spectrum)
+</h3>
+<ul>
+    <li><span class="special">工作原理</span>：用高速伪随机码与数据相乘</li>
+    <li><span class="special">处理增益</span>：Gp = 10log₁₀(BW_ratio)，BW_ratio为扩频后带宽与原始带宽之比</li>
+    <li><span class="special">应用</span>：CDMA蜂窝系统、GPS、IEEE 802.11b</li>
+</ul>
+<h3>
+    3. 跳频扩频 (FHSS - Frequency Hopping Spread Spectrum)
+</h3>
+<ul>
+    <li><span class="special">工作原理</span>：载波频率按伪随机序列快速跳变</li>
+    <li><span class="special">分类</span>：
+        <ul>
+            <li>慢跳频：跳频速率低于数据速率</li>
+            <li>快跳频：跳频速率高于数据速率</li>
+        </ul>
+    </li>
+    <li><span class="special">应用</span>：蓝牙、军事通信、IEEE 802.11（早期）</li>
+</ul>
+<h2>
+    空分复用技术 (SDM - Space Division Multiplexing)
+</h2>
+<h3>
+    1. 基本概念
+</h3>
+<p>
+    空分复用通过空间隔离实现信号复用，包括物理空间隔离和波束空间隔离。
+    p>
+<ul>
+    <li><span class="special">物理空间</span>：使用多根独立传输介质</li>
+    <li><span class="special">波束空间</span>：使用定向天线形成空间波束</li>
+</ul>
+<h3>
+    2. MIMO技术 (Multiple-Input Multiple-Output)
+</h3>
+<ul>
+    <li><span class="special">技术原理</span>：利用多天线实现空间复用和分集</li>
+    <li><span class="special">工作模式</span>：
+        <ul>
+            <li>空间复用：提高数据速率</li>
+            <li>空间分集：提高可靠性</li>
+            <li>波束成形：提高覆盖范围</li>
+        </ul>
+    </li>
+    <li><span class="special">关键技术</span>：
+        <ul>
+            <li>信道估计</li>
+            <li>预编码/解码</li>
+            <li>干扰消除</li>
+        </ul>
+    </li>
+    <li><span class="special">应用</span>：WiFi(802.11n/ac/ax)、4G LTE、5G NR</li>
+</ul>
+<h2>
+    复用技术的性能比较
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>复用技术</th>
+            <th>资源维度</th>
+            <th>效率</th>
+            <th>复杂度</th>
+            <th>灵活性</th>
+            <th>典型应用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>FDM</td>
+            <td>频率</td>
+            <td>中等</td>
+            <td>低</td>
+            <td>差</td>
+            <td>广播电视、传统电话</td>
+        </tr>
+        <tr>
+            <td>OFDM</td>
+            <td>频率/时间</td>
+            <td>高</td>
+            <td>高</td>
+            <td>好</td>
+            <td>WiFi、4G/5G</td>
+        </tr>
+        <tr>
+            <td>WDM</td>
+            <td>波长</td>
+            <td>很高</td>
+            <td>中</td>
+            <td>好</td>
+            <td>光纤通信</td>
+        </tr>
+        <tr>
+            <td>TDM</td>
+            <td>时间</td>
+            <td>高</td>
+            <td>低</td>
+            <td>一般</td>
+            <td>传统电话、SDH</td>
+        </tr>
+        <tr>
+            <td>CDM</td>
+            <td>编码</td>
+            <td>高</td>
+            <td>高</td>
+            <td>很好</td>
+            <td>CDMA蜂窝系统</td>
+        </tr>
+        <tr>
+            <td>MIMO</td>
+            <td>空间</td>
+            <td>很高</td>
+            <td>很高</td>
+            <td>很好</td>
+            <td>现代无线通信</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    复用技术的发展趋势
+</h2>
+<h3>
+    1. 多维复用融合
+</h3>
+<ul>
+    <li><span class="special">空分+时分+频分</span>：5G网络中的综合复用技术</li>
+    <li><span class="special">波分+时分</span>：下一代光网络技术</li>
+    <li><span class="special">码分+空分</span>：大规模MIMO与CDMA结合</li>
+</ul>
+<h3>
+    2. 智能复用技术
+</h3>
+<ul>
+    <li><span class="special">自适应复用</span>：根据业务需求动态调整复用策略</li>
+    <li><span class="special">认知复用</span>：感知环境变化，智能选择复用方式</li>
+    <li><span class="special">软件定义复用</span>：通过软件定义网络(SDN)实现灵活复用</li>
+</ul>
+<h3>
+    3. 新型复用维度
+</h3>
+<ul>
+    <li><span class="special">模分复用</span>：利用光纤中的不同模式传输信号</li>
+    <li><span class="special">轨道角动量复用</span>：利用电磁波的轨道角动量特性</li>
+    <li><span class="special">偏振复用</span>：利用光的不同偏振态传输独立信号</li>
+</ul>

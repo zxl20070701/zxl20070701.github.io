@@ -1,0 +1,284 @@
+<header>
+    传输介质
+</header>
+<p>
+    传输介质是网络中数据传输的物理通道，是构成计算机网络物理层的基础。不同的传输介质具有不同的特性，适用于不同的网络环境和应用场景。选择合适的传输介质对于网络性能、成本和可靠性都有重要影响。
+</p>
+<h2>
+    有线传输介质
+</h2>
+<h3>
+    1. 双绞线 (Twisted Pair Cable)
+</h3>
+<p>
+    双绞线是最常用的有线传输介质，由两根绝缘铜导线按一定密度相互缠绕而成。
+</p>
+<h4>
+    1.1 非屏蔽双绞线 (UTP - Unshielded Twisted Pair)
+</h4>
+<ul>
+    <li><span class="special">结构特点</span>：无金属屏蔽层，仅依靠双绞结构减少干扰</li>
+    <li><span class="special">分类标准</span>：按照EIA/TIA-568标准分为Cat1-Cat8多个等级
+        <ul>
+            <li>Cat5e：支持100MHz，用于100BASE-TX和1000BASE-T</li>
+            <li>Cat6：支持250MHz，用于1000BASE-T和10GBASE-T（短距离）</li>
+            <li>Cat6a：支持500MHz，用于10GBASE-T（100米）</li>
+            <li>Cat7：支持600MHz，全屏蔽设计，支持10GBASE-T</li>
+            <li>Cat8：支持2000MHz，用于数据中心25/40GBASE-T</li>
+        </ul>
+    </li>
+    <li><span class="special">优点</span>：成本低、安装简单、灵活性高</li>
+    <li><span class="special">缺点</span>：抗干扰能力较弱、传输距离有限（100米）</li>
+    <li><span class="special">典型应用</span>：以太网、电话系统、综合布线</li>
+</ul>
+<h4>
+    1.2 屏蔽双绞线 (STP - Shielded Twisted Pair)
+</h4>
+<ul>
+    <li><span class="special">结构特点</span>：每对线或整个电缆有金属屏蔽层</li>
+    <li><span class="special">屏蔽类型</span>：
+        <ul>
+            <li>FTP (Foiled Twisted Pair)：铝箔屏蔽</li>
+            <li>SSTP (Shielded Screened Twisted Pair)：编织网+铝箔双重屏蔽</li>
+        </ul>
+    </li>
+    <li><span class="special">优点</span>：抗电磁干扰能力强、串扰小</li>
+    <li><span class="special">缺点</span>：成本高、安装复杂、接地要求高</li>
+    <li><span class="special">典型应用</span>：工业环境、高干扰区域、数据中心</li>
+</ul>
+<h3>
+    2. 同轴电缆 (Coaxial Cable)
+</h3>
+<p>
+    同轴电缆由内导体、绝缘层、外导体屏蔽层和保护套组成，具有良好的抗干扰能力。
+</p>
+<h4>
+    2.1 基带同轴电缆
+</h4>
+<ul>
+    <li><span class="special">RG-8/RG-11</span>：粗同轴电缆，用于10BASE5以太网</li>
+    <li><span class="special">RG-58</span>：细同轴电缆，用于10BASE2以太网</li>
+    <li><span class="special">特性阻抗</span>：50Ω，用于数字信号传输</li>
+    <li><span class="special">传输距离</span>：500米（粗缆）/185米（细缆）</li>
+</ul>
+<h4>
+    2.2 宽带同轴电缆
+</h4>
+<ul>
+    <li><span class="special">RG-59</span>：用于有线电视系统，特性阻抗75Ω</li>
+    <li><span class="special">RG-6</span>：改进型，用于卫星电视、宽带接入</li>
+    <li><span class="special">频分复用</span>：支持多频道同时传输</li>
+    <li><span class="special">传输距离</span>：可达数公里</li>
+</ul>
+<h4>
+    2.3 优缺点分析
+</h4>
+<ul>
+    <li><span class="special">优点</span>：抗干扰能力强、带宽高、传输距离远</li>
+    <li><span class="special">缺点</span>：成本高、安装复杂、扩展性差</li>
+    <li><span class="special">现状</span>：在现代以太网中已基本被双绞线和光纤取代</li>
+</ul>
+<h3>
+    3. 光纤 (Fiber Optic Cable)
+</h3>
+<p>
+    光纤利用光脉冲传输数据，具有极高的带宽和传输距离，是现代高速网络的首选介质。
+</p>
+<h4>
+    3.1 光纤分类
+</h4>
+<ul>
+    <li><span class="special">按传输模式</span>：
+        <ul>
+            <li>单模光纤(SMF)：纤芯直径8-10μm，传输单一模式，适用于长距离</li>
+            <li>多模光纤(MMF)：纤芯直径50μm或62.5μm，传输多个模式，适用于短距离</li>
+        </ul>
+    </li>
+    <li><span class="special">按折射率分布</span>：
+        <ul>
+            <li>阶跃型光纤：纤芯和包层折射率突变</li>
+            <li>渐变型光纤：折射率从中心向外逐渐减小</li>
+        </ul>
+    </li>
+</ul>
+<h4>
+    3.2 光纤规格
+</h4>
+<ul>
+    <li><span class="special">单模光纤</span>：
+        <ul>
+            <li>G.652：标准单模光纤，广泛用于城域网和长途传输</li>
+            <li>G.655：非零色散位移光纤，适用于DWDM系统</li>
+            <li>G.657：弯曲不敏感光纤，适用于室内布线</li>
+        </ul>
+    </li>
+    <li><span class="special">多模光纤</span>：
+        <ul>
+            <li>OM1：62.5/125μm，支持1Gb/s至275米</li>
+            <li>OM2：50/125μm，支持1Gb/s至550米</li>
+            <li>OM3：激光优化，支持10Gb/s至300米</li>
+            <li>OM4：改进型OM3，支持10Gb/s至550米</li>
+            <li>OM5：宽带多模光纤，支持40/100Gb/s</li>
+        </ul>
+    </li>
+</ul>
+<h4>
+    3.3 光纤连接器
+</h4>
+<ul>
+    <li><span class="special">SC连接器</span>：方形卡接式，常用于千兆网络</li>
+    <li><span class="special">LC连接器</span>：小型化设计，用于高密度应用</li>
+    <li><span class="special">FC连接器</span>：螺纹连接，用于精密仪器</li>
+    <li><span class="special">ST连接器</span>：卡口式，用于多模网络</li>
+    <li><span class="special">MPO/MTP连接器</span>：多芯连接器，用于40/100GbE</li>
+</ul>
+<h4>
+    3.4 光纤优缺点
+</h4>
+<ul>
+    <li><span class="special">优点</span>：
+        <ul>
+            <li>带宽极高：可达Tbps级别</li>
+            <li>传输距离远：单模光纤可达数百公里</li>
+            <li>抗干扰能力强：不受电磁干扰影响</li>
+            <li>安全性高：难以窃听</li>
+            <li>体积小、重量轻：便于布线</li>
+        </ul>
+    </li>
+    <li><span class="special">缺点</span>：
+        <ul>
+            <li>成本高：材料和安装费用昂贵</li>
+            <li>连接复杂：需要专业设备和技能</li>
+            <li>脆弱性：弯曲半径有限，易断裂</li>
+            <li>设备兼容性：需要光电转换设备</li>
+        </ul>
+    </li>
+</ul>
+<h2>
+    无线传输介质
+</h2>
+<h3>
+    1. 无线电波 (Radio Waves)
+</h3>
+<p>
+    无线电波是频率在3kHz-300GHz之间的电磁波，广泛用于无线通信。
+</p>
+<h4>
+    1.1 频段划分
+</h4>
+<ul>
+    <li><span class="special">VLF (3-30kHz)</span>：甚低频，用于导航</li>
+    <li><span class="special">LF (30-300kHz)</span>：低频，用于导航和授时</li>
+    <li><span class="special">MF (300kHz-3MHz)</span>：中频，用于AM广播</li>
+    <li><span class="special">HF (3-30MHz)</span>：高频，用于短波通信</li>
+    <li><span class="special">VHF (30-300MHz)</span>：甚高频，用于FM广播、电视</li>
+    <li><span class="special">UHF (300MHz-3GHz)</span>：特高频，用于移动通信、WiFi</li>
+    <li><span class="special">SHF (3-30GHz)</span>：超高频，用于卫星通信、微波</li>
+    <li><span class="special">EHF (30-300GHz)</span>：极高频，用于毫米波通信</li>
+</ul>
+<h4>
+    1.2 传播特性
+</h4>
+<ul>
+    <li><span class="special">地波传播</span>：沿地面传播，适用于低频</li>
+    <li><span class="special">天波传播</span>：经电离层反射，适用于高频</li>
+    <li><span class="special">视距传播</span>：直线传播，适用于甚高频以上</li>
+    <li><span class="special">散射传播</span>：利用对流层散射，适用于特高频</li>
+</ul>
+<h3>
+    2. 微波通信 (Microwave Communication)
+</h3>
+<p>
+    微波是频率在1-300GHz之间的电磁波，主要用于视距通信。
+</p>
+<ul>
+    <li><span class="special">频段应用</span>：
+        <ul>
+            <li>L波段(1-2GHz)：移动通信、GPS</li>
+            <li>S波段(2-4GHz)：雷达、WiFi 2.4GHz</li>
+            <li>C波段(4-8GHz)：卫星通信</li>
+            <li>X波段(8-12GHz)：雷达、卫星通信</li>
+            <li>Ku波段(12-18GHz)：卫星电视</li>
+            <li>K波段(18-27GHz)：毫米波通信</li>
+            <li>Ka波段(27-40GHz)：5G、卫星通信</li>
+        </ul>
+    </li>
+    <li><span class="special">特点</span>：方向性强、容量大、建设周期短</li>
+    <li><span class="special">限制</span>：视距传播、受天气影响、需要中继站</li>
+</ul>
+<h3>
+    3. 卫星通信 (Satellite Communication)
+</h3>
+<p>
+    利用人造卫星作为中继站进行远距离通信。
+</p>
+<h4>
+    3.1 卫星轨道分类
+</h4>
+<ul>
+    <li><span class="special">GEO (地球静止轨道)</span>：高度35786km，覆盖范围广，延迟大(250ms)</li>
+    <li><span class="special">MEO (中地球轨道)</span>：高度5000-15000km，用于导航(GPS、北斗)</li>
+    <li><span class="special">LEO (低地球轨道)</span>：高度500-1500km，延迟小，需要多颗卫星组网</li>
+    <li><span class="special">HEO (高椭圆轨道)</span>：用于高纬度地区通信</li>
+</ul>
+<h4>
+    3.2 卫星通信特点
+</h4>
+<ul>
+    <li><span class="special">优点</span>：覆盖范围广、广播能力强、不受地理限制</li>
+    <li><span class="special">缺点</span>：传输延迟大、成本高、受天气影响</li>
+    <li><span class="special">应用</span>：电视广播、互联网接入、远程教育、应急通信</li>
+</ul>
+<h3>
+    4. 红外线通信 (Infrared Communication)
+</h3>
+<p>
+    利用红外线进行短距离无线通信。
+</p>
+<ul>
+    <li><span class="special">波长范围</span>：700nm-1mm，通常使用850nm-900nm</li>
+    <li><span class="special">标准协议</span>：IrDA (Infrared Data Association)</li>
+    <li><span class="special">传输速率</span>：传统IrDA 115.2Kbps，现代版本可达4Mbps</li>
+    <li><span class="special">特点</span>：成本低、功耗低、安全性高（视距传播）</li>
+    <li><span class="special">限制</span>：视距传播、易受障碍物阻挡、传输距离短</li>
+    <li><span class="special">应用</span>：遥控器、早期手机数据传输、短距离设备互联</li>
+</ul>
+<h2>
+    传输介质的选择因素
+</h2>
+<h3>
+    1. 性能要求
+</h3>
+<ul>
+    <li><span class="special">带宽需求</span>：根据应用选择满足带宽要求的介质</li>
+    <li><span class="special">传输距离</span>：考虑介质的最大传输距离和中继需求</li>
+    <li><span class="special">延迟要求</span>：实时应用需要低延迟介质</li>
+    <li><span class="special">可靠性要求</span>：关键应用需要高可靠性介质</li>
+</ul>
+<h3>
+    2. 环境因素
+</h3>
+<ul>
+    <li><span class="special">电磁干扰</span>：高干扰环境选择抗干扰能力强的介质</li>
+    <li><span class="special">物理环境</span>：考虑温度、湿度、腐蚀性等因素</li>
+    <li><span class="special">布线条件</span>：考虑管道空间、弯曲半径等限制</li>
+    <li><span class="special">安全要求</span>：涉密环境选择安全性高的介质</li>
+</ul>
+<h3>
+    3. 经济因素
+</h3>
+<ul>
+    <li><span class="special">初期投资</span>：介质成本、安装成本、设备成本</li>
+    <li><span class="special">维护成本</span>：日常维护、故障修复、升级成本</li>
+    <li><span class="special">扩展性</span>：未来升级和扩展的成本考虑</li>
+    <li><span class="special">生命周期</span>：介质的使用寿命和折旧成本</li>
+</ul>
+<h3>
+    4. 技术标准
+</h3>
+<ul>
+    <li><span class="special">兼容性</span>：与现有网络设备的兼容性</li>
+    <li><span class="special">标准化</span>：选择符合国际标准的产品</li>
+    <li><span class="special">未来发展</span>：考虑技术发展趋势和升级路径</li>
+    <li><span class="special">厂商支持</span>：选择有良好技术支持的厂商</li>
+</ul>

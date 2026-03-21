@@ -1,0 +1,334 @@
+<header>
+    VLAN
+</header>
+<p>
+    VLAN（Virtual Local Area Network，虚拟局域网）是一种将物理局域网划分为多个逻辑广播域的技术。通过VLAN，网络管理员可以根据功能、部门、应用等因素将网络设备逻辑分组，而不受物理位置的限制。VLAN技术提高了网络的安全性、可管理性和性能，是现代企业网络的基础技术之一。
+</p>
+<h2>
+    VLAN基本概念
+</h2>
+<h3>
+    1. VLAN的定义
+</h3>
+<p>
+    VLAN是在一个物理网络基础设施上创建的多个逻辑广播域，每个VLAN都是一个独立的广播域，VLAN间的通信需要通过三层设备（如路由器或三层交换机）进行。
+</p>
+<h3>
+    2. VLAN的优势
+</h3>
+<ul>
+    <li><span class="special">广播控制</span>：限制广播域范围，减少广播流量</li>
+    <li><span class="special">安全性增强</span>：不同VLAN间默认无法通信，提高安全性</li>
+    <li><span class="special">灵活管理</span>：根据逻辑关系而非物理位置组织网络</li>
+    <li><span class="special">成本节约</span>：减少路由器的使用，降低网络成本</li>
+    <li><span class="special">性能提升</span>：减小广播域，提高网络整体性能</li>
+</ul>
+<h3>
+    3. VLAN类型
+</h3>
+<h4>
+    3.1 基于端口的VLAN (Port-Based VLAN)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：将交换机的物理端口分配给特定VLAN</li>
+    <li><span class="special">特点</span>：配置简单，最常用</li>
+    <li><span class="special">应用</span>：企业网络中最常见的VLAN类型</li>
+</ul>
+<h4>
+    3.2 基于MAC地址的VLAN (MAC-Based VLAN)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：根据设备的MAC地址分配VLAN</li>
+    <li><span class="special">特点</span>：设备移动时VLAN成员身份保持不变</li>
+    <li><span class="special">应用</span>：移动办公环境</li>
+</ul>
+<h4>
+    3.3 基于协议的VLAN (Protocol-Based VLAN)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：根据网络层协议类型分配VLAN</li>
+    <li><span class="special">特点</span>：支持多协议网络</li>
+    <li><span class="special">应用</span>：混合协议环境</li>
+</ul>
+<h4>
+    3.4 基于子网的VLAN (Subnet-Based VLAN)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：根据IP子网分配VLAN</li>
+    <li><span class="special">特点</span>：与网络层紧密结合</li>
+    <li><span class="special">应用</span>：大型网络环境</li>
+</ul>
+<h2>
+    VLAN技术标准
+</h2>
+<h3>
+    1. IEEE 802.1Q标准
+</h3>
+<p>
+    IEEE 802.1Q是VLAN技术的核心标准，定义了VLAN标签格式和操作方法。
+</p>
+<h4>
+    1.1 VLAN标签格式
+</h4>
+<pre>
+| TPID (2字节) | TCI (2字节) |
+| 0x8100       | PCP(3) | CFI(1) | VID(12) |
+</pre>
+<ul>
+    <li><span class="special">TPID (Tag Protocol Identifier)</span>：标签协议标识符，固定为0x8100</li>
+    <li><span class="special">TCI (Tag Control Information)</span>：标签控制信息
+        <ul>
+            <li>PCP (Priority Code Point)：3位优先级，支持8个优先级(0-7)</li>
+            <li>CFI (Canonical Format Indicator)：1位规范格式指示符</li>
+            <li>VID (VLAN Identifier)：12位VLAN标识符，支持4096个VLAN(0-4095)</li>
+        </ul>
+    </li>
+</ul>
+<h4>
+    1.2 标记帧格式
+</h4>
+<pre>
+| 目的MAC(6) | 源MAC(6) | VLAN标签(4) | 类型/长度(2) | 数据 | FCS(4) |
+</pre>
+<ul>
+    <li><span class="special">最大帧长度</span>：1522字节(标准以太网1518字节 + 4字节VLAN标签)</li>
+    <li><span class="special">最小帧长度</span>：68字节(64字节 + 4字节VLAN标签)</li>
+</ul>
+<h3>
+    2. VLAN链路类型
+</h3>
+<h4>
+    2.1 访问链路 (Access Link)
+</h4>
+<ul>
+    <li><span class="special">定义</span>：连接终端设备的链路</li>
+    <li><span class="special">特点</span>：只传输一个VLAN的流量，不带VLAN标签</li>
+    <li><span class="special">配置</span>：将端口配置为access模式，指定VLAN ID</li>
+</ul>
+<h4>
+    2.2 中继链路 (Trunk Link)
+</h4>
+<ul>
+    <li><span class="special">定义</span>：交换机之间或交换机与路由器之间的链路</li>
+    <li><span class="special">特点</span>：可传输多个VLAN的流量，带VLAN标签</li>
+    <li><span class="special">标签协议</span>：IEEE 802.1Q、Cisco ISL(私有)</li>
+    <li><span class="special">本征VLAN</span>：Trunk链路上不带标签的VLAN(默认VLAN 1)</li>
+</ul>
+<h4>
+    2.3 混合链路 (Hybrid Link)
+</h4>
+<ul>
+    <li><span class="special">定义</span>：既可连接终端设备又可连接其他交换机的链路</li>
+    <li><span class="special">特点</span>：灵活配置，部分VLAN带标签，部分不带标签</li>
+    <li><span class="special">应用</span>：复杂网络环境</li>
+</ul>
+<h2>
+    VLAN配置与管理
+</h2>
+<h3>
+    1. VLAN创建与删除
+</h3>
+<h4>
+    1.1 创建VLAN
+</h4>
+<ul>
+    <li><span class="special">全局配置模式</span>：在全局配置模式下创建VLAN</li>
+    <li><span class="special">VLAN数据库模式</span>：在VLAN数据库模式下创建(传统方法)</li>
+    <li><span class="special">命名规则</span>：VLAN ID范围1-4094，可配置名称</li>
+</ul>
+<h4>
+    1.2 删除VLAN
+</h4>
+<ul>
+    <li><span class="special">注意事项</span>：删除VLAN前需将端口移出该VLAN</li>
+    <li><span class="special">默认VLAN</span>：VLAN 1不能被删除</li>
+</ul>
+<h3>
+    2. 端口配置
+</h3>
+<h4>
+    2.1 Access端口配置
+</h4>
+<ul>
+    <li><span class="special">配置步骤</span>：
+        <ol>
+            <li>进入接口配置模式</li>
+            <li>设置端口模式为access</li>
+            <li>指定VLAN成员身份</li>
+        </ol>
+    </li>
+    <li><span class="special">验证命令</span>：show vlan brief、show interfaces switchport</li>
+</ul>
+<h4>
+    2.2 Trunk端口配置
+</h4>
+<ul>
+    <li><span class="special">配置步骤</span>：
+        <ol>
+            <li>进入接口配置模式</li>
+            <li>设置端口模式为trunk</li>
+            <li>配置允许的VLAN列表</li>
+            <li>设置本征VLAN(可选)</li>
+        </ol>
+    </li>
+    <li><span class="special">封装协议</span>：IEEE 802.1Q(标准)、ISL(Cisco私有)</li>
+</ul>
+<h3>
+    3. VLAN间路由
+</h3>
+<h4>
+    3.1 传统路由器方案
+</h4>
+<ul>
+    <li><span class="special">原理</span>：每个VLAN连接到路由器的不同物理接口</li>
+    <li><span class="special">缺点</span>：需要大量物理接口，成本高</li>
+</ul>
+<h4>
+    3.2 单臂路由 (Router-on-a-Stick)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：路由器通过单个物理接口连接交换机，使用子接口</li>
+    <li><span class="special">配置</span>：在路由器上创建子接口，每个子接口对应一个VLAN</li>
+    <li><span class="special">封装</span>：每个子接口配置802.1Q封装和VLAN ID</li>
+    <li><span class="special">优点</span>：节省接口，成本较低</li>
+</ul>
+<h4>
+    3.3 三层交换机方案
+</h4>
+<ul>
+    <li><span class="special">原理</span>：使用支持三层功能的交换机实现VLAN间路由</li>
+    <li><span class="special">配置</span>：在交换机上创建SVI(Switched Virtual Interface)</li>
+    <li><span class="special">优点</span>：性能高，配置简单，成本适中</li>
+    <li><span class="special">应用</span>：现代企业网络主流方案</li>
+</ul>
+<h2>
+    VLAN高级特性
+</h2>
+<h3>
+    1. Voice VLAN
+</h3>
+<ul>
+    <li><span class="special">用途</span>：为IP电话提供专用VLAN</li>
+    <li><span class="special">优势</span>：服务质量(QoS)保证，安全隔离</li>
+    <li><span class="special">配置</span>：将端口配置为同时支持数据和语音VLAN</li>
+</ul>
+<h3>
+    2. Private VLAN
+</h3>
+<h4>
+    2.1 PVLAN类型
+</h4>
+<ul>
+    <li><span class="special">主VLAN</span>：Primary VLAN，PVLAN的父VLAN</li>
+    <li><span class="special">辅助VLAN</span>：Secondary VLAN，包括隔离VLAN和社区VLAN</li>
+</ul>
+<h4>
+    2.2 端口类型
+</h4>
+<ul>
+    <li><span class="special">混杂端口</span>：Promiscuous port，可与所有端口通信</li>
+    <li><span class="special">隔离端口</span>：Isolated port，只能与混杂端口通信</li>
+    <li><span class="special">社区端口</span>：Community port，可与同社区端口和混杂端口通信</li>
+</ul>
+<h4>
+    2.3 应用场景
+</h4>
+<ul>
+    <li><span class="special">服务器隔离</span>：共享同一网段但需隔离的服务器</li>
+    <li><span class="special">托管服务</span>：IDC中不同客户的隔离</li>
+</ul>
+<h3>
+    3. QinQ (802.1ad)
+</h3>
+<ul>
+    <li><span class="special">原理</span>：在原有VLAN标签外再添加一层VLAN标签</li>
+    <li><span class="special">优势</span>：扩展VLAN数量，支持服务提供商网络</li>
+    <li><span class="special">应用</span>：运营商网络，企业专线服务</li>
+</ul>
+<h2>
+    VLAN安全与管理
+</h2>
+<h3>
+    1. VLAN安全风险
+</h3>
+<h4>
+    1.1 VLAN跳跃攻击
+</h4>
+<ul>
+    <li><span class="special">攻击方式</span>：通过伪造VLAN标签或双重封装绕过VLAN隔离</li>
+    <li><span class="special">防护措施</span>：禁用动态Trunk协议，配置本征VLAN</li>
+</ul>
+<h4>
+    1.2 MAC地址泛洪攻击
+</h4>
+<ul>
+    <li><span class="special">攻击方式</span>：发送大量伪造MAC地址使交换机MAC表溢出</li>
+    <li><span class="special">防护措施</span>：端口安全，限制MAC地址数量</li>
+</ul>
+<h4>
+    1.3 广播风暴
+</h4>
+<ul>
+    <li><span class="special">原因</span>：二层环路或恶意攻击导致广播包无限循环</li>
+    <li><span class="special">防护措施</span>：启用STP协议，配置广播风暴控制</li>
+</ul>
+<h3>
+    2. VLAN管理最佳实践
+</h3>
+<h4>
+    2.1 VLAN规划原则
+</h4>
+<ul>
+    <li><span class="special">按功能划分</span>：根据部门、应用、安全等级划分VLAN</li>
+    <li><span class="special">地址规划</span>：合理规划IP地址和VLAN的对应关系</li>
+    <li><span class="special">命名规范</span>：使用有意义的VLAN名称</li>
+</ul>
+<h4>
+    2.2 安全策略
+</h4>
+<ul>
+    <li><span class="special">本征VLAN安全</span>：将本征VLAN设置为未使用的VLAN</li>
+    <li><span class="special">Trunk端口安全</span>：限制允许的VLAN列表</li>
+    <li><span class="special">VLAN ACL</span>：配置VLAN访问控制列表</li>
+</ul>
+<h4>
+    2.3 性能优化
+</h4>
+<ul>
+    <li><span class="special">VTP管理</span>：使用VTP统一管理VLAN配置</li>
+    <li><span class="special">STP优化</span>：配置RSTP或MSTP提高收敛速度</li>
+    <li><span class="special">链路聚合</span>：使用EtherChannel增加带宽</li>
+</ul>
+<h2>
+    VLAN部署案例分析
+</h2>
+<h3>
+    1. 企业网络VLAN设计
+</h3>
+<p>
+    典型的企业网络VLAN设计包括以下VLAN：
+</p>
+<ul>
+    <li><span class="special">管理VLAN</span>：VLAN 1，用于网络设备管理</li>
+    <li><span class="special">用户VLAN</span>：按部门划分，如VLAN 10(行政)、VLAN 20(财务)、VLAN 30(研发)</li>
+    <li><span class="special">服务器VLAN</span>：VLAN 100，用于服务器接入</li>
+    <li><span class="special">语音VLAN</span>：VLAN 200，用于IP电话</li>
+    <li><span class="special">访客VLAN</span>：VLAN 300，用于访客网络，限制访问内部资源</li>
+</ul>
+<h3>
+    2. 数据中心VLAN设计
+</h3>
+<ul>
+    <li><span class="special">管理网络</span>：独立的管理VLAN</li>
+    <li><span class="special">业务网络</span>：按应用类型划分VLAN</li>
+    <li><span class="special">存储网络</span>：独立的存储VLAN(iSCSI、FCoE)</li>
+    <li><span class="special">备份网络</span>：独立的备份VLAN</li>
+</ul>
+<h3>
+    3. 校园网VLAN设计
+</h3>
+<ul>
+    <li><span class="special">按区域划分</span>：教学楼、宿舍楼、图书馆等</li>
+    <li><span class="special">按用户类型</span>：教师、学生、访客</li>
+    <li><span class="special">按应用类型</span>：教学、科研、管理</li>
+</ul>

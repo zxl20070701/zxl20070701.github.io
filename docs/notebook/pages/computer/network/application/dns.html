@@ -1,0 +1,430 @@
+<header>
+    DNS协议
+</header>
+<p>
+    DNS（Domain Name
+    System，域名系统）是互联网的核心基础设施之一，负责将人类可读的域名转换为计算机可识别的IP地址。DNS采用分布式数据库和层次化命名结构，支持域名解析、负载均衡、邮件路由等多种功能。理解DNS的工作原理对于网络管理、应用开发和故障排除至关重要。
+</p>
+<h2>
+    DNS基础概念
+</h2>
+<h3>
+    1. DNS的作用
+</h3>
+<ul>
+    <li><span class="special">域名解析</span>：将域名转换为IP地址（正向解析）</li>
+    <li><span class="special">反向解析</span>：将IP地址转换为域名</li>
+    <li><span class="special">邮件路由</span>：通过MX记录确定邮件服务器</li>
+    <li><span class="special">负载均衡</span>：通过多个A记录实现负载分担</li>
+    <li><span class="special">服务发现</span>：通过SRV记录发现网络服务</li>
+</ul>
+<h3>
+    2. DNS层次结构
+</h3>
+<ul>
+    <li><span class="special">根域</span>："."，根域名服务器</li>
+    <li><span class="special">顶级域</span>：TLD，如.com、.org、.cn、.net</li>
+    <li><span class="special">二级域</span>：如example.com、baidu.com</li>
+    <li><span class="special">子域</span>：如www.example.com、mail.example.com</li>
+</ul>
+<h3>
+    3. 域名空间
+</h3>
+<p>
+    域名空间采用树形结构，每个节点代表一个域，叶节点代表具体的主机。
+</p>
+<ul>
+    <li><span class="special">完全限定域名</span>：FQDN，以点结尾的完整域名</li>
+    <li><span class="special">相对域名</span>：相对于某个域的域名</li>
+    <li><span class="special">标签</span>：域名中的每个部分，最多63个字符</li>
+    <li><span class="special">总长度限制</span>：完整域名不超过255个字符</li>
+</ul>
+<h2>
+    DNS资源记录
+</h2>
+<h3>
+    1. 常用记录类型
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>名称</th>
+            <th>功能</th>
+            <th>示例</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A</td>
+            <td>Address</td>
+            <td>IPv4地址记录</td>
+            <td>example.com. IN A 192.0.2.1</td>
+        </tr>
+        <tr>
+            <td>AAAA</td>
+            <td>IPv6 Address</td>
+            <td>IPv6地址记录</td>
+            <td>example.com. IN AAAA 2001:db8::1</td>
+        </tr>
+        <tr>
+            <td>CNAME</td>
+            <td>Canonical Name</td>
+            <td>别名记录</td>
+            <td>www.example.com. IN CNAME example.com.</td>
+        </tr>
+        <tr>
+            <td>MX</td>
+            <td>Mail Exchange</td>
+            <td>邮件交换记录</td>
+            <td>example.com. IN MX 10 mail.example.com.</td>
+        </tr>
+        <tr>
+            <td>NS</td>
+            <td>Name Server</td>
+            <td>域名服务器记录</td>
+            <td>example.com. IN NS ns1.example.com.</td>
+        </tr>
+        <tr>
+            <td>PTR</td>
+            <td>Pointer</td>
+            <td>反向解析记录</td>
+            <td>1.2.0.192.in-addr.arpa. IN PTR example.com.</td>
+        </tr>
+        <tr>
+            <td>TXT</td>
+            <td>Text</td>
+            <td>文本记录</td>
+            <td>example.com. IN TXT "v=spf1 mx ~all"</td>
+        </tr>
+        <tr>
+            <td>SRV</td>
+            <td>Service</td>
+            <td>服务记录</td>
+            <td>_sip._tcp.example.com. IN SRV 0 5 5060 sipserver.example.com.</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    2. 记录格式
+</h3>
+<pre>
+name [TTL] [class] type data
+</pre>
+<ul>
+    <li><span class="special">name</span>：域名</li>
+    <li><span class="special">TTL</span>：生存时间，缓存有效期</li>
+    <li><span class="special">class</span>：类别，通常为IN（Internet）</li>
+    <li><span class="special">type</span>：记录类型</li>
+    <li><span class="special">data</span>：记录数据</li>
+</ul>
+<h2>
+    DNS查询过程
+</h2>
+<h3>
+    1. 递归查询与迭代查询
+</h3>
+<h4>
+    1.1 递归查询 (Recursive Query)
+</h4>
+<ul>
+    <li><span class="special">特点</span>：DNS服务器为客户机完全解析域名</li>
+    <li><span class="special">过程</span>：如果本地没有缓存，服务器会代表客户端查询其他服务器</li>
+    <li><span class="special">应用</span>：客户端到本地DNS服务器的查询</li>
+</ul>
+<h4>
+    1.2 迭代查询 (Iterative Query)
+</h4>
+<ul>
+    <li><span class="special">特点</span>：DNS服务器返回最佳答案或推荐其他服务器</li>
+    <li><span class="special">过程</span>：客户端需要多次查询不同服务器</li>
+    <li><span class="special">应用</span>：DNS服务器之间的查询</li>
+</ul>
+<h3>
+    2. DNS解析过程
+</h3>
+<ol>
+    <li><span class="special">本地缓存检查</span>：检查浏览器、操作系统、本地DNS缓存</li>
+    <li><span class="special">hosts文件检查</span>：检查本地hosts文件</li>
+    <li><span class="special">本地DNS服务器查询</span>：向配置的DNS服务器发送查询</li>
+    <li><span class="special">根域名服务器查询</span>：如果需要，查询根域名服务器</li>
+    <li><span class="special">顶级域名服务器查询</span>：查询相应的TLD服务器</li>
+    <li><span class="special">权威域名服务器查询</span>：查询域名的权威服务器</li>
+    <li><span class="special">结果返回</span>：将结果返回给客户端并缓存</li>
+</ol>
+<h3>
+    3. DNS消息格式
+</h3>
+<pre>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Identification        |            Flags              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|        Question Count         |         Answer Count          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|       Authority Count         |      Additional Count         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           Questions                           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            Answers                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Authority                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Additional                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</pre>
+<h4>
+    3.1 首部字段
+</h4>
+<ul>
+    <li><span class="special">标识(Identification)</span>：16位，匹配请求和响应</li>
+    <li><span class="special">标志(Flags)</span>：16位，包含查询/响应标志、操作码等</li>
+    <li><span class="special">问题数(Question Count)</span>：16位，问题部分条目数</li>
+    <li><span class="special">回答数(Answer Count)</span>：16位，回答部分条目数</li>
+    <li><span class="special">权威数(Authority Count)</span>：16位，权威部分条目数</li>
+    <li><span class="special">附加数(Additional Count)</span>：16位，附加部分条目数</li>
+</ul>
+<h2>
+    DNS服务器类型
+</h2>
+<h3>
+    1. 根域名服务器
+</h3>
+<ul>
+    <li><span class="special">数量</span>：13个逻辑根服务器（a.root-servers.net到m.root-servers.net）</li>
+    <li><span class="special">分布</span>：全球分布，使用任播技术</li>
+    <li><span class="special">功能</span>：提供顶级域服务器的地址信息</li>
+</ul>
+<h3>
+    2. 顶级域服务器
+</h3>
+<ul>
+    <li><span class="special">gTLD服务器</span>：通用顶级域，如.com、.org、.net</li>
+    <li><span class="special">ccTLD服务器</span>：国家代码顶级域，如.cn、.uk、.jp</li>
+    <li><span class="special">新gTLD</span>：新通用顶级域，如.xyz、.online、.app</li>
+</ul>
+<h3>
+    3. 权威域名服务器
+</h3>
+<ul>
+    <li><span class="special">主服务器</span>：Primary Master，维护区域数据的原始副本</li>
+    <li><span class="special">从服务器</span>：Secondary Slave，从主服务器复制数据</li>
+    <li><span class="special">功能</span>：提供特定域名的权威解析结果</li>
+</ul>
+<h3>
+    4. 本地DNS服务器
+</h3>
+<ul>
+    <li><span class="special">功能</span>：为本地网络提供DNS解析服务</li>
+    <li><span class="special">缓存</span>：缓存解析结果，提高响应速度</li>
+    <li><span class="special">递归解析</span>：为客户机提供完整的解析服务</li>
+</ul>
+<h2>
+    DNS安全
+</h2>
+<h3>
+    1. DNS安全威胁
+</h3>
+<h4>
+    1.1 DNS欺骗 (DNS Spoofing)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：攻击者伪造DNS响应，返回错误的IP地址</li>
+    <li><span class="special">影响</span>：用户被重定向到恶意网站</li>
+    <li><span class="special">防护</span>：使用DNSSEC，验证响应真实性</li>
+</ul>
+<h4>
+    1.2 DNS缓存污染 (DNS Cache Poisoning)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：攻击者向DNS缓存注入错误的解析记录</li>
+    <li><span class="special">影响</span>：影响所有使用该缓存的用户</li>
+    <li><span class="special">防护</span>：随机化查询ID，使用端口随机化</li>
+</ul>
+<h4>
+    1.3 DNS放大攻击 (DNS Amplification)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：利用DNS响应比请求大的特点进行DDoS攻击</li>
+    <li><span class="special">放大倍数</span>：可达50-100倍</li>
+    <li><span class="special">防护</span>：限制响应大小，实施源地址验证</li>
+</ul>
+<h3>
+    2. DNSSEC (DNS Security Extensions)
+</h3>
+<h4>
+    2.1 DNSSEC原理
+</h4>
+<ul>
+    <li><span class="special">数字签名</span>：对DNS记录进行数字签名</li>
+    <li><span class="special">链式验证</span>：从根域到子域的信任链</li>
+    <li><span class="special">公钥密码学</span>：使用RSA、ECDSA等算法</li>
+</ul>
+<h4>
+    2.2 DNSSEC记录类型
+</h4>
+<ul>
+    <li><span class="special">RRSIG</span>：资源记录签名</li>
+    <li><span class="special">DNSKEY</span>：公钥记录</li>
+    <li><span class="special">DS</span>：委派签名者记录</li>
+    <li><span class="special">NSEC/NSEC3</span>：不存在记录证明</li>
+</ul>
+<h4>
+    2.3 DNSSEC部署
+</h4>
+<ul>
+    <li><span class="special">根域支持</span>：2010年开始根域支持DNSSEC</li>
+    <li><span class="special">TLD支持</span>：大多数gTLD和ccTLD支持DNSSEC</li>
+    <li><span class="special">域名注册</span>：注册域名时可启用DNSSEC</li>
+</ul>
+<h3>
+    3. 其他安全措施
+</h3>
+<h4>
+    3.1 DNS over HTTPS (DoH)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：通过HTTPS加密传输DNS查询</li>
+    <li><span class="special">优势</span>：防止监听和篡改，绕过DNS污染</li>
+    <li><span class="special">应用</span>：Firefox、Chrome等浏览器支持</li>
+</ul>
+<h4>
+    3.2 DNS over TLS (DoT)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：通过TLS加密传输DNS查询</li>
+    <li><span class="special">端口</span>：853端口</li>
+    <li><span class="special">优势</span>：专用端口，易于识别和管理</li>
+</ul>
+<h4>
+    3.3 响应速率限制 (RRL)
+</h4>
+<ul>
+    <li><span class="special">目的</span>：防止DNS放大攻击</li>
+    <li><span class="special">机制</span>：限制对相同查询的响应频率</li>
+    <li><span class="special">实现</span>：BIND、PowerDNS等支持</li>
+</ul>
+<h2>
+    DNS性能优化
+</h2>
+<h3>
+    1. 缓存优化
+</h3>
+<h4>
+    1.1 缓存层次
+</h4>
+<ul>
+    <li><span class="special">浏览器缓存</span>：应用层缓存</li>
+    <li><span class="special">操作系统缓存</span>：系统级DNS缓存</li>
+    <li><span class="special">本地DNS缓存</span>：递归服务器缓存</li>
+</ul>
+<h4>
+    1.2 TTL策略
+</h4>
+<ul>
+    <li><span class="special">合理设置</span>：平衡缓存效果和记录更新需求</li>
+    <li><span class="special">动态调整</span>：根据记录稳定性调整TTL</li>
+    <li><span class="special">负缓存</span>：缓存不存在的记录</li>
+</ul>
+<h3>
+    2. 负载均衡
+</h3>
+<h4>
+    2.1 轮询DNS
+</h4>
+<ul>
+    <li><span class="special">原理</span>：为同一域名配置多个A记录</li>
+    <li><span class="special">实现</span>：DNS服务器轮询返回不同IP</li>
+    <li><span class="special">问题</span>：不考虑服务器负载和健康状态</li>
+</ul>
+<h4>
+    2.2 智能DNS
+</h4>
+<ul>
+    <li><span class="special">地理位置</span>：根据用户位置返回最近的服务器</li>
+    <li><span class="special">负载感知</span>：根据服务器负载调整解析结果</li>
+    <li><span class="special">健康检查</span>：自动检测并移除故障服务器</li>
+</ul>
+<h3>
+    3. 协议优化
+</h3>
+<h4>
+    3.1 EDNS0
+</h4>
+<ul>
+    <li><span class="special">功能</span>：扩展DNS协议支持更大消息</li>
+    <li><span class="special">优势</span>：支持DNSSEC，减少TCP回退</li>
+</ul>
+<h4>
+    3.2 TCP fallback
+</h4>
+<ul>
+    <li><span class="special">场景</span>：UDP响应超过512字节时</li>
+    <li><span class="special">机制</span>：使用TCP重新查询</li>
+    <li><span class="special">优化</span>：减少TCP连接建立开销</li>
+</ul>
+<h2>
+    DNS故障排除
+</h2>
+<h3>
+    1. 常用诊断工具
+</h3>
+<h4>
+    1.1 nslookup
+</h4>
+<ul>
+    <li><span class="special">功能</span>：查询DNS记录</li>
+    <li><span class="special">用法</span>：nslookup domain [server]</li>
+    <li><span class="special">模式</span>：交互式和非交互式</li>
+</ul>
+<h4>
+    1.2 dig
+</h4>
+<ul>
+    <li><span class="special">功能</span>：DNS查询工具</li>
+    <li><span class="special">优势</span>：输出格式清晰，功能强大</li>
+    <li><span class="special">用法</span>：dig [@server] domain [type]</li>
+</ul>
+<h4>
+    1.3 host
+</h4>
+<ul>
+    <li><span class="special">功能</span>：简单的DNS查询工具</li>
+    <li><span class="special">用法</span>：host domain [server]</li>
+</ul>
+<h3>
+    2. 常见故障
+</h3>
+<h4>
+    2.1 解析失败
+</h4>
+<ul>
+    <li><span class="special">原因</span>：DNS服务器不可达、记录不存在、网络问题</li>
+    <li><span class="special">排查</span>：检查网络连通性、验证记录存在性</li>
+</ul>
+<h4>
+    2.2 解析延迟
+</h4>
+<ul>
+    <li><span class="special">原因</span>：DNS服务器响应慢、网络延迟、缓存未命中</li>
+    <li><span class="special">排查</span>：测试DNS服务器响应时间、检查缓存策略</li>
+</ul>
+<h4>
+    2.3 缓存问题
+</h4>
+<ul>
+    <li><span class="special">原因</span>：缓存过期、缓存污染、TTL设置不当</li>
+    <li><span class="special">解决</span>：清除缓存、调整TTL、启用DNSSEC</li>
+</ul>
+<h3>
+    3. 故障排除步骤
+</h3>
+<ol>
+    <li><span class="special">验证网络连通性</span>：ping DNS服务器</li>
+    <li><span class="special">检查DNS配置</span>：验证DNS服务器地址</li>
+    <li><span class="special">直接查询</span>：使用dig/nslookup直接查询权威服务器</li>
+    <li><span class="special">检查缓存</span>：查看本地缓存内容</li>
+    <li><span class="special">跟踪解析过程</span>：使用dig +trace跟踪完整解析过程</li>
+    <li><span class="special">检查防火墙</span>：确认53端口未被阻止</li>
+</ol>
