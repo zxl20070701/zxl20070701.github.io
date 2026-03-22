@@ -83,7 +83,7 @@ var initSearchObj = function () {
                     }
                 }
 
-                var firstLevelUrl = firstLevelSpan.getAttribute('tag').replace(/\-/g, '/')
+                var firstLevelUrl = firstLevelSpan.getAttribute('tag').replace(/\-/g, '/');
                 loadPage("pages/" + firstLevelUrl + "/menu", function (data) {
                     finshCount += 1;
 
@@ -169,7 +169,16 @@ function doSearch(event) {
             var rightCount = 0;
             for (i = 0; i < searchObj.length; i++) {
                 // 如果匹配到
-                if (searchObj[i].path.replace(/ /g, '').toLowerCase().indexOf(inputValue) > -1 || searchObj[i].url.toLowerCase().indexOf(inputValue) > -1) {
+                // 将inputValue按空格分割成多个值，每个值都必须分别被url或path包含
+                var inputValues = inputValue.split(' ');
+                var allMatch = true;
+                for (var j = 0; j < inputValues.length; j++) {
+                    if (inputValues[j] && !(searchObj[i].path.replace(/ /g, '').toLowerCase().indexOf(inputValues[j]) > -1 || searchObj[i].url.toLowerCase().indexOf(inputValues[j]) > -1)) {
+                        allMatch = false;
+                        break;
+                    }
+                }
+                if (allMatch) {
                     rightCount += 1;
                     itemEl = document.createElement("div");
                     window.searchListEl.appendChild(itemEl);
