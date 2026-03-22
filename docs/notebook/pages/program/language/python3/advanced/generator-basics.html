@@ -1,0 +1,88 @@
+<header>
+    生成器基础
+</header>
+<p>
+    它们允许你创建一个迭代器，一次产生一个值，而不是一次性生成所有值。这种惰性求值的特性使得生成器在处理大量数据时非常高效。
+</p>
+
+<h2>
+    基本生成器函数
+</h2>
+<pre tag="python">
+# 基本生成器函数
+def simple_generator():
+    yield 1
+    yield 2
+    yield 3
+
+# 使用生成器
+gen = simple_generator()
+print(next(gen))  # 1
+print(next(gen))  # 2
+print(next(gen))  # 3
+# print(next(gen))  # StopIteration异常
+
+# 使用for循环遍历生成器
+for value in simple_generator():
+    print(f"值: {value}")
+</pre>
+
+<h2>
+    生成器表达式
+</h2>
+<pre tag="python">
+# 生成器表达式（类似列表推导式）
+gen_expr = (x**2 for x in range(5))
+print(f"生成器表达式: {list(gen_expr)}")  # [0, 1, 4, 9, 16]
+
+# 无限序列生成器
+def infinite_sequence():
+    num = 0
+    while True:
+        yield num
+        num += 1
+
+# 使用无限生成器（需要限制）
+infinite_gen = infinite_sequence()
+for i in range(10):
+    print(next(infinite_gen), end=' ')  # 0 1 2 3 4 5 6 7 8 9
+print()
+</pre>
+
+<h2>
+    生成器与列表的区别
+</h2>
+<pre tag="python">
+import sys
+
+# 列表：一次性生成所有值
+numbers_list = [x**2 for x in range(1000000)]
+print(f"列表内存占用: {sys.getsizeof(numbers_list)} bytes")
+
+# 生成器：惰性求值
+numbers_gen = (x**2 for x in range(1000000))
+print(f"生成器内存占用: {sys.getsizeof(numbers_gen)} bytes")
+
+# 使用生成器处理大数据
+def large_data_generator():
+    for i in range(1000000):
+        yield i * 2
+
+# 处理大数据而不占用大量内存
+count = 0
+for value in large_data_generator():
+    if value > 1000:
+        break
+    count += 1
+print(f"处理了 {count} 个值")
+</pre>
+
+<h2>
+    生成器的优势
+</h2>
+<ul>
+    <li><strong>内存效率</strong>：不需要一次性加载所有数据到内存</li>
+    <li><strong>惰性求值</strong>：只在需要时计算值</li>
+    <li><strong>无限序列</strong>：可以表示无限长的序列</li>
+    <li><strong>管道处理</strong>：可以链接多个生成器进行数据处理</li>
+</ul>

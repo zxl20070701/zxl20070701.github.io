@@ -1,0 +1,22 @@
+<header>
+    参数解包
+</header>
+<pre tag="python">
+# 列表解包
+numbers = [1, 2, 3]
+print(*numbers)  # 输出: 1 2 3
+
+# 字典解包
+config = {"host": "localhost", "port": 8080}
+connect(**config)  # 等价于 connect(host="localhost", port=8080)
+
+# 函数调用时的解包
+def add(a, b, c):
+    return a + b + c
+
+args = [1, 2, 3]
+print(add(*args))  # 输出: 6
+
+kwargs = {"a": 1, "b": 2, "c": 3}
+print(add(**kwargs))  # 输出: 6
+</pre>

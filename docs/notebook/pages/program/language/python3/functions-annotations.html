@@ -1,0 +1,24 @@
+<header>
+    函数注解和文档字符串
+</header>
+<pre tag="python">
+def calculate_area(length: float, width: float) -> float:
+    """
+    计算矩形的面积
+
+    参数:
+        length (float): 矩形的长度
+        width (float): 矩形的宽度
+
+    返回:
+        float: 矩形的面积
+    """
+    return length * width
+
+# 查看函数注解
+print(calculate_area.__annotations__)
+# 输出: {'length': &lt;class 'float'&gt;, 'width': &lt;class 'float'&gt;, 'return': &lt;class 'float'&gt;}
+
+# 查看文档字符串
+print(calculate_area.__doc__)
+</pre>

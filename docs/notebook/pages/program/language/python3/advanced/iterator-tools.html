@@ -1,0 +1,110 @@
+<header>
+    迭代器工具
+</header>
+<pre tag="python">
+import itertools
+
+# 迭代器组合工具
+def iterator_combinations():
+    """迭代器组合工具"""
+
+    # chain - 连接多个迭代器
+    list1 = [1, 2, 3]
+    list2 = ['a', 'b', 'c']
+    list3 = [True, False]
+
+    chained = itertools.chain(list1, list2, list3)
+    print("chain连接结果:")
+    for item in chained:
+        print(item, end=' ')
+    print()
+
+    # zip_longest - 类似zip但处理不同长度
+    names = ['Alice', 'Bob', 'Charlie']
+    ages = [25, 30]
+
+    zipped = itertools.zip_longest(names, ages, fillvalue='Unknown')
+    print("\nzip_longest结果:")
+    for name, age in zipped:
+        print(f"{name}: {age}")
+
+    # islice - 切片迭代器
+    numbers = range(20)
+    sliced = itertools.islice(numbers, 5, 15, 2)
+    print("\nislice结果 (5-15, 步长2):")
+    for num in sliced:
+        print(num, end=' ')
+    print()
+
+# 过滤和映射工具
+def iterator_filters():
+    """迭代器过滤和映射"""
+
+    # filterfalse - 过滤不符合条件的元素
+    numbers = range(10)
+    even_filter = itertools.filterfalse(lambda x: x % 2, numbers)
+    print("filterfalse结果 (过滤奇数):")
+    for num in even_filter:
+        print(num, end=' ')
+    print()
+
+    # takewhile - 取满足条件的元素直到遇到不满足的
+    data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3]
+    taken = itertools.takewhile(lambda x: x < 5, data)
+    print("\ntakewhile结果 (取小于5的元素):")
+    for num in taken:
+        print(num, end=' ')
+    print()
+
+    # dropwhile - 跳过满足条件的元素直到遇到不满足的
+    dropped = itertools.dropwhile(lambda x: x < 5, data)
+    print("\ndropwhile结果 (跳过小于5的元素):")
+    for num in dropped:
+        print(num, end=' ')
+    print()
+
+# 分组和排列工具
+def iterator_grouping():
+    """迭代器分组和排列"""
+
+    # groupby - 按条件分组
+    data = [('apple', 1), ('apple', 2), ('banana', 1), ('banana', 2), ('cherry', 1)]
+    sorted_data = sorted(data, key=lambda x: x[0])  # groupby需要排序
+
+    grouped = itertools.groupby(sorted_data, key=lambda x: x[0])
+    print("groupby结果:")
+    for key, group in grouped:
+        items = list(group)
+        print(f"{key}: {items}")
+
+    # permutations - 排列
+    items = ['A', 'B', 'C']
+    perms = itertools.permutations(items, 2)
+    print("\npermutations结果 (2个元素的排列):")
+    for perm in perms:
+        print(perm, end=' ')
+    print()
+
+    # combinations - 组合
+    combos = itertools.combinations(items, 2)
+    print("\ncombinations结果 (2个元素的组合):")
+    for combo in combos:
+        print(combo, end=' ')
+    print()
+
+# 使用迭代器工具
+def use_iterator_tools():
+    """使用迭代器工具"""
+
+    print("=== 迭代器组合 ===")
+    iterator_combinations()
+
+    print("\n=== 过滤和映射 ===")
+    iterator_filters()
+
+    print("\n=== 分组和排列 ===")
+    iterator_grouping()
+
+# 运行迭代器工具示例
+use_iterator_tools()
+</pre>

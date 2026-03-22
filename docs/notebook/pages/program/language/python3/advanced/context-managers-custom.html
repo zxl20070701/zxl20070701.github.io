@@ -1,0 +1,132 @@
+<header>
+    自定义上下文管理器
+</header>
+<pre tag="python">
+from contextlib import contextmanager
+import time
+
+# 使用类实现上下文管理器
+class Timer:
+    """计时器上下文管理器"""
+
+    def __init__(self, name="计时器"):
+        self.name = name
+        self.start_time = None
+        self.end_time = None
+
+    def __enter__(self):
+        """进入上下文"""
+        self.start_time = time.time()
+        print(f"[{self.name}] 开始计时")
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """退出上下文"""
+        self.end_time = time.time()
+        elapsed = self.end_time - self.start_time
+        print(f"[{self.name}] 结束计时，耗时: {elapsed:.4f}秒")
+
+        # 返回False表示不抑制异常
+        return False
+
+    def elapsed_time(self):
+        """获取已过时间"""
+        if self.start_time:
+            return time.time() - self.start_time
+        return 0
+
+# 使用装饰器实现上下文管理器
+@contextmanager
+def database_connection(db_name):
+    """数据库连接上下文管理器"""
+    print(f"连接到数据库: {db_name}")
+
+    # 模拟数据库连接
+    connection = {
+        'name': db_name,
+        'connected': True,
+        'data': []
+    }
+
+    try:
+        yield connection
+    finally:
+        # 确保连接关闭
+        connection['connected'] = False
+        print(f"关闭数据库连接: {db_name}")
+
+# 文件锁上下文管理器
+class FileLock:
+    """文件锁上下文管理器"""
+
+    def __init__(self, filename):
+        self.filename = filename
+        self.lockfile = f"{filename}.lock"
+
+    def __enter__(self):
+        """获取文件锁"""
+        import os
+
+        # 检查锁文件是否存在
+        if os.path.exists(self.lockfile):
+            raise RuntimeError(f"文件 {self.filename} 已被锁定")
+
+        # 创建锁文件
+        with open(self.lockfile, 'w') as f:
+            f.write(f"锁定时间: {time.ctime()}")
+
+        print(f"获取文件锁: {self.lockfile}")
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """释放文件锁"""
+        import os
+
+        # 删除锁文件
+        if os.path.exists(self.lockfile):
+            os.remove(self.lockfile)
+            print(f"释放文件锁: {self.lockfile}")
+
+        # 返回False表示不抑制异常
+        return False
+
+# 使用自定义上下文管理器
+def use_custom_context_managers():
+    """使用自定义上下文管理器"""
+
+    # 使用计时器
+    with Timer("程序执行") as timer:
+        time.sleep(1)
+        print(f"当前已过时间: {timer.elapsed_time():.2f}秒")
+
+    # 使用数据库连接
+    with database_connection("my_database") as db:
+        db['data'].append("新数据")
+        print(f"数据库状态: {db}")
+
+    # 使用文件锁
+    test_file = "locked_file.txt"
+    try:
+        with FileLock(test_file) as lock:
+            # 在这里进行文件操作
+            with open(test_file, 'w') as f:
+                f.write("这是受保护的文件内容")
+            print("文件操作完成")
+
+            # 模拟长时间操作
+            time.sleep(2)
+
+    except RuntimeError as e:
+        print(f"文件锁定错误: {e}")
+
+    finally:
+        # 清理测试文件
+        import os
+        for file in [test_file, f"{test_file}.lock"]:
+            if os.path.exists(file):
+                os.remove(file)
+                print(f"已清理文件: {file}")
+
+# 运行自定义上下文管理器示例
+use_custom_context_managers()
+</pre>

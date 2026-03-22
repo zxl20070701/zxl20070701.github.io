@@ -1,0 +1,49 @@
+<header>
+    异常链和重新抛出
+</header>
+<p>
+    异常链允许我们在处理一个异常时创建新的异常，同时保留原始异常的信息。这在需要转换异常类型或添加额外上下文时非常有用。
+</p>
+<pre tag="python">
+# 异常链
+def divide_numbers(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError as e:
+        # 创建新的异常并保留原始异常
+        raise ValueError("参数b不能为零") from e
+
+try:
+    result = divide_numbers(10, 0)
+except ValueError as e:
+    print(f"捕获到值错误: {e}")
+    print(f"原始异常: {e.__cause__}")
+
+# 重新抛出异常
+def process_data(data):
+    try:
+        # 一些处理逻辑
+        if not data:
+            raise ValueError("数据不能为空")
+        return data.upper()
+    except ValueError:
+        print("处理数据时发生值错误")
+        raise  # 重新抛出相同的异常
+
+try:
+    process_data("")
+except ValueError as e:
+    print(f"最终捕获: {e}")
+
+# 抑制异常
+def may_fail():
+    try:
+        # 一些可能失败的操作
+        return 10 / 0
+    except ZeroDivisionError:
+        print("忽略除零错误")
+        return None
+
+result = may_fail()
+print(f"结果: {result}")
+</pre>

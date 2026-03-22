@@ -1,0 +1,69 @@
+<header>
+    类属性与实例属性
+</header>
+<h2>
+    类属性
+</h2>
+<p>
+    类属性是定义在类中但在任何方法之外的变量，所有类的实例共享这个属性：
+</p>
+<pre tag="python">
+class Dog:
+    # 类属性
+    species = "Canis familiaris"
+    
+    def __init__(self, name):
+        self.name = name
+
+# 所有Dog实例共享species属性
+dog1 = Dog("Buddy")
+dog2 = Dog("Lucy")
+
+print(dog1.species)  # 输出: Canis familiaris
+print(dog2.species)  # 输出: Canis familiaris
+print(Dog.species)   # 输出: Canis familiaris
+</pre>
+
+<h2>
+    实例属性
+</h2>
+<p>
+    实例属性是属于特定对象的属性，通过<span class="warn">self</span>在方法中定义：
+</p>
+<pre tag="python">
+class Person:
+    def __init__(self, name, age):
+        # 实例属性
+        self.name = name
+        self.age = age
+    
+    def introduce(self):
+        return f"My name is {self.name}, I'm {self.age} years old."
+
+person = Person("Alice", 30)
+print(person.name)  # 输出: Alice
+print(person.age)   # 输出: 30
+</pre>
+
+<h2>
+    属性访问顺序
+</h2>
+<pre tag="python">
+class Example:
+    class_attr = "类属性"
+    
+    def __init__(self):
+        self.instance_attr = "实例属性"
+    
+    def show_attrs(self):
+        print(f"类属性: {self.class_attr}")
+        print(f"实例属性: {self.instance_attr}")
+
+obj = Example()
+obj.show_attrs()
+
+# 修改实例属性不会影响类属性
+obj.class_attr = "修改后的实例属性"
+print(f"通过实例访问: {obj.class_attr}")  # 修改后的实例属性
+print(f"通过类访问: {Example.class_attr}")  # 类属性（未改变）
+</pre>

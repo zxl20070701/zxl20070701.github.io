@@ -1,0 +1,115 @@
+<header>
+    异常处理模式
+</header>
+<p>
+    Python提供了多种异常处理模式，每种模式适用于不同的场景。了解这些模式可以帮助我们选择最适合特定情况的异常处理方式。
+</p>
+<pre tag="python">
+# 1. EAFP (Easier to Ask for Forgiveness than Permission)
+def read_file_eafp(filename):
+    """EAFP模式：先尝试，失败再处理"""
+    try:
+        with open(filename, 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        return "文件不存在"
+    except IOError:
+        return "读取文件失败"
+
+# 2. LBYL (Look Before You Leap)
+def read_file_lbyl(filename):
+    """LBYL模式：先检查，再执行"""
+    import os
+    if not os.path.exists(filename):
+        return "文件不存在"
+    if not os.access(filename, os.R_OK):
+        return "文件不可读"
+
+    try:
+        with open(filename, 'r') as file:
+            return file.read()
+    except IOError:
+        return "读取文件失败"
+
+# 3. 重试模式
+import time
+import random
+
+def retry_operation(operation, max_attempts=3, delay=1):
+    """重试操作"""
+    for attempt in range(max_attempts):
+        try:
+            return operation()
+        except Exception as e:
+            if attempt == max_attempts - 1:
+                raise
+            print(f"尝试 {attempt + 1} 失败: {e}，{delay}秒后重试...")
+            time.sleep(delay)
+
+# 测试重试
+def unreliable_operation():
+    """模拟不可靠操作"""
+    if random.random() < 0.7:  # 70%概率失败
+        raise ConnectionError("网络连接失败")
+    return "操作成功"
+
+try:
+    result = retry_operation(unreliable_operation, max_attempts=3, delay=0.5)
+    print(result)
+except ConnectionError as e:
+    print(f"所有重试都失败: {e}")
+
+# 4. 回退模式
+def get_data_with_fallback(primary_source, fallback_source):
+    """带回退的数据获取"""
+    try:
+        return primary_source()
+    except Exception as e:
+        print(f"主数据源失败: {e}")
+        try:
+            return fallback_source()
+        except Exception as e2:
+            print(f"备用数据源也失败: {e2}")
+            raise
+
+# 测试回退
+def primary_data_source():
+    # 模拟主数据源失败
+    raise ConnectionError("主服务器不可用")
+
+def fallback_data_source():
+    return {"data": "来自备用源的数据"}
+
+try:
+    data = get_data_with_fallback(primary_data_source, fallback_data_source)
+    print(f"获取到的数据: {data}")
+except Exception as e:
+    print(f"无法获取数据: {e}")
+
+# 5. 批量处理异常
+def process_items(items):
+    """批量处理项目，收集所有异常"""
+    results = []
+    exceptions = []
+
+    for item in items:
+        try:
+            # 模拟处理逻辑
+            if item < 0:
+                raise ValueError(f"项目 {item} 不能为负数")
+            result = item * 2
+            results.append(result)
+        except Exception as e:
+            exceptions.append((item, e))
+
+    return results, exceptions
+
+# 测试批量处理
+items = [1, -2, 3, -4, 5]
+results, errors = process_items(items)
+
+print(f"成功处理的结果: {results}")
+print(f"处理错误:")
+for item, error in errors:
+    print(f"  项目 {item}: {error}")
+</pre>

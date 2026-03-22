@@ -1,0 +1,211 @@
+<header>
+    装饰器实际应用
+</header>
+<h2>
+    缓存装饰器
+</h2>
+<pre tag="python">
+import functools
+
+def memoize(func):
+    """缓存装饰器"""
+    cache = {}
+    
+    @functools.wraps(func)
+    def wrapper(*args):
+        if args in cache:
+            print(f"从缓存获取结果: {args}")
+            return cache[args]
+        
+        result = func(*args)
+        cache[args] = result
+        print(f"计算并缓存结果: {args}")
+        return result
+    
+    return wrapper
+
+@memoize
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print(f"斐波那契数列:")
+for i in range(10):
+    print(f"F({i}) = {fibonacci(i)}")
+</pre>
+
+<h2>
+    权限检查装饰器
+</h2>
+<pre tag="python">
+import functools
+
+def require_permission(permission):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            user_permissions = kwargs.get('user_permissions', [])
+            if permission in user_permissions:
+                return func(*args, **kwargs)
+            else:
+                raise PermissionError(f"需要{permission}权限")
+        return wrapper
+    return decorator
+
+@require_permission('admin')
+def delete_user(user_id, user_permissions=None):
+    print(f"删除用户 {user_id}")
+
+# 测试权限
+try:
+    delete_user(123, user_permissions=['admin'])
+    delete_user(456, user_permissions=['user'])
+except PermissionError as e:
+    print(f"权限错误: {e}")
+</pre>
+
+<h2>
+    重试装饰器
+</h2>
+<pre tag="python">
+import time
+import random
+import functools
+
+def retry(max_attempts=3, delay=1, backoff=2):
+    """重试装饰器"""
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            current_delay = delay
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if attempt == max_attempts - 1:
+                        raise
+                    
+                    print(f"尝试 {attempt + 1} 失败: {e}")
+                    time.sleep(current_delay)
+                    current_delay *= backoff
+            return None
+        return wrapper
+    return decorator
+
+@retry(max_attempts=3, delay=0.5, backoff=2)
+def unreliable_function():
+    import random
+    if random.random() < 0.7:  # 70%概率失败
+        raise Exception("随机错误")
+    return "成功执行!"
+
+print("\n测试重试装饰器:")
+try:
+    result = unreliable_function()
+    print(result)
+except Exception as e:
+    print(f"最终失败: {e}")
+</pre>
+
+<h2>
+    日志装饰器
+</h2>
+<pre tag="python">
+import logging
+import functools
+
+def log_calls(logger_name=None):
+    """日志装饰器"""
+    def decorator(func):
+        logger = logging.getLogger(logger_name or func.__module__)
+        
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            logger.info(f"调用 {func.__name__}")
+            logger.info(f"参数: args={args}, kwargs={kwargs}")
+            try:
+                result = func(*args, **kwargs)
+                logger.info(f"{func.__name__} 返回: {result}")
+                return result
+            except Exception as e:
+                logger.error(f"{func.__name__} 异常: {e}")
+                raise
+        return wrapper
+    return decorator
+
+# 配置日志
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+@log_calls()
+def divide(a, b):
+    return a / b
+
+print("\n测试日志装饰器:")
+divide(10, 2)
+try:
+    divide(10, 0)
+except ZeroDivisionError:
+    print("捕获到除零异常")
+</pre>
+
+<h2>
+    性能监控装饰器
+</h2>
+<pre tag="python">
+import time
+import functools
+from collections import defaultdict
+
+class PerformanceMonitor:
+    def __init__(self):
+        self.call_counts = defaultdict(int)
+        self.total_times = defaultdict(float)
+    
+    def monitor(self, func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            result = func(*args, **kwargs)
+            end_time = time.time()
+            
+            elapsed = end_time - start_time
+            self.call_counts[func.__name__] += 1
+            self.total_times[func.__name__] += elapsed
+            
+            return result
+        return wrapper
+    
+    def get_stats(self, func_name):
+        count = self.call_counts[func_name]
+        total_time = self.total_times[func_name]
+        avg_time = total_time / count if count > 0 else 0
+        return {
+            'call_count': count,
+            'total_time': total_time,
+            'average_time': avg_time
+        }
+    
+    def print_stats(self):
+        print("\n性能统计:")
+        for func_name in self.call_counts:
+            stats = self.get_stats(func_name)
+            print(f"{func_name}: 调用{stats['call_count']}次, "
+                  f"总时间{stats['total_time']:.4f}s, "
+                  f"平均时间{stats['average_time']:.4f}s")
+
+# 使用性能监控
+monitor = PerformanceMonitor()
+
+@monitor.monitor
+def slow_calculation(n):
+    time.sleep(0.1)  # 模拟耗时计算
+    return sum(i**2 for i in range(n))
+
+# 测试多次调用
+for i in range(3):
+    result = slow_calculation(1000)
+    print(f"计算结果: {result}")
+
+monitor.print_stats()
+</pre>

@@ -1,0 +1,62 @@
+<header>
+    构造函数 __init__()
+</header>
+<h2>
+    构造函数基础
+</h2>
+<p>
+    <span class="important">__init__()</span>方法是Python中的构造函数，在创建对象时自动调用。它用于初始化对象的属性。
+</p>
+<pre tag="python">
+class Person:
+    def __init__(self, name, age):
+        """构造函数，初始化对象属性"""
+        self.name = name
+        self.age = age
+        print(f"创建了Person对象: {name}, {age}岁")
+
+# 创建对象时自动调用__init__方法
+person1 = Person("Alice", 25)
+person2 = Person("Bob", 30)
+</pre>
+
+<h2>
+    构造函数的作用
+</h2>
+<ul>
+    <li>初始化对象的属性</li>
+    <li>执行对象创建时的必要设置</li>
+    <li>验证传入参数的合法性</li>
+    <li>建立对象间的关联关系</li>
+</ul>
+
+<h2>
+    带验证的构造函数
+</h2>
+<pre tag="python">
+class BankAccount:
+    def __init__(self, account_number, owner, initial_balance=0):
+        if initial_balance < 0:
+            raise ValueError("初始余额不能为负数")
+        
+        self.account_number = account_number
+        self.owner = owner
+        self.balance = initial_balance
+        self.transaction_history = []
+        
+        # 记录开户交易
+        if initial_balance > 0:
+            self.transaction_history.append(f"开户存入: ¥{initial_balance}")
+    
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            self.transaction_history.append(f"存入: ¥{amount}")
+    
+    def get_balance(self):
+        return self.balance
+
+# 创建银行账户
+account = BankAccount("123456", "张三", 1000)
+print(f"账户余额: ¥{account.get_balance()}")
+</pre>

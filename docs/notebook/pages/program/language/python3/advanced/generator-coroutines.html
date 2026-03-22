@@ -1,0 +1,188 @@
+<header>
+    协程
+</header>
+<p>
+    协程是生成器的高级用法，它们可以在执行过程中暂停和恢复，实现双向通信和协作式多任务处理。
+</p>
+
+<h2>
+    基本协程
+</h2>
+<pre tag="python">
+def simple_coroutine():
+    print("协程启动")
+    x = yield "等待输入"
+    print(f"接收到: {x}")
+    y = yield f"处理结果: {x * 2}"
+    print(f"再次接收到: {y}")
+    yield "协程结束"
+
+# 使用协程
+coro = simple_coroutine()
+print(next(coro))  # 启动协程
+print(coro.send(10))  # 发送值并获取结果
+print(coro.send(20))  # 再次发送值
+</pre>
+
+<h2>
+    生产者-消费者模式
+</h2>
+<pre tag="python">
+def producer(consumer):
+    """生产者协程"""
+    for i in range(5):
+        print(f"生产者生产: {i}")
+        consumer.send(i)
+    consumer.close()
+
+def consumer():
+    """消费者协程"""
+    try:
+        while True:
+            item = yield
+            print(f"消费者消费: {item}")
+    except GeneratorExit:
+        print("消费者关闭")
+
+# 使用生产者-消费者模式
+cons = consumer()
+next(cons)  # 启动消费者
+producer(cons)
+</pre>
+
+<h2>
+    数据过滤协程
+</h2>
+<pre tag="python">
+def filter_coroutine(predicate):
+    """过滤协程"""
+    print("过滤器启动")
+    try:
+        while True:
+            item = yield
+            if predicate(item):
+                yield item
+            else:
+                yield None
+    except GeneratorExit:
+        print("过滤器关闭")
+
+def process_coroutine():
+    """处理协程"""
+    print("处理器启动")
+    try:
+        while True:
+            item = yield
+            if item is not None:
+                print(f"处理: {item}")
+    except GeneratorExit:
+        print("处理器关闭")
+
+# 使用数据过滤协程
+filter_coro = filter_coroutine(lambda x: x > 5)
+process_coro = process_coroutine()
+
+next(filter_coro)  # 启动过滤器
+next(process_coro)  # 启动处理器
+
+# 发送数据
+data = [1, 3, 7, 2, 9, 4, 8]
+for item in data:
+    filtered = filter_coro.send(item)
+    if filtered is not None:
+        process_coro.send(filtered)
+
+filter_coro.close()
+process_coro.close()
+</pre>
+
+<h2>
+    异步任务协程
+</h2>
+<pre tag="python">
+import time
+import random
+
+def async_task(name, duration):
+    """异步任务协程"""
+    print(f"任务 {name} 开始")
+    start_time = time.time()
+
+    while time.time() - start_time < duration:
+        yield f"{name} 运行中..."
+        time.sleep(0.1)
+
+    yield f"任务 {name} 完成"
+
+def task_scheduler(tasks):
+    """任务调度器"""
+    while tasks:
+        for task in tasks[:]:
+            try:
+                status = next(task)
+                print(status)
+            except StopIteration:
+                tasks.remove(task)
+        time.sleep(0.01)  # 短暂休眠，避免过度占用CPU
+
+# 使用异步任务协程
+tasks = [
+    async_task("下载文件", 0.5),
+    async_task("处理数据", 0.3),
+    async_task("更新界面", 0.4)
+]
+
+task_scheduler(tasks)
+</pre>
+
+<h2>
+    协程装饰器
+</h2>
+<pre tag="python">
+def coroutine(func):
+    """协程装饰器"""
+    def start(*args, **kwargs):
+        cr = func(*args, **kwargs)
+        next(cr)
+        return cr
+    return start
+
+@coroutine
+def grep(pattern):
+    """搜索协程"""
+    print(f"搜索模式: {pattern}")
+    try:
+        while True:
+            line = yield
+            if pattern in line:
+                print(f"匹配: {line}")
+    except GeneratorExit:
+        print("搜索结束")
+
+@coroutine
+def printer():
+    """打印协程"""
+    try:
+        while True:
+            line = yield
+            print(f"打印: {line}")
+    except GeneratorExit:
+        print("打印结束")
+
+# 使用协程装饰器
+search = grep("python")
+output = printer()
+
+# 发送数据
+lines = [
+    "I love python programming",
+    "Java is also good",
+    "Python is powerful",
+    "C++ is fast"
+]
+
+for line in lines:
+    search.send(line)
+
+search.close()
+</pre>

@@ -1,0 +1,81 @@
+<header>
+    基本迭代器
+</header>
+<p>
+    迭代器提供了一种统一的方式来访问集合中的元素，而无需暴露集合的内部表示。
+</p>
+<pre tag="python">
+# 创建基本迭代器
+def create_basic_iterator():
+    """创建基本迭代器"""
+
+    # 从列表创建迭代器
+    numbers = [1, 2, 3, 4, 5]
+    iterator = iter(numbers)
+
+    print("从列表创建迭代器:")
+    print(next(iterator))  # 1
+    print(next(iterator))  # 2
+    print(next(iterator))  # 3
+
+    # 使用for循环遍历迭代器
+    iterator2 = iter(numbers)
+    print("\n使用for循环遍历:")
+    for num in iterator2:
+        print(num, end=' ')
+    print()
+
+    # 从字符串创建迭代器
+    text = "Hello"
+    char_iterator = iter(text)
+    print("\n字符串迭代器:")
+    for char in char_iterator:
+        print(char, end=' ')
+    print()
+
+# 自定义迭代器类
+class CountDown:
+    """倒计时迭代器"""
+
+    def __init__(self, start):
+        self.start = start
+        self.current = start
+
+    def __iter__(self):
+        """返回迭代器对象"""
+        return self
+
+    def __next__(self):
+        """返回下一个值"""
+        if self.current <= 0:
+            raise StopIteration
+
+        value = self.current
+        self.current -= 1
+        return value
+
+# 使用自定义迭代器
+def use_custom_iterator():
+    """使用自定义迭代器"""
+
+    print("倒计时迭代器:")
+    countdown = CountDown(5)
+
+    for num in countdown:
+        print(num, end=' ')
+    print()
+
+    # 重新创建迭代器（因为已经耗尽）
+    countdown2 = CountDown(3)
+    print("再次使用倒计时:")
+    while True:
+        try:
+            print(next(countdown2), end=' ')
+        except StopIteration:
+            break
+    print()
+
+# 运行基本迭代器示例
+create_basic_iterator()
+use_custom_iterator()
+</pre>

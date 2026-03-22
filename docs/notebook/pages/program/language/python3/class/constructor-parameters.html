@@ -1,0 +1,102 @@
+<header>
+    构造函数的参数
+</header>
+<h2>
+    带默认参数的构造函数
+</h2>
+<pre tag="python">
+class Student:
+    def __init__(self, name, age=18, grade="大一"):
+        self.name = name
+        self.age = age
+        self.grade = grade
+    
+    def display_info(self):
+        return f"姓名: {self.name}, 年龄: {self.age}, 年级: {self.grade}"
+
+# 使用默认参数
+student1 = Student("张三")
+student2 = Student("李四", 20)
+student3 = Student("王五", 19, "大二")
+
+print(student1.display_info())  # 姓名: 张三, 年龄: 18, 年级: 大一
+print(student2.display_info())  # 姓名: 李四, 年龄: 20, 年级: 大一
+print(student3.display_info())  # 姓名: 王五, 年龄: 19, 年级: 大二
+</pre>
+
+<h2>
+    可变参数的构造函数
+</h2>
+<pre tag="python">
+class Calculator:
+    def __init__(self, *numbers):
+        """接受任意数量的数字"""
+        self.numbers = numbers
+    
+    def sum_all(self):
+        return sum(self.numbers)
+    
+    def average(self):
+        if self.numbers:
+            return sum(self.numbers) / len(self.numbers)
+        return 0
+
+# 创建不同参数数量的对象
+calc1 = Calculator(1, 2, 3, 4, 5)
+calc2 = Calculator(10, 20, 30)
+calc3 = Calculator(100)
+
+print(calc1.sum_all())    # 输出: 15
+print(calc2.average())    # 输出: 20.0
+print(calc3.sum_all())    # 输出: 100
+</pre>
+
+<h2>
+    关键字参数的构造函数
+</h2>
+<pre tag="python">
+class Product:
+    def __init__(self, name, price, **kwargs):
+        self.name = name
+        self.price = price
+        # 处理额外的属性
+        self.brand = kwargs.get('brand', 'Unknown')
+        self.category = kwargs.get('category', 'General')
+        self.in_stock = kwargs.get('in_stock', True)
+    
+    def display_info(self):
+        return f"{self.name} - ¥{self.price} ({self.brand})"
+
+# 创建产品对象
+product1 = Product("手机", 2999, brand="小米", category="电子产品")
+product2 = Product("书籍", 59, author="张三", pages=300)
+
+print(product1.display_info())  # 手机 - ¥2999 (小米)
+print(product2.brand)           # Unknown
+print(product2.author)          # 张三
+</pre>
+
+<h2>
+    多种参数组合的构造函数
+</h2>
+<pre tag="python">
+class FlexibleClass:
+    def __init__(self, required_param, optional_param=None, *args, **kwargs):
+        self.required_param = required_param
+        self.optional_param = optional_param
+        self.args_list = args
+        self.kwargs_dict = kwargs
+    
+    def show_all(self):
+        print(f"必需参数: {self.required_param}")
+        print(f"可选参数: {self.optional_param}")
+        print(f"可变参数: {self.args_list}")
+        print(f"关键字参数: {self.kwargs_dict}")
+
+# 不同方式的实例化
+obj1 = FlexibleClass("必需值")
+obj2 = FlexibleClass("必需值", "可选值", 1, 2, 3, name="测试", value=100)
+
+obj1.show_all()
+obj2.show_all()
+</pre>

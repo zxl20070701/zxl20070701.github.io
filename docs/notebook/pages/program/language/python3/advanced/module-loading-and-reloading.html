@@ -1,0 +1,126 @@
+<header>
+    模块加载与重载
+</header>
+<p>
+    Python中用于动态加载和更新模块的重要机制。这允许程序在运行时加载新模块或重新加载已修改的模块，而无需重启整个应用程序。
+</p>
+
+<h2>
+    动态加载模块
+</h2>
+<pre tag="python">
+import importlib
+import sys
+from pathlib import Path
+
+# 动态加载模块
+def dynamic_module_loading():
+    """动态加载模块"""
+
+    # 创建测试模块
+    test_module_path = "dynamic_test_module.py"
+    with open(test_module_path, 'w', encoding='utf-8') as f:
+        f.write('''
+"""
+动态测试模块
+"""
+VERSION = "1.0.0"
+
+def greet(name):
+    """问候函数"""
+    return f"Hello, {name}!"
+
+class Calculator:
+    """计算器类"""
+
+    def add(self, a, b):
+        return a + b
+
+    def multiply(self, a, b):
+        return a * b
+
+print("动态模块已加载")
+''')
+
+    try:
+        # 导入模块
+        spec = importlib.util.spec_from_file_location("dynamic_test", test_module_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        # 使用模块
+        print(f"模块版本: {module.VERSION}")
+        print(module.greet("Python"))
+
+        calc = module.Calculator()
+        print(f"5 + 3 = {calc.add(5, 3)}")
+        print(f"5 * 3 = {calc.multiply(5, 3)}")
+
+        # 清理
+        import os
+        os.remove(test_module_path)
+
+    except Exception as e:
+        print(f"动态加载失败: {e}")
+</pre>
+
+<h2>
+    模块重载
+</h2>
+<pre tag="python">
+# 模块重载
+def module_reload_demo():
+    """模块重载演示"""
+
+    # 创建测试模块
+    reload_module_path = "reload_test_module.py"
+    with open(reload_module_path, 'w', encoding='utf-8') as f:
+        f.write('''
+"""
+重载测试模块 - 版本1
+"""
+VERSION = "1.0.0"
+
+def get_version():
+    return VERSION
+''')
+
+    try:
+        # 首次导入
+        import reload_test_module
+        print(f"首次导入版本: {reload_test_module.get_version()}")
+
+        # 修改模块文件
+        with open(reload_module_path, 'w', encoding='utf-8') as f:
+            f.write('''
+"""
+重载测试模块 - 版本2
+"""
+VERSION = "2.0.0"
+
+def get_version():
+    return VERSION
+
+def new_function():
+    return "这是新功能"
+''')
+
+        # 重载模块
+        importlib.reload(reload_test_module)
+        print(f"重载后版本: {reload_test_module.get_version()}")
+
+        # 使用新功能
+        if hasattr(reload_test_module, 'new_function'):
+            print(reload_test_module.new_function())
+
+        # 清理
+        import os
+        os.remove(reload_module_path)
+
+    except Exception as e:
+        print(f"重载失败: {e}")
+
+# 运行模块加载示例
+dynamic_module_loading()
+module_reload_demo()
+</pre>

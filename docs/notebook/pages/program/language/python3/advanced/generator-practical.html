@@ -1,0 +1,300 @@
+<header>
+    生成器的实际应用
+</header>
+<h2>
+    大文件处理
+</h2>
+<pre tag="python">
+def read_large_file(filename, chunk_size=1024):
+    """逐块读取大文件"""
+    with open(filename, 'r') as f:
+        while True:
+            chunk = f.read(chunk_size)
+            if not chunk:
+                break
+            yield chunk
+
+def process_lines(lines):
+    """处理行数据"""
+    for line in lines:
+        # 模拟处理
+        yield line.upper().strip()
+
+def filter_empty(lines):
+    """过滤空行"""
+    for line in lines:
+        if line:
+            yield line
+
+# 创建大文件测试
+with open('large_file.txt', 'w') as f:
+    for i in range(10000):
+        f.write(f"Line {i}: This is test data\n")
+        if i % 100 == 0:
+            f.write("\n")  # 添加一些空行
+
+# 使用生成器处理大文件
+print("处理大文件:")
+chunks = read_large_file('large_file.txt', 512)
+lines = (line for chunk in chunks for line in chunk.split('\n'))
+processed = process_lines(lines)
+filtered = filter_empty(processed)
+
+# 只处理前10行
+for i, line in enumerate(filtered):
+    if i >= 10:
+        break
+    print(f"处理后的行: {line}")
+</pre>
+
+<h2>
+    实时数据流处理
+</h2>
+<pre tag="python">
+import time
+import random
+
+def sensor_data_stream(sensor_id, duration=5):
+    """模拟传感器数据流"""
+    start_time = time.time()
+    while time.time() - start_time < duration:
+        # 模拟传感器读数
+        value = random.uniform(20, 30) + random.gauss(0, 0.5)
+        yield {
+            'sensor_id': sensor_id,
+            'timestamp': time.time(),
+            'value': value
+        }
+        time.sleep(0.1)  # 模拟采样间隔
+
+def filter_anomalies(data_stream, threshold=2.0):
+    """过滤异常值"""
+    for data in data_stream:
+        if abs(data['value'] - 25) > threshold:
+            yield data
+
+def calculate_moving_average(data_stream, window_size=5):
+    """计算移动平均"""
+    window = []
+    for data in data_stream:
+        window.append(data['value'])
+        if len(window) > window_size:
+            window.pop(0)
+        
+        if len(window) == window_size:
+            avg = sum(window) / len(window)
+            yield {
+                'timestamp': data['timestamp'],
+                'average': avg,
+                'current': data['value']
+            }
+
+# 使用实时数据流处理
+print("\n实时数据流处理:")
+sensor_data = sensor_data_stream("TEMP_001", 2)  # 2秒数据
+filtered_data = filter_anomalies(sensor_data, 1.5)
+moving_avg = calculate_moving_average(filtered_data, 3)
+
+for data in moving_avg:
+    print(f"时间: {data['timestamp']:.2f}, "
+          f"当前值: {data['current']:.2f}, "
+          f"移动平均: {data['average']:.2f}")
+</pre>
+
+<h2>
+    分页数据获取
+</h2>
+<pre tag="python">
+def paginated_data_fetch(api_endpoint, page_size=10):
+    """分页数据获取生成器"""
+    page = 1
+    while True:
+        # 模拟API调用
+        url = f"{api_endpoint}?page={page}&size={page_size}"
+        
+        # 模拟API响应
+        import random
+        data = [f"Item {page}_{i}" for i in range(random.randint(0, page_size))]
+        
+        if not data:
+            break
+        
+        for item in data:
+            yield item
+        
+        page += 1
+        
+        # 模拟网络延迟
+        time.sleep(0.1)
+
+def filter_items(items, keyword):
+    """过滤项目"""
+    for item in items:
+        if keyword.lower() in item.lower():
+            yield item
+
+def transform_items(items):
+    """转换项目格式"""
+    for item in items:
+        yield f"Processed: {item}"
+
+# 使用分页数据获取
+print("\n分页数据获取:")
+api_data = paginated_data_fetch("https://api.example.com/data", 5)
+filtered_data = filter_items(api_data, "item")
+transformed_data = transform_items(filtered_data)
+
+# 获取前15个项目
+for i, item in enumerate(transformed_data):
+    if i >= 15:
+        break
+    print(f"项目 {i+1}: {item}")
+</pre>
+
+<h2>
+    树形结构遍历
+</h2>
+<pre tag="python">
+class TreeNode:
+    def __init__(self, value, children=None):
+        self.value = value
+        self.children = children or []
+
+def depth_first_traversal(node):
+    """深度优先遍历"""
+    yield node.value
+    for child in node.children:
+        yield from depth_first_traversal(child)
+
+def breadth_first_traversal(root):
+    """广度优先遍历"""
+    from collections import deque
+    queue = deque([root])
+    
+    while queue:
+        node = queue.popleft()
+        yield node.value
+        queue.extend(node.children)
+
+def filter_by_condition(nodes, condition):
+    """根据条件过滤节点"""
+    for node in nodes:
+        if condition(node):
+            yield node
+
+# 创建测试树
+root = TreeNode("A", [
+    TreeNode("B", [
+        TreeNode("D"),
+        TreeNode("E")
+    ]),
+    TreeNode("C", [
+        TreeNode("F"),
+        TreeNode("G", [
+            TreeNode("H"),
+            TreeNode("I")
+        ])
+    ])
+])
+
+# 使用树形结构遍历
+print("\n树形结构遍历:")
+print("深度优先:")
+for value in depth_first_traversal(root):
+    print(f"节点: {value}")
+
+print("\n广度优先:")
+for value in breadth_first_traversal(root):
+    print(f"节点: {value}")
+
+print("\n过滤特定节点:")
+filtered = filter_by_condition(depth_first_traversal(root), lambda x: x in ['B', 'E', 'H'])
+for value in filtered:
+    print(f"过滤节点: {value}")
+</pre>
+
+<h2>
+    配置文件解析
+</h2>
+<pre tag="python">
+def parse_config_file(filename):
+    """解析配置文件"""
+    with open(filename, 'r') as f:
+        section = None
+        for line_num, line in enumerate(f, 1):
+            line = line.strip()
+            
+            # 跳过空行和注释
+            if not line or line.startswith('#'):
+                continue
+            
+            # 处理节标题
+            if line.startswith('[') and line.endswith(']'):
+                section = line[1:-1]
+                yield 'section', section, line_num
+            # 处理键值对
+            elif '=' in line:
+                key, value = line.split('=', 1)
+                key = key.strip()
+                value = value.strip()
+                yield 'key_value', (section, key, value), line_num
+            else:
+                yield 'error', f"无效行: {line}", line_num
+
+def validate_config(config_items):
+    """验证配置项"""
+    required_sections = {'database', 'server'}
+    found_sections = set()
+    
+    for item_type, data, line_num in config_items:
+        if item_type == 'section':
+            found_sections.add(data)
+        elif item_type == 'key_value':
+            section, key, value = data
+            # 验证必填配置
+            if section == 'database' and key == 'host' and not value:
+                yield 'error', f"数据库主机不能为空 (行 {line_num})", line_num
+            elif section == 'server' and key == 'port':
+                try:
+                    port = int(value)
+                    if not (1 <= port <= 65535):
+                        yield 'error', f"无效端口: {value} (行 {line_num})", line_num
+                except ValueError:
+                    yield 'error', f"端口必须是数字: {value} (行 {line_num})", line_num
+            else:
+                yield item_type, data, line_num
+        else:
+            yield item_type, data, line_num
+    
+    missing_sections = required_sections - found_sections
+    if missing_sections:
+        yield 'error', f"缺少必要节: {missing_sections}", 0
+
+# 创建测试配置文件
+with open('config.ini', 'w') as f:
+    f.write("[database]\n")
+    f.write("host = localhost\n")
+    f.write("port = 5432\n")
+    f.write("name = myapp\n")
+    f.write("\n")
+    f.write("[server]\n")
+    f.write("port = 8080\n")
+    f.write("debug = true\n")
+    f.write("\n")
+    f.write("# 这是一个注释\n")
+    f.write("invalid line\n")
+
+# 使用配置文件解析
+print("\n配置文件解析:")
+config_items = parse_config_file('config.ini')
+validated_items = validate_config(config_items)
+
+for item_type, data, line_num in validated_items:
+    if item_type == 'error':
+        print(f"错误 (行 {line_num}): {data}")
+    elif item_type == 'section':
+        print(f"节: {data}")
+    elif item_type == 'key_value':
+        section, key, value = data
+        print(f"配置: {section}.{key} = {value}")
+</pre>

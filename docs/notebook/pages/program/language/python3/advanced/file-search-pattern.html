@@ -1,0 +1,47 @@
+<header>
+    文件搜索和模式匹配
+</header>
+<p>
+    文件搜索和模式匹配是在文件系统中查找符合特定条件的文件的重要功能。
+</p>
+<pre tag="python">
+import glob
+import fnmatch
+from pathlib import Path
+
+# 创建测试文件
+test_files = ['test1.txt', 'test2.py', 'data.csv', 'config.json']
+for filename in test_files:
+    with open(filename, 'w') as f:
+        f.write(f'这是 {filename} 文件')
+
+# 使用glob搜索文件
+txt_files = glob.glob('*.txt')
+print(f"文本文件: {txt_files}")
+
+py_files = glob.glob('*.py')
+print(f"Python文件: {py_files}")
+
+# 递归搜索
+all_files = glob.glob('**/*', recursive=True)
+print(f"所有文件: {all_files[:5]}...")  # 只显示前5个
+
+# 使用fnmatch进行模式匹配
+files = ['document.txt', 'image.jpg', 'script.py', 'data.csv']
+txt_files = [f for f in files if fnmatch.fnmatch(f, '*.txt')]
+print(f"匹配的文本文件: {txt_files}")
+
+# 使用pathlib进行搜索
+current_path = Path('.')
+python_files = list(current_path.glob('*.py'))
+print(f"Python文件: {python_files}")
+
+# 递归搜索
+all_python_files = list(current_path.rglob('*.py'))
+print(f"所有Python文件: {all_python_files}")
+
+# 清理测试文件
+for filename in test_files:
+    if os.path.exists(filename):
+        os.remove(filename)
+</pre>

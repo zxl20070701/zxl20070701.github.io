@@ -1,0 +1,109 @@
+<header>
+    析构函数 __del__()
+</header>
+<h2>
+    析构函数基础
+</h2>
+<p>
+    <span class="important">__del__()</span>方法是Python中的析构函数，在对象被销毁时自动调用。它用于清理资源。
+</p>
+<pre tag="python">
+class FileHandler:
+    def __init__(self, filename):
+        self.filename = filename
+        self.file = open(filename, 'w')
+        print(f"打开文件: {filename}")
+    
+    def write(self, content):
+        self.file.write(content)
+    
+    def __del__(self):
+        """析构函数，关闭文件"""
+        self.file.close()
+        print(f"关闭文件: {self.filename}")
+
+# 创建对象
+handler = FileHandler("test.txt")
+handler.write("Hello, World!")
+
+# 当对象被销毁时，__del__方法会被调用
+del handler  # 显式删除对象
+</pre>
+
+<h2>
+    析构函数注意事项
+</h2>
+<div class="tips">
+    注意：在Python中，__del__方法的调用时机不确定，依赖于垃圾回收器。对于资源管理，推荐使用上下文管理器（with语句）。
+</div>
+
+<h2>
+    更安全的资源管理
+</h2>
+<pre tag="python">
+class SafeFileHandler:
+    def __init__(self, filename, mode='r'):
+        self.filename = filename
+        self.mode = mode
+        self.file = None
+    
+    def __enter__(self):
+        """上下文管理器入口"""
+        self.file = open(self.filename, self.mode)
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """上下文管理器出口"""
+        if self.file:
+            self.file.close()
+            print(f"文件 {self.filename} 已安全关闭")
+    
+    def read(self):
+        return self.file.read() if self.file else None
+    
+    def write(self, content):
+        if self.file and 'w' in self.mode:
+            self.file.write(content)
+
+# 推荐使用with语句
+with SafeFileHandler("example.txt", "w") as handler:
+    handler.write("Hello, World!")
+# 文件自动关闭，无需手动调用__del__
+</pre>
+
+<h2>
+    析构函数的实际应用
+</h2>
+<pre tag="python">
+class TempFileManager:
+    def __init__(self, temp_dir="/tmp"):
+        self.temp_dir = temp_dir
+        self.temp_files = []
+    
+    def create_temp_file(self, content=""):
+        import tempfile
+        import os
+        temp_file = tempfile.NamedTemporaryFile(dir=self.temp_dir, delete=False)
+        temp_file.write(content.encode())
+        temp_file.close()
+        self.temp_files.append(temp_file.name)
+        return temp_file.name
+    
+    def __del__(self):
+        """清理所有临时文件"""
+        import os
+        for file_path in self.temp_files:
+            try:
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                    print(f"已删除临时文件: {file_path}")
+            except Exception as e:
+                print(f"删除文件失败 {file_path}: {e}")
+
+# 使用示例
+temp_manager = TempFileManager()
+temp_file = temp_manager.create_temp_file("临时数据")
+print(f"创建临时文件: {temp_file}")
+
+# 当temp_manager被销毁时，临时文件会被自动清理
+</pre>

@@ -1,0 +1,71 @@
+<header>
+    类变量与实例变量的区别
+</header>
+<h2>
+    基本概念
+</h2>
+<pre tag="python">
+class MyClass:
+    # 类变量
+    class_var = "类变量"
+    
+    def __init__(self, instance_var):
+        # 实例变量
+        self.instance_var = instance_var
+</pre>
+
+<h2>
+    访问和修改
+</h2>
+<pre tag="python">
+# 创建实例
+obj1 = MyClass("实例1")
+obj2 = MyClass("实例2")
+
+# 访问类变量
+print(MyClass.class_var)  # 输出: 类变量
+print(obj1.class_var)     # 输出: 类变量
+print(obj2.class_var)     # 输出: 类变量
+
+# 修改类变量
+MyClass.class_var = "修改后的类变量"
+print(obj1.class_var)     # 输出: 修改后的类变量
+print(obj2.class_var)     # 输出: 修改后的类变量
+
+# 为实例添加与类变量同名的实例变量
+obj1.class_var = "实例1的类变量"
+print(obj1.class_var)     # 输出: 实例1的类变量
+print(obj2.class_var)     # 输出: 修改后的类变量
+print(MyClass.class_var)  # 输出: 修改后的类变量
+</pre>
+
+<h2>
+    内存机制解释
+</h2>
+<pre tag="python">
+class Counter:
+    # 类变量 - 所有实例共享
+    total_count = 0
+    
+    def __init__(self, name):
+        self.name = name  # 实例变量 - 每个实例独有
+        Counter.total_count += 1
+    
+    def show_info(self):
+        print(f"{self.name}: 总实例数={Counter.total_count}")
+
+# 创建实例
+c1 = Counter("计数器1")
+c1.show_info()  # 计数器1: 总实例数=1
+
+c2 = Counter("计数器2")
+c1.show_info()  # 计数器1: 总实例数=2
+c2.show_info()  # 计数器2: 总实例数=2
+
+# 通过类名访问类变量
+print(Counter.total_count)  # 2
+
+# 通过实例访问实例变量
+print(c1.name)  # 计数器1
+print(c2.name)  # 计数器2
+</pre>

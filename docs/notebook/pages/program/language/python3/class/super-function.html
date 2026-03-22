@@ -1,0 +1,136 @@
+<header>
+    super()函数
+</header>
+<h2>
+    super()基础用法
+</h2>
+<p>
+    <span class="important">super()</span>函数用于调用父类的方法，特别是在方法重写时调用父类的实现。
+</p>
+<pre tag="python">
+class Vehicle:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+    
+    def start_engine(self):
+        return f"{self.brand} {self.model} engine started"
+
+class Car(Vehicle):
+    def __init__(self, brand, model, doors):
+        # 调用父类的构造函数
+        super().__init__(brand, model)
+        self.doors = doors
+    
+    def start_engine(self):
+        # 调用父类的方法并扩展
+        base_message = super().start_engine()
+        return f"{base_message} with {self.doors} doors"
+
+# 使用super()
+car = Car("Toyota", "Camry", 4)
+print(car.start_engine())  # Toyota Camry engine started with 4 doors
+</pre>
+
+<h2>
+    多重继承中的super()
+</h2>
+<pre tag="python">
+class Animal:
+    def __init__(self, name):
+        self.name = name
+        print(f"Animal: {name}")
+
+class Flyer:
+    def __init__(self, flight_speed):
+        self.flight_speed = flight_speed
+        print(f"Flyer: can fly at {flight_speed} km/h")
+
+class Bird(Animal, Flyer):
+    def __init__(self, name, flight_speed, wingspan):
+        # 在多重继承中，super()按照MRO顺序调用
+        super().__init__(name)
+        Flyer.__init__(self, flight_speed)  # 显式调用特定父类
+        self.wingspan = wingspan
+        print(f"Bird: wingspan is {wingspan} cm")
+
+# 创建Bird实例
+bird = Bird("Eagle", 80, 200)
+print(f"{bird.name} flies at {bird.flight_speed} km/h with {bird.wingspan} cm wingspan")
+</pre>
+
+<h2>
+    super()在方法重写中的应用
+</h2>
+<pre tag="python">
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def introduce(self):
+        return f"My name is {self.name}, I'm {self.age} years old"
+
+class Student(Person):
+    def __init__(self, name, age, student_id, grade):
+        super().__init__(name, age)
+        self.student_id = student_id
+        self.grade = grade
+    
+    def introduce(self):
+        # 调用父类的introduce方法
+        base_intro = super().introduce()
+        return f"{base_intro}, student ID: {self.student_id}, grade: {self.grade}"
+
+class Teacher(Person):
+    def __init__(self, name, age, subject, salary):
+        super().__init__(name, age)
+        self.subject = subject
+        self.salary = salary
+    
+    def introduce(self):
+        base_intro = super().introduce()
+        return f"{base_intro}, I teach {self.subject}"
+
+# 使用示例
+student = Student("Alice", 20, "S001", "A")
+teacher = Teacher("Bob", 35, "Math", 5000)
+
+print(student.introduce())
+print(teacher.introduce())
+</pre>
+
+<h2>
+    协作式多重继承
+</h2>
+<pre tag="python">
+class Base:
+    def __init__(self, value):
+        self.value = value
+        print(f"Base initialized with {value}")
+
+class Left(Base):
+    def __init__(self, value, left_param):
+        super().__init__(value)
+        self.left_param = left_param
+        print(f"Left initialized with {left_param}")
+
+class Right(Base):
+    def __init__(self, value, right_param):
+        super().__init__(value)
+        self.right_param = right_param
+        print(f"Right initialized with {right_param}")
+
+class Bottom(Left, Right):
+    def __init__(self, value, left_param, right_param, bottom_param):
+        # 使用super()确保所有父类都被正确初始化
+        super().__init__(value, left_param)
+        # 需要显式调用Right的构造函数
+        Right.__init__(self, value, right_param)
+        self.bottom_param = bottom_param
+        print(f"Bottom initialized with {bottom_param}")
+
+# 创建Bottom实例
+bottom = Bottom(10, "left", "right", "bottom")
+print(f"Value: {bottom.value}, Left: {bottom.left_param}, Right: {bottom.right_param}, Bottom: {bottom.bottom_param}")
+</pre>

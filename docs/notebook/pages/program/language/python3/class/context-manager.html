@@ -1,0 +1,207 @@
+<header>
+    上下文管理器方法
+</header>
+<h2>
+    上下文管理器概念
+</h2>
+<p>
+    <span class="important">上下文管理器（Context Manager）</span>用于管理资源的获取和释放，通过__enter__和__exit__特殊方法实现。通常使用with语句。
+</p>
+<pre tag="python">
+class FileManager:
+    def __init__(self, filename, mode):
+        self.filename = filename
+        self.mode = mode
+        self.file = None
+    
+    def __enter__(self):
+        """进入上下文时调用"""
+        print(f"打开文件: {self.filename}")
+        self.file = open(self.filename, self.mode)
+        return self.file
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """退出上下文时调用"""
+        if self.file:
+            self.file.close()
+            print(f"关闭文件: {self.filename}")
+        
+        # 如果返回True，异常会被抑制
+        # 返回False或None，异常会继续传播
+        return False
+
+# 使用上下文管理器
+with FileManager("test.txt", "w") as f:
+    f.write("Hello, World!")
+    print("写入文件完成")
+# 文件自动关闭
+</pre>
+
+<h2>
+    数据库连接管理器
+</h2>
+<pre tag="python">
+import sqlite3
+
+class DatabaseConnection:
+    def __init__(self, db_name):
+        self.db_name = db_name
+        self.connection = None
+        self.cursor = None
+    
+    def __enter__(self):
+        """建立数据库连接"""
+        print(f"连接到数据库: {self.db_name}")
+        self.connection = sqlite3.connect(self.db_name)
+        self.cursor = self.connection.cursor()
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """关闭数据库连接"""
+        if exc_type is not None:
+            print(f"发生异常: {exc_val}")
+            self.connection.rollback()
+        else:
+            self.connection.commit()
+        
+        if self.cursor:
+            self.cursor.close()
+        if self.connection:
+            self.connection.close()
+            print(f"关闭数据库连接: {self.db_name}")
+    
+    def execute(self, query, params=None):
+        """执行SQL查询"""
+        if params is None:
+            params = []
+        return self.cursor.execute(query, params)
+    
+    def fetchall(self):
+        """获取所有结果"""
+        return self.cursor.fetchall()
+
+# 使用数据库连接管理器
+# 注意：这里需要实际的数据库文件才能运行
+# with DatabaseConnection("example.db") as db:
+#     db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
+#     db.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
+#     db.execute("SELECT * FROM users")
+#     results = db.fetchall()
+#     print(results)
+</pre>
+
+<h2>
+    计时器上下文管理器
+</h2>
+<pre tag="python">
+import time
+from contextlib import contextmanager
+
+class Timer:
+    def __init__(self, name="Timer"):
+        self.name = name
+        self.start_time = None
+        self.end_time = None
+    
+    def __enter__(self):
+        """开始计时"""
+        self.start_time = time.time()
+        print(f"{self.name} 开始计时")
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """结束计时"""
+        self.end_time = time.time()
+        elapsed = self.end_time - self.start_time
+        print(f"{self.name} 结束计时: {elapsed:.4f} 秒")
+    
+    @property
+    def elapsed_time(self):
+        """获取已过去的时间"""
+        if self.start_time is None:
+            return 0
+        if self.end_time is None:
+            return time.time() - self.start_time
+        return self.end_time - self.start_time
+
+# 使用计时器
+with Timer("计算任务"):
+    # 模拟一些计算
+    result = sum(i**2 for i in range(1000000))
+    print(f"计算结果: {result}")
+
+# 使用函数装饰器版本的计时器
+@contextmanager
+def timer(name="Timer"):
+    start_time = time.time()
+    print(f"{name} 开始计时")
+    try:
+        yield
+    finally:
+        elapsed = time.time() - start_time
+        print(f"{name} 结束计时: {elapsed:.4f} 秒")
+
+with timer("另一个任务"):
+    time.sleep(1)  # 模拟耗时操作
+    print("任务完成")
+</pre>
+
+<h2>
+    临时文件管理器
+</h2>
+<pre tag="python">
+import os
+import tempfile
+
+class TempFileManager:
+    def __init__(self, suffix='', prefix='tmp', dir=None):
+        self.suffix = suffix
+        self.prefix = prefix
+        self.dir = dir
+        self.temp_file = None
+        self.temp_path = None
+    
+    def __enter__(self):
+        """创建临时文件"""
+        self.temp_file = tempfile.NamedTemporaryFile(
+            suffix=self.suffix,
+            prefix=self.prefix,
+            dir=self.dir,
+            delete=False
+        )
+        self.temp_path = self.temp_file.name
+        print(f"创建临时文件: {self.temp_path}")
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """清理临时文件"""
+        if self.temp_file:
+            self.temp_file.close()
+        
+        if self.temp_path and os.path.exists(self.temp_path):
+            try:
+                os.remove(self.temp_path)
+                print(f"删除临时文件: {self.temp_path}")
+            except Exception as e:
+                print(f"删除临时文件失败: {e}")
+    
+    def write(self, data):
+        """写入数据"""
+        if self.temp_file:
+            self.temp_file.write(data.encode() if isinstance(data, str) else data)
+            self.temp_file.flush()
+    
+    def read(self):
+        """读取数据"""
+        if self.temp_path and os.path.exists(self.temp_path):
+            with open(self.temp_path, 'r') as f:
+                return f.read()
+        return None
+
+# 使用临时文件管理器
+with TempFileManager(suffix='.txt') as temp:
+    temp.write("这是临时文件的内容")
+    content = temp.read()
+    print(f"文件内容: {content}")
+# 临时文件自动删除
+</pre>

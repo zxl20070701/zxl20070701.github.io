@@ -1,0 +1,45 @@
+<header>
+    CSV文件处理
+</header>
+<p>
+    CSV（Comma-Separated Values）是一种常见的表格数据格式，Python提供了csv模块来处理这种格式。
+</p>
+<pre tag="python">
+import csv
+
+# 写入CSV文件
+data = [
+    ['姓名', '年龄', '城市'],
+    ['张三', 25, '北京'],
+    ['李四', 30, '上海'],
+    ['王五', 28, '广州']
+]
+
+with open('people.csv', 'w', newline='', encoding='utf-8') as file:
+    writer = csv.writer(file)
+    writer.writerows(data)
+
+# 读取CSV文件
+with open('people.csv', 'r', encoding='utf-8') as file:
+    reader = csv.reader(file)
+    for row in reader:
+        print(row)
+
+# 使用DictReader和DictWriter
+with open('people.csv', 'r', encoding='utf-8') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        print(f"{row['姓名']}，{row['年龄']}岁，来自{row['城市']}")
+
+# 写入字典数据
+people = [
+    {'姓名': '赵六', '年龄': 35, '城市': '深圳'},
+    {'姓名': '钱七', '年龄': 22, '城市': '杭州'}
+]
+
+with open('people2.csv', 'w', newline='', encoding='utf-8') as file:
+    fieldnames = ['姓名', '年龄', '城市']
+    writer = csv.DictWriter(file, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(people)
+</pre>

@@ -1,0 +1,140 @@
+<header>
+    高级目录操作
+</header>
+<p>
+    高级目录操作包括目录的复制、移动、权限管理以及大小计算等复杂操作。
+</p>
+<h2>
+    复制目录
+</h2>
+<pre tag="python">
+import os
+import shutil
+from pathlib import Path
+
+source_dir = "test_directory"
+dest_dir = "test_directory_copy"
+
+try:
+    # 使用shutil.copytree
+    if os.path.exists(dest_dir):
+        shutil.rmtree(dest_dir)
+
+    shutil.copytree(source_dir, dest_dir)
+    print(f"目录复制成功: {source_dir} -> {dest_dir}")
+
+    # 验证复制结果
+    source_files = list(Path(source_dir).rglob('*'))
+    dest_files = list(Path(dest_dir).rglob('*'))
+    print(f"源目录文件数: {len(source_files)}")
+    print(f"目标目录文件数: {len(dest_files)}")
+
+except Exception as e:
+    print(f"目录复制失败: {e}")
+</pre>
+<h2>
+    移动和重命名目录
+</h2>
+<pre tag="python">
+import os
+import shutil
+import stat
+
+source_dir = "test_directory_copy"
+new_name = "renamed_directory"
+
+try:
+    if os.path.exists(source_dir):
+        shutil.move(source_dir, new_name)
+        print(f"目录重命名成功: {source_dir} -> {new_name}")
+
+    # 移回原位置
+    if os.path.exists(new_name):
+        shutil.move(new_name, source_dir)
+        print(f"目录移回成功: {new_name} -> {source_dir}")
+
+except Exception as e:
+    print(f"目录移动失败: {e}")
+</pre>
+<h2>
+    目录权限管理
+</h2>
+<pre tag="python">
+import os
+import shutil
+from pathlib import Path
+
+test_dir = "permission_test"
+
+try:
+    # 创建测试目录
+    Path(test_dir).mkdir(exist_ok=True)
+
+    # 获取当前权限
+    current_mode = os.stat(test_dir).st_mode
+    print(f"当前权限: {oct(current_mode)}")
+
+    # 设置只读权限
+    os.chmod(test_dir, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+    print("设置为只读权限")
+
+    # 尝试写入（会失败）
+    try:
+        with open(os.path.join(test_dir, "test.txt"), 'w') as f:
+            f.write("test")
+    except PermissionError:
+        print("写入失败：权限不足")
+
+    # 恢复权限
+    os.chmod(test_dir, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+    print("恢复所有权限")
+
+    # 现在可以写入
+    with open(os.path.join(test_dir, "test.txt"), 'w') as f:
+        f.write("test")
+    print("写入成功")
+
+    # 清理
+    shutil.rmtree(test_dir)
+    print("测试目录已清理")
+
+except Exception as e:
+    print(f"权限管理失败: {e}")
+</pre>
+<h2>
+    目录大小计算
+</h2>
+<pre tag="python">
+import os
+import stat
+
+def get_dir_size(path):
+    """递归计算目录大小"""
+    total_size = 0
+    try:
+        for dirpath, dirnames, filenames in os.walk(path):
+            for filename in filenames:
+                filepath = os.path.join(dirpath, filename)
+                if os.path.exists(filepath):
+                    total_size += os.path.getsize(filepath)
+    except Exception as e:
+        print(f"计算目录大小出错: {e}")
+    return total_size
+
+test_dir = "test_directory"
+if os.path.exists(test_dir):
+    size = get_dir_size(test_dir)
+    print(f"目录 {test_dir} 大小: {size} 字节 ({size / 1024:.2f} KB)")
+
+# 使用pathlib计算
+def get_dir_size_pathlib(path):
+    """使用pathlib计算目录大小"""
+    path_obj = Path(path)
+    if not path_obj.exists():
+        return 0
+
+    return sum(f.stat().st_size for f in path_obj.rglob('*') if f.is_file())
+
+size_pathlib = get_dir_size_pathlib(test_dir)
+print(f"使用pathlib计算的目录大小: {size_pathlib} 字节")
+</pre>

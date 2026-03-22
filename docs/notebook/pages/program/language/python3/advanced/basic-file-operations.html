@@ -1,0 +1,41 @@
+<header>
+    基本文件操作
+</header>
+<p>
+    文件操作是Python编程中的重要部分，用于读取、写入和管理文件系统中的数据。Python提供了多种方式来处理文件操作，包括文本文件、二进制文件、JSON、CSV等格式的处理。
+</p>
+<pre tag="python">
+# 打开和关闭文件
+# 传统方式
+file = open('example.txt', 'w')
+file.write('Hello, World!')
+file.close()
+
+# 推荐方式：使用上下文管理器
+with open('example.txt', 'w') as file:
+    file.write('Hello, World!')
+
+# 文件打开模式
+# 'r' - 读取（默认）
+# 'w' - 写入（覆盖）
+# 'a' - 追加
+# 'x' - 独占创建
+# 'b' - 二进制模式
+# 't' - 文本模式（默认）
+# '+' - 读写模式
+
+# 读取文件
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print(content)
+
+# 逐行读取
+with open('example.txt', 'r') as file:
+    for line in file:
+        print(line.strip())
+
+# 读取所有行到列表
+with open('example.txt', 'r') as file:
+    lines = file.readlines()
+    print(lines)
+</pre>

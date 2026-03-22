@@ -1,0 +1,39 @@
+<header>
+    断言和异常处理
+</header>
+<p>
+    断言(assert)是一种调试工具，用于在开发阶段检查程序状态。与异常处理不同，断言主要用于检测程序内部错误，而不是处理外部错误。
+</p>
+<pre tag="python">
+# 使用断言进行调试
+def calculate_average(numbers):
+    assert len(numbers) > 0, "列表不能为空"
+    assert all(isinstance(x, (int, float)) for x in numbers), "所有元素必须是数字"
+    return sum(numbers) / len(numbers)
+
+# 测试断言
+try:
+    avg = calculate_average([1, 2, 3, 4])
+    print(f"平均值: {avg}")
+
+    # avg = calculate_average([])  # 这会触发AssertionError
+    # avg = calculate_average([1, 2, '3'])  # 这会触发AssertionError
+except AssertionError as e:
+    print(f"断言失败: {e}")
+
+# 注意：断言可以用 -O 标志禁用，不要用于数据验证
+def validate_age(age):
+    # 错误：不应该用断言进行数据验证
+    # assert age >= 0, "年龄不能为负数"
+
+    # 正确：应该显式抛出异常
+    if age < 0:
+        raise ValueError("年龄不能为负数")
+    return age
+
+# 测试年龄验证
+try:
+    validate_age(-5)
+except ValueError as e:
+    print(f"验证错误: {e}")
+</pre>

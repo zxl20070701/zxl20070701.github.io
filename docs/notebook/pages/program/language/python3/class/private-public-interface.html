@@ -1,0 +1,165 @@
+<header>
+    私有属性与公有接口
+</header>
+<h2>
+    名称改写（Name Mangling）
+</h2>
+<p>
+    Python通过名称改写机制实现私有属性，在属性名前添加双下划线时，Python会自动改写属性名。
+</p>
+<pre tag="python">
+class MyClass:
+    def __init__(self):
+        self.public = "公有属性"
+        self._protected = "受保护属性"
+        self.__private = "私有属性"
+    
+    def show_attributes(self):
+        print(f"公有: {self.public}")
+        print(f"受保护: {self._protected}")
+        print(f"私有: {self.__private}")
+
+obj = MyClass()
+obj.show_attributes()
+
+# 访问不同级别的属性
+print(obj.public)        # 直接访问
+print(obj._protected)    # 可以访问但不推荐
+# print(obj.__private)   # 会报错
+
+# 查看实际属性名
+print(dir(obj))
+# 可以看到'_MyClass__private'属性
+
+# 技术上仍然可以访问私有属性
+print(obj._MyClass__private)  # 不推荐这样做
+</pre>
+
+<h2>
+    设计良好的接口
+</h2>
+<pre tag="python">
+class BankAccount:
+    """设计良好的银行账户类，隐藏实现细节"""
+    
+    def __init__(self, account_holder, initial_balance=0):
+        self.__account_holder = account_holder
+        self.__balance = initial_balance
+        self.__transaction_history = []
+        self.__account_number = self.__generate_account_number()
+    
+    def __generate_account_number(self):
+        """私有方法：生成账户号码"""
+        import random
+        return f"ACC{random.randint(100000, 999999)}"
+    
+    def deposit(self, amount):
+        """公有方法：存款"""
+        if amount <= 0:
+            raise ValueError("存款金额必须大于0")
+        
+        self.__balance += amount
+        self.__transaction_history.append({
+            'type': 'deposit',
+            'amount': amount,
+            'timestamp': self.__get_timestamp()
+        })
+        return self.__balance
+    
+    def withdraw(self, amount):
+        """公有方法：取款"""
+        if amount <= 0:
+            raise ValueError("取款金额必须大于0")
+        if amount > self.__balance:
+            raise ValueError("余额不足")
+        
+        self.__balance -= amount
+        self.__transaction_history.append({
+            'type': 'withdrawal',
+            'amount': amount,
+            'timestamp': self.__get_timestamp()
+        })
+        return self.__balance
+    
+    def get_balance(self):
+        """公有方法：获取余额"""
+        return self.__balance
+    
+    def get_account_info(self):
+        """公有方法：获取账户信息"""
+        return {
+            'account_holder': self.__account_holder,
+            'account_number': self.__account_number,
+            'balance': self.__balance
+        }
+    
+    def get_transaction_history(self):
+        """公有方法：获取交易历史"""
+        return self.__transaction_history.copy()  # 返回副本防止外部修改
+    
+    def __get_timestamp(self):
+        """私有方法：获取当前时间戳"""
+        from datetime import datetime
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+# 使用设计良好的接口
+account = BankAccount("张三", 1000)
+print(account.get_account_info())
+
+account.deposit(500)
+account.withdraw(200)
+print(f"当前余额: {account.get_balance()}")
+
+history = account.get_transaction_history()
+for transaction in history:
+    print(f"{transaction['timestamp']}: {transaction['type']} ¥{transaction['amount']}")
+</pre>
+
+<h2>
+    受保护属性的使用
+</h2>
+<pre tag="python">
+class Vehicle:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+        self._mileage = 0  # 受保护属性
+    
+    def drive(self, miles):
+        if miles > 0:
+            self._mileage += miles
+    
+    def get_mileage(self):
+        return self._mileage
+
+class Car(Vehicle):
+    def __init__(self, brand, model, fuel_capacity):
+        super().__init__(brand, model)
+        self.fuel_capacity = fuel_capacity
+        self._fuel_level = fuel_capacity  # 受保护属性
+    
+    def drive(self, miles):
+        """重写drive方法，考虑燃油消耗"""
+        fuel_needed = miles * 0.1  # 假设每英里消耗0.1单位燃油
+        if fuel_needed <= self._fuel_level:
+            super().drive(miles)
+            self._fuel_level -= fuel_needed
+            return True
+        return False
+    
+    def refuel(self):
+        """加油"""
+        self._fuel_level = self.fuel_capacity
+    
+    def get_fuel_level(self):
+        return self._fuel_level
+
+# 使用受保护属性
+car = Car("Toyota", "Camry", 15)
+car.drive(100)
+print(f"里程: {car.get_mileage()} 英里")
+print(f"燃油剩余: {car.get_fuel_level():.1f} 加仑")
+
+# 子类可以访问受保护属性
+print(f"燃油容量: {car.fuel_capacity}")
+</pre>

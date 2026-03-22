@@ -1,0 +1,148 @@
+<header>
+    上下文管理器最佳实践
+</header>
+<pre tag="python">
+import logging
+from contextlib import contextmanager
+import time
+import threading
+
+# 配置日志
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# 带日志的上下文管理器
+@contextmanager
+def logged_operation(operation_name):
+    """带日志操作的上下文管理器"""
+    logger.info(f"开始操作: {operation_name}")
+    start_time = time.time()
+
+    try:
+        yield
+        elapsed = time.time() - start_time
+        logger.info(f"操作完成: {operation_name} (耗时: {elapsed:.2f}秒)")
+    except Exception as e:
+        elapsed = time.time() - start_time
+        logger.error(f"操作失败: {operation_name} - {e} (耗时: {elapsed:.2f}秒)")
+        raise
+
+# 资源池上下文管理器
+class ResourcePool:
+    """资源池上下文管理器"""
+
+    def __init__(self, max_resources=3):
+        self.max_resources = max_resources
+        self.available = list(range(max_resources))
+        self.in_use = set()
+        self.lock = threading.Lock()
+
+    def __enter__(self):
+        """获取资源"""
+        with self.lock:
+            if not self.available:
+                raise RuntimeError("没有可用资源")
+
+            resource = self.available.pop()
+            self.in_use.add(resource)
+            logger.info(f"获取资源: {resource} (可用: {len(self.available)}, 使用中: {len(self.in_use)})")
+            return resource
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """释放资源"""
+        with self.lock:
+            # 假设最后一个使用的资源是当前资源
+            if self.in_use:
+                resource = max(self.in_use)
+                self.in_use.remove(resource)
+                self.available.append(resource)
+                logger.info(f"释放资源: {resource} (可用: {len(self.available)}, 使用中: {len(self.in_use)})")
+
+        return False
+
+# 事务上下文管理器
+@contextmanager
+def transaction():
+    """事务上下文管理器"""
+    logger.info("开始事务")
+
+    # 模拟事务状态
+    transaction_state = {
+        'started': True,
+        'completed': False,
+        'rolled_back': False
+    }
+
+    try:
+        yield transaction_state
+
+        # 如果没有异常，提交事务
+        if not transaction_state['rolled_back']:
+            transaction_state['completed'] = True
+            logger.info("事务已提交")
+        else:
+            logger.info("事务已回滚")
+
+    except Exception as e:
+        # 发生异常时回滚
+        transaction_state['rolled_back'] = True
+        logger.error(f"事务回滚: {e}")
+        raise
+
+# 使用最佳实践上下文管理器
+def use_best_practices():
+    """使用最佳实践上下文管理器"""
+
+    print("=== 带日志的操作 ===")
+    with logged_operation("数据处理任务"):
+        time.sleep(1)
+        print("处理数据...")
+        # 模拟一些工作
+        data = [i for i in range(100)]
+        result = sum(data)
+        print(f"处理结果: {result}")
+
+    print("\n=== 资源池管理 ===")
+    pool = ResourcePool(max_resources=2)
+
+    # 使用多个资源
+    try:
+        with pool as resource1:
+            print(f"使用资源: {resource1}")
+            time.sleep(1)
+
+            with pool as resource2:
+                print(f"使用资源: {resource2}")
+                time.sleep(1)
+
+                # 尝试获取第三个资源（会失败）
+                try:
+                    with pool as resource3:
+                        print(f"使用资源: {resource3}")
+                except RuntimeError as e:
+                    print(f"资源获取失败: {e}")
+
+    except RuntimeError as e:
+        print(f"资源池错误: {e}")
+
+    print("\n=== 事务处理 ===")
+    try:
+        with transaction() as tx:
+            print("执行数据库操作...")
+            # 模拟数据库操作
+            operations = ["插入数据", "更新数据", "删除数据"]
+
+            for op in operations:
+                print(f"执行操作: {op}")
+                if op == "更新数据":
+                    # 模拟操作失败
+                    raise ValueError("更新操作失败")
+
+            tx['completed'] = True
+
+    except ValueError as e:
+        print(f"事务处理错误: {e}")
+
+# 运行最佳实践示例
+use_best_practices()
+</pre>

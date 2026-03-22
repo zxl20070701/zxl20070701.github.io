@@ -1,0 +1,67 @@
+<header>
+    模块导入机制
+</header>
+<p>
+    Python提供了多种导入方式，包括基本导入、动态导入、条件导入和延迟导入等。
+</p>
+
+<h2>
+    基本模块导入
+</h2>
+<pre tag="python">
+import math
+import os.path as osp
+from collections import defaultdict, Counter
+from urllib.request import urlopen, Request
+</pre>
+
+<h2>
+    动态导入
+</h2>
+<pre tag="python">
+def dynamic_import(module_name, attribute_name):
+    try:
+        module = __import__(module_name)
+        attribute = getattr(module, attribute_name)
+        return attribute
+    except (ImportError, AttributeError) as e:
+        print(f"导入失败: {e}")
+        return None
+
+# 使用
+sqrt_func = dynamic_import('math', 'sqrt')
+if sqrt_func:
+    print(f"sqrt(16) = {sqrt_func(16)}")
+</pre>
+
+<h2>
+    条件导入
+</h2>
+<pre tag="python">
+def conditional_import():
+    try:
+        import numpy as np
+        print("NumPy可用")
+        return np
+    except ImportError:
+        print("NumPy不可用，使用替代方案")
+        class MockNumpy:
+            @staticmethod
+            def array(data):
+                return list(data)
+        return MockNumpy()
+</pre>
+
+<h2>
+    延迟导入
+</h2>
+<pre tag="python">
+def lazy_import():
+    # 在函数内部导入，避免循环依赖
+    def process_data():
+        import pandas as pd  # 只在需要时导入
+        # 处理数据...
+        return "数据处理完成"
+
+    return process_data
+</pre>

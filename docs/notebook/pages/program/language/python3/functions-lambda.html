@@ -1,0 +1,20 @@
+<header>
+    匿名函数（Lambda）
+</header>
+<pre tag="python">
+# 简单lambda函数
+square = lambda x: x ** 2
+print(square(5))  # 输出: 25
+
+# 在排序中使用lambda
+students = [("Alice", 85), ("Bob", 90), ("Charlie", 78)]
+students.sort(key=lambda student: student[1])  # 按分数排序
+print(students)  # 输出: [('Charlie', 78), ('Alice', 85), ('Bob', 90)]
+
+# 在map、filter中使用lambda
+numbers = [1, 2, 3, 4, 5]
+squares = list(map(lambda x: x**2, numbers))
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+print(squares)  # 输出: [1, 4, 9, 16, 25]
+print(evens)    # 输出: [2, 4]
+</pre>

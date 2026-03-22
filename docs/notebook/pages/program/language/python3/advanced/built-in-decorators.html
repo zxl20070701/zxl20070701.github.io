@@ -1,0 +1,163 @@
+<header>
+    内置装饰器
+</header>
+<h2>
+    @property装饰器
+</h2>
+<p>
+    <span class="important">@property</span>装饰器将方法转换为只读属性，使得方法可以像属性一样访问。
+</p>
+<pre tag="python">
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+    
+    @property
+    def radius(self):
+        return self._radius
+    
+    @radius.setter
+    def radius(self, value):
+        if value < 0:
+            raise ValueError("半径不能为负数")
+        self._radius = value
+    
+    @property
+    def area(self):
+        import math
+        return math.pi * self._radius ** 2
+    
+    @property
+    def circumference(self):
+        import math
+        return 2 * math.pi * self._radius
+
+circle = Circle(5)
+print(f"半径: {circle.radius}")
+print(f"面积: {circle.area:.2f}")
+print(f"周长: {circle.circumference:.2f}")
+
+circle.radius = 10
+print(f"新半径: {circle.radius}")
+</pre>
+
+<h2>
+    @staticmethod和@classmethod
+</h2>
+<pre tag="python">
+class MathUtils:
+    @staticmethod
+    def add(x, y):
+        return x + y
+    
+    @classmethod
+    def multiply(cls, x, y):
+        print(f"调用{cls.__name__}的方法")
+        return x * y
+
+print(MathUtils.add(3, 4))
+print(MathUtils.multiply(3, 4))
+</pre>
+
+<h2>
+    自定义属性装饰器
+</h2>
+<pre tag="python">
+def validated_property(name, validator):
+    """带验证的属性装饰器"""
+    private_name = f"_{name}"
+    
+    @property
+    def prop(self):
+        return getattr(self, private_name)
+    
+    @prop.setter
+    def prop(self, value):
+        if not validator(value):
+            raise ValueError(f"Invalid value for {name}: {value}")
+        setattr(self, private_name, value)
+    
+    return prop
+
+class Person:
+    def __init__(self, name, age, email):
+        self.name = name
+        self.age = age
+        self.email = email
+    
+    name = validated_property("name", lambda x: isinstance(x, str) and x.strip())
+    age = validated_property("age", lambda x: isinstance(x, int) and x > 0)
+    email = validated_property("email", lambda x: isinstance(x, str) and '@' in x)
+
+# 使用验证属性
+person = Person("Alice", 25, "alice@example.com")
+print(person.name)
+
+try:
+    person.age = -5
+except ValueError as e:
+    print(e)
+</pre>
+
+<h2>
+    缓存装饰器
+</h2>
+<pre tag="python">
+import functools
+
+def memoize(func):
+    cache = {}
+    
+    @functools.wraps(func)
+    def wrapper(*args):
+        if args in cache:
+            print(f"从缓存获取结果: {args}")
+            return cache[args]
+        
+        result = func(*args)
+        cache[args] = result
+        print(f"计算并缓存结果: {args}")
+        return result
+    
+    return wrapper
+
+@memoize
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print(f"斐波那契数列:")
+for i in range(10):
+    print(f"F({i}) = {fibonacci(i)}")
+</pre>
+
+<h2>
+    权限检查装饰器
+</h2>
+<pre tag="python">
+import functools
+
+def require_permission(permission):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            user_permissions = kwargs.get('user_permissions', [])
+            if permission in user_permissions:
+                return func(*args, **kwargs)
+            else:
+                raise PermissionError(f"需要{permission}权限")
+        return wrapper
+    return decorator
+
+@require_permission('admin')
+def delete_user(user_id, user_permissions=None):
+    print(f"删除用户 {user_id}")
+
+# 测试权限
+try:
+    delete_user(123, user_permissions=['admin'])
+    delete_user(456, user_permissions=['user'])
+except PermissionError as e:
+    print(f"权限错误: {e}")
+</pre>

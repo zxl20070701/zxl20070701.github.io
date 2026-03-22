@@ -1,0 +1,41 @@
+<header>
+    二进制文件处理
+</header>
+<p>
+    二进制文件处理用于处理非文本格式的文件，如图片、音频、视频、可执行文件等。
+</p>
+<pre tag="python">
+# 写入二进制文件
+data = bytes([120, 3, 255, 0, 100])
+with open('binary.dat', 'wb') as file:
+    file.write(data)
+
+# 读取二进制文件
+with open('binary.dat', 'rb') as file:
+    binary_content = file.read()
+    print(f"二进制内容: {binary_content}")
+    print(f"十六进制: {binary_content.hex()}")
+
+# 处理图片文件
+from PIL import Image
+import io
+
+# 创建简单图片数据
+image_data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\x0cIDATx\x9cc\xf8\xff\xff?\x00\x05\xfe\x02\xfe\xa75\x81\x84\x00\x00\x00\x00IEND\xaeB`\x82'
+
+# 写入图片文件
+with open('test.png', 'wb') as file:
+    file.write(image_data)
+
+# 读取图片文件
+with open('test.png', 'rb') as file:
+    image_content = file.read()
+    print(f"图片大小: {len(image_content)} 字节")
+
+# 使用BytesIO进行内存操作
+buffer = io.BytesIO()
+buffer.write(b"Hello, BytesIO!")
+buffer.seek(0)
+content = buffer.read()
+print(f"内存缓冲区内容: {content}")
+</pre>

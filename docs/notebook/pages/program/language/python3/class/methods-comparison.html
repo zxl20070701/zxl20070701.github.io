@@ -1,0 +1,106 @@
+<header>
+    三种方法的对比
+</header>
+<h2>
+    方法类型对比表
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>方法类型</th>
+            <th>装饰器</th>
+            <th>第一个参数</th>
+            <th>访问类属性</th>
+            <th>访问实例属性</th>
+            <th>调用方式</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>实例方法</td>
+            <td>无</td>
+            <td>self</td>
+            <td>可以</td>
+            <td>可以</td>
+            <td>对象.方法()</td>
+        </tr>
+        <tr>
+            <td>类方法</td>
+            <td>@classmethod</td>
+            <td>cls</td>
+            <td>可以</td>
+            <td>不可以</td>
+            <td>类名.方法() 或 对象.方法()</td>
+        </tr>
+        <tr>
+            <td>静态方法</td>
+            <td>@staticmethod</td>
+            <td>无</td>
+            <td>不可以</td>
+            <td>不可以</td>
+            <td>类名.方法() 或 对象.方法()</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    综合示例
+</h2>
+<pre tag="python">
+class Weather:
+    # 类属性
+    default_city = "Beijing"
+
+    def __init__(self, city=None):
+        # 实例属性
+        self.city = city or self.default_city
+        self.temperature = None
+
+    # 实例方法 - 可以访问实例属性和类属性
+    def set_temperature(self, temp):
+        self.temperature = temp
+
+    def get_info(self):
+        return f"{self.city}: {self.temperature}°C"
+
+    # 类方法 - 可以访问类属性，但不能直接访问实例属性
+    @classmethod
+    def set_default_city(cls, city):
+        cls.default_city = city
+
+    @classmethod
+    def create_default_weather(cls):
+        return cls()  # 使用类属性创建实例
+
+    # 静态方法 - 不能访问类属性或实例属性
+    @staticmethod
+    def celsius_to_fahrenheit(celsius):
+        return celsius * 9/5 + 32
+
+    @staticmethod
+    def is_extreme_temperature(temp):
+        return temp < -20 or temp > 40
+
+# 演示三种方法的使用
+weather = Weather("Shanghai")
+weather.set_temperature(25)
+print(weather.get_info())  # Shanghai: 25°C
+
+# 使用类方法
+Weather.set_default_city("Guangzhou")
+default_weather = Weather.create_default_weather()
+print(default_weather.city)  # Guangzhou
+
+# 使用静态方法
+print(Weather.celsius_to_fahrenheit(25))  # 77.0
+print(Weather.is_extreme_temperature(45)) # True
+</pre>
+
+<h2>
+    选择合适的方法类型
+</h2>
+<ul>
+    <li><strong>实例方法</strong>：需要访问或修改对象状态时</li>
+    <li><strong>类方法</strong>：需要访问或修改类状态，或创建替代构造函数时</li>
+    <li><strong>静态方法</strong>：与类相关但不依赖类或实例状态的工具函数</li>
+</ul>

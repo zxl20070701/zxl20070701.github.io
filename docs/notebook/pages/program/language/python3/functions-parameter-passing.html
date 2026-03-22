@@ -1,0 +1,31 @@
+<header>
+    参数传递机制
+</header>
+<p>
+    在 python 中，strings, tuples, 和 numbers 是不可更改的对象，而 list,dict 等则是可以修改的对象。
+</p>
+<p>
+    函数中传递参数的时候，不可更改的对象和可以修改的对象在操作影响上是有很大区别的，用一句话说明的话就是：不可更改的对象类似传递的是值，可以修改的对象传递的是'指针'，也就是引用传递，应该可以感受出来区别了吧。
+</p>
+<p>
+    python 中一切都是对象，严格意义我们不能说值传递还是引用传递，我们应该说传不可变对象和传可变对象。
+</p>
+<pre tag="python">
+# 不可变对象（数字、字符串、元组）
+def modify_immutable(x):
+    x = 100  # 创建新对象，不影响原始变量
+    print(f"函数内: {x}")
+
+a = 50
+modify_immutable(a)
+print(f"函数外: {a}")  # 输出仍然是50
+
+# 可变对象（列表、字典、集合）
+def modify_mutable(lst):
+    lst.append(100)  # 修改原始对象
+    print(f"函数内: {lst}")
+
+my_list = [1, 2, 3]
+modify_mutable(my_list)
+print(f"函数外: {my_list}")  # 输出: [1, 2, 3, 100]
+</pre>

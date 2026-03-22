@@ -1,0 +1,67 @@
+<header>
+    文件和目录操作
+</header>
+<p>
+    文件和目录操作包括创建、删除、移动、复制文件和目录，以及获取文件信息等操作。
+</p>
+<pre tag="python">
+import os
+import shutil
+import glob
+from pathlib import Path
+
+# 获取当前工作目录
+current_dir = os.getcwd()
+print(f"当前目录: {current_dir}")
+
+# 创建目录
+os.makedirs('new_folder/subfolder', exist_ok=True)
+
+# 检查文件或目录是否存在
+print(f"文件存在: {os.path.exists('example.txt')}")
+print(f"是文件: {os.path.isfile('example.txt')}")
+print(f"是目录: {os.path.isdir('new_folder')}")
+
+# 获取文件信息
+if os.path.exists('example.txt'):
+    print(f"文件大小: {os.path.getsize('example.txt')} 字节")
+    print(f"最后修改时间: {os.path.getmtime('example.txt')}")
+
+# 重命名文件
+if os.path.exists('example.txt'):
+    os.rename('example.txt', 'renamed_example.txt')
+
+# 复制文件
+if os.path.exists('renamed_example.txt'):
+    shutil.copy('renamed_example.txt', 'copy_example.txt')
+
+# 移动文件
+if os.path.exists('copy_example.txt'):
+    shutil.move('copy_example.txt', 'new_folder/moved_example.txt')
+
+# 删除文件
+if os.path.exists('renamed_example.txt'):
+    os.remove('renamed_example.txt')
+
+# 删除目录
+if os.path.exists('new_folder'):
+    shutil.rmtree('new_folder')
+
+# 使用pathlib（更现代的方式）
+path = Path('test_directory')
+path.mkdir(exist_ok=True)
+
+file_path = path / 'test_file.txt'
+file_path.write_text('使用pathlib创建的文件', encoding='utf-8')
+
+print(f"文件内容: {file_path.read_text(encoding='utf-8')}")
+print(f"文件父目录: {file_path.parent}")
+print(f"文件后缀: {file_path.suffix}")
+print(f"文件stem: {file_path.stem}")
+
+# 清理
+if file_path.exists():
+    file_path.unlink()
+if path.exists():
+    path.rmdir()
+</pre>

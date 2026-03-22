@@ -1,0 +1,75 @@
+<header>
+    封装基础
+</header>
+<h2>
+    封装概念
+</h2>
+<p>
+    <span class="important">封装（Encapsulation）</span>是面向对象编程的重要原则，它将数据（属性）和操作数据的方法捆绑在一起，并隐藏对象的内部实现细节，只暴露必要的接口。
+</p>
+
+<h2>
+    封装的层次
+</h2>
+<ul>
+    <li><strong>公有（Public）</strong>：所有地方都可以访问</li>
+    <li><strong>受保护（Protected）</strong>：类内部和子类可以访问（单下划线前缀）</li>
+    <li><strong>私有（Private）</strong>：只有类内部可以访问（双下划线前缀）</li>
+</ul>
+
+<h2>
+    基本封装示例
+</h2>
+<pre tag="python">
+class BankAccount:
+    def __init__(self, account_holder, initial_balance):
+        self.account_holder = account_holder  # 公有属性
+        self._account_number = self._generate_account_number()  # 受保护属性
+        self.__balance = initial_balance  # 私有属性
+    
+    def _generate_account_number(self):
+        """受保护方法：生成账户号码"""
+        import random
+        return f"ACC{random.randint(10000, 99999)}"
+    
+    def deposit(self, amount):
+        """公有方法：存款"""
+        if amount > 0:
+            self.__balance += amount
+            return True
+        return False
+    
+    def withdraw(self, amount):
+        """公有方法：取款"""
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+            return True
+        return False
+    
+    def get_balance(self):
+        """公有方法：获取余额"""
+        return self.__balance
+    
+    def __calculate_interest(self):
+        """私有方法：计算利息"""
+        return self.__balance * 0.05
+
+# 使用封装的类
+account = BankAccount("张三", 1000)
+print(account.account_holder)  # 可以访问公有属性
+print(account.get_balance())   # 通过公有方法访问私有属性
+
+# 受保护和私有成员不能直接访问
+# print(account._account_number)  # 可以访问但不推荐
+# print(account.__balance)        # 会报错
+</pre>
+
+<h2>
+    封装的好处
+</h2>
+<ul>
+    <li>数据保护：防止外部直接修改对象状态</li>
+    <li>接口简化：只暴露必要的操作接口</li>
+    <li>实现隐藏：内部实现可以改变而不影响外部代码</li>
+    <li>代码维护：更容易维护和调试</li>
+</ul>

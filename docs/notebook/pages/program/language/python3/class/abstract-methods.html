@@ -1,0 +1,226 @@
+<header>
+    抽象方法
+</header>
+<h2>
+    抽象方法基础
+</h2>
+<p>
+    <span class="important">抽象方法（Abstract Methods）</span>是在抽象基类中声明但不实现的方法。子类必须实现所有抽象方法才能被实例化。
+</p>
+<pre tag="python">
+from abc import ABC, abstractmethod
+
+class PaymentProcessor(ABC):
+    """支付处理器抽象基类"""
+    
+    def __init__(self, merchant_id):
+        self.merchant_id = merchant_id
+    
+    @abstractmethod
+    def process_payment(self, amount, card_info):
+        """处理支付"""
+        pass
+    
+    @abstractmethod
+    def refund_payment(self, transaction_id, amount):
+        """退款"""
+        pass
+    
+    def get_merchant_info(self):
+        """获取商户信息（具体方法）"""
+        return f"Merchant ID: {self.merchant_id}"
+
+class CreditCardProcessor(PaymentProcessor):
+    def process_payment(self, amount, card_info):
+        # 模拟信用卡处理
+        print(f"Processing credit card payment of ${amount}")
+        return {"status": "success", "transaction_id": "CC12345"}
+    
+    def refund_payment(self, transaction_id, amount):
+        print(f"Refunding ${amount} for transaction {transaction_id}")
+        return {"status": "refunded", "transaction_id": transaction_id}
+
+class PayPalProcessor(PaymentProcessor):
+    def process_payment(self, amount, paypal_email):
+        # 模拟PayPal处理
+        print(f"Processing PayPal payment of ${amount} for {paypal_email}")
+        return {"status": "success", "transaction_id": "PP67890"}
+    
+    def refund_payment(self, transaction_id, amount):
+        print(f"Refunding ${amount} for PayPal transaction {transaction_id}")
+        return {"status": "refunded", "transaction_id": transaction_id}
+
+# 使用抽象方法
+# processor = PaymentProcessor("MERCHANT001")  # 会报错
+
+cc_processor = CreditCardProcessor("MERCHANT001")
+paypal_processor = PayPalProcessor("MERCHANT002")
+
+print(cc_processor.get_merchant_info())
+result = cc_processor.process_payment(100.00, "4111111111111111")
+print(result)
+
+paypal_result = paypal_processor.process_payment(50.00, "user@example.com")
+print(paypal_result)
+</pre>
+
+<h2>
+    抽象方法的参数
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+
+class DataStore(ABC):
+    """数据存储抽象基类"""
+    
+    @abstractmethod
+    def save(self, key, value):
+        """保存数据"""
+        pass
+    
+    @abstractmethod
+    def load(self, key):
+        """加载数据"""
+        pass
+    
+    @abstractmethod
+    def delete(self, key):
+        """删除数据"""
+        pass
+
+class InMemoryDataStore(DataStore):
+    def __init__(self):
+        self.data = {}
+    
+    def save(self, key, value):
+        self.data[key] = value
+        return True
+    
+    def load(self, key):
+        return self.data.get(key, None)
+    
+    def delete(self, key):
+        if key in self.data:
+            del self.data[key]
+            return True
+        return False
+
+class FileDataStore(DataStore):
+    def __init__(self, filename):
+        self.filename = filename
+        import json
+        try:
+            with open(filename, 'r') as f:
+                self.data = json.load(f)
+        except FileNotFoundError:
+            self.data = {}
+    
+    def save(self, key, value):
+        self.data[key] = value
+        self._save_to_file()
+        return True
+    
+    def load(self, key):
+        return self.data.get(key, None)
+    
+    def delete(self, key):
+        if key in self.data:
+            del self.data[key]
+            self._save_to_file()
+            return True
+        return False
+    
+    def _save_to_file(self):
+        import json
+        with open(self.filename, 'w') as f:
+            json.dump(self.data, f)
+
+# 使用抽象方法的不同实现
+memory_store = InMemoryDataStore()
+file_store = FileDataStore("data.json")
+
+# 测试内存存储
+memory_store.save("name", "Alice")
+print(memory_store.load("name"))
+memory_store.delete("name")
+print(memory_store.load("name"))
+
+# 测试文件存储
+file_store.save("age", 30)
+print(file_store.load("age"))
+</pre>
+
+<h2>
+    强制方法签名一致性
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+import inspect
+
+class Validator(ABC):
+    """验证器抽象基类"""
+    
+    @abstractmethod
+    def validate(self, value):
+        """验证值是否有效"""
+        pass
+    
+    @abstractmethod
+    def get_error_message(self):
+        """获取错误信息"""
+        pass
+
+class EmailValidator(Validator):
+    def __init__(self):
+        import re
+        self.pattern = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+        self.error_msg = "Invalid email format"
+    
+    def validate(self, value):
+        return bool(self.pattern.match(value)) if value else False
+    
+    def get_error_message(self):
+        return self.error_msg
+
+class RangeValidator(Validator):
+    def __init__(self, min_val, max_val):
+        self.min_val = min_val
+        self.max_val = max_val
+        self.error_msg = f"Value must be between {min_val} and {max_val}"
+    
+    def validate(self, value):
+        return self.min_val <= value <= self.max_val
+    
+    def get_error_message(self):
+        return self.error_msg
+
+class RequiredValidator(Validator):
+    def __init__(self):
+        self.error_msg = "This field is required"
+    
+    def validate(self, value):
+        return value is not None and str(value).strip() != ""
+    
+    def get_error_message(self):
+        return self.error_msg
+
+# 使用验证器
+validators = [
+    EmailValidator(),
+    RangeValidator(1, 100),
+    RequiredValidator()
+]
+
+test_values = [
+    ("test@example.com", [EmailValidator()]),
+    (50, [RangeValidator(1, 100)]),
+    ("Hello", [RequiredValidator()])
+]
+
+for value, val_list in test_values:
+    for validator in val_list:
+        if validator.validate(value):
+            print(f"{value} is valid for {type(validator).__name__}")
+        else:
+            print(f"{value} is invalid: {validator.get_error_message()}")
+</pre>

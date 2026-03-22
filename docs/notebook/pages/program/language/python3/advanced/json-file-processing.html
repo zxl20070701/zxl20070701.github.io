@@ -1,0 +1,40 @@
+<header>
+    JSON文件处理
+</header>
+<p>
+    JSON（JavaScript Object Notation）是一种轻量级的数据交换格式，Python通过json模块提供了对JSON的支持。
+</p>
+<pre tag="python">
+import json
+
+# 写入JSON文件
+data = {
+    "name": "张三",
+    "age": 25,
+    "skills": ["Python", "JavaScript", "SQL"],
+    "address": {
+        "city": "北京",
+        "district": "朝阳区"
+    },
+    "married": False
+}
+
+with open('person.json', 'w', encoding='utf-8') as file:
+    json.dump(data, file, ensure_ascii=False, indent=2)
+
+# 读取JSON文件
+with open('person.json', 'r', encoding='utf-8') as file:
+    loaded_data = json.load(file)
+    print("读取的JSON数据:")
+    print(json.dumps(loaded_data, ensure_ascii=False, indent=2))
+
+# 处理JSON字符串
+json_string = '{"name": "李四", "age": 30}'
+parsed_data = json.loads(json_string)
+print(f"解析的姓名: {parsed_data['name']}")
+
+# 生成JSON字符串
+python_dict = {"name": "王五", "age": 28}
+json_str = json.dumps(python_dict, ensure_ascii=False)
+print(f"生成的JSON: {json_str}")
+</pre>

@@ -4,10 +4,6 @@
 <p>
     算术运算符用于执行基本的数学运算，包括加、减、乘、除等。Python中的算术运算符不仅适用于数字类型，还可以用于字符串、列表等序列类型的特定操作。
 </p>
-
-<h2>
-    基本算术运算符
-</h2>
 <table>
     <thead>
         <tr>
@@ -64,10 +60,13 @@
 </table>
 
 <h2>
-    运算符详细示例
+    示例
 </h2>
+
+<h3>
+    基本算术运算
+</h3>
 <pre tag="python">
-# 基本算术运算
 a = 10
 b = 3
 
@@ -79,26 +78,37 @@ print(f"a / b = {a / b}")    # 3.333...
 print(f"a // b = {a // b}")  # 3 (整除)
 print(f"a % b = {a % b}")    # 1 (取模)
 print(f"a ** b = {a ** b}")  # 1000 (10的3次方)
+</pre>
 
-# 字符串操作
+<h3>
+    字符串操作
+</h3>
+<pre tag="python">
 str1 = "Hello"
 str2 = "World"
 
-print(f"\n字符串操作:")
 print(f"str1 + str2 = {str1 + ' ' + str2}")  # Hello World
 print(f"str1 * 3 = {str1 * 3}")  # HelloHelloHello
+</pre>
 
-# 列表操作
+<h3>
+    列表操作
+</h3>
+<pre tag="python">
 list1 = [1, 2, 3]
 list2 = [4, 5, 6]
 
-print(f"\n列表操作:")
 print(f"list1 + list2 = {list1 + list2}")  # [1, 2, 3, 4, 5, 6]
 print(f"list1 * 2 = {list1 * 2}")  # [1, 2, 3, 1, 2, 3]
+</pre>
 
-# 复合赋值运算符
+<h3>
+    复合赋值运算符
+</h3>
+<pre tag="python">
 x = 5
-print(f"\n复合赋值运算:")
+print(f"初始值: x = {x}")
+
 x += 3   # 等价于 x = x + 3
 print(f"x += 3 -> x = {x}")  # 8
 
@@ -122,7 +132,6 @@ print(f"x **= 2 -> x = {x}")  # 9
     浮点数精度问题
 </h2>
 <pre tag="python">
-# 浮点数精度问题
 a = 0.1
 b = 0.2
 c = a + b
@@ -175,101 +184,6 @@ print(f"pow(2, 3) = {math.pow(2, 3)}")  # 幂运算
 print(f"ceil(3.2) = {math.ceil(3.2)}")  # 向上取整
 print(f"floor(3.8) = {math.floor(3.8)}")  # 向下取整
 print(f"trunc(3.8) = {math.trunc(3.8)}")  # 截断小数部分
-</pre>
-
-<h2>
-    实际应用示例
-</h2>
-<pre tag="python">
-# 1. 计算圆的面积和周长
-def circle_properties(radius):
-    """计算圆的面积和周长"""
-    area = math.pi * radius ** 2
-    circumference = 2 * math.pi * radius
-    return area, circumference
-
-radius = 5
-area, circumference = circle_properties(radius)
-print(f"半径为{radius}的圆:")
-print(f"面积: {area:.2f}")
-print(f"周长: {circumference:.2f}")
-
-# 2. 温度转换
-def celsius_to_fahrenheit(celsius):
-    """摄氏温度转华氏温度"""
-    return celsius * 9/5 + 32
-
-def fahrenheit_to_celsius(fahrenheit):
-    """华氏温度转摄氏温度"""
-    return (fahrenheit - 32) * 5/9
-
-temperatures = [0, 20, 37, 100]
-print("\n温度转换:")
-for c in temperatures:
-    f = celsius_to_fahrenheit(c)
-    print(f"{c}°C = {f:.1f}°F")
-
-# 3. 计算平均值、方差和标准差
-def statistics(numbers):
-    """计算基本统计信息"""
-    n = len(numbers)
-    mean = sum(numbers) / n
-    variance = sum((x - mean) ** 2 for x in numbers) / n
-    std_dev = math.sqrt(variance)
-    return mean, variance, std_dev
-
-scores = [85, 90, 78, 92, 88, 76, 95, 89]
-mean, variance, std_dev = statistics(scores)
-print(f"\n成绩统计:")
-print(f"平均分: {mean:.2f}")
-print(f"方差: {variance:.2f}")
-print(f"标准差: {std_dev:.2f}")
-
-# 4. 复利计算
-def compound_interest(principal, rate, time, n=1):
-    """计算复利
-    principal: 本金
-    rate: 年利率（小数）
-    time: 时间（年）
-    n: 每年复利次数
-    """
-    amount = principal * (1 + rate/n) ** (n*time)
-    return amount
-
-principal = 10000  # 本金10000元
-rate = 0.05       # 年利率5%
-time = 10         # 10年
-
-# 不同复利频率的比较
-frequencies = [1, 2, 4, 12, 365]
-print(f"\n{principal}元投资{time}年，年利率{rate*100}%:")
-for n in frequencies:
-    amount = compound_interest(principal, rate, time, n)
-    interest = amount - principal
-    print(f"每年{n}次复利: 总额={amount:.2f}, 利息={interest:.2f}")
-
-# 5. 生成斐波那契数列
-def fibonacci(n):
-    """生成前n个斐波那契数"""
-    fib_sequence = []
-    a, b = 0, 1
-    for _ in range(n):
-        fib_sequence.append(a)
-        a, b = b, a + b
-    return fib_sequence
-
-fib_numbers = fibonacci(10)
-print(f"\n前10个斐波那契数: {fib_numbers}")
-
-# 6. 计算两点间距离
-def distance(x1, y1, x2, y2):
-    """计算两点间欧几里得距离"""
-    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-
-point1 = (0, 0)
-point2 = (3, 4)
-dist = distance(*point1, *point2)
-print(f"\n点{point1}到点{point2}的距离: {dist}")  # 5.0
 </pre>
 
 <h2>

@@ -1,0 +1,70 @@
+<header>
+    目录遍历
+</header>
+<p>
+    目录遍历是Python中处理文件系统的重要功能，用于递归地访问目录中的所有文件和子目录。
+</p>
+
+<h2>
+    使用os.walk遍历目录
+</h2>
+<pre tag="python">
+import os
+from pathlib import Path
+
+def walk_directory_os(root_dir):
+
+    for dirpath, dirnames, filenames in os.walk(root_dir):
+        level = dirpath.replace(root_dir, '').count(os.sep)
+        indent = ' ' * 2 * level
+        print(f"{indent}{os.path.basename(dirpath)}/")
+
+        subindent = ' ' * 2 * (level + 1)
+        for file in filenames:
+            print(f"{subindent}{file}")
+
+</pre>
+<h2>
+    使用pathlib遍历目录
+</h2>
+<pre tag="python">
+from pathlib import Path
+
+def walk_directory_pathlib(root_dir):
+
+    root_path = Path(root_dir)
+
+    # 递归遍历所有文件和目录
+    for path in root_path.rglob('*'):
+        if path.is_file():
+            relative_path = path.relative_to(root_path)
+            print(f"  文件: {relative_path}")
+        elif path.is_dir():
+            relative_path = path.relative_to(root_path)
+            print(f"目录: {relative_path}/")
+</pre>
+<h2>
+    glob模式匹配
+</h2>
+<pre tag="python">
+import os
+from pathlib import Path
+import glob
+
+current_dir = os.getcwd()
+
+print(f"\n当前目录: {current_dir}")
+
+# 查找所有.py文件
+py_files = glob.glob("**/*.py", recursive=True)
+print(f"\nPython文件: {py_files[:3]}...")  # 显示前3个
+
+# 使用pathlib的glob
+path = Path(current_dir)
+txt_files = list(path.glob("*.txt"))
+print(f"文本文件: {txt_files}")
+
+# 递归查找所有.py文件
+all_py_files = list(path.rglob("*.py"))
+print(f"所有Python文件数量: {len(all_py_files)}")
+</pre>

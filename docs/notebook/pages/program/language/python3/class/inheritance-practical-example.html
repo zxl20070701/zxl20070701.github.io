@@ -1,0 +1,170 @@
+<header>
+    继承的实际应用
+</header>
+<h2>
+    员工管理系统
+</h2>
+<pre tag="python">
+from datetime import datetime
+
+class Employee:
+    """员工基类"""
+    company_name = "Tech Corp"
+    
+    def __init__(self, name, employee_id, salary):
+        self.name = name
+        self.employee_id = employee_id
+        self.salary = salary
+        self.hire_date = datetime.now()
+    
+    def get_info(self):
+        return f"{self.name} (ID: {self.employee_id}) - ¥{self.salary}/月"
+    
+    def calculate_bonus(self):
+        return self.salary * 0.1  # 默认10%奖金
+    
+    def work(self):
+        return f"{self.name} is doing general work"
+
+class Developer(Employee):
+    """开发工程师"""
+    def __init__(self, name, employee_id, salary, programming_language):
+        super().__init__(name, employee_id, salary)
+        self.programming_language = programming_language
+    
+    def work(self):
+        return f"{self.name} is writing {self.programming_language} code"
+    
+    def calculate_bonus(self):
+        return self.salary * 0.15  # 开发工程师15%奖金
+
+class Manager(Employee):
+    """经理"""
+    def __init__(self, name, employee_id, salary, team_size):
+        super().__init__(name, employee_id, salary)
+        self.team_size = team_size
+        self.team_members = []
+    
+    def work(self):
+        return f"{self.name} is managing a team of {self.team_size} people"
+    
+    def calculate_bonus(self):
+        return self.salary * 0.2  # 经理20%奖金
+    
+    def add_team_member(self, employee):
+        if len(self.team_members) < self.team_size:
+            self.team_members.append(employee)
+            return True
+        return False
+
+class SalesPerson(Employee):
+    """销售人员"""
+    def __init__(self, name, employee_id, salary, sales_target):
+        super().__init__(name, employee_id, salary)
+        self.sales_target = sales_target
+        self.current_sales = 0
+    
+    def work(self):
+        return f"{self.name} is making sales calls"
+    
+    def make_sale(self, amount):
+        self.current_sales += amount
+    
+    def calculate_bonus(self):
+        # 销售奖金基于目标完成情况
+        achievement_rate = self.current_sales / self.sales_target
+        return self.salary * min(achievement_rate, 0.3)  # 最高30%
+
+# 使用员工管理系统
+dev = Developer("Alice", "D001", 15000, "Python")
+manager = Manager("Bob", "M001", 20000, 5)
+sales = SalesPerson("Charlie", "S001", 12000, 100000)
+
+employees = [dev, manager, sales]
+
+# 多态性演示
+for emp in employees:
+    print(emp.get_info())
+    print(emp.work())
+    if isinstance(emp, SalesPerson):
+        emp.make_sale(50000)
+    print(f"奖金: ¥{emp.calculate_bonus():.2f}")
+    print("-" * 40)
+</pre>
+
+<h2>
+    图形绘制系统
+</h2>
+<pre tag="python">
+import math
+
+class Drawable:
+    """可绘制对象接口"""
+    def draw(self):
+        raise NotImplementedError
+    
+    def get_area(self):
+        raise NotImplementedError
+    
+    def get_perimeter(self):
+        raise NotImplementedError
+
+class Shape(Drawable):
+    """形状基类"""
+    def __init__(self, color="black"):
+        self.color = color
+    
+    def set_color(self, color):
+        self.color = color
+
+class Rectangle(Shape):
+    def __init__(self, width, height, color="black"):
+        super().__init__(color)
+        self.width = width
+        self.height = height
+    
+    def draw(self):
+        return f"Drawing {self.color} rectangle: {self.width}x{self.height}"
+    
+    def get_area(self):
+        return self.width * self.height
+    
+    def get_perimeter(self):
+        return 2 * (self.width + self.height)
+
+class Circle(Shape):
+    def __init__(self, radius, color="black"):
+        super().__init__(color)
+        self.radius = radius
+    
+    def draw(self):
+        return f"Drawing {self.color} circle with radius {self.radius}"
+    
+    def get_area(self):
+        return math.pi * self.radius ** 2
+    
+    def get_perimeter(self):
+        return 2 * math.pi * self.radius
+
+class Square(Rectangle):
+    """正方形是特殊的矩形"""
+    def __init__(self, side, color="black"):
+        super().__init__(side, side, color)
+        self.side = side
+    
+    def draw(self):
+        return f"Drawing {self.color} square with side {self.side}"
+
+# 使用图形绘制系统
+shapes = [
+    Rectangle(4, 6, "red"),
+    Circle(3, "blue"),
+    Square(5, "green")
+]
+
+for shape in shapes:
+    print(shape.draw())
+    print(f"面积: {shape.get_area():.2f}")
+    print(f"周长: {shape.get_perimeter():.2f}")
+    print("-" * 30)
+</pre>

@@ -1,0 +1,60 @@
+<header>
+    自定义异常
+</header>
+<p>
+    Python允许我们创建自定义异常类，以便更好地表示特定的错误情况。自定义异常可以帮助我们创建更具描述性的错误，并提供额外的上下文信息。
+</p>
+<pre tag="python">
+# 自定义异常类
+class CustomError(Exception):
+    """自定义异常基类"""
+    pass
+
+class ValidationError(CustomError):
+    """验证错误"""
+    def __init__(self, message, field=None):
+        super().__init__(message)
+        self.field = field
+
+class InsufficientFundsError(CustomError):
+    """余额不足错误"""
+    def __init__(self, balance, amount):
+        self.balance = balance
+        self.amount = amount
+        super().__init__(f"余额不足: 当前余额 {balance}, 需要 {amount}")
+
+# 使用自定义异常
+class BankAccount:
+    def __init__(self, initial_balance=0):
+        self.balance = initial_balance
+
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValidationError("存款金额必须大于零", "amount")
+        self.balance += amount
+        return self.balance
+
+    def withdraw(self, amount):
+        if amount <= 0:
+            raise ValidationError("取款金额必须大于零", "amount")
+        if amount > self.balance:
+            raise InsufficientFundsError(self.balance, amount)
+        self.balance -= amount
+        return self.balance
+
+# 测试银行账户
+account = BankAccount(100)
+
+try:
+    account.deposit(50)
+    print(f"存款后余额: {account.balance}")
+
+    account.withdraw(200)
+except ValidationError as e:
+    print(f"验证错误: {e}")
+    if e.field:
+        print(f"错误字段: {e.field}")
+except InsufficientFundsError as e:
+    print(f"余额不足错误: {e}")
+    print(f"当前余额: {e.balance}, 请求金额: {e.amount}")
+</pre>

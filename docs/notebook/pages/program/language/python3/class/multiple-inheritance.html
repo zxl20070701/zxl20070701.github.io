@@ -1,0 +1,114 @@
+<header>
+    多重继承
+</header>
+<h2>
+    多重继承概念
+</h2>
+<p>
+    Python支持<span class="important">多重继承</span>，一个类可以继承多个父类：
+</p>
+<pre tag="python">
+class Flyable:
+    """飞行能力"""
+    def fly(self):
+        return "I can fly!"
+
+class Swimmable:
+    """游泳能力"""
+    def swim(self):
+        return "I can swim!"
+
+class Walkable:
+    """行走能力"""
+    def walk(self):
+        return "I can walk!"
+
+class Duck(Flyable, Swimmable, Walkable):
+    """鸭子：会飞、会游泳、会走"""
+    def __init__(self, name):
+        self.name = name
+    
+    def quack(self):
+        return "Quack! Quack!"
+
+class Penguin(Swimmable, Walkable):
+    """企鹅：会游泳、会走，但不会飞"""
+    def __init__(self, name):
+        self.name = name
+    
+    def slide(self):
+        return f"{self.name} is sliding on ice!"
+
+# 使用多重继承
+duck = Duck("Donald")
+penguin = Penguin("Pingu")
+
+print(duck.fly())     # I can fly!
+print(duck.swim())    # I can swim!
+print(duck.walk())    # I can walk!
+print(duck.quack())   # Quack! Quack!
+
+print(penguin.swim())  # I can swim!
+print(penguin.walk())  # I can walk!
+print(penguin.slide()) # Pingu is sliding on ice!
+# print(penguin.fly())  # AttributeError: 'Penguin' object has no attribute 'fly'
+</pre>
+
+<h2>
+    方法解析顺序（MRO）
+</h2>
+<pre tag="python">
+class A:
+    def method(self):
+        print("A.method")
+
+class B(A):
+    def method(self):
+        print("B.method")
+
+class C(A):
+    def method(self):
+        print("C.method")
+
+class D(B, C):
+    pass
+
+# 查看方法解析顺序
+print(D.__mro__)
+# (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
+
+d = D()
+d.method()  # 输出: B.method
+</pre>
+
+<h2>
+    钻石继承问题
+</h2>
+<pre tag="python">
+class Base:
+    def __init__(self):
+        print("Base.__init__")
+
+class Left(Base):
+    def __init__(self):
+        super().__init__()
+        print("Left.__init__")
+
+class Right(Base):
+    def __init__(self):
+        super().__init__()
+        print("Right.__init__")
+
+class Bottom(Left, Right):
+    def __init__(self):
+        super().__init__()
+        print("Bottom.__init__")
+
+# 使用super()避免重复调用
+bottom = Bottom()
+# 输出:
+# Base.__init__
+# Right.__init__
+# Left.__init__
+# Bottom.__init__
+</pre>

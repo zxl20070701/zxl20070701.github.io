@@ -1,0 +1,297 @@
+<header>
+    抽象属性
+</header>
+<h2>
+    抽象属性概念
+</h2>
+<p>
+    <span class="important">抽象属性（Abstract Properties）</span>使用@property装饰器和@abstractmethod结合定义，要求子类必须实现特定的属性访问器。
+</p>
+
+<h2>
+    抽象属性定义
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+
+class Person(ABC):
+    """抽象基类：人"""
+    
+    def __init__(self, name):
+        self._name = name
+    
+    @property
+    @abstractmethod
+    def age(self):
+        """抽象属性：年龄"""
+        pass
+    
+    @property
+    @abstractmethod
+    def occupation(self):
+        """抽象属性：职业"""
+        pass
+    
+    @property
+    def name(self):
+        """具体属性：姓名"""
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        self._name = value
+    
+    @abstractmethod
+    def introduce(self):
+        """抽象方法：自我介绍"""
+        pass
+
+class Student(Person):
+    def __init__(self, name, age, major):
+        super().__init__(name)
+        self._age = age
+        self.major = major
+    
+    @property
+    def age(self):
+        """学生年龄"""
+        return self._age
+    
+    @property
+    def occupation(self):
+        """学生职业"""
+        return "Student"
+    
+    def introduce(self):
+        return f"Hi, I'm {self.name}, a {self.age}-year-old student majoring in {self.major}."
+
+class Teacher(Person):
+    def __init__(self, name, age, subject):
+        super().__init__(name)
+        self._age = age
+        self.subject = subject
+    
+    @property
+    def age(self):
+        """教师年龄"""
+        return self._age
+    
+    @property
+    def occupation(self):
+        """教师职业"""
+        return "Teacher"
+    
+    def introduce(self):
+        return f"Hello, I'm {self.name}, a {self.age}-year-old teacher teaching {self.subject}."
+
+# 使用抽象属性
+student = Student("Alice", 20, "Computer Science")
+teacher = Teacher("Bob", 35, "Mathematics")
+
+print(student.introduce())
+print(f"Student age: {student.age}")
+print(f"Student occupation: {student.occupation}")
+
+print(teacher.introduce())
+print(f"Teacher age: {teacher.age}")
+print(f"Teacher occupation: {teacher.occupation}")
+
+# 抽象类不能直接实例化
+# person = Person("Charlie")  # 会报错
+</pre>
+
+<h2>
+    抽象属性的setter
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+
+class Vehicle(ABC):
+    """抽象基类：车辆"""
+    
+    def __init__(self):
+        self._speed = 0
+    
+    @property
+    @abstractmethod
+    def max_speed(self):
+        """抽象属性：最大速度"""
+        pass
+    
+    @property
+    def speed(self):
+        """当前速度"""
+        return self._speed
+    
+    @speed.setter
+    @abstractmethod
+    def speed(self, value):
+        """抽象属性setter：设置速度"""
+        pass
+    
+    @abstractmethod
+    def accelerate(self, increment):
+        """抽象方法：加速"""
+        pass
+    
+    @abstractmethod
+    def brake(self, decrement):
+        """抽象方法：刹车"""
+        pass
+
+class Car(Vehicle):
+    def __init__(self):
+        super().__init__()
+        self._max_speed = 200
+    
+    @property
+    def max_speed(self):
+        return self._max_speed
+    
+    @speed.setter
+    def speed(self, value):
+        if 0 <= value <= self.max_speed:
+            self._speed = value
+        else:
+            raise ValueError(f"Speed must be between 0 and {self.max_speed}")
+    
+    def accelerate(self, increment):
+        new_speed = min(self.speed + increment, self.max_speed)
+        self.speed = new_speed
+        return self.speed
+    
+    def brake(self, decrement):
+        new_speed = max(self.speed - decrement, 0)
+        self.speed = new_speed
+        return self.speed
+
+class Bicycle(Vehicle):
+    def __init__(self):
+        super().__init__()
+        self._max_speed = 30
+    
+    @property
+    def max_speed(self):
+        return self._max_speed
+    
+    @speed.setter
+    def speed(self, value):
+        if 0 <= value <= self.max_speed:
+            self._speed = value
+        else:
+            raise ValueError(f"Speed must be between 0 and {self.max_speed}")
+    
+    def accelerate(self, increment):
+        new_speed = min(self.speed + increment, self.max_speed)
+        self.speed = new_speed
+        return self.speed
+    
+    def brake(self, decrement):
+        new_speed = max(self.speed - decrement, 0)
+        self.speed = new_speed
+        return self.speed
+
+# 使用抽象属性
+car = Car()
+bicycle = Bicycle()
+
+print(f"Car max speed: {car.max_speed}")
+print(f"Bicycle max speed: {bicycle.max_speed}")
+
+car.accelerate(50)
+print(f"Car speed: {car.speed}")
+
+car.brake(20)
+print(f"Car speed after braking: {car.speed}")
+
+bicycle.accelerate(15)
+print(f"Bicycle speed: {bicycle.speed}")
+</pre>
+
+<h2>
+    抽象类属性
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+
+class DatabaseModel(ABC):
+    """抽象基类：数据库模型"""
+    
+    @property
+    @classmethod
+    @abstractmethod
+    def table_name(cls):
+        """抽象类属性：表名"""
+        pass
+    
+    @property
+    @classmethod
+    @abstractmethod
+    def primary_key(cls):
+        """抽象类属性：主键"""
+        pass
+    
+    @abstractmethod
+    def to_dict(self):
+        """转换为字典"""
+        pass
+    
+    @abstractmethod
+    def save(self):
+        """保存到数据库"""
+        pass
+
+class User(DatabaseModel):
+    table_name = "users"
+    primary_key = "id"
+    
+    def __init__(self, id, name, email):
+        self.id = id
+        self.name = name
+        self.email = email
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email
+        }
+    
+    def save(self):
+        print(f"Saving user to {self.table_name} table")
+        print(f"User data: {self.to_dict()}")
+        return True
+
+class Product(DatabaseModel):
+    table_name = "products"
+    primary_key = "sku"
+    
+    def __init__(self, sku, name, price):
+        self.sku = sku
+        self.name = name
+        self.price = price
+    
+    def to_dict(self):
+        return {
+            "sku": self.sku,
+            "name": self.name,
+            "price": self.price
+        }
+    
+    def save(self):
+        print(f"Saving product to {self.table_name} table")
+        print(f"Product data: {self.to_dict()}")
+        return True
+
+# 使用抽象类属性
+user = User(1, "Alice", "alice@example.com")
+product = Product("ABC123", "Laptop", 999.99)
+
+print(f"User table: {User.table_name}")
+print(f"User primary key: {User.primary_key}")
+user.save()
+
+print(f"Product table: {Product.table_name}")
+print(f"Product primary key: {Product.primary_key}")
+product.save()
+</pre>
