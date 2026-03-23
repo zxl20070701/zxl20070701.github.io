@@ -1,0 +1,330 @@
+<header>
+    拓扑排序
+</header>
+
+<h2>
+    拓扑排序的定义
+</h2>
+
+<p>
+    拓扑排序（Topological Sorting）是对有向无环图（Directed Acyclic
+    Graph，DAG）的一种线性排序。它将图中的所有顶点排成一个线性序列，使得对于图中的任意一条有向边(u,v)，u在序列中都出现在v的前面。如果图中有环，则无法进行拓扑排序。
+</p>
+
+<h3>
+    相关概念
+</h3>
+
+<ul>
+    <li>
+        <span class="special">有向无环图（DAG）</span>：没有环的有向图
+    </li>
+    <li>
+        <span class="special">前驱</span>：在有向图中，如果存在边(u,v)，则u是v的前驱
+    </li>
+    <li>
+        <span class="special">后继</span>：在有向图中，如果存在边(u,v)，则v是u的后继
+    </li>
+    <li>
+        <span class="special">入度</span>：顶点的入度是指向该顶点的边的数量
+    </li>
+    <li>
+        <span class="special">出度</span>：顶点的出度是从该顶点出发的边的数量
+    </li>
+</ul>
+
+<h2>
+    拓扑排序的性质
+</h2>
+
+<h3>
+    存在性
+</h3>
+
+<p>
+    一个图可以进行拓扑排序的充要条件是它是一个有向无环图。
+</p>
+
+<h3>
+    唯一性
+</h3>
+
+<p>
+    拓扑排序的结果不一定是唯一的，一个图可能有多个不同的拓扑排序结果。
+</p>
+
+<h3>
+    应用性
+</h3>
+
+<p>
+    拓扑排序在任务调度、课程安排、编译依赖分析等领域有广泛应用。
+</p>
+
+<h2>
+    拓扑排序的算法
+</h2>
+
+<h3>
+    Kahn算法（基于入度）
+</h3>
+
+<h4>
+    算法思想
+</h4>
+
+<p>
+    Kahn算法的基本思想是：不断选择入度为0的顶点，将其加入结果序列，并删除该顶点及其所有出边，直到所有顶点都被处理或发现图中存在环。
+</p>
+
+<h4>
+    算法步骤
+</h4>
+
+<ol>
+    <li>计算图中所有顶点的入度</li>
+    <li>将所有入度为0的顶点加入队列</li>
+    <li>当队列不为空时：
+        <ol>
+            <li>从队列中取出一个顶点，将其加入结果序列</li>
+            <li>删除该顶点及其所有出边，更新相关顶点的入度</li>
+            <li>如果某个顶点的入度变为0，将其加入队列</li>
+        </ol>
+    </li>
+    <li>如果结果序列中的顶点数少于图中的顶点数，则说明图中存在环</li>
+</ol>
+
+<h4>
+    Kahn算法的实现
+</h4>
+
+<pre tag="c">
+#define MAX_VERTEX_NUM 100
+
+Status TopologicalSort(GraphAdjList GL) {
+    EdgeNode *e;
+    int i, k, gettop;
+    int top = 0;  // 用于栈指针下标
+    int count = 0;  // 用于统计输出顶点的个数
+    int *stack;  // 建栈存储入度为0的顶点
+    stack = (int*)malloc(GL->numVertexes * sizeof(int));
+
+    // 遍历邻接表，计算每个顶点的入度
+    for (i = 0; i < GL->numVertexes; i++) {
+        if (GL->adjList[i].in == 0) {
+            stack[++top] = i;  // 将入度为0的顶点入栈
+        }
+    }
+
+    while (top != 0) {
+        gettop = stack[top--];  // 出栈
+        printf("%d -> ", GL->adjList[gettop].data);
+        count++;  // 统计输出顶点数
+
+        // 遍历邻接表，将以该顶点为尾的弧的头顶点的入度减1
+        for (e = GL->adjList[gettop].firstedge; e; e = e->next) {
+            k = e->adjvex;
+            if (!(--GL->adjList[k].in)) {
+                stack[++top] = k;  // 若入度为0，则入栈
+            }
+        }
+    }
+
+    if (count < GL->numVertexes) {
+        return ERROR;  // 如果count小于顶点数，说明存在环
+    } else {
+        return OK;
+    }
+}
+</pre>
+
+<h3>
+    DFS算法（基于深度优先搜索）
+</h3>
+
+<h4>
+    算法思想
+</h4>
+
+<p>
+    DFS算法的基本思想是：对图进行深度优先搜索，在回溯时将顶点加入结果序列。这样可以保证对于任意边(u,v)，u在序列中出现在v的前面。
+</p>
+
+<h4>
+    算法步骤
+</h4>
+
+<ol>
+    <li>对图中的每个未访问的顶点进行深度优先搜索</li>
+    <li>在回溯时将顶点加入结果序列</li>
+    <li>最终得到的结果序列的逆序就是拓扑排序的结果</li>
+</ol>
+
+<h4>
+    DFS算法的实现
+</h4>
+
+<pre tag="c">
+#define MAX_VERTEX_NUM 100
+int visited[MAX_VERTEX_NUM];  // 访问标志数组
+int result[MAX_VERTEX_NUM];   // 存储拓扑排序结果
+int index = 0;                // 结果数组下标
+
+Status TopologicalSort_DFS(GraphAdjList GL) {
+    int i;
+
+    // 初始化访问标志数组
+    for (i = 0; i < GL->numVertexes; i++) {
+        visited[i] = 0;
+    }
+
+    // 对未访问的顶点进行深度优先搜索
+    for (i = 0; i < GL->numVertexes; i++) {
+        if (!visited[i]) {
+            if (!DFS(GL, i)) {
+                return ERROR;  // 发现环
+            }
+        }
+    }
+
+    // 输出拓扑排序结果（逆序）
+    for (i = index - 1; i >= 0; i--) {
+        printf("%d -> ", GL->adjList[result[i]].data);
+    }
+
+    return OK;
+}
+
+Status DFS(GraphAdjList GL, int i) {
+    EdgeNode *e;
+    int k;
+
+    visited[i] = 1;  // 标记为已访问
+
+    // 遍历所有邻接顶点
+    for (e = GL->adjList[i].firstedge; e; e = e->next) {
+        k = e->adjvex;
+        if (!visited[k]) {
+            if (!DFS(GL, k)) {
+                return ERROR;  // 发现环
+            }
+        } else if (visited[k] == 1) {
+            return ERROR;  // 发现环
+        }
+    }
+
+    visited[i] = 2;  // 标记为已完成
+    result[index++] = i;  // 将顶点加入结果序列
+
+    return OK;
+}
+</pre>
+
+<h2>
+    两种算法的比较
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>特性</th>
+            <th>Kahn算法</th>
+            <th>DFS算法</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>算法思想</td>
+            <td>基于入度</td>
+            <td>基于深度优先搜索</td>
+        </tr>
+        <tr>
+            <td>时间复杂度</td>
+            <td>O(V+E)</td>
+            <td>O(V+E)</td>
+        </tr>
+        <tr>
+            <td>空间复杂度</td>
+            <td>O(V)</td>
+            <td>O(V)</td>
+        </tr>
+        <tr>
+            <td>实现复杂度</td>
+            <td>中等</td>
+            <td>较高</td>
+        </tr>
+        <tr>
+            <td>环检测</td>
+            <td>自然检测</td>
+            <td>需要额外判断</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    其中，V是顶点数，E是边数。
+</p>
+
+<h2>
+    拓扑排序的应用
+</h2>
+
+<h3>
+    任务调度
+</h3>
+
+<p>
+    在项目管理中，拓扑排序可以用于确定任务的执行顺序，确保前置任务在后续任务之前完成。
+</p>
+
+<h3>
+    课程安排
+</h3>
+
+<p>
+    在教育系统中，拓扑排序可以用于安排课程，确保先修课程在后续课程之前开设。
+</p>
+
+<h3>
+    编译依赖分析
+</h3>
+
+<p>
+    在编译系统中，拓扑排序可以用于分析源文件之间的依赖关系，确定编译顺序。
+</p>
+
+<h3>
+    数据流分析
+</h3>
+
+<p>
+    在程序分析中，拓扑排序可以用于数据流分析，确定变量的定义和使用顺序。
+</p>
+
+<h2>
+    拓扑排序的扩展
+</h2>
+
+<h3>
+    字典序拓扑排序
+</h3>
+
+<p>
+    在满足拓扑排序条件的前提下，使结果序列字典序最小。
+</p>
+
+<h3>
+    并行拓扑排序
+</h3>
+
+<p>
+    利用并行计算技术加速拓扑排序过程。
+</p>
+
+<h3>
+    增量拓扑排序
+</h3>
+
+<p>
+    在图结构发生变化时，动态维护拓扑排序结果。
+</p>

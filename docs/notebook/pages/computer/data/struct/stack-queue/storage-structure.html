@@ -1,0 +1,356 @@
+<header>
+    栈和队列的存储结构
+</header>
+
+<h2>
+    栈的顺序存储结构
+</h2>
+
+<h3>
+    顺序栈的定义
+</h3>
+
+<p>
+    顺序栈是利用一组地址连续的存储单元依次存放自栈底到栈顶的数据元素，同时附设指针top指示栈顶元素在顺序栈中的位置。通常将数组的低端作为栈底，高端作为栈顶。
+</p>
+
+<pre tag="c">
+#define MAXSIZE 100
+typedef struct {
+    int data[MAXSIZE];
+    int top; // 栈顶指针
+} SqStack;
+</pre>
+
+<h3>
+    顺序栈的基本操作
+</h3>
+
+<h4>
+    初始化
+</h4>
+
+<pre tag="c">
+Status InitStack(SqStack *S) {
+    S->top = -1; // 初始化栈顶指针
+    return OK;
+}
+</pre>
+
+<h4>
+    判断栈空
+</h4>
+
+<pre tag="c">
+bool StackEmpty(SqStack S) {
+    return S.top == -1;
+}
+</pre>
+
+<h4>
+    进栈操作
+</h4>
+
+<pre tag="c">
+Status Push(SqStack *S, int e) {
+    if (S->top == MAXSIZE - 1) return ERROR; // 栈满
+    S->data[++S->top] = e;
+    return OK;
+}
+</pre>
+
+<h4>
+    出栈操作
+</h4>
+
+<pre tag="c">
+Status Pop(SqStack *S, int *e) {
+    if (S->top == -1) return ERROR; // 栈空
+    *e = S->data[S->top--];
+    return OK;
+}
+</pre>
+
+<h4>
+    读栈顶元素
+</h4>
+
+<pre tag="c">
+Status GetTop(SqStack S, int *e) {
+    if (S.top == -1) return ERROR; // 栈空
+    *e = S.data[S.top];
+    return OK;
+}
+</pre>
+
+<h3>
+    共享栈
+</h3>
+
+<p>
+    两个栈共享一个一维数组空间，将两个栈的栈底分别设置在数组的两端，两个栈顶向中间延伸。这样可以在一个数组中实现两个栈，提高空间利用率。
+</p>
+
+<pre tag="c">
+#define MAXSIZE 100
+typedef struct {
+    int data[MAXSIZE];
+    int top1; // 栈1栈顶指针
+    int top2; // 栈2栈顶指针
+} ShareStack;
+</pre>
+
+<h4>
+    共享栈初始化
+</h4>
+
+<pre tag="c">
+Status InitStack(ShareStack *S) {
+    S->top1 = -1;
+    S->top2 = MAXSIZE;
+    return OK;
+}
+</pre>
+
+<h4>
+    判断共享栈满
+</h4>
+
+<pre tag="c">
+bool StackFull(ShareStack S) {
+    return S.top1 + 1 == S.top2;
+}
+</pre>
+
+<h2>
+    栈的链式存储结构
+</h2>
+
+<h3>
+    链栈的定义
+</h3>
+
+<p>
+    链栈是指采用链式存储结构实现的栈。通常链栈用单链表来表示，链栈的结点结构与单链表的结构相同。由于栈的操作是线性表操作的特例，则链栈的操作易于实现。
+</p>
+
+<pre tag="c">
+typedef struct SNode {
+    int data;
+    struct SNode *next;
+} SNode, *LinkStack;
+</pre>
+
+<h3>
+    链栈的基本操作
+</h3>
+
+<h4>
+    初始化
+</h4>
+
+<pre tag="c">
+Status InitStack(LinkStack *S) {
+    *S = NULL; // 栈顶指针置空
+    return OK;
+}
+</pre>
+
+<h4>
+    判断栈空
+</h4>
+
+<pre tag="c">
+bool StackEmpty(LinkStack S) {
+    return S == NULL;
+}
+</pre>
+
+<h4>
+    进栈操作
+</h4>
+
+<pre tag="c">
+Status Push(LinkStack *S, int e) {
+    SNode *p = (SNode*)malloc(sizeof(SNode));
+    if (!p) return ERROR;
+
+    p->data = e;
+    p->next = *S;
+    *S = p;
+
+    return OK;
+}
+</pre>
+
+<h4>
+    出栈操作
+</h4>
+
+<pre tag="c">
+Status Pop(LinkStack *S, int *e) {
+    if (*S == NULL) return ERROR; // 栈空
+
+    SNode *p = *S;
+    *e = p->data;
+    *S = p->next;
+    free(p);
+
+    return OK;
+}
+</pre>
+
+<h2>
+    队列的顺序存储结构
+</h2>
+
+<h3>
+    顺序队列的定义
+</h3>
+
+<p>
+    队列的顺序存储结构是指分配一块连续的存储单元存放队列中的元素，并附设两个指针：队头指针front指向队头元素，队尾指针rear指向队尾元素的下一个位置（不同的实现方式可能有所不同）。
+</p>
+
+<pre tag="c">
+#define MAXSIZE 100
+typedef struct {
+    int data[MAXSIZE];
+    int front, rear;
+} SqQueue;
+</pre>
+
+<h3>
+    循环队列
+</h3>
+
+<p>
+    为了解决顺序队列的"假溢出"问题，引入了循环队列的概念。循环队列是将顺序队列臆造为一个环状的空间，即把存储队列元素的表从逻辑上看成一个环。
+</p>
+
+<h4>
+    循环队列的基本操作
+</h4>
+
+<pre tag="c">
+// 初始化
+Status InitQueue(SqQueue *Q) {
+    Q->front = Q->rear = 0;
+    return OK;
+}
+
+// 判断队列空
+bool QueueEmpty(SqQueue Q) {
+    return Q.front == Q.rear;
+}
+
+// 判断队列满
+bool QueueFull(SqQueue Q) {
+    return (Q.rear + 1) % MAXSIZE == Q.front;
+}
+
+// 入队
+Status EnQueue(SqQueue *Q, int e) {
+    if (QueueFull(*Q)) return ERROR;
+    Q->data[Q->rear] = e;
+    Q->rear = (Q->rear + 1) % MAXSIZE;
+    return OK;
+}
+
+// 出队
+Status DeQueue(SqQueue *Q, int *e) {
+    if (QueueEmpty(*Q)) return ERROR;
+    *e = Q->data[Q->front];
+    Q->front = (Q->front + 1) % MAXSIZE;
+    return OK;
+}
+</pre>
+
+<h2>
+    队列的链式存储结构
+</h2>
+
+<h3>
+    链队列的定义
+</h3>
+
+<p>
+    队列的链式存储结构表示为链队列，它实际上是一个同时带有队头指针和队尾指针的单链表。头指针指向队头结点，尾指针指向队尾结点。
+</p>
+
+<pre tag="c">
+typedef struct QNode {
+    int data;
+    struct QNode *next;
+} QNode;
+
+typedef struct {
+    QNode *front, *rear;
+} LinkQueue;
+</pre>
+
+<h3>
+    链队列的基本操作
+</h3>
+
+<h4>
+    初始化
+</h4>
+
+<pre tag="c">
+Status InitQueue(LinkQueue *Q) {
+    Q->front = Q->rear = (QNode*)malloc(sizeof(QNode));
+    if (!Q->front) return ERROR;
+    Q->front->next = NULL;
+    return OK;
+}
+</pre>
+
+<h4>
+    判断队列空
+</h4>
+
+<pre tag="c">
+bool QueueEmpty(LinkQueue Q) {
+    return Q.front == Q.rear;
+}
+</pre>
+
+<h4>
+    入队操作
+</h4>
+
+<pre tag="c">
+Status EnQueue(LinkQueue *Q, int e) {
+    QNode *p = (QNode*)malloc(sizeof(QNode));
+    if (!p) return ERROR;
+
+    p->data = e;
+    p->next = NULL;
+    Q->rear->next = p;
+    Q->rear = p;
+
+    return OK;
+}
+</pre>
+
+<h4>
+    出队操作
+</h4>
+
+<pre tag="c">
+Status DeQueue(LinkQueue *Q, int *e) {
+    if (QueueEmpty(*Q)) return ERROR;
+
+    QNode *p = Q->front->next;
+    *e = p->data;
+    Q->front->next = p->next;
+
+    if (Q->rear == p) { // 若原队列中只有一个结点，删除后变空
+        Q->rear = Q->front;
+    }
+
+    free(p);
+    return OK;
+}
+</pre>

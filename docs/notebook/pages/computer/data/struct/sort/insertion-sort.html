@@ -1,0 +1,260 @@
+<header>
+    插入排序
+</header>
+
+<h2>
+    插入排序的定义
+</h2>
+
+<p>
+    插入排序（Insertion Sort）是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序）。
+</p>
+
+<h3>
+    插入排序的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">简单直观</span>：算法实现简单，易于理解
+    </li>
+    <li>
+        <span class="special">稳定排序</span>：相等元素的相对位置不会改变
+    </li>
+    <li>
+        <span class="special">原地排序</span>：只需要常数级别的额外空间
+    </li>
+    <li>
+        <span class="special">在线算法</span>：可以边接收数据边排序
+    </li>
+</ul>
+
+<h2>
+    插入排序的实现
+</h2>
+
+<h3>
+    直接插入排序
+</h3>
+
+<pre tag="c">
+void InsertionSort(int arr[], int n) {
+    int i, j, temp;
+
+    for (i = 1; i < n; i++) {
+        temp = arr[i];  // 待插入元素
+        j = i - 1;
+
+        // 从后向前扫描已排序序列
+        while (j >= 0 && arr[j] > temp) {
+            arr[j + 1] = arr[j];  // 元素后移
+            j--;
+        }
+
+        arr[j + 1] = temp;  // 插入元素
+    }
+}
+</pre>
+
+<h3>
+    二分插入排序
+</h3>
+
+<p>
+    二分插入排序是对直接插入排序的改进，使用二分查找来确定插入位置，减少比较次数。
+</p>
+
+<pre tag="c">
+void BinaryInsertionSort(int arr[], int n) {
+    int i, j, temp, left, right, mid;
+
+    for (i = 1; i < n; i++) {
+        temp = arr[i];
+        left = 0;
+        right = i - 1;
+
+        // 二分查找插入位置
+        while (left <= right) {
+            mid = left + (right - left) / 2;
+            if (arr[mid] > temp) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        // 移动元素
+        for (j = i - 1; j >= left; j--) {
+            arr[j + 1] = arr[j];
+        }
+
+        arr[left] = temp;
+    }
+}
+</pre>
+
+<h3>
+    希尔排序
+</h3>
+
+<p>
+    希尔排序（Shell Sort）是插入排序的一种更高效的改进版本，又称"缩小增量排序"。
+</p>
+
+<pre tag="c">
+void ShellSort(int arr[], int n) {
+    int i, j, gap, temp;
+
+    // 初始增量为n/2，逐步缩小增量
+    for (gap = n / 2; gap > 0; gap /= 2) {
+        // 对每个子序列进行直接插入排序
+        for (i = gap; i < n; i++) {
+            temp = arr[i];
+            j = i - gap;
+
+            while (j >= 0 && arr[j] > temp) {
+                arr[j + gap] = arr[j];
+                j -= gap;
+            }
+
+            arr[j + gap] = temp;
+        }
+    }
+}
+</pre>
+
+<h2>
+    插入排序的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：O(n)，数据已经有序
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：O(n²)，数据逆序排列
+    </li>
+    <li>
+        <span class="special">平均情况</span>：O(n²)
+    </li>
+</ul>
+
+<h3>
+    希尔排序的时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：O(n log n)
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：O(n²)
+    </li>
+    <li>
+        <span class="special">平均情况</span>：O(n^1.3) ~ O(n^1.5)
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<p>
+    O(1)，只需要常数级别的额外空间。
+</p>
+
+<h2>
+    插入排序的优化
+</h2>
+
+<h3>
+    哨兵法
+</h3>
+
+<p>
+    在数组的头部设置哨兵，可以避免边界检查，提高排序效率。
+</p>
+
+<h3>
+    二分查找优化
+</h3>
+
+<p>
+    使用二分查找来确定插入位置，减少比较次数。
+</p>
+
+<h3>
+    链表插入排序
+</h3>
+
+<p>
+    对于链表结构，可以直接修改指针，避免元素移动。
+</p>
+
+<h2>
+    插入排序的应用场景
+</h2>
+
+<h3>
+    小规模数据
+</h3>
+
+<p>
+    当数据量较小时，插入排序的简单性使其成为不错的选择。
+</p>
+
+<h3>
+    基本有序数据
+</h3>
+
+<p>
+    当数据基本有序时，插入排序的效率很高。
+</p>
+
+<h3>
+    在线排序
+</h3>
+
+<p>
+    当需要边接收数据边排序时，插入排序是理想的选择。
+</p>
+
+<h3>
+    稳定排序需求
+</h3>
+
+<p>
+    当需要保持相等元素的相对顺序时，插入排序是稳定的选择。
+</p>
+
+<h2>
+    插入排序的变种
+</h2>
+
+<h3>
+    折半插入排序
+</h3>
+
+<p>
+    使用二分查找确定插入位置，减少比较次数。
+</p>
+
+<h3>
+    2-路插入排序
+</h3>
+
+<p>
+    同时使用两个有序序列，减少元素移动次数。
+</p>
+
+<h3>
+    表插入排序
+</h3>
+
+<p>
+    使用链表结构，通过修改指针实现排序，避免元素移动。
+</p>

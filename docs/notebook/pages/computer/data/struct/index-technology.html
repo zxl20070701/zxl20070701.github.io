@@ -1,0 +1,472 @@
+<header>
+    索引技术
+</header>
+
+<h2>
+    索引技术的定义
+</h2>
+
+<p>
+    索引技术（Index
+    Technology）是数据库系统和文件系统中用于提高数据检索效率的重要技术。索引是一种数据结构，它包含了指向数据记录的指针，使得系统可以快速定位到所需的数据，而无需扫描整个数据集。索引技术广泛应用于数据库、文件系统、搜索引擎等领域。
+</p>
+
+<h3>
+    索引技术的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">提高检索效率</span>：通过索引可以快速定位数据，避免全表扫描
+    </li>
+    <li>
+        <span class="special">额外存储开销</span>：索引需要额外的存储空间
+    </li>
+    <li>
+        <span class="special">维护成本</span>：数据更新时需要同步更新索引
+    </li>
+    <li>
+        <span class="special">多种索引类型</span>：支持不同类型的索引以适应不同的查询需求
+    </li>
+</ul>
+
+<h2>
+    索引的基本类型
+</h2>
+
+<h3>
+    稠密索引
+</h3>
+
+<p>
+    稠密索引（Dense Index）为数据文件中的每个记录都建立一个索引项，每个索引项包含一个键值和一个指向记录的指针。
+</p>
+
+<h3>
+    稀疏索引
+</h3>
+
+<p>
+    稀疏索引（Sparse Index）只为数据文件中的部分记录建立索引项，通常是每个数据块或每个页面建立一个索引项。
+</p>
+
+<h3>
+    多级索引
+</h3>
+
+<p>
+    多级索引（Multilevel Index）是在索引之上再建立索引，形成树形结构，可以有效减少索引的搜索时间。
+</p>
+
+<h2>
+    B树索引
+</h2>
+
+<h3>
+    B树的定义
+</h3>
+
+<p>
+    B树（B-Tree）是一种平衡的多路搜索树，广泛应用于数据库和文件系统的索引实现。B树的特点是所有叶子节点都在同一层，且每个节点可以包含多个键值。
+</p>
+
+<h3>
+    B树的性质
+</h3>
+
+<ul>
+    <li>每个节点最多包含m个子节点（m为B树的阶）</li>
+    <li>除根节点和叶子节点外，每个节点至少有⌈m/2⌉个子节点</li>
+    <li>根节点至少有2个子节点（除非是叶子节点）</li>
+    <li>所有叶子节点都在同一层</li>
+    <li>每个节点的键值按升序排列</li>
+</ul>
+
+<h3>
+    B树的基本操作
+</h3>
+
+<h4>
+    B树节点结构
+</h4>
+
+<pre tag="c">
+#define MAX_KEYS 4  // B树的阶为5，每个节点最多4个键值
+
+typedef struct BTreeNode {
+    int keys[MAX_KEYS];           // 键值数组
+    struct BTreeNode *children[MAX_KEYS + 1];  // 子节点指针数组
+    int numKeys;                  // 当前节点中的键值数量
+    bool isLeaf;                  // 是否为叶子节点
+} BTreeNode;
+</pre>
+
+<h4>
+    B树搜索
+</h4>
+
+<pre tag="c">
+BTreeNode* searchBTree(BTreeNode *root, int key) {
+    int i = 0;
+
+    // 在当前节点中查找键值
+    while (i < root->numKeys && key > root->keys[i]) {
+        i++;
+    }
+
+    // 如果找到键值，返回当前节点
+    if (i < root->numKeys && key == root->keys[i]) {
+        return root;
+    }
+
+    // 如果是叶子节点，键值不存在
+    if (root->isLeaf) {
+        return NULL;
+    }
+
+    // 递归搜索相应的子树
+    return searchBTree(root->children[i], key);
+}
+</pre>
+
+<h4>
+    B树插入
+</h4>
+
+<pre tag="c">
+void insertBTree(BTreeNode **root, int key) {
+    // 如果根节点已满，需要分裂
+    if ((*root)->numKeys == MAX_KEYS) {
+        BTreeNode *newRoot = createNode(false);
+        newRoot->children[0] = *root;
+        splitChild(newRoot, 0, *root);
+
+        // 确定新的键值应该插入到哪个子树中
+        int i = 0;
+        if (newRoot->keys[0] < key) {
+            i++;
+        }
+        insertNonFull(newRoot->children[i], key);
+
+        *root = newRoot;
+    } else {
+        insertNonFull(*root, key);
+    }
+}
+
+void insertNonFull(BTreeNode *node, int key) {
+    int i = node->numKeys - 1;
+
+    if (node->isLeaf) {
+        // 如果是叶子节点，直接插入键值
+        while (i >= 0 && node->keys[i] > key) {
+            node->keys[i + 1] = node->keys[i];
+            i--;
+        }
+        node->keys[i + 1] = key;
+        node->numKeys++;
+    } else {
+        // 找到应该插入的子树
+        while (i >= 0 && node->keys[i] > key) {
+            i--;
+        }
+        i++;
+
+        // 如果子节点已满，需要分裂
+        if (node->children[i]->numKeys == MAX_KEYS) {
+            splitChild(node, i, node->children[i]);
+
+            // 确定键值应该插入到哪个子树中
+            if (node->keys[i] < key) {
+                i++;
+            }
+        }
+
+        insertNonFull(node->children[i], key);
+    }
+}
+
+void splitChild(BTreeNode *parent, int index, BTreeNode *child) {
+    BTreeNode *newChild = createNode(child->isLeaf);
+    newChild->numKeys = MAX_KEYS / 2;
+
+    // 复制后半部分键值和子节点指针
+    for (int j = 0; j < MAX_KEYS / 2; j++) {
+        newChild->keys[j] = child->keys[j + MAX_KEYS / 2 + 1];
+    }
+
+    if (!child->isLeaf) {
+        for (int j = 0; j <= MAX_KEYS / 2; j++) {
+            newChild->children[j] = child->children[j + MAX_KEYS / 2 + 1];
+        }
+    }
+
+    child->numKeys = MAX_KEYS / 2;
+
+    // 在父节点中插入新的子节点指针和键值
+    for (int j = parent->numKeys; j >= index + 1; j--) {
+        parent->children[j + 1] = parent->children[j];
+    }
+
+    parent->children[index + 1] = newChild;
+
+    for (int j = parent->numKeys - 1; j >= index; j--) {
+        parent->keys[j + 1] = parent->keys[j];
+    }
+
+    parent->keys[index] = child->keys[MAX_KEYS / 2];
+    parent->numKeys++;
+}
+</pre>
+
+<h2>
+    B+树索引
+</h2>
+
+<h3>
+    B+树的定义
+</h3>
+
+<p>
+    B+树（B+ Tree）是B树的一种变体，广泛应用于数据库索引。与B树不同，B+树的所有数据都存储在叶子节点中，内部节点只存储键值用于导航。
+</p>
+
+<h3>
+    B+树的特点
+</h3>
+
+<ul>
+    <li>所有数据都存储在叶子节点中</li>
+    <li>叶子节点通过指针连接形成有序链表</li>
+    <li>内部节点只存储键值，不存储数据</li>
+    <li>更适合范围查询和顺序访问</li>
+</ul>
+
+<h3>
+    B+树的优势
+</h3>
+
+<ul>
+    <li>叶子节点的链表结构便于范围查询</li>
+    <li>内部节点可以存储更多的键值，减少树的高度</li>
+    <li>所有查询都需要访问到叶子节点，查询时间更稳定</li>
+</ul>
+
+<h2>
+    哈希索引
+</h2>
+
+<h3>
+    哈希索引的定义
+</h3>
+
+<p>
+    哈希索引（Hash Index）使用哈希函数将键值映射到哈希表的槽位中，通过直接计算哈希值来快速定位数据。
+</p>
+
+<h3>
+    哈希索引的实现
+</h3>
+
+<pre tag="c">
+#define HASH_TABLE_SIZE 1000
+
+typedef struct HashNode {
+    int key;
+    int value;
+    struct HashNode *next;
+} HashNode;
+
+typedef struct {
+    HashNode *buckets[HASH_TABLE_SIZE];
+} HashIndex;
+
+// 简单的哈希函数
+int hashFunction(int key) {
+    return key % HASH_TABLE_SIZE;
+}
+
+// 插入键值对
+void insertHashIndex(HashIndex *index, int key, int value) {
+    int hashValue = hashFunction(key);
+    HashNode *newNode = (HashNode *)malloc(sizeof(HashNode));
+    newNode->key = key;
+    newNode->value = value;
+    newNode->next = index->buckets[hashValue];
+    index->buckets[hashValue] = newNode;
+}
+
+// 查找键值
+int searchHashIndex(HashIndex *index, int key) {
+    int hashValue = hashFunction(key);
+    HashNode *current = index->buckets[hashValue];
+
+    while (current != NULL) {
+        if (current->key == key) {
+            return current->value;
+        }
+        current = current->next;
+    }
+
+    return -1; // 未找到
+}
+</pre>
+
+<h3>
+    哈希索引的优缺点
+</h3>
+
+<h4>
+    优点
+</h4>
+
+<ul>
+    <li>查询速度快，平均时间复杂度为O(1)</li>
+    <li>实现简单，易于理解</li>
+    <li>适合等值查询</li>
+</ul>
+
+<h4>
+    缺点
+</h4>
+
+<ul>
+    <li>不支持范围查询</li>
+    <li>哈希冲突需要额外处理</li>
+    <li>不支持排序操作</li>
+</ul>
+
+<h2>
+    位图索引
+</h2>
+
+<h3>
+    位图索引的定义
+</h3>
+
+<p>
+    位图索引（Bitmap Index）使用位图（bitmap）来表示某个属性值的存在情况，特别适合于低基数（cardinality）的属性。
+</p>
+
+<h3>
+    位图索引的实现
+</h3>
+
+<pre tag="c">
+#define MAX_RECORDS 10000
+#define MAX_VALUES 100
+
+typedef struct {
+    unsigned char bitmap[MAX_RECORDS / 8];  // 位图，每个字节表示8个记录
+    int count;  // 该值对应的记录数
+} Bitmap;
+
+typedef struct {
+    Bitmap bitmaps[MAX_VALUES];  // 每个可能的值对应一个位图
+    int valueCount;  // 不同值的数量
+} BitmapIndex;
+
+// 设置位图中的某一位
+void setBit(unsigned char *bitmap, int position) {
+    int byteIndex = position / 8;
+    int bitIndex = position % 8;
+    bitmap[byteIndex] |= (1 << bitIndex);
+}
+
+// 检查位图中的某一位
+int getBit(unsigned char *bitmap, int position) {
+    int byteIndex = position / 8;
+    int bitIndex = position % 8;
+    return (bitmap[byteIndex] & (1 << bitIndex)) != 0;
+}
+
+// 构建位图索引
+void buildBitmapIndex(BitmapIndex *index, int data[], int n) {
+    // 初始化索引
+    for (int i = 0; i < MAX_VALUES; i++) {
+        memset(index->bitmaps[i].bitmap, 0, sizeof(index->bitmaps[i].bitmap));
+        index->bitmaps[i].count = 0;
+    }
+
+    // 构建位图
+    for (int i = 0; i < n; i++) {
+        int value = data[i];
+        if (value >= 0 && value < MAX_VALUES) {
+            setBit(index->bitmaps[value].bitmap, i);
+            index->bitmaps[value].count++;
+        }
+    }
+}
+</pre>
+
+<h2>
+    索引的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">B树/B+树</span>：O(log n)，其中n是索引中的键值数量
+    </li>
+    <li>
+        <span class="special">哈希索引</span>：平均O(1)，最坏O(n)
+    </li>
+    <li>
+        <span class="special">位图索引</span>：O(1)确定位图，O(k)进行位运算，其中k是记录数
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">B树/B+树</span>：O(n)，与数据量成正比
+    </li>
+    <li>
+        <span class="special">哈希索引</span>：O(n)，与数据量成正比
+    </li>
+    <li>
+        <span class="special">位图索引</span>：O(m * n)，其中m是不同值的数量，n是记录数
+    </li>
+</ul>
+
+<h2>
+    索引的应用场景
+</h2>
+
+<h3>
+    B树/B+树索引
+</h3>
+
+<ul>
+    <li>数据库主键索引</li>
+    <li>范围查询</li>
+    <li>顺序访问</li>
+    <li>外存索引</li>
+</ul>
+
+<h3>
+    哈希索引
+</h3>
+
+<ul>
+    <li>等值查询</li>
+    <li>内存数据库</li>
+    <li>缓存系统</li>
+</ul>
+
+<h3>
+    位图索引
+</h3>
+
+<ul>
+    <li>低基数属性的查询</li>
+    <li>数据仓库</li>
+    <li>多维查询</li>
+    <li>集合操作</li>
+</ul>

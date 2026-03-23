@@ -1,0 +1,364 @@
+<header>
+    二叉树遍历
+</header>
+
+<h2>
+    遍历的基本概念
+</h2>
+
+<p>
+    二叉树的遍历（traversing binary tree）是指从根结点出发，按照某种次序依次访问二叉树中所有结点，使得每个结点被访问一次且仅被访问一次。遍历是二叉树最基本的运算，是二叉树上进行其他运算的基础。
+</p>
+
+<h3>
+    遍历的重要性
+</h3>
+
+<ul>
+    <li>
+        <span class="special">数据访问</span>：按照特定顺序访问树中的所有数据
+    </li>
+    <li>
+        <span class="special">树的操作</span>：许多树的操作都基于遍历实现
+    </li>
+    <li>
+        <span class="special">算法基础</span>：许多树算法都以遍历为基础
+    </li>
+</ul>
+
+<h2>
+    遍历的分类
+</h2>
+
+<h3>
+    深度优先遍历
+</h3>
+
+<p>
+    深度优先遍历按照深度方向进行遍历，包括前序遍历、中序遍历和后序遍历。
+</p>
+
+<h3>
+    广度优先遍历
+</h3>
+
+<p>
+    广度优先遍历按照层次顺序进行遍历，即层序遍历。
+</p>
+
+<h2>
+    深度优先遍历
+</h2>
+
+<h3>
+    前序遍历（Pre-order Traversal）
+</h3>
+
+<p>
+    前序遍历的基本思想是：若二叉树为空，则空操作返回；否则先访问根结点，然后前序遍历左子树，再前序遍历右子树。
+</p>
+
+<h4>
+    递归实现
+</h4>
+
+<pre tag="c">
+void PreOrderTraverse(BiTree T) {
+    if (T) {
+        printf("%d ", T->data);        // 访问根结点
+        PreOrderTraverse(T->lchild);   // 遍历左子树
+        PreOrderTraverse(T->rchild);   // 遍历右子树
+    }
+}
+</pre>
+
+<h4>
+    非递归实现（使用栈）
+</h4>
+
+<pre tag="c">
+void PreOrderTraverse_NonRecursive(BiTree T) {
+    Stack S;
+    InitStack(&S);
+    BiTree p = T;
+
+    while (p || !StackEmpty(S)) {
+        if (p) {
+            printf("%d ", p->data);  // 访问根结点
+            Push(&S, p);
+            p = p->lchild;           // 遍历左子树
+        } else {
+            Pop(&S, &p);
+            p = p->rchild;           // 遍历右子树
+        }
+    }
+}
+</pre>
+
+<h3>
+    中序遍历（In-order Traversal）
+</h3>
+
+<p>
+    中序遍历的基本思想是：若二叉树为空，则空操作返回；否则从根结点开始（注意并不是先访问根结点），中序遍历根结点的左子树，然后是访问根结点，最后中序遍历右子树。
+</p>
+
+<h4>
+    递归实现
+</h4>
+
+<pre tag="c">
+void InOrderTraverse(BiTree T) {
+    if (T) {
+        InOrderTraverse(T->lchild);    // 遍历左子树
+        printf("%d ", T->data);        // 访问根结点
+        InOrderTraverse(T->rchild);    // 遍历右子树
+    }
+}
+</pre>
+
+<h4>
+    非递归实现（使用栈）
+</h4>
+
+<pre tag="c">
+void InOrderTraverse_NonRecursive(BiTree T) {
+    Stack S;
+    InitStack(&S);
+    BiTree p = T;
+
+    while (p || !StackEmpty(S)) {
+        if (p) {
+            Push(&S, p);
+            p = p->lchild;           // 遍历左子树
+        } else {
+            Pop(&S, &p);
+            printf("%d ", p->data);  // 访问根结点
+            p = p->rchild;           // 遍历右子树
+        }
+    }
+}
+</pre>
+
+<h3>
+    后序遍历（Post-order Traversal）
+</h3>
+
+<p>
+    后序遍历的基本思想是：若二叉树为空，则空操作返回；否则从左到右先叶子后结点的方式遍历访问左右子树，最后是访问根结点。
+</p>
+
+<h4>
+    递归实现
+</h4>
+
+<pre tag="c">
+void PostOrderTraverse(BiTree T) {
+    if (T) {
+        PostOrderTraverse(T->lchild);  // 遍历左子树
+        PostOrderTraverse(T->rchild);  // 遍历右子树
+        printf("%d ", T->data);        // 访问根结点
+    }
+}
+</pre>
+
+<h4>
+    非递归实现（使用栈）
+</h4>
+
+<pre tag="c">
+void PostOrderTraverse_NonRecursive(BiTree T) {
+    Stack S;
+    InitStack(&S);
+    BiTree p = T, r = NULL;
+
+    while (p || !StackEmpty(S)) {
+        if (p) {
+            Push(&S, p);
+            p = p->lchild;  // 遍历左子树
+        } else {
+            GetTop(S, &p);
+            if (p->rchild && p->rchild != r) {
+                p = p->rchild;  // 遍历右子树
+            } else {
+                Pop(&S, &p);
+                printf("%d ", p->data);  // 访问根结点
+                r = p;
+                p = NULL;
+            }
+        }
+    }
+}
+</pre>
+
+<h2>
+    广度优先遍历
+</h2>
+
+<h3>
+    层序遍历（Level-order Traversal）
+</h3>
+
+<p>
+    层序遍历的基本思想是：从树的第一层（即根结点）开始，从上而下逐层遍历，在同一层中，按从左到右的顺序对结点逐个访问。
+</p>
+
+<h4>
+    实现（使用队列）
+</h4>
+
+<pre tag="c">
+void LevelOrderTraverse(BiTree T) {
+    if (!T) return;
+
+    Queue Q;
+    InitQueue(&Q);
+    EnQueue(&Q, T);
+
+    while (!QueueEmpty(Q)) {
+        BiTree p;
+        DeQueue(&Q, &p);
+        printf("%d ", p->data);
+
+        if (p->lchild) EnQueue(&Q, p->lchild);
+        if (p->rchild) EnQueue(&Q, p->rchild);
+    }
+}
+</pre>
+
+<h2>
+    遍历的应用
+</h2>
+
+<h3>
+    前序遍历的应用
+</h3>
+
+<ul>
+    <li>复制二叉树</li>
+    <li>获取二叉树的深度</li>
+    <li>前缀表达式求值</li>
+</ul>
+
+<h3>
+    中序遍历的应用
+</h3>
+
+<ul>
+    <li>二叉搜索树的中序遍历结果是有序序列</li>
+    <li>中缀表达式求值</li>
+</ul>
+
+<h3>
+    后序遍历的应用
+</h3>
+
+<ul>
+    <li>计算二叉树的结点个数</li>
+    <li>计算二叉树的叶子结点个数</li>
+    <li>后缀表达式求值</li>
+    <li>销毁二叉树</li>
+</ul>
+
+<h3>
+    层序遍历的应用
+</h3>
+
+<ul>
+    <li>计算二叉树的宽度</li>
+    <li>寻找二叉树的最左/最右结点</li>
+    <li>序列化和反序列化二叉树</li>
+</ul>
+
+<h2>
+    遍历序列的性质
+</h2>
+
+<h3>
+    前序+中序确定唯一二叉树
+</h3>
+
+<p>
+    给定一棵二叉树的前序遍历序列和中序遍历序列，可以唯一确定这棵二叉树。
+</p>
+
+<h3>
+    后序+中序确定唯一二叉树
+</h3>
+
+<p>
+    给定一棵二叉树的后序遍历序列和中序遍历序列，可以唯一确定这棵二叉树。
+</p>
+
+<h3>
+    前序+后序不能确定唯一二叉树
+</h3>
+
+<p>
+    给定一棵二叉树的前序遍历序列和后序遍历序列，不能唯一确定这棵二叉树。
+</p>
+
+<h2>
+    遍历的复杂度分析
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>遍历方法</th>
+            <th>时间复杂度</th>
+            <th>空间复杂度（递归）</th>
+            <th>空间复杂度（非递归）</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>前序遍历</td>
+            <td>O(n)</td>
+            <td>O(h)</td>
+            <td>O(h)</td>
+        </tr>
+        <tr>
+            <td>中序遍历</td>
+            <td>O(n)</td>
+            <td>O(h)</td>
+            <td>O(h)</td>
+        </tr>
+        <tr>
+            <td>后序遍历</td>
+            <td>O(n)</td>
+            <td>O(h)</td>
+            <td>O(h)</td>
+        </tr>
+        <tr>
+            <td>层序遍历</td>
+            <td>O(n)</td>
+            <td>O(w)</td>
+            <td>O(w)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    其中，n是二叉树的结点数，h是二叉树的高度，w是二叉树的最大宽度。
+</p>
+
+<h2>
+    遍历的优化技巧
+</h2>
+
+<h3>
+    Morris遍历
+</h3>
+
+<p>
+    Morris遍历是一种不需要栈或递归的二叉树遍历算法，可以在O(1)空间复杂度下完成遍历。
+</p>
+
+<h3>
+    线索化遍历
+</h3>
+
+<p>
+    通过线索化二叉树，可以在不使用栈的情况下实现遍历。
+</p>

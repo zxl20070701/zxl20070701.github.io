@@ -1,0 +1,320 @@
+<header>
+    图的存储结构
+</header>
+
+<h2>
+    图的基本概念
+</h2>
+
+<p>
+    图（Graph）是由顶点的有穷非空集合和顶点之间边的集合组成，通常表示为：G(V,E)，其中，G表示一个图，V是图G中顶点的集合，E是图G中边的集合。
+</p>
+
+<h3>
+    相关术语
+</h3>
+
+<ul>
+    <li>
+        <span class="special">顶点</span>：图中的数据元素
+    </li>
+    <li>
+        <span class="special">边</span>：顶点之间的逻辑关系
+    </li>
+    <li>
+        <span class="special">无向图</span>：边没有方向的图
+    </li>
+    <li>
+        <span class="special">有向图</span>：边有方向的图
+    </li>
+    <li>
+        <span class="special">完全图</span>：任意两个顶点之间都有边的图
+    </li>
+    <li>
+        <span class="special">稀疏图</span>：边数很少的图
+    </li>
+    <li>
+        <span class="special">稠密图</span>：边数很多的图
+    </li>
+</ul>
+
+<h2>
+    邻接矩阵
+</h2>
+
+<h3>
+    定义
+</h3>
+
+<p>
+    邻接矩阵（Adjacency Matrix）是表示顶点之间相邻关系的矩阵。设G=(V,E)是具有n个顶点的图，则G的邻接矩阵是具有如下性质的n×n矩阵：
+</p>
+
+<pre tag="text">
+A[i][j] = 1, 若(vi,vj)或<vi,vj>是E(G)中的边
+A[i][j] = 0, 若(vi,vj)或<vi,vj>不是E(G)中的边
+</pre>
+
+<h3>
+    邻接矩阵的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">无向图的邻接矩阵是对称矩阵</span>
+    </li>
+    <li>
+        <span class="special">有向图的邻接矩阵不一定是对称矩阵</span>
+    </li>
+    <li>
+        <span class="special">顶点v的度是邻接矩阵中第i行（或第i列）的元素之和</span>
+    </li>
+</ul>
+
+<h3>
+    邻接矩阵的实现
+</h3>
+
+<pre tag="c">
+#define MAX_VERTEX_NUM 100  // 最大顶点数
+#define INFINITY 65535      // 表示无穷大
+
+typedef char VertexType;    // 顶点类型
+typedef int EdgeType;       // 边上的权值类型
+
+typedef struct {
+    VertexType vexs[MAX_VERTEX_NUM];    // 顶点表
+    EdgeType arc[MAX_VERTEX_NUM][MAX_VERTEX_NUM]; // 邻接矩阵
+    int numVertexes, numEdges;          // 图中当前的顶点数和边数
+} MGraph;
+</pre>
+
+<h3>
+    邻接矩阵的优缺点
+</h3>
+
+<h4>
+    优点
+</h4>
+
+<ul>
+    <li>直观、简单、好理解</li>
+    <li>方便检查任意一对顶点间是否存在边</li>
+    <li>方便找任一顶点的所有邻接点</li>
+    <li>方便计算任一顶点的度</li>
+</ul>
+
+<h4>
+    缺点
+</h4>
+
+<ul>
+    <li>对于稀疏图，浪费存储空间</li>
+    <li>统计图中边的个数需要O(n²)时间</li>
+</ul>
+
+<h2>
+    邻接表
+</h2>
+
+<h3>
+    定义
+</h3>
+
+<p>
+    邻接表（Adjacency List）是图的一种链式存储结构。对图中每个顶点建立一个单链表，第i个单链表中的结点表示依附于顶点vi的边（对于有向图是以顶点vi为尾的弧）。
+</p>
+
+<h3>
+    邻接表的实现
+</h3>
+
+<pre tag="c">
+typedef struct EdgeNode {
+    int adjvex;                 // 邻接点域，存储该顶点对应的下标
+    EdgeType weight;            // 用于存储权值，对于非网图可以不需要
+    struct EdgeNode *next;      // 链域，指向下一个邻接点
+} EdgeNode;
+
+typedef struct VertexNode {
+    VertexType data;            // 顶点域，存储顶点信息
+    EdgeNode *firstedge;        // 边表头指针
+} VertexNode, AdjList[MAX_VERTEX_NUM];
+
+typedef struct {
+    AdjList adjList;
+    int numVertexes, numEdges;  // 图中当前顶点数和边数
+} GraphAdjList;
+</pre>
+
+<h3>
+    邻接表的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">无向图的邻接表</span>：第i个链表中结点的个数是顶点vi的度
+    </li>
+    <li>
+        <span class="special">有向图的邻接表</span>：第i个链表中结点的个数是顶点vi的出度
+    </li>
+    <li>
+        <span class="special">逆邻接表</span>：有向图中，第i个链表中结点的个数是顶点vi的入度
+    </li>
+</ul>
+
+<h3>
+    邻接表的优缺点
+</h3>
+
+<h4>
+    优点
+</h4>
+
+<ul>
+    <li>对于稀疏图，节省存储空间</li>
+    <li>统计边的个数时间复杂度为O(n+e)</li>
+    <li>方便找任一顶点的所有邻接点</li>
+</ul>
+
+<h4>
+    缺点
+</h4>
+
+<ul>
+    <li>不方便检查任意一对顶点间是否存在边</li>
+    <li>计算有向图的入度需要构造逆邻接表</li>
+    <li>对于稠密图，邻接表没有优势</li>
+</ul>
+
+<h2>
+    十字链表
+</h2>
+
+<h3>
+    定义
+</h3>
+
+<p>
+    十字链表（Orthogonal List）是有向图的另一种链式存储结构。可以看成是将有向图的邻接表和逆邻接表结合起来得到的一种链表。
+</p>
+
+<h3>
+    十字链表的实现
+</h3>
+
+<pre tag="c">
+typedef struct ArcBox {
+    int tailvex, headvex;       // 该弧的尾和头顶点的位置
+    struct ArcBox *hlink, *tlink; // 分别为弧头相同和弧尾相同的弧的链域
+} ArcBox;
+
+typedef struct VexNode {
+    VertexType data;
+    ArcBox *firstin, *firstout; // 分别指向该顶点的第一条入弧和出弧
+} VexNode;
+
+typedef struct {
+    VexNode xlist[MAX_VERTEX_NUM]; // 表头向量
+    int vexnum, arcnum;            // 有向图的当前顶点数和弧数
+} OLGraph;
+</pre>
+
+<h2>
+    邻接多重表
+</h2>
+
+<h3>
+    定义
+</h3>
+
+<p>
+    邻接多重表（Adjacency Multilist）是无向图的另一种链式存储结构。在邻接表中，容易求得顶点和边的各种信息，但在邻接表中每一条边(vi,
+    vj)有两个结点，分别在第i个和第j个链表中，这给图的某些操作带来不便。邻接多重表将所有依附于同一顶点的边串联在同一链表中，由于每条边依附于两个顶点，则每个边结点同时链接在两个链表中。
+</p>
+
+<h3>
+    邻接多重表的实现
+</h3>
+
+<pre tag="c">
+typedef struct EBox {
+    int ivex, jvex;             // 该边依附的两个顶点的位置
+    struct EBox *ilink, *jlink; // 分别指向依附这两个顶点的下一条边
+} EBox;
+
+typedef struct VexBox {
+    VertexType data;
+    EBox *firstedge;            // 指向第一条依附该顶点的边
+} VexBox;
+
+typedef struct {
+    VexBox adjmulist[MAX_VERTEX_NUM];
+    int vexnum, edgenum;        // 无向图的当前顶点数和边数
+} AMLGraph;
+</pre>
+
+<h2>
+    存储结构的选择
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>存储结构</th>
+            <th>适用场景</th>
+            <th>空间复杂度</th>
+            <th>时间复杂度（查找边）</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>邻接矩阵</td>
+            <td>稠密图、需要频繁判断边是否存在</td>
+            <td>O(n²)</td>
+            <td>O(1)</td>
+        </tr>
+        <tr>
+            <td>邻接表</td>
+            <td>稀疏图、需要遍历邻接点</td>
+            <td>O(n+e)</td>
+            <td>O(d)</td>
+        </tr>
+        <tr>
+            <td>十字链表</td>
+            <td>有向图、需要同时处理入度和出度</td>
+            <td>O(n+e)</td>
+            <td>O(d)</td>
+        </tr>
+        <tr>
+            <td>邻接多重表</td>
+            <td>无向图、需要频繁删除边</td>
+            <td>O(n+e)</td>
+            <td>O(d)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    其中，n是顶点数，e是边数，d是顶点的度。
+</p>
+
+<h2>
+    存储结构的比较
+</h2>
+
+<h3>
+    邻接矩阵 vs 邻接表
+</h3>
+
+<ul>
+    <li>
+        <span class="special">空间效率</span>：稀疏图用邻接表，稠密图用邻接矩阵
+    </li>
+    <li>
+        <span class="special">时间效率</span>：频繁判断边是否存在用邻接矩阵，频繁遍历邻接点用邻接表
+    </li>
+    <li>
+        <span class="special">实现复杂度</span>：邻接矩阵实现简单，邻接表实现相对复杂
+    </li>
+</ul>

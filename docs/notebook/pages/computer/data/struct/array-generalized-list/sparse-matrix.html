@@ -1,0 +1,338 @@
+<header>
+    稀疏矩阵
+</header>
+
+<h2>
+    稀疏矩阵的定义
+</h2>
+
+<p>
+    稀疏矩阵（Sparse
+    Matrix）是指矩阵中大多数元素为零，只有少量非零元素的矩阵。通常认为非零元素个数远小于矩阵元素总数的矩阵为稀疏矩阵。对于稀疏矩阵，如果采用常规的二维数组存储方法，会浪费大量的存储空间来存储零元素，因此需要采用特殊的压缩存储方法。
+</p>
+
+<h3>
+    稀疏因子
+</h3>
+
+<p>
+    稀疏因子δ = 非零元素个数 / 矩阵元素总数。当δ ≤ 0.05时，通常认为该矩阵为稀疏矩阵。
+</p>
+
+<h2>
+    稀疏矩阵的三元组表示
+</h2>
+
+<h3>
+    三元组定义
+</h3>
+
+<p>
+    稀疏矩阵中的每个非零元素可以用一个三元组（i, j, value）来表示，其中i表示行号，j表示列号，value表示元素的值。
+</p>
+
+<pre tag="c">
+#define MAXSIZE 1000  // 假设非零元素的最大个数
+
+typedef struct {
+    int i, j;     // 行号，列号
+    int value;    // 元素值
+} Triple;
+
+typedef struct {
+    Triple data[MAXSIZE + 1];  // 非零元素三元组表，data[0]未用
+    int mu, nu, tu;            // 矩阵的行数、列数、非零元素个数
+} TSMatrix;
+</pre>
+
+<h3>
+    三元组顺序表的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">节省空间</span>：只存储非零元素，大大节省存储空间
+    </li>
+    <li>
+        <span class="special">便于运算</span>：可以方便地进行矩阵运算
+    </li>
+    <li>
+        <span class="special">访问效率</span>：随机访问效率较低，需要顺序查找
+    </li>
+</ul>
+
+<h2>
+    稀疏矩阵的基本操作
+</h2>
+
+<h3>
+    矩阵转置
+</h3>
+
+<p>
+    矩阵转置是将矩阵的行和列互换。对于稀疏矩阵的三元组表示，转置操作需要重新排列三元组的顺序。
+</p>
+
+<h4>
+    方法一：按列序转置
+</h4>
+
+<pre tag="c">
+Status TransposeSMatrix(TSMatrix M, TSMatrix *T) {
+    T->mu = M.nu;  // 新矩阵行数等于原矩阵列数
+    T->nu = M.mu;  // 新矩阵列数等于原矩阵行数
+    T->tu = M.tu;  // 非零元素个数不变
+
+    if (T->tu) {
+        int q = 1;
+        for (int col = 1; col <= M.nu; col++) {  // 按列扫描
+            for (int p = 1; p <= M.tu; p++) {     // 扫描整个三元组表
+                if (M.data[p].j == col) {
+                    T->data[q].i = M.data[p].j;
+                    T->data[q].j = M.data[p].i;
+                    T->data[q].value = M.data[p].value;
+                    q++;
+                }
+            }
+        }
+    }
+
+    return OK;
+}
+</pre>
+
+<h4>
+    方法二：快速转置
+</h4>
+
+<p>
+    快速转置算法通过预处理确定每个元素在转置后的位置，从而实现一次扫描完成转置。
+</p>
+
+<pre tag="c">
+Status FastTransposeSMatrix(TSMatrix M, TSMatrix *T) {
+    T->mu = M.nu;
+    T->nu = M.mu;
+    T->tu = M.tu;
+
+    if (T->tu) {
+        int *num = (int*)malloc((M.nu + 1) * sizeof(int));
+        int *cpot = (int*)malloc((M.nu + 1) * sizeof(int));
+
+        // 计算每列非零元素个数
+        for (int col = 1; col <= M.nu; col++) {
+            num[col] = 0;
+        }
+        for (int t = 1; t <= M.tu; t++) {
+            num[M.data[t].j]++;
+        }
+
+        // 计算每列第一个非零元素在转置矩阵中的位置
+        cpot[1] = 1;
+        for (int col = 2; col <= M.nu; col++) {
+            cpot[col] = cpot[col-1] + num[col-1];
+        }
+
+        // 转置
+        for (int p = 1; p <= M.tu; p++) {
+            int col = M.data[p].j;
+            int q = cpot[col];
+            T->data[q].i = M.data[p].j;
+            T->data[q].j = M.data[p].i;
+            T->data[q].value = M.data[p].value;
+            cpot[col]++;
+        }
+
+        free(num);
+        free(cpot);
+    }
+
+    return OK;
+}
+</pre>
+
+<h3>
+    矩阵加法
+</h3>
+
+<p>
+    两个稀疏矩阵相加，结果矩阵中的非零元素是两个矩阵对应位置元素的和。
+</p>
+
+<pre tag="c">
+Status AddSMatrix(TSMatrix M, TSMatrix N, TSMatrix *Q) {
+    if (M.mu != N.mu || M.nu != N.nu) {
+        return ERROR;  // 矩阵大小不匹配
+    }
+
+    Q->mu = M.mu;
+    Q->nu = M.nu;
+    Q->tu = 0;
+
+    int m = 1, n = 1;
+    while (m <= M.tu && n <= N.tu) {
+        if (M.data[m].i < N.data[n].i ||
+            (M.data[m].i == N.data[n].i && M.data[m].j < N.data[n].j)) {
+            // M中的元素在前
+            Q->data[++Q->tu] = M.data[m++];
+        } else if (M.data[m].i > N.data[n].i ||
+                   (M.data[m].i == N.data[n].i && M.data[m].j > N.data[n].j)) {
+            // N中的元素在前
+            Q->data[++Q->tu] = N.data[n++];
+        } else {
+            // 相同位置的元素相加
+            if (M.data[m].value + N.data[n].value != 0) {
+                Q->data[++Q->tu].i = M.data[m].i;
+                Q->data[Q->tu].j = M.data[m].j;
+                Q->data[Q->tu].value = M.data[m].value + N.data[n].value;
+            }
+            m++;
+            n++;
+        }
+    }
+
+    // 处理剩余元素
+    while (m <= M.tu) {
+        Q->data[++Q->tu] = M.data[m++];
+    }
+    while (n <= N.tu) {
+        Q->data[++Q->tu] = N.data[n++];
+    }
+
+    return OK;
+}
+</pre>
+
+<h2>
+    十字链表表示法
+</h2>
+
+<h3>
+    十字链表结构
+</h3>
+
+<p>
+    十字链表（Orthogonal List）是稀疏矩阵的另一种存储方法，它结合了行链表和列链表的特点，每个非零元素既是行链表中的一个结点，又是列链表中的一个结点。
+</p>
+
+<pre tag="c">
+typedef struct OLNode {
+    int i, j;              // 行号，列号
+    int value;             // 元素值
+    struct OLNode *right;  // 指向同一行下一个非零元素
+    struct OLNode *down;   // 指向同一列下一个非零元素
+} OLNode, *OLink;
+
+typedef struct {
+    OLink *rhead, *chead;  // 行链表和列链表头指针向量
+    int mu, nu, tu;        // 矩阵的行数、列数、非零元素个数
+} CrossList;
+</pre>
+
+<h3>
+    十字链表的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">灵活插入删除</span>：便于非零元素的插入和删除
+    </li>
+    <li>
+        <span class="special">双向链接</span>：同时维护行和列的链接关系
+    </li>
+    <li>
+        <span class="special">存储开销</span>：每个结点需要额外的指针域
+    </li>
+</ul>
+
+<h2>
+    稀疏矩阵的应用场景
+</h2>
+
+<ul>
+    <li>
+        <span class="special">有限元分析</span>：结构力学、流体力学等工程计算中产生的刚度矩阵
+    </li>
+    <li>
+        <span class="special">图论</span>：大型图的邻接矩阵通常是稀疏的
+    </li>
+    <li>
+        <span class="special">网页搜索</span>：网页链接矩阵、词项-文档矩阵
+    </li>
+    <li>
+        <span class="special">推荐系统</span>：用户-物品评分矩阵
+    </li>
+    <li>
+        <span class="special">社交网络</span>：用户关系矩阵
+    </li>
+    <li>
+        <span class="special">机器学习</span>：高维特征空间中的数据矩阵
+    </li>
+</ul>
+
+<h2>
+    稀疏矩阵的运算优化
+</h2>
+
+<h3>
+    矩阵向量乘法
+</h3>
+
+<p>
+    稀疏矩阵与向量的乘法可以只对非零元素进行运算，避免对零元素的无效计算。
+</p>
+
+<h3>
+    矩阵转置优化
+</h3>
+
+<p>
+    使用快速转置算法可以在O(tu)时间内完成转置，其中tu是非零元素个数。
+    </h3>
+
+<h3>
+    矩阵乘法优化
+</h3>
+
+<p>
+    两个稀疏矩阵相乘的结果通常比单个矩阵更稠密，需要合理选择存储结构。
+</p>
+
+<h2>
+    存储结构比较
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>存储结构</th>
+            <th>空间复杂度</th>
+            <th>随机访问</th>
+            <th>插入删除</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>三元组顺序表</td>
+            <td>O(tu)</td>
+            <td>慢</td>
+            <td>慢</td>
+            <td>矩阵运算</td>
+        </tr>
+        <tr>
+            <td>十字链表</td>
+            <td>O(tu)</td>
+            <td>慢</td>
+            <td>快</td>
+            <td>频繁插入删除</td>
+        </tr>
+        <tr>
+            <td>二维数组</td>
+            <td>O(m×n)</td>
+            <td>快</td>
+            <td>快</td>
+            <td>稠密矩阵</td>
+        </tr>
+    </tbody>
+</table>

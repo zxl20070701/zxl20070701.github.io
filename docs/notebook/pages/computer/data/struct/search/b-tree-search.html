@@ -1,0 +1,277 @@
+<header>
+    B树/B+树查找
+</header>
+
+<h2>
+    B树查找的定义
+</h2>
+
+<p>
+    B树查找是在B树（平衡多路查找树）中查找指定关键字的过程。B树是一种平衡的多路搜索树，广泛应用于文件系统和数据库系统中。B树查找的基本思想是：从根结点开始，在每个结点中查找目标关键字，如果找到则查找成功；如果没有找到，则根据关键字的大小选择相应的子树继续查找，直到找到目标关键字或到达叶子结点。
+</p>
+
+<h3>
+    B树查找的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">多路搜索</span>：每个结点可以有多于两个的子树
+    </li>
+    <li>
+        <span class="special">平衡性</span>：所有叶子结点都在同一层
+    </li>
+    <li>
+        <span class="special">磁盘友好</span>：减少磁盘I/O次数
+    </li>
+    <li>
+        <span class="special">范围查询</span>：支持高效的范围查询
+    </li>
+</ul>
+
+<h2>
+    B树的结构
+</h2>
+
+<h3>
+    B树结点的定义
+</h3>
+
+<pre tag="c">
+#define M 3  // B树的阶
+#define MAX_M (M - 1)  // 每个结点最多关键字数
+#define MIN_M (M / 2)  // 每个结点最少关键字数
+
+typedef struct BTNode {
+    int keynum;                 // 结点中关键字的个数
+    int key[M];                 // 关键字向量，key[0]未用
+    struct BTNode *parent;      // 指向双亲结点
+    struct BTNode *ptr[M];      // 子树指针向量
+} BTNode, *BTree;
+</pre>
+
+<h2>
+    B树查找算法
+</h2>
+
+<h3>
+    查找过程
+</h3>
+
+<ol>
+    <li>从根结点开始查找</li>
+    <li>在当前结点中使用二分查找或顺序查找找到目标关键字或确定查找范围</li>
+    <li>如果找到目标关键字，则查找成功</li>
+    <li>如果没有找到目标关键字，则根据关键字的大小选择相应的子树继续查找</li>
+    <li>重复步骤2-4，直到找到目标关键字或到达叶子结点</li>
+</ol>
+
+<h3>
+    B树查找的实现
+</h3>
+
+<pre tag="c">
+Result SearchBTree(BTree T, int key) {
+    int i = 0;
+    BTree p = T, q = NULL;  // p指向待查结点，q指向p的双亲
+    Status found = FALSE;
+
+    while (p && !found) {
+        i = Search(p, key);  // 在p->key[1..keynum]中查找i，使得p->key[i] <= key < p->key[i+1]
+
+        if (i > 0 && p->key[i] == key) {
+            found = TRUE;  // 查找成功
+        } else {
+            q = p;
+            p = p->ptr[i];  // 查找下一层结点
+        }
+    }
+
+    Result r;
+    if (found) {
+        r.pt = p;
+        r.i = i;
+        r.tag = 1;
+    } else {
+        r.pt = q;
+        r.i = i;
+        r.tag = 0;
+    }
+
+    return r;
+}
+
+int Search(BTree p, int key) {
+    int i = 1;
+    while (i <= p->keynum && key > p->key[i]) {
+        i++;
+    }
+    return i - 1;
+}
+</pre>
+
+<h2>
+    B+树查找
+</h2>
+
+<h3>
+    B+树的特点
+</h3>
+
+<ul>
+    <li>有n棵子树的结点中含有n个关键字</li>
+    <li>所有的叶子结点中包含了全部关键字的信息</li>
+    <li>叶子结点本身依关键字的大小顺序链接</li>
+    <li>所有的非终端结点可以看成是索引部分</li>
+</ul>
+
+<h3>
+    B+树查找的实现
+</h3>
+
+<pre tag="c">
+BPlusNode* SearchBPlusTree(BPlusTree T, int key) {
+    BPlusNode *p = T;
+
+    // 在非叶子结点中查找
+    while (!p->isLeaf) {
+        int i = 0;
+        while (i < p->keynum && key >= p->key[i]) {
+            i++;
+        }
+        p = p->ptr[i];
+    }
+
+    // 在叶子结点中查找
+    int i = 0;
+    while (i < p->keynum && key != p->key[i]) {
+        i++;
+    }
+
+    if (i < p->keynum && key == p->key[i]) {
+        return p;  // 查找成功
+    } else {
+        return NULL;  // 查找失败
+    }
+}
+</pre>
+
+<h2>
+    B树查找的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">查找</span>：O(log n)
+    </li>
+    <li>
+        <span class="special">插入</span>：O(log n)
+    </li>
+    <li>
+        <span class="special">删除</span>：O(log n)
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<p>
+    O(n)，需要存储n个关键字。
+</p>
+
+<h2>
+    B树查找的优化
+</h2>
+
+<h3>
+    二分查找优化
+</h3>
+
+<p>
+    在每个结点中使用二分查找而不是顺序查找，可以提高查找效率。
+</p>
+
+<h3>
+    缓存优化
+</h3>
+
+<p>
+    将频繁访问的结点缓存到内存中，减少磁盘I/O次数。
+</p>
+
+<h3>
+    预取优化
+</h3>
+
+<p>
+    根据访问模式预取可能需要访问的结点，提高查找效率。
+</p>
+
+<h2>
+    B树查找的应用场景
+</h2>
+
+<h3>
+    数据库索引
+</h3>
+
+<p>
+    B+树是数据库系统中最常用的索引结构，如MySQL的InnoDB存储引擎。
+</p>
+
+<h3>
+    文件系统
+</h3>
+
+<p>
+    许多文件系统使用B树或B+树来管理文件和目录，如NTFS、HFS+等。
+</p>
+
+<h3>
+    操作系统
+</h3>
+
+<p>
+    操作系统的虚拟内存管理、页表管理等也使用B树结构。
+</p>
+
+<h2>
+    B树与B+树查找的比较
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>特性</th>
+            <th>B树查找</th>
+            <th>B+树查找</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>查找路径</td>
+            <td>可能在非叶子结点结束</td>
+            <td>必须到叶子结点结束</td>
+        </tr>
+        <tr>
+            <td>存储效率</td>
+            <td>非叶子结点存储数据</td>
+            <td>非叶子结点只存储索引</td>
+        </tr>
+        <tr>
+            <td>范围查询</td>
+            <td>效率较低</td>
+            <td>效率高（叶子结点链接）</td>
+        </tr>
+        <tr>
+            <td>实现复杂度</td>
+            <td>中等</td>
+            <td>较高</td>
+        </tr>
+    </tbody>
+</table>

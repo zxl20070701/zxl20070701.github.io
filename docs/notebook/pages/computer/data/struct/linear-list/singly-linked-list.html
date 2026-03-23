@@ -1,0 +1,280 @@
+<header>
+    单链表
+</header>
+
+<h2>
+    单链表的定义
+</h2>
+
+<p>
+    单链表是用一组任意的存储单元来存储线性表的数据元素，这些存储单元可以是连续的，也可以是不连续的。为了表示每个数据元素aᵢ与其直接后继数据元素aᵢ₊₁之间的逻辑关系，对数据元素aᵢ来说，除了存储其本身的信息之外，还需存储一个指示其直接后继的信息（即直接后继的存储位置）。这两部分信息组成数据元素aᵢ的存储映像，称为<span class="important">结点（Node）</span>。
+</p>
+
+<h3>
+    结点结构
+</h3>
+
+<p>
+    单链表的结点包括两个域：
+</p>
+
+<ul>
+    <li>
+        <span class="special">数据域</span>：存储数据元素信息的域
+    </li>
+    <li>
+        <span class="special">指针域</span>：存储直接后继结点地址的指针域
+    </li>
+</ul>
+
+<pre tag="c">
+typedef struct LNode {
+    int data;           // 数据域
+    struct LNode *next; // 指针域
+} LNode, *LinkList;
+</pre>
+
+<h3>
+    单链表的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">动态分配</span>：结点空间可以动态申请和释放
+    </li>
+    <li>
+        <span class="special">插入删除高效</span>：不需要移动元素，只需要修改指针
+    </li>
+    <li>
+        <span class="special">顺序访问</span>：不能随机访问，必须从头指针开始顺序访问
+    </li>
+    <li>
+        <span class="special">额外空间开销</span>：每个结点需要额外的指针域
+    </li>
+</ul>
+
+<h2>
+    单链表的实现
+</h2>
+
+<h3>
+    带头结点的单链表
+</h3>
+
+<p>
+    为了方便操作，通常在单链表的第一个结点之前附设一个结点，称为<span class="important">头结点</span>。头结点的数据域可以不存储任何信息，也可以存储如线性表的长度等附加信息。头结点的指针域存储指向第一个结点的指针（即第一个元素结点的存储位置）。
+</p>
+
+<div class="tips">
+    带头结点的单链表可以简化插入和删除操作的实现，因为不需要特殊处理第一个结点的插入和删除。
+</div>
+
+<h3>
+    不带头结点的单链表
+</h3>
+
+<p>
+    不带头结点的单链表直接用头指针指向第一个元素结点。这种实现方式在处理第一个结点时需要特殊考虑。
+</div>
+
+<h2>
+    单链表的基本操作
+</h2>
+
+<h3>
+    初始化
+</h3>
+
+<p>
+    创建一个空的单链表，只包含头结点。
+</p>
+
+<pre tag="c">
+Status InitList(LinkList *L) {
+    *L = (LinkList)malloc(sizeof(LNode));
+    if (!(*L)) return ERROR;
+    (*L)->next = NULL;
+    return OK;
+}
+</pre>
+
+<h3>
+    按序号查找
+</h3>
+
+<p>
+    在单链表中查找第i个结点，并返回指向该结点的指针。
+</p>
+
+<pre tag="c">
+LNode* GetElem(LinkList L, int i) {
+    if (i < 1) return NULL;
+    LNode *p = L->next; // 指向第一个结点
+    int j = 1;
+
+    while (p && j < i) {
+        p = p->next;
+        j++;
+    }
+
+    return p; // 若i大于表长，返回NULL
+}
+</pre>
+
+<h3>
+    按值查找
+</h3>
+
+<p>
+    在单链表中查找第一个值等于e的结点，并返回指向该结点的指针。
+</p>
+
+<pre tag="c">
+LNode* LocateElem(LinkList L, int e) {
+    LNode *p = L->next;
+
+    while (p && p->data != e) {
+        p = p->next;
+    }
+
+    return p; // 若未找到，返回NULL
+}
+</pre>
+
+<h3>
+    插入操作
+</h3>
+
+<p>
+    在单链表的第i个位置插入新元素e。插入位置i的合法范围是1 ≤ i ≤ 表长+1。
+</p>
+
+<pre tag="c">
+Status ListInsert(LinkList L, int i, int e) {
+    // 找到第i-1个结点
+    LNode *p = GetElem(L, i-1);
+    if (!p) return ERROR;
+
+    // 创建新结点
+    LNode *s = (LNode*)malloc(sizeof(LNode));
+    if (!s) return ERROR;
+
+    s->data = e;
+    s->next = p->next;
+    p->next = s;
+
+    return OK;
+}
+</pre>
+
+<p>
+    插入操作的时间复杂度分析：
+</p>
+<ul>
+    <li>最好情况：在表头插入，时间复杂度为O(1)</li>
+    <li>最坏情况：在表尾插入，需要遍历整个链表，时间复杂度为O(n)</li>
+    <li>平均情况：假设在每个位置插入的概率相等，平均时间复杂度为O(n)</li>
+</ul>
+
+<div class="tips">
+    如果已知插入位置的前驱结点指针，插入操作的时间复杂度为O(1)。
+</div>
+
+<h3>
+    删除操作
+</h3>
+
+<p>
+    删除单链表的第i个结点，并用e返回其值。删除位置i的合法范围是1 ≤ i ≤ 表长。
+</p>
+
+<pre tag="c">
+Status ListDelete(LinkList L, int i, int *e) {
+    // 找到第i-1个结点
+    LNode *p = GetElem(L, i-1);
+    if (!p || !p->next) return ERROR;
+
+    // 保存被删除的结点
+    LNode *q = p->next;
+    *e = q->data;
+
+    // 修改指针
+    p->next = q->next;
+
+    // 释放被删除结点的空间
+    free(q);
+
+    return OK;
+}
+</pre>
+
+<p>
+    删除操作的时间复杂度分析：
+</p>
+<ul>
+    <li>最好情况：删除表头结点，时间复杂度为O(1)</li>
+    <li>最坏情况：删除表尾结点，需要遍历整个链表，时间复杂度为O(n)</li>
+    <li>平均情况：假设删除每个位置的概率相等，平均时间复杂度为O(n)</li>
+</ul>
+
+<div class="tips">
+    如果已知删除结点的前驱结点指针，删除操作的时间复杂度为O(1)。
+</div>
+
+<h3>
+    头插法建立单链表
+</h3>
+
+<p>
+    从一个空表开始，重复读入数据，生成新结点，将新结点插入到当前链表的表头上，直到读入结束标志为止。
+</p>
+
+<pre tag="c">
+LinkList CreateList_Head(int n) {
+    LinkList L = (LinkList)malloc(sizeof(LNode));
+    L->next = NULL;
+
+    for (int i = n; i > 0; i--) {
+        LNode *p = (LNode*)malloc(sizeof(LNode));
+        scanf("%d", &p->data);
+        p->next = L->next;
+        L->next = p;
+    }
+
+    return L;
+}
+</pre>
+
+<p>
+    头插法建立单链表的时间复杂度为O(n)，生成的链表中结点的次序和输入数据的顺序相反。
+</p>
+
+<h3>
+    尾插法建立单链表
+</h3>
+
+<p>
+    从一个空表开始，将新结点逐个插入到当前链表的表尾上，为此需要增加一个尾指针r，使其始终指向当前链表的尾结点。
+</p>
+
+<pre tag="c">
+LinkList CreateList_Tail(int n) {
+    LinkList L = (LinkList)malloc(sizeof(LNode));
+    L->next = NULL;
+    LNode *r = L; // 尾指针
+
+    for (int i = 0; i < n; i++) {
+        LNode *p = (LNode*)malloc(sizeof(LNode));
+        scanf("%d", &p->data);
+        p->next = NULL;
+        r->next = p;
+        r = p; // r指向新的尾结点
+    }
+
+    return L;
+}
+</pre>
+
+<p>
+    尾插法建立单链表的时间复杂度为O(n)，生成的链表中结点的次序和输入数据的顺序相同。
+</p>

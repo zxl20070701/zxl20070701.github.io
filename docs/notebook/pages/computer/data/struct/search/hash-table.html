@@ -1,0 +1,354 @@
+<header>
+    哈希表
+</header>
+
+<h2>
+    哈希表的定义
+</h2>
+
+<p>
+    哈希表（Hash Table），又称散列表，是根据关键码值（Key value）而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。这个映射函数叫做<span class="important">散列函数</span>，存放记录的数组叫做<span class="important">散列表</span>。
+</p>
+
+<h3>
+    哈希表的基本概念
+</h3>
+
+<ul>
+    <li>
+        <span class="special">哈希函数</span>：将关键字映射到哈希表位置的函数
+    </li>
+    <li>
+        <span class="special">哈希地址</span>：通过哈希函数计算得到的位置
+    </li>
+    <li>
+        <span class="special">冲突</span>：不同的关键字通过哈希函数计算得到相同的哈希地址
+    </li>
+    <li>
+        <span class="special">同义词</span>：发生哈希冲突的不同关键字
+    </li>
+</ul>
+
+<h2>
+    哈希函数的构造方法
+</h2>
+
+<h3>
+    直接定址法
+</h3>
+
+<p>
+    取关键字或关键字的某个线性函数值为哈希地址。
+</p>
+
+<pre tag="c">
+H(key) = key 或 H(key) = a × key + b
+</pre>
+
+<h3>
+    除留余数法
+</h3>
+
+<p>
+    取关键字被某个不大于哈希表表长m的数p除后所得余数为哈希地址。
+</p>
+
+<pre tag="c">
+H(key) = key mod p (p ≤ m)
+</pre>
+
+<div class="tips">
+    其中p最好选择小于或等于m的最大素数，以减少冲突。
+</div>
+
+<h3>
+    数字分析法
+</h3>
+
+<p>
+    分析一组数据，比如一组员工的出生年月日，这时我们发现出生年月日的前几位数字大体相同，这样的话，出现冲突的几率就会很大，但是我们发现年月日的后几位表示月份和具体日期的数字差别很大，如果用后面的数字来构成散列地址，则冲突的几率会明显降低。
+</h3>
+
+<h3>
+    平方取中法
+</h3>
+
+<p>
+    取关键字平方后的中间几位作为哈希地址。
+</p>
+
+<h3>
+    折叠法
+</h3>
+
+<p>
+    将关键字分割成位数相同的几部分（最后一部分的位数可以不同），然后取这几部分的叠加和（舍去进位）作为哈希地址。
+</p>
+
+<h2>
+    处理冲突的方法
+</h2>
+
+<h3>
+    开放定址法
+</h3>
+
+<p>
+    当发生冲突时，使用某种探测技术在哈希表中形成一个探测序列，沿着这个序列逐个查找，直到找到一个开放的地址（即空位置）为止。
+</p>
+
+<h4>
+    线性探测法
+</h4>
+
+<pre tag="c">
+Hᵢ = (H(key) + i) mod m, i = 1, 2, ..., m-1
+</pre>
+
+<h4>
+    二次探测法
+</h4>
+
+<pre tag="c">
+Hᵢ = (H(key) + i²) mod m, i = 1, 2, ..., m-1
+</pre>
+
+<h4>
+    双重哈希法
+</h4>
+
+<pre tag="c">
+Hᵢ = (H(key) + i × H₂(key)) mod m, i = 1, 2, ..., m-1
+</pre>
+
+<h3>
+    链地址法
+</h3>
+
+<p>
+    将所有哈希地址相同的记录都链接在同一个链表中。
+</p>
+
+<pre tag="c">
+typedef struct HashNode {
+    int key;
+    int value;
+    struct HashNode *next;
+} HashNode;
+
+typedef struct {
+    HashNode **table;
+    int size;
+} HashTable;
+</pre>
+
+<h3>
+    公共溢出区法
+</h3>
+
+<p>
+    建立一个公共溢出区，将所有冲突的记录都存储在这个区域中。
+</p>
+
+<h2>
+    哈希表的基本操作
+</h2>
+
+<h3>
+    初始化
+</h3>
+
+<pre tag="c">
+HashTable* InitHashTable(int size) {
+    HashTable *ht = (HashTable*)malloc(sizeof(HashTable));
+    ht->size = size;
+    ht->table = (HashNode**)calloc(size, sizeof(HashNode*));
+    return ht;
+}
+</pre>
+
+<h3>
+    插入操作
+</h3>
+
+<pre tag="c">
+Status InsertHash(HashTable *ht, int key, int value) {
+    int index = HashFunction(key) % ht->size;
+    HashNode *node = (HashNode*)malloc(sizeof(HashNode));
+    node->key = key;
+    node->value = value;
+    node->next = ht->table[index];
+    ht->table[index] = node;
+    return OK;
+}
+</pre>
+
+<h3>
+    查找操作
+</h3>
+
+<pre tag="c">
+int SearchHash(HashTable *ht, int key) {
+    int index = HashFunction(key) % ht->size;
+    HashNode *p = ht->table[index];
+
+    while (p != NULL) {
+        if (p->key == key) {
+            return p->value;
+        }
+        p = p->next;
+    }
+
+    return -1;  // 查找失败
+}
+</pre>
+
+<h3>
+    删除操作
+</h3>
+
+<pre tag="c">
+Status DeleteHash(HashTable *ht, int key) {
+    int index = HashFunction(key) % ht->size;
+    HashNode *p = ht->table[index];
+    HashNode *prev = NULL;
+
+    while (p != NULL) {
+        if (p->key == key) {
+            if (prev == NULL) {
+                ht->table[index] = p->next;
+            } else {
+                prev->next = p->next;
+            }
+            free(p);
+            return OK;
+        }
+        prev = p;
+        p = p->next;
+    }
+
+    return ERROR;  // 删除失败
+}
+</pre>
+
+<h2>
+    哈希表的性能分析
+</h2>
+
+<h3>
+    装填因子
+</h3>
+
+<p>
+    装填因子α = 表中记录数n / 哈希表长度m。装填因子越大，发生冲突的可能性越大。
+</p>
+
+<h3>
+    查找成功的平均查找长度
+</h3>
+
+<ul>
+    <li>线性探测法：ASL ≈ (1 + 1/(1-α))/2</li>
+    <li>二次探测法：ASL ≈ -ln(1-α)/α</li>
+    <li>链地址法：ASL ≈ 1 + α/2</li>
+</ul>
+
+<h3>
+    查找失败的平均查找长度
+</h3>
+
+<ul>
+    <li>线性探测法：ASL ≈ (1 + 1/(1-α)²)/2</li>
+    <li>二次探测法：ASL ≈ 1/(1-α)</li>
+    <li>链地址法：ASL ≈ α + e^(-α)</li>
+</ul>
+
+<h2>
+    哈希表的应用
+</h2>
+
+<h3>
+    数据库索引
+</h3>
+
+<p>
+    哈希表在数据库系统中用于实现哈希索引，提供快速的记录查找。
+</p>
+
+<h3>
+    编译器符号表
+</h3>
+
+<p>
+    编译器使用哈希表来存储标识符和它们的属性，实现快速的符号查找。
+</p>
+
+<h3>
+    缓存系统
+</h3>
+
+<p>
+    缓存系统使用哈希表来存储键值对，实现快速的数据访问。
+</p>
+
+<h3>
+    路由表
+</h3>
+
+<p>
+    网络路由器使用哈希表来存储路由信息，实现快速的路由查找。
+</p>
+
+<h2>
+    哈希表的优缺点
+</h2>
+
+<h3>
+    优点
+</h3>
+
+<ul>
+    <li>查找效率高，平均时间复杂度为O(1)</li>
+    <li>插入和删除操作效率高</li>
+    <li>实现相对简单</li>
+    <li>适用于大规模数据</li>
+</ul>
+
+<h3>
+    缺点
+</h3>
+
+<ul>
+    <li>需要额外的空间存储哈希表</li>
+    <li>冲突处理会影响性能</li>
+    <li>不支持范围查询</li>
+    <li>哈希函数的选择对性能影响很大</li>
+</ul>
+
+<h2>
+    哈希表的扩展
+</h2>
+
+<h3>
+    动态哈希表
+</h3>
+
+<p>
+    当哈希表的装填因子超过某个阈值时，自动扩大哈希表的容量。
+</p>
+
+<h3>
+    一致性哈希
+</h3>
+
+<p>
+    在分布式系统中，一致性哈希用于实现负载均衡和数据分布。
+</p>
+
+<h3>
+    布隆过滤器
+</h3>
+
+<p>
+    使用多个哈希函数和位数组，实现高效的集合成员查询。
+</p>

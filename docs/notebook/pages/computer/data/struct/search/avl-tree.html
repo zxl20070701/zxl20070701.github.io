@@ -1,0 +1,300 @@
+<header>
+    平衡二叉树（AVL）
+</header>
+
+<h2>
+    AVL树的定义
+</h2>
+
+<p>
+    平衡二叉树（Balanced Binary Tree）是由Adelson-Velskii和Landis于1962年提出的，又称AVL树。它或者是一棵空树，或者是具有下列性质的二叉树：它的左子树和右子树都是平衡二叉树，且左子树和右子树的高度之差的绝对值不超过1。
+</p>
+
+<h3>
+    平衡因子
+</h3>
+
+<p>
+    结点的平衡因子（Balance Factor）定义为该结点的左子树的高度减去右子树的高度。平衡二叉树中所有结点的平衡因子只可能是-1、0和1。
+</p>
+
+<h2>
+    AVL树的存储结构
+</h2>
+
+<pre tag="c">
+typedef struct AVLNode {
+    int data;                    // 数据域
+    int bf;                      // 平衡因子
+    struct AVLNode *lchild, *rchild; // 左右孩子指针
+} AVLNode, *AVLTree;
+</pre>
+
+<h2>
+    AVL树的旋转操作
+</h2>
+
+<h3>
+    左旋（LL型）
+</h3>
+
+<p>
+    当某个结点的左子树的左子树上插入新结点，导致该结点平衡因子变为2时，需要进行右旋操作。
+</p>
+
+<pre tag="c">
+void R_Rotate(AVLTree *p) {
+    AVLTree lc = (*p)->lchild;
+    (*p)->lchild = lc->rchild;
+    lc->rchild = *p;
+    *p = lc;
+}
+</pre>
+
+<h3>
+    右旋（RR型）
+</h3>
+
+<p>
+    当某个结点的右子树的右子树上插入新结点，导致该结点平衡因子变为-2时，需要进行左旋操作。
+</p>
+
+<pre tag="c">
+void L_Rotate(AVLTree *p) {
+    AVLTree rc = (*p)->rchild;
+    (*p)->rchild = rc->lchild;
+    rc->lchild = *p;
+    *p = rc;
+}
+</pre>
+
+<h3>
+    先左旋后右旋（LR型）
+</h3>
+
+<p>
+    当某个结点的左子树的右子树上插入新结点，导致该结点平衡因子变为2时，需要先对左子树进行左旋，再对该结点进行右旋。
+</p>
+
+<pre tag="c">
+void LeftBalance(AVLTree *T) {
+    AVLTree lc, rd;
+    lc = (*T)->lchild;
+
+    switch (lc->bf) {
+        case LH:  // LL型
+            (*T)->bf = lc->bf = EH;
+            R_Rotate(T);
+            break;
+        case RH:  // LR型
+            rd = lc->rchild;
+            switch (rd->bf) {
+                case LH:
+                    (*T)->bf = RH;
+                    lc->bf = EH;
+                    break;
+                case EH:
+                    (*T)->bf = lc->bf = EH;
+                    break;
+                case RH:
+                    (*T)->bf = EH;
+                    lc->bf = LH;
+                    break;
+            }
+            rd->bf = EH;
+            L_Rotate(&(*T)->lchild);
+            R_Rotate(T);
+            break;
+    }
+}
+</pre>
+
+<h3>
+    先右旋后左旋（RL型）
+</h3>
+
+<p>
+    当某个结点的右子树的左子树上插入新结点，导致该结点平衡因子变为-2时，需要先对右子树进行右旋，再对该结点进行左旋。
+</p>
+
+<pre tag="c">
+void RightBalance(AVLTree *T) {
+    AVLTree rc, ld;
+    rc = (*T)->rchild;
+
+    switch (rc->bf) {
+        case RH:  // RR型
+            (*T)->bf = rc->bf = EH;
+            L_Rotate(T);
+            break;
+        case LH:  // RL型
+            ld = rc->lchild;
+            switch (ld->bf) {
+                case RH:
+                    (*T)->bf = LH;
+                    rc->bf = EH;
+                    break;
+                case EH:
+                    (*T)->bf = rc->bf = EH;
+                    break;
+                case LH:
+                    (*T)->bf = EH;
+                    rc->bf = RH;
+                    break;
+            }
+            ld->bf = EH;
+            R_Rotate(&(*T)->rchild);
+            L_Rotate(T);
+            break;
+    }
+}
+</pre>
+
+<h2>
+    AVL树的插入操作
+</h2>
+
+<pre tag="c">
+#define LH +1  // 左高
+#define EH 0   // 等高
+#define RH -1  // 右高
+
+Status InsertAVL(AVLTree *T, int e, Status *taller) {
+    if (!*T) {
+        // 插入新结点，树"长高"，置taller为TRUE
+        *T = (AVLTree)malloc(sizeof(AVLNode));
+        (*T)->data = e;
+        (*T)->lchild = (*T)->rchild = NULL;
+        (*T)->bf = EH;
+        *taller = TRUE;
+    } else {
+        if (e == (*T)->data) {
+            // 树中已存在和e有相同关键字的结点则不再插入
+            *taller = FALSE;
+            return FALSE;
+        }
+
+        if (e < (*T)->data) {
+            // 应继续在T的左子树中进行搜索
+            if (!InsertAVL(&(*T)->lchild, e, taller)) {
+                return FALSE;
+            }
+
+            if (*taller) {
+                // 已插入到T的左子树中且左子树"长高"
+                switch ((*T)->bf) {
+                    case LH:  // 原本左子树比右子树高，需要作左平衡处理
+                        LeftBalance(T);
+                        *taller = FALSE;
+                        break;
+                    case EH:  // 原本左、右子树等高，现因左子树增高而使树增高
+                        (*T)->bf = LH;
+                        *taller = TRUE;
+                        break;
+                    case RH:  // 原本右子树比左子树高，现左、右子树等高
+                        (*T)->bf = EH;
+                        *taller = FALSE;
+                        break;
+                }
+            }
+        } else {
+            // 应继续在T的右子树中进行搜索
+            if (!InsertAVL(&(*T)->rchild, e, taller)) {
+                return FALSE;
+            }
+
+            if (*taller) {
+                // 已插入到T的右子树中且右子树"长高"
+                switch ((*T)->bf) {
+                    case LH:  // 原本左子树比右子树高，现左、右子树等高
+                        (*T)->bf = EH;
+                        *taller = FALSE;
+                        break;
+                    case EH:  // 原本左、右子树等高，现因右子树增高而使树增高
+                        (*T)->bf = RH;
+                        *taller = TRUE;
+                        break;
+                    case RH:  // 原本右子树比左子树高，需要作右平衡处理
+                        RightBalance(T);
+                        *taller = FALSE;
+                        break;
+                }
+            }
+        }
+    }
+
+    return TRUE;
+}
+</pre>
+
+<h2>
+    AVL树的删除操作
+</h2>
+
+<p>
+    AVL树的删除操作比插入操作更复杂，需要考虑多种情况。删除结点后，可能需要对多个结点进行平衡调整。
+</p>
+
+<h2>
+    AVL树的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">查找</span>：O(log n)
+    </li>
+    <li>
+        <span class="special">插入</span>：O(log n)
+    </li>
+    <li>
+        <span class="special">删除</span>：O(log n)
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<p>
+    O(n)，需要存储n个结点。
+</p>
+
+<h2>
+    AVL树的高度
+</h3>
+
+<p>
+    对于包含n个结点的AVL树，其高度h满足：log₂(n+1) ≤ h ≤ 1.44log₂(n+2) - 0.328。
+</p>
+
+<h2>
+    AVL树的应用场景
+</h2>
+
+<h3>
+    数据库索引
+</h3>
+
+<p>
+    AVL树可以用于实现数据库的索引结构，提供高效的查找、插入和删除操作。
+</p>
+
+<h3>
+    内存管理
+</h3>
+
+<p>
+    在操作系统的内存管理中，AVL树可以用于管理空闲内存块。
+</p>
+
+<h3>
+    文件系统
+</h3>
+
+<p>
+    文件系统中的目录结构可以使用AVL树来维护，提供高效的文件查找。
+</p>

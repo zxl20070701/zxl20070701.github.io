@@ -1,0 +1,256 @@
+<header>
+    模式匹配算法
+</header>
+
+<h2>
+    模式匹配的基本概念
+</h2>
+
+<p>
+    模式匹配（Pattern
+    Matching）是串的一种重要运算，即子串的定位运算。设S和T是给定的两个串，在主串S中找到等于子串T的过程称为模式匹配，T称为模式。如果在S中找到等于T的子串，则称匹配成功，函数返回T在S中首次出现的位置；否则匹配失败，返回-1。
+</p>
+
+<h2>
+    暴力匹配算法（Brute Force）
+</h2>
+
+<h3>
+    算法思想
+</h3>
+
+<p>
+    暴力匹配算法是最简单直观的模式匹配算法。其基本思想是从主串S的第一个字符开始，与模式串T的第一个字符进行比较，若相等，则继续比较后续字符；若不相等，则从主串S的第二个字符开始重新与模式串T的第一个字符进行比较。重复上述过程，直到模式串T中的每个字符依次和主串S中的一个连续的字符序列相等，则匹配成功；否则匹配失败。
+</p>
+
+<h3>
+    算法实现
+</h3>
+
+<pre tag="c">
+int Index_BF(SString S, SString T, int pos) {
+    int i = pos, j = 1; // i指向主串，j指向模式串
+
+    while (i <= S.length && j <= T.length) {
+        if (S.ch[i] == T.ch[j]) { // 继续比较后续字符
+            ++i;
+            ++j;
+        } else { // 指针后退重新开始匹配
+            i = i - j + 2; // 主串回溯
+            j = 1;         // 模式串从头开始
+        }
+    }
+
+    if (j > T.length) {
+        return i - T.length; // 匹配成功，返回匹配位置
+    } else {
+        return 0; // 匹配失败
+    }
+}
+</pre>
+
+<h3>
+    时间复杂度分析
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：每次不匹配都发生在第一个字符，时间复杂度为O(n+m)
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：每次不匹配都发生在模式串的最后一个字符，时间复杂度为O(n×m)
+    </li>
+    <li>
+        <span class="special">平均情况</span>：时间复杂度为O(n×m)
+    </li>
+</ul>
+
+<h2>
+    KMP算法
+</h2>
+
+<h3>
+    算法思想
+</h3>
+
+<p>
+    KMP（Knuth-Morris-Pratt）算法是一种改进的模式匹配算法，由D.E.Knuth、J.H.Morris和V.R.Pratt三人同时提出。KMP算法的关键是利用匹配失败后的信息，尽量减少模式串与主串的匹配次数以达到快速匹配的目的。具体实现就是通过一个next()函数实现，函数本身包含了模式串的局部匹配信息。
+</p>
+
+<h3>
+    next数组的构造
+</h3>
+
+<p>
+    next数组是KMP算法的核心，它存储了模式串中每个位置的最长公共前后缀长度。next[j]表示当模式串的第j个字符与主串的相应字符不匹配时，模式串应该跳转到哪个位置继续匹配。
+</p>
+
+<pre tag="c">
+void get_next(SString T, int next[]) {
+    int i = 1, j = 0;
+    next[1] = 0;
+
+    while (i < T.length) {
+        if (j == 0 || T.ch[i] == T.ch[j]) {
+            ++i;
+            ++j;
+            next[i] = j;
+        } else {
+            j = next[j];
+        }
+    }
+}
+</pre>
+
+<h3>
+    KMP算法实现
+</h3>
+
+<pre tag="c">
+int Index_KMP(SString S, SString T, int pos) {
+    int i = pos, j = 1;
+    int next[T.length + 1];
+
+    get_next(T, next); // 计算next数组
+
+    while (i <= S.length && j <= T.length) {
+        if (j == 0 || S.ch[i] == T.ch[j]) {
+            ++i;
+            ++j;
+        } else {
+            j = next[j]; // 模式串向右移动
+        }
+    }
+
+    if (j > T.length) {
+        return i - T.length; // 匹配成功
+    } else {
+        return 0; // 匹配失败
+    }
+}
+</pre>
+
+<h3>
+    改进的KMP算法（nextval数组）
+</h3>
+
+<p>
+    在KMP算法的基础上，可以进一步优化得到nextval数组，避免不必要的比较。
+</p>
+
+<pre tag="c">
+void get_nextval(SString T, int nextval[]) {
+    int i = 1, j = 0;
+    nextval[1] = 0;
+
+    while (i < T.length) {
+        if (j == 0 || T.ch[i] == T.ch[j]) {
+            ++i;
+            ++j;
+            if (T.ch[i] != T.ch[j]) {
+                nextval[i] = j;
+            } else {
+                nextval[i] = nextval[j];
+            }
+        } else {
+            j = nextval[j];
+        }
+    }
+}
+</pre>
+
+<h3>
+    KMP算法时间复杂度分析
+</h3>
+
+<ul>
+    <li>
+        <span class="special">预处理阶段</span>：计算next数组的时间复杂度为O(m)
+    </li>
+    <li>
+        <span class="special">匹配阶段</span>：时间复杂度为O(n)
+    </li>
+    <li>
+        <span class="special">总时间复杂度</span>：O(n+m)，其中n为主串长度，m为模式串长度
+    </li>
+</ul>
+
+<h2>
+    Boyer-Moore算法
+</h2>
+
+<h3>
+    算法思想
+</h3>
+
+<p>
+    Boyer-Moore算法是一种高效的字符串匹配算法，它从模式串的末尾开始比较，并且利用两种启发式规则（坏字符规则和好后缀规则）来决定模式串的移动距离。
+</p>
+
+<h3>
+    坏字符规则
+</h3>
+
+<p>
+    当发现不匹配时，如果造成不匹配的字符（称为坏字符）在模式串中不存在，则可以将模式串整体移过该字符；如果坏字符在模式串中存在，则可以将模式串移动到该字符在模式串中最后一次出现的位置。
+</p>
+
+<h3>
+    好后缀规则
+</h3>
+
+<p>
+    当发现不匹配时，如果在模式串中存在一个与好后缀匹配的子串，则将模式串移动到该子串的位置；如果不存在这样的子串，但好后缀的后缀与模式串的前缀匹配，则将模式串移动到该前缀的位置。
+</p>
+
+<h3>
+    Boyer-Moore算法特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">从右向左比较</span>：与大多数字符串匹配算法不同
+    </li>
+    <li>
+        <span class="special">跳跃式移动</span>：可以跳过大量不可能匹配的位置
+    </li>
+    <li>
+        <span class="special">实际效率高</span>：在实际应用中通常比KMP算法更快
+    </li>
+</ul>
+
+<h2>
+    Rabin-Karp算法
+</h2>
+
+<h3>
+    算法思想
+</h3>
+
+<p>
+    Rabin-Karp算法使用哈希函数来比较模式串和主串的子串。它首先计算模式串的哈希值，然后计算主串中每个与模式串等长的子串的哈希值，如果哈希值相等，再进行精确比较。
+</p>
+
+<h3>
+    滚动哈希
+</h3>
+
+<p>
+    Rabin-Karp算法的关键是使用滚动哈希技术，可以在O(1)时间内计算下一个子串的哈希值，而不需要重新计算整个子串的哈希值。
+</p>
+
+<h3>
+    Rabin-Karp算法特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">平均时间复杂度</span>：O(n+m)
+    </li>
+    <li>
+        <span class="special">最坏时间复杂度</span>：O(n×m)（当哈希冲突较多时）
+    </li>
+    <li>
+        <span class="special">多模式匹配</span>：特别适合同时查找多个模式串
+    </li>
+</ul>

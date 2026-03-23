@@ -1,0 +1,201 @@
+<header>
+    顺序表
+</header>
+
+<h2>
+    顺序表的定义
+</h2>
+
+<p>
+    顺序表是用一组地址连续的存储单元依次存储线性表的数据元素，使得逻辑上相邻的元素物理上也相邻。通常用数组来实现顺序表，因此顺序表具有随机存取的特性。
+</p>
+
+<h3>
+    顺序表的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">随机访问</span>：可以通过下标直接访问任意位置的元素，时间复杂度为O(1)
+    </li>
+    <li>
+        <span class="special">存储密度高</span>：不需要额外的指针域，存储空间利用率高
+    </li>
+    <li>
+        <span class="special">插入删除效率低</span>：插入或删除元素需要移动大量元素，时间复杂度为O(n)
+    </li>
+    <li>
+        <span class="special">容量固定</span>：数组大小固定，扩展容量需要重新分配内存
+    </li>
+</ul>
+
+<h2>
+    顺序表的实现
+</h2>
+
+<h3>
+    静态顺序表
+</h3>
+
+<p>
+    静态顺序表使用定长数组存储元素，表的大小在编译时就确定，不能动态改变。
+</p>
+
+<pre tag="c">
+#define MAXSIZE 100
+typedef struct {
+    int data[MAXSIZE];
+    int length;
+} SqList;
+</pre>
+
+<h3>
+    动态顺序表
+</h3>
+
+<p>
+    动态顺序表使用动态分配的数组存储元素，可以根据需要调整表的大小。
+</p>
+
+<pre tag="c">
+typedef struct {
+    int *data;
+    int length;
+    int capacity;
+} SqList;
+</pre>
+
+<h2>
+    顺序表的基本操作
+</h2>
+
+<h3>
+    初始化
+</h3>
+
+<p>
+    为顺序表分配存储空间，并将表长设为0。
+</p>
+
+<pre tag="c">
+Status InitList(SqList *L) {
+    L->data = (int *)malloc(MAXSIZE * sizeof(int));
+    if (!L->data) return ERROR;
+    L->length = 0;
+    L->capacity = MAXSIZE;
+    return OK;
+}
+</pre>
+
+<h3>
+    插入操作
+</h3>
+
+<p>
+    在顺序表的第i个位置插入新元素e。插入位置i的合法范围是1 ≤ i ≤ L.length+1。
+</p>
+
+<pre tag="c">
+Status ListInsert(SqList *L, int i, int e) {
+    // 检查i的范围是否有效
+    if (i < 1 || i > L->length + 1) return ERROR;
+
+    // 检查存储空间是否已满
+    if (L->length >= L->capacity) return ERROR;
+
+    // 将第i个元素及之后的元素后移
+    for (int j = L->length; j >= i; j--) {
+        L->data[j] = L->data[j-1];
+    }
+
+    // 在位置i处放入新元素
+    L->data[i-1] = e;
+    L->length++;
+
+    return OK;
+}
+</pre>
+
+<p>
+    插入操作的时间复杂度分析：
+</p>
+<ul>
+    <li>最好情况：在表尾插入，无需移动元素，时间复杂度为O(1)</li>
+    <li>最坏情况：在表头插入，需要移动n个元素，时间复杂度为O(n)</li>
+    <li>平均情况：假设在每个位置插入的概率相等，平均移动元素个数为n/2，时间复杂度为O(n)</li>
+</ul>
+
+<h3>
+    删除操作
+</h3>
+
+<p>
+    删除顺序表的第i个元素，并用e返回其值。删除位置i的合法范围是1 ≤ i ≤ L.length。
+</p>
+
+<pre tag="c">
+Status ListDelete(SqList *L, int i, int *e) {
+    // 检查i的范围是否有效
+    if (i < 1 || i > L->length) return ERROR;
+
+    // 保存被删除的元素
+    *e = L->data[i-1];
+
+    // 将第i个元素之后的元素前移
+    for (int j = i; j < L->length; j++) {
+        L->data[j-1] = L->data[j];
+    }
+
+    L->length--;
+
+    return OK;
+}
+</pre>
+
+<p>
+    删除操作的时间复杂度分析：
+</p>
+<ul>
+    <li>最好情况：删除表尾元素，无需移动元素，时间复杂度为O(1)</li>
+    <li>最坏情况：删除表头元素，需要移动n-1个元素，时间复杂度为O(n)</li>
+    <li>平均情况：假设删除每个位置的概率相等，平均移动元素个数为(n-1)/2，时间复杂度为O(n)</li>
+</ul>
+
+<h3>
+    查找操作
+</h3>
+
+<p>
+    按值查找：在顺序表中查找第一个值等于e的元素，并返回其位序。
+</p>
+
+<pre tag="c">
+int LocateElem(SqList L, int e) {
+    for (int i = 0; i < L.length; i++) {
+        if (L.data[i] == e) {
+            return i + 1; // 返回位序（从1开始）
+        }
+    }
+    return 0; // 查找失败
+}
+</pre>
+
+<p>
+    按位查找：获取顺序表中第i个位置的元素值。
+</p>
+
+<pre tag="c">
+Status GetElem(SqList L, int i, int *e) {
+    if (i &lt; 1 || i > L.length) return ERROR;
+    *e = L.data[i-1];
+    return OK;
+}
+</pre>
+
+<p>
+    查找操作的时间复杂度：
+</p>
+<ul>
+    <li>按位查找：时间复杂度为O(1)，体现了顺序表的随机存取特性</li>
+    <li>按值查找：最好情况为O(1)，最坏情况为O(n)，平均情况为O(n)</li>
+</ul>

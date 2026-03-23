@@ -1,0 +1,347 @@
+<header>
+    广义表
+</header>
+
+<h2>
+    广义表的定义
+</h2>
+
+<p>
+    广义表（Generalized List）是线性表的推广，也称为列表（Lists）。广义表是n（n≥0）个元素a₁, a₂, ..., aₙ的有限序列，其中aᵢ或者是原子（Atom），或者是一个广义表。通常记作：LS = (a₁, a₂, ..., aₙ)。LS是广义表的名称，n为广义表的长度。当n=0时，称广义表为空表。
+</p>
+
+<h3>
+    相关术语
+</h3>
+
+<ul>
+    <li>
+        <span class="special">原子</span>：不可再分的元素
+    </li>
+    <li>
+        <span class="special">子表</span>：广义表中的元素如果是广义表，则称为子表
+    </li>
+    <li>
+        <span class="special">表头</span>：广义表中的第一个元素
+    </li>
+    <li>
+        <span class="special">表尾</span>：广义表中除去表头后其余元素组成的广义表
+    </li>
+    <li>
+        <span class="special">深度</span>：广义表中括号嵌套的最大层数
+    </li>
+</ul>
+
+<h3>
+    广义表的例子
+</h3>
+
+<pre tag="text">
+A = ()                    // 空表，长度为0
+B = (e)                   // 长度为1，只有一个原子e
+C = (a, (b, c, d))        // 长度为2，第一个元素是原子a，第二个元素是子表(b,c,d)
+D = (A, B, C)             // 长度为3，三个元素都是子表
+E = (a, E)                // 递归表，长度为2，E是其自身的子表
+</pre>
+
+<h2>
+    广义表的特性
+</h2>
+
+<h3>
+    多层次结构
+</h3>
+
+<p>
+    广义表的元素可以是原子，也可以是子表，因此广义表是一种多层次的结构。
+</p>
+
+<h3>
+    共享性
+</h3>
+
+<p>
+    广义表可以为其他广义表共享。例如，在广义表D中，子表A、B、C为D的子表，则在D中可以不必列出子表的值，而是通过子表的名称来引用。
+</p>
+
+<h3>
+    递归性
+</h3>
+
+<p>
+    广义表可以是其自身的子表，如广义表E就是一个递归的广义表。
+</p>
+
+<h2>
+    广义表的存储结构
+</h2>
+
+<h3>
+    头尾链表存储表示
+</h3>
+
+<p>
+    由于广义表中的数据元素可能为原子或广义表，因此难以用顺序存储结构表示，通常采用链式存储结构。常用的链式存储结构有两种：头尾链表存储表示和扩展线性链表存储表示。
+</p>
+
+<h4>
+    结点结构
+</h4>
+
+<pre tag="c">
+typedef enum {ATOM, LIST} ElemTag;  // ATOM==0：原子，LIST==1：子表
+
+typedef struct GLNode {
+    ElemTag tag;                    // 公共部分，用于区分原子结点和表结点
+    union {                         // 原子结点和表结点的联合部分
+        char atom;                  // atom是原子结点的值域，AtomType由用户定义
+        struct {
+            struct GLNode *hp, *tp;
+        } ptr;                      // ptr是表结点的指针域，prt.hp和ptr.tp分别指向表头和表尾
+    };
+} *GList, GLNode;                   // 广义表类型
+</pre>
+
+<h3>
+    扩展线性链表存储表示
+</h3>
+
+<p>
+    在这种结构中，无论是原子结点还是表结点，都含有三个域：标志域、指针域和值域/指针域。
+</p>
+
+<pre tag="c">
+typedef enum {ATOM, LIST} ElemTag;
+
+typedef struct GLNode1 {
+    ElemTag tag;
+    union {
+        char atom;
+        struct GLNode1 *hp;
+    };
+    struct GLNode1 *tp;
+} *GList1, GLNode1;
+</pre>
+
+<h2>
+    广义表的基本操作
+</h2>
+
+<h3>
+    广义表的创建
+</h3>
+
+<pre tag="c">
+Status CreateGList(GList *L, char *S) {
+    // 从字符串S创建广义表L
+    if (StrEmpty(S)) {
+        *L = NULL;
+    } else {
+        *L = (GList)malloc(sizeof(GLNode));
+        if (!*L) return ERROR;
+
+        if (StrLength(S) == 1) {  // 原子
+            (*L)->tag = ATOM;
+            (*L)->atom = S[0];
+        } else {  // 子表
+            (*L)->tag = LIST;
+            // 分离表头和表尾
+            char *hsub = (char*)malloc(StrLength(S) * sizeof(char));
+            char *rtail = (char*)malloc(StrLength(S) * sizeof(char));
+
+            sever(S, hsub);  // 分离表头
+            CreateGList(&((*L)->ptr.hp), hsub);
+            CreateGList(&((*L)->ptr.tp), rtail);
+
+            free(hsub);
+            free(rtail);
+        }
+    }
+
+    return OK;
+}
+</pre>
+
+<h3>
+    求广义表的深度
+</h3>
+
+<pre tag="c">
+int GListDepth(GList L) {
+    if (!L) return 1;  // 空表深度为1
+
+    if (L->tag == ATOM) return 0;  // 原子深度为0
+
+    int max = 0;
+    GList pp;
+    for (pp = L; pp; pp = pp->ptr.tp) {
+        int dep = GListDepth(pp->ptr.hp);
+        if (dep > max) max = dep;
+    }
+
+    return max + 1;
+}
+</pre>
+
+<h3>
+    复制广义表
+</h3>
+
+<pre tag="c">
+Status CopyGList(GList *T, GList L) {
+    if (!L) {
+        *T = NULL;
+    } else {
+        *T = (GList)malloc(sizeof(GLNode));
+        if (!*T) return ERROR;
+
+        (*T)->tag = L->tag;
+        if (L->tag == ATOM) {
+            (*T)->atom = L->atom;
+        } else {
+            CopyGList(&((*T)->ptr.hp), L->ptr.hp);
+            CopyGList(&((*T)->ptr.tp), L->ptr.tp);
+        }
+    }
+
+    return OK;
+}
+</pre>
+
+<h3>
+    求广义表的长度
+</h3>
+
+<pre tag="c">
+int GListLength(GList L) {
+    int len = 0;
+    while (L) {
+        len++;
+        L = L->ptr.tp;
+    }
+    return len;
+}
+</pre>
+
+<h3>
+    求广义表的深度
+</h3>
+
+<pre tag="c">
+int GListDepth(GList L) {
+    if (!L) return 1;  // 空表深度为1
+
+    if (L->tag == ATOM) return 0;  // 原子深度为0
+
+    int max = 0;
+    GList pp;
+    for (pp = L; pp; pp = pp->ptr.tp) {
+        int dep = GListDepth(pp->ptr.hp);
+        if (dep > max) max = dep;
+    }
+
+    return max + 1;
+}
+</pre>
+
+<h2>
+    广义表的遍历
+</h2>
+
+<h3>
+    深度优先遍历
+</h3>
+
+<pre tag="c">
+void TraverseGList(GList L) {
+    if (!L) {
+        printf("()");
+        return;
+    }
+
+    if (L->tag == ATOM) {
+        printf("%c", L->atom);
+    } else {
+        printf("(");
+        GList p = L;
+        while (p) {
+            TraverseGList(p->ptr.hp);
+            p = p->ptr.tp;
+            if (p) printf(",");
+        }
+        printf(")");
+    }
+}
+</pre>
+
+<h2>
+    广义表的应用
+</h2>
+
+<h3>
+    函数式编程
+</h3>
+
+<p>
+    广义表是LISP语言的基本数据结构，用于表示程序和数据。
+</p>
+
+<h3>
+    符号计算
+</h3>
+
+<p>
+    在计算机代数系统中，广义表用于表示数学表达式。
+</p>
+
+<h3>
+    人工智能
+</h3>
+
+<p>
+    在专家系统和知识表示中，广义表用于表示复杂的知识结构。
+</p>
+
+<h3>
+    编译原理
+</h3>
+
+<p>
+    在语法分析中，广义表用于表示抽象语法树。
+</p>
+
+<h2>
+    广义表的优缺点
+</h2>
+
+<h3>
+    优点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">表达能力强</span>：可以表示复杂的层次结构
+    </li>
+    <li>
+        <span class="special">灵活性高</span>：可以动态地改变结构
+    </li>
+    <li>
+        <span class="special">共享性好</span>：可以共享子结构
+    </li>
+</ul>
+
+<h3>
+    缺点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">存储开销大</span>：每个结点需要额外的指针域
+    </li>
+    <li>
+        <span class="special">访问效率低</span>：随机访问效率较低
+    </li>
+    <li>
+        <span class="special">实现复杂</span>：需要处理递归结构
+    </li>
+</ul>

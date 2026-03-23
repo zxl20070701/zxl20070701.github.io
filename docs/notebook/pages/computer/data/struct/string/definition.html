@@ -1,0 +1,317 @@
+<header>
+    定义
+</header>
+
+<h2>
+    串的基本概念
+</h2>
+
+<p>
+    串（String）是由零个或多个字符组成的有限序列。一般记为：S = 'a₁a₂...aₙ'（n ≥ 0）。其中，S是串名，单引号括起来的字符序列是串的值；aᵢ可以是字母、数字或其他字符；串中字符的数目n称为串的长度。n = 0时的串称为空串（Null String）。
+</p>
+
+<h3>
+    相关术语
+</h3>
+
+<ul>
+    <li>
+        <span class="special">空串</span>：长度为零的串，记为""或∅
+    </li>
+    <li>
+        <span class="special">空格串</span>：仅由一个或多个空格组成的串
+    </li>
+    <li>
+        <span class="special">子串</span>：串中任意个连续的字符组成的子序列
+    </li>
+    <li>
+        <span class="special">主串</span>：包含子串的串
+    </li>
+    <li>
+        <span class="special">位置</span>：字符在串中的序号
+    </li>
+    <li>
+        <span class="special">相等</span>：两个串的长度相等且对应位置的字符都相等
+    </li>
+</ul>
+
+<h2>
+    串的抽象数据类型
+</h2>
+
+<pre tag="c">
+ADT String {
+    数据对象：D = {aᵢ | aᵢ ∈ CharacterSet, i = 1, 2, ..., n, n ≥ 0}
+    数据关系：R = {&lt;aᵢ₋₁, aᵢ&gt; | aᵢ₋₁, aᵢ ∈ D, i = 2, ..., n}
+
+    基本操作：
+        StrAssign(&T, chars)
+        StrCopy(&T, S)
+        StrEmpty(S)
+        StrCompare(S, T)
+        StrLength(S)
+        SubString(&Sub, S, pos, len)
+        Concat(&T, S1, S2)
+        Index(S, T, pos)
+        Replace(&S, T, V)
+        StrInsert(&S, pos, T)
+        StrDelete(&S, pos, len)
+        ClearString(&S)
+        DestroyString(&S)
+}
+</pre>
+
+<h2>
+    串的基本操作
+</h2>
+
+<h3>
+    赋值操作 StrAssign(&T, chars)
+</h3>
+
+<p>
+    生成一个其值等于chars的串T。
+</p>
+
+<pre tag="c">
+Status StrAssign(HString *T, char *chars) {
+    int i, j;
+    if (T-&gt;ch) free(T-&gt;ch); // 释放T原有空间
+
+    for (i = 0; chars[i]; i++); // 计算chars的长度
+
+    if (!i) { // chars为空串
+        T-&gt;ch = NULL;
+        T-&gt;length = 0;
+    } else {
+        T-&gt;ch = (char*)malloc(i * sizeof(char));
+        if (!T-&gt;ch) return ERROR;
+
+        for (j = 0; j &lt; i; j++) {
+            T-&gt;ch[j] = chars[j];
+        }
+        T-&gt;length = i;
+    }
+
+    return OK;
+}
+</pre>
+
+<h3>
+    复制操作 StrCopy(&T, S)
+</h3>
+
+<p>
+    由串S复制得串T。
+</p>
+
+<pre tag="c">
+Status StrCopy(HString *T, HString S) {
+    int i;
+    if (T-&gt;ch) free(T-&gt;ch); // 释放T原有空间
+
+    T-&gt;ch = (char*)malloc(S.length * sizeof(char));
+    if (!T-&gt;ch) return ERROR;
+
+    for (i = 0; i &lt; S.length; i++) {
+        T-&gt;ch[i] = S.ch[i];
+    }
+    T-&gt;length = S.length;
+
+    return OK;
+}
+</pre>
+
+<h3>
+    判空操作 StrEmpty(S)
+</h3>
+
+<p>
+    若S为空串，则返回true，否则返回false。
+</p>
+
+<pre tag="c">
+bool StrEmpty(HString S) {
+    return S.length == 0;
+}
+</pre>
+
+<h3>
+    比较操作 StrCompare(S, T)
+</h3>
+
+<p>
+    若S &gt; T，则返回值 &gt; 0；若S = T，则返回值 = 0；若S &lt; T，则返回值 &lt; 0。
+</p>
+
+<pre tag="c">
+int StrCompare(HString S, HString T) {
+    int i;
+    for (i = 0; i &lt; S.length && i &lt; T.length; i++) {
+        if (S.ch[i] != T.ch[i]) {
+            return S.ch[i] - T.ch[i];
+        }
+    }
+    return S.length - T.length;
+}
+</pre>
+
+<h3>
+    求串长 StrLength(S)
+</h3>
+
+<p>
+    返回串S的元素个数。
+</p>
+
+<pre tag="c">
+int StrLength(HString S) {
+    return S.length;
+}
+</pre>
+
+<h3>
+    清空操作 ClearString(&S)
+</h3>
+
+<p>
+    将S清为空串。
+</p>
+
+<pre tag="c">
+Status ClearString(HString *S) {
+    if (S->ch) {
+        free(S->ch);
+        S->ch = NULL;
+    }
+    S->length = 0;
+    return OK;
+}
+</pre>
+
+<h3>
+    连接操作 Concat(&T, S1, S2)
+</h3>
+
+<p>
+    用T返回由S1和S2连接而成的新串。
+</p>
+
+<pre tag="c">
+Status Concat(HString *T, HString S1, HString S2) {
+    int i;
+    if (T->ch) free(T->ch); // 释放T原有空间
+
+    T->length = S1.length + S2.length;
+    T->ch = (char*)malloc(T->length * sizeof(char));
+    if (!T->ch) return ERROR;
+
+    for (i = 0; i &lt; S1.length; i++) {
+        T->ch[i] = S1.ch[i];
+    }
+    for (i = 0; i &lt; S2.length; i++) {
+        T->ch[S1.length + i] = S2.ch[i];
+    }
+
+    return OK;
+}
+</pre>
+
+<h3>
+    求子串 SubString(&Sub, S, pos, len)
+</h3>
+
+<p>
+    用Sub返回串S的第pos个字符起长度为len的子串。
+</p>
+
+<pre tag="c">
+Status SubString(HString *Sub, HString S, int pos, int len) {
+    int i;
+    if (pos &lt; 1 || pos > S.length || len &lt; 0 || len > S.length - pos + 1) {
+        return ERROR;
+    }
+
+    if (Sub->ch) free(Sub->ch); // 释放Sub原有空间
+
+    if (!len) { // 空子串
+        Sub->ch = NULL;
+        Sub->length = 0;
+    } else {
+        Sub->ch = (char*)malloc(len * sizeof(char));
+        if (!Sub->ch) return ERROR;
+
+        for (i = 0; i &lt; len; i++) {
+            Sub->ch[i] = S.ch[pos - 1 + i];
+        }
+        Sub->length = len;
+    }
+
+    return OK;
+}
+</pre>
+
+<h2>
+    串的存储结构
+</h2>
+
+<h3>
+    定长顺序存储表示
+</h3>
+
+<p>
+    类似于线性表的顺序存储结构，用一组地址连续的存储单元存储串值的字符序列。在串的定长顺序存储结构中，按照预定义的大小，为每个定义的串变量分配一个固定长度的存储区。
+</p>
+
+<pre tag="c">
+#define MAXLEN 255
+typedef struct {
+    char ch[MAXLEN]; // 每个分量存储一个字符
+    int length;      // 串的实际长度
+} SString;
+</pre>
+
+<h3>
+    堆分配存储表示
+</h3>
+
+<p>
+    仍以一组地址连续的存储单元存放串值字符序列，但它们的存储空间是在程序执行过程中动态分配得到的。
+</p>
+
+<pre tag="c">
+typedef struct {
+    char *ch;   // 若是非空串，则按串长分配存储区，否则ch为NULL
+    int length; // 串长度
+} HString;
+</pre>
+
+<h3>
+    块链存储表示
+</h3>
+
+<p>
+    和线性表的链式存储结构相类似，也可采用链表方式存储串值。由于串结构的特殊性——结构中每个数据元素是一个字符，则用链表存储串值时，存在一个"结点大小"的问题，即每个结点可以存放一个字符，也可以存放多个字符。
+</pre>
+
+<h2>
+    串的应用场景
+</h2>
+
+<ul>
+    <li>
+        <span class="special">文本处理</span>：文本编辑器、文字处理软件
+    </li>
+    <li>
+        <span class="special">编译系统</span>：词法分析、语法分析
+    </li>
+    <li>
+        <span class="special">信息检索</span>：搜索引擎、数据库查询
+    </li>
+    <li>
+        <span class="special">生物信息学</span>：DNA序列分析、基因比对
+    </li>
+    <li>
+        <span class="special">数据压缩</span>：字符串匹配算法在压缩中的应用
+    </li>
+</ul>

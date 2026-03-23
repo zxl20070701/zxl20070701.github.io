@@ -1,0 +1,290 @@
+<header>
+    最短路径
+</header>
+
+<h2>
+    最短路径的定义
+</h2>
+
+<p>
+    最短路径（Shortest Path）是指在一个图中，从一个顶点到另一个顶点的路径中，边的权值之和最小的路径。根据问题的不同，最短路径问题可以分为单源最短路径、多源最短路径和全源最短路径。
+</p>
+
+<h3>
+    最短路径问题的分类
+</h3>
+
+<ul>
+    <li>
+        <span class="special">单源最短路径</span>：从一个源顶点到图中所有其他顶点的最短路径
+    </li>
+    <li>
+        <span class="special">多源最短路径</span>：从多个源顶点到图中所有其他顶点的最短路径
+    </li>
+    <li>
+        <span class="special">全源最短路径</span>：图中任意两个顶点之间的最短路径
+    </li>
+</ul>
+
+<h2>
+    最短路径算法
+</h2>
+
+<h3>
+    Dijkstra算法
+</h3>
+
+<h4>
+    算法思想
+</h4>
+
+<p>
+    Dijkstra算法是一种贪心算法，用于求解单源最短路径问题。它适用于边权为非负的图。算法的基本思想是：维护一个顶点集合S，其中包含了所有已找到最短路径的顶点。初始时，S只包含源顶点。然后，每次从不在S中的顶点中选择一个距离源顶点最近的顶点，将其加入S，并更新与该顶点相邻的顶点的距离。
+</p>
+
+<h4>
+    算法步骤
+</h4>
+
+<ol>
+    <li>初始化：将源顶点的距离设为0，其他顶点的距离设为无穷大</li>
+    <li>重复以下步骤直到所有顶点都被处理：
+        <ol>
+            <li>从尚未处理的顶点中选择距离最小的顶点u</li>
+            <li>将u标记为已处理</li>
+            <li>对于u的每个邻接顶点v，更新其距离：如果通过u到达v的路径比当前已知的最短路径更短，则更新v的距离</li>
+        </ol>
+    </li>
+</ol>
+
+<h4>
+    Dijkstra算法的实现
+</h4>
+
+<pre tag="c">
+#define MAX_VERTEX_NUM 100
+#define INFINITY 65535
+
+void Dijkstra(MGraph G, int v0, int *dist, int *path) {
+    int i, j, k;
+    int min;
+    int final[MAX_VERTEX_NUM];  // final[i]=1表示已求得v0到vi的最短路径
+
+    // 初始化数据
+    for (i = 0; i < G.numVertexes; i++) {
+        final[i] = 0;  // 全部顶点初始化为未知最短路径状态
+        dist[i] = G.arc[v0][i];  // 将与v0点有连线的顶点加上权值
+        path[i] = 0;  // 初始化路径数组为0
+    }
+
+    dist[v0] = 0;  // v0到v0的路径为0
+    final[v0] = 1;  // v0到v0不需要求路径
+
+    // 开始主循环，每次求得v0到某个v顶点的最短路径
+    for (i = 1; i < G.numVertexes; i++) {
+        min = INFINITY;  // 当前所知离v0顶点的最近距离
+        k = 0;
+
+        for (j = 0; j < G.numVertexes; j++) {
+            if (!final[j] && dist[j] < min) {
+                k = j;
+                min = dist[j];
+            }
+        }
+
+        final[k] = 1;  // 将目前找到的最近的顶点置为1
+
+        for (j = 0; j < G.numVertexes; j++) {
+            // 如果经过v顶点的路径比现在这条路径的长度短的话
+            if (!final[j] && (min + G.arc[k][j] < dist[j])) {
+                dist[j] = min + G.arc[k][j];  // 修改当前路径长度
+                path[j] = k;  // 记录前驱顶点
+            }
+        }
+    }
+}
+</pre>
+
+<h3>
+    Bellman-Ford算法
+</h3>
+
+<h4>
+    算法思想
+</h4>
+
+<p>
+    Bellman-Ford算法可以处理边权为负的图，用于求解单源最短路径问题。算法的基本思想是：对图中的所有边进行V-1次松弛操作，其中V是顶点数。如果在第V-1次松弛操作后还能继续松弛，则说明图中存在负权环。
+</p>
+
+<h4>
+    算法步骤
+</h4>
+
+<ol>
+    <li>初始化：将源顶点的距离设为0，其他顶点的距离设为无穷大</li>
+    <li>重复以下步骤V-1次：
+        <ol>
+            <li>对图中的每条边(u,v)，如果dist[u] + weight(u,v) < dist[v]，则更新dist[v]</li>
+        </ol>
+    </li>
+    <li>检查是否存在负权环：再对所有边进行一次松弛操作，如果还能更新距离，则存在负权环</li>
+</ol>
+
+<h3>
+    Floyd-Warshall算法
+</h3>
+
+<h4>
+    算法思想
+</h4>
+
+<p>
+    Floyd-Warshall算法用于求解全源最短路径问题。算法的基本思想是动态规划：通过考虑所有可能的中间顶点，逐步更新顶点之间的最短距离。
+</p>
+
+<h4>
+    算法步骤
+</h4>
+
+<ol>
+    <li>初始化：将邻接矩阵作为初始的距离矩阵</li>
+    <li>对于每个中间顶点k，更新所有顶点对(i,j)之间的距离：
+        <ol>
+            <li>如果dist[i][k] + dist[k][j] < dist[i][j]，则更新dist[i][j]</li>
+        </ol>
+    </li>
+</ol>
+
+<h4>
+    Floyd-Warshall算法的实现
+</h4>
+
+<pre tag="c">
+void Floyd(MGraph G, int dist[][MAX_VERTEX_NUM], int path[][MAX_VERTEX_NUM]) {
+    int i, j, k;
+
+    // 初始化距离和路径矩阵
+    for (i = 0; i < G.numVertexes; i++) {
+        for (j = 0; j < G.numVertexes; j++) {
+            dist[i][j] = G.arc[i][j];
+            path[i][j] = j;
+        }
+    }
+
+    // Floyd算法核心
+    for (k = 0; k < G.numVertexes; k++) {
+        for (i = 0; i < G.numVertexes; i++) {
+            for (j = 0; j < G.numVertexes; j++) {
+                if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                    path[i][j] = path[i][k];
+                }
+            }
+        }
+    }
+}
+</pre>
+
+<h2>
+    最短路径算法的比较
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>算法</th>
+            <th>适用场景</th>
+            <th>时间复杂度</th>
+            <th>空间复杂度</th>
+            <th>特点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Dijkstra</td>
+            <td>单源最短路径，非负权图</td>
+            <td>O(V²)或O(E log V)</td>
+            <td>O(V)</td>
+            <td>贪心算法，效率高</td>
+        </tr>
+        <tr>
+            <td>Bellman-Ford</td>
+            <td>单源最短路径，可处理负权</td>
+            <td>O(VE)</td>
+            <td>O(V)</td>
+            <td>可检测负权环</td>
+        </tr>
+        <tr>
+            <td>Floyd-Warshall</td>
+            <td>全源最短路径</td>
+            <td>O(V³)</td>
+            <td>O(V²)</td>
+            <td>动态规划，实现简单</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    最短路径的应用
+</h2>
+
+<h3>
+    路由算法
+</h3>
+
+<p>
+    在网络通信中，最短路径算法用于计算数据包的最佳传输路径。
+</p>
+
+<h3>
+    导航系统
+</h3>
+
+<p>
+    在GPS导航系统中，最短路径算法用于计算从起点到终点的最佳路线。
+</p>
+
+<h3>
+    社交网络
+</h3>
+
+<p>
+    在社交网络中，最短路径算法用于计算两个人之间的最短关系链。
+</p>
+
+<h3>
+    项目管理
+</h3>
+
+<p>
+    在项目管理中，最短路径算法用于计算关键路径，确定项目的最短完成时间。
+</p>
+
+<h2>
+    最短路径的扩展
+</h2>
+
+<h3>
+    k最短路径
+</h3>
+
+<p>
+    寻找从源点到目标点的k条最短路径。
+</p>
+
+<h3>
+    有约束的最短路径
+</h3>
+
+<p>
+    在满足某些约束条件（如必须经过某些顶点）下的最短路径。
+</p>
+
+<h3>
+    多目标最短路径
+</h3>
+
+<p>
+    同时考虑多个目标（如距离、时间、费用）的最短路径。
+</p>
