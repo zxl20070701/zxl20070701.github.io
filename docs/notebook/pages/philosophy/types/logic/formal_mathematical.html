@@ -1,0 +1,278 @@
+<header>
+    形式逻辑与数理逻辑
+</header>
+
+<h2>
+    形式逻辑的基本概念
+</h2>
+<p>
+    形式逻辑是研究推理有效性的科学，它关注推理的形式结构而非具体内容。形式逻辑的核心任务是区分有效推理和无效推理，为正确思维提供规范。
+</p>
+
+<h3>
+    命题逻辑
+</h3>
+<p>
+    <span class="important">命题逻辑</span>（Propositional Logic）是形式逻辑的基础，研究命题之间的逻辑关系。
+</p>
+<p>
+    基本逻辑联结词包括：<span class="important">¬</span>（否定）、<span class="important">∧</span>（合取）、<span class="important">∨</span>（析取）、<span class="important">→</span>（蕴涵）、<span class="important">↔</span>（等价）。
+</p>
+<p>
+    命题逻辑通过<span class="important">真值表</span>来判断复合命题的真假，通过<span class="important">推理规则</span>（如假言推理、拒取式）进行有效推理。
+</p>
+
+<h3>
+    谓词逻辑
+</h3>
+<p>
+    <span class="important">谓词逻辑</span>（Predicate Logic）扩展了命题逻辑，能够分析命题的内部结构。
+</p>
+<p>
+    谓词逻辑引入了<span class="important">量词</span>：全称量词<span class="important">∀</span>（对所有）和存在量词<span class="important">∃</span>（存在）。
+</p>
+<p>
+    谓词逻辑可以表达更复杂的逻辑关系，如<span class="important">"所有人都是有死的"</span>可以表示为<span class="important">∀x(H(x) → M(x))</span>。
+</p>
+
+<h3>
+    逻辑等价与逻辑蕴涵
+</h3>
+<p>
+    <span class="important">逻辑等价</span>指两个命题在所有可能情况下都具有相同的真值。
+</p>
+<p>
+    <span class="important">逻辑蕴涵</span>指如果一个命题为真，则另一个命题必然为真。
+</p>
+<p>
+    例如，<span class="important">¬(A ∧ B)</span>与<span class="important">¬A ∨ ¬B</span>是逻辑等价的（德摩根定律）。
+</p>
+
+<h2>
+    数理逻辑的发展
+</h2>
+<p>
+    数理逻辑是数学与逻辑学的交叉学科，用数学方法研究逻辑问题，为现代计算机科学奠定了基础。
+</p>
+
+<h3>
+    集合论基础
+</h3>
+<p>
+    <span class="important">集合论</span>是数理逻辑的基础，由<span class="important">康托尔</span>（Georg Cantor）创立。
+</p>
+<p>
+    集合论研究<span class="important">无限集合</span>的性质，引入了<span class="important">基数</span>和<span class="important">序数</span>的概念。
+</p>
+<p>
+    <span class="important">罗素悖论</span>揭示了朴素集合论的问题，促进了公理化集合论的发展。
+</p>
+
+<h3>
+    公理化方法
+</h3>
+<p>
+    <span class="important">公理化方法</span>是数理逻辑的核心方法，通过一组不证自明的公理推导整个理论体系。
+</p>
+<p>
+    希尔伯特的形式主义计划试图将所有数学建立在严格的公理系统之上。
+</p>
+<p>
+    哥德尔的不完全性定理证明了任何足够复杂的公理系统都存在无法证明的真命题。
+</p>
+
+<h3>
+    证明论与模型论
+</h3>
+<p>
+    <span class="important">证明论</span>（Proof Theory）研究数学证明的形式结构和性质。
+</p>
+<p>
+    <span class="important">模型论</span>（Model Theory）研究形式系统与其解释之间的关系。
+</p>
+<p>
+    这两个分支共同构成了数理逻辑的理论框架。
+</p>
+
+<h2>
+    逻辑演算系统
+</h2>
+<p>
+    逻辑演算系统是形式逻辑的具体实现，包括自然演绎系统、公理系统等不同类型。
+</p>
+
+<h3>
+    自然演绎系统
+</h3>
+<p>
+    <span class="important">自然演绎</span>（Natural Deduction）系统模仿人类自然的推理过程。
+</p>
+<p>
+    它通过<span class="important">引入规则</span>和<span class="important">消去规则</span>来处理逻辑联结词。
+</p>
+<p>
+    例如，蕴涵引入规则：如果从A能推出B，则可以推出A→B。
+</p>
+
+<h3>
+    公理系统
+</h3>
+<p>
+    <span class="important">公理系统</span>从一组不证自明的公理出发，通过推理规则推导所有定理。
+</p>
+<p>
+    希尔伯特-阿克曼公理系统是典型的命题逻辑公理系统。
+</p>
+<p>
+    公理系统的优点是简洁明了，但可能不够直观。
+</p>
+
+<h3>
+    序列演算
+</h3>
+<p>
+    <span class="important">序列演算</span>（Sequent Calculus）由<span class="important">甘岑</span>（Gentzen）创立，提供了一种优雅的逻辑推理框架。
+</p>
+<p>
+    它使用<span class="important">序列</span>（sequent）表示推理关系，具有<span class="important">切割消去定理</span>等重要性质。
+</p>
+<p>
+    序列演算在自动定理证明中有重要应用。
+</p>
+
+<h2>
+    逻辑与计算
+</h2>
+<p>
+    数理逻辑与计算机科学有着密切联系，为现代计算理论奠定了基础。
+</p>
+
+<h3>
+    图灵机与可计算性
+</h3>
+<p>
+    <span class="important">图灵机</span>是<span class="important">图灵</span>（Alan Turing）提出的抽象计算模型。
+</p>
+<p>
+    图灵机定义了<span class="important">可计算性</span>的概念，为现代计算机科学奠定了理论基础。
+</p>
+<p>
+    停机问题证明了某些问题是<span class="important">不可判定的</span>。
+</p>
+
+<h3>
+    布尔代数与逻辑电路
+</h3>
+<p>
+    <span class="important">布尔代数</span>由<span class="important">布尔</span>（George Boole）创立，是数字电路设计的数学基础。
+</p>
+<p>
+    逻辑门（AND、OR、NOT）可以直接对应布尔运算。
+</p>
+<p>
+    现代计算机的核心部件——<span class="important">CPU</span>，其设计基于布尔代数原理。
+</p>
+
+<h3>
+    自动定理证明
+</h3>
+<p>
+    <span class="important">自动定理证明</span>是人工智能的重要分支，试图用计算机程序自动证明数学定理。
+p>
+<p>
+    归结原理（Resolution）是自动定理证明的基本方法之一。
+</p>
+<p>
+    这一领域的发展推动了人工智能和形式化方法的发展。
+</p>
+
+<h2>
+    非经典逻辑
+</h2>
+<p>
+    非经典逻辑突破了经典逻辑的局限，为处理不确定性、模糊性等问题提供了工具。
+</p>
+
+<h3>
+    模态逻辑
+</h3>
+<p>
+    <span class="important">模态逻辑</span>引入了<span class="important">必然性</span>（□）和<span class="important">可能性</span>（◇）算子。
+</p>
+<p>
+    模态逻辑可以表达<span class="important">"必然p"</span>、<span class="important">"可能p"</span>等概念。
+</p>
+<p>
+    不同的模态逻辑系统（如T、S4、S5）对应不同的哲学观点。
+</p>
+
+<h3>
+    模糊逻辑
+</h3>
+<p>
+    <span class="important">模糊逻辑</span>由<span class="important">扎德</span>（Lotfi Zadeh）创立，处理<span class="important">模糊性</span>和<span class="important">不确定性</span>。
+</p>
+<p>
+    模糊逻辑允许命题具有介于真和假之间的<span class="important">真值度</span>。
+</p>
+<p>
+    模糊逻辑在控制理论、人工智能等领域有广泛应用。
+</p>
+
+<h3>
+    多值逻辑
+</h3>
+<p>
+    <span class="important">多值逻辑</span>允许命题具有多于两个的真值。
+</p>
+<p>
+    <span class="important">三值逻辑</span>（真、假、未定）是最简单的多值逻辑。
+</p>
+<p>
+    多值逻辑为处理<span class="important">悖论</span>和<span class="important">不确定性</span>提供了工具。
+</p>
+
+<h2>
+    逻辑学的哲学意义
+</h2>
+<p>
+    逻辑学不仅是一门技术学科，也具有深刻的哲学意义，涉及真理、意义、理性等基本哲学问题。
+</p>
+
+<h3>
+    逻辑与真理
+</h3>
+<p>
+    逻辑学研究<span class="important">逻辑真理</span>的性质，即那些在所有可能情况下都为真的命题。
+</p>
+<p>
+    逻辑真理与<span class="important">经验真理</span>的区别是哲学认识论的重要问题。
+</p>
+<p>
+    塔斯基的<span class="important">真理定义</span>为形式化真理概念提供了重要框架。
+</p>
+
+<h3>
+    逻辑与意义
+</h3>
+<p>
+    逻辑学通过<span class="important">形式化</span>方法澄清语言表达的意义。
+</p>
+<p>
+    逻辑分析可以揭示<span class="important">语义悖论</span>（如说谎者悖论）的根源。
+</p>
+<p>
+    逻辑与语言哲学的关系是现代哲学的重要议题。
+</p>
+
+<h3>
+    逻辑与理性
+</h3>
+<p>
+    逻辑学为<span class="important">理性思维</span>提供了规范和标准。
+</p>
+<p>
+    逻辑推理的有效性标准是<span class="important">形式有效性</span>而非内容真实性。
+</p>
+<p>
+    逻辑与理性能力的关系是认知科学和哲学的重要研究课题。
