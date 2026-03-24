@@ -1,0 +1,415 @@
+<header>
+    寄存器组织
+</header>
+<h2>
+    寄存器组织概述
+</h2>
+<p>
+    <span class="important">寄存器组织</span>（Register Organization）是指CPU内部寄存器的结构、功能和管理方式。寄存器是CPU中速度最快的存储单元，其组织设计直接影响处理器的性能和编程模型。
+</p>
+
+<h2>
+    寄存器的基本概念
+</h2>
+<h3>
+    1. 寄存器的定义
+</h3>
+<ul>
+    <li><span class="special">高速存储单元</span>：位于CPU内部，访问速度最快</li>
+    <li><span class="special">有限容量</span>：数量少但速度快</li>
+    <li><span class="special">特定用途</span>：不同寄存器有不同功能</li>
+</ul>
+
+<h3>
+    2. 寄存器的特点
+</h3>
+<ul>
+    <li><span class="special">速度极快</span>：访问时间通常在1-2个时钟周期</li>
+    <li><span class="special">容量极小</span>：通常只有几十个到几百个</li>
+    <li><span class="special">成本极高</span>：每个寄存器需要多个触发器</li>
+    <li><span class="special">直接访问</span>：CPU可直接读写，无需地址译码</li>
+</ul>
+
+<h3>
+    3. 寄存器的分类
+</h3>
+<h4>
+    按功能分类
+</h4>
+<ul>
+    <li><span class="special">通用寄存器</span>：可用于多种用途</li>
+    <li><span class="special">专用寄存器</span>：特定功能专用</li>
+    <li><span class="special">控制寄存器</span>：控制CPU工作状态</li>
+    <li><span class="special">状态寄存器</span>：保存CPU状态信息</li>
+</ul>
+
+<h4>
+    按可见性分类
+</h4>
+<ul>
+    <li><span class="special">程序员可见</span>：汇编语言可直接访问</li>
+    <li><span class="special">程序员不可见</span>：CPU内部使用，对程序员透明</li>
+</ul>
+
+<h2>
+    通用寄存器组织
+</h2>
+<h3>
+    1. 通用寄存器的功能
+</h3>
+<ul>
+    <li><span class="special">数据暂存</span>：保存运算中间结果</li>
+    <li><span class="special">地址计算</span>：参与地址计算</li>
+    <li><span class="special">参数传递</span>：函数调用时传递参数</li>
+    <li><span class="special">局部变量</span>：保存局部变量</li>
+</ul>
+
+<h3>
+    2. 典型通用寄存器组织
+</h3>
+<h4>
+    x86架构（32位）
+</h4>
+<ul>
+    <li><span class="special">EAX</span>：累加器，算术运算主要寄存器</li>
+    <li><span class="special">EBX</span>：基址寄存器，数据指针</li>
+    <li><span class="special">ECX</span>：计数寄存器，循环和字符串操作</li>
+    <li><span class="special">EDX</span>：数据寄存器，I/O操作</li>
+    <li><span class="special">ESI</span>：源变址寄存器，字符串操作源指针</li>
+    <li><span class="special">EDI</span>：目的变址寄存器，字符串操作目的指针</li>
+    <li><span class="special">EBP</span>：基址指针，栈帧指针</li>
+    <li><span class="special">ESP</span>：栈指针，堆栈顶部指针</li>
+</ul>
+
+<h4>
+    x86-64架构（64位）
+</h4>
+<ul>
+    <li><span class="special">RAX</span>：64位累加器</li>
+    <li><span class="special">RBX</span>：64位基址寄存器</li>
+    <li><span class="special">RCX</span>：64位计数寄存器</li>
+    <li><span class="special">RDX</span>：64位数据寄存器</li>
+    <li><span class="special">RSI/RDI</span>：64位变址寄存器</li>
+    <li><span class="special">RBP/RSP</span>：64位指针寄存器</li>
+    <li><span class="special">R8-R15</span>：新增的8个通用寄存器</li>
+</ul>
+
+<h4>
+    ARM架构
+</h4>
+<ul>
+    <li><span class="special">R0-R12</span>：通用寄存器</li>
+    <li><span class="special">R13</span>：栈指针（SP）</li>
+    <li><span class="special">R14</span>：链接寄存器（LR）</li>
+    <li><span class="special">R15</span>：程序计数器（PC）</li>
+</ul>
+
+<h4>
+    MIPS架构
+</h4>
+<ul>
+    <li><span class="special">$0</span>：零寄存器，恒为0</li>
+    <li><span class="special">$1</span>：汇编器临时寄存器</li>
+    <li><span class="special">$2-$3</span>：函数返回值寄存器</li>
+    <li><span class="special">$4-$7</span>：函数参数寄存器</li>
+    <li><span class="special">$8-$15</span>：临时寄存器</li>
+    <li><span class="special">$16-$23</span>：保存寄存器</li>
+    <li><span class="special">$24-$25</span>：内核保留寄存器</li>
+    <li><span class="special">$26-$27</span>：内核寄存器</li>
+    <li><span class="special">$28</span>：全局指针</li>
+    <li><span class="special">$29</span>：栈指针</li>
+    <li><span class="special">$30</span>：帧指针</li>
+    <li><span class="special">$31</span>：返回地址寄存器</li>
+</ul>
+
+<h3>
+    3. 通用寄存器的设计考虑
+</h3>
+<h4>
+    数量权衡
+</h4>
+<ul>
+    <li><span class="special">太少</span>：频繁访问内存，性能下降</li>
+    <li><span class="special">太多</span>：硬件复杂，上下文切换开销大</li>
+    <li><span class="special">最佳数量</span>：16-32个通常较合适</li>
+</ul>
+
+<h4>
+    命名方式
+</h4>
+<ul>
+    <li><span class="special">数字命名</span>：R0、R1、R2...（ARM、MIPS）</li>
+    <li><span class="special">功能命名</span>：EAX、EBX、ECX...（x86）</li>
+    <li><span class="special">混合命名</span>：结合数字和功能</li>
+</ul>
+
+<h2>
+    专用寄存器组织
+</h2>
+<h3>
+    1. 程序计数器（PC）
+</h3>
+<h4>
+    功能
+</h4>
+<ul>
+    <li><span class="special">指令地址</span>：保存下一条要执行指令的地址</li>
+    <li><span class="special">顺序执行</span>：自动递增指向下一条指令</li>
+    <li><span class="special">分支跳转</span>：保存跳转目标地址</li>
+</ul>
+
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">自动更新</span>：取指后自动递增</li>
+    <li><span class="special">特殊访问</span>：通常不能直接作为操作数</li>
+    <li><span class="special">宽度匹配</span>：地址宽度与系统架构匹配</li>
+</ul>
+
+<h3>
+    2. 堆栈指针（SP）
+</h3>
+<h4>
+    功能
+</h4>
+<ul>
+    <li><span class="special">栈顶指示</span>：指向当前栈顶位置</li>
+    <li><span class="special">栈操作</span>：PUSH、POP操作使用</li>
+    <li><span class="special">过程调用</span>：保存返回地址和局部变量</li>
+</ul>
+
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">自动更新</span>：PUSH减小，POP增大</li>
+    <li><span class="special">增长方向</span>：通常向下增长（向低地址）</li>
+    <li><span class="special">对齐要求</span>：通常要求字对齐</li>
+</ul>
+
+<h3>
+    3. 链接寄存器（LR）
+</h3>
+<h4>
+    功能
+</h4>
+<ul>
+    <li><span class="special">返回地址</span>：保存子程序调用后的返回地址</li>
+    <li><span class="special">过程调用</span>：支持嵌套过程调用</li>
+</ul>
+
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">自动保存</span>：调用指令自动保存返回地址</li>
+    <li><span class="special">嵌套支持</span>：需要软件保存嵌套调用</li>
+</ul>
+
+<h3>
+    4. 状态寄存器
+</h3>
+<h4>
+    标志寄存器（x86的EFLAGS/RFLAGS）
+</h4>
+<ul>
+    <li><span class="special">进位标志CF</span>：算术运算进位/借位</li>
+    <li><span class="special">零标志ZF</span>：运算结果为零</li>
+    <li><span class="special">符号标志SF</span>：运算结果为负</li>
+    <li><span class="special">溢出标志OF</span>：算术运算溢出</li>
+    <li><span class="special">辅助进位AF</span>：BCD运算辅助进位</li>
+    <li><span class="special">奇偶标志PF</span>：结果低字节奇偶性</li>
+    <li><span class="special">方向标志DF</span>：字符串操作方向</li>
+    <li><span class="special">中断标志IF</span>：中断使能</li>
+</ul>
+
+<h4>
+    程序状态寄存器（ARM的CPSR）
+</h4>
+<ul>
+    <li><span class="special">条件标志</span>：N、Z、C、V标志</li>
+    <li><span class="special">中断禁止位</span>：I、F位</li>
+    <li><span class="special">处理器模式</span>：当前处理器模式</li>
+    <li><span class="special">状态位</span>：T位（Thumb状态）</li>
+</ul>
+
+<h2>
+    控制寄存器组织
+</h2>
+<h3>
+    1. 系统控制寄存器
+</h3>
+<h4>
+    控制寄存器（CR0-CR4，x86）
+</h4>
+<ul>
+    <li><span class="special">CR0</span>：系统控制标志</li>
+    <li><span class="special">CR2</span>：页故障线性地址</li>
+    <li><span class="special">CR3</span>：页目录基址寄存器</li>
+    <li><span class="special">CR4</span>：扩展系统控制</li>
+</ul>
+
+<h4>
+    系统寄存器（ARM）
+</h4>
+<ul>
+    <li><span class="special">SCTLR</span>：系统控制寄存器</li>
+    <li><span class="special">TTBR0/TTBR1</span>：转换表基址寄存器</li>
+    <li><span class="special">VBAR</span>：向量基址地址寄存器</li>
+</ul>
+
+<h3>
+    2. 调试寄存器
+</h3>
+<h4>
+    调试功能
+</h4>
+<ul>
+    <li><span class="special">断点设置</span>：设置指令和数据断点</li>
+    <li><span class="special">单步执行</span>：逐条指令执行</li>
+    <li><span class="special">性能监控</span>：监控程序执行性能</li>
+</ul>
+
+<h3>
+    3. 性能监控寄存器
+</h3>
+<h4>
+    性能计数器
+</h4>
+<ul>
+    <li><span class="special">事件计数</span>：统计特定硬件事件</li>
+    <li><span class="special">周期计数</span>：统计时钟周期数</li>
+    <li><span class="special">指令计数</span>：统计执行的指令数</li>
+</ul>
+
+<h2>
+    寄存器文件设计
+</h2>
+<h3>
+    1. 物理寄存器文件
+</h3>
+<h4>
+    寄存器重命名
+</h4>
+<ul>
+    <li><span class="special">目的</span>：消除假数据相关</li>
+    <li><span class="special">实现</span>：使用更多物理寄存器</li>
+    <li><span class="special">映射</span>：逻辑寄存器到物理寄存器</li>
+</ul>
+
+<h4>
+    寄存器分配
+</h4>
+<ul>
+    <li><span class="special">编译器分配</span>：编译时确定寄存器使用</li>
+    <li><span class="special">运行时分配</span>：动态分配寄存器</li>
+    <li><span class="special">溢出处理</span>：寄存器不足时溢出到内存</li>
+</ul>
+
+<h3>
+    2. 寄存器窗口
+</h3>
+<h4>
+    SPARC寄存器窗口
+</h4>
+<ul>
+    <li><span class="special">全局寄存器</span>：所有过程共享</li>
+    <li><span class="special">局部寄存器</span>：当前过程专用</li>
+    <li><span class="special">输入寄存器</span>：接收参数</li>
+    <li><span class="special">输出寄存器</span>：传递参数</li>
+</ul>
+
+<h4>
+    窗口切换
+</h4>
+<ul>
+    <li><span class="special">SAVE</span>：切换到新窗口</li>
+    <li><span class="special">RESTORE</span>：恢复到旧窗口</li>
+    <li><span class="special">溢出处理</span>：寄存器窗口溢出到内存</li>
+</ul>
+
+<h2>
+    寄存器访问优化
+</h2>
+<h3>
+    1. 寄存器分配算法
+</h3>
+<h4>
+    图着色算法
+</h4>
+<ul>
+    <li><span class="special">冲突图</span>：表示变量间的冲突关系</li>
+    <li><span class="special">着色</span>：为节点分配颜色（寄存器）</li>
+    <li><span class="special">溢出</span>：无法着色时溢出到内存</li>
+</ul>
+
+<h4>
+    线性扫描算法
+</h4>
+<ul>
+    <li><span class="special">活跃区间</span>：变量的生命周期</li>
+    <li><span class="special">扫描分配</span>：按顺序扫描分配寄存器</li>
+    <li><span class="special">效率</span>：速度快，适合JIT编译</li>
+</ul>
+
+<h3>
+    2. 寄存器使用约定
+</h3>
+<h4>
+    调用约定
+</h4>
+<ul>
+    <li><span class="special">调用者保存</span>：调用函数前保存</li>
+    <li><span class="special">被调用者保存</span>：被调用函数负责保存</li>
+    <li><span class="special">参数传递</span>：通过寄存器传递参数</li>
+    <li><span class="special">返回值</span>：通过特定寄存器返回</li>
+</ul>
+
+<h4>
+    ABI（应用二进制接口）
+</h4>
+<ul>
+    <li><span class="special">寄存器使用规则</span>：定义寄存器的用途</li>
+    <li><span class="special">栈帧布局</span>：定义函数栈帧结构</li>
+    <li><span class="special">参数传递规则</span>：定义参数如何传递</li>
+</ul>
+
+<h2>
+    现代寄存器组织趋势
+</h2>
+<h3>
+    1. 寄存器数量增加
+</h3>
+<ul>
+    <li><span class="special">x86-64</span>：从8个增加到16个通用寄存器</li>
+    <li><span class="special">ARMv8</span>：31个通用寄存器</li>
+    <li><span class="special">RISC-V</span>：32个通用寄存器</li>
+</ul>
+
+<h3>
+    2. 专用寄存器扩展
+</h3>
+<ul>
+    <li><span class="special">向量寄存器</span>：支持SIMD操作</li>
+    <li><span class="special">浮点寄存器</span>：专门用于浮点运算</li>
+    <li><span class="special">AI寄存器</span>：专门用于AI计算</li>
+</ul>
+
+<h3>
+    3. 寄存器重命名优化
+</h3>
+<ul>
+    <li><span class="special">物理寄存器池</span>：大量物理寄存器支持重命名</li>
+    <li><span class="special">动态分配</span>：运行时动态分配寄存器</li>
+    <li><span class="special">回收机制</span>：及时回收不再使用的寄存器</li>
+</ul>
+
+<h3>
+    4. 寄存器文件优化
+</h3>
+<ul>
+    <li><span class="special">多端口设计</span>：支持并行读写</li>
+    <li><span class="special">分体设计</span>：分离整数和浮点寄存器文件</li>
+    <li><span class="special">层次化设计</span>：多级寄存器层次</li>
+</ul>

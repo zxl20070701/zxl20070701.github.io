@@ -1,0 +1,211 @@
+<header>
+    性能指标
+</header>
+<h2>
+    计算机性能评价概述
+</h2>
+<p>
+    计算机性能评价是衡量计算机系统处理能力的重要指标，涉及多个维度的量化分析。对于专业工程师而言，理解这些指标对于系统设计和优化至关重要。
+</p>
+
+<h2>
+    基本性能指标
+</h2>
+<h3>
+    1. 机器字长（Word Length）
+</h3>
+<p>
+    指CPU一次能够处理的二进制数据的位数，通常等于CPU内部寄存器的位数。
+</p>
+<ul>
+    <li>8位、16位、32位、64位处理器</li>
+    <li>影响数据精度和寻址能力</li>
+    <li>字长越长，处理能力越强</li>
+</ul>
+
+<h3>
+    2. 主频（Clock Frequency）
+</h3>
+<p>
+    CPU的时钟频率，表示CPU每秒钟的时钟周期数。
+</p>
+<ul>
+    <li>单位：Hz、MHz、GHz</li>
+    <li>公式：主频 = 1 / 时钟周期</li>
+    <li>注意：主频高≠性能高，还取决于IPC</li>
+</ul>
+
+<h3>
+    3. CPI（Cycles Per Instruction）
+</h3>
+<p>
+    每条指令所需的平均时钟周期数。
+</p>
+<ul>
+    <li>CPI = 总时钟周期数 / 指令总数</li>
+    <li>不同指令的CPI不同</li>
+    <li>RISC架构通常CPI较低</li>
+</ul>
+
+<h3>
+    4. IPC（Instructions Per Cycle）
+</h3>
+<p>
+    每个时钟周期能够执行的指令数，是CPI的倒数。
+</p>
+<ul>
+    <li>IPC = 1 / CPI</li>
+    <li>现代处理器IPC > 1（超标量架构）</li>
+    <li>受流水线效率影响</li>
+</ul>
+
+<h2>
+    综合性能指标
+</h2>
+<h3>
+    1. MIPS（Million Instructions Per Second）
+</h3>
+<p>
+    每秒钟能够执行的百万条指令数。
+</p>
+<ul>
+    <li>公式：MIPS = 主频 / (CPI × 10^6)</li>
+    <li>优点：简单直观</li>
+    <li>缺点：忽略指令复杂度差异</li>
+</ul>
+
+<h3>
+    2. MFLOPS（Million Floating-point Operations Per Second）
+</h3>
+<p>
+    每秒钟能够执行的百万次浮点运算次数。
+</p>
+<ul>
+    <li>适用于科学计算性能评价</li>
+    <li>分为单精度MFLOPS和双精度MFLOPS</li>
+    <li>现代单位：GFLOPS、TFLOPS、PFLOPS</li>
+</ul>
+
+<h3>
+    3. CPU时间（CPU Time）
+</h3>
+<p>
+    执行特定程序所需的CPU时间。
+</p>
+<ul>
+    <li>公式：CPU时间 = 指令数 × CPI × 时钟周期</li>
+    <li>反映程序实际执行时间</li>
+    <li>受程序特性、编译器、架构影响</li>
+</ul>
+
+<h2>
+    存储性能指标
+</h2>
+<h3>
+    1. 存储容量（Storage Capacity）
+</h3>
+<ul>
+    <li>主存容量：直接影响程序运行规模</li>
+    <li>辅存容量：影响数据存储能力</li>
+    <li>单位：B、KB、MB、GB、TB、PB</li>
+</ul>
+
+<h3>
+    2. 存储周期（Memory Cycle Time）
+</h3>
+<ul>
+    <li>完成一次完整存储操作的时间</li>
+    <li>包括读写时间和恢复时间</li>
+    <li>影响存储器带宽</li>
+</ul>
+
+<h3>
+    3. 存储带宽（Memory Bandwidth）
+</h3>
+<ul>
+    <li>单位时间内传输的数据量</li>
+    <li>单位：MB/s、GB/s</li>
+    <li>影响系统整体性能</li>
+</ul>
+
+<h2>
+    I/O性能指标
+</h2>
+<h3>
+    1. 响应时间（Response Time）
+</h3>
+<ul>
+    <li>从请求发出到响应开始的时间</li>
+    <li>包括排队时间、服务时间</li>
+    <li>用户体验的重要指标</li>
+</ul>
+
+<h3>
+    2. 吞吐量（Throughput）
+</h3>
+<ul>
+    <li>单位时间内完成的请求数量</li>
+    <li>单位：IOPS（每秒I/O操作数）</li>
+    <li>系统处理能力的重要指标</li>
+</ul>
+
+<h2>
+    并行性能指标
+</h2>
+<h3>
+    1. 加速比（Speedup）
+</h3>
+<p>
+    并行系统相对于串行系统的性能提升。
+</p>
+<ul>
+    <li>公式：S = T_serial / T_parallel</li>
+    <li>理论最大加速比：Amdahl定律</li>
+    <li>实际加速比受通信开销影响</li>
+</ul>
+
+<h3>
+    2. 效率（Efficiency）
+</h3>
+<p>
+    并行系统的资源利用效率。
+</p>
+<ul>
+    <li>公式：E = S / N（N为处理器数量）</li>
+    <li>理想情况下E = 1</li>
+    <li>实际效率通常E < 1</li>
+</ul>
+
+<h2>
+    基准测试（Benchmark）
+</h2>
+<p>
+    基准测试是通过运行标准化程序来评价计算机性能的方法。
+</p>
+<h3>
+    SPEC基准测试
+</h3>
+<ul>
+    <li>SPECint：整数性能测试</li>
+    <li>SPECfp：浮点性能测试</li>
+    <li>SPEC CPU：综合性能测试</li>
+</ul>
+
+<h3>
+    其他基准测试
+</h3>
+<ul>
+    <li>Linpack：线性代数性能测试</li>
+    <li>TPC：事务处理性能测试</li>
+    <li>3DMark：图形性能测试</li>
+</ul>
+
+<h2>
+    性能评价原则
+</h2>
+<ul>
+    <li><span class="special">综合性</span>：考虑多个性能指标</li>
+    <li><span class="special">针对性</span>：根据应用场景选择合适指标</li>
+    <li><span class="special">可重复性</span>：测试结果可重复验证</li>
+    <li><span class="special">公平性</span>：在相同条件下比较</li>
+</ul>

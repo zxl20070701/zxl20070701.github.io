@@ -1,0 +1,371 @@
+<header>
+    虚拟存储器
+</header>
+<h2>
+    虚拟存储器概述
+</h2>
+<p>
+    <span class="important">虚拟存储器</span>（Virtual Memory）是一种存储管理技术，它为每个进程提供一个独立的、连续的地址空间，使得程序可以访问比实际物理内存更大的存储空间。虚拟存储器通过硬件和操作系统的配合，实现了内存的抽象和扩展。
+</p>
+
+<h2>
+    虚拟存储器的基本概念
+</h2>
+<h3>
+    1. 虚拟地址空间
+</h3>
+<ul>
+    <li><span class="special">逻辑地址</span>：程序使用的地址，也称为虚拟地址</li>
+    <li><span class="special">物理地址</span>：实际内存中的地址</li>
+    <li><span class="special">地址转换</span>：将虚拟地址映射到物理地址</li>
+</ul>
+
+<h3>
+    2. 地址空间划分
+</h3>
+<ul>
+    <li><span class="special">用户空间</span>：用户程序运行的地址空间</li>
+    <li><span class="special">内核空间</span>：操作系统内核使用的地址空间</li>
+    <li><span class="special">共享空间</span>：多个进程共享的内存区域</li>
+</ul>
+
+<h3>
+    3. 虚拟存储器的优势
+</h3>
+<ul>
+    <li><span class="special">内存扩展</span>：程序可以使用比物理内存更大的地址空间</li>
+    <li><span class="special">内存保护</span>：每个进程有独立的地址空间，防止相互干扰</li>
+    <li><span class="special">内存共享</span>：多个进程可以共享相同的代码和数据</li>
+    <li><span class="special">简化编程</span>：程序员无需关心物理内存布局</li>
+</ul>
+
+<h2>
+    虚拟存储器的实现技术
+</h2>
+<h3>
+    1. 分页（Paging）
+</h3>
+<h4>
+    基本概念
+</h4>
+<ul>
+    <li><span class="special">页面（Page）</span>：虚拟地址空间的基本单位，通常为4KB</li>
+    <li><span class="special">页框（Page Frame）</span>：物理内存中的页面容器</li>
+    <li><span class="special">页表（Page Table）</span>：记录虚拟页面到物理页框的映射关系</li>
+</ul>
+
+<h4>
+    地址转换过程
+</h4>
+<ol>
+    <li>CPU生成虚拟地址</li>
+    <li>MMU（内存管理单元）将虚拟地址分解为页号和页内偏移</li>
+    <li>查询页表获取物理页框号</li>
+    <li>组合物理页框号和页内偏移得到物理地址</li>
+</ol>
+
+<h4>
+    页表结构
+</h4>
+<ul>
+    <li><span class="special">单级页表</span>：简单但占用大量连续内存</li>
+    <li><span class="special">多级页表</span>：节省内存空间，如二级、三级页表</li>
+    <li><span class="special">反向页表</span>：每个物理页框对应一个表项，节省空间</li>
+</ul>
+
+<h3>
+    2. 分段（Segmentation）
+</h3>
+<h4>
+    基本概念
+</h4>
+<ul>
+    <li><span class="special">段（Segment）</span>：逻辑上的程序和数据单元</li>
+    <li><span class="special">段表（Segment Table）</span>：记录段的起始地址和长度</li>
+    <li><span class="special">逻辑结构</span>：代码段、数据段、堆栈段等</li>
+</ul>
+
+<h4>
+    地址转换过程
+</h4>
+<ol>
+    <li>虚拟地址分为段号和段内偏移</li>
+    <li>查询段表获取段基址和段长度</li>
+    <li>检查段内偏移是否越界</li>
+    <li>段基址加段内偏移得到物理地址</li>
+</ol>
+
+<h3>
+    3. 段页式（Segmented Paging）
+</h3>
+<p>
+    结合分段和分页的优点，先分段再分页。
+</p>
+<ul>
+    <li>将程序分为逻辑段</li>
+    <li>每个段内采用分页管理</li>
+    <li>兼具灵活性和效率</li>
+</ul>
+
+<h2>
+    页面置换算法
+</h2>
+<h3>
+    1. 最佳置换（OPT）
+</h3>
+<p>
+    置换将来最长时间不会被访问的页面，理论最优但无法实现。
+</p>
+<ul>
+    <li>作为性能评价基准</li>
+    <li>实际系统中无法预知未来访问</li>
+</ul>
+
+<h3>
+    2. 先进先出（FIFO）
+</h3>
+<p>
+    置换最早进入内存的页面。
+</p>
+<ul>
+    <li>实现简单，使用队列结构</li>
+    <li>可能出现Belady异常</li>
+    <li>性能一般</li>
+</ul>
+
+<h3>
+    3. 最近最少使用（LRU）
+</h3>
+<p>
+    置换最长时间未被访问的页面。
+</p>
+<ul>
+    <li>符合局部性原理，性能较好</li>
+    <li>硬件实现复杂，需要维护访问时间</li>
+    <li>近似算法如Clock算法更实用</li>
+</ul>
+
+<h3>
+    4. 时钟算法（Clock）
+</h3>
+<p>
+    使用环形链表和引用位，近似实现LRU。
+</p>
+<ul>
+    <li>硬件实现简单</li>
+    <li>性能接近LRU</li>
+    <li>广泛应用于实际系统</li>
+</ul>
+
+<h3>
+    5. 最不经常使用（LFU）
+</h3>
+<p>
+    置换访问次数最少的页面。
+</p>
+<ul>
+    <li>需要维护访问计数</li>
+    <li>对程序行为变化适应性差</li>
+</ul>
+
+<h2>
+    虚拟存储器管理
+</h2>
+<h3>
+    1. 地址转换机制
+</h3>
+<h4>
+    TLB（转换后备缓冲器）
+</h4>
+<ul>
+    <li><span class="special">功能</span>：缓存最近使用的页表项，加速地址转换</li>
+    <li><span class="special">结构</span>：类似于Cache的相联存储器</li>
+    <li><span class="special">命中率</span>：通常高达90%以上</li>
+</ul>
+
+<h4>
+    MMU（内存管理单元）
+</h4>
+<ul>
+    <li><span class="special">功能</span>：执行虚拟地址到物理地址的转换</li>
+    <li><span class="special">组成</span>：TLB、页表遍历单元、权限检查单元</li>
+    <li><span class="special">异常处理</span>：处理页缺失、权限违规等异常</li>
+</ul>
+
+<h3>
+    2. 页面分配策略
+</h3>
+<h4>
+    固定分配
+</h4>
+<ul>
+    <li>每个进程分配固定数量的页框</li>
+    <li>实现简单，但不够灵活</li>
+</ul>
+
+<h4>
+    可变分配
+</h4>
+<ul>
+    <li>根据进程需要动态分配页框</li>
+    <li>更有效地利用内存资源</li>
+    <li>需要全局页面置换策略</li>
+</ul>
+
+<h3>
+    3. 页面置换策略
+</h3>
+<h4>
+    局部置换
+</h4>
+<ul>
+    <li>只置换本进程的页面</li>
+    <li>进程之间相互独立</li>
+</ul>
+
+<h4>
+    全局置换
+</h4>
+<ul>
+    <li>可以从所有进程中选择页面置换</li>
+    <li>更好地利用整个系统内存</li>
+    <li>可能导致进程间干扰</li>
+</ul>
+
+<h2>
+    虚拟存储器性能
+</h2>
+<h3>
+    1. 性能指标
+</h3>
+<ul>
+    <li><span class="special">页缺失率</span>：页面访问中发生缺失的比例</li>
+    <li><span class="special">有效访问时间</span>：考虑页缺失惩罚的平均访问时间</li>
+    <li><span class="special">工作集大小</span>：进程在一段时间内活跃访问的页面集合</li>
+</ul>
+
+<h3>
+    2. 抖动（Thrashing）
+</h3>
+<p>
+    当系统频繁进行页面置换，导致CPU大部分时间用于页面调度而非执行程序。
+</p>
+<h4>
+    产生原因
+</h4>
+<ul>
+    <li>进程数量过多，超出物理内存容量</li>
+    <li>工作集大小超过分配的物理页框数</li>
+    <li>页面置换算法选择不当</li>
+</ul>
+
+<h4>
+    解决方法
+</h4>
+<ul>
+    <li>减少同时运行的进程数</li>
+    <li>增加物理内存</li>
+    <li>改进页面置换算法</li>
+    <li>使用工作集模型进行内存分配</li>
+</ul>
+
+<h2>
+    虚拟存储器实现技术
+</h2>
+<h3>
+    1. 请求调页（Demand Paging）
+</h3>
+<ul>
+    <li>页面只有在被访问时才调入内存</li>
+    <li>减少初始加载时间和内存占用</li>
+    <li>需要处理页缺失异常</li>
+</ul>
+
+<h3>
+    2. 预调页（Prepaging）
+</h3>
+<ul>
+    <li>在页面被访问前预先调入</li>
+    <li>减少页缺失率</li>
+    <li>需要预测程序行为</li>
+</ul>
+
+<h3>
+    3. 内存映射文件
+</h3>
+<ul>
+    <li>将文件内容映射到虚拟地址空间</li>
+    <li>简化文件I/O操作</li>
+    <li>实现进程间共享内存</li>
+</ul>
+
+<h3>
+    4. 写时复制（Copy-on-Write）
+</h3>
+<ul>
+    <li>多个进程共享同一物理页面</li>
+    <li>写操作时创建页面副本</li>
+    <li>减少内存占用，提高创建进程效率</li>
+</ul>
+
+<h2>
+    现代虚拟存储器系统
+</h2>
+<h3>
+    1. Linux虚拟存储器
+</h3>
+<ul>
+    <li><span class="special">三级页表</span>：PGD、PMD、PTE</li>
+    <li><span class="special">反向映射</span>：快速查找映射到物理页的虚拟页</li>
+    <li><span class="special">Huge Pages</span>：支持大页面减少TLB缺失</li>
+    <li><span class="special">KSM</span>：内核同页合并技术</li>
+</ul>
+
+<h3>
+    2. Windows虚拟存储器
+</h3>
+<ul>
+    <li><span class="special">二级页表</span>：页目录和页表</li>
+    <li><span class="special">工作集管理</span>：基于工作集的页面置换</li>
+    <li><span class="special">超级页面</span>：支持大页面</li>
+    <li><span class="special">地址窗口扩展</span>：扩展32位系统的寻址能力</li>
+</ul>
+
+<h3>
+    3. 硬件支持
+</h3>
+<ul>
+    <li><span class="special">Intel VT-x</span>：硬件虚拟化支持</li>
+    <li><span class="special">AMD-V</span>：AMD的虚拟化技术</li>
+    <li><span class="special">EPT/NPT</span>：扩展页表/嵌套页表</li>
+</ul>
+
+<h2>
+    虚拟存储器发展趋势
+</h2>
+<h3>
+    1. 大容量支持
+</h3>
+<ul>
+    <li><span class="special">64位系统</span>：支持更大的虚拟地址空间</li>
+    <li><span class="special">大页面</span>：减少页表开销和TLB缺失</li>
+    <li><span class="special">稀疏地址空间</span>：有效利用大地址空间</li>
+</ul>
+
+<h3>
+    2. 性能优化
+</h3>
+<ul>
+    <li><span class="special">硬件加速</span>：专用MMU和TLB</li>
+    <li><span class="special">并行处理</span>：并行页表遍历</li>
+    <li><span class="special">预测技术</span>：预取和预转换</li>
+</ul>
+
+<h3>
+    3. 安全性增强
+</h3>
+<ul>
+    <li><span class="special">内存保护</span>：防止缓冲区溢出攻击</li>
+    <li><span class="special">地址空间布局随机化</span>：ASLR技术</li>
+    <li><span class="special">控制流完整性</span>：防止ROP攻击</li>
+</ul>

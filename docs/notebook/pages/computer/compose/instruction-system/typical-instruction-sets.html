@@ -1,0 +1,486 @@
+<header>
+    典型指令集
+</header>
+<h2>
+    典型指令集概述
+</h2>
+<p>
+    <span
+        class="important">典型指令集</span>是指在实际计算机系统中广泛应用的指令集架构。不同的指令集在设计哲学、应用领域和性能特征上各有特点。了解这些典型指令集对于理解计算机组成原理和系统设计具有重要意义。
+</p>
+
+<h2>
+    x86指令集
+</h2>
+<h3>
+    1. 架构概述
+</h3>
+<p>
+    x86指令集是Intel开发的CISC指令集，广泛应用于个人计算机和服务器领域。从1978年的8086开始，经历了多个发展阶段。
+</p>
+
+<h3>
+    2. 发展历程
+</h3>
+<ul>
+    <li><span class="special">8086/8088</span>（1978）：16位处理器，基础指令集</li>
+    <li><span class="special">80286</span>（1982）：保护模式，虚拟内存支持</li>
+    <li><span class="special">80386</span>（1985）：32位处理器，平坦内存模型</li>
+    <li><span class="special">80486</span>（1989）：集成浮点单元，流水线</li>
+    <li><span class="special">Pentium</span>（1993）：超标量架构，MMX指令集</li>
+    <li><span class="special">x86-64</span>（2003）：64位扩展，AMD开发</li>
+</ul>
+
+<h3>
+    3. 指令类型
+</h3>
+<h4>
+    数据传输指令
+</h4>
+<ul>
+    <li><span class="special">MOV</span>：数据传送</li>
+    <li><span class="special">PUSH/POP</span>：堆栈操作</li>
+    <li><span class="special">LEA</span>：加载有效地址</li>
+    <li><span class="special">XCHG</span>：数据交换</li>
+</ul>
+
+<h4>
+    算术运算指令
+</h4>
+<ul>
+    <li><span class="special">ADD/SUB</span>：加减法</li>
+    <li><span class="special">MUL/IMUL</span>：乘法</li>
+    <li><span class="special">DIV/IDIV</span>：除法</li>
+    <li><span class="special">INC/DEC</span>：增量/减量</li>
+</ul>
+
+<h4>
+    逻辑运算指令
+</h4>
+<ul>
+    <li><span class="special">AND/OR/XOR</span>：位运算</li>
+    <li><span class="special">NOT</span>：按位取反</li>
+    <li><span class="special">SHL/SHR</span>：移位</li>
+    <li><span class="special">ROL/ROR</span>：循环移位</li>
+</ul>
+
+<h4>
+    控制转移指令
+</h4>
+<ul>
+    <li><span class="special">JMP</span>：无条件跳转</li>
+    <li><span class="special">JE/JNE</span>：条件跳转</li>
+    <li><span class="special">CALL/RET</span>：子程序调用/返回</li>
+    <li><span class="special">LOOP</span>：循环控制</li>
+</ul>
+
+<h3>
+    4. 寻址方式
+</h3>
+<ul>
+    <li><span class="special">立即寻址</span>：操作数在指令中</li>
+    <li><span class="special">寄存器寻址</span>：操作数在寄存器中</li>
+    <li><span class="special">直接寻址</span>：指令包含内存地址</li>
+    <li><span class="special">寄存器间接寻址</span>：寄存器包含地址</li>
+    <li><span class="special">基址寻址</span>：基址寄存器+偏移</li>
+    <li><span class="special">变址寻址</span>：变址寄存器+偏移</li>
+    <li><span class="special">比例变址寻址</span>：支持比例因子</li>
+</ul>
+
+<h3>
+    5. 特点分析
+</h3>
+<h4>
+    优势
+</h4>
+<ul>
+    <li><span class="special">软件生态丰富</span>：大量现有软件支持</li>
+    <li><span class="special">向后兼容</span>：新处理器兼容旧软件</li>
+    <li><span class="special">性能优化</span>：经过多年优化，性能卓越</li>
+</ul>
+
+<h4>
+    劣势
+</h4>
+<ul>
+    <li><span class="special">设计复杂</span>：指令集庞大，实现复杂</li>
+    <li><span class="special">功耗较高</span>：复杂硬件导致功耗增加</li>
+    <li><span class="special">专利限制</span>：主要掌握在Intel和AMD手中</li>
+</ul>
+
+<h2>
+    ARM指令集
+</h2>
+<h3>
+    1. 架构概述
+</h3>
+<p>
+    ARM（Advanced RISC Machine）是典型的RISC指令集，广泛应用于移动设备和嵌入式系统。ARM公司采用授权模式，多个厂商生产ARM处理器。
+</p>
+
+<h3>
+    2. 发展历程
+</h3>
+<ul>
+    <li><span class="special">ARM1</span>（1985）：第一颗ARM处理器</li>
+    <li><span class="special">ARM7</span>（1993）：Thumb指令集，16位压缩指令</li>
+    <li><span class="special">ARM9</span>（1998）：增强DSP指令</li>
+    <li><span class="special">ARM11</span>（2002）：SIMD指令支持</li>
+    <li><span class="special">Cortex-A</span>（2005）：应用处理器系列</li>
+    <li><span class="special">ARMv8</span>（2011）：64位架构支持</li>
+</ul>
+
+<h3>
+    3. 指令类型
+</h3>
+<h4>
+    数据处理指令
+</h4>
+<ul>
+    <li><span class="special">MOV</span>：数据传送</li>
+    <li><span class="special">ADD/SUB</span>：加减法</li>
+    <li><span class="special">MUL</span>：乘法</li>
+    <li><span class="special">AND/ORR/EOR</span>：逻辑运算</li>
+</ul>
+
+<h4>
+    加载/存储指令
+</h4>
+<ul>
+    <li><span class="special">LDR/STR</span>：32位加载/存储</li>
+    <li><span class="special">LDRB/STRB</span>：字节加载/存储</li>
+    <li><span class="special">LDRH/STRH</span>：半字加载/存储</li>
+    <li><span class="special">LDM/STM</span>：多寄存器加载/存储</li>
+</ul>
+
+<h4>
+    分支指令
+</h4>
+<ul>
+    <li><span class="special">B</span>：无条件分支</li>
+    <li><span class="special">BL</span>：分支并链接</li>
+    <li><span class="special">BX</span>：分支并切换状态</li>
+    <li><span class="special">条件分支</span>：BEQ、BNE、BLT等</li>
+</ul>
+
+<h3>
+    4. 寻址方式
+</h3>
+<ul>
+    <li><span class="special">立即寻址</span>：8位立即数</li>
+    <li><span class="special">寄存器寻址</span>：源和目标寄存器</li>
+    <li><span class="special">基址寻址</span>：基址寄存器+偏移</li>
+    <li><span class="special">前变址/后变址</span>：自动更新基址寄存器</li>
+    <li><span class="special">多寄存器寻址</span>：一次操作多个寄存器</li>
+</ul>
+
+<h3>
+    5. 特点分析
+</h3>
+<h4>
+    优势
+</h4>
+<ul>
+    <li><span class="special">低功耗</span>：RISC设计，能效比高</li>
+    <li><span class="special">高性能</span>：流水线优化，执行效率高</li>
+    <li><span class="special">授权模式</span>：开放授权，生态丰富</li>
+</ul>
+
+<h4>
+    劣势
+</h4>
+<ul>
+    <li><span class="special">软件生态</span>：桌面软件相对较少</li>
+    <li><span class="special">性能极限</span>：单核性能不如高端x86</li>
+</ul>
+
+<h2>
+    MIPS指令集
+</h2>
+<h3>
+    1. 架构概述
+</h3>
+<p>
+    MIPS（Microprocessor without Interlocked Pipeline Stages）是典型的RISC架构，以其简洁性和教学价值著称。广泛应用于路由器、嵌入式系统和教学实验。
+</p>
+
+<h3>
+    2. 发展历程
+</h3>
+<ul>
+    <li><span class="special">MIPS I</span>（1985）：基础32位RISC架构</li>
+    <li><span class="special">MIPS III</span>（1991）：64位扩展</li>
+    <li><span class="special">MIPS32/64</span>（1999）：标准化指令集</li>
+    <li><span class="special">MIPS Release 6</span>（2014）：最新版本</li>
+</ul>
+
+<h3>
+    3. 指令格式
+</h3>
+<h4>
+    R型指令（寄存器型）
+</h4>
+<ul>
+    <li><span class="special">格式</span>：opcode(6) + rs(5) + rt(5) + rd(5) + shamt(5) + funct(6)</li>
+    <li><span class="special">用途</span>：寄存器-寄存器操作</li>
+    <li><span class="special">示例</span>：ADD、SUB、AND、OR</li>
+</ul>
+
+<h4>
+    I型指令（立即数型）
+</h4>
+<ul>
+    <li><span class="special">格式</span>：opcode(6) + rs(5) + rt(5) + immediate(16)</li>
+    <li><span class="special">用途</span>：加载/存储、分支、立即数操作</li>
+    <li><span class="special">示例</span>：LW、SW、BEQ、ADDI</li>
+</ul>
+
+<h4>
+    J型指令（跳转型）
+</h4>
+<ul>
+    <li><span class="special">格式</span>：opcode(6) + address(26)</li>
+    <li><span class="special">用途</span>：跳转和链接</li>
+    <li><span class="special">示例</span>：J、JAL</li>
+</ul>
+
+<h3>
+    4. 指令类型
+</h3>
+<h4>
+    算术逻辑指令
+</h4>
+<ul>
+    <li><span class="special">ADD/ADDU</span>：加法和无符号加法</li>
+    <li><span class="special">SUB/SUBU</span>：减法和无符号减法</li>
+    <li><span class="special">MULT/DIV</span>：乘法和除法</li>
+    <li><span class="special">AND/OR/XOR</span>：逻辑运算</li>
+</ul>
+
+<h4>
+    数据传输指令
+</h4>
+<ul>
+    <li><span class="special">LW/LB/LH</span>：加载字/字节/半字</li>
+    <li><span class="special">SW/SB/SH</span>：存储字/字节/半字</li>
+    <li><span class="special">LUI</span>：加载立即数到高位</li>
+</ul>
+
+<h4>
+    控制转移指令
+</h4>
+<ul>
+    <li><span class="special">J/JAL</span>：跳转/跳转并链接</li>
+    <li><span class="special">BEQ/BNE</span>：相等/不等分支</li>
+    <li><span class="special">BGTZ/BLEZ</span>：大于零/小于等于零分支</li>
+</ul>
+
+<h3>
+    5. 特点分析
+</h3>
+<h4>
+    优势
+</h4>
+<ul>
+    <li><span class="special">设计简洁</span>：指令格式规整，易于理解</li>
+    <li><span class="special">教学价值</span>：广泛用于计算机教学</li>
+    <li><span class="special">流水线优化</span>：无互锁流水线设计</li>
+</ul>
+
+<h4>
+    劣势
+</h4>
+<ul>
+    <li><span class="special">市场份额</span>：逐渐被ARM和RISC-V取代</li>
+    <li><span class="special">生态系统</span>：相对封闭，发展受限</li>
+</ul>
+
+<h2>
+    RISC-V指令集
+</h2>
+<h3>
+    1. 架构概述
+</h3>
+<p>
+    RISC-V是加州大学伯克利分校开发的开源RISC指令集，以其模块化设计和开放性著称。正在快速发展，有望成为未来的主流架构之一。
+</p>
+
+<h3>
+    2. 设计理念
+</h3>
+<ul>
+    <li><span class="special">开放标准</span>：免版税，任何人都可以使用</li>
+    <li><span class="special">模块化</span>：基础指令集+可选扩展</li>
+    <li><span class="special">简洁性</span>：核心指令集非常小</li>
+    <li><span class="special">可扩展性</span>：支持自定义指令</li>
+</ul>
+
+<h3>
+    3. 指令集分类
+</h3>
+<h4>
+    基础指令集
+</h4>
+<ul>
+    <li><span class="special">RV32I</span>：32位基础整数指令集</li>
+    <li><span class="special">RV64I</span>：64位基础整数指令集</li>
+    <li><span class="special">RV32E</span>：32位嵌入式简化版本</li>
+</ul>
+
+<h4>
+    标准扩展
+</h4>
+<ul>
+    <li><span class="special">M扩展</span>：整数乘除法</li>
+    <li><span class="special">A扩展</span>：原子操作</li>
+    <li><span class="special">F扩展</span>：单精度浮点</li>
+    <li><span class="special">D扩展</span>：双精度浮点</li>
+    <li><span class="special">C扩展</span>：压缩指令</li>
+    <li><span class="special">V扩展</span>：向量操作</li>
+</ul>
+
+<h3>
+    4. 指令格式
+    </h4>
+    <ul>
+        <li><span class="special">R型</span>：寄存器-寄存器操作</li>
+        <li><span class="special">I型</span>：立即数和加载操作</li>
+        <li><span class="special">S型</span>：存储操作</li>
+        <li><span class="special">B型</span>：分支操作</li>
+        <li><span class="special">U型</span>：高位立即数操作</li>
+        <li><span class="special">J型</span>：跳转操作</li>
+    </ul>
+
+    <h3>
+        5. 特点分析
+    </h3>
+    <h4>
+        优势
+    </h4>
+    <ul>
+        <li><span class="special">开源免费</span>：无专利限制</li>
+        <li><span class="special">模块化设计</span>：可根据需要选择扩展</li>
+        <li><span class="special">社区支持</span>：活跃的开发者社区</li>
+        <li><span class="special">未来发展</span>：潜力巨大，广泛应用</li>
+    </ul>
+
+    <h4>
+        劣势
+    </h4>
+    <ul>
+        <li><span class="special">生态系统</span>：相对年轻，生态建设中</li>
+        <li><span class="special">成熟度</span>：相比x86和ARM还不够成熟</li>
+    </ul>
+
+    <h2>
+        指令集比较分析
+    </h2>
+    <h3>
+        1. 设计哲学比较
+    </h3>
+    <table>
+        <thead>
+            <tr>
+                <th>特征</th>
+                <th>x86</th>
+                <th>ARM</th>
+                <th>MIPS</th>
+                <th>RISC-V</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>架构类型</td>
+                <td>CISC</td>
+                <td>RISC</td>
+                <td>RISC</td>
+                <td>RISC</td>
+            </tr>
+            <tr>
+                <td>指令长度</td>
+                <td>可变</td>
+                <td>固定+Thumb</td>
+                <td>固定</td>
+                <td>固定+压缩</td>
+            </tr>
+            <tr>
+                <td>寄存器数量</td>
+                <td>少(8-16)</td>
+                <td>中(16-32)</td>
+                <td>多(32)</td>
+                <td>多(32)</td>
+            </tr>
+            <tr>
+                <td>寻址方式</td>
+                <td>复杂多样</td>
+                <td>中等</td>
+                <td>简单</td>
+                <td>简单</td>
+            </tr>
+            <tr>
+                <td>条件执行</td>
+                <td>有限</td>
+                <td>支持</td>
+                <td>不支持</td>
+                <td>不支持</td>
+            </tr>
+            <tr>
+                <td>开源</td>
+                <td>否</td>
+                <td>否</td>
+                <td>否</td>
+                <td>是</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>
+        2. 应用领域比较
+    </h3>
+    <h4>
+        桌面和服务器
+    </h4>
+    <ul>
+        <li><span class="special">x86</span>：绝对主导地位</li>
+        <li><span class="special">ARM</span>：逐渐进入服务器市场</li>
+        <li><span class="special">RISC-V</span>：正在发展中</li>
+    </ul>
+
+    <h4>
+        移动设备
+    </h4>
+    <ul>
+        <li><span class="special">ARM</span>：绝对主导地位</li>
+        <li><span class="special">x86</span>：极少应用</li>
+        <li><span class="special">RISC-V</span>：开始应用</li>
+    </ul>
+
+    <h4>
+        嵌入式系统
+    </h4>
+    <ul>
+        <li><span class="special">ARM</span>：主导地位</li>
+        <li><span class="special">MIPS</span>：传统应用</li>
+        <li><span class="special">RISC-V</span>：快速增长</li>
+    </ul>
+
+    <h3>
+        3. 未来发展趋势
+    </h3>
+    <h4>
+        技术融合
+    </h4>
+    <ul>
+        <li><span class="special">异构计算</span>：不同架构协同工作</li>
+        <li><span class="special">专用加速</span>：AI、图形、网络专用指令</li>
+        <li><span class="special">可扩展性</span>：模块化指令集设计</li>
+    </ul>
+
+    <h4>
+        新兴应用
+    </h4>
+    <ul>
+        <li><span class="special">边缘计算</span>：低功耗、实时处理</li>
+        <li><span class="special">人工智能</span>：矩阵运算、向量处理</li>
+        <li><span class="special">物联网</span>：超低功耗、小尺寸</li>
+    </ul>

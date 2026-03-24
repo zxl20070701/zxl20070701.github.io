@@ -1,0 +1,249 @@
+<header>
+    主存储器（SRAM/DRAM）
+</header>
+<h2>
+    主存储器概述
+</h2>
+<p>
+    <span class="important">主存储器</span>（Main Memory）是计算机系统中用于临时存储程序和数据的核心存储部件，直接与CPU交换信息。主存储器通常由SRAM（静态随机存取存储器）和DRAM（动态随机存取存储器）组成，两者在结构、性能和应用方面各有特点。
+</p>
+
+<h2>
+    SRAM（静态随机存取存储器）
+</h2>
+<h3>
+    1. SRAM基本原理
+</h3>
+<p>
+    SRAM使用双稳态触发器存储信息，只要保持电源供应，数据就能长期保存，无需刷新。
+</p>
+
+<h4>
+    基本结构
+</h4>
+<ul>
+    <li><span class="special">存储单元</span>：6个晶体管组成的双稳态电路</li>
+    <li><span class="special">字线（Word Line）</span>：控制存储单元的选通</li>
+    <li><span class="special">位线（Bit Line）</span>：传输数据信号</li>
+</ul>
+
+<h4>
+    工作原理
+</h4>
+<ul>
+    <li>读操作：字线激活，位线检测存储单元状态</li>
+    <li>写操作：字线激活，位线施加写入信号</li>
+    <li>保持状态：字线不激活，存储单元保持原有状态</li>
+</ul>
+
+<h3>
+    2. SRAM特点
+</h3>
+<ul>
+    <li><span class="special">速度快</span>：访问时间通常在1-10纳秒</li>
+    <li><span class="special">功耗较高</span>：每个存储单元需要持续供电</li>
+    <li><span class="special">集成度低</span>：每个存储单元需要6个晶体管</li>
+    <li><span class="special">成本高</span>：芯片面积大，制造成本高</li>
+</ul>
+
+<h3>
+    3. SRAM应用
+</h3>
+<ul>
+    <li><span class="special">CPU缓存</span>：L1、L2、L3缓存</li>
+    <li><span class="special">寄存器堆</span>：处理器内部寄存器</li>
+    <li><span class="special">高速缓冲</span>：需要快速访问的场合</li>
+</ul>
+
+<h2>
+    DRAM（动态随机存取存储器）
+</h2>
+<h3>
+    1. DRAM基本原理
+</h3>
+<p>
+    DRAM使用电容存储信息，电容充电表示1，放电表示0。由于电容会漏电，需要定期刷新。
+</p>
+
+<h4>
+    基本结构
+</h4>
+<ul>
+    <li><span class="special">存储单元</span>：1个晶体管+1个电容</li>
+    <li><span class="special">字线</span>：控制晶体管的导通</li>
+    <li><span class="special">位线</span>：传输数据信号</li>
+</ul>
+
+<h4>
+    工作原理
+</h4>
+<ul>
+    <li>读操作：字线激活，晶体管导通，检测位线电压变化</li>
+    <li>写操作：字线激活，晶体管导通，位线施加写入电压</li>
+    <li>刷新操作：定期读取并重新写入数据，补充电容电荷</li>
+</ul>
+
+<h3>
+    2. DRAM特点
+</h3>
+<ul>
+    <li><span class="special">速度较慢</span>：访问时间通常在50-100纳秒</li>
+    <li><span class="special">功耗较低</span>：存储单元简单，静态功耗小</li>
+    <li><span class="special">集成度高</span>：每个存储单元只需1个晶体管+1个电容</li>
+    <li><span class="special">成本低</span>：芯片面积小，制造成本低</li>
+    <li><span class="special">需要刷新</span>：每几毫秒需要刷新一次</li>
+</ul>
+
+<h3>
+    3. DRAM类型
+</h3>
+<h4>
+    SDRAM（同步DRAM）
+</h4>
+<ul>
+    <li>与系统时钟同步工作</li>
+    <li>支持突发传输模式</li>
+    <li>广泛应用于PC内存</li>
+</ul>
+
+<h4>
+    DDR SDRAM（双倍数据速率SDRAM）
+</h4>
+<ul>
+    <li>DDR：在时钟上升沿和下降沿都传输数据</li>
+    <li>DDR2：改进的信号完整性和功耗</li>
+    <li>DDR3：更高的数据传输速率</li>
+    <li>DDR4：进一步降低功耗，提高容量</li>
+    <li>DDR5：最新标准，更高带宽和容量</li>
+</ul>
+
+<h4>
+    GDDR（图形DDR）
+</h4>
+<ul>
+    <li>专为图形应用优化</li>
+    <li>高带宽设计</li>
+    <li>用于显卡显存</li>
+</ul>
+
+<h2>
+    主存储器组织结构
+</h2>
+<h3>
+    1. 存储单元组织
+</h3>
+<ul>
+    <li><span class="special">位结构</span>：每个存储单元存储1位信息</li>
+    <li><span class="special">字结构</span>：多个位组成一个字（通常为8位、16位、32位或64位）</li>
+    <li><span class="special">地址空间</span>：每个存储单元有唯一的地址</li>
+</ul>
+
+<h3>
+    2. 地址译码
+</h3>
+<ul>
+    <li><span class="special">线性译码</span>：每个地址对应一个译码器输出，简单但硬件开销大</li>
+    <li><span class="special">矩阵译码</span>：将地址分为行地址和列地址，减少译码器数量</li>
+    <li><span class="special">双译码</span>：同时译码行地址和列地址，提高效率</li>
+</ul>
+
+<h3>
+    3. 存储器芯片结构
+</h3>
+<ul>
+    <li><span class="special">存储阵列</span>：存储单元的二维阵列</li>
+    <li><span class="special">行译码器</span>：选择激活的行</li>
+    <li><span class="special">列译码器</span>：选择激活的列</li>
+    <li><span class="special">读写电路</span>：数据输入输出缓冲</li>
+    <li><span class="special">控制逻辑</span>：控制读写时序</li>
+</ul>
+
+<h2>
+    主存储器性能指标
+</h2>
+<h3>
+    1. 存储容量
+</h3>
+<ul>
+    <li><span class="special">芯片容量</span>：单个存储器芯片的容量</li>
+    <li><span class="special">模块容量</span>：存储器模块的总容量</li>
+    <li><span class="special">系统容量</span>：整个系统的最大内存容量</li>
+</ul>
+
+<h3>
+    2. 访问时间
+</h3>
+<ul>
+    <li><span class="special">读取时间</span>：从发出读命令到数据稳定输出的时间</li>
+    <li><span class="special">写入时间</span>：从发出写命令到数据写入完成的时间</li>
+    <li><span class="special">周期时间</span>：连续两次访问之间的最小时间间隔</li>
+</ul>
+
+<h3>
+    3. 带宽
+</h3>
+<ul>
+    <li><span class="special">数据宽度</span>：一次能传输的数据位数</li>
+    <li><span class="special">传输速率</span>：单位时间内传输的数据量</li>
+    <li><span class="special">突发传输</span>：连续传输多个数据单元的模式</li>
+</ul>
+
+<h2>
+    主存储器接口技术
+</h2>
+<h3>
+    1. 总线接口
+</h3>
+<ul>
+    <li><span class="special">地址总线</span>：传输存储器地址</li>
+    <li><span class="special">数据总线</span>：传输数据</li>
+    <li><span class="special">控制总线</span>：传输读写控制信号</li>
+</ul>
+
+<h3>
+    2. 时序控制
+</h3>
+<ul>
+    <li><span class="special">同步接口</span>：与系统时钟同步</li>
+    <li><span class="special">异步接口</span>：不依赖系统时钟</li>
+    <li><span class="special">握手协议</span>：通过应答信号协调传输</li>
+</ul>
+
+<h3>
+    3. 错误检测与纠正
+</h3>
+<ul>
+    <li><span class="special">奇偶校验</span>：简单的错误检测</li>
+    <li><span class="special">ECC</span>：错误检测和纠正</li>
+    <li><span class="special">Chipkill</span>：更高级的错误纠正技术</li>
+</ul>
+
+<h2>
+    主存储器发展趋势
+</h2>
+<h3>
+    1. 容量提升
+</h3>
+<ul>
+    <li><span class="special">工艺进步</span>：更小的工艺节点，更高密度</li>
+    <li><span class="special">3D堆叠</span>：垂直堆叠增加容量</li>
+    <li><span class="special">新型存储单元</span>：如3D NAND、MRAM等</li>
+</ul>
+
+<h3>
+    2. 速度提升
+</h3>
+<ul>
+    <li><span class="special">接口升级</span>：从DDR到DDR5，带宽不断提升</li>
+    <li><span class="special">协议优化</span>：改进的通信协议减少延迟</li>
+    <li><span class="special">近存计算</span>：减少数据移动，提高速度</li>
+</ul>
+
+<h3>
+    3. 功耗优化
+</h3>
+<ul>
+    <li><span class="special">低功耗模式</span>：支持多种省电模式</li>
+    <li><span class="special">动态电压调节</span>：根据负载调整电压</li>
+    <li><span class="special">新型材料</span>：如相变存储器、阻变存储器等</li>
+</ul>

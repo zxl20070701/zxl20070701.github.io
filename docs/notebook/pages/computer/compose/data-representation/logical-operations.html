@@ -1,0 +1,298 @@
+<header>
+    逻辑运算
+</header>
+<h2>
+    逻辑运算概述
+</h2>
+<p>
+    逻辑运算是计算机中最基本的运算类型，直接对应数字电路中的逻辑门操作。逻辑运算处理的是布尔值（真或假，1或0），是构建复杂计算的基础。
+</p>
+
+<h2>
+    基本逻辑运算
+</h2>
+<h3>
+    1. 与运算（AND）
+</h3>
+<p>
+    符号：∧、·、AND
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>A</th>
+            <th>B</th>
+            <th>A AND B</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+    </tbody>
+</table>
+<ul>
+    <li>特点：全1出1，有0出0</li>
+    <li>应用：位掩码、条件判断</li>
+</ul>
+
+<h3>
+    2. 或运算（OR）
+</h3>
+<p>
+    符号：∨、+、OR
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>A</th>
+            <th>B</th>
+            <th>A OR B</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+    </tbody>
+</table>
+<ul>
+    <li>特点：有1出1，全0出0</li>
+    <li>应用：标志位设置、权限控制</li>
+</ul>
+
+<h3>
+    3. 非运算（NOT）
+</h3>
+<p>
+    符号：¬、~、NOT、!
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>A</th>
+            <th>NOT A</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+    </tbody>
+</table>
+<ul>
+    <li>特点：取反操作</li>
+    <li>应用：状态切换、条件反转</li>
+</ul>
+
+<h3>
+    4. 异或运算（XOR）
+</h3>
+<p>
+    符号：⊕、XOR
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>A</th>
+            <th>B</th>
+            <th>A XOR B</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+    </tbody>
+</table>
+<ul>
+    <li>特点：相同出0，不同出1</li>
+    <li>应用：数据比较、加密算法</li>
+</ul>
+
+<h2>
+    复合逻辑运算
+</h2>
+<h3>
+    1. 与非运算（NAND）
+</h3>
+<p>
+    先与后非，NAND(A,B) = NOT(AND(A,B))
+</p>
+<ul>
+    <li>特点：功能完备，可构建任何逻辑电路</li>
+    <li>应用：NAND门是通用逻辑门</li>
+</ul>
+
+<h3>
+    2. 或非运算（NOR）
+</h3>
+<p>
+    先或后非，NOR(A,B) = NOT(OR(A,B))
+</p>
+<ul>
+    <li>特点：功能完备，可构建任何逻辑电路</li>
+    <li>应用：NOR门是通用逻辑门</li>
+</ul>
+
+<h3>
+    3. 同或运算（XNOR）
+</h3>
+<p>
+    先异或后非，XNOR(A,B) = NOT(XOR(A,B))
+</p>
+<ul>
+    <li>特点：相同出1，不同出0</li>
+    <li>应用：相等比较器</li>
+</ul>
+
+<h2>
+    逻辑运算代数定律
+</h2>
+<h3>
+    基本定律
+</h3>
+<ul>
+    <li><span class="special">交换律</span>：A∧B = B∧A，A∨B = B∨A</li>
+    <li><span class="special">结合律</span>：(A∧B)∧C = A∧(B∧C)，(A∨B)∨C = A∨(B∨C)</li>
+    <li><span class="special">分配律</span>：A∧(B∨C) = (A∧B)∨(A∧C)，A∨(B∧C) = (A∨B)∧(A∨C)</li>
+    <li><span class="special">德摩根定律</span>：¬(A∧B) = ¬A∨¬B，¬(A∨B) = ¬A∧¬B</li>
+</ul>
+
+<h3>
+    特殊定律
+</h3>
+<ul>
+    <li><span class="special">同一律</span>：A∧1 = A，A∨0 = A</li>
+    <li><span class="special">零律</span>：A∧0 = 0，A∨1 = 1</li>
+    <li><span class="special">互补律</span>：A∧¬A = 0，A∨¬A = 1</li>
+    <li><span class="special">双重否定律</span>：¬(¬A) = A</li>
+</ul>
+
+<h2>
+    逻辑运算在计算机中的应用
+</h2>
+<h3>
+    1. 位操作
+</h3>
+<ul>
+    <li><span class="special">位掩码</span>：使用AND运算提取特定位</li>
+    <li><span class="special">位置位</span>：使用OR运算设置特定位为1</li>
+    <li><span class="special">位清零</span>：使用AND运算将特定位清零</li>
+    <li><span class="special">位翻转</span>：使用XOR运算翻转特定位</li>
+</ul>
+
+<h3>
+    2. 条件判断
+</h3>
+<ul>
+    <li><span class="special">标志位</span>：零标志、进位标志、溢出标志</li>
+    <li><span class="special">条件跳转</span>：基于标志位的程序控制</li>
+</ul>
+
+<h3>
+    3. 数据加密
+</h3>
+<ul>
+    <li><span class="special">XOR加密</span>：简单高效的加密方法</li>
+    <li><span class="special">哈希函数</span>：基于逻辑运算的数据摘要</li>
+</ul>
+
+<h2>
+    逻辑运算电路实现
+</h2>
+<h3>
+    基本逻辑门
+</h3>
+<ul>
+    <li><span class="special">与门</span>：AND运算的电路实现</li>
+    <li><span class="special">或门</span>：OR运算的电路实现</li>
+    <li><span class="special">非门</span>：NOT运算的电路实现</li>
+    <li><span class="special">异或门</span>：XOR运算的电路实现</li>
+</ul>
+
+<h3>
+    组合逻辑电路
+</h3>
+<ul>
+    <li><span class="special">译码器</span>：将编码输入转换为独热输出</li>
+    <li><span class="special">编码器</span>：将独热输入转换为编码输出</li>
+    <li><span class="special">多路选择器</span>：根据选择信号选择输入</li>
+    <li><span class="special">比较器</span>：比较两个数的大小关系</li>
+</ul>
+
+<h2>
+    逻辑运算优化技巧
+</h2>
+<h3>
+    位操作优化
+</h3>
+<ul>
+    <li><span class="special">快速乘除法</span>：使用移位运算代替乘除2的幂</li>
+    <li><span class="special">快速模运算</span>：使用AND运算代替模2的幂</li>
+    <li><span class="special">条件赋值</span>：使用逻辑运算避免分支</li>
+</ul>
+
+<h3>
+    编译器优化
+</h3>
+<ul>
+    <li><span class="special">常量折叠</span>：编译时计算常量逻辑表达式</li>
+    <li><span class="special">逻辑简化</span>：使用代数定律简化逻辑表达式</li>
+</ul>

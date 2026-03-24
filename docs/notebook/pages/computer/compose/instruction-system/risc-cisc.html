@@ -1,0 +1,354 @@
+<header>
+    RISC与CISC架构
+</header>
+<h2>
+    RISC与CISC架构概述
+</h2>
+<p>
+    <span class="important">RISC</span>（Reduced Instruction Set Computer，精简指令集计算机）和<span
+        class="important">CISC</span>（Complex Instruction Set
+    Computer，复杂指令集计算机）是两种主要的处理器架构设计理念。它们在指令集设计、硬件实现和性能特征等方面存在显著差异。
+</p>
+
+<h2>
+    CISC架构特点
+</h2>
+<h3>
+    1. 设计理念
+</h3>
+<ul>
+    <li><span class="special">复杂指令</span>：提供功能强大的复杂指令</li>
+    <li><span class="special">硬件实现</span>：复杂指令由硬件直接实现</li>
+    <li><span class="special">内存操作</span>：支持内存到内存的操作</li>
+    <li><span class="special">微程序控制</span>：复杂指令通过微程序实现</li>
+</ul>
+
+<h3>
+    2. 指令特征
+</h3>
+<ul>
+    <li><span class="special">指令长度可变</span>：不同指令占用不同字节数</li>
+    <li><span class="special">寻址方式丰富</span>：支持多种复杂的寻址方式</li>
+    <li><span class="special">指令周期不等</span>：不同指令执行时间差异很大</li>
+    <li><span class="special">微码实现</span>：复杂指令通过微程序控制单元实现</li>
+</ul>
+
+<h3>
+    3. 典型代表
+</h3>
+<ul>
+    <li><span class="special">Intel x86</span>：桌面和服务器处理器</li>
+    <li><span class="special">VAX</span>：DEC公司的经典CISC架构</li>
+    <li><span class="special">Motorola 68k</span>：早期苹果电脑使用的处理器</li>
+</ul>
+
+<h3>
+    4. 优势
+</h3>
+<ul>
+    <li><span class="special">代码密度高</span>：复杂指令减少程序长度</li>
+    <li><span class="special">向后兼容</span>：新处理器兼容旧指令集</li>
+    <li><span class="special">编程便利</span>：高级语言可以直接映射到复杂指令</li>
+    <li><span class="special">内存访问灵活</span>：支持多种内存操作模式</li>
+</ul>
+
+<h3>
+    5. 劣势
+</h3>
+<ul>
+    <li><span class="special">设计复杂</span>：控制单元复杂，设计难度大</li>
+    <li><span class="special">功耗较高</span>：复杂硬件导致功耗增加</li>
+    <li><span class="special">时钟频率受限</span>：复杂指令限制时钟频率提升</li>
+    <li><span class="special">流水线效率低</span>：指令长度和执行时间不等影响流水线</li>
+</ul>
+
+<h2>
+    RISC架构特点
+</h2>
+<h3>
+    1. 设计理念
+</h3>
+<ul>
+    <li><span class="special">精简指令</span>：只保留最常用的简单指令</li>
+    <li><span class="special">硬布线控制</span>：简单指令由硬布线逻辑实现</li>
+    <li><span class="special">寄存器操作</span>：大多数操作在寄存器间进行</li>
+    <li><span class="special">加载/存储架构</span>：只有加载/存储指令访问内存</li>
+</ul>
+
+<h3>
+    2. 指令特征
+</h3>
+<ul>
+    <li><span class="special">指令长度固定</span>：通常为32位</li>
+    <li><span class="special">寻址方式简单</span>：主要使用寄存器寻址</li>
+    <li><span class="special">指令周期相等</span>：大多数指令单周期执行</li>
+    <li><span class="special">硬布线控制</span>：简单指令由组合逻辑实现</li>
+</ul>
+
+<h3>
+    3. 典型代表
+</h3>
+<ul>
+    <li><span class="special">ARM</span>：移动设备和嵌入式系统</li>
+    <li><span class="special">MIPS</span>：教学和研究领域广泛应用</li>
+    <li><span class="special">RISC-V</span>：开源RISC架构，新兴标准</li>
+    <li><span class="special">SPARC</span>：Sun公司的RISC架构</li>
+</ul>
+
+<h3>
+    4. 优势
+</h3>
+<ul>
+    <li><span class="special">设计简单</span>：控制单元简单，易于设计和验证</li>
+    <li><span class="special">时钟频率高</span>：简单指令允许更高的时钟频率</li>
+    <li><span class="special">流水线效率高</span>：固定指令长度和执行时间优化流水线</li>
+    <li><span class="special">功耗较低</span>：简单硬件降低功耗</li>
+</ul>
+
+<h3>
+    5. 劣势
+</h3>
+<ul>
+    <li><span class="special">代码密度低</span>：简单指令导致程序长度增加</li>
+    <li><span class="special">内存访问频繁</span>：需要更多加载/存储指令</li>
+    <li><span class="special">编译器复杂</span>：需要优化编译器生成高效代码</li>
+    <li><span class="special">向后兼容困难</span>：指令集扩展可能影响兼容性</li>
+</ul>
+
+<h2>
+    架构比较
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>特征</th>
+            <th>CISC</th>
+            <th>RISC</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>指令数量</td>
+            <td>多（200+）</td>
+            <td>少（<100）< /td>
+        </tr>
+        <tr>
+            <td>指令长度</td>
+            <td>可变</td>
+            <td>固定</td>
+        </tr>
+        <tr>
+            <td>寻址方式</td>
+            <td>复杂多样</td>
+            <td>简单有限</td>
+        </tr>
+        <tr>
+            <td>执行周期</td>
+            <td>不等</td>
+            <td>单周期为主</td>
+        </tr>
+        <tr>
+            <td>控制单元</td>
+            <td>微程序</td>
+            <td>硬布线</td>
+        </tr>
+        <tr>
+            <td>寄存器数量</td>
+            <td>少（8-16）</td>
+            <td>多（32+）</td>
+        </tr>
+        <tr>
+            <td>内存访问</td>
+            <td>任意指令</td>
+            <td>仅加载/存储</td>
+        </tr>
+        <tr>
+            <td>代码密度</td>
+            <td>高</td>
+            <td>低</td>
+        </tr>
+        <tr>
+            <td>时钟频率</td>
+            <td>较低</td>
+            <td>较高</td>
+        </tr>
+        <tr>
+            <td>功耗</td>
+            <td>较高</td>
+            <td>较低</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    性能分析
+</h2>
+<h3>
+    1. 指令执行效率
+</h3>
+<h4>
+    CISC性能特点
+</h4>
+<ul>
+    <li><span class="special">复杂指令</span>：单条指令完成复杂操作</li>
+    <li><span class="special">微码执行</span>：通过微程序控制执行</li>
+    <li><span class="special">执行周期</span>：不同指令执行时间差异大</li>
+</ul>
+
+<h4>
+    RISC性能特点
+</h4>
+<ul>
+    <li><span class="special">简单指令</span>：单周期执行</li>
+    <li><span class="special">流水线优化</span>：固定指令长度便于流水线设计</li>
+    <li><span class="special">编译器优化</span>：编译器负责指令调度</li>
+</ul>
+
+<h3>
+    2. 代码密度比较
+</h3>
+<h4>
+    CISC代码密度
+</h4>
+<ul>
+    <li><span class="special">优势</span>：复杂指令减少指令数量</li>
+    <li><span class="special">存储效率</span>：程序占用空间小</li>
+    <li><span class="special">缓存效率</span>：更多指令可装入Cache</li>
+</ul>
+
+<h4>
+    RISC代码密度
+</h4>
+<ul>
+    <li><span class="special">劣势</span>：简单指令导致指令数量增加</li>
+    <li><span class="special">改进</span>：Thumb指令集提高代码密度</li>
+    <li><span class="special">权衡</span>：存储空间vs执行效率</li>
+</ul>
+
+<h3>
+    3. 功耗比较
+</h3>
+<h4>
+    CISC功耗特征
+</h4>
+<ul>
+    <li><span class="special">复杂硬件</span>：控制单元复杂，功耗较高</li>
+    <li><span class="special">微码存储</span>：需要ROM存储微程序</li>
+    <li><span class="special">动态功耗</span>：复杂逻辑门切换频繁</li>
+</ul>
+
+<h4>
+    RISC功耗特征
+</h4>
+<ul>
+    <li><span class="special">简单硬件</span>：控制逻辑简单，功耗较低</li>
+    <li><span class="special">高效执行</span>：单周期指令减少功耗</li>
+    <li><span class="special">低功耗模式</span>：适合移动设备应用</li>
+</ul>
+
+<h2>
+    现代发展趋势
+</h2>
+<h3>
+    1. 架构融合
+</h3>
+<h4>
+    CISC向RISC发展
+</h4>
+<ul>
+    <li><span class="special">微操作分解</span>：复杂指令分解为简单微操作</li>
+    <li><span class="special">RISC核心</span>：CISC处理器内部采用RISC核心</li>
+    <li><span class="special">动态翻译</span>：x86指令翻译为内部RISC指令</li>
+</ul>
+
+<h4>
+    RISC增强
+</h4>
+<ul>
+    <li><span class="special">复杂指令支持</span>：增加一些复杂指令</li>
+    <li><span class="special">代码密度优化</span>：Thumb、压缩指令集</li>
+    <li><span class="special">向量扩展</span>：SIMD指令支持</li>
+</ul>
+
+<h3>
+    2. 新兴架构
+</h3>
+<h4>
+    RISC-V
+</h4>
+<ul>
+    <li><span class="special">开源设计</span>：开放指令集架构</li>
+    <li><span class="special">模块化扩展</span>：可选择不同的扩展指令集</li>
+    <li><span class="special">应用广泛</span>：从嵌入式到高性能计算</li>
+</ul>
+
+<h4>
+    专用加速器
+</h4>
+<ul>
+    <li><span class="special">AI加速器</span>：专门用于神经网络计算</li>
+    <li><span class="special">GPU架构</span>：大规模并行SIMD架构</li>
+    <li><span class="special">异构计算</span>：CPU+GPU+FPGA组合</li>
+</ul>
+
+<h3>
+    3. 未来展望
+</h3>
+<h4>
+    量子计算
+</h4>
+<ul>
+    <li><span class="special">量子位操作</span>：全新的计算模型</li>
+    <li><span class="special">量子算法</span>：Shor算法、Grover算法</li>
+    <li><span class="special">混合架构</span>：经典+量子混合系统</li>
+</ul>
+
+<h4>
+    神经形态计算
+</h4>
+<ul>
+    <li><span class="special">类脑计算</span>：模拟大脑神经元工作方式</li>
+    <li><span class="special">脉冲神经网络</span>：基于事件的计算模型</li>
+    <li><span class="special">低功耗</span>：事件驱动，功耗极低</li>
+</ul>
+
+<h2>
+    实际应用选择
+</h2>
+<h3>
+    1. 应用场景分析
+</h3>
+<h4>
+    移动设备
+</h4>
+<ul>
+    <li><span class="special">ARM架构</span>：低功耗、高效率</li>
+    <li><span class="special">RISC优势</span>：电池续航、散热管理</li>
+</ul>
+
+<h4>
+    桌面计算
+</h4>
+<ul>
+    <li><span class="special">x86架构</span>：软件生态、向后兼容</li>
+    <li><span class="special">CISC优势</span>：复杂应用、高性能计算</li>
+</ul>
+
+<h4>
+    服务器领域
+</h4>
+<ul>
+    <li><span class="special">x86-64</span>：数据中心主流</li>
+    <li><span class="special">ARM服务器</span>：高能效比、云计算</li>
+</ul>
+
+<h3>
+    2. 选择考虑因素
+</h3>
+<ul>
+    <li><span class="special">性能需求</span>：计算密集型vs I/O密集型</li>
+    <li><span class="special">功耗限制</span>：移动设备vs桌面设备</li>
+    <li><span class="special">软件生态</span>：现有软件兼容性</li>
+    <li><span class="special">开发成本</span>：硬件设计复杂度</li>
+    <li><span class="special">市场定位</span>：通用计算vs专用计算</li>
+</ul>

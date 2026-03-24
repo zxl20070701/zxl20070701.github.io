@@ -1,0 +1,621 @@
+<header>
+    系统总线
+</header>
+<h2>
+    系统总线概述
+</h2>
+<p>
+    <span class="important">系统总线</span>（System Bus）是连接计算机各功能部件的公共通信线路，是计算机系统的重要组成部分。它负责在各部件之间传输数据、地址和控制信号，协调整个系统的有序运行。
+</p>
+
+<h2>
+    系统总线的功能
+</h2>
+<h3>
+    1. 数据传输功能
+</h3>
+<h4>
+    数据类型
+</h4>
+<ul>
+    <li><span class="special">指令数据</span>：从内存到CPU的指令传输</li>
+    <li><span class="special">操作数据</span>：CPU与内存、I/O设备间的数据传输</li>
+    <li><span class="special">状态数据</span>：设备状态信息的传输</li>
+    <li><span class="special">控制数据</span>：控制命令和参数的传输</li>
+</ul>
+
+<h4>
+    传输方式
+</h4>
+<ul>
+    <li><span class="special">并行传输</span>：多位数据同时传输</li>
+    <li><span class="special">串行传输</span>：数据位按顺序传输</li>
+    <li><span class="special">同步传输</span>：按统一时钟信号传输</li>
+    <li><span class="special">异步传输</span>：通过握手协议传输</li>
+</ul>
+
+<h3>
+    2. 地址传输功能
+</h3>
+<h4>
+    地址类型
+</h4>
+<ul>
+    <li><span class="special">内存地址</span>：指定内存单元的地址</li>
+    <li><span class="special">I/O地址</span>：指定I/O设备的地址</li>
+    <li><span class="special">设备地址</span>：指定设备的标识地址</li>
+</ul>
+
+<h4>
+    地址空间
+</h4>
+<ul>
+    <li><span class="special">统一编址</span>：内存和I/O设备统一编址</li>
+    <li><span class="special">独立编址</span>：内存和I/O设备分别编址</li>
+</ul>
+
+<h3>
+    3. 控制传输功能
+</h3>
+<h4>
+    控制信号类型
+</h4>
+<ul>
+    <li><span class="special">时序控制</span>：协调各部件的时序关系</li>
+    <li><span class="special">操作控制</span>：控制各部件的操作</li>
+    <li><span class="special">状态控制</span>：传输设备状态信息</li>
+    <li><span class="special">中断控制</span>：处理中断请求和响应</li>
+</ul>
+
+<h4>
+    控制方式
+</h4>
+<ul>
+    <li><span class="special">集中式控制</span>：由中央控制器统一控制</li>
+    <li><span class="special">分布式控制</span>：各部件自主协调控制</li>
+</ul>
+
+<h2>
+    系统总线的组成
+</h2>
+<h3>
+    1. 数据总线（Data Bus）
+</h3>
+<h4>
+    功能
+</h4>
+<ul>
+    <li><span class="special">双向传输</span>：支持数据的双向传输</li>
+    <li><span class="special">并行传输</span>：多位数据同时传输</li>
+    <li><span class="special">缓冲功能</span>：提供数据传输缓冲</li>
+</ul>
+
+<h4>
+    特性
+</h4>
+<ul>
+    <li><span class="special">宽度</span>：决定一次传输的数据位数</li>
+    <li><span class="special">频率</span>：决定数据传输速率</li>
+    <li><span class="special">负载能力</span>：决定可连接的设备数量</li>
+</ul>
+
+<h3>
+    2. 地址总线（Address Bus）
+</h3>
+<h4>
+    功能
+</h4>
+<ul>
+    <li><span class="special">单向传输</span>：通常从CPU向内存或I/O设备传输</li>
+    <li><span class="special">地址指定</span>：指定内存单元或I/O端口地址</li>
+    <li><span class="special">地址译码</span>：选择特定的内存单元或设备</li>
+</ul>
+
+<h4>
+    特性
+</h4>
+<ul>
+    <li><span class="special">宽度</span>：决定可寻址的地址空间大小</li>
+    <li><span class="special">n位地址总线</span>：可寻址2^n个地址单元</li>
+</ul>
+
+<h3>
+    3. 控制总线（Control Bus）
+</h3>
+<h4>
+    功能
+</h4>
+<ul>
+    <li><span class="special">时序控制</span>：提供系统时序信号</li>
+    <li><span class="special">操作控制</span>：控制各部件的操作</li>
+    <li><span class="special">状态传输</span>：传输设备状态信息</li>
+    <li><span class="special">中断处理</span>：处理中断请求和响应</li>
+</ul>
+
+<h4>
+    典型控制信号
+</h4>
+<table>
+    <thead>
+        <tr>
+            <th>信号名称</th>
+            <th>功能</th>
+            <th>方向</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>CLK</td>
+            <td>系统时钟</td>
+            <td>CPU输出</td>
+        </tr>
+        <tr>
+            <td>RESET</td>
+            <td>系统复位</td>
+            <td>CPU输出</td>
+        </tr>
+        <tr>
+            <td>READ</td>
+            <td>读使能</td>
+            <td>CPU输出</td>
+        </tr>
+        <tr>
+            <td>WRITE</td>
+            <td>写使能</td>
+            <td>CPU输出</td>
+        </tr>
+        <tr>
+            <td>READY</td>
+            <td>就绪信号</td>
+            <td>设备输出</td>
+        </tr>
+        <tr>
+            <td>INT</td>
+            <td>中断请求</td>
+            <td>设备输出</td>
+        </tr>
+        <tr>
+            <td>INTA</td>
+            <td>中断响应</td>
+            <td>CPU输出</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    系统总线的结构
+</h2>
+<h3>
+    1. 单总线结构
+</h3>
+<h4>
+    结构特点
+</h4>
+<ul>
+    <li><span class="special">单一总线</span>：所有部件共享同一总线</li>
+    <li><span class="special">结构简单</span>：设计和实现相对简单</li>
+    <li><span class="special">成本低廉</span>：硬件成本较低</li>
+</ul>
+
+<h4>
+    缺点
+</h4>
+<ul>
+    <li><span class="special">总线冲突</span>：多个部件同时竞争总线</li>
+    <li><span class="special">性能瓶颈</span>：总线成为系统性能瓶颈</li>
+    <li><span class="special">扩展困难</span>：增加设备会降低性能</li>
+</ul>
+
+<h4>
+    应用
+</h4>
+<ul>
+    <li><span class="special">简单系统</span>：小型嵌入式系统</li>
+    <li><span class="special">教学系统</span>：计算机组成原理教学</li>
+</ul>
+
+<h3>
+    2. 双总线结构
+</h3>
+<h4>
+    结构特点
+</h4>
+<ul>
+    <li><span class="special">内存总线</span>：CPU与内存之间的专用总线</li>
+    <li><span class="special">I/O总线</span>：CPU与I/O设备之间的总线</li>
+    <li><span class="special">分离传输</span>：内存访问和I/O操作分离</li>
+</ul>
+
+<h4>
+    优点
+</h4>
+<ul>
+    <li><span class="special">减少冲突</span>：内存和I/O操作不相互干扰</li>
+    <li><span class="special">提高性能</span>：并行进行内存和I/O操作</li>
+    <li><span class="special">便于扩展</span>：可以独立扩展内存或I/O</li>
+</ul>
+
+<h3>
+    3. 三总线结构
+</h3>
+<h4>
+    结构特点
+</h4>
+<ul>
+    <li><span class="special">内存总线</span>：CPU与主存之间的总线</li>
+    <li><span class="special">I/O总线</span>：CPU与I/O设备之间的总线</li>
+    <li><span class="special">DMA总线</span>：内存与I/O设备之间的直接总线</li>
+</ul>
+
+<h4>
+    优点
+</h4>
+<ul>
+    <li><span class="special">DMA传输</span>：支持直接内存访问</li>
+    <li><span class="special">并行操作</span>：CPU、内存、I/O可并行工作</li>
+    <li><span class="special">高性能</span>：最大化系统吞吐量</li>
+</ul>
+
+<h4>
+    缺点
+</h4>
+<ul>
+    <li><span class="special">结构复杂</span>：设计和控制复杂</li>
+    <li><span class="special">成本较高</span>：硬件成本增加</li>
+</ul>
+
+<h2>
+    总线仲裁机制
+</h2>
+<h3>
+    1. 集中式仲裁
+</h3>
+<h4>
+    链式查询方式
+</h4>
+<ul>
+    <li><span class="special">总线忙</span>：BS信号表示总线是否被占用</li>
+    <li><span class="special">总线请求</span>：BR信号表示设备请求总线</li>
+    <li><span class="special">总线授权</span>：BG信号依次传递授权</li>
+</ul>
+
+<h4>
+    计数器定时查询方式
+</h4>
+<ul>
+    <li><span class="special">计数器</span>：中央仲裁器维护设备计数</li>
+    <li><span class="special">查询机制</span>：按计数器值查询设备请求</li>
+    <li><span class="special">优先级</span>：可通过计数器初始值设置优先级</li>
+</ul>
+
+<h4>
+    独立请求方式
+</h4>
+<ul>
+    <li><span class="special">独立请求线</span>：每个设备有独立的请求线</li>
+    <li><span class="special">独立授权线</span>：每个设备有独立的授权线</li>
+    <li><span class="special">优先级排队</span>：中央仲裁器进行优先级排队</li>
+</ul>
+
+<h3>
+    2. 分布式仲裁
+</h3>
+<h4>
+    自举分布式仲裁
+</h4>
+<ul>
+    <li><span class="special">设备优先级</span>：每个设备有固定的优先级</li>
+    <li><span class="special">仲裁逻辑</span>：各设备根据优先级自主仲裁</li>
+    <li><span class="special">无需中央仲裁器</span>：仲裁逻辑分布在各设备中</li>
+</ul>
+
+<h4>
+    冲突检测分布式仲裁
+</h4>
+<ul>
+    <li><span class="special">冲突检测</span>：检测多个设备同时请求总线</li>
+    <li><span class="special">重试机制</span>：冲突时设备重新请求</li>
+    <li><span class="special">随机退避</span>：减少再次冲突的概率</li>
+</ul>
+
+<h2>
+    总线定时方式
+</h2>
+<h3>
+    1. 同步定时
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">统一时钟</span>：所有设备使用统一的时钟信号</li>
+    <li><span class="special">固定时序</span>：操作按固定时序进行</li>
+    <li><span class="special">简单控制</span>：控制逻辑相对简单</li>
+</ul>
+
+<h4>
+    优点
+</h4>
+<ul>
+    <li><span class="special">速度快</span>：适合高速设备</li>
+    <li><span class="special">控制简单</span>：时序控制逻辑简单</li>
+    <li><span class="special">成本低</span>：硬件实现成本低</li>
+</ul>
+
+<h4>
+    缺点
+</h4>
+<ul>
+    <li><span class="special">时钟偏移</span>：高速时钟可能产生偏移</li>
+    <li><span class="special">速度限制</span>：受最慢设备限制</li>
+    <li><span class="special">灵活性差</span>：不适合速度差异大的设备</li>
+</ul>
+
+<h3>
+    2. 异步定时
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">握手协议</span>：使用握手协议协调操作</li>
+    <li><span class="special">无时钟</span>：不依赖统一时钟信号</li>
+    <li><span class="special">自适应</span>：适应不同速度的设备</li>
+</ul>
+
+<h4>
+    握手过程
+</h4>
+<ol>
+    <li><span class="special">请求</span>：主设备发出操作请求</li>
+    <li><span class="special">应答</span>：从设备回应操作准备就绪</li>
+    <li><span class="special">数据传输</span>：进行数据传输</li>
+    <li><span class="special">完成</span>：从设备通知操作完成</li>
+</ol>
+
+<h4>
+    优点
+</h4>
+<ul>
+    <li><span class="special">适应性强</span>：适合不同速度的设备</li>
+    <li><span class="special">无时钟偏移</span>：避免时钟偏移问题</li>
+    <li><span class="special">功耗低</span>：不需要全局时钟</li>
+</ul>
+
+<h4>
+    缺点
+</h4>
+<ul>
+    <li><span class="special">速度慢</span>：握手过程增加延迟</li>
+    <li><span class="special">控制复杂</span>：握手逻辑复杂</li>
+    <li><span class="special">成本高</span>：硬件实现成本较高</li>
+</ul>
+
+<h3>
+    3. 半同步定时
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">结合优势</span>：结合同步和异步的优势</li>
+    <li><span class="special">灵活时序</span>：提供灵活的时序控制</li>
+    <li><span class="special">等待状态</span>：支持插入等待状态</li>
+</ul>
+
+<h4>
+    应用场景
+</h4>
+<ul>
+    <li><span class="special">混合系统</span>：包含不同速度设备的系统</li>
+    <li><span class="special">扩展系统</span>：需要支持慢速扩展设备的系统</li>
+</ul>
+
+<h2>
+    总线标准
+</h2>
+<h3>
+    1. ISA总线
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">8/16位数据总线</span>：支持8位或16位数据传输</li>
+    <li><span class="special">24位地址总线</span>：可寻址16MB地址空间</li>
+    <li><span class="special">8MHz时钟</span>：标准工作频率8MHz</li>
+</ul>
+
+<h4>
+    应用
+</h4>
+<ul>
+    <li><span class="special">早期PC</span>：IBM PC/AT及其兼容机</li>
+    <li><span class="special">扩展卡</span>：声卡、网卡等扩展设备</li>
+</ul>
+
+<h3>
+    2. PCI总线
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">32/64位数据总线</span>：支持32位或64位数据传输</li>
+    <li><span class="special">33/66MHz时钟</span>：支持33MHz或66MHz工作频率</li>
+    <li><span class="special">即插即用</span>：支持即插即用功能</li>
+    <li><span class="special">突发传输</span>：支持突发数据传输模式</li>
+</ul>
+
+<h4>
+    架构
+</h4>
+<ul>
+    <li><span class="special">主桥</span>：连接CPU和PCI总线</li>
+    <li><span class="special">PCI设备</span>：各种PCI接口设备</li>
+    <li><span class="special">PCI桥</span>：连接多个PCI总线段</li>
+</ul>
+
+<h3>
+    3. PCI Express总线
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">串行传输</span>：采用高速串行传输</li>
+    <li><span class="special">点对点连接</span>：设备间点对点连接</li>
+    <li><span class="special">高带宽</span>：单通道带宽可达2.5Gbps（PCIe 1.0）</li>
+    <li><span class="special">可扩展</span>：支持x1、x4、x8、x16等多种通道配置</li>
+</ul>
+
+<h4>
+    架构
+</h4>
+<ul>
+    <li><span class="special">根复合体</span>：连接CPU和PCIe设备</li>
+    <li><span class="special">交换机</span>：扩展PCIe端口</li>
+    <li><span class="special">端点设备</span>：各种PCIe接口设备</li>
+</ul>
+
+<h3>
+    4. USB总线
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">通用串行总线</span>：支持多种设备类型</li>
+    <li><span class="special">热插拔</span>：支持设备热插拔</li>
+    <li><span class="special">即插即用</span>：自动识别和配置设备</li>
+    <li><span class="special">供电能力</span>：可为设备提供电源</li>
+</ul>
+
+<h4>
+    版本演进
+</h4>
+<table>
+    <thead>
+        <tr>
+            <th>版本</th>
+            <th>发布年份</th>
+            <th>最大速率</th>
+            <th>特点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>USB 1.0</td>
+            <td>1996</td>
+            <td>12 Mbps</td>
+            <td>低速/全速模式</td>
+        </tr>
+        <tr>
+            <td>USB 2.0</td>
+            <td>2000</td>
+            <td>480 Mbps</td>
+            <td>高速模式</td>
+        </tr>
+        <tr>
+            <td>USB 3.0</td>
+            <td>2008</td>
+            <td>5 Gbps</td>
+            <td>超高速模式</td>
+        </tr>
+        <tr>
+            <td>USB 3.1</td>
+            <td>2013</td>
+            <td>10 Gbps</td>
+            <td>超高速+模式</td>
+        </tr>
+        <tr>
+            <td>USB 3.2</td>
+            <td>2017</td>
+            <td>20 Gbps</td>
+            <td>双通道超高速</td>
+        </tr>
+        <tr>
+            <td>USB 4.0</td>
+            <td>2019</td>
+            <td>40 Gbps</td>
+            <td>基于Thunderbolt 3</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    总线性能分析
+</h2>
+<h3>
+    1. 带宽计算
+</h3>
+<h4>
+    基本公式
+</h4>
+<p>
+    总线带宽 = 总线宽度 × 时钟频率 × 传输效率
+</p>
+
+<h4>
+    示例计算
+</h4>
+<ul>
+    <li><span class="special">32位总线，33MHz</span>：32 × 33 MHz = 1056 Mbps = 132 MB/s</li>
+    <li><span class="special">64位总线，66MHz</span>：64 × 66 MHz = 4224 Mbps = 528 MB/s</li>
+</ul>
+
+<h3>
+    2. 性能影响因素
+</h3>
+<h4>
+    总线宽度
+</h4>
+<ul>
+    <li><span class="special">数据宽度</span>：影响单次传输的数据量</li>
+    <li><span class="special">地址宽度</span>：影响可寻址空间大小</li>
+</ul>
+
+<h4>
+    总线频率
+</h4>
+<ul>
+    <li><span class="special">时钟频率</span>：决定总线的工作速度</li>
+    <li><span class="special">倍频技术</span>：通过倍频提高有效频率</li>
+</ul>
+
+<h4>
+    传输方式
+</h4>
+<ul>
+    <li><span class="special">突发传输</span>：连续传输多个数据</li>
+    <li><span class="special">块传输</span>：传输数据块</li>
+    <li><span class="special">流水线传输</span>：重叠多个传输操作</li>
+</ul>
+
+<h3>
+    3. 性能优化技术
+</h3>
+<h4>
+    总线缓冲
+</h4>
+<ul>
+    <li><span class="special">数据缓冲</span>：减少总线占用时间</li>
+    <li><span class="special">地址缓冲</span>：提前准备地址信息</li>
+</ul>
+
+<h4>
+    总线复用
+</h4>
+<ul>
+    <li><span class="special">地址/数据复用</span>：同一组线传输地址和数据</li>
+    <li><span class="special">控制复用</span>：多个控制信号共享线路</li>
+</ul>
+
+<h4>
+    总线分级
+</h4>
+<ul>
+    <li><span class="special">局部总线</span>：高速设备专用总线</li>
+    <li><span class="special">系统总线</span>：连接主要功能部件</li>
+    <li><span class="special">扩展总线</span>：连接低速扩展设备</li>
+</ul>
