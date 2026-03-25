@@ -1460,8 +1460,12 @@ window.doShader = function (el) {
 
     var preEls = el.getElementsByTagName('pre'), i, j;
     for (i = 0; i < preEls.length; i++) {
-        var shaderJSON = null;
-        var source = replaceCode(preEls[i].innerHTML.trim());
+        var shaderJSON = null, source;
+        if (/\n/.test(preEls[i].innerHTML)) {
+            source = replaceCode(preEls[i].innerHTML);
+        } else {
+            source = replaceCode(preEls[i].innerHTML.trim());
+        }
 
         switch (preEls[i].getAttribute('tag')) {
             case "html": {

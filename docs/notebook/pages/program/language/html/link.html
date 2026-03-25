@@ -8,24 +8,20 @@
     基本用法
 </h2>
 <pre tag='html'>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Link标签示例</title>
-    
-    <!-- 链接CSS样式表 -->
-    <link rel="stylesheet" href="styles.css">
-    
-    <!-- 网站图标 -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    
-    <!-- 预加载资源 -->
-    <link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin>
-</head>
-<body>
-    <h1>欢迎来到我的网页</h1>
-</body>
-</html>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;!-- 链接CSS样式表 --&gt;
+        &lt;link rel="stylesheet" href="styles.css"&gt;
+
+        &lt;!-- 网站图标 --&gt;
+        &lt;link rel="icon" href="favicon.ico" type="image/x-icon"&gt;
+
+        &lt;!-- 预加载资源 --&gt;
+        &lt;link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin&gt;
+    &lt;/head&gt;
+    &lt;body&gt;&lt;/body&gt;
+&lt;/html&gt;
 </pre>
 <h2>
     属性详解
@@ -150,9 +146,9 @@
     integrity属性允许浏览器检查获取的资源是否被篡改，提供了额外的安全性。
 </p>
 <pre tag='html'>
-<link rel="stylesheet" 
-      href="https://cdn.example.com/bootstrap.min.css" 
-      integrity="sha384-..." 
+<link rel="stylesheet"
+      href="https://cdn.example.com/bootstrap.min.css"
+      integrity="sha384-..."
       crossorigin="anonymous">
 </pre>
 <h3>
@@ -274,13 +270,3 @@
 <link rel="preload" href="hero-image.jpg" as="image">
 <link rel="preload" href="main-font.woff2" as="font" type="font/woff2" crossorigin>
 </pre>
-<h2>
-    注意事项
-</h2>
-<ul>
-    <li>link标签应该放在head部分</li>
-    <li>对于CSS样式表，应该尽早加载以避免页面闪烁</li>
-    <li>使用integrity属性可以提高安全性，但需要定期更新哈希值</li>
-    <li>预加载资源时要谨慎，避免浪费带宽</li>
-    <li>对于第三方资源，考虑使用crossorigin属性</li>
-</ul>
