@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/textarea-eraser/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['326']=function(){
+window.__pkg__bundleSrc__['333']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('433');
+    __pkg__scope_args__=window.__pkg__getBundle('440');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('434');
+__pkg__scope_args__=window.__pkg__getBundle('441');
 
 
 
@@ -35,7 +35,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/textarea-eraser/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['433']=function(){
+window.__pkg__bundleSrc__['440']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,8,12]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","target":"_blank"},"childNodes":[4]},{"type":"text","content":"一个简单的多行文本擦除显示动画效果","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[6]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[7]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content textarea-eraser","ref":"mycontent"},"childNodes":[9,10]},{"type":"tag","name":"p","attrs":{"ui-bind":"text"},"childNodes":[]},{"type":"tag","name":"p","attrs":{"class":"help"},"childNodes":[11]},{"type":"tag","name":"span","attrs":{"ui-bind":"text"},"childNodes":[]},{"type":"tag","name":"style","attrs":{},"childNodes":[13]},{"type":"text","content":"@property --p {\r\n    syntax: '<percentage>';\r\n    initial-value: 0%;\r\n    inherits: false;\r\n}\r\n\r\n@keyframes erase_animation {\r\n    to {\r\n        --p: 100%;\r\n    }\r\n}","childNodes":[]}]
@@ -46,7 +46,7 @@ window.__pkg__bundleSrc__['433']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/textarea-eraser/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['434']=function(){
+window.__pkg__bundleSrc__['441']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

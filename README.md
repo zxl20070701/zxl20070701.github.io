@@ -44,7 +44,13 @@ npm run build
 
 ### 文档笔记
 
-主要是一些文档笔记，包括编程、数学、计算机、英语、历史等各种常用的内容快速查询。
+主要是一些文档笔记，包括编程、数学、计算机、英语、历史等各种常用的内容快速查询：
+
+<img src="https://zxl20070701.github.io/images/snipping/notebook.jpeg">
+
+笔记支持代码、数学公式等特殊录入：
+
+<img src="https://zxl20070701.github.io/notebook/images/formula.jpeg">
 
 ### 实用工具
 
@@ -64,7 +70,7 @@ npm run build
 
 下面是部分功能的预览截图：
 
-<table style="text-align:center;">
+<table>
     <tbody>
         <tr>
             <th>

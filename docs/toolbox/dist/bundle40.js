@@ -2,34 +2,34 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/npm-download/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['96']=function(){
+window.__pkg__bundleSrc__['103']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('346');
+    __pkg__scope_args__=window.__pkg__getBundle('353');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('347');
+__pkg__scope_args__=window.__pkg__getBundle('354');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('305');
+__pkg__scope_args__=window.__pkg__getBundle('312');
 var canvasRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('306');
+__pkg__scope_args__=window.__pkg__getBundle('313');
 var getValue =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('309');
+__pkg__scope_args__=window.__pkg__getBundle('316');
 var toValue =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('310');
+__pkg__scope_args__=window.__pkg__getBundle('317');
 var ruler =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('311');
+__pkg__scope_args__=window.__pkg__getBundle('318');
 var getLoopColors =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('312');
+__pkg__scope_args__=window.__pkg__getBundle('319');
 var drawRuler =__pkg__scope_args__.default;
 
 
@@ -112,7 +112,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/npm-download/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['346']=function(){
+window.__pkg__bundleSrc__['353']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[4]},{"type":"text","content":"Npm Download","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[8]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
@@ -123,7 +123,7 @@ window.__pkg__bundleSrc__['346']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/npm-download/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['347']=function(){
+window.__pkg__bundleSrc__['354']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -137,13 +137,13 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['305']=function(){
+window.__pkg__bundleSrc__['312']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('144');
+    __pkg__scope_args__=window.__pkg__getBundle('151');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('211');
+__pkg__scope_args__=window.__pkg__getBundle('218');
 var assemble =__pkg__scope_args__.default;
 
 
@@ -258,20 +258,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
+window.__pkg__bundleSrc__['151']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('145');
+    __pkg__scope_args__=window.__pkg__getBundle('152');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('147');
+__pkg__scope_args__=window.__pkg__getBundle('154');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('145');
+__pkg__scope_args__=window.__pkg__getBundle('152');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -558,10 +558,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['145']=function(){
+window.__pkg__bundleSrc__['152']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('146');
+    __pkg__scope_args__=window.__pkg__getBundle('153');
 var arc =__pkg__scope_args__.default;
 
 
@@ -680,7 +680,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['153']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -741,7 +741,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
+window.__pkg__bundleSrc__['154']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -781,7 +781,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/assemble
 /*****************************************************************/
-window.__pkg__bundleSrc__['211']=function(){
+window.__pkg__bundleSrc__['218']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (begin, end, step, count) {
@@ -814,10 +814,10 @@ window.__pkg__bundleSrc__['211']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/npm-download/getValue
 /*****************************************************************/
-window.__pkg__bundleSrc__['306']=function(){
+window.__pkg__bundleSrc__['313']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('307');
+    __pkg__scope_args__=window.__pkg__getBundle('314');
 var xhr =__pkg__scope_args__.default;
 
 
@@ -871,13 +871,13 @@ __pkg__scope_bundle__.default= function (packages) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhr/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['307']=function(){
+window.__pkg__bundleSrc__['314']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunction =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('308');
+__pkg__scope_args__=window.__pkg__getBundle('315');
 var toString =__pkg__scope_args__.default;
 
 
@@ -949,10 +949,10 @@ __pkg__scope_bundle__.default= function (settings, callback, errorback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhr/toString
 /*****************************************************************/
-window.__pkg__bundleSrc__['308']=function(){
+window.__pkg__bundleSrc__['315']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('54');
+    __pkg__scope_args__=window.__pkg__getBundle('61');
 var isPlainObject =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('31');
@@ -990,7 +990,7 @@ __pkg__scope_bundle__.default= function (data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/npm-download/toValue
 /*****************************************************************/
-window.__pkg__bundleSrc__['309']=function(){
+window.__pkg__bundleSrc__['316']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (oralValue, interval) {
@@ -1028,7 +1028,7 @@ window.__pkg__bundleSrc__['309']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['310']=function(){
+window.__pkg__bundleSrc__['317']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 刻度尺刻度求解
@@ -1138,7 +1138,7 @@ __pkg__scope_bundle__.default= function (maxValue, minValue, num) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/getLoopColors
 /*****************************************************************/
-window.__pkg__bundleSrc__['311']=function(){
+window.__pkg__bundleSrc__['318']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取一组循环色彩
@@ -1192,13 +1192,13 @@ __pkg__scope_bundle__.default= function (num, alpha) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/extend/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['312']=function(){
+window.__pkg__bundleSrc__['319']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('313');
+    __pkg__scope_args__=window.__pkg__getBundle('320');
 var dotRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('216');
+__pkg__scope_args__=window.__pkg__getBundle('223');
 var initConfig=__pkg__scope_args__.initConfig;
 
 
@@ -1342,19 +1342,19 @@ __pkg__scope_bundle__.default= function (painter, attr) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/dot
 /*****************************************************************/
-window.__pkg__bundleSrc__['313']=function(){
+window.__pkg__bundleSrc__['320']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('216');
+    __pkg__scope_args__=window.__pkg__getBundle('223');
 var initConfig=__pkg__scope_args__.initConfig;
 
-__pkg__scope_args__=window.__pkg__getBundle('314');
+__pkg__scope_args__=window.__pkg__getBundle('321');
 var move =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('222');
+__pkg__scope_args__=window.__pkg__getBundle('229');
 var rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('315');
+__pkg__scope_args__=window.__pkg__getBundle('322');
 var scale =__pkg__scope_args__.default;
 
 
@@ -1410,7 +1410,7 @@ __pkg__scope_bundle__.default= function (config) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['216']=function(){
+window.__pkg__bundleSrc__['223']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1433,7 +1433,7 @@ __pkg__scope_bundle__.initConfig = function (init, data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['314']=function(){
+window.__pkg__bundleSrc__['321']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）沿着向量（ax,ay）方向移动距离d
@@ -1451,7 +1451,7 @@ __pkg__scope_bundle__.default= function (ax, ay, d, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/rotate
 /*****************************************************************/
-window.__pkg__bundleSrc__['222']=function(){
+window.__pkg__bundleSrc__['229']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）旋转deg度
@@ -1469,7 +1469,7 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/scale
 /*****************************************************************/
-window.__pkg__bundleSrc__['315']=function(){
+window.__pkg__bundleSrc__['322']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）缩放times倍

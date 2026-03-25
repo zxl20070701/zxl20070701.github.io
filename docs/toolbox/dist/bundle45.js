@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/video-play/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['101']=function(){
+window.__pkg__bundleSrc__['108']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('356');
+    __pkg__scope_args__=window.__pkg__getBundle('363');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('357');
+__pkg__scope_args__=window.__pkg__getBundle('364');
 
 
 __pkg__scope_bundle__.default= function (obj) {
@@ -36,7 +36,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/video-play/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['356']=function(){
+window.__pkg__bundleSrc__['363']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,11,13]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"视频播放器","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"label","attrs":{"for":"videoFile"},"childNodes":[10]},{"type":"text","content":"选择文件","childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:active":"videoSrc?'yes':'no'"},"childNodes":[12]},{"type":"tag","name":"video","attrs":{"ui-bind:src":"videoSrc","controls":""},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"no-view"},"childNodes":[14]},{"type":"tag","name":"input","attrs":{"id":"videoFile","type":"file","accept":"video/*","ui-on:change":"openVideo"},"childNodes":[]}]
@@ -47,7 +47,7 @@ window.__pkg__bundleSrc__['356']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/video-play/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['357']=function(){
+window.__pkg__bundleSrc__['364']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

@@ -103,13 +103,13 @@ __pkg__scope_args__=window.__pkg__getBundle('45');
 
 
 // 调试后台
-__pkg__scope_args__=window.__pkg__getBundle('46');
+__pkg__scope_args__=window.__pkg__getBundle('53');
 var runDebug =__pkg__scope_args__.default;
 
 runDebug();
 
 // 系统相关
-__pkg__scope_args__=window.__pkg__getBundle('55');
+__pkg__scope_args__=window.__pkg__getBundle('62');
 
 
 // 桌面壁纸
@@ -2375,9 +2375,33 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/polyfill/Promise
+// Original file:./src/polyfill/index
 /*****************************************************************/
 window.__pkg__bundleSrc__['45']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('46');
+
+__pkg__scope_args__=window.__pkg__getBundle('47');
+
+__pkg__scope_args__=window.__pkg__getBundle('48');
+
+__pkg__scope_args__=window.__pkg__getBundle('49');
+
+__pkg__scope_args__=window.__pkg__getBundle('50');
+
+__pkg__scope_args__=window.__pkg__getBundle('51');
+
+__pkg__scope_args__=window.__pkg__getBundle('52');
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/polyfill/Promise.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['46']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var isObject = function (value) {
@@ -2812,12 +2836,227 @@ if (!('Promise' in window)) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/tool/debugger/index
+// Original file:./src/polyfill/event.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['46']=function(){
+window.__pkg__bundleSrc__['47']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('47');
+    // 兼容老IE浏览器
+// 请不要使用event.srcElement获取
+// https://dom.spec.whatwg.org/#dom-event-srcelement
+if ('target' in Event.prototype === false) {
+    Object.defineProperty(Event.prototype, 'target', {
+        get: function () {
+            return this.srcElement;
+        }
+    });
+}
+
+// 取消冒泡事件
+// 防止对事件流中当前节点的后续节点中的所有事件侦听器进行处理
+// 此方法不会影响当前节点中的任何事件侦听器
+// 如果需要取消包括本结点的方法，应该使用stopImmediatePropagation()
+// https://dom.spec.whatwg.org/#dom-event-stopimmediatepropagation
+if ('stopPropagation' in Event.prototype === false) {
+    Event.prototype.stopPropagation = function () {
+        this.cancelBubble = true;
+    };
+}
+
+// 阻止默认事件
+// https://dom.spec.whatwg.org/#dom-event-preventdefault
+if ('preventDefault' in Event.prototype === false) {
+    Event.prototype.preventDefault = function () {
+        this.returnValue = false;
+    };
+}
+
+// 获取键盘按下键编码
+// https://www.w3.org/TR/uievents/#dom-keyboardevent-which
+if ('keyCode' in Event.prototype === false) {
+    Object.defineProperty(Event.prototype, 'keyCode', {
+        get: function () {
+            return this.which || this.charCode;
+        }
+    });
+}
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/polyfill/function.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['48']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 获取函数名称
+// 部分旧浏览器不支持
+if ('name' in Function.prototype === false) {
+    // https://www.ecma-international.org/ecma-262/6.0/#sec-setfunctionname
+    Object.defineProperty(Function.prototype, 'name', {
+        get: function () {
+            return this.toString().match(/^\s*function\s*([^\(\s]*)/)[1];
+        }
+    });
+}
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/polyfill/Math.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['49']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 判断一个数字正负
+// IE不支持
+if (Math.sign === undefined) {
+    // https://www.ecma-international.org/ecma-262/6.0/#sec-math.sign
+    Math.sign = function (x) {
+        return (x < 0) ? - 1 : (x > 0) ? 1 : + x;
+    };
+}
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/polyfill/number.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['50']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 表示二个正的浮点数之间的最新差值
+// 你可以由此判断二个浮点数是否相对
+// （因为js浮点运算都不是准确的，不可以简单的等号判断）
+// 老火狐和IE不支持
+if (Number.EPSILON === undefined) {
+    // https://www.ecma-international.org/ecma-262/6.0/#sec-number.epsilon
+    Number.EPSILON = Math.pow(2, - 52);
+}
+
+// 判断是不是整数
+// IE浏览器不支持
+if (Number.isInteger === undefined) {
+    Number.isInteger = function (value) {
+        // https://www.ecma-international.org/ecma-262/6.0/#sec-isfinite-number
+        return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+    };
+}
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/polyfill/Object.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['51']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 用于复制属性
+if (Object.assign === undefined) {
+    // https://www.ecma-international.org/ecma-262/6.0/#sec-object.assign
+    (function () {
+        Object.assign = function (target) {
+            if (target === undefined || target === null) {
+                throw new TypeError('Cannot convert undefined or null to object');
+            }
+            var output = Object(target);
+            for (var index = 1; index < arguments.length; index++) {
+                var source = arguments[index];
+                if (source !== undefined && source !== null) {
+                    for (var nextKey in source) {
+                        if (Object.prototype.hasOwnProperty.call(source, nextKey)) {
+                            output[nextKey] = source[nextKey];
+                        }
+                    }
+                }
+            }
+            return output;
+        };
+    })();
+}
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/polyfill/innerHTML.js
+/*****************************************************************/
+window.__pkg__bundleSrc__['52']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    // 针对部分浏览器svg上没有innerHTML进行加强
+var _innerHTML = {
+    get: function () {
+        var frame = document.createElement("div"), i;
+        for (i = 0; i < this.childNodes.length; i++) {
+            // 深度克隆，克隆节点以及节点下面的子内容
+            frame.appendChild(this.childNodes[i].cloneNode(true));
+        }
+        return frame.innerHTML;
+    },
+    set: function (svgstring) {
+        var frame = document.createElement("div"), i;
+        frame.innerHTML = svgstring;
+        var toSvgNode = function (htmlNode) {
+            var svgNode = document.createElementNS("http://www.w3.org/2000/svg", (htmlNode.tagName + "").toLowerCase());
+            var attrs = htmlNode.attributes, i;
+            for (i = 0; attrs && i < attrs.length; i++) {
+                if (["href", "title", "show", "type", "role", "actuate"].indexOf(attrs[i].nodeName) >= 0) {
+                    // 特殊的svg属性需要使用特殊的方法设置
+                    svgNode.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:' + attrs[i].nodeName, htmlNode.getAttribute(attrs[i].nodeName));
+                } else {
+                    svgNode.setAttribute(attrs[i].nodeName, htmlNode.getAttribute(attrs[i].nodeName));
+                }
+
+            }
+            return svgNode;
+        };
+        var rslNode = toSvgNode(frame.firstChild);
+        (function toSVG(pnode, svgPnode) {
+            var node = pnode.firstChild;
+            if (node && node.nodeType == 3) {
+                svgPnode.textContent = pnode.innerText;
+                return;
+            }
+            while (node) {
+                var svgNode = toSvgNode(node);
+                svgPnode.appendChild(svgNode);
+                if (node.firstChild) toSVG(node, svgNode);
+                node = node.nextSibling;
+            }
+        })(frame.firstChild, rslNode);
+        this.appendChild(rslNode);
+    }
+};
+
+if ('innerHTML' in SVGElement.prototype === false) {
+    Object.defineProperty(SVGElement.prototype, 'innerHTML', _innerHTML);
+}
+
+if ('innerHTML' in SVGSVGElement.prototype === false) {
+    Object.defineProperty(SVGSVGElement.prototype, 'innerHTML', _innerHTML);
+}
+
+
+    return __pkg__scope_bundle__;
+}
+
+/*************************** [bundle] ****************************/
+// Original file:./src/tool/debugger/index
+/*****************************************************************/
+window.__pkg__bundleSrc__['53']=function(){
+    var __pkg__scope_bundle__={};
+    var __pkg__scope_args__;
+    __pkg__scope_args__=window.__pkg__getBundle('54');
 var showData =__pkg__scope_args__.default;
 
 
@@ -2955,10 +3194,10 @@ __pkg__scope_bundle__.default= function () {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/debugger/showData
 /*****************************************************************/
-window.__pkg__bundleSrc__['47']=function(){
+window.__pkg__bundleSrc__['54']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('48');
+    __pkg__scope_args__=window.__pkg__getBundle('55');
 var appendTo =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
@@ -2970,13 +3209,13 @@ var isString =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunction =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('51');
+__pkg__scope_args__=window.__pkg__getBundle('58');
 var isNumber =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('52');
+__pkg__scope_args__=window.__pkg__getBundle('59');
 var isBoolean =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('53');
+__pkg__scope_args__=window.__pkg__getBundle('60');
 var toString =__pkg__scope_args__.default;
 
 
@@ -3051,13 +3290,13 @@ __pkg__scope_bundle__.default= function (target, msg) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/appendTo
 /*****************************************************************/
-window.__pkg__bundleSrc__['48']=function(){
+window.__pkg__bundleSrc__['55']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('49');
+    __pkg__scope_args__=window.__pkg__getBundle('56');
 var isElement =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('50');
+__pkg__scope_args__=window.__pkg__getBundle('57');
 var toNode =__pkg__scope_args__.default;
 
 
@@ -3074,7 +3313,7 @@ __pkg__scope_bundle__.default= function (el, template) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isElement
 /*****************************************************************/
-window.__pkg__bundleSrc__['49']=function(){
+window.__pkg__bundleSrc__['56']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (dom) {
@@ -3088,10 +3327,10 @@ window.__pkg__bundleSrc__['49']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/toNode
 /*****************************************************************/
-window.__pkg__bundleSrc__['50']=function(){
+window.__pkg__bundleSrc__['57']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('49');
+    __pkg__scope_args__=window.__pkg__getBundle('56');
 var isElement =__pkg__scope_args__.default;
 
 
@@ -3131,7 +3370,7 @@ __pkg__scope_bundle__.default= function (template) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isNumber
 /*****************************************************************/
-window.__pkg__bundleSrc__['51']=function(){
+window.__pkg__bundleSrc__['58']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('5');
@@ -3158,7 +3397,7 @@ __pkg__scope_bundle__.default= function (value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isBoolean
 /*****************************************************************/
-window.__pkg__bundleSrc__['52']=function(){
+window.__pkg__bundleSrc__['59']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('5');
@@ -3183,10 +3422,10 @@ __pkg__scope_bundle__.default= function (value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/debugger/toString
 /*****************************************************************/
-window.__pkg__bundleSrc__['53']=function(){
+window.__pkg__bundleSrc__['60']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('54');
+    __pkg__scope_args__=window.__pkg__getBundle('61');
 var isPlainObject =__pkg__scope_args__.default;
 
 
@@ -3217,7 +3456,7 @@ __pkg__scope_bundle__.default= function (val) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/type/isPlainObject
 /*****************************************************************/
-window.__pkg__bundleSrc__['54']=function(){
+window.__pkg__bundleSrc__['61']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('5');
@@ -3256,7 +3495,7 @@ __pkg__scope_bundle__.default= function (value) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/system/keep-time
 /*****************************************************************/
-window.__pkg__bundleSrc__['55']=function(){
+window.__pkg__bundleSrc__['62']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 如果time不是空，说明当前打开前，已经有这个页面打开了，无需更新打开时间

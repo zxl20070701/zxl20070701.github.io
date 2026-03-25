@@ -2,26 +2,26 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/sankey-nodeAlign-left/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['268']=function(){
+window.__pkg__bundleSrc__['275']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('419');
+    __pkg__scope_args__=window.__pkg__getBundle('426');
 var template =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('197');
+__pkg__scope_args__=window.__pkg__getBundle('204');
 var ResizeObserver =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('144');
+__pkg__scope_args__=window.__pkg__getBundle('151');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('307');
+__pkg__scope_args__=window.__pkg__getBundle('314');
 var xhr =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('420');
+__pkg__scope_args__=window.__pkg__getBundle('427');
 var toSankeyImageData =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('311');
+__pkg__scope_args__=window.__pkg__getBundle('318');
 var getLoopColors =__pkg__scope_args__.default;
 
 
@@ -114,7 +114,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/sankey-nodeAlign-left/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['419']=function(){
+window.__pkg__bundleSrc__['426']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"桑基图左对齐布局","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
@@ -125,7 +125,7 @@ window.__pkg__bundleSrc__['419']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['197']=function(){
+window.__pkg__bundleSrc__['204']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -208,20 +208,20 @@ __pkg__scope_bundle__.default= function (el, doback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
+window.__pkg__bundleSrc__['151']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('145');
+    __pkg__scope_args__=window.__pkg__getBundle('152');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('147');
+__pkg__scope_args__=window.__pkg__getBundle('154');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('145');
+__pkg__scope_args__=window.__pkg__getBundle('152');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -508,10 +508,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['145']=function(){
+window.__pkg__bundleSrc__['152']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('146');
+    __pkg__scope_args__=window.__pkg__getBundle('153');
 var arc =__pkg__scope_args__.default;
 
 
@@ -630,7 +630,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['153']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -691,7 +691,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
+window.__pkg__bundleSrc__['154']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -731,13 +731,13 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhr/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['307']=function(){
+window.__pkg__bundleSrc__['314']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunction =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('308');
+__pkg__scope_args__=window.__pkg__getBundle('315');
 var toString =__pkg__scope_args__.default;
 
 
@@ -809,10 +809,10 @@ __pkg__scope_bundle__.default= function (settings, callback, errorback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhr/toString
 /*****************************************************************/
-window.__pkg__bundleSrc__['308']=function(){
+window.__pkg__bundleSrc__['315']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('54');
+    __pkg__scope_args__=window.__pkg__getBundle('61');
 var isPlainObject =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('31');
@@ -850,7 +850,7 @@ __pkg__scope_bundle__.default= function (data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/tool/toSankeyImageData
 /*****************************************************************/
-window.__pkg__bundleSrc__['420']=function(){
+window.__pkg__bundleSrc__['427']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1002,7 +1002,7 @@ __pkg__scope_bundle__.default= function (data, width, height, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/getLoopColors
 /*****************************************************************/
-window.__pkg__bundleSrc__['311']=function(){
+window.__pkg__bundleSrc__['318']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取一组循环色彩

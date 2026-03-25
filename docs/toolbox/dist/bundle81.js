@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/colorful-dice/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['327']=function(){
+window.__pkg__bundleSrc__['334']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('435');
+    __pkg__scope_args__=window.__pkg__getBundle('442');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('436');
+__pkg__scope_args__=window.__pkg__getBundle('443');
 
 
 
@@ -34,7 +34,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/colorful-dice/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['435']=function(){
+window.__pkg__bundleSrc__['442']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,8,22]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","target":"_blank"},"childNodes":[4]},{"type":"text","content":"一个旋转的3D彩色骰子","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[6]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[7]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content colorful-dice","ref":"mycontent"},"childNodes":[9]},{"type":"tag","name":"ul","attrs":{},"childNodes":[10,12,14,16,18,20]},{"type":"tag","name":"li","attrs":{},"childNodes":[11]},{"type":"text","content":"1","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[13]},{"type":"text","content":"2","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[15]},{"type":"text","content":"3","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[17]},{"type":"text","content":"4","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[19]},{"type":"text","content":"5","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[21]},{"type":"text","content":"6","childNodes":[]},{"type":"tag","name":"style","attrs":{},"childNodes":[23]},{"type":"text","content":"@keyframes rotate_animation {\r\n        0% {\r\n            transform: rotateY(0) rotateX(360deg);\r\n        }\r\n\r\n        16.7% {\r\n            transform: rotateY(60deg) rotateX(300deg);\r\n        }\r\n\r\n        33.3% {\r\n            transform: rotateY(100deg) rotateX(240deg);\r\n        }\r\n\r\n        50% {\r\n            transform: rotateY(180deg) rotateX(100deg);\r\n        }\r\n\r\n        66.7% {\r\n            transform: rotateY(240deg) rotateX(120deg);\r\n        }\r\n\r\n        83.3% {\r\n            transform: rotateY(330deg) rotateX(60deg);\r\n        }\r\n\r\n        100% {\r\n            transform: rotateY(360deg) rotateX(0deg);\r\n        }\r\n    }","childNodes":[]}]
@@ -45,7 +45,7 @@ window.__pkg__bundleSrc__['435']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/colorful-dice/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['436']=function(){
+window.__pkg__bundleSrc__['443']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

@@ -2,29 +2,29 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/zoom-line/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['266']=function(){
+window.__pkg__bundleSrc__['273']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('406');
+    __pkg__scope_args__=window.__pkg__getBundle('413');
 var template =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('197');
+__pkg__scope_args__=window.__pkg__getBundle('204');
 var ResizeObserver =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('407');
+__pkg__scope_args__=window.__pkg__getBundle('414');
 var data =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('144');
+__pkg__scope_args__=window.__pkg__getBundle('151');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('310');
+__pkg__scope_args__=window.__pkg__getBundle('317');
 var ruler =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('408');
+__pkg__scope_args__=window.__pkg__getBundle('415');
 var throttle =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('409');
+__pkg__scope_args__=window.__pkg__getBundle('416');
 var PointIn =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('22');
@@ -337,7 +337,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/zoom-line/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['406']=function(){
+window.__pkg__bundleSrc__['413']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"可缩放折线图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
@@ -348,7 +348,7 @@ window.__pkg__bundleSrc__['406']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ResizeObserver
 /*****************************************************************/
-window.__pkg__bundleSrc__['197']=function(){
+window.__pkg__bundleSrc__['204']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var _support_ = true;
@@ -431,7 +431,7 @@ __pkg__scope_bundle__.default= function (el, doback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/zoom-line/data
 /*****************************************************************/
-window.__pkg__bundleSrc__['407']=function(){
+window.__pkg__bundleSrc__['414']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     let base = +new Date(1968, 9, 3);
@@ -456,20 +456,20 @@ __pkg__scope_bundle__.default= data;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
+window.__pkg__bundleSrc__['151']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('145');
+    __pkg__scope_args__=window.__pkg__getBundle('152');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('147');
+__pkg__scope_args__=window.__pkg__getBundle('154');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('145');
+__pkg__scope_args__=window.__pkg__getBundle('152');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -756,10 +756,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['145']=function(){
+window.__pkg__bundleSrc__['152']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('146');
+    __pkg__scope_args__=window.__pkg__getBundle('153');
 var arc =__pkg__scope_args__.default;
 
 
@@ -878,7 +878,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['153']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -939,7 +939,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
+window.__pkg__bundleSrc__['154']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -979,7 +979,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['310']=function(){
+window.__pkg__bundleSrc__['317']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 刻度尺刻度求解
@@ -1089,7 +1089,7 @@ __pkg__scope_bundle__.default= function (maxValue, minValue, num) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/throttle
 /*****************************************************************/
-window.__pkg__bundleSrc__['408']=function(){
+window.__pkg__bundleSrc__['415']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function throttle(callback, _option) {
@@ -1149,19 +1149,19 @@ window.__pkg__bundleSrc__['408']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/pointin/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['409']=function(){
+window.__pkg__bundleSrc__['416']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('410');
+    __pkg__scope_args__=window.__pkg__getBundle('417');
 var arc =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('411');
+__pkg__scope_args__=window.__pkg__getBundle('418');
 var circle =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('412');
+__pkg__scope_args__=window.__pkg__getBundle('419');
 var polygon =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('413');
+__pkg__scope_args__=window.__pkg__getBundle('420');
 var rect =__pkg__scope_args__.default;
 
 
@@ -1189,7 +1189,7 @@ __pkg__scope_bundle__.default= PointIn;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/pointin/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['410']=function(){
+window.__pkg__bundleSrc__['417']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 判断第二个弧度是否大于第一个
@@ -1275,7 +1275,7 @@ __pkg__scope_bundle__.default= function (cx, cy, r1, r2, beginDeg, deg) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/pointin/circle
 /*****************************************************************/
-window.__pkg__bundleSrc__['411']=function(){
+window.__pkg__bundleSrc__['418']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (cx, cy, r) {
@@ -1293,7 +1293,7 @@ window.__pkg__bundleSrc__['411']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/pointin/polygon
 /*****************************************************************/
-window.__pkg__bundleSrc__['412']=function(){
+window.__pkg__bundleSrc__['419']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (points) {
@@ -1353,7 +1353,7 @@ window.__pkg__bundleSrc__['412']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/pointin/rect
 /*****************************************************************/
-window.__pkg__bundleSrc__['413']=function(){
+window.__pkg__bundleSrc__['420']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (x, y, width, height) {

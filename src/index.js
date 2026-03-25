@@ -14,7 +14,7 @@ import lazyDialogs from "./dialogs/lazy-load";
 import './common.scss';
 
 // 浏览器兼容文件
-import './polyfill/Promise';
+import './polyfill/index';
 
 // 调试后台
 import runDebug from './tool/debugger/index';

@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['35']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('63');
+    __pkg__scope_args__=window.__pkg__getBundle('70');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('64');
+__pkg__scope_args__=window.__pkg__getBundle('71');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('31');
@@ -18,7 +18,7 @@ __pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunction =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('65');
+__pkg__scope_args__=window.__pkg__getBundle('72');
 var lazyWins =__pkg__scope_args__.default;
 
 
@@ -125,7 +125,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/desktop/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['63']=function(){
+window.__pkg__bundleSrc__['70']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,22]},{"type":"tag","name":"ul","attrs":{"class":"content","ui-right-menu:system":"","ui-on:click":"doSelect","tag":""},"childNodes":[2,4,6,8,10,12,14,16,18,20]},{"type":"tag","name":"li","attrs":{"ui-bind:select":"select=='computer'?'yes':'no'","ui-on:click.stop":"doSelect","title":"包含所有应用的地方","tag":"computer","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[3]},{"type":"text","content":"我的电脑","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='recorder-screen'?'yes':'no'","ui-on:click.stop":"doSelect","title":"一个H5版本的电脑屏幕录制软件","tag":"recorder-screen","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[5]},{"type":"text","content":"录屏软件","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='image-editor'?'yes':'no'","ui-on:click.stop":"doSelect","title":"可以对图片进行编辑，包括合并、修改大小、美化等","tag":"image-editor","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[7]},{"type":"text","content":"图片编辑器","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='code-editor'?'yes':'no'","ui-on:click.stop":"doSelect","title":"支持图片、代码等查看和编辑，支持文件或目录打开、编辑、新建和保存","tag":"code-editor","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[9]},{"type":"text","content":"代码编辑器","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='snake-eating'?'yes':'no'","ui-on:click.stop":"doSelect","title":"一个经典的贪吃蛇小游戏","tag":"snake-eating","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[11]},{"type":"text","content":"贪吃蛇","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='snipping-tool'?'yes':'no'","ui-on:click.stop":"doSelect","title":"一个H5版本的截图工具","tag":"snipping-tool","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[13]},{"type":"text","content":"截图工具","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='regexper-visualization'?'yes':'no'","ui-on:click.stop":"doSelect","title":"输入一个正则表达式后可以把其变成可视化的图表来快速读懂意义","tag":"regexper-visualization","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[15]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='geo-json'?'yes':'no'","ui-on:click.stop":"doSelect","title":"主要用于快速了解一份geoJSON地理数据的内容","tag":"geo-json","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[17]},{"type":"text","content":"geoJSON查看器","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='type-practice'?'yes':'no'","ui-on:click.stop":"doSelect","title":"一个打字练习软件","tag":"type-practice","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[19]},{"type":"text","content":"金山打字通","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"link","ui-bind:select":"select=='audio-editor'?'yes':'no'","ui-on:click.stop":"doSelect","title":"可以对音频文件进行切割、合并等操作，支持多种格式","tag":"audio-editor","ui-on:dblclick":"goto","ui-right-menu:app":""},"childNodes":[21]},{"type":"text","content":"音频编辑器","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"taskline","ui-right-menu:desktop-line":""},"childNodes":[23,24,25,26]},{"type":"tag","name":"span","attrs":{"class":"begin","title":"快速开始","tag":"begin","ui-on:click.stop":"toggleWin"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"what","tag":"what","ui-on:click":"openDialog"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"wins","id":"wins-line-id"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"time","tag":"tools","ui-on:click.stop":"toggleWin"},"childNodes":[27,28]},{"type":"tag","name":"div","attrs":{"ui-bind":"time"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind":"date"},"childNodes":[]}]
@@ -136,7 +136,7 @@ window.__pkg__bundleSrc__['63']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/desktop/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['64']=function(){
+window.__pkg__bundleSrc__['71']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -150,19 +150,19 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/desktop/wins/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['65']=function(){
+window.__pkg__bundleSrc__['72']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
 
     // 快速开始
     begin: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle12.js','66')
+        return window.__pkg__getLazyBundle('./dist/bundle12.js','73')
     },
 
     // 右侧工具
     tools: function () {
-        return window.__pkg__getLazyBundle('./dist/bundle13.js','67')
+        return window.__pkg__getLazyBundle('./dist/bundle13.js','74')
     }
 };
 

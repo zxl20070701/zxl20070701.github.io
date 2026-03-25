@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/setting/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['94']=function(){
+window.__pkg__bundleSrc__['101']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('338');
+    __pkg__scope_args__=window.__pkg__getBundle('345');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('339');
+__pkg__scope_args__=window.__pkg__getBundle('346');
 
 
 __pkg__scope_bundle__.default= function (obj) {
@@ -31,7 +31,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/setting/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['338']=function(){
+window.__pkg__bundleSrc__['345']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"设置","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"developing-notice"},"childNodes":[10]},{"type":"tag","name":"div","attrs":{"class":"notice-content"},"childNodes":[11,13]},{"type":"tag","name":"h3","attrs":{},"childNodes":[12]},{"type":"text","content":"开发中，敬请期待","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[14]},{"type":"text","content":"该功能正在开发中，敬请期待后续版本。","childNodes":[]}]
@@ -42,7 +42,7 @@ window.__pkg__bundleSrc__['338']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/setting/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['339']=function(){
+window.__pkg__bundleSrc__['346']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

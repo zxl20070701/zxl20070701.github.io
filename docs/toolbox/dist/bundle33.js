@@ -2,16 +2,16 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/draft/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['89']=function(){
+window.__pkg__bundleSrc__['96']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('328');
+    __pkg__scope_args__=window.__pkg__getBundle('335');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('329');
+__pkg__scope_args__=window.__pkg__getBundle('336');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('305');
+__pkg__scope_args__=window.__pkg__getBundle('312');
 var canvasRender =__pkg__scope_args__.default;
 
 
@@ -168,7 +168,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/draft/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['328']=function(){
+window.__pkg__bundleSrc__['335']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,42]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"草稿纸","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"toolbar"},"childNodes":[10,21,33,36,39]},{"type":"tag","name":"div","attrs":{"class":"tool-group"},"childNodes":[11,13]},{"type":"tag","name":"label","attrs":{},"childNodes":[12]},{"type":"text","content":"颜色:","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"color-palette"},"childNodes":[14,15,16,17,18,19,20]},{"type":"tag","name":"div","attrs":{"ui-bind:class":"'color-item ' + (currentColor === '#000000' ? 'active' : '')","style":"background-color: #000000","data-value":"#000000","ui-on:click":"setColor"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:class":"'color-item ' + (currentColor === '#FF0000' ? 'active' : '')","style":"background-color: #FF0000","data-value":"#FF0000","ui-on:click":"setColor"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:class":"'color-item ' + (currentColor === '#00FF00' ? 'active' : '')","style":"background-color: #00FF00","data-value":"#00FF00","ui-on:click":"setColor"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:class":"'color-item ' + (currentColor === '#0000FF' ? 'active' : '')","style":"background-color: #0000FF","data-value":"#0000FF","ui-on:click":"setColor"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:class":"'color-item ' + (currentColor === '#FFFF00' ? 'active' : '')","style":"background-color: #FFFF00","data-value":"#FFFF00","ui-on:click":"setColor"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:class":"'color-item ' + (currentColor === '#FF00FF' ? 'active' : '')","style":"background-color: #FF00FF","data-value":"#FF00FF","ui-on:click":"setColor"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"ui-bind:class":"'color-item ' + (currentColor === '#00FFFF' ? 'active' : '')","style":"background-color: #00FFFF","data-value":"#00FFFF","ui-on:click":"setColor"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tool-group"},"childNodes":[22,24]},{"type":"tag","name":"label","attrs":{},"childNodes":[23]},{"type":"text","content":"粗细:","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"pen-sizes"},"childNodes":[25,27,29,31]},{"type":"tag","name":"button","attrs":{"ui-bind:class":"'pen-size ' + (currentPenSize === 1 ? 'active' : '')","data-value":"1","ui-on:click":"setPenSize"},"childNodes":[26]},{"type":"text","content":"1","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-bind:class":"'pen-size ' + (currentPenSize === 3 ? 'active' : '')","data-value":"3","ui-on:click":"setPenSize"},"childNodes":[28]},{"type":"text","content":"3","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-bind:class":"'pen-size ' + (currentPenSize === 5 ? 'active' : '')","data-value":"5","ui-on:click":"setPenSize"},"childNodes":[30]},{"type":"text","content":"5","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-bind:class":"'pen-size ' + (currentPenSize === 8 ? 'active' : '')","data-value":"8","ui-on:click":"setPenSize"},"childNodes":[32]},{"type":"text","content":"8","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tool-group"},"childNodes":[34]},{"type":"tag","name":"button","attrs":{"ui-bind:class":"'eraser-btn ' + (isEraserMode ? 'active' : '')","ui-on:click":"toggleEraser"},"childNodes":[35]},{"type":"text","content":"橡皮擦","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tool-group"},"childNodes":[37]},{"type":"tag","name":"button","attrs":{"class":"clear-btn","ui-on:click":"clearCanvas"},"childNodes":[38]},{"type":"text","content":"清空","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tool-group"},"childNodes":[40]},{"type":"tag","name":"button","attrs":{"class":"save-btn","ui-on:click":"saveCanvas"},"childNodes":[41]},{"type":"text","content":"保存","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[43]},{"type":"tag","name":"canvas","attrs":{"style":"width: 100%;height: 100%;","ref":"mycanvas"},"childNodes":[44]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
@@ -179,7 +179,7 @@ window.__pkg__bundleSrc__['328']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/draft/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['329']=function(){
+window.__pkg__bundleSrc__['336']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -193,13 +193,13 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['305']=function(){
+window.__pkg__bundleSrc__['312']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('144');
+    __pkg__scope_args__=window.__pkg__getBundle('151');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('211');
+__pkg__scope_args__=window.__pkg__getBundle('218');
 var assemble =__pkg__scope_args__.default;
 
 
@@ -314,20 +314,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['144']=function(){
+window.__pkg__bundleSrc__['151']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('145');
+    __pkg__scope_args__=window.__pkg__getBundle('152');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('147');
+__pkg__scope_args__=window.__pkg__getBundle('154');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('145');
+__pkg__scope_args__=window.__pkg__getBundle('152');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -614,10 +614,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['145']=function(){
+window.__pkg__bundleSrc__['152']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('146');
+    __pkg__scope_args__=window.__pkg__getBundle('153');
 var arc =__pkg__scope_args__.default;
 
 
@@ -736,7 +736,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['146']=function(){
+window.__pkg__bundleSrc__['153']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -797,7 +797,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['147']=function(){
+window.__pkg__bundleSrc__['154']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -837,7 +837,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/assemble
 /*****************************************************************/
-window.__pkg__bundleSrc__['211']=function(){
+window.__pkg__bundleSrc__['218']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (begin, end, step, count) {

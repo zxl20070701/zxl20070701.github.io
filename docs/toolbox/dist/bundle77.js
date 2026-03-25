@@ -2,22 +2,22 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/dialogs/keyboard/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['276']=function(){
+window.__pkg__bundleSrc__['283']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('426');
+    __pkg__scope_args__=window.__pkg__getBundle('433');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('427');
+__pkg__scope_args__=window.__pkg__getBundle('434');
 
 
-__pkg__scope_args__=window.__pkg__getBundle('428');
+__pkg__scope_args__=window.__pkg__getBundle('435');
 var keyData =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('173');
+__pkg__scope_args__=window.__pkg__getBundle('180');
 var getKeyCode =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('167');
+__pkg__scope_args__=window.__pkg__getBundle('174');
 var preventDefault =__pkg__scope_args__.default;
 
 
@@ -261,7 +261,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/dialogs/keyboard/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['426']=function(){
+window.__pkg__bundleSrc__['433']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"键盘练习","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content"},"childNodes":[8,9,14,15]},{"type":"tag","name":"div","attrs":{"ref":"willlist","ui-bind:active":"flag=='end'?'no':'yes'","class":"willlist topview"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"endinfo topview","ui-bind:active":"flag=='end'?'yes':'no'"},"childNodes":[10,11,13]},{"type":"text","content":"🎉恭喜你，键盘完成练习，你可以","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"reopen"},"childNodes":[12]},{"type":"text","content":"再来一次","childNodes":[]},{"type":"text","content":"哦～","childNodes":[]},{"type":"tag","name":"div","attrs":{"ref":"mykeyboard","class":"mykeyboard"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"info"},"childNodes":[16,19,22,25]},{"type":"tag","name":"span","attrs":{},"childNodes":[17,18]},{"type":"text","content":"时间","childNodes":[]},{"type":"tag","name":"i","attrs":{"ui-bind":"time"},"childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[20,21]},{"type":"text","content":"速度","childNodes":[]},{"type":"tag","name":"i","attrs":{"ui-bind":"speed"},"childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[23,24]},{"type":"text","content":"进度","childNodes":[]},{"type":"tag","name":"i","attrs":{"ui-bind":"process"},"childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[26,27]},{"type":"text","content":"正确率","childNodes":[]},{"type":"tag","name":"i","attrs":{"ui-bind":"rate"},"childNodes":[]}]
@@ -272,7 +272,7 @@ window.__pkg__bundleSrc__['426']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/dialogs/keyboard/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['427']=function(){
+window.__pkg__bundleSrc__['434']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -286,7 +286,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/dialogs/keyboard/keyData.json
 /*****************************************************************/
-window.__pkg__bundleSrc__['428']=function(){
+window.__pkg__bundleSrc__['435']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [
@@ -611,7 +611,7 @@ window.__pkg__bundleSrc__['428']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/keyCode
 /*****************************************************************/
-window.__pkg__bundleSrc__['173']=function(){
+window.__pkg__bundleSrc__['180']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 字典表
@@ -816,7 +816,7 @@ __pkg__scope_bundle__.default= function (callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhtml/preventDefault
 /*****************************************************************/
-window.__pkg__bundleSrc__['167']=function(){
+window.__pkg__bundleSrc__['174']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 阻止默认事件

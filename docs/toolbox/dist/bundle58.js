@@ -2,13 +2,13 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/dialogs/geometry/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['193']=function(){
+window.__pkg__bundleSrc__['200']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('376');
+    __pkg__scope_args__=window.__pkg__getBundle('383');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('377');
+__pkg__scope_args__=window.__pkg__getBundle('384');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -63,7 +63,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/dialogs/geometry/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['376']=function(){
+window.__pkg__bundleSrc__['383']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,4]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":""},"childNodes":[2,3]},{"type":"text","content":"添加","childNodes":[]},{"type":"tag","name":"span","attrs":{"ui-bind":"kindName"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right-btn"},"childNodes":[5,36]},{"type":"tag","name":"div","attrs":{},"childNodes":[6]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[7,9]},{"type":"tag","name":"legend","attrs":{},"childNodes":[8]},{"type":"text","content":"基础","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[10,14,22,28,32]},{"type":"tag","name":"li","attrs":{},"childNodes":[11,13]},{"type":"tag","name":"label","attrs":{},"childNodes":[12]},{"type":"text","content":"名称：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"name"},"childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[15,17,19,20,21]},{"type":"tag","name":"label","attrs":{"ui-bind:active":"kind=='sphere'?'yes':'no'"},"childNodes":[16]},{"type":"text","content":"球心：","childNodes":[]},{"type":"tag","name":"label","attrs":{"ui-bind:active":"kind=='prism'||kind=='cylinder'?'yes':'no'"},"childNodes":[18]},{"type":"text","content":"起点：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"x","class":"slice"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"y","class":"slice"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"z","class":"slice"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:active":"kind=='prism'||kind=='cylinder'?'yes':'no'"},"childNodes":[23,25,26,27]},{"type":"tag","name":"label","attrs":{},"childNodes":[24]},{"type":"text","content":"终点：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"x2","class":"slice"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"y2","class":"slice"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"z2","class":"slice"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:active":"kind=='sphere'||kind=='prism'||kind=='cylinder'?'yes':'no'"},"childNodes":[29,31]},{"type":"tag","name":"label","attrs":{},"childNodes":[30]},{"type":"text","content":"半径：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"radius","class":"slice"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"ui-bind:active":"kind=='prism'?'yes':'no'"},"childNodes":[33,35]},{"type":"tag","name":"label","attrs":{},"childNodes":[34]},{"type":"text","content":"棱数：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"count","class":"slice"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[37,39]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[38]},{"type":"text","content":"确定","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose"},"childNodes":[40]},{"type":"text","content":"取消","childNodes":[]}]
@@ -74,7 +74,7 @@ window.__pkg__bundleSrc__['376']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/dialogs/geometry/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['377']=function(){
+window.__pkg__bundleSrc__['384']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
