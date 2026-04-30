@@ -2,7 +2,7 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/echarts/dialogs/gauge-barometer/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['352']=function(){
+window.__pkg__bundleSrc__['346']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('445');

@@ -21,7 +21,7 @@ var TreeLayout =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('312');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('321');
+__pkg__scope_args__=window.__pkg__getBundle('394');
 var move =__pkg__scope_args__.default;
 
 
@@ -1649,7 +1649,7 @@ window.__pkg__bundleSrc__['218']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['321']=function(){
+window.__pkg__bundleSrc__['394']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）沿着向量（ax,ay）方向移动距离d

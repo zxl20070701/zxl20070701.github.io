@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['263']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('389');
+    __pkg__scope_args__=window.__pkg__getBundle('383');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('390');
+__pkg__scope_args__=window.__pkg__getBundle('384');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('204');
@@ -20,13 +20,13 @@ var animation =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('312');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('318');
+__pkg__scope_args__=window.__pkg__getBundle('385');
 var getLoopColors =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('229');
 var rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('391');
+__pkg__scope_args__=window.__pkg__getBundle('386');
 var drawRectRadius =__pkg__scope_args__.default;
 
 
@@ -256,7 +256,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/pie-simple/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['389']=function(){
+window.__pkg__bundleSrc__['383']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"简单的饼图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content pie-simple","ref":"mycontent"},"childNodes":[11,12]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"tooltip","ref":"mytooltip"},"childNodes":[]}]
@@ -267,7 +267,7 @@ window.__pkg__bundleSrc__['389']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/pie-simple/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['390']=function(){
+window.__pkg__bundleSrc__['384']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -1156,7 +1156,7 @@ window.__pkg__bundleSrc__['218']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/getLoopColors
 /*****************************************************************/
-window.__pkg__bundleSrc__['318']=function(){
+window.__pkg__bundleSrc__['385']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取一组循环色彩
@@ -1228,7 +1228,7 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/extend/rectRadius
 /*****************************************************************/
-window.__pkg__bundleSrc__['391']=function(){
+window.__pkg__bundleSrc__['386']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**

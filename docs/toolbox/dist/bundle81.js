@@ -2,7 +2,7 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/colorful-dice/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['334']=function(){
+window.__pkg__bundleSrc__['328']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('442');

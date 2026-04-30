@@ -21,7 +21,7 @@ var xhr =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('427');
 var toSankeyImageData =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('318');
+__pkg__scope_args__=window.__pkg__getBundle('385');
 var getLoopColors =__pkg__scope_args__.default;
 
 
@@ -1002,7 +1002,7 @@ __pkg__scope_bundle__.default= function (data, width, height, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/getLoopColors
 /*****************************************************************/
-window.__pkg__bundleSrc__['318']=function(){
+window.__pkg__bundleSrc__['385']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取一组循环色彩

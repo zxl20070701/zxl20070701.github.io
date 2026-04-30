@@ -2,7 +2,7 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/textarea-eraser/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['333']=function(){
+window.__pkg__bundleSrc__['327']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('440');

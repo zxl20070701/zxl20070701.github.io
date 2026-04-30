@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['194']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('379');
+    __pkg__scope_args__=window.__pkg__getBundle('373');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('380');
+__pkg__scope_args__=window.__pkg__getBundle('374');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -27,7 +27,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/layer/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['379']=function(){
+window.__pkg__bundleSrc__['373']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"图层","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"list","ref":"layerList"},"childNodes":[]}]
@@ -38,7 +38,7 @@ window.__pkg__bundleSrc__['379']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/layer/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['380']=function(){
+window.__pkg__bundleSrc__['374']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

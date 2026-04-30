@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['104']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('355');
+    __pkg__scope_args__=window.__pkg__getBundle('349');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('356');
+__pkg__scope_args__=window.__pkg__getBundle('350');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('165');
@@ -54,7 +54,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/format-json/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['355']=function(){
+window.__pkg__bundleSrc__['349']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,15]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"格式化JSON字符串","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[10,14]},{"type":"tag","name":"h2","attrs":{},"childNodes":[11,12]},{"type":"text","content":"源代码","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"run","ui-on:click":"formatJSON"},"childNodes":[13]},{"type":"text","content":"运行","childNodes":[]},{"type":"tag","name":"textarea","attrs":{"ref":"source"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[16,18]},{"type":"tag","name":"h2","attrs":{},"childNodes":[17]},{"type":"text","content":"运行结果","childNodes":[]},{"type":"tag","name":"div","attrs":{"ref":"target"},"childNodes":[]}]
@@ -65,7 +65,7 @@ window.__pkg__bundleSrc__['355']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/format-json/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['356']=function(){
+window.__pkg__bundleSrc__['350']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

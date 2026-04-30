@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['202']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('385');
+    __pkg__scope_args__=window.__pkg__getBundle('379');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('386');
+__pkg__scope_args__=window.__pkg__getBundle('380');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -32,7 +32,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/wins/geometry/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['385']=function(){
+window.__pkg__bundleSrc__['379']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"立方体","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"list"},"childNodes":[4,7,10]},{"type":"tag","name":"li","attrs":{"title":"球体","class":"sphere","name":"sphere"},"childNodes":[5,6]},{"type":"text","content":"球体","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"add","title":"点击我添加球体","ui-on:click":"addGeometry"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"棱柱体","class":"prism","name":"prism"},"childNodes":[8,9]},{"type":"text","content":"棱柱体","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"add","title":"点击我添加棱柱体","ui-on:click":"addGeometry"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"圆柱体","class":"cylinder","name":"cylinder"},"childNodes":[11,12]},{"type":"text","content":"圆柱体","childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"add","title":"点击我添加圆柱体","ui-on:click":"addGeometry"},"childNodes":[]}]
@@ -43,7 +43,7 @@ window.__pkg__bundleSrc__['385']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/wins/geometry/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['386']=function(){
+window.__pkg__bundleSrc__['380']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

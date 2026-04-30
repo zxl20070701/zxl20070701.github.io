@@ -6,4 +6,12 @@
         <button class="close" ui-on:click.stop="$closeView">关闭</button>
     </div>
 </header>
-<canvas ref="mycanvas">非常抱歉，您的浏览器不支持canvas!</canvas>
+<div class="chart-container">
+    <div class="chart-header">
+        <div class="legend">
+            <span class="legend-color"></span>
+            <span class="legend-text"></span>
+        </div>
+    </div>
+    <canvas ref="mycanvas">非常抱歉，您的浏览器不支持canvas!</canvas>
+</div>

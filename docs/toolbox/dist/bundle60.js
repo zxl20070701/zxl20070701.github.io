@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['203']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('387');
+    __pkg__scope_args__=window.__pkg__getBundle('381');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('388');
+__pkg__scope_args__=window.__pkg__getBundle('382');
 
 
 var cacheData = {}, handler;
@@ -61,7 +61,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/wins/modify/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['387']=function(){
+window.__pkg__bundleSrc__['381']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3,20]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"修改器","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right-btn","ui-bind:active":"!isEmpty?'yes':'no'"},"childNodes":[4,13]},{"type":"tag","name":"div","attrs":{},"childNodes":[5]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[6,8]},{"type":"tag","name":"legend","attrs":{},"childNodes":[7]},{"type":"text","content":"基础","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[9]},{"type":"tag","name":"li","attrs":{},"childNodes":[10,12]},{"type":"tag","name":"label","attrs":{},"childNodes":[11]},{"type":"text","content":"名称：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"name"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[14,16,18]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSave"},"childNodes":[15]},{"type":"text","content":"保存","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doReset"},"childNodes":[17]},{"type":"text","content":"重置","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"delete","ui-on:click":"doDelete"},"childNodes":[19]},{"type":"text","content":"删除","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"empty","ui-bind:active":"isEmpty?'yes':'no'"},"childNodes":[21]},{"type":"text","content":"未选中物体","childNodes":[]}]
@@ -72,7 +72,7 @@ window.__pkg__bundleSrc__['387']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/wins/modify/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['388']=function(){
+window.__pkg__bundleSrc__['382']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

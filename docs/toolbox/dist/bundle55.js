@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['193']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('377');
+    __pkg__scope_args__=window.__pkg__getBundle('371');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('378');
+__pkg__scope_args__=window.__pkg__getBundle('372');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -50,7 +50,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/tool/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['377']=function(){
+window.__pkg__bundleSrc__['371']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3,7]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":"dragdropPadding"},"childNodes":[2]},{"type":"text","content":"工具箱","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"list"},"childNodes":[4,5,6]},{"type":"tag","name":"li","attrs":{"title":"移动工具","class":"move","ui-on:click":"changeTool","name":"move","ui-bind:active":"active=='move'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"橡皮擦","class":"eraser","ui-on:click":"changeTool","name":"eraser","ui-bind:active":"active=='eraser'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"li","attrs":{"title":"画笔","class":"painter","ui-on:click":"changeTool","name":"painter","ui-bind:active":"active=='painter'?'yes':'no'"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"color"},"childNodes":[8,9]},{"type":"tag","name":"span","attrs":{"tag":"backcolor","ui-on:click":"selectColor","title":"背景色","style":"background-color: black;"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"tag":"forecolor","ui-on:click":"selectColor","title":"前景色","style":"background-color: red;"},"childNodes":[]}]
@@ -61,7 +61,7 @@ window.__pkg__bundleSrc__['377']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/image-editor/wins/tool/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['378']=function(){
+window.__pkg__bundleSrc__['372']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

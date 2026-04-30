@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['199']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('381');
+    __pkg__scope_args__=window.__pkg__getBundle('375');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('382');
+__pkg__scope_args__=window.__pkg__getBundle('376');
 
 
 __pkg__scope_bundle__.default= function (obj, props) {
@@ -43,7 +43,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/dialogs/save/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['381']=function(){
+window.__pkg__bundleSrc__['375']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,3]},{"type":"tag","name":"h2","attrs":{"ui-dragdrop":""},"childNodes":[2]},{"type":"text","content":"保存","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"right-btn"},"childNodes":[4,13]},{"type":"tag","name":"div","attrs":{},"childNodes":[5]},{"type":"tag","name":"fieldset","attrs":{},"childNodes":[6,8]},{"type":"tag","name":"legend","attrs":{},"childNodes":[7]},{"type":"text","content":"基础","childNodes":[]},{"type":"tag","name":"ul","attrs":{},"childNodes":[9]},{"type":"tag","name":"li","attrs":{},"childNodes":[10,12]},{"type":"tag","name":"label","attrs":{},"childNodes":[11]},{"type":"text","content":"名称：","childNodes":[]},{"type":"tag","name":"input","attrs":{"ui-model":"name"},"childNodes":[]},{"type":"tag","name":"div","attrs":{},"childNodes":[14,16]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doSubmit"},"childNodes":[15]},{"type":"text","content":"确定","childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doClose"},"childNodes":[17]},{"type":"text","content":"取消","childNodes":[]}]
@@ -54,7 +54,7 @@ window.__pkg__bundleSrc__['381']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/model-editor/dialogs/save/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['382']=function(){
+window.__pkg__bundleSrc__['376']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

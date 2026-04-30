@@ -2,7 +2,7 @@
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/echarts/dialogs/line-multiple-x-axis/index.js
 /*****************************************************************/
-window.__pkg__bundleSrc__['351']=function(){
+window.__pkg__bundleSrc__['345']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('444');
@@ -12,7 +12,7 @@ var template =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('151');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('317');
+__pkg__scope_args__=window.__pkg__getBundle('388');
 var ruler =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('133');
@@ -830,7 +830,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['317']=function(){
+window.__pkg__bundleSrc__['388']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 刻度尺刻度求解

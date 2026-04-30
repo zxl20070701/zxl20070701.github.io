@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['100']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('343');
+    __pkg__scope_args__=window.__pkg__getBundle('337');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('344');
+__pkg__scope_args__=window.__pkg__getBundle('338');
 
 __pkg__scope_args__=window.__pkg__getBundle('168');
 var editorRender =__pkg__scope_args__.default;
@@ -259,7 +259,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/notepad/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['343']=function(){
+window.__pkg__bundleSrc__['337']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"记事本","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"notepad-container"},"childNodes":[10,28]},{"type":"tag","name":"div","attrs":{"class":"notes-list-view","ref":"notesListView"},"childNodes":[11,18,19]},{"type":"tag","name":"div","attrs":{"class":"notes-header"},"childNodes":[12,14]},{"type":"tag","name":"h3","attrs":{},"childNodes":[13]},{"type":"text","content":"我的笔记","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"new-note-btn","ui-on:click":"createNewNote"},"childNodes":[15,17]},{"type":"tag","name":"span","attrs":{},"childNodes":[16]},{"type":"text","content":"+","childNodes":[]},{"type":"text","content":"新建笔记","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"notes-list","ref":"notesList"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"empty-state","ref":"emptyState"},"childNodes":[20,22,24,26]},{"type":"tag","name":"div","attrs":{"class":"empty-icon"},"childNodes":[21]},{"type":"text","content":"📝","childNodes":[]},{"type":"tag","name":"h3","attrs":{},"childNodes":[23]},{"type":"text","content":"暂无笔记","childNodes":[]},{"type":"tag","name":"p","attrs":{},"childNodes":[25]},{"type":"text","content":"点击右上角按钮创建你的第一条笔记","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"create-first-note-btn","ui-on:click":"createNewNote"},"childNodes":[27]},{"type":"text","content":"创建第一条笔记","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"note-editor-view","ref":"noteEditorView","style":"display: none;"},"childNodes":[29,36,38]},{"type":"tag","name":"div","attrs":{"class":"editor-header"},"childNodes":[30,32,34]},{"type":"tag","name":"button","attrs":{"class":"back-btn","ui-on:click":"backToList"},"childNodes":[31]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"editor-title"},"childNodes":[33]},{"type":"tag","name":"input","attrs":{"type":"text","ref":"noteTitleInput","placeholder":"请输入标题"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"save-btn","ui-on:click":"saveNote"},"childNodes":[35]},{"type":"text","content":"保存","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"editor-content"},"childNodes":[37]},{"type":"tag","name":"div","attrs":{"ref":"editorContainer"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"editor-footer"},"childNodes":[39]},{"type":"tag","name":"button","attrs":{"class":"delete-btn","ui-on:click":"deleteNote"},"childNodes":[40]},{"type":"text","content":"删除笔记","childNodes":[]}]
@@ -270,7 +270,7 @@ window.__pkg__bundleSrc__['343']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/notepad/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['344']=function(){
+window.__pkg__bundleSrc__['338']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

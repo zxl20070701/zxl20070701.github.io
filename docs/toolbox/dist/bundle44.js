@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['107']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('361');
+    __pkg__scope_args__=window.__pkg__getBundle('355');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('362');
+__pkg__scope_args__=window.__pkg__getBundle('356');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('141');
@@ -96,7 +96,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/regexper-visualization/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['361']=function(){
+window.__pkg__bundleSrc__['355']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9,10,11,13,19,20]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5,7]},{"type":"tag","name":"button","attrs":{"class":"goback","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"返回","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[6]},{"type":"text","content":"正则表达式可视化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[8]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"help-hidden","ref":"help"},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"text","ui-model":"expressVal"},"childNodes":[]},{"type":"tag","name":"button","attrs":{"ui-on:click":"doDisplay"},"childNodes":[12]},{"type":"text","content":"显示","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"isString"},"childNodes":[14,15,16,17,18]},{"type":"tag","name":"input","attrs":{"type":"radio","ui-bind:name":"\"isString\"+uniqueHash","ref":"is-string-yes","ui-on:click":"doIsString","tag":"yes"},"childNodes":[]},{"type":"text","content":"是字符串","childNodes":[]},{"type":"tag","name":"span","attrs":{},"childNodes":[]},{"type":"tag","name":"input","attrs":{"type":"radio","ui-bind:name":"\"isString\"+uniqueHash","ref":"is-string-no","ui-on:click":"doIsString","tag":"no"},"childNodes":[]},{"type":"text","content":"不是字符串","childNodes":[]},{"type":"tag","name":"hr","attrs":{},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"canvas"},"childNodes":[21]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[22]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
@@ -107,7 +107,7 @@ window.__pkg__bundleSrc__['361']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/regexper-visualization/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['362']=function(){
+window.__pkg__bundleSrc__['356']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

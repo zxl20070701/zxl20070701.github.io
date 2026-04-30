@@ -15,13 +15,13 @@ var ResizeObserver =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('312');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('317');
+__pkg__scope_args__=window.__pkg__getBundle('388');
 var ruler =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('128');
 var animation =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('319');
+__pkg__scope_args__=window.__pkg__getBundle('392');
 var drawRuler =__pkg__scope_args__.default;
 
 
@@ -929,7 +929,7 @@ window.__pkg__bundleSrc__['218']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['317']=function(){
+window.__pkg__bundleSrc__['388']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 刻度尺刻度求解
@@ -1154,10 +1154,10 @@ __pkg__scope_bundle__.default= function (doback, duration, callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/extend/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['319']=function(){
+window.__pkg__bundleSrc__['392']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('320');
+    __pkg__scope_args__=window.__pkg__getBundle('393');
 var dotRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('223');
@@ -1304,19 +1304,19 @@ __pkg__scope_bundle__.default= function (painter, attr) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/dot
 /*****************************************************************/
-window.__pkg__bundleSrc__['320']=function(){
+window.__pkg__bundleSrc__['393']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('223');
 var initConfig=__pkg__scope_args__.initConfig;
 
-__pkg__scope_args__=window.__pkg__getBundle('321');
+__pkg__scope_args__=window.__pkg__getBundle('394');
 var move =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('229');
 var rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('322');
+__pkg__scope_args__=window.__pkg__getBundle('395');
 var scale =__pkg__scope_args__.default;
 
 
@@ -1395,7 +1395,7 @@ __pkg__scope_bundle__.initConfig = function (init, data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['321']=function(){
+window.__pkg__bundleSrc__['394']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）沿着向量（ax,ay）方向移动距离d
@@ -1431,7 +1431,7 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/scale
 /*****************************************************************/
-window.__pkg__bundleSrc__['322']=function(){
+window.__pkg__bundleSrc__['395']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）缩放times倍
