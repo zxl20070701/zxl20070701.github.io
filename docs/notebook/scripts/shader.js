@@ -74,6 +74,17 @@ var cColors = {
     "execName": "#1e83b1"/*执行方法颜色*/
 };
 
+var shellColors = {
+    "text": "#000000",/*文本颜色*/
+    "annotation": "#6a9955",/*注释颜色*/
+    "insign": "#9e9e9e",/*符号颜色*/
+    "command": "#1e50b3",/*命令颜色*/
+    "option": "#1e83b1",/*选项颜色*/
+    "argument": "#ac4c1e",/*参数颜色*/
+    "string": "#ac4c1e",/*字符串颜色*/
+    "variable": "#ff0000"/*变量颜色*/
+};
+
 var _cssShader = function (textString, colors) {
     var shaderArray = [];
 
@@ -1449,6 +1460,182 @@ var _cShader = function (textString, colors) {
     return shaderArray;
 };
 
+var _shellShader = function (textString, colors) {
+    // Shell关键字和内置命令
+    var keyWords = [
+        "if", "then", "else", "elif", "fi", "case", "esac", "for", "select", "while", "until", "do", "done", "in", "function", "time", "coproc",
+        "alias", "bg", "bind", "break", "builtin", "caller", "cd", "command", "compgen", "complete", "compopt", "continue", "declare", "dirs", "disown",
+        "echo", "enable", "eval", "exec", "exit", "export", "false", "fc", "fg", "getopts", "hash", "help", "history", "jobs", "kill", "let", "local",
+        "logout", "mapfile", "popd", "printf", "pushd", "pwd", "read", "readarray", "readonly", "return", "set", "shift", "shopt", "source", "suspend",
+        "test", "times", "trap", "true", "type", "typeset", "ulimit", "umask", "unalias", "unset", "wait"
+    ];
+
+    var shaderArray = [];
+
+    // 当前面对的
+    var i = 0;
+
+    // 获取往后n个值
+    var nextNValue = function (n) {
+        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
+    };
+
+    var template = "";
+
+    // 初始化模板，开始文本捕获
+    var initTemplate = function () {
+        if (template != "") {
+            shaderArray.push({
+                color: colors.text,
+                content: template
+            });
+        }
+        template = "";
+    };
+
+    while (true) {
+        /* 1.注释 */
+        if (nextNValue(1) == '#') {
+            initTemplate();
+            while (nextNValue(1) !== '\n' && i < textString.length) {
+                template += textString[i++];
+            }
+            shaderArray.push({
+                color: colors.annotation,
+                content: template
+            });
+            template = "";
+        }
+
+        /* 2.字符串 */
+        else if (["'", '"', '`'].indexOf(nextNValue(1)) > -1) {
+            var strBorder = nextNValue(1);
+            initTemplate();
+
+            do {
+                template += textString[i++];
+                // 处理转义字符
+                if (nextNValue(1) == '\\') {
+                    template += textString[i++];
+                    template += textString[i++];
+                }
+            } while (nextNValue(1) != strBorder && i < textString.length)
+
+            // 因为可能是没有字符导致的结束
+            if (nextNValue(1) != strBorder) {
+                strBorder = "";
+            } else {
+                i += 1;
+            }
+
+            shaderArray.push({
+                color: colors.string,
+                content: template + strBorder
+            });
+            template = "";
+        }
+
+        /* 3.变量 */
+        else if (nextNValue(1) == '$') {
+            initTemplate();
+            template += textString[i++]; // 添加 $
+
+            // 处理 ${VAR} 形式的变量
+            if (nextNValue(1) == '{') {
+                template += textString[i++]; // 添加 {
+                while (nextNValue(1) != '}' && i < textString.length) {
+                    template += textString[i++];
+                }
+                if (i < textString.length) {
+                    template += textString[i++]; // 添加 }
+                }
+            } else {
+                // 处理 $VAR 形式的变量
+                while (/[a-zA-Z_][a-zA-Z0-9_]*/.test(nextNValue(1)) && i < textString.length) {
+                    template += textString[i++];
+                }
+            }
+
+            shaderArray.push({
+                color: colors.variable,
+                content: template
+            });
+            template = "";
+        }
+
+        /* 4.命令和选项识别 */
+        else if (nextNValue(1) == ' ' || nextNValue(1) == '\n' || nextNValue(1) == '\t') {
+            // 判断是否是命令（行首或分号后）
+            var isCommand = false;
+            if (template.trim() !== '' &&
+                (i - template.length === 0 ||
+                 nextNValue(template.length + 1).substring(0, template.length + 1)[0] === '\n' ||
+                 nextNValue(template.length + 1).substring(0, template.length + 1)[0] === ';')) {
+                isCommand = true;
+            }
+
+            if (isCommand) {
+                shaderArray.push({
+                    color: colors.command,
+                    content: template
+                });
+            } else if (template.trim().startsWith('-')) {
+                // 选项
+                shaderArray.push({
+                    color: colors.option,
+                    content: template
+                });
+            } else if (template.trim() !== '') {
+                // 普通参数
+                shaderArray.push({
+                    color: colors.argument,
+                    content: template
+                });
+            }
+
+            shaderArray.push({
+                color: colors.insign,
+                content: nextNValue(1)
+            });
+            template = "";
+            i += 1;
+        }
+
+        /* 5.边界符号 */
+        else if ([';', '|', '&', '>', '<', '(', ')', '[', ']', '{', '}', '=', '!', '?', '*', '+', '-', '~', '^'].indexOf(nextNValue(1)) > -1) {
+            initTemplate();
+            shaderArray.push({
+                color: colors.insign,
+                content: nextNValue(1)
+            });
+            template = "";
+            i += 1;
+        }
+
+        /* 6.关键字 */
+        else if (nextNValue(1) == ' ' && keyWords.indexOf(template.trim()) > -1) {
+            shaderArray.push({
+                color: colors.key,
+                content: template + " "
+            });
+            template = "";
+            i += 1;
+        }
+
+        /* 追加字符 */
+        else {
+            if (i >= textString.length) {
+                initTemplate();
+                break;
+            } else {
+                template += textString[i++];
+            }
+        }
+    }
+
+    return shaderArray;
+};
+
 // 对特殊转义符号等进行校对
 var replaceCode = function (source) {
     return source
@@ -1498,6 +1685,10 @@ window.doShader = function (el) {
             }
             case "c": {
                 shaderJSON = _cShader(source, cColors);
+                break
+            }
+            case "shell": {
+                shaderJSON = _shellShader(source, shellColors);
                 break
             }
             default: {
