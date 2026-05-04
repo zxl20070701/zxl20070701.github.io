@@ -152,7 +152,8 @@ __pkg__scope_bundle__.default= function (obj) {
                         painter.config({
                             strokeStyle: '#4a4a4a',
                             fillStyle: 'rgba(240, 240, 240, 0.5)',
-                            lineWidth: 2
+                            lineWidth: 2,
+                            lineJoin: "round"
                         }).beginPath();
 
                         for (var index = 0; index < npmData[pkgName].value.length; index++) {
