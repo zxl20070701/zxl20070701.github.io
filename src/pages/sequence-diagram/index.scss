@@ -1,0 +1,159 @@
+[page-view="sequence-diagram"] {
+  width: calc(100vw - 100px);
+  left: 50px;
+  top: 25px;
+
+  &[focus="no"] {
+    &>header {
+      background-color: #ececec;
+    }
+  }
+
+  &>header {
+    text-align: left;
+    line-height: 50px;
+    background-color: #e5e5e5;
+
+    &>h2 {
+      color: #2e88fb;
+      font-size: 20px;
+      padding-left: 50px;
+      background-image: url("./sequence-diagram.jpeg");
+      background-position: 10px center;
+      background-repeat: no-repeat;
+      background-size: auto 60%;
+      font-family: fangsong;
+      display: inline-block;
+    }
+  }
+
+  &>.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+
+    .tool-group {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      margin-bottom: 5px;
+
+      label {
+        margin-right: 8px;
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .tool-btn {
+        padding: 6px 12px;
+        margin-right: 5px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.2s;
+
+        &:hover {
+          background-color: #e9e9e9;
+        }
+
+        &.active {
+          background-color: #007bff;
+          color: white;
+          border-color: #007bff;
+        }
+      }
+
+      .color-palette {
+        display: flex;
+
+        .color-item {
+          width: 20px;
+          height: 20px;
+          margin-right: 5px;
+          border: 1px solid #ddd;
+          border-radius: 3px;
+          cursor: pointer;
+          transition: transform 0.2s;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+
+          &.active {
+            border: 2px solid #007bff;
+            transform: scale(1.1);
+          }
+        }
+      }
+
+      select {
+        padding: 6px 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 12px;
+        background-color: white;
+        cursor: pointer;
+      }
+
+      .clear-btn, .save-btn, .export-btn, .import-btn {
+        padding: 6px 12px;
+        margin-right: 5px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+
+        &:active {
+          transform: translateY(1px);
+        }
+      }
+
+      .clear-btn {
+        background-color: #dc3545;
+
+        &:hover {
+          background-color: #c82333;
+        }
+      }
+
+      .delete-btn {
+        padding: 6px 12px;
+        margin-right: 5px;
+        background-color: #ffc107;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #e0a800;
+        }
+      }
+    }
+  }
+
+  &>.content {
+    height: calc(100vh - 200px);
+    overflow: auto;
+
+    canvas {
+      display: block;
+      cursor: crosshair;
+      background-color: white;
+    }
+  }
+}

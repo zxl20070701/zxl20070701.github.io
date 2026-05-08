@@ -100,8 +100,13 @@ export default {
         return import('./draft/index.js')
     },
 
-    // Job Resume
+    // 简历制作
     "job-resume": function () {
         return import('./job-resume/index.js')
+    },
+
+     // 时序图
+    "sequence-diagram": function () {
+        return import('./sequence-diagram/index.js')
     }
 };
