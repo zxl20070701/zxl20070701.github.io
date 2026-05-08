@@ -1,5 +1,5 @@
 .body {
-    height: 100vh;
+    height: 100svh;
     overflow: auto;
     min-width: 980px;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -196,7 +196,7 @@ nav>a.active {
 
 .view>.containter {
     background: transparent;
-    min-height: calc(100vh - 720px);
+    min-height: calc(100svh - 720px);
     position: relative;
     padding: 40px 0;
     font-size: 0;
@@ -352,8 +352,8 @@ footer a:hover {
     position: fixed;
     left: 0;
     top: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100svw;
+    height: 100svh;
     background-color: rgb(0 0 0 / 63%);
     z-index: 7;
     text-align: center;
@@ -383,7 +383,7 @@ footer a:hover {
 }
 
 .pageview-content>.item {
-    height: calc(100vh - 130px);
+    height: calc(100svh - 130px);
     display: inline-block;
     text-align: left;
     vertical-align: top;
@@ -400,7 +400,7 @@ footer a:hover {
 }
 
 .pageview-content>.item.doc {
-    width: calc(100vw - 300px);
+    width: calc(100svw - 300px);
     background-color: white;
 }
 

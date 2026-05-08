@@ -1,0 +1,36 @@
+<header>
+    workspaces
+</header>
+<p>
+    在一个顶层根包中管理多个本地文件系统中的包。
+</p>
+<p>
+    比如我们现在有如下项目结构：
+</p>
+<pre>
+- packages
+    - core
+        - package.json
+    - tools
+        - package.json
+- src
+    - index.js
+- package.json
+</pre>
+<p>
+    在根目录下的package.json内容如下：
+</p>
+<pre tag="json">{
+    "name": "example",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+}</pre>
+<p>
+    那么，此时packages中的内容就可以看成一个个npm包了，在src中可以类似：
+</p>
+<pre tag="javascript">
+const Core = require("@example/core");
+// ......
+</pre>

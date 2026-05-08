@@ -225,6 +225,11 @@
                                                 tf.layers.conv2d
                                             </span>
                                         </li>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.conv2d">
+                                                tf.conv2d
+                                            </span>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li>
@@ -235,6 +240,11 @@
                                         <li>
                                             <span tag="Tensorflow.js/api/tf.layers.maxPooling2d">
                                                 tf.layers.maxPooling2d
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.maxPool">
+                                                tf.maxPool
                                             </span>
                                         </li>
                                     </ul>
@@ -252,8 +262,45 @@
                                     </span>
                                     <ul>
                                         <li>
+                                            <span tag="Tensorflow.js/api/tf.add">
+                                                tf.add
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.sub">
+                                                tf.sub
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.mul">
+                                                tf.mul
+                                            </span>
+                                        </li>
+                                        <li>
                                             <span tag="Tensorflow.js/api/tf.div">
                                                 tf.div
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.matMul">
+                                                tf.matMul
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <span>
+                                        Activation
+                                    </span>
+                                    <ul>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.relu">
+                                                tf.relu
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.softmax">
+                                                tf.softmax
                                             </span>
                                         </li>
                                     </ul>
@@ -266,10 +313,55 @@
                             </span>
                             <ul>
                                 <li>
-
                                     <span tag="Tensorflow.js/api/tf.util.shuffle">
                                         tf.util.shuffle
                                     </span>
+                                </li>
+                                <li>
+                                    <span tag="Tensorflow.js/api/tf.flatten">
+                                        tf.flatten
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="Tensorflow.js/api/tf.mean">
+                                        tf.mean
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>
+                                TRAINING 训练
+                            </span>
+                            <ul>
+                                <li>
+                                    <span>
+                                        Optimizers
+                                    </span>
+                                    <ul>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.train.sgd">
+                                                tf.train.sgd
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.train.adam">
+                                                tf.train.adam
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <span>
+                                        Losses
+                                    </span>
+                                    <ul>
+                                        <li>
+                                            <span tag="Tensorflow.js/api/tf.losses.softmaxCrossEntropy">
+                                                tf.losses.softmaxCrossEntropy
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
@@ -298,38 +390,275 @@
     <ul>
         <li>
             <span>
-                Ollama
+                本地LLM搭建
             </span>
             <ul>
                 <li>
-                    <span tag="ollama/install">
-                        安装
-                    </span>
-                </li>
-                <li>
-                    <span tag="ollama/run-mode">
-                        运行模型
-                    </span>
-                </li>
-                <li>
-                    <span tag="ollama/api">
-                        API 交互
-                    </span>
-                </li>
-                <li>
-                    <span tag="ollama/Python-SDK">
-                        通过 Python SDK 使用模型
-                    </span>
-                </li>
-                <li>
                     <span>
-                        快速使用
+                        Ollama
                     </span>
                     <ul>
                         <li>
-                            <span tag="ollama/commands">
-                                相关命令
+                            <span tag="ollama/install">
+                                安装
                             </span>
+                        </li>
+                        <li>
+                            <span tag="ollama/run-mode">
+                                运行模型
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="ollama/api">
+                                API 交互
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="ollama/Python-SDK">
+                                通过 Python SDK 使用模型
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                快速使用
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="ollama/commands">
+                                        相关命令
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>
+                        llama.cpp
+                    </span>
+                    <ul>
+                        <li>
+                            <span tag="llama.cpp/install">
+                                安装
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="llama.cpp/basic-usage">
+                                基本使用
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="llama.cpp/advanced-features">
+                                高级功能
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>
+                        vLLM
+                    </span>
+                    <ul>
+                        <li>
+                            <span tag="vllm/install">
+                                安装
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="vllm/basic-usage">
+                                基本使用
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <span>
+                智能体开发
+            </span>
+            <ul>
+                <li>
+                    <span>
+                        基本概念
+                    </span>
+                    <ul>
+                        <li>
+                            <span>
+                                MCP
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="MCP/what">
+                                        什么是MCP
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>
+                                Skill
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="Skill/what">
+                                        什么是Skill
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>
+                        设计思想
+                    </span>
+                    <ul>
+                        <li>
+                            <span tag="mode/ReAct">
+                                什么是ReAct模式？
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="mode/Supervisor">
+                                多 Agent 系统之主从架构
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                Harness Engineering
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="Harness-Engineering/planning">
+                                        规划能力
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="Harness-Engineering/virtual-filesystem">
+                                        虚拟文件系统
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="Harness-Engineering/task-delegation">
+                                        任务委托/子智能体
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="Harness-Engineering/context-management">
+                                        上下文管理
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="Harness-Engineering/code-execution">
+                                        代码执行
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="Harness-Engineering/human-in-the-loop">
+                                        人工介入
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="Harness-Engineering/skills">
+                                        技能包加载和管理
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>
+                        框架
+                    </span>
+                    <ul>
+                        <li>
+                            <span>
+                                LangGraph
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="LangGraph/begin">
+                                        快速开始
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>
+                                LangGraph.js
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="LangGraph.js/introduce">
+                                        简介
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="LangGraph.js/begin">
+                                        快速开始
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>
+                                LangChain
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="LangChain/begin">
+                                        快速开始
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>
+                                LangChain.js
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="LangChain.js/introduce">
+                                        简介
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="LangChain.js/begin">
+                                        快速开始
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                         <li>
+                            <span>
+                                Deep Agents
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="deepagents/begin">
+                                        快速开始
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>
+                                Deep Agents.js
+                            </span>
+                            <ul>
+                                <li>
+                                    <span tag="deepagents.js/introduce">
+                                        简介
+                                    </span>
+                                </li>
+                                <li>
+                                    <span tag="deepagents.js/begin">
+                                        快速开始
+                                    </span>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

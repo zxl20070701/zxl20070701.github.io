@@ -1,0 +1,42 @@
+<header>
+    MacOS Docker 安装
+</header>
+<h2>
+    使用 Homebrew 安装
+</h2>
+<p>
+    macOS 我们可以使用 Homebrew 来安装 Docker。
+</p>
+<p>
+    Homebrew 的 Cask 已经支持 Docker for Mac，因此可以很方便的使用 Homebrew Cask 来进行安装：
+</p>
+<pre tag="shell">
+$ brew install --cask --appdir=/Applications docker
+
+==> Creating Caskroom at /usr/local/Caskroom
+==> We'll set permissions properly so we won't need sudo in the future
+Password:          # 输入 macOS 密码
+==> Satisfying dependencies
+==> Downloading https://download.docker.com/mac/stable/21090/Docker.dmg
+######################################################################## 100.0%
+==> Verifying checksum for Cask docker
+==> Installing Cask docker
+==> Moving App 'Docker.app' to '/Applications/Docker.app'.
+&#x1f37a;  docker was successfully installed!
+</pre>
+<p>
+    在载入 Docker app 后，点击 Next，可能会询问你的 macOS 登陆密码，你输入即可。之后会弹出一个 Docker 运行的提示窗口，状态栏上也有有个小鲸鱼的图标（<img src="./images/docker-logo.png">）。
+</p>
+<h2>
+    手动下载安装
+</h2>
+<p>
+    如果需要手动下载，请点击以下链接下载 <a href="https://docs.docker.com/desktop/setup/install/mac-install/" target="_blank">Install Docker Desktop on Mac</a> 。
+</p>
+<img src="./images/docker-macos-download.png" width="100%">
+<p>
+    比如我的是Apple M4，下载左边的就可以了。
+</p>
+<p>
+    余下的，如同 macOS 其它软件一样，安装也非常简单，双击下载的 .dmg 文件，然后将鲸鱼图标拖拽到 Application 文件夹即可。
+</p>

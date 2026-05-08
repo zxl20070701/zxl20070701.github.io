@@ -1,0 +1,38 @@
+<header>
+    tf.sub
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.sub(a, b)
+</pre>
+<p>
+    逐元素相减两个张量。
+</p>
+<h3>
+    a
+</h3>
+<p>
+    第一个张量。
+</p>
+<h3>
+    b
+</h3>
+<p>
+    第二个张量。
+</p>
+<h2>
+    示例
+</h2>
+<pre tag="javascript">
+const a = tf.tensor1d([10, 20, 30, 40]);
+const b = tf.tensor1d([1, 2, 3, 4]);
+tf.sub(a, b).print();
+</pre>
+<p>
+    输出：
+</p>
+<pre>
+[9, 18, 27, 36]
+</pre>

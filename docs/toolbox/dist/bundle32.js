@@ -5,19 +5,19 @@
 window.__pkg__bundleSrc__['95']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('323');
+    __pkg__scope_args__=window.__pkg__getBundle('324');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('324');
+__pkg__scope_args__=window.__pkg__getBundle('325');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
 
-__pkg__scope_args__=window.__pkg__getBundle('325');
-
 __pkg__scope_args__=window.__pkg__getBundle('326');
+
+__pkg__scope_args__=window.__pkg__getBundle('327');
 var lazyDialogs =__pkg__scope_args__.default;
 
 
@@ -65,7 +65,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['323']=function(){
+window.__pkg__bundleSrc__['324']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"代码例子","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"content"},"childNodes":[10,12]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"textarea-eraser"},"childNodes":[11]},{"type":"text","content":"一个简单的多行文本擦除显示动画效果","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"colorful-dice"},"childNodes":[13]},{"type":"text","content":"一个旋转的3D彩色骰子","childNodes":[]}]
@@ -76,7 +76,7 @@ window.__pkg__bundleSrc__['323']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['324']=function(){
+window.__pkg__bundleSrc__['325']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -90,7 +90,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['325']=function(){
+window.__pkg__bundleSrc__['326']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -104,15 +104,15 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/code-example/dialogs/lazy-load
 /*****************************************************************/
-window.__pkg__bundleSrc__['326']=function(){
+window.__pkg__bundleSrc__['327']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= {
     "textarea-eraser": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle80.js','327')
+        return window.__pkg__getLazyBundle('./dist/bundle81.js','328')
     },
     "colorful-dice": function () {
-        return window.__pkg__getLazyBundle('./dist/bundle81.js','328')
+        return window.__pkg__getLazyBundle('./dist/bundle82.js','329')
     }
 };
 

@@ -72,7 +72,6 @@ fs.writeFileSync(fullPath('index.html', targetFolder), (template + "").replace('
 
 <!-- 安装应用 -->
 <script>
-/*
 try {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
@@ -92,7 +91,6 @@ try {
 } catch (err) {
     console.log("[安装应用出错]", err);
 }
-*/
 </script>`);
 fs.mkdirSync(fullPath("../", global._output));
 

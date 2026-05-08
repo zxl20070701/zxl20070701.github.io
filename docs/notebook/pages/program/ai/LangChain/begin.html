@@ -1,0 +1,43 @@
+<header>
+    快速开始
+</header>
+<p>
+    安装必要的依赖：
+</p>
+<pre tag>
+pip3 install langchain langchain-openai langchain-core
+</pre>
+<p>
+    比如我们本次安装的版本：
+</p>
+<pre>
+langchain-core==0.3.41
+langchain-openai==0.3.4
+langchain==0.3.4
+</pre>
+<p>
+    基本的 LangChain 使用示例：
+</p>
+<pre tag="python">
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+
+# 初始化模型
+llm = ChatOpenAI(
+    model="qwen3.5",
+    api_key="",
+    base_url="http://localhost:11434/v1"
+)
+
+# 发送消息
+messages = [
+    SystemMessage(content="你是一个有用的助手。"),
+    HumanMessage(content="你是谁?")
+]
+
+response = llm.invoke(messages)
+print(response.content)
+</pre>
+<p>
+    LangChain 提供了多种链类型和组件，可以根据需求选择合适的组件构建应用。
+</p>

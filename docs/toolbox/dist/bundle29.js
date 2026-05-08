@@ -5,22 +5,22 @@
 window.__pkg__bundleSrc__['92']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('310');
+    __pkg__scope_args__=window.__pkg__getBundle('311');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('311');
-
-
 __pkg__scope_args__=window.__pkg__getBundle('312');
+
+
+__pkg__scope_args__=window.__pkg__getBundle('313');
 var canvasRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('30');
 var urlFormat =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('313');
+__pkg__scope_args__=window.__pkg__getBundle('314');
 var getValue =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('316');
+__pkg__scope_args__=window.__pkg__getBundle('317');
 var toValue =__pkg__scope_args__.default;
 
 
@@ -197,7 +197,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/npm-download/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['310']=function(){
+window.__pkg__bundleSrc__['311']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"Npm Download","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"chart-container"},"childNodes":[8,12]},{"type":"tag","name":"div","attrs":{"class":"chart-header"},"childNodes":[9]},{"type":"tag","name":"div","attrs":{"class":"legend"},"childNodes":[10,11]},{"type":"tag","name":"span","attrs":{"class":"legend-color"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"legend-text"},"childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[13]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
@@ -208,7 +208,7 @@ window.__pkg__bundleSrc__['310']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/npm-download/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['311']=function(){
+window.__pkg__bundleSrc__['312']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -222,13 +222,13 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/region
 /*****************************************************************/
-window.__pkg__bundleSrc__['312']=function(){
+window.__pkg__bundleSrc__['313']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('151');
+    __pkg__scope_args__=window.__pkg__getBundle('152');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('218');
+__pkg__scope_args__=window.__pkg__getBundle('219');
 var assemble =__pkg__scope_args__.default;
 
 
@@ -343,20 +343,20 @@ __pkg__scope_bundle__.default= function (canvas, width, height, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['151']=function(){
+window.__pkg__bundleSrc__['152']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('152');
+    __pkg__scope_args__=window.__pkg__getBundle('153');
 var initText=__pkg__scope_args__.initText;
 var initArc=__pkg__scope_args__.initArc;
 var initCircle=__pkg__scope_args__.initCircle;
 var initRect=__pkg__scope_args__.initRect;
 
-__pkg__scope_args__=window.__pkg__getBundle('154');
+__pkg__scope_args__=window.__pkg__getBundle('155');
 var linearGradient=__pkg__scope_args__.linearGradient;
 var radialGradient=__pkg__scope_args__.radialGradient;
 
-__pkg__scope_args__=window.__pkg__getBundle('152');
+__pkg__scope_args__=window.__pkg__getBundle('153');
 var initPainterConfig=__pkg__scope_args__.initPainterConfig;
 
 
@@ -643,10 +643,10 @@ __pkg__scope_bundle__.default= function (canvas, width, height, opts, isScale) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/config
 /*****************************************************************/
-window.__pkg__bundleSrc__['152']=function(){
+window.__pkg__bundleSrc__['153']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('153');
+    __pkg__scope_args__=window.__pkg__getBundle('154');
 var arc =__pkg__scope_args__.default;
 
 
@@ -765,7 +765,7 @@ __pkg__scope_bundle__.initRect = function (painter, x, y, width, height) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/arc
 /*****************************************************************/
-window.__pkg__bundleSrc__['153']=function(){
+window.__pkg__bundleSrc__['154']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -826,7 +826,7 @@ __pkg__scope_bundle__.default= function (beginA, rotateA, cx, cy, r1, r2, doback
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/Gradient
 /*****************************************************************/
-window.__pkg__bundleSrc__['154']=function(){
+window.__pkg__bundleSrc__['155']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 线性渐变
@@ -866,7 +866,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/assemble
 /*****************************************************************/
-window.__pkg__bundleSrc__['218']=function(){
+window.__pkg__bundleSrc__['219']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (begin, end, step, count) {
@@ -899,10 +899,10 @@ window.__pkg__bundleSrc__['218']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/npm-download/getValue
 /*****************************************************************/
-window.__pkg__bundleSrc__['313']=function(){
+window.__pkg__bundleSrc__['314']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('314');
+    __pkg__scope_args__=window.__pkg__getBundle('315');
 var xhr =__pkg__scope_args__.default;
 
 
@@ -956,13 +956,13 @@ __pkg__scope_bundle__.default= function (packages) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhr/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['314']=function(){
+window.__pkg__bundleSrc__['315']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('32');
 var isFunction =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('315');
+__pkg__scope_args__=window.__pkg__getBundle('316');
 var toString =__pkg__scope_args__.default;
 
 
@@ -1034,7 +1034,7 @@ __pkg__scope_bundle__.default= function (settings, callback, errorback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/xhr/toString
 /*****************************************************************/
-window.__pkg__bundleSrc__['315']=function(){
+window.__pkg__bundleSrc__['316']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('61');
@@ -1075,7 +1075,7 @@ __pkg__scope_bundle__.default= function (data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/npm-download/toValue
 /*****************************************************************/
-window.__pkg__bundleSrc__['316']=function(){
+window.__pkg__bundleSrc__['317']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= function (oralValue, interval) {

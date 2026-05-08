@@ -1,0 +1,40 @@
+<header>
+    简介
+</header>
+<div class="tips">
+    官方文档：<a href="https://docs.langchain.com/oss/javascript/deepagents"
+        target="_blank">https://docs.langchain.com/oss/javascript/deepagents</a>
+</div>
+<p>
+    基于 JavaScript 的 AI 智能体框架，它建立在 LangChain.js
+    之上，旨在简化大型语言模型（LLM）应用的开发过程。该框架提供了一套完整的工具和抽象，使开发者能够轻松创建、配置和管理 AI 智能体，实现复杂的对话系统和自动化任务。
+</p>
+
+<h2>
+    核心概念
+</h2>
+<h3>
+    智能体（Agent）
+</h3>
+<p>
+    在 Deep Agents.js 中，<span class="important">智能体</span>是核心概念，它是一个能够与 LLM 交互并执行特定任务的实体。每个智能体都包含以下关键组件：
+</p>
+<ul>
+    <li><span class="special">模型（Model）</span>：用于处理自然语言的大型语言模型</li>
+    <li><span class="special">工具（Tools）</span>：智能体可以调用的外部功能或服务</li>
+    <li><span class="special">系统提示（System Prompt）</span>：定义智能体行为和角色的指令</li>
+</ul>
+
+<h3>
+    工具系统
+</h3>
+<p>
+    Deep Agents.js 提供了强大的工具系统，允许智能体调用外部函数来执行特定任务，如查询数据库、调用 API、执行计算等。工具可以是同步或异步的，并且可以与各种第三方服务集成。
+</p>
+
+<h3>
+    消息流
+</h3>
+<p>
+    框架使用消息流（Message Flow）模式处理对话，每条消息都有角色（user、assistant、system）和内容，这种设计使得对话历史的管理和追踪变得简单直观。
+</p>

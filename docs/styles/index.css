@@ -177,7 +177,7 @@ body>footer {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100vw;
+    width: 100svw;
 }
 
 body>footer>.copyright {
@@ -201,7 +201,7 @@ body>footer>.copyright>.btn:hover {
 
 /* 移动端适配样式 */
 @media screen and (max-width: 768px) {
-    
+
     body>header {
         padding: 0 10px;
         line-height: 50px;
@@ -210,68 +210,68 @@ body>footer>.copyright>.btn:hover {
         justify-content: space-between;
         align-items: center;
     }
-    
+
     body>header>h2 {
         margin-left: 0;
         font-size: 18px;
         background-size: auto 80%;
         padding-left: 30px;
     }
-    
+
     body>header>a.nav-item {
         margin-left: 5px;
         font-size: 14px;
     }
-    
+
     body>header>.right {
         position: static;
         margin-left: auto;
     }
-    
+
     body>.homepage {
         padding: 30px 15px;
     }
-    
+
     body>.homepage>h1 {
         font-size: 32px;
     }
-    
+
     body>.homepage>p {
         font-size: 16px;
         padding: 15px 0;
     }
-    
+
     body>.organizations {
         margin-top: 40px;
         padding: 0 10px;
     }
-    
+
     body>.organizations>.item {
         display: block;
         width: 100%;
         max-width: 300px;
         margin: 0 auto 30px;
     }
-    
+
     body>.organizations>.item>.icon {
         width: 80px;
         height: 80px;
     }
-    
+
     body>.organizations>.item>h2 {
         font-size: 18px;
         margin-top: 15px;
     }
-    
+
     body>.organizations>.item>p {
         font-size: 14px;
     }
-    
+
     body>footer {
         position: static;
         margin-top: 30px;
     }
-    
+
     body>footer>.copyright {
         font-size: 12px;
         line-height: 40px;
@@ -283,16 +283,16 @@ body>footer>.copyright>.btn:hover {
     body>.homepage>h1 {
         font-size: 24px;
     }
-    
+
     body>.homepage>p {
         font-size: 14px;
     }
-    
+
     body>header>h2 {
         font-size: 16px;
         padding-left: 40px;
     }
-    
+
     body>header>a.nav-item,
     body>header>.right a {
         font-size: 12px;

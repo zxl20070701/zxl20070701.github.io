@@ -1,0 +1,206 @@
+<header>
+    高级功能
+</header>
+<p>
+    llama.cpp 除了基本的推理功能外，还提供了许多高级功能，包括模型量化、API 服务器、嵌入生成等。
+</p>
+<h2>
+    模型量化
+</h2>
+<p>
+    模型量化可以显著减少模型大小和内存使用，同时保持合理的性能。llama.cpp 提供了强大的量化工具。
+</p>
+<h3>
+    使用 quantize 工具
+</h3>
+<pre>
+# 查看可用的量化类型
+./build/bin/llama-quantize --help
+
+# 将 FP16 模型量化为 Q4_K_M
+./build/bin/llama-quantize models/llama-2-7b-chat.gguf models/llama-2-7b-chat-Q4_K_M.gguf Q4_K_M
+</pre>
+<h3>
+    量化类型说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th style="text-align:left">量化类型</th>
+            <th style="text-align:left">说明</th>
+            <th style="text-align:left">相对大小</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align:left">Q4_0</td>
+            <td style="text-align:left">4位量化，旧格式</td>
+            <td style="text-align:left">~4.5GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q4_1</td>
+            <td style="text-align:left">4位量化，改进版</td>
+            <td style="text-align:left">~4.8GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q4_K_S</td>
+            <td style="text-align:left">4位量化，小尺寸</td>
+            <td style="text-align:left">~4.3GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q4_K_M</td>
+            <td style="text-align:left">4位量化，平衡型</td>
+            <td style="text-align:left">~4.5GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q5_0</td>
+            <td style="text-align:left">5位量化</td>
+            <td style="text-align:left">~5.3GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q5_1</td>
+            <td style="text-align:left">5位量化，改进版</td>
+            <td style="text-align:left">~5.5GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q5_K_S</td>
+            <td style="text-align:left">5位量化，小尺寸</td>
+            <td style="text-align:left">~5.1GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q5_K_M</td>
+            <td style="text-align:left">5位量化，平衡型</td>
+            <td style="text-align:left">~5.3GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q6_K</td>
+            <td style="text-align:left">6位量化</td>
+            <td style="text-align:left">~6.2GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Q8_0</td>
+            <td style="text-align:left">8位量化</td>
+            <td style="text-align:left">~7.5GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">F16</td>
+            <td style="text-align:left">16位浮点</td>
+            <td style="text-align:left">~13.5GB (7B模型)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">F32</td>
+            <td style="text-align:left">32位浮点</td>
+            <td style="text-align:left">~26.5GB (7B模型)</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    API 服务器
+</h2>
+<p>
+    llama.cpp 提供了 HTTP API 服务器，可以通过网络接口访问模型。
+</p>
+<h3>
+    启动服务器
+</h3>
+<pre>
+# 启动服务器，监听 8080 端口
+./build/bin/llama-server -m models/llama-2-7b-chat.Q4_K_M.gguf --host 0.0.0.0 --port 8080
+
+# 使用多线程
+./build/bin/llama-server -m models/llama-2-7b-chat.Q4_K_M.gguf -t 8 --host 0.0.0.0 --port 8080
+</pre>
+<h3>
+    API 端点
+</h3>
+<p>
+    服务器启动后，可以使用以下 API 端点：
+</p>
+<div class="tips">
+    兼容 OpenAI 的 API 位于 http://localhost:8080/v1/
+</div>
+<ul>
+    <li>
+        <span class="warn">POST /completion</span>：文本补全
+    </li>
+    <li>
+        <span class="warn">POST /chat/completions</span>：聊天补全
+    </li>
+    <li>
+        <span class="warn">POST /embedding</span>：生成嵌入向量
+    </li>
+    <li>
+        <span class="warn">GET /models</span>：列出可用模型
+    </li>
+    <li>
+        <span class="warn">GET /health</span>：健康检查
+    </li>
+</ul>
+<h3>
+    使用示例
+</h3>
+<pre>
+# 使用 curl 调用 API
+curl http://localhost:8080/completion \
+    -H "Content-Type: application/json" \
+    -d '{
+        "prompt": "Hello, how are you?",
+        "n_predict": 128
+    }'
+</pre>
+<h2>
+    嵌入生成
+</h2>
+<p>
+    使用 embedding 工具生成文本的嵌入向量：
+</p>
+<pre>
+# 生成单个文本的嵌入
+./build/bin/llama-embedding -m models/llama-2-7b-chat.Q4_K_M.gguf -p "Hello world"
+
+# 从文件读取文本
+./build/bin/llama-embedding -m models/llama-2-7b-chat.Q4_K_M.gguf -f input.txt
+</pre>
+<h2>
+    性能优化
+</h2>
+<h3>
+    批处理
+</h3>
+<p>
+    使用批处理可以提高吞吐量：
+</p>
+<pre>
+./build/bin/llama-cli -m models/llama-2-7b-chat.Q4_K_M.gguf -p "Hello" -n 128 -b 512
+</pre>
+<h3>
+    内存映射
+</h3>
+<p>
+    对于大模型，可以使用内存映射减少内存使用：
+</p>
+<pre>
+./build/bin/llama-cli -m models/llama-2-7b-chat.Q4_K_M.gguf --mmap
+</pre>
+<h3>
+    内存锁定
+</h3>
+<p>
+    锁定模型到内存可以提高性能（需要足够内存）：
+</p>
+<pre>
+./build/bin/llama-cli -m models/llama-2-7b-chat.Q4_K_M.gguf --mlock
+</pre>
+<h2>
+    多 GPU 支持
+</h2>
+<p>
+    如果有多个 GPU，可以指定使用哪些 GPU：
+</p>
+<pre>
+# 使用 GPU 0 和 GPU 1
+./build/bin/llama-cli -m models/llama-2-7b-chat.Q4_K_M.gguf -ngl 35 --tensor-split 3,1
+
+# 仅使用 GPU 1
+./build/bin/llama-cli -m models/llama-2-7b-chat.Q4_K_M.gguf -ngl 35 --main-gpu 1
+</pre>

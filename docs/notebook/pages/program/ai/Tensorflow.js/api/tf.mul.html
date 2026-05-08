@@ -1,0 +1,38 @@
+<header>
+    tf.mul
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.mul(a, b)
+</pre>
+<p>
+    逐元素相乘两个张量。
+</p>
+<h3>
+    a
+</h3>
+<p>
+    第一个张量。
+</p>
+<h3>
+    b
+</h3>
+<p>
+    第二个张量。
+</p>
+<h2>
+    示例
+</h2>
+<pre tag="javascript">
+const a = tf.tensor1d([1, 2, 3, 4]);
+const b = tf.tensor1d([2, 3, 4, 5]);
+tf.mul(a, b).print();
+</pre>
+<p>
+    输出：
+</p>
+<pre>
+[2, 6, 12, 20]
+</pre>

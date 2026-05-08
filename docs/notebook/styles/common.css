@@ -34,7 +34,7 @@ body>#process {
 
 /* 文档 */
 .doc {
-    width: calc(100vw - 520px);
+    width: calc(100svw - 520px);
     padding: 30px;
     position: relative;
     scroll-behavior: smooth;

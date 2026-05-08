@@ -1,0 +1,176 @@
+<header>
+    vLLM基本使用
+</header>
+<h2>
+    简介
+</h2>
+<p>
+    vLLM提供了简单易用的API来进行大语言模型的推理和服务。本指南将介绍vLLM的基本使用方法。
+</p>
+<h2>
+    基本推理
+</h2>
+<h3>
+    使用LLM类进行推理
+</h3>
+<p>
+    最简单的使用方式是直接创建LLM实例并进行推理：
+</p>
+<pre tag="python">
+from vllm import LLM, SamplingParams
+
+# 创建LLM实例
+llm = LLM(model="facebook/opt-125m")
+
+# 定义采样参数
+sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
+
+# 准备输入
+prompts = [
+    "Hello, my name is",
+    "The future of AI is",
+]
+
+# 生成输出
+outputs = llm.generate(prompts, sampling_params)
+
+# 打印输出
+for output in outputs:
+    prompt = output.prompt
+    generated_text = output.outputs[0].text
+    print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
+</pre>
+<h2>
+    在线服务
+</h2>
+<h3>
+    启动OpenAI兼容的API服务器
+</h3>
+<p>
+    vLLM可以启动一个与OpenAI API兼容的服务器：
+</p>
+<pre tag="bash">
+python -m vllm.entrypoints.openai.api_server --model facebook/opt-125m
+</pre>
+<p>
+    服务器启动后，你可以使用与OpenAI API相同的格式进行请求：
+</p>
+<pre tag="python">
+import openai
+
+# 设置API基础URL
+openai.api_base = "http://localhost:8000/v1"
+openai.api_key = "EMPTY"
+
+# 创建聊天完成
+completion = openai.ChatCompletion.create(
+    model="facebook/opt-125m",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+
+print(completion.choices[0].message.content)
+</pre>
+<h2>
+    高级功能
+</h2>
+<h3>
+    批处理推理
+</h3>
+<p>
+    vLLM支持高效的批处理推理：
+</p>
+<pre tag="python">
+from vllm import LLM, SamplingParams
+
+# 创建LLM实例
+llm = LLM(model="facebook/opt-125m")
+
+# 准备大量输入
+prompts = [f"User request {i}: " for i in range(100)]
+
+# 定义采样参数
+sampling_params = SamplingParams(
+    temperature=0.8,
+    top_p=0.95,
+    max_tokens=100
+)
+
+# 批处理生成
+outputs = llm.generate(prompts, sampling_params)
+
+# 处理输出
+for output in outputs:
+    print(f"Generated: {output.outputs[0].text}")
+</pre>
+<h3>
+    多GPU推理
+</h3>
+<p>
+    vLLM支持多GPU并行推理：
+</p>
+<pre tag="python">
+from vllm import LLM
+
+# 使用多个GPU
+llm = LLM(
+    model="facebook/opt-125m",
+    tensor_parallel_size=2  # 使用2个GPU
+)
+
+# 其余代码与单GPU相同
+</pre>
+<h2>
+    性能优化
+</h2>
+<h3>
+    内存管理
+</h3>
+<p>
+    可以通过调整GPU内存使用比例来优化性能：
+</p>
+<pre tag="python">
+from vllm import LLM
+
+# 设置GPU内存使用比例
+llm = LLM(
+    model="facebook/opt-125m",
+    gpu_memory_utilization=0.8  # 使用80%的GPU内存
+)
+</pre>
+<h3>
+    并发请求
+</h3>
+<p>
+    在服务端，可以通过调整worker数量来处理更多并发请求：
+</p>
+<pre tag="bash">
+python -m vllm.entrypoints.openai.api_server \
+    --model facebook/opt-125m \
+    --tensor-parallel-size 2 \
+    --pipeline-parallel-size 1
+</pre>
+<h2>
+    常见问题
+</h2>
+<h3>
+    模型加载失败
+</h3>
+<p>
+    如果遇到模型加载失败，可以尝试：
+</p>
+<ol>
+    <li>检查模型路径是否正确</li>
+    <li>确保有足够的GPU内存</li>
+    <li>尝试使用较小的模型</li>
+</ol>
+<h3>
+    推理速度慢
+</h3>
+<p>
+    如果推理速度较慢，可以尝试：
+</p>
+<ol>
+    <li>增加批处理大小</li>
+    <li>使用多GPU并行</li>
+    <li>调整采样参数（如降低max_tokens）</li>
+</ol>

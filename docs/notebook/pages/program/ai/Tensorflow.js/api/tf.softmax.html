@@ -1,0 +1,37 @@
+<header>
+    tf.softmax
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.softmax(logits, dim?)
+</pre>
+<p>
+    计算 softmax 归一化。
+</p>
+<h3>
+    logits
+</h3>
+<p>
+    输入张量。
+</p>
+<h3>
+    dim
+</h3>
+<p>
+    沿着哪个维度计算 softmax 归一化。
+</p>
+<h2>
+    示例
+</h2>
+<pre tag="javascript">
+const x = tf.tensor1d([1, 2, 3]);
+tf.softmax(x).print();
+</pre>
+<p>
+    输出：
+</p>
+<pre>
+[0.0900306, 0.2447285, 0.6652409]
+</pre>

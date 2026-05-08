@@ -1,0 +1,58 @@
+<svg viewBox="0 0 750 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect x="0" y="0" width="750" height="280" fill="#FAFBFC"></rect>
+
+  <!-- 标题 -->
+  <text x="375" y="25" text-anchor="middle" fill="#4A6FA5" font-size="14" font-weight="bold">ReAct Agent 工作流程</text>
+
+  <!-- START 节点 -->
+  <rect x="30" y="110" width="70" height="40" rx="6" fill="#4A6FA5"></rect>
+  <text x="65" y="135" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">START</text>
+
+  <!-- 箭头 START -> Agent -->
+  <path d="M100 130 L150 130" stroke="#6B8FC7" stroke-width="2" fill="none" marker-end="url(#arrowReact)"></path>
+
+  <!-- Agent 节点 -->
+  <rect x="155" y="100" width="120" height="60" rx="8" fill="#6B8FC7"></rect>
+  <text x="215" y="125" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="bold">Agent</text>
+  <text x="215" y="145" text-anchor="middle" fill="#E8F0F8" font-size="10">LLM 推理</text>
+
+  <!-- 条件判断菱形 -->
+  <polygon points="375,100 435,130 375,160 315,130" fill="#F0F4F8" stroke="#4A6FA5" stroke-width="2"></polygon>
+  <text x="375" y="127" text-anchor="middle" fill="#4A6FA5" font-size="10">有工具调用?</text>
+  <text x="375" y="140" text-anchor="middle" fill="#4A6FA5" font-size="10"></text>
+
+  <!-- 箭头 Agent -> 条件判断 -->
+  <path d="M275 130 L315 130" stroke="#6B8FC7" stroke-width="2" fill="none" marker-end="url(#arrowReact)"></path>
+
+  <!-- Tool 节点 -->
+  <rect x="480" y="100" width="120" height="60" rx="8" fill="#52A05A"></rect>
+  <text x="540" y="125" text-anchor="middle" fill="#FFFFFF" font-size="12" font-weight="bold">Tools</text>
+  <text x="540" y="145" text-anchor="middle" fill="#E8F0F8" font-size="10">执行工具</text>
+
+  <!-- 箭头 条件判断 -> Tool (是) -->
+  <path d="M435 130 L480 130" stroke="#52A05A" stroke-width="2" fill="none" marker-end="url(#arrowGreenReact)"></path>
+  <text x="455" y="120" fill="#52A05A" font-size="10">是</text>
+
+  <!-- 循环箭头 Tool -> Agent -->
+  <path d="M540 160 L540 200 L215 200 L215 160" stroke="#6B8FC7" stroke-width="2" fill="none" marker-end="url(#arrowReact)"></path>
+  <text x="375" y="220" text-anchor="middle" fill="#6B8FC7" font-size="10">返回结果继续推理</text>
+
+  <!-- END 节点 -->
+  <rect x="640" y="110" width="70" height="40" rx="6" fill="#4A6FA5"></rect>
+  <text x="675" y="135" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">END</text>
+
+  <!-- 箭头 条件判断 -> END (否) -->
+  <path d="M375 160 L375 250 L675 250 L675 150" stroke="#4A6FA5" stroke-width="2" fill="none" marker-end="url(#arrowReact)"></path>
+  <text x="390" y="180" fill="#4A6FA5" font-size="10">否</text>
+
+  <!-- 箭头定义 -->
+  <defs>
+    <marker id="arrowReact" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6B8FC7"></polygon>
+    </marker>
+    <marker id="arrowGreenReact" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#52A05A"></polygon>
+    </marker>
+  </defs>
+</svg>

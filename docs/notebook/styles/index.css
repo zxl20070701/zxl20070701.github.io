@@ -1,5 +1,5 @@
 html {
-    height: 100vh !important;
+    height: 100svh !important;
     overflow: hidden;
 }
 
@@ -244,7 +244,7 @@ body>header>.github:hover {
 .main-view>div {
     vertical-align: top;
     display: inline-block;
-    height: calc(100vh - 50px);
+    height: calc(100svh - 50px);
     font-size: 16px;
     padding: 10px;
     white-space: normal;
@@ -516,8 +516,8 @@ body>header>.github:hover {
 }
 
 .explain-view>div {
-    width: calc(100vw - 420px);
-    height: calc(100vh - 50px);
+    width: calc(100svw - 420px);
+    height: calc(100svh - 50px);
     position: fixed;
     top: 25px;
     right: 210px;

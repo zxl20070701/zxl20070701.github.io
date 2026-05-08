@@ -1,0 +1,59 @@
+<svg viewBox="0 0 750 320" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect x="0" y="0" width="750" height="320" fill="#FAFBFC"></rect>
+
+  <!-- 标题 -->
+  <text x="375" y="25" text-anchor="middle" fill="#4A6FA5" font-size="14" font-weight="bold">多 Agent 协作架构（Supervisor 模式）</text>
+
+  <!-- Supervisor 节点 -->
+  <rect x="300" y="60" width="150" height="70" rx="10" fill="#4A6FA5"></rect>
+  <text x="375" y="90" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="bold">Supervisor</text>
+  <text x="375" y="110" text-anchor="middle" fill="#E8F0F8" font-size="10">主管 - 任务分配</text>
+
+  <!-- Research Agent -->
+  <rect x="80" y="200" width="140" height="60" rx="8" fill="#6B8FC7"></rect>
+  <text x="150" y="225" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">Research Agent</text>
+  <text x="150" y="242" text-anchor="middle" fill="#E8F0F8" font-size="9">信息收集</text>
+
+  <!-- Writing Agent -->
+  <rect x="305" y="200" width="140" height="60" rx="8" fill="#52A05A"></rect>
+  <text x="375" y="225" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">Writing Agent</text>
+  <text x="375" y="242" text-anchor="middle" fill="#E8F0F8" font-size="9">内容创作</text>
+
+  <!-- Review Agent -->
+  <rect x="530" y="200" width="140" height="60" rx="8" fill="#6B8FC7"></rect>
+  <text x="600" y="225" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="bold">Review Agent</text>
+  <text x="600" y="242" text-anchor="middle" fill="#E8F0F8" font-size="9">质量审核</text>
+
+  <!-- 从 Supervisor 到各 Agent 的箭头 -->
+  <path d="M325 130 L150 200" stroke="#6B8FC7" stroke-width="2" fill="none" marker-end="url(#arrowMulti)"></path>
+  <path d="M375 130 L375 200" stroke="#52A05A" stroke-width="2" fill="none" marker-end="url(#arrowGreenMulti)"></path>
+  <path d="M425 130 L600 200" stroke="#6B8FC7" stroke-width="2" fill="none" marker-end="url(#arrowMulti)"></path>
+
+  <!-- 从各 Agent 返回 Supervisor 的箭头（虚线） -->
+  <path d="M170 200 L340 130" stroke="#8BA4C7" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowGrayMulti)"></path>
+  <path d="M375 200 L375 130" stroke="#8BA4C7" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowGrayMulti)"></path>
+  <path d="M580 200 L410 130" stroke="#8BA4C7" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowGrayMulti)"></path>
+
+  <!-- 说明文字 -->
+  <text x="200" y="165" fill="#6B8FC7" font-size="9">分配任务</text>
+  <text x="520" y="165" fill="#6B8FC7" font-size="9">分配任务</text>
+  <text x="260" y="175" fill="#8BA4C7" font-size="9">返回结果</text>
+  <text x="450" y="175" fill="#8BA4C7" font-size="9">返回结果</text>
+
+  <!-- 底部说明 -->
+  <text x="375" y="295" text-anchor="middle" fill="#4A6FA5" font-size="11">Supervisor 协调各专家 Agent，每个 Agent 完成后返回结果给 Supervisor 决定下一步</text>
+
+  <!-- 箭头定义 -->
+  <defs>
+    <marker id="arrowMulti" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6B8FC7"></polygon>
+    </marker>
+    <marker id="arrowGreenMulti" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#52A05A"></polygon>
+    </marker>
+    <marker id="arrowGrayMulti" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8BA4C7"></polygon>
+    </marker>
+  </defs>
+</svg>

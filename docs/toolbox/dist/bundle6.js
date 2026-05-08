@@ -107,9 +107,14 @@ window.__pkg__bundleSrc__['37']=function(){
         return window.__pkg__getLazyBundle('./dist/bundle33.js','96')
     },
 
-    // Job Resume
+    // 简历制作
     "job-resume": function () {
         return window.__pkg__getLazyBundle('./dist/bundle34.js','97')
+    },
+
+     // 时序图
+    "sequence-diagram": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle35.js','98')
     }
 };
 

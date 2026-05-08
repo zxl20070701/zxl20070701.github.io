@@ -1,14 +1,14 @@
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/code-example/dialogs/colorful-dice/index.js
+// Original file:./src/pages/code-example/dialogs/textarea-eraser/index.js
 /*****************************************************************/
 window.__pkg__bundleSrc__['328']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('442');
+    __pkg__scope_args__=window.__pkg__getBundle('443');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('443');
+__pkg__scope_args__=window.__pkg__getBundle('444');
 
 
 
@@ -18,7 +18,8 @@ __pkg__scope_bundle__.default= function (obj, props) {
         name: "code-example",
         render: template,
         data: {
-            srcUrl: props.srcUrl
+            srcUrl: props.srcUrl,
+            text: "嗟乎！时运不齐，命途多舛。冯唐易老，李广难封。屈贾谊于长沙，非无圣主；窜梁鸿于海曲，岂乏明时？所赖君子见机，达人知命。老当益壮，宁移白首之心？穷且益坚，不坠青云之志。酌贪泉而觉爽，处涸辙以犹欢。北海虽赊，扶摇可接；东隅已逝，桑榆非晚。孟尝高洁，空余报国之情；阮籍猖狂，岂效穷途之哭！"
         },
         mounted: function () {
 
@@ -32,25 +33,25 @@ __pkg__scope_bundle__.default= function (obj, props) {
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/code-example/dialogs/colorful-dice/index.html
+// Original file:./src/pages/code-example/dialogs/textarea-eraser/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['442']=function(){
+window.__pkg__bundleSrc__['443']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,8,22]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","target":"_blank"},"childNodes":[4]},{"type":"text","content":"一个旋转的3D彩色骰子","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[6]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[7]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content colorful-dice","ref":"mycontent"},"childNodes":[9]},{"type":"tag","name":"ul","attrs":{},"childNodes":[10,12,14,16,18,20]},{"type":"tag","name":"li","attrs":{},"childNodes":[11]},{"type":"text","content":"1","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[13]},{"type":"text","content":"2","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[15]},{"type":"text","content":"3","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[17]},{"type":"text","content":"4","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[19]},{"type":"text","content":"5","childNodes":[]},{"type":"tag","name":"li","attrs":{},"childNodes":[21]},{"type":"text","content":"6","childNodes":[]},{"type":"tag","name":"style","attrs":{},"childNodes":[23]},{"type":"text","content":"@keyframes rotate_animation {\r\n        0% {\r\n            transform: rotateY(0) rotateX(360deg);\r\n        }\r\n\r\n        16.7% {\r\n            transform: rotateY(60deg) rotateX(300deg);\r\n        }\r\n\r\n        33.3% {\r\n            transform: rotateY(100deg) rotateX(240deg);\r\n        }\r\n\r\n        50% {\r\n            transform: rotateY(180deg) rotateX(100deg);\r\n        }\r\n\r\n        66.7% {\r\n            transform: rotateY(240deg) rotateX(120deg);\r\n        }\r\n\r\n        83.3% {\r\n            transform: rotateY(330deg) rotateX(60deg);\r\n        }\r\n\r\n        100% {\r\n            transform: rotateY(360deg) rotateX(0deg);\r\n        }\r\n    }","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,8,12]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","target":"_blank"},"childNodes":[4]},{"type":"text","content":"一个简单的多行文本擦除显示动画效果","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[6]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[7]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content textarea-eraser","ref":"mycontent"},"childNodes":[9,10]},{"type":"tag","name":"p","attrs":{"ui-bind":"text"},"childNodes":[]},{"type":"tag","name":"p","attrs":{"class":"help"},"childNodes":[11]},{"type":"tag","name":"span","attrs":{"ui-bind":"text"},"childNodes":[]},{"type":"tag","name":"style","attrs":{},"childNodes":[13]},{"type":"text","content":"@property --p {\r\n    syntax: '<percentage>';\r\n    initial-value: 0%;\r\n    inherits: false;\r\n}\r\n\r\n@keyframes erase_animation {\r\n    to {\r\n        --p: 100%;\r\n    }\r\n}","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
 
 /*************************** [bundle] ****************************/
-// Original file:./src/pages/code-example/dialogs/colorful-dice/index.scss
+// Original file:./src/pages/code-example/dialogs/textarea-eraser/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['443']=function(){
+window.__pkg__bundleSrc__['444']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [dialog-view=\"code-example\"]{\n\nheight: 400px;\n\nwidth: 600px;\n\ntop: calc(50vh - 200px);\n\nleft: calc(50vw - 300px);\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice{\n\nwidth: 400px;\n\nmargin: auto;\n\nposition: relative;\n\nheight: 350px;\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice > ul{\n\nposition: absolute;\n\ntransform-style: preserve-3d;\n\ntransform: rotateX(45deg);\n\nborder: 1px solid red;\n\nanimation: rotate_animation 3s cubic-bezier(0.34, 0.29, 1, 1) infinite;\n\nmargin-left: calc(50% - 10px);\n\nmargin-top: calc(50% - 60px);\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice > ul > li{\n\nwidth: 120px;\n\nline-height: 100px;\n\nheight: 120px;\n\ntext-align: center;\n\nborder-radius: 20px;\n\nposition: absolute;\n\nborder: 20px solid #f3f5f6;\n\ncolor: white;\n\nfont-size: 30px;\n\nleft: -60px;\n\ntop: -60px;\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice > ul > li:nth-child(1){\n\ntransform: rotateY(0) translateZ(50px);\n\nbackground: rgb(149, 149, 218);\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice > ul > li:nth-child(2){\n\ntransform: rotateX(-90deg) translateZ(50px);\n\nbackground: rgb(235, 184, 107);\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice > ul > li:nth-child(3){\n\ntransform: rotateY(-90deg) translateZ(50px);\n\nbackground: rgb(90, 218, 31);\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice > ul > li:nth-child(4){\n\ntransform: rotateY(90deg) translateZ(50px);\n\nbackground: rgb(38, 228, 228);\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice > ul > li:nth-child(5){\n\ntransform: rotateX(90deg) translateZ(50px);\n\nbackground: rgb(191, 24, 233);\n\n}\n\n [dialog-view=\"code-example\"] > div.colorful-dice > ul > li:nth-child(6){\n\ntransform: rotateY(180deg) translateZ(50px);\n\nbackground: rgb(236, 9, 20);\n\n}\n";
+styleElement.innerHTML = "\n [dialog-view=\"code-example\"]{\n\nheight: 400px;\n\nwidth: 600px;\n\ntop: calc(50vh - 200px);\n\nleft: calc(50vw - 300px);\n\n}\n\n [dialog-view=\"code-example\"] > div.textarea-eraser{\n\nwidth: 400px;\n\nmargin: auto;\n\nposition: relative;\n\n}\n\n [dialog-view=\"code-example\"] > div.textarea-eraser > p{\n\ntext-align: left;\n\ntext-indent: 2em;\n\nline-height: 1.8em;\n\npadding-top: 75px;\n\ncolor: #212332;\n\nfont-weight: 800;\n\nfont-style: italic;\n\nfont-family: system-ui;\n\ntext-decoration: overline;\n\n}\n\n [dialog-view=\"code-example\"] > div.textarea-eraser > p.help{\n\nposition: absolute;\n\ntop: 0;\n\n}\n\n [dialog-view=\"code-example\"] > div.textarea-eraser > p.help > span{\n\nbackground: linear-gradient(\r\n            to right,\r\n            transparent var(--p),\r\n            #fff calc(var(--p) + 30px)\r\n          );\n\ncolor: transparent;\n\nanimation: erase_animation 5s linear forwards;\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

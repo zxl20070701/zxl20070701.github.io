@@ -1,0 +1,55 @@
+<header>
+    安装
+</header>
+<p>
+    llama.cpp 是一个用 C/C++ 编写的轻量级 LLM 推理库，支持多种操作系统，包括 macOS、Windows、Linux。
+</p>
+<h2>
+    源码编译安装
+</h2>
+<p>
+    llama.cpp 主要通过源码编译的方式进行安装，首先需要克隆仓库：
+</p>
+<pre>
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+</pre>
+<h3>
+    macOS
+</h3>
+<p>
+    在 macOS 上，可以使用以下命令进行编译：
+</p>
+<pre>
+cmake -B build
+cmake --build build --config Release
+</pre>
+<h2>
+    依赖项
+</h2>
+<p>
+    llama.cpp 基本编译不需要额外依赖，但如果需要特定功能，可能需要安装：
+</p>
+<ul>
+    <li>
+        OpenBLAS：用于 CPU 加速
+    </li>
+    <li>
+        CUDA Toolkit：用于 NVIDIA GPU 加速
+    </li>
+    <li>
+        ROCm：用于 AMD GPU 加速
+    </li>
+</ul>
+<h2>
+    验证安装
+</h2>
+<p>
+    编译完成后，可以通过以下命令验证是否成功：
+</p>
+<pre>
+./build/bin/llama-cli --help
+</pre>
+<p>
+    如果显示帮助信息，则说明编译成功。
+</p>

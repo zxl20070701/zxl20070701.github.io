@@ -29,10 +29,10 @@
 
         // 计算vw和vh具体应该是什么
         window.getVwVh = function () {
-            var _vw = "vw", _vh = "vh";
+            var _vw = "svw", _vh = "svh";
             if (window.isPhone && window.innerWidth < window.innerHeight) {
-                _vw = "vh";
-                _vh = "vw";
+                _vw = "svh";
+                _vh = "svw";
             }
             return {
                 vw: _vw,
@@ -89,7 +89,7 @@
                         if (window.isPhone) {
                             if (window.innerWidth < window.innerHeight) {
                                 window.scale = window.innerWidth / 700;
-                                _transform = "rotate(90deg) translateY(-" + 100 / window.scale + "vw)";
+                                _transform = "rotate(90deg) translateY(-" + 100 / window.scale + "svw)";
                             } else {
                                 window.scale = window.innerWidth / 1500;
                             }
