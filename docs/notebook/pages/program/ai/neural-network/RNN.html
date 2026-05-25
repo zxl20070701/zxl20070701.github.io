@@ -1,0 +1,30 @@
+<header>
+    循环神经网络（RNN）
+</header>
+<p>
+    核心在于循环连接（Recurrent Connection），即网络的输出不仅取决于当前输入，还取决于之前所有时间步的输入。
+</p>
+<p>
+    利用前一步的隐藏状态（Hidden State）来影响当前步骤的输出，从而捕捉序列中的时序依赖关系：
+</p>
+<img src="./images/neural-network/1rnn-scaled.png" width="90%">
+<h2>
+    工作机制
+</h2>
+<p>
+    在每个时间步 t 执行以下计算（Wₓ和Wₕ分别表示输入权重和隐藏状态权重、b是偏置项）：
+</p>
+<ol>
+    <li>
+        接收当前输入 xₜ 和前一时刻的隐藏状态 hₜ₋₁
+    </li>
+    <li>
+        计算新的隐藏状态 hₜ = f(Wₕₕ·hₜ₋₁ + Wₓₕ·xₜ + b)
+    </li>
+    <li>
+        产生输出 yₜ = g(Wₕᵧ·hₜ + c)
+    </li>
+</ol>
+<p>
+    其中 f 和 g 通常是激活函数（如 tanh 或 softmax）。
+</p>

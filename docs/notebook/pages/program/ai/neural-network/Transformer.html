@@ -1,0 +1,39 @@
+<header>
+    Transformer 模型
+</header>
+<p>
+    论文地址：
+    <a href="https://arxiv.org/abs/1706.03762" target="_blank">
+        《Attention Is All You Need》
+    </a>
+</p>
+<h2>
+    架构
+</h2>
+<p>
+    Transformer 由编码器（Encoder）和解码器（Decoder）两大部分组成，各自由多层相同模块堆叠而成。
+</p>
+<div class="tips">
+    类比理解：编码器好比"读书人"，把输入的中文句子理解为一组富含语义的向量；解码器好比"翻译官"，参考这些向量，一个词一个词地生成英文输出。
+</div>
+<p>
+    以下是 Transformer 架构图，左边为编码器，右边为解码器。
+</p>
+<img width="100%" src="./images/neural-network/Transformer_full_architecture.png">
+<h2>
+    多头注意力（Multi-Head Attention）
+</h2>
+<p>
+    多头注意力将输入分成 h 个子空间，每个"头"独立学习不同的关注模式，最后拼接结果：
+</p>
+<img width="100%" src="./images/neural-network/Multi-Head-Attention-runoob.png">
+<h3>
+    自注意力机制
+</h3>
+<p>
+    它回答一个问题："处理这个词时，我应该重点关注句子中的哪些其他词？"
+</p>
+<p>
+    每个词的向量会被线性变换成三个角色：Query（查询）、Key（键）、Value（值）：
+</p>
+<img width="100%" src="./images/neural-network/transform-qkv.svg">
