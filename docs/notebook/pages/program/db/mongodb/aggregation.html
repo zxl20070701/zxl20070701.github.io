@@ -1,0 +1,155 @@
+<header>
+    聚合管道
+</header>
+<h2>
+    概述
+</h2>
+<p>
+    MongoDB 的聚合管道(aggregation pipeline)类似于 SQL 的 GROUP BY、JOIN 等操作，通过多个阶段(stage)处理文档。
+</p>
+<pre tag="javascript">
+db.collection.aggregate([
+    {stage1},
+    {stage2},
+    ...
+])
+</pre>
+<h2>
+    $match 过滤
+</h2>
+<pre tag="javascript">
+// 等价于 WHERE 子句
+db.orders.aggregate([
+    {$match: {status: "paid"}}
+])
+</pre>
+<h2>
+    $group 分组
+</h2>
+<pre tag="javascript">
+// 等价于 GROUP BY
+db.orders.aggregate([
+    {
+        $group: {
+            _id: "$city",
+            totalAmount: {$sum: "$amount"},
+            count: {$sum: 1}
+        }
+    }
+])
+</pre>
+<h2>
+    $project 投影
+</h2>
+<pre tag="javascript">
+// 选择、重命名、计算字段
+db.users.aggregate([
+    {
+        $project: {
+            name: 1,
+            fullName: {$concat: ["$firstName", " ", "$lastName"]},
+            _id: 0
+        }
+    }
+])
+</pre>
+<h2>
+    $sort 排序
+</h2>
+<pre tag="javascript">
+db.orders.aggregate([
+    {$sort: {totalAmount: -1}}
+])
+</pre>
+<h2>
+    $limit 和 $skip
+</h2>
+<pre tag="javascript">
+db.orders.aggregate([
+    {$limit: 10},
+    {$skip: 20}
+])
+</pre>
+<h2>
+    $unwind 展开数组
+</h2>
+<pre tag="javascript">
+// 将数组字段拆分成多条文档
+db.users.aggregate([
+    {$unwind: "$tags"}
+])
+</pre>
+<h2>
+    $lookup 关联查询
+</h2>
+<pre tag="javascript">
+// 等价于 LEFT JOIN
+db.orders.aggregate([
+    {
+        $lookup: {
+            from: "users",
+            localField: "userId",
+            foreignField: "_id",
+            as: "userInfo"
+        }
+    }
+])
+</pre>
+<h2>
+    $addFields 添加字段
+</h2>
+<pre tag="javascript">
+db.users.aggregate([
+    {
+        $addFields: {
+            ageGroup: {
+                $cond: [
+                    {$gte: ["$age", 18]},
+                    "adult",
+                    "minor"
+                ]
+            }
+        }
+    }
+])
+</pre>
+<h2>
+    $cond 条件表达式
+</h2>
+<pre tag="javascript">
+db.students.aggregate([
+    {
+        $project: {
+            name: 1,
+            grade: {
+                $switch: {
+                    branches: [
+                        {case: {$gte: ["$score", 90]}, then: "A"},
+                        {case: {$gte: ["$score", 80]}, then: "B"},
+                        {case: {$gte: ["$score", 60]}, then: "C"}
+                    ],
+                    default: "F"
+                }
+            }
+        }
+    }
+])
+</pre>
+<h2>
+    完整示例
+</h2>
+<pre tag="javascript">
+// 统计每个城市的男女比例
+db.users.aggregate([
+    {$match: {age: {$gte: 18}}},
+    {
+        $group: {
+            _id: "$city",
+            total: {$sum: 1},
+            males: {$sum: {$cond: [{$eq: ["$gender", "男"]}, 1, 0]}},
+            females: {$sum: {$cond: [{$eq: ["$gender", "女"]}, 1, 0]}}
+        }
+    },
+    {$sort: {total: -1}}
+])
+</pre>

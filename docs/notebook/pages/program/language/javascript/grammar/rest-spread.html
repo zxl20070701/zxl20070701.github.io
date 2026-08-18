@@ -1,0 +1,77 @@
+<header>
+    剩余参数与展开运算符
+</header>
+<h2>
+    剩余参数(...args)
+</h2>
+<p>
+    剩余参数将一个不定数量的参数表示为一个数组。必须是函数参数列表中的最后一个参数。
+</p>
+<pre tag="javascript">
+function sum(...numbers) {
+    return numbers.reduce((total, n) => total + n, 0);
+}
+sum(1, 2, 3, 4); // 10
+</pre>
+<h2>
+    展开运算符(...)
+</h2>
+<p>
+    展开运算符可以将数组或可迭代对象拆分为单独的元素。
+</p>
+<h3>
+    数组展开
+</h3>
+<pre tag="javascript">
+let arr1 = [1, 2];
+let arr2 = [3, 4];
+let combined = [...arr1, ...arr2]; // [1, 2, 3, 4]
+console.log(...arr1); // 1 2
+</pre>
+<h3>
+    对象展开
+</h3>
+<pre tag="javascript">
+let obj1 = { a: 1 };
+let obj2 = { b: 2, ...obj1 };
+console.log(obj2); // { b: 2, a: 1 }
+// 后面的属性会覆盖前面的同名属性
+let obj3 = { ...obj1, a: 100 }; // { a: 100 }
+</pre>
+<h3>
+    函数调用
+</h3>
+<pre tag="javascript">
+let numbers = [1, 2, 3];
+console.log(Math.max(...numbers)); // 3
+</pre>
+<h3>
+    字符串展开
+</h3>
+<pre tag="javascript">
+let str = 'hello';
+let chars = [...str]; // ['h', 'e', 'l', 'l', 'o']
+</pre>
+<h2>
+    数组克隆
+</h2>
+<p>
+    使用展开运算符可以快速创建数组的浅拷贝。
+</p>
+<pre tag="javascript">
+let original = [1, 2, 3];
+let copy = [...original];
+console.log(copy); // [1, 2, 3]
+console.log(original === copy); // false
+</pre>
+<h2>
+    与解构结合
+</h2>
+<p>
+    展开运算符可以与解构赋值结合使用，提取剩余元素。
+</p>
+<pre tag="javascript">
+let [first, ...rest] = [1, 2, 3, 4];
+console.log(first); // 1
+console.log(rest); // [2, 3, 4]
+</pre>

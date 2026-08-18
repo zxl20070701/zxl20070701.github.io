@@ -5,7 +5,7 @@
 window.__pkg__bundleSrc__['268']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('399');
+    __pkg__scope_args__=window.__pkg__getBundle('400');
 var template =__pkg__scope_args__.default;
 
 
@@ -15,13 +15,13 @@ var ResizeObserver =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('313');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('391');
+__pkg__scope_args__=window.__pkg__getBundle('392');
 var ruler =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('129');
 var animation =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('395');
+__pkg__scope_args__=window.__pkg__getBundle('396');
 var drawRuler =__pkg__scope_args__.default;
 
 
@@ -158,7 +158,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/candlestick-simple/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['399']=function(){
+window.__pkg__bundleSrc__['400']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"基础K线图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
@@ -929,7 +929,7 @@ window.__pkg__bundleSrc__['219']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['391']=function(){
+window.__pkg__bundleSrc__['392']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 刻度尺刻度求解
@@ -1154,10 +1154,10 @@ __pkg__scope_bundle__.default= function (doback, duration, callback) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/extend/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['395']=function(){
+window.__pkg__bundleSrc__['396']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('396');
+    __pkg__scope_args__=window.__pkg__getBundle('397');
 var dotRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('224');
@@ -1304,19 +1304,19 @@ __pkg__scope_bundle__.default= function (painter, attr) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/dot
 /*****************************************************************/
-window.__pkg__bundleSrc__['396']=function(){
+window.__pkg__bundleSrc__['397']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('224');
 var initConfig=__pkg__scope_args__.initConfig;
 
-__pkg__scope_args__=window.__pkg__getBundle('397');
+__pkg__scope_args__=window.__pkg__getBundle('398');
 var move =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('230');
 var rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('398');
+__pkg__scope_args__=window.__pkg__getBundle('399');
 var scale =__pkg__scope_args__.default;
 
 
@@ -1395,7 +1395,7 @@ __pkg__scope_bundle__.initConfig = function (init, data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['397']=function(){
+window.__pkg__bundleSrc__['398']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）沿着向量（ax,ay）方向移动距离d
@@ -1431,7 +1431,7 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/scale
 /*****************************************************************/
-window.__pkg__bundleSrc__['398']=function(){
+window.__pkg__bundleSrc__['399']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）缩放times倍

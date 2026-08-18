@@ -1,0 +1,74 @@
+<header>
+    异步函数
+</header>
+<h2>
+    async 函数
+</h2>
+<p>
+    使用 async 关键字定义的函数总是返回一个 Promise。即使函数内部直接 return 一个值，也会被包装成 Promise.resolve。
+</p>
+<pre tag="javascript">
+async function getData() {
+    return 'hello';
+}
+getData().then(val => console.log(val)); // "hello"
+</pre>
+<h2>
+    await 表达式
+</h2>
+<p>
+    await 只能在 async 函数内部使用。它会等待右侧的 Promise 解决，并返回其结果。如果等待的不是 Promise，则直接返回该值。
+</p>
+<pre tag="javascript">
+async function fetchData() {
+    let response = await fetch('/api/data');
+    let data = await response.json();
+    return data;
+}
+</pre>
+<h2>
+    错误处理
+</h2>
+<p>
+    async 函数中的异常会导致 Promise 变为 rejected 状态，可以使用 try...catch 捕获。
+</p>
+<pre tag="javascript">
+async function safeFetch() {
+    try {
+        let response = await fetch('/api/data');
+        return await response.json();
+    } catch (error) {
+        console.log('Error:', error.message);
+        return null;
+    }
+}
+</pre>
+<h2>
+    并行执行
+</h2>
+<p>
+    多个独立的 await 应该使用 Promise.all 并行执行，避免不必要的串行等待。
+</p>
+<pre tag="javascript">
+async function loadAll() {
+    // 并行
+    let [users, products] = await Promise.all([
+        fetch('/api/users').then(r => r.json()),
+        fetch('/api/products').then(r => r.json())
+    ]);
+    // 串行（避免）
+    // let users = await fetch('/api/users');
+    // let products = await fetch('/api/products');
+}
+</pre>
+<h2>
+    顶层 await
+</h2>
+<p>
+    在 ES 模块（module）中可以使用顶层 await，不需要包裹在 async 函数中。
+</p>
+<pre tag="javascript">
+// module.js
+let data = await fetch('/api/config').then(r => r.json());
+export default data;
+</pre>

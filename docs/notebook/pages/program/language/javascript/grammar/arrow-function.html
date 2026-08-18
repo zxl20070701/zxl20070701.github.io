@@ -1,0 +1,76 @@
+<header>
+    箭头函数
+</header>
+<h2>
+    基础语法
+</h2>
+<p>
+    箭头函数使用 => 定义，是 function 表达式的简写形式。如果只有一个表达式，自动返回该表达式的值。
+</p>
+<pre tag="javascript">
+// 无参数
+let fn = () => console.log('hello');
+// 单个参数
+let fn = x => x * 2;
+// 多个参数
+let fn = (x, y) => x + y;
+// 多行语句
+let fn = (x, y) => {
+    let result = x + y;
+    return result;
+};
+</pre>
+<h2>
+    this 指向
+</h2>
+<p>
+    箭头函数没有自己的 this，它会捕获外层作用域的 this。在方法内部使用箭头函数时，this 指向定义时的对象，而非调用时的对象。
+</p>
+<pre tag="javascript">
+let obj = {
+    name: 'test',
+    sayHello: function() {
+        console.log(this.name); // 'test'
+        let fn = () => console.log(this.name); // 'test'
+        fn();
+    }
+};
+</pre>
+<h2>
+    不绑定 arguments
+</h2>
+<p>
+    箭头函数没有自己的 arguments 对象，会访问外层作用域的 arguments。如果需要访问参数，建议使用剩余参数。
+</p>
+<pre tag="javascript">
+function outer() {
+    let fn = (...args) => console.log(args);
+    fn(1, 2, 3); // [1, 2, 3]
+}
+</pre>
+<h2>
+    不能用作构造函数
+</h2>
+<p>
+    箭头函数不能使用 new 关键字调用，也没有 prototype 属性。
+</p>
+<pre tag="javascript">
+let fn = () => {};
+// new fn(); // TypeError: fn is not a constructor
+console.log(fn.prototype); // undefined
+</pre>
+<h2>
+    常见用途
+</h2>
+<p>
+    箭头函数常用于回调函数、事件处理器等需要保持 this 上下文的场景。
+</p>
+<pre tag="javascript">
+// 数组方法回调
+let numbers = [1, 2, 3];
+let doubled = numbers.map(n => n * 2);
+// setTimeout
+setTimeout(() => {
+    console.log(this); // 指向定义时的 this
+}, 1000);
+</pre>

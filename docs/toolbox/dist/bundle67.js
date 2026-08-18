@@ -5,7 +5,7 @@
 window.__pkg__bundleSrc__['269']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('400');
+    __pkg__scope_args__=window.__pkg__getBundle('401');
 var template =__pkg__scope_args__.default;
 
 
@@ -18,7 +18,7 @@ var animation =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('152');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('401');
+__pkg__scope_args__=window.__pkg__getBundle('402');
 var drawPolarRuler =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('230');
@@ -169,7 +169,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/gauge-barometer/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['400']=function(){
+window.__pkg__bundleSrc__['401']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"气压表","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
@@ -901,7 +901,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/extend/polar-ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['401']=function(){
+window.__pkg__bundleSrc__['402']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('224');

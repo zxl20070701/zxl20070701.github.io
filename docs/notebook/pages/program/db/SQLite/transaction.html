@@ -1,0 +1,64 @@
+<header>
+    事务控制
+</header>
+<h2>
+    事务特性
+</h2>
+<pre tag="sql">
+-- 原子性（Atomicity）
+-- 一致性（Consistency）
+-- 隔离性（Isolation）
+-- 持久性（Durability）
+</pre>
+<h2>
+    事务控制语句
+</h2>
+<pre tag="sql">
+BEGIN;
+-- 或 BEGIN TRANSACTION;
+COMMIT;
+ROLLBACK;
+-- 保存点
+SAVEPOINT sp1;
+ROLLBACK TO SAVEPOINT sp1;
+RELEASE SAVEPOINT sp1;
+</pre>
+<h2>
+    事务示例
+</h2>
+<pre tag="sql">
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;
+
+-- 出错回滚
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 999;
+ROLLBACK;
+</pre>
+<h2>
+    自动提交
+</h2>
+<p>
+    SQLite 默认开启自动提交模式，每个语句自动成为一个独立事务。使用 BEGIN 可以手动控制事务。
+</p>
+<h2>
+    并发控制
+</h2>
+<pre tag="sql">
+-- 查看锁状态
+PRAGMA lock_status;
+-- 设置锁超时
+PRAGMA busy_timeout = 5000;
+-- WAL 模式（提高并发读写性能）
+PRAGMA journal_mode=WAL;
+</pre>
+<h2>
+    隔离级别
+</h2>
+<pre tag="sql">
+PRAGMA read_uncommitted = 1;  -- 读未提交
+PRAGMA read_uncommitted = 0;  -- 读已提交（默认）
+</pre>

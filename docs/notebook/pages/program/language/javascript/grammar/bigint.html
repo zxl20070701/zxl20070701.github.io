@@ -1,0 +1,58 @@
+<header>
+    BigInt 类型
+</header>
+<h2>
+    基本概念
+</h2>
+<p>
+    BigInt 是一种数字原始类型，可以表示任意精度的整数。通过在数字后面添加 n 后缀或使用 BigInt() 函数创建。
+</p>
+<pre tag="javascript">
+let bigNum = 9007199254740993n;
+let fromStr = BigInt('9007199254740999999');
+let fromNum = BigInt(42);
+console.log(typeof bigNum); // 'bigint'
+</pre>
+<h2>
+    算术运算
+</h2>
+<p>
+    BigInt 支持常规的算术运算符：+、-、*、/、**、%。不能与普通数字混用。
+</p>
+<pre tag="javascript">
+let a = 100n;
+let b = 30n;
+console.log(a + b); // 130n
+console.log(a / b); // 3n (整除，无小数)
+// console.log(a + 1); // TypeError: 不能混合 BigInt 和 Number
+</pre>
+<h2>
+    类型转换
+</h2>
+<p>
+    BigInt 可以转换为 Number 或 String，但转换为 Number 时可能丢失精度。
+</p>
+<pre tag="javascript">
+let big = 12345678901234567890n;
+let num = Number(big); // 可能丢失精度
+let str = String(big); // "12345678901234567890"
+let bool = Boolean(0n); // false
+</pre>
+<h2>
+    比较运算
+</h2>
+<p>
+    BigInt 可以与普通数字进行比较（<、>、<=、>=、==、!=），但不能使用严格相等与普通数字比较。
+</p>
+<pre tag="javascript">
+10n > 5; // true
+10n == 10; // true
+10n === 10; // false (类型不同)
+typeof 10n === 'bigint'; // true
+</pre>
+<h2>
+    用途
+</h2>
+<p>
+    BigInt 适合处理超出 Number.MAX_SAFE_INTEGER 范围的大整数运算，如密码学、大数据处理、精确计数等。
+</p>

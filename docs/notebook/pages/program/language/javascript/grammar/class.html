@@ -1,0 +1,113 @@
+<header>
+    类语法
+</header>
+<h2>
+    基础语法
+</h2>
+<p>
+    class 关键字用于定义类。类的内部是方法定义，所有方法都会添加到原型对象上。构造函数使用 constructor 方法。
+</p>
+<pre tag="javascript">
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    sayHello() {
+        console.log(`Hello, I'm ${this.name}`);
+    }
+}
+let p = new Person('Alice', 25);
+p.sayHello(); // "Hello, I'm Alice"
+</pre>
+<h2>
+    类表达式
+</h2>
+<p>
+    类也可以通过表达式的方式定义，类表达式可以是具名或匿名的。
+</p>
+<pre tag="javascript">
+let Animal = class {
+    constructor(type) {
+        this.type = type;
+    }
+};
+let dog = new Animal('dog');
+</pre>
+<h2>
+    类的继承
+</h2>
+<p>
+    使用 extends 关键字实现继承，子类通过 super 调用父类的构造函数和方法。
+</p>
+<pre tag="javascript">
+class Student extends Person {
+    constructor(name, age, school) {
+        super(name, age); // 调用父类构造函数
+        this.school = school;
+    }
+    sayHello() {
+        super.sayHello(); // 调用父类方法
+        console.log(`I study at ${this.school}`);
+    }
+}
+let s = new Student('Bob', 20, 'MIT');
+s.sayHello();
+</pre>
+<h2>
+    getter 和 setter
+</h2>
+<p>
+    类中可以使用 getter/setter 来定义属性的访问器和设置器。
+</p>
+<pre tag="javascript">
+class Circle {
+    constructor(radius) {
+        this.radius = radius;
+    }
+    get area() {
+        return Math.PI * this.radius ** 2;
+    }
+    set diameter(value) {
+        this.radius = value / 2;
+    }
+}
+let c = new Circle(5);
+console.log(c.area); // 78.5398...
+c.diameter = 20;
+console.log(c.radius); // 10
+</pre>
+<h2>
+    静态方法
+</h2>
+<p>
+    使用 static 关键字定义的静态方法不需要实例化即可调用，属于类本身而非实例。
+</p>
+<pre tag="javascript">
+class MathUtil {
+    static add(a, b) {
+        return a + b;
+    }
+    static multiply(a, b) {
+        return a * b;
+    }
+}
+MathUtil.add(1, 2); // 3
+</pre>
+<h2>
+    私有属性和方法
+</h2>
+<p>
+    使用 # 前缀可以定义类的私有属性和方法，只能在类的内部访问。
+</p>
+<pre tag="javascript">
+class Counter {
+    #count = 0; // 私有属性
+    increment() {
+        this.#count++;
+    }
+    getCount() {
+        return this.#count;
+    }
+}
+</pre>

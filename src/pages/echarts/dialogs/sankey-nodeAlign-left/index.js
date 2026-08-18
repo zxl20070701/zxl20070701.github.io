@@ -22,9 +22,9 @@ export default function (obj, props) {
             xhr({
                 method: "GET",
                 url: "../data/energy.json"
-            }, function (data) {
-                if (data.status == 200) {
-                    data = JSON.parse(data.data);
+            }, function (res) {
+                if (res.status == 200) {
+                    var data = JSON.parse(res.data);
 
                     var updateView = function () {
                         var sankeyData = toSankeyImageData(data, mycontent.clientWidth - 50, mycontent.clientHeight - 60, 0, 30);

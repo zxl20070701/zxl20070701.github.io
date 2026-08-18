@@ -5,17 +5,17 @@
 window.__pkg__bundleSrc__['273']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('412');
+    __pkg__scope_args__=window.__pkg__getBundle('413');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('413');
+__pkg__scope_args__=window.__pkg__getBundle('414');
 
 
 // 着色器
-__pkg__scope_args__=window.__pkg__getBundle('414');
+__pkg__scope_args__=window.__pkg__getBundle('415');
 var vertexShader =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('415');
+__pkg__scope_args__=window.__pkg__getBundle('416');
 var fragmentShader =__pkg__scope_args__.default;
 
 
@@ -114,7 +114,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/h2o/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['412']=function(){
+window.__pkg__bundleSrc__['413']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"水分子式H2O","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content h2o","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas","class":"canvas","width":"500","height":"500"},"childNodes":[]}]
@@ -125,7 +125,7 @@ window.__pkg__bundleSrc__['412']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/h2o/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['413']=function(){
+window.__pkg__bundleSrc__['414']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
@@ -139,7 +139,7 @@ styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/h2o/shader-vertex.c
 /*****************************************************************/
-window.__pkg__bundleSrc__['414']=function(){
+window.__pkg__bundleSrc__['415']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= "attribute vec4 a_position;\r\nuniform mat4 u_matrix;\r\n\r\nvoid main()\r\n{\r\n    vec4 temp = u_matrix * a_position;\r\n    \r\n    // 表示眼睛距离vec4(0.0,0.0,1.0)的距离\r\n    float dist = 3.0;\r\n\r\n    // 使用投影直接计算\r\n    // 为保证纹理和相对位置正确\r\n    // x、y、z的改变满足线性变换\r\n    gl_Position = vec4((dist + 1.0) * temp.x, (dist + 1.0) * temp.y, dist * (dist + temp.z) + 1.0 - dist * dist, temp.w * 2.0 * (dist + temp.z));\r\n}"
@@ -150,7 +150,7 @@ window.__pkg__bundleSrc__['414']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/h2o/shader-fragment.c
 /*****************************************************************/
-window.__pkg__bundleSrc__['415']=function(){
+window.__pkg__bundleSrc__['416']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= "precision mediump float;\r\n\r\nuniform vec4 u_color;\r\n\r\nvoid main()\r\n{\r\n    gl_FragColor = u_color;\r\n}"

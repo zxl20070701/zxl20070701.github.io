@@ -50,9 +50,15 @@ module.exports = function (configUrl) {
             }
         }
 
-        // 静态文件
-        _filepath = fullPath(filepath, fullPath(config.static, process.cwd()));
+        // 测试文件
+        if (/^\.\/test\//.test(filepath)) {
+            _filepath = fullPath(filepath, process.cwd());
+        }
 
+        // 静态文件
+        else {
+            _filepath = fullPath(filepath, fullPath(config.static, process.cwd()));
+        }
 
         if (fs.existsSync(_filepath) && !fs.lstatSync(_filepath).isDirectory()) {
             return {

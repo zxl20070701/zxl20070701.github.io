@@ -5,7 +5,7 @@
 window.__pkg__bundleSrc__['277']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('431');
+    __pkg__scope_args__=window.__pkg__getBundle('432');
 var template =__pkg__scope_args__.default;
 
 
@@ -15,13 +15,13 @@ var ResizeObserver =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('315');
 var xhr =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('425');
+__pkg__scope_args__=window.__pkg__getBundle('426');
 var TreeLayout =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('313');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('397');
+__pkg__scope_args__=window.__pkg__getBundle('398');
 var move =__pkg__scope_args__.default;
 
 
@@ -39,8 +39,8 @@ __pkg__scope_bundle__.default= function (obj, props) {
             xhr({
                 method: "GET",
                 url: "../data/flare.json"
-            }, function (data) {
-                if (data.status == 200) {
+            }, function (res) {
+                if (res.status == 200) {
 
                     var mycontent = _this._refs.mycontent.value;
                     var mycanvas = _this._refs.mycanvas.value;
@@ -58,7 +58,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
                         x: cx,
                         y: cy,
                         radius: Math.min(mycontent.clientWidth, mycontent.clientHeight) * 0.5 - 100
-                    }).bind(JSON.parse(data.data), function (tree) {
+                    }).bind(JSON.parse(res.data), function (tree) {
                         painter.config({
                             fontSize: 9
                         }).clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);
@@ -150,7 +150,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/tree-radial/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['431']=function(){
+window.__pkg__bundleSrc__['432']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"径向树状图","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
@@ -363,10 +363,10 @@ __pkg__scope_bundle__.default= function (data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/treeLayout/index
 /*****************************************************************/
-window.__pkg__bundleSrc__['425']=function(){
+window.__pkg__bundleSrc__['426']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('426');
+    __pkg__scope_args__=window.__pkg__getBundle('427');
 var Tree =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('224');
@@ -576,10 +576,10 @@ __pkg__scope_bundle__.default= TreeLayout;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/treeLayout/Tree
 /*****************************************************************/
-window.__pkg__bundleSrc__['426']=function(){
+window.__pkg__bundleSrc__['427']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('427');
+    __pkg__scope_args__=window.__pkg__getBundle('428');
 var toPlainTree =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('224');
@@ -607,10 +607,10 @@ __pkg__scope_bundle__.default= Tree;
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/treeLayout/toPlainTree
 /*****************************************************************/
-window.__pkg__bundleSrc__['427']=function(){
+window.__pkg__bundleSrc__['428']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('428');
+    __pkg__scope_args__=window.__pkg__getBundle('429');
 var toInnerTree =__pkg__scope_args__.default;
 
 
@@ -748,7 +748,7 @@ __pkg__scope_bundle__.default= function (initTree, config, noOpens) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/treeLayout/toInnerTree
 /*****************************************************************/
-window.__pkg__bundleSrc__['428']=function(){
+window.__pkg__bundleSrc__['429']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     /**
@@ -1649,7 +1649,7 @@ window.__pkg__bundleSrc__['219']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['397']=function(){
+window.__pkg__bundleSrc__['398']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）沿着向量（ax,ay）方向移动距离d

@@ -1,0 +1,159 @@
+<header>
+    Number 数字
+</header>
+<h2>
+    toFixed()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+number.toFixed(digits)
+</pre>
+<p>
+    把数字转换为字符串，结果的小数点后有指定位数的数字。digits 参数指定小数位数（0-100）。
+</p>
+<h2>
+    toPrecision()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+number.toPrecision(length)
+</pre>
+<p>
+    把数字格式化为指定的长度。length 指定有效数字位数（1-21）。
+</p>
+<h2>
+    toString()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+number.toString(radix)
+</pre>
+<p>
+    把数字转换为字符串。radix 指定基数（2-36），如 2 为二进制，16 为十六进制。
+</p>
+<h2>
+    valueOf()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+number.valueOf()
+</pre>
+<p>
+    返回一个 Number 对象的原始数值。
+</p>
+<h2>
+    isFinite()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.isFinite(value)
+</pre>
+<p>
+    判断传入的数值是否为有限数。返回 true 或 false。与全局 isFinite() 不同，不会强制转换参数。
+</p>
+<h2>
+    isInteger()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.isInteger(value)
+</pre>
+<p>
+    判断传入的数值是否为整数。返回 true 或 false。
+</p>
+<h2>
+    isNaN()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.isNaN(value)
+</pre>
+<p>
+    判断传入的数值是否为 NaN。返回 true 或 false。与全局 isNaN() 不同，不会强制转换参数。
+</p>
+<h2>
+    parseFloat()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.parseFloat(string)
+</pre>
+<p>
+    解析一个字符串参数，并返回一个浮点数。如果无法解析则返回 NaN。
+</p>
+<h2>
+    parseInt()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.parseInt(string, radix)
+</pre>
+<p>
+    解析一个字符串参数，并返回指定基数的整数。radix 为 2-36 之间的整数。
+</p>
+<h2>
+    MAX_VALUE
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.MAX_VALUE
+</pre>
+<p>
+    JavaScript 中最大的正数常量，约为 1.7976931348623157e+308。
+</p>
+<h2>
+    MIN_VALUE
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.MIN_VALUE
+</pre>
+<p>
+    JavaScript 中最小的正数常量，约为 5e-324。
+</p>
+<h2>
+    MAX_SAFE_INTEGER
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.MAX_SAFE_INTEGER
+</pre>
+<p>
+    在 JavaScript 中表示的最大安全整数常量，为 2^53 - 1，即 9007199254740991。
+</p>
+<h2>
+    MIN_SAFE_INTEGER
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Number.MIN_SAFE_INTEGER
+</pre>
+<p>
+    在 JavaScript 中表示的最小安全整数常量，为 -(2^53 - 1)，即 -9007199254740991。
+</p>

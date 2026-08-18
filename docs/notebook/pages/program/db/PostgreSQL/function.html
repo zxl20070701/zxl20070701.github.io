@@ -1,0 +1,83 @@
+<header>
+    常用内置函数
+</header>
+<h2>
+    字符串函数
+</h2>
+<pre tag="sql">
+SELECT CONCAT('Hello', ' ', 'World');
+SELECT UPPER('hello');
+SELECT LOWER('HELLO');
+SELECT INITCAP('hello world');
+SELECT LENGTH('hello');
+SELECT CHAR_LENGTH('你好');
+SELECT SUBSTRING('Hello World', 1, 5);
+SELECT SUBSTR('Hello World', 7);
+SELECT REPLACE('Hello World', 'World', 'PostgreSQL');
+SELECT TRIM('  hello  ');
+SELECT LTRIM('  hello');
+SELECT RTRIM('hello  ');
+SELECT LPAD('1', 5, '0');
+SELECT RPAD('hello', 10, '*');
+SELECT POSITION('World' IN 'Hello World');
+SELECT STRING_AGG(name, ', ') FROM users;
+SELECT ARRAY_AGG(name) FROM users;
+</pre>
+<h2>
+    数字函数
+</h2>
+<pre tag="sql">
+SELECT ABS(-5);
+SELECT CEIL(4.3);
+SELECT FLOOR(4.7);
+SELECT ROUND(4.567, 2);
+SELECT RANDOM();
+SELECT FLOOR(RANDOM() * 100);
+SELECT POW(2, 10);
+SELECT SQRT(16);
+SELECT MOD(10, 3);
+SELECT GREATEST(1, 2, 3);
+SELECT LEAST(1, 2, 3);
+SELECT SIGN(-5);
+</pre>
+<h2>
+    日期时间函数
+</h2>
+<pre tag="sql">
+SELECT NOW();
+SELECT CURRENT_TIMESTAMP;
+SELECT CURRENT_DATE;
+SELECT CURRENT_TIME;
+SELECT EXTRACT(YEAR FROM NOW());
+SELECT EXTRACT(MONTH FROM NOW());
+SELECT EXTRACT(DAY FROM NOW());
+SELECT EXTRACT(HOUR FROM NOW());
+SELECT DATE_TRUNC('month', NOW());
+SELECT DATE_ADD(NOW(), INTERVAL '1 day');
+SELECT NOW() + INTERVAL '1 hour';
+SELECT AGE(timestamp '2024-01-01');
+SELECT TO_CHAR(NOW(), 'YYYY年MM月DD日 HH24:MI:SS');
+SELECT TO_DATE('2024-01-15', 'YYYY-MM-DD');
+SELECT TO_TIMESTAMP('2024-01-15 10:30', 'YYYY-MM-DD HH24:MI');
+</pre>
+<h2>
+    聚合函数
+</h2>
+<pre tag="sql">
+SELECT COUNT(*) FROM users;
+SELECT COUNT(email) FROM users;
+SELECT COUNT(DISTINCT city) FROM users;
+SELECT SUM(amount) FROM orders;
+SELECT AVG(age) FROM users;
+SELECT MAX(age) FROM users;
+SELECT MIN(age) FROM users;
+</pre>
+<h2>
+    条件函数
+</h2>
+<pre tag="sql">
+SELECT COALESCE(email, phone, '未知') FROM users;
+SELECT NULLIF(a, b);
+SELECT GREATEST(1, 2, 3);
+SELECT LEAST(1, 2, 3);
+</pre>

@@ -1,0 +1,82 @@
+<header>
+    事务控制
+</header>
+<h2>
+    事务特性
+</h2>
+<pre tag="sql">
+-- 原子性（Atomicity）
+-- 一致性（Consistency）
+-- 隔离性（Isolation）
+-- 持久性（Durability）
+</pre>
+<h2>
+    基本事务控制
+</h2>
+<pre tag="sql">
+BEGIN;
+-- 或 BEGIN WORK;
+-- 或 START TRANSACTION;
+
+COMMIT;
+ROLLBACK;
+
+SAVEPOINT sp1;
+ROLLBACK TO SAVEPOINT sp1;
+RELEASE SAVEPOINT sp1;
+</pre>
+<h2>
+    事务示例
+</h2>
+<pre tag="sql">
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;
+
+-- 出错回滚
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 999;
+ROLLBACK;
+</pre>
+<h2>
+    隔离级别
+</h2>
+<pre tag="sql">
+-- 读未提交
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+-- 读已提交（默认）
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- 可重复读
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+-- 串行化
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+-- 查看当前隔离级别
+SHOW TRANSACTION ISOLATION LEVEL;
+</pre>
+<h2>
+    锁机制
+</h2>
+<pre tag="sql">
+-- 行级锁
+SELECT * FROM users WHERE id = 1 FOR UPDATE;
+SELECT * FROM users WHERE id = 1 FOR UPDATE NOWAIT;
+SELECT * FROM users WHERE id = 1 FOR UPDATE SKIP LOCKED;
+SELECT * FROM users WHERE id = 1 FOR SHARE;
+-- 表级锁
+LOCK TABLE users IN ACCESS EXCLUSIVE MODE;
+UNLOCK TABLES;
+-- 死锁检测
+SELECT * FROM pg_stat_activity;
+</pre>
+<h2>
+    自动提交
+</h2>
+<pre tag="sql">
+-- 查看自动提交状态
+SHOW autocommit;
+-- 设置自动提交
+\set AUTOCOMMIT on
+\set AUTOCOMMIT off
+</pre>

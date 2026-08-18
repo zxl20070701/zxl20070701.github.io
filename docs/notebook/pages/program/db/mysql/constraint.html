@@ -1,0 +1,85 @@
+<header>
+    约束
+</header>
+<h2>
+    主键约束 PRIMARY KEY
+</h2>
+<pre tag="sql">
+-- 建表时定义
+CREATE TABLE users (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+-- 已有表添加主键
+ALTER TABLE users ADD PRIMARY KEY (id);
+-- 删除主键
+ALTER TABLE users DROP PRIMARY KEY;
+</pre>
+<h2>
+    唯一约束 UNIQUE
+</h2>
+<pre tag="sql">
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE
+);
+-- 已有表添加唯一约束
+ALTER TABLE users ADD UNIQUE INDEX uk_email (email);
+</pre>
+<h2>
+    非空约束 NOT NULL
+</h2>
+<pre tag="sql">
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NULL
+);
+-- 修改字段为非空
+ALTER TABLE users MODIFY name VARCHAR(50) NOT NULL;
+</pre>
+<h2>
+    默认值约束 DEFAULT
+</h2>
+<pre tag="sql">
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    status TINYINT DEFAULT 1,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+-- 修改默认值
+ALTER TABLE users ALTER COLUMN status SET DEFAULT 1;
+</pre>
+<h2>
+    外键约束 FOREIGN KEY
+</h2>
+<pre tag="sql">
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES products(id)
+);
+-- 添加外键
+ALTER TABLE orders ADD CONSTRAINT fk_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE;
+-- 删除外键
+ALTER TABLE orders DROP FOREIGN KEY fk_user;
+</pre>
+<h2>
+    检查约束 CHECK
+</h2>
+<p>
+    MySQL 8.0.16+ 支持 CHECK 约束。
+</p>
+<pre tag="sql">
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    age INT CHECK (age >= 0 AND age <= 150),
+    gender VARCHAR(10) CHECK (gender IN ('男', '女'))
+);
+</pre>
+</pre>

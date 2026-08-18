@@ -20,3 +20,53 @@ let [isPending, startTransition] = useTransition()
         你可以使用此方法将状态更新标记为transition。
     </li>
 </ul>
+<h2>
+    使用说明和举例
+</h2>
+<h3>
+    基本用法
+</h3>
+<p>
+    useTransition 允许你将某些状态更新标记为"过渡"状态，这些状态更新不会阻塞 UI 的渲染，从而提升用户体验。
+</p>
+<pre tag="javascript">
+function SearchInput() {
+    const [query, setQuery] = useState('')
+    const [isPending, startTransition] = useTransition()
+    const [list, setList] = useState([])
+
+    function handleChange(e) {
+        setQuery(e.target.value)
+        startTransition(() => {
+            const newList = Array(100).fill(0).map((_, i) =>
+                `Item ${i}: ${e.target.value}`
+            )
+            setList(newList)
+        })
+    }
+
+    return (
+        &lt;div&gt;
+            &lt;input value={query} onChange={handleChange} /&gt;
+            {isPending && &lt;div&gt;加载中...&lt;/div&gt;}
+            &lt;ul&gt;
+                {list.map((item, i) => &lt;li key={i}&gt;{item}&lt;/li&gt;)}
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    )
+}
+</pre>
+<p>
+    在上面的例子中，当用户输入时：
+</p>
+<ul>
+    <li>
+        <span class="important">setQuery</span>：立即更新输入框的值，这是紧急更新。
+    </li>
+    <li>
+        <span class="important">setList</span>：被包裹在 startTransition 中，是非阻塞的过渡更新。
+    </li>
+    <li>
+        <span class="important">isPending</span>：在过渡更新进行中为 true，可以用来显示加载状态。
+    </li>
+</ul>

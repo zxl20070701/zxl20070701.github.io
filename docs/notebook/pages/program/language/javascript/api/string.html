@@ -28,3 +28,267 @@
 <p>
     用于提取字符串中介于两个指定下标之间的字符，返回的子串包括 start 处的字符，但不包括 stop 处的字符。
 </p>
+<h2>
+    indexOf()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.indexOf(searchValue, start)
+</pre>
+<p>
+    返回字符串中指定文本首次出现的索引位置。如果未找到返回 -1。
+</p>
+<h2>
+    lastIndexOf()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.lastIndexOf(searchValue, start)
+</pre>
+<p>
+    返回指定文本在字符串中最后一次出现的索引。如果未找到返回 -1。
+</p>
+<h2>
+    includes()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.includes(searchValue, start)
+</pre>
+<p>
+    判断一个字符串是否包含在另一个字符串中，根据情况返回 true 或 false。
+</p>
+<h2>
+    startsWith()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.startsWith(searchValue, start)
+</pre>
+<p>
+    判断字符串是否以指定的子字符串开头，返回 true 或 false。
+</p>
+<h2>
+    endsWith()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.endsWith(searchValue, length)
+</pre>
+<p>
+    判断字符串是否以指定的子字符串结尾，返回 true 或 false。
+</p>
+<h2>
+    concat()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.concat(string2, string3, ..., stringX)
+</pre>
+<p>
+    用于连接两个或多个字符串。此方法不会更改原有字符串，而是返回一个新字符串。
+</p>
+<h2>
+    split()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.split(separator, limit)
+</pre>
+<p>
+    用于把一个字符串分割成字符串数组。separator 为分隔符，limit 为返回数组的长度限制。
+</p>
+<h2>
+    replace()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.replace(searchValue, newValue)
+</pre>
+<p>
+    在字符串中搜索匹配的值，并用新值替换。只替换第一个匹配项，如需替换所有请使用正则或 replaceAll()。
+</p>
+<h2>
+    replaceAll()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.replaceAll(searchValue, newValue)
+</pre>
+<p>
+    在字符串中搜索所有匹配的值，并用新值替换全部匹配项。
+</p>
+<h2>
+    slice()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.slice(start, end)
+</pre>
+<p>
+    提取字符串的某个部分，并以新的字符串返回被提取的部分。start 为起始位置，end 为结束位置（不包含）。
+</p>
+<h2>
+    charAt()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.charAt(index)
+</pre>
+<p>
+    返回指定索引位置处的字符。如果超出有效范围返回空字符串。
+</p>
+<h2>
+    charCodeAt()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.charCodeAt(index)
+</pre>
+<p>
+    返回在指定的位置的字符的 Unicode 编码。返回值是 0 - 65535 之间的整数。
+</p>
+<h2>
+    fromCharCode()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+String.fromCharCode(n1, n2, ..., nX)
+</pre>
+<p>
+    通过指定的 Unicode 编码点序列返回一个字符串。是 charCodeAt() 的反操作。
+</p>
+<h2>
+    toUpperCase()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.toUpperCase()
+</pre>
+<p>
+    将字符串转换为大写。不会影响原字符串。
+</p>
+<h2>
+    toLowerCase()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.toLowerCase()
+</pre>
+<p>
+    将字符串转换为小写。不会影响原字符串。
+</p>
+<h2>
+    trim()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.trim()
+</pre>
+<p>
+    去除字符串首尾的空格。不会影响原字符串。
+</p>
+<h2>
+    padStart()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.padStart(length, padString)
+</pre>
+<p>
+    用另一个字符串填充当前字符串（如果需要的话），以便产生的字符串达到给定的长度。从左侧开始填充。
+</p>
+<h2>
+    padEnd()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.padEnd(length, padString)
+</pre>
+<p>
+    用另一个字符串填充当前字符串（如果需要的话），以便产生的字符串达到给定的长度。从右侧开始填充。
+</p>
+<h2>
+    repeat()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.repeat(count)
+</pre>
+<p>
+    构造并返回一个新字符串，该字符串包含被连接在一起的指定数量的字符串的副本。
+</p>
+<h2>
+    match()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.match(regexp)
+</pre>
+<p>
+    查找字符串中匹配的字符串。返回一个数组，其中存放匹配的结果。如果未找到匹配，则返回 null。
+</p>
+<h2>
+    search()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.search(regexp)
+</pre>
+<p>
+    用于检索字符串中指定的子字符串，或检索与正则表达式相匹配的子字符串。返回子字符串的起始位置。
+</p>
+<h2>
+    at()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+string.at(index)
+</pre>
+<p>
+    接收一个整数值并返回该索引的字符，支持正数和负数索引。负数索引从字符串末尾开始计数。
+</p>

@@ -1,0 +1,89 @@
+<header>
+    模块化
+</header>
+<h2>
+    导出 export
+</h2>
+<p>
+    使用 export 关键字导出变量、函数或类。每个模块可以有多个命名导出，但只能有一个默认导出。
+</p>
+<h3>
+    命名导出
+</h3>
+<pre tag="javascript">
+// math.js
+export const PI = 3.14159;
+export function add(a, b) {
+    return a + b;
+}
+export class Calculator { ... }
+</pre>
+<h3>
+    默认导出
+</h3>
+<pre tag="javascript">
+// app.js
+export default function start() {
+    console.log('App started');
+}
+</pre>
+<h3>
+    重命名导出
+</h3>
+<pre tag="javascript">
+export { add as sum, PI as CIRCUMFERENCE };
+</pre>
+<h2>
+    导入 import
+</h2>
+<p>
+    使用 import 关键字从其他模块导入绑定。import 语句必须在模块的顶层。
+</p>
+<h3>
+    导入命名导出
+</h3>
+<pre tag="javascript">
+import { add, PI } from './math.js';
+import { add as sum } from './math.js';
+</pre>
+<h3>
+    导入默认导出
+</h3>
+<pre tag="javascript">
+import start from './app.js';
+</pre>
+<h3>
+    混合导入
+</h3>
+<pre tag="javascript">
+import start, { add, PI } from './app.js';
+</pre>
+<h3>
+    模块整体导入
+</h3>
+<pre tag="javascript">
+import * as math from './math.js';
+console.log(math.add(1, 2));
+</pre>
+<h2>
+    重导出
+</h2>
+<p>
+    可以使用 export...from 语法将导入的内容重新导出。
+</p>
+<pre tag="javascript">
+// index.js
+export { add, PI } from './math.js';
+export { default as start } from './app.js';
+</pre>
+<h2>
+    动态导入
+</h2>
+<p>
+    使用 import() 函数可以在运行时动态加载模块，返回一个 Promise。
+</p>
+<pre tag="javascript">
+// 动态导入
+let module = await import('./dynamic-module.js');
+module.doSomething();
+</pre>

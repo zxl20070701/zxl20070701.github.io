@@ -7,26 +7,25 @@
 <h3>
     MacOS
 </h3>
-<pre>
-brew tap mongodb/brew
+<pre tag="shell">brew tap mongodb/brew
 brew install mongodb-community@4.4
 </pre>
 <p>
     要将MongoDB（即mongod进程）作为macOS服务运行，执行以下命令：
 </p>
-<pre>
+<pre tag="shell">
     brew services start mongodb-community@4.4
 </pre>
 <p>
     如果要停止mongod作为macOS服务运行：
 </p>
-<pre>
+<pre tag="shell">
     brew services stop mongodb-community@4.4
 </pre>
 <p>
     此外，你还可以执行下面命令启动：
 </p>
-<pre>
+<pre tag="shell">
     mongod --config /usr/local/etc/mongod.conf --fork
 </pre>
 <div class="tips">
@@ -38,13 +37,13 @@ brew install mongodb-community@4.4
 <p>
     执行过程中，mongod可能不存在，需要你配置PATH路径。如何确定bin文件夹？可以使用brew启动后，执行：
 </p>
-<pre>
+<pre tag="shell">
     ps -ef|grep mongo
 </pre>
 <p>
     根据打印：
 </p>
-<pre>
+<pre tag="shell">
 501  8120     1   0 11:17上午 ??         0:01.86 /usr/local/opt/mongodb-community@4.4/bin/mongod --config /usr/local/etc/mongod.conf
 501  8149  4020   0 11:19上午 ttys003    0:00.00 grep mongo
 </pre>
@@ -53,7 +52,7 @@ brew install mongodb-community@4.4
     <span class="warn">/usr/local/opt/mongodb-community@4.4/bin</span>
     ，也就是：
 </p>
-<pre>
+<pre tag="shell">
 export PATH=$PATH:/usr/local/opt/mongodb-community@4.4/bin
 </pre>
 <h2>
@@ -62,7 +61,7 @@ export PATH=$PATH:/usr/local/opt/mongodb-community@4.4/bin
 <p>
     查看 mongod 服务是否启动：
 </p>
-<pre>
+<pre tag="shell">
     ps aux | grep -v grep | grep mongod
 </pre>
 <p>
@@ -74,7 +73,7 @@ export PATH=$PATH:/usr/local/opt/mongodb-community@4.4/bin
 <p>
     在 mongo 的命令出口中：
 </p>
-<pre>
+<pre tag="javascript">
 &gt; use admin
 switched to db admin
 &gt; db.shutdownServer()

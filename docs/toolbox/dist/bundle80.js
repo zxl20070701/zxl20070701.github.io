@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['286']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('441');
+    __pkg__scope_args__=window.__pkg__getBundle('442');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('442');
+__pkg__scope_args__=window.__pkg__getBundle('443');
 
 
 __pkg__scope_bundle__.default= function (obj) {
@@ -28,7 +28,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/dialogs/pinyin/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['441']=function(){
+window.__pkg__bundleSrc__['442']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"拼音打字","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[5]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","style":"font-size: 24px;color: #5f5f5f;padding-top: 100px;font-family: cursive;font-weight: 800;"},"childNodes":[8]},{"type":"text","content":"温馨提示：时间问题，推迟开发，敬请期待~","childNodes":[]}]
@@ -39,7 +39,7 @@ window.__pkg__bundleSrc__['441']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/type-practice/dialogs/pinyin/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['442']=function(){
+window.__pkg__bundleSrc__['443']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

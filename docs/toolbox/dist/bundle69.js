@@ -5,7 +5,7 @@
 window.__pkg__bundleSrc__['271']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('403');
+    __pkg__scope_args__=window.__pkg__getBundle('404');
 var template =__pkg__scope_args__.default;
 
 
@@ -18,13 +18,13 @@ var animation =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('152');
 var canvasRender =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('388');
+__pkg__scope_args__=window.__pkg__getBundle('389');
 var getLoopColors =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('391');
+__pkg__scope_args__=window.__pkg__getBundle('392');
 var ruler =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('395');
+__pkg__scope_args__=window.__pkg__getBundle('396');
 var drawRuler =__pkg__scope_args__.default;
 
 
@@ -155,7 +155,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/parallel-simple/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['403']=function(){
+window.__pkg__bundleSrc__['404']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"基础平行坐标","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
@@ -887,7 +887,7 @@ __pkg__scope_bundle__.radialGradient = function (painter, cx, cy, r1, r2) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/getLoopColors
 /*****************************************************************/
-window.__pkg__bundleSrc__['388']=function(){
+window.__pkg__bundleSrc__['389']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取一组循环色彩
@@ -941,7 +941,7 @@ __pkg__scope_bundle__.default= function (num, alpha) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['391']=function(){
+window.__pkg__bundleSrc__['392']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 刻度尺刻度求解
@@ -1051,10 +1051,10 @@ __pkg__scope_bundle__.default= function (maxValue, minValue, num) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/canvas/extend/ruler
 /*****************************************************************/
-window.__pkg__bundleSrc__['395']=function(){
+window.__pkg__bundleSrc__['396']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('396');
+    __pkg__scope_args__=window.__pkg__getBundle('397');
 var dotRender =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('224');
@@ -1201,19 +1201,19 @@ __pkg__scope_bundle__.default= function (painter, attr) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/dot
 /*****************************************************************/
-window.__pkg__bundleSrc__['396']=function(){
+window.__pkg__bundleSrc__['397']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_args__=window.__pkg__getBundle('224');
 var initConfig=__pkg__scope_args__.initConfig;
 
-__pkg__scope_args__=window.__pkg__getBundle('397');
+__pkg__scope_args__=window.__pkg__getBundle('398');
 var move =__pkg__scope_args__.default;
 
 __pkg__scope_args__=window.__pkg__getBundle('230');
 var rotate =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('398');
+__pkg__scope_args__=window.__pkg__getBundle('399');
 var scale =__pkg__scope_args__.default;
 
 
@@ -1292,7 +1292,7 @@ __pkg__scope_bundle__.initConfig = function (init, data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/move
 /*****************************************************************/
-window.__pkg__bundleSrc__['397']=function(){
+window.__pkg__bundleSrc__['398']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）沿着向量（ax,ay）方向移动距离d
@@ -1328,7 +1328,7 @@ __pkg__scope_bundle__.default= function (cx, cy, deg, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/transform/scale
 /*****************************************************************/
-window.__pkg__bundleSrc__['398']=function(){
+window.__pkg__bundleSrc__['399']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 点（x,y）围绕中心（cx,cy）缩放times倍

@@ -1,0 +1,86 @@
+<header>
+    查询操作
+</header>
+<h2>
+    find() 基础查询
+</h2>
+<pre tag="javascript">
+db.collection.find()
+</pre>
+<p>
+    查询所有文档，等价于 SQL 中的 SELECT * FROM table。
+</p>
+<pre tag="javascript">
+db.users.find().pretty()
+</pre>
+<h2>
+    条件查询
+</h2>
+<pre tag="javascript">
+db.users.find({name: "张三"})
+db.users.find({age: 18})
+db.users.find({city: "北京", age: {$gt: 20}})
+</pre>
+<h2>
+    findOne() 查询单条
+</h2>
+<pre tag="javascript">
+db.users.findOne({name: "张三"})
+</pre>
+<p>
+    findOne() 只返回符合条件的第一条文档。
+</p>
+<h2>
+    投影（指定返回字段）
+</h2>
+<pre tag="javascript">
+db.users.find({}, {name: 1, age: 1})
+db.users.find({}, {name: 1, _id: 0})
+</pre>
+<p>
+    1 表示显示该字段，0 表示不显示。_id 字段默认总是返回。
+</p>
+<h2>
+    sort() 排序
+</h2>
+<pre tag="javascript">
+db.users.find().sort({age: 1})
+db.users.find().sort({age: -1})
+db.users.find().sort({age: -1, name: 1})
+</pre>
+<p>
+    1 表示升序，-1 表示降序。
+</p>
+<h2>
+    limit() 和 skip()
+</h2>
+<pre tag="javascript">
+db.users.find().limit(10)
+db.users.find().skip(5).limit(10)
+</pre>
+<p>
+    limit 限制返回数量，skip 跳过指定数量的文档，常用于分页。
+</p>
+<h2>
+    countDocuments() 计数
+</h2>
+<pre tag="javascript">
+db.users.countDocuments()
+db.users.countDocuments({age: {$gt: 18}})
+</pre>
+<h2>
+    去重查询
+</h2>
+<pre tag="javascript">
+db.users.distinct("city")
+</pre>
+<h2>
+    分页查询示例
+</h2>
+<pre tag="javascript">
+// 第1页，每页10条
+db.users.find().skip(0).limit(10)
+// 第2页，每页10条
+db.users.find().skip(10).limit(10)
+// 通用公式：skip = (page-1) * pageSize
+</pre>

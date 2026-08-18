@@ -1,0 +1,76 @@
+<header>
+    索引管理
+</header>
+<h2>
+    索引类型
+</h2>
+<p>
+    MySQL 常见索引类型：
+</p>
+<pre tag="sql">
+-- 普通索引（INDEX）：最基本的索引
+-- 唯一索引（UNIQUE）：索引值必须唯一
+-- 主键索引（PRIMARY KEY）：特殊的唯一索引
+-- 全文索引（FULLTEXT）：用于全文搜索
+-- 空间索引（SPATIAL）：用于地理数据
+-- 组合索引：基于多个字段的索引
+</pre>
+<h2>
+    创建索引
+</h2>
+<pre tag="sql">
+-- 创建普通索引
+CREATE INDEX idx_name ON users(name);
+-- 创建唯一索引
+CREATE UNIQUE INDEX idx_email ON users(email);
+-- 创建组合索引
+CREATE INDEX idx_city_age ON users(city, age);
+-- 在建表时创建索引
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100),
+    INDEX idx_name (name),
+    UNIQUE INDEX idx_email (email)
+);
+</pre>
+<h2>
+    查看索引
+</h2>
+<pre tag="sql">
+-- 查看表的索引
+SHOW INDEX FROM users;
+-- 查看索引是否被使用
+EXPLAIN SELECT * FROM users WHERE name = '张三';
+</pre>
+<h2>
+    删除索引
+</h2>
+<pre tag="sql">
+DROP INDEX idx_name ON users;
+DROP INDEX idx_email ON users;
+</pre>
+<h2>
+    索引优化建议
+</h2>
+<pre tag="sql">
+-- 最左前缀原则：组合索引 (a, b, c)，查询条件使用 a 或 a+b 或 a+b+c 时生效
+-- 避免在索引列上使用函数、运算
+-- 选择性高的列更适合建索引
+-- 不要滥用索引，索引会降低 INSERT/UPDATE 性能
+-- 使用 EXPLAIN 分析查询计划
+EXPLAIN SELECT * FROM orders WHERE user_id = 1 AND status = 'paid';
+</pre>
+<h2>
+    全文索引
+</h2>
+<pre tag="sql">
+-- 创建全文索引
+ALTER TABLE articles ADD FULLTEXT INDEX ft_content(title, content);
+-- 使用全文搜索
+SELECT * FROM articles
+WHERE MATCH(title, content) AGAINST ('MySQL 索引');
+-- 使用布尔模式
+SELECT * FROM articles
+WHERE MATCH(title, content) AGAINST ('+MySQL -Oracle' IN BOOLEAN MODE);
+</pre>

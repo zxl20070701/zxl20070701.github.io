@@ -1,0 +1,45 @@
+<header>
+    多表连接查询
+</header>
+<h2>
+    内连接 INNER JOIN
+</h2>
+<pre tag="sql">
+SELECT u.name, o.order_no
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id;
+</pre>
+<h2>
+    左连接 LEFT JOIN
+</h2>
+<pre tag="sql">
+SELECT u.name, o.order_no
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id;
+</pre>
+<h2>
+    交叉连接 CROSS JOIN
+</h2>
+<pre tag="sql">
+SELECT * FROM users CROSS JOIN products;
+</pre>
+<div class="tips">
+    SQLite 只支持 INNER JOIN 和 LEFT JOIN，不支持 RIGHT JOIN 和 FULL JOIN。
+</div>
+<h2>
+    多表连接
+</h2>
+<pre tag="sql">
+SELECT u.name, p.name, o.quantity
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id
+INNER JOIN products p ON o.product_id = p.id;
+</pre>
+<h2>
+    自连接
+</h2>
+<pre tag="sql">
+SELECT e.name AS employee, m.name AS manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.id;
+</pre>

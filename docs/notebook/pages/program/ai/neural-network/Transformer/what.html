@@ -1,11 +1,28 @@
 <header>
-    Transformer 模型
+    什么是Transformer模型？
 </header>
 <p>
     论文地址：
     <a href="https://arxiv.org/abs/1706.03762" target="_blank">
         《Attention Is All You Need》
     </a>
+</p>
+<p>
+    想象一下，你正在阅读一本小说。当你读到"哈利波特拿起魔杖"这句话时，你的大脑会立即联想到"魔法"、"霍格沃茨"、"伏地魔"等相关概念。这种能够捕捉词语之间关联的能力，正是Transformer模型的核心思想。
+</p>
+<p>
+    在Transformer出现之前，主流的序列建模方法是循环神经网络（RNN）及其变体（LSTM、GRU）。这类模型存在两个根本性缺陷：
+</p>
+<ul>
+    <li>
+        其一，梯度消失/爆炸问题限制了模型对长距离依赖的捕捉能力；
+    </li>
+    <li>
+        其二，递归计算天然无法并行化，导致训练效率低下。
+    </li>
+</ul>
+<p>
+    Transformer通过自注意力机制从根本上解决了这两个问题。
 </p>
 <h2>
     架构

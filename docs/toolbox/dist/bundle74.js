@@ -5,7 +5,7 @@
 window.__pkg__bundleSrc__['276']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('429');
+    __pkg__scope_args__=window.__pkg__getBundle('430');
 var template =__pkg__scope_args__.default;
 
 
@@ -18,10 +18,10 @@ var canvasRender =__pkg__scope_args__.default;
 __pkg__scope_args__=window.__pkg__getBundle('315');
 var xhr =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('430');
+__pkg__scope_args__=window.__pkg__getBundle('431');
 var toSankeyImageData =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('388');
+__pkg__scope_args__=window.__pkg__getBundle('389');
 var getLoopColors =__pkg__scope_args__.default;
 
 
@@ -41,9 +41,9 @@ __pkg__scope_bundle__.default= function (obj, props) {
             xhr({
                 method: "GET",
                 url: "../data/energy.json"
-            }, function (data) {
-                if (data.status == 200) {
-                    data = JSON.parse(data.data);
+            }, function (res) {
+                if (res.status == 200) {
+                    var data = JSON.parse(res.data);
 
                     var updateView = function () {
                         var sankeyData = toSankeyImageData(data, mycontent.clientWidth - 50, mycontent.clientHeight - 60, 0, 30);
@@ -114,7 +114,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/sankey-nodeAlign-left/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['429']=function(){
+window.__pkg__bundleSrc__['430']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,10]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,4,7]},{"type":"tag","name":"h2","attrs":{},"childNodes":[3]},{"type":"text","content":"桑基图左对齐布局","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"src-url"},"childNodes":[5,6]},{"type":"text","content":"查看源码：","childNodes":[]},{"type":"tag","name":"a","attrs":{"ui-bind:href":"srcUrl","ui-bind":"srcUrl","target":"_blank"},"childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[8]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeDialog"},"childNodes":[9]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"content","ref":"mycontent"},"childNodes":[11]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[]}]
@@ -850,7 +850,7 @@ __pkg__scope_bundle__.default= function (data) {
 /*************************** [bundle] ****************************/
 // Original file:./src/pages/echarts/dialogs/tool/toSankeyImageData
 /*****************************************************************/
-window.__pkg__bundleSrc__['430']=function(){
+window.__pkg__bundleSrc__['431']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     
@@ -1002,7 +1002,7 @@ __pkg__scope_bundle__.default= function (data, width, height, x, y) {
 /*************************** [bundle] ****************************/
 // Original file:./src/tool/getLoopColors
 /*****************************************************************/
-window.__pkg__bundleSrc__['388']=function(){
+window.__pkg__bundleSrc__['389']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     // 获取一组循环色彩

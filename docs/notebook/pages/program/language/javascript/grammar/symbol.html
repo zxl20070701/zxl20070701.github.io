@@ -1,0 +1,66 @@
+<header>
+    Symbol 类型
+</header>
+<h2>
+    基本概念
+</h2>
+<p>
+    Symbol 是一种原始数据类型，用于创建唯一的标识符。每个 Symbol 值都是唯一的，即使使用相同的描述创建。
+</p>
+<pre tag="javascript">
+let sym1 = Symbol();
+let sym2 = Symbol('description');
+console.log(typeof sym1); // 'symbol'
+console.log(sym1 === sym2); // false
+</pre>
+<h2>
+    使用场景
+</h2>
+<p>
+    Symbol 常用于定义对象的唯一属性名，避免属性名冲突。
+</p>
+<pre tag="javascript">
+let NAME = Symbol('name');
+let user = {
+    [NAME]: 'Alice',
+    name: 'Bob'
+};
+console.log(user[NAME]); // 'Alice'
+console.log(user.name); // 'Bob'
+</pre>
+<h2>
+    共享 Symbol
+</h2>
+<p>
+    使用 Symbol.for() 可以在全局 Symbol 注册表中创建或获取共享的 Symbol。
+</p>
+<pre tag="javascript">
+let sym1 = Symbol.for('key');
+let sym2 = Symbol.for('key');
+console.log(sym1 === sym2); // true
+console.log(Symbol.keyFor(sym1)); // 'key'
+</pre>
+<h2>
+    常用内置 Symbol
+</h2>
+<p>
+    JavaScript 提供了一些内置 Symbol，用于定制对象的行为。
+</p>
+<pre tag="javascript">
+// Symbol.iterator - 定义对象的默认迭代器
+let iterable = {
+    [Symbol.iterator]() {
+        let i = 0;
+        return {
+            next() {
+                return { value: ++i, done: i > 3 };
+            }
+        };
+    }
+};
+// Symbol.toStringTag - 自定义 Object.prototype.toString 的输出
+let obj = {
+    [Symbol.toStringTag]: 'MyClass'
+};
+Object.prototype.toString.call(obj); // '[object MyClass]'
+</pre>

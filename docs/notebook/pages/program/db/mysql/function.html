@@ -1,0 +1,122 @@
+<header>
+    常用内置函数
+</header>
+<h2>
+    字符串函数
+</h2>
+<pre tag="sql">
+-- 拼接字符串
+SELECT CONCAT('Hello', ' ', 'World');
+-- 小写转大写
+SELECT UPPER('hello');
+-- 大写转小写
+SELECT LOWER('HELLO');
+-- 去除首尾空格
+SELECT TRIM('  hello  ');
+-- 截取子串
+SELECT SUBSTRING('Hello World', 1, 5);
+SELECT SUBSTR('Hello World', 7);
+-- 替换
+SELECT REPLACE('Hello World', 'World', 'MySQL');
+-- 查找位置
+SELECT LOCATE('World', 'Hello World');
+SELECT INSTR('Hello World', 'World');
+-- 获取长度
+SELECT LENGTH('Hello');
+SELECT CHAR_LENGTH('你好');
+-- 左填充/右填充
+SELECT LPAD('1', 5, '0');
+SELECT RPAD('hello', 10, '*');
+</pre>
+<h2>
+    数字函数
+</h2>
+<pre tag="sql">
+-- 绝对值
+SELECT ABS(-5);
+-- 向上取整
+SELECT CEIL(4.3);
+-- 向下取整
+SELECT FLOOR(4.7);
+-- 四舍五入
+SELECT ROUND(4.567, 2);
+-- 随机数
+SELECT RAND();
+SELECT FLOOR(RAND() * 100);
+-- 幂运算
+SELECT POW(2, 10);
+-- 平方根
+SELECT SQRT(16);
+-- 最小值/最大值
+SELECT LEAST(1, 2, 3);
+SELECT GREATEST(1, 2, 3);
+-- 取模
+SELECT MOD(10, 3);
+</pre>
+<h2>
+    日期函数
+</h2>
+<pre tag="sql">
+-- 获取当前日期时间
+SELECT NOW();
+SELECT CURRENT_TIMESTAMP();
+-- 获取当前日期
+SELECT CURDATE();
+-- 获取当前时间
+SELECT CURTIME();
+-- 提取日期部分
+SELECT YEAR('2024-01-15');
+SELECT MONTH('2024-01-15');
+SELECT DAY('2024-01-15');
+SELECT HOUR('2024-01-15 10:30:00');
+SELECT MINUTE('2024-01-15 10:30:00');
+SELECT SECOND('2024-01-15 10:30:45');
+-- 日期加减
+SELECT DATE_ADD('2024-01-15', INTERVAL 7 DAY);
+SELECT DATE_SUB('2024-01-15', INTERVAL 1 MONTH);
+SELECT DATE_ADD(NOW(), INTERVAL 1 HOUR);
+-- 日期差
+SELECT DATEDIFF('2024-02-01', '2024-01-15');
+SELECT TIMESTAMPDIFF(MONTH, '2023-01-01', '2024-01-01');
+-- 日期格式化
+SELECT DATE_FORMAT(NOW(), '%Y年%m月%d日 %H:%i:%s');
+SELECT DATE_FORMAT(NOW(), '%Y-%m-%d');
+-- 字符串转日期
+SELECT STR_TO_DATE('2024-01-15', '%Y-%m-%d');
+</pre>
+<h2>
+    聚合函数
+</h2>
+<pre tag="sql">
+-- 计数
+SELECT COUNT(*) FROM users;
+SELECT COUNT(email) FROM users;
+SELECT COUNT(DISTINCT city) FROM users;
+-- 求和
+SELECT SUM(amount) FROM orders;
+-- 平均值
+SELECT AVG(age) FROM users;
+-- 最大值/最小值
+SELECT MAX(age) FROM users;
+SELECT MIN(age) FROM users;
+</pre>
+<h2>
+    条件函数
+</h2>
+<pre tag="sql">
+-- IF 函数
+SELECT IF(age >= 18, '成年', '未成年') AS status FROM users;
+-- CASE WHEN
+SELECT name,
+    CASE
+        WHEN score >= 90 THEN '优秀'
+        WHEN score >= 80 THEN '良好'
+        WHEN score >= 60 THEN '及格'
+        ELSE '不及格'
+    END AS level
+FROM students;
+-- IFNULL / COALESCE
+SELECT IFNULL(email, '未填写') FROM users;
+SELECT COALESCE(email, phone, '未知') FROM users;
+</pre>
+</pre>

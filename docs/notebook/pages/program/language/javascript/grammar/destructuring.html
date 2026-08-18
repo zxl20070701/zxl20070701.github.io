@@ -1,0 +1,98 @@
+<header>
+    解构赋值
+</header>
+<h2>
+    数组解构
+</h2>
+<p>
+    从数组中提取值，按位置依次赋给变量。
+</p>
+<pre tag="javascript">
+let [a, b, c] = [1, 2, 3];
+console.log(a); // 1
+console.log(b); // 2
+console.log(c); // 3
+</pre>
+<h3>
+    跳过元素
+</h3>
+<pre tag="javascript">
+let [x, , y] = [1, 2, 3];
+console.log(x); // 1
+console.log(y); // 3
+</pre>
+<h3>
+    嵌套解构
+</h3>
+<pre tag="javascript">
+let [a, [b, c]] = [1, [2, 3]];
+console.log(a); // 1
+console.log(b); // 2
+console.log(c); // 3
+</pre>
+<h3>
+    默认值
+</h3>
+<pre tag="javascript">
+let [a = 1, b = 2] = [3];
+console.log(a); // 3
+console.log(b); // 2
+</pre>
+<h2>
+    对象解构
+</h2>
+<p>
+    从对象中提取属性值，按属性名匹配赋给变量。
+</p>
+<pre tag="javascript">
+let { name, age } = { name: 'Alice', age: 25 };
+console.log(name); // 'Alice'
+console.log(age); // 25
+</pre>
+<h3>
+    重命名变量
+</h3>
+<pre tag="javascript">
+let { name: userName, age: userAge } = { name: 'Bob', age: 30 };
+console.log(userName); // 'Bob'
+console.log(userAge); // 30
+</pre>
+<h3>
+    默认值
+</h3>
+<pre tag="javascript">
+let { name = 'Anonymous', age = 18 } = { name: 'Charlie' };
+console.log(name); // 'Charlie'
+console.log(age); // 18
+</pre>
+<h3>
+    嵌套对象解构
+</h3>
+<pre tag="javascript">
+let { user: { name, age } } = { user: { name: 'Dave', age: 35 } };
+console.log(name); // 'Dave'
+</pre>
+<h2>
+    函数参数解构
+</h2>
+<p>
+    在函数参数中直接使用解构，方便处理传入的对象或数组。
+</p>
+<pre tag="javascript">
+function greet({ name, greeting = 'Hello' }) {
+    return `${greeting}, ${name}!`;
+}
+greet({ name: 'Eve' }); // "Hello, Eve!"
+</pre>
+<h2>
+    交换变量
+</h2>
+<p>
+    使用数组解构可以方便地交换两个变量的值，无需临时变量。
+</p>
+<pre tag="javascript">
+let a = 1, b = 2;
+[a, b] = [b, a];
+console.log(a); // 2
+console.log(b); // 1
+</pre>

@@ -1,0 +1,63 @@
+<header>
+    变量声明
+</header>
+<h2>
+    var
+</h2>
+<p>
+    var 声明的变量存在变量提升（hoisting），在声明之前就可以访问，值为 undefined。在函数内声明时为函数作用域，在函数外声明时为全局作用域。可以重复声明。
+</p>
+<pre tag="javascript">
+console.log(a); // undefined
+var a = 10;
+var a = 20; // 可以重复声明
+</pre>
+<h2>
+    let
+</h2>
+<p>
+    let 声明的变量具有块级作用域（block scope），不存在变量提升（存在暂时性死区）。不能重复声明。声明前访问会报错。
+</p>
+<pre tag="javascript">
+let b = 10;
+// let b = 20; // 报错：不能重复声明
+if (true) {
+    let c = 30;
+    console.log(c); // 30
+}
+// console.log(c); // 报错：c 不存在
+</pre>
+<h2>
+    const
+</h2>
+<p>
+    const 声明的常量具有块级作用域，必须在声明时赋值，且引用不可更改（引用的值可以是可变对象）。同样存在暂时性死区，不能重复声明。
+</p>
+<pre tag="javascript">
+const PI = 3.14159;
+// PI = 3; // 报错：不能重新赋值
+const obj = { name: 'test' };
+obj.name = 'updated'; // 可以修改对象属性
+// obj = {}; // 报错：不能重新赋值
+</pre>
+<h2>
+    暂时性死区(TDZ)
+</h2>
+<p>
+    let 和 const 声明的变量在声明前处于暂时性死区，任何访问都会抛出 ReferenceError。这与 var 的行为不同。
+</p>
+<pre tag="javascript">
+// console.log(x); // ReferenceError
+let x = 1;
+console.log(x); // 1
+</pre>
+<h2>
+    三种声明方式对比
+</h2>
+<pre tag="javascript">
+// 作用域：var 为函数作用域，let/const 为块级作用域
+// 重复声明：var 允许，let/const 不允许
+// 变量提升：var 有，let/const 有 TDZ
+// 重新赋值：var/let 允许，const 不允许
+// 初始值：var/let 可选，const 必须
+</pre>

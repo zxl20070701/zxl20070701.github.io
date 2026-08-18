@@ -1,0 +1,90 @@
+<header>
+    表操作
+</header>
+<h2>
+    创建表
+</h2>
+<pre tag="sql">
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    age INTEGER DEFAULT 0,
+    email VARCHAR(100) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</pre>
+<h3>
+    带约束的建表
+</h3>
+<pre tag="sql">
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    amount NUMERIC(10,2) CHECK (amount >= 0),
+    status VARCHAR(20) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</pre>
+<h2>
+    查看表结构
+</h2>
+<pre tag="sql">
+\d users
+\d+ users
+SELECT column_name, data_type, is_nullable, column_default
+FROM information_schema.columns
+WHERE table_name = 'users';
+</pre>
+<h2>
+    修改表
+</h2>
+<pre tag="sql">
+-- 添加列
+ALTER TABLE users ADD COLUMN phone VARCHAR(20);
+-- 修改列类型
+ALTER TABLE users ALTER COLUMN name TYPE VARCHAR(100);
+-- 修改列默认值
+ALTER TABLE users ALTER COLUMN age SET DEFAULT 18;
+-- 重命名列
+ALTER TABLE users RENAME COLUMN name TO full_name;
+-- 删除列
+ALTER TABLE users DROP COLUMN phone;
+-- 重命名表
+ALTER TABLE users RENAME TO accounts;
+</pre>
+<h2>
+    删除表
+</h2>
+<pre tag="sql">
+DROP TABLE IF EXISTS users;
+DROP TABLE users CASCADE;
+</pre>
+<h2>
+    创建索引
+</h2>
+<pre tag="sql">
+CREATE INDEX idx_name ON users(name);
+CREATE UNIQUE INDEX idx_email ON users(email);
+CREATE INDEX idx_city_age ON users(city, age);
+</pre>
+<h2>
+    序列
+</h2>
+<pre tag="sql">
+-- 查看当前序列值
+SELECT last_value FROM users_id_seq;
+-- 重置序列
+SELECT setval('users_id_seq', 100);
+-- 创建独立序列
+CREATE SEQUENCE custom_seq START 1;
+SELECT nextval('custom_seq');
+</pre>
+<h2>
+    视图
+</h2>
+<pre tag="sql">
+CREATE VIEW user_summary AS
+SELECT name, age, email FROM users WHERE age > 18;
+SELECT * FROM user_summary;
+DROP VIEW IF EXISTS user_summary;
+</pre>

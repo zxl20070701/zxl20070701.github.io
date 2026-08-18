@@ -1,0 +1,40 @@
+[dialog-view="code-example"] {
+    height: 600px;
+    width: 600px;
+    top: calc(50vh - 300px);
+    left: calc(50vw - 300px);
+
+    &>div.sphere-rotate {
+        width: 100%;
+        height: calc(100% - 51px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 800px;
+
+        &>.globe-wrapper {
+            transform-style: preserve-3d;
+
+            &>.globe-stage {
+                position: relative;
+                width: 0;
+                height: 0;
+                transform-style: preserve-3d;
+
+                &>.card {
+                    position: absolute;
+                    padding: 4px 10px;
+                    background: rgba(83, 52, 131, 0.85);
+                    color: #fff;
+                    font-size: 12px;
+                    border-radius: 4px;
+                    white-space: nowrap;
+                    backface-visibility: hidden;
+                    text-align: center;
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                }
+            }
+        }
+    }
+}

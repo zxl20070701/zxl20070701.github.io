@@ -1,0 +1,85 @@
+<header>
+    条件与分组查询
+</header>
+<h2>
+    GROUP BY 分组
+</h2>
+<pre tag="sql">
+-- 按城市分组统计人数
+SELECT city, COUNT(*) AS count FROM users GROUP BY city;
+-- 多字段分组
+SELECT city, gender, COUNT(*) AS count FROM users GROUP BY city, gender;
+</pre>
+<h2>
+    HAVING 分组条件
+</h2>
+<p>
+    HAVING 用于在 GROUP BY 之后筛选分组结果，WHERE 用于在 GROUP BY 之前筛选原始数据。
+</p>
+<pre tag="sql">
+-- 查询人数大于5的城市
+SELECT city, COUNT(*) AS count
+FROM users
+GROUP BY city
+HAVING COUNT(*) > 5;
+-- 查询平均年龄大于25的城市
+SELECT city, AVG(age) AS avg_age
+FROM users
+GROUP BY city
+HAVING AVG(age) > 25;
+</pre>
+<h2>
+    WHERE vs HAVING
+</h2>
+<pre tag="sql">
+-- WHERE 在分组前筛选
+SELECT city, COUNT(*) AS count
+FROM users
+WHERE age > 18
+GROUP BY city;
+-- HAVING 在分组后筛选
+SELECT city, COUNT(*) AS count
+FROM users
+WHERE age > 18
+GROUP BY city
+HAVING COUNT(*) > 3;
+</pre>
+<h2>
+    分组排序
+</h2>
+<pre tag="sql">
+SELECT city, COUNT(*) AS count
+FROM users
+GROUP BY city
+ORDER BY count DESC;
+</pre>
+<h2>
+    WITH ROLLUP 汇总
+</h2>
+<p>
+    WITH ROLLUP 可以在分组结果后添加一行小计或总计。
+</p>
+<pre tag="sql">
+SELECT city, SUM(amount) AS total
+FROM orders
+GROUP BY city WITH ROLLUP;
+</pre>
+<h2>
+    条件查询示例
+</h2>
+<pre tag="sql">
+-- 统计每个城市的男女比例
+SELECT city,
+    SUM(CASE WHEN gender = '男' THEN 1 ELSE 0 END) AS male,
+    SUM(CASE WHEN gender = '女' THEN 1 ELSE 0 END) AS female
+FROM users
+GROUP BY city;
+
+-- 统计每月订单金额
+SELECT DATE_FORMAT(create_time, '%Y-%m') AS month,
+    COUNT(*) AS order_count,
+    SUM(amount) AS total_amount
+FROM orders
+GROUP BY month
+ORDER BY month DESC;
+</pre>

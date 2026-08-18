@@ -85,6 +85,16 @@ var shellColors = {
     "variable": "#ff0000"/*变量颜色*/
 };
 
+var sqlColors = {
+    "text": "#000000",/*文本颜色*/
+    "annotation": "#6a9955",/*注释颜色*/
+    "insign": "#9e9e9e",/*符号颜色*/
+    "key": "#ff0000",/*关键字颜色*/
+    "string": "#ac4c1e",/*字符串颜色*/
+    "number": "#1e50b3",/*数字颜色*/
+    "funName": "#1e83b1"/*函数名称颜色*/
+};
+
 var _cssShader = function (textString, colors) {
     var shaderArray = [];
 
@@ -1636,6 +1646,253 @@ var _shellShader = function (textString, colors) {
     return shaderArray;
 };
 
+var _mysqlShader = function (textString, colors) {
+
+    // SQL关键字
+    var keyWords = [
+        "ADD", "ALL", "ALTER", "AND", "AS", "ASC",
+        "BETWEEN", "BY", "CASCADE", "CASE", "CHECK",
+        "COLUMN", "COMMIT", "CONSTRAINT", "CREATE", "CROSS",
+        "DATABASE", "DATABASES", "DEFAULT", "DELETE", "DESC",
+        "DISTINCT", "DROP", "ELSE", "ESCAPE", "EXISTS",
+        "FOREIGN", "FROM", "FULL", "GROUP", "HAVING",
+        "IF", "IN", "INDEX", "INNER", "INSERT",
+        "INTO", "IS", "JOIN", "KEY", "LEFT",
+        "LIKE", "LIMIT", "MATCH", "NATURAL", "NOT",
+        "NULL", "ON", "OR", "ORDER", "OUTER",
+        "PRIMARY", "REFERENCES", "RIGHT", "ROLLBACK", "ROW",
+        "SAVEPOINT", "SELECT", "SET", "TABLE", "THEN",
+        "TO", "TRANSACTION", "UNION", "UNIQUE", "UPDATE",
+        "USING", "VALUES", "VARCHAR", "VIEW", "WHEN",
+        "WHERE", "WITH", "RECURSIVE", "OVER",
+        "PARTITION", "RANGE", "ROWS", "CURRENT", "ROW_NUMBER",
+        "RANK", "DENSE_RANK", "LAG", "LEAD",
+        "TRUE", "FALSE", "AUTO_INCREMENT", "ENGINE",
+        "INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN",
+        "GROUP BY", "ORDER BY", "INSERT INTO",
+        "UNIQUE INDEX", "FULLTEXT INDEX", "SPATIAL INDEX"
+    ];
+
+    var shaderArray = [];
+
+    // 当前面对的
+    var i = 0;
+
+    // 获取往后n个值
+    var nextNValue = function (n) {
+        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
+    };
+
+    var template = "";
+
+    // 初始化模板，开始文本捕获
+    var initTemplate = function () {
+        if (template != "") {
+
+            // 考虑开始的(
+            if (template[0] == '(') {
+                shaderArray.push({
+                    color: colors.insign,
+                    content: "("
+                });
+                template = template.substring(1);
+            }
+
+            // 检查是否为关键字
+            var trimmed = template.trim().toUpperCase();
+            if (keyWords.indexOf(trimmed) > -1) {
+                shaderArray.push({
+                    color: colors.key,
+                    content: template
+                });
+            } else {
+                shaderArray.push({
+                    color: colors.text,
+                    content: template
+                });
+            }
+        }
+
+        template = "";
+    };
+
+    while (true) {
+
+        /* 1. 多行注释 */
+
+        if (nextNValue(2) == '/*') {
+
+            initTemplate();
+            while (nextNValue(2) !== '*/' && i < textString.length) {
+                template += textString[i++];
+            }
+
+            shaderArray.push({
+                color: colors.annotation,
+                content: template + nextNValue(2)
+            });
+            i += 2;
+            template = "";
+
+        }
+
+        /* 2. 单行注释 */
+
+        else if (nextNValue(2) == '--') {
+            initTemplate();
+            while (nextNValue(1) !== '\n' && i < textString.length) {
+                template += textString[i++];
+            }
+            shaderArray.push({
+                color: colors.annotation,
+                content: template
+            });
+            template = "";
+        }
+
+        /* 3. 字符串 */
+
+        else if (["'", '"'].indexOf(nextNValue(1)) > -1) {
+
+            var strBorder = nextNValue(1);
+            initTemplate();
+
+            do {
+                template += textString[i++];
+                // 处理转义字符
+                if (nextNValue(1) == '\\') {
+                    template += textString[i++];
+                    template += textString[i++];
+                }
+            } while (nextNValue(1) != strBorder && i < textString.length);
+
+            // 因为可能是没有字符导致的结束
+            if (nextNValue(1) != strBorder) {
+                strBorder = "";
+            } else {
+                i += 1;
+            }
+
+            shaderArray.push({
+                color: colors.string,
+                content: template + strBorder
+            });
+            template = "";
+
+        }
+
+        /* 4. 数字 */
+
+        else if (nextNValue(1).match(/[0-9]/) || (nextNValue(1) == '-' && nextNValue(2).match(/[0-9]/))) {
+
+            initTemplate();
+            template += textString[i++];
+
+            // 匹配数字（包括小数）
+            while (nextNValue(1).match(/[0-9.]/) && i < textString.length) {
+                template += textString[i++];
+            }
+
+            shaderArray.push({
+                color: colors.number,
+                content: template
+            });
+            template = "";
+
+        }
+
+        /* 5. 函数调用 */
+
+        else if (nextNValue(1) == '(') {
+
+            initTemplate();
+
+            // 检查是否为SQL函数名
+            var trimmed = template.trim().toUpperCase();
+            var sqlFuncs = [
+                "COUNT", "SUM", "AVG", "MAX", "MIN",
+                "ABS", "CEIL", "FLOOR", "ROUND", "RAND",
+                "CONCAT", "UPPER", "LOWER", "TRIM", "LENGTH",
+                "SUBSTRING", "SUBSTR", "REPLACE", "LOCATE",
+                "NOW", "CURDATE", "CURTIME", "YEAR", "MONTH",
+                "DAY", "HOUR", "MINUTE", "SECOND",
+                "DATE_ADD", "DATE_SUB", "DATEDIFF", "DATE_FORMAT",
+                "STR_TO_DATE", "IF", "IFNULL", "COALESCE",
+                "CASE", "CAST", "CONVERT", "GROUP_CONCAT",
+                "DATE", "TIME", "TIMESTAMP", "DATETIME",
+                "INET_ATON", "INET_NTOA", "LAST_INSERT_ID",
+                "USER", "DATABASE", "VERSION", "MD5", "SHA1",
+                "TRUNCATE", "MOD", "POW", "SQRT",
+                "LEAST", "GREATEST", "LPAD", "RPAD",
+                "FIND_IN_SET", "FIELD", "EXPORT_SET",
+                "FROM_UNIXTIME", "UNIX_TIMESTAMP"
+            ];
+
+            if (sqlFuncs.indexOf(trimmed) > -1) {
+                shaderArray.push({
+                    color: colors.funName,
+                    content: template
+                });
+            } else {
+                shaderArray.push({
+                    color: colors.text,
+                    content: template
+                });
+            }
+
+            i += 1;
+            template = "(";
+        }
+
+        /* 6. 边界符号 */
+
+        else if ([";", '{', '}', '(', ')', '.', '\n', '=', '+', '>', '<', '[', ']', '-', '*', '/', '^', '!', ','].indexOf(nextNValue(1)) > -1) {
+
+            initTemplate();
+            shaderArray.push({
+                color: colors.insign,
+                content: nextNValue(1)
+            });
+            template = "";
+            i += 1;
+        }
+
+        /* 7. 关键字（空格分隔） */
+
+        else if (nextNValue(1) == ' ') {
+
+            var trimmed = template.trim().toUpperCase();
+
+            if (keyWords.indexOf(trimmed) > -1) {
+                shaderArray.push({
+                    color: colors.key,
+                    content: template + " "
+                });
+                template = "";
+                i += 1;
+            } else {
+                initTemplate();
+                template += textString[i++];
+            }
+
+        }
+
+        /* 追加字符 */
+
+        else {
+            if (i >= textString.length) {
+                initTemplate();
+                break;
+            } else {
+                template += textString[i++];
+            }
+        }
+
+    }
+
+    return shaderArray;
+};
+
 // 对特殊转义符号等进行校对
 var replaceCode = function (source) {
     return source
@@ -1689,6 +1946,11 @@ window.doShader = function (el) {
             }
             case "shell": {
                 shaderJSON = _shellShader(source, shellColors);
+                break
+            }
+            case "mysql":
+            case "sql": {
+                shaderJSON = _mysqlShader(source, sqlColors);
                 break
             }
             default: {

@@ -85,3 +85,219 @@
 <p>
     可返回时间的秒，返回值是 0 ~ 59 之间的一个整数。
 </p>
+<h2>
+    getTime()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.getTime()
+</pre>
+<p>
+    返回自 1970 年 1 月 1 日以来的毫秒数。通常用于跟踪代码执行时间。
+</p>
+<h2>
+    setFullYear()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.setFullYear(year, month, day)
+</pre>
+<p>
+    设置日期对象的年份。可选的 month 和 day 参数可同时设置月份和日期。
+</p>
+<h2>
+    setMonth()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.setMonth(month, day)
+</pre>
+<p>
+    设置日期对象的月份（0-11）。可选的 day 参数可同时设置日期。
+</p>
+<h2>
+    setDate()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.setDate(day)
+</pre>
+<p>
+    设置日期对象的日期（1-31）。
+</p>
+<h2>
+    setHours()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.setHours(hour, min, sec, millisec)
+</pre>
+<p>
+    设置日期对象的小时（0-23）。可选的 min、sec、millisec 参数可同时设置分、秒、毫秒。
+</p>
+<h2>
+    setMinutes()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.setMinutes(min, sec, millisec)
+</pre>
+<p>
+    设置日期对象的分钟（0-59）。
+</p>
+<h2>
+    setSeconds()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.setSeconds(sec, millisec)
+</pre>
+<p>
+    设置日期对象的秒数（0-59）。
+</p>
+<h2>
+    setTime()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.setTime(millisec)
+</pre>
+<p>
+    通过从 1970 年 1 月 1 日起的指定毫秒数来设置日期。
+</p>
+<h2>
+    toDateString()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.toDateString()
+</pre>
+<p>
+    把 Date 对象的日期部分转换为字符串。返回格式如 "Wed Apr 23 2025"。
+</p>
+<h2>
+    toTimeString()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.toTimeString()
+</pre>
+<p>
+    把 Date 对象的时间部分转换为字符串。返回格式如 "14:30:45 GMT+0800"。
+</p>
+<h2>
+    toISOString()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.toISOString()
+</pre>
+<p>
+    将 Date 对象转换为 ISO 格式字符串（YYYY-MM-DDTHH:mm:ss.sssZ）。使用 UTC 时区。
+</p>
+<h2>
+    toJSON()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.toJSON()
+</pre>
+<p>
+    返回 Date 对象的 JSON 格式字符串。实际上返回的是 ISO 格式的字符串。
+</p>
+<h2>
+    toLocaleDateString()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.toLocaleDateString(locales, options)
+</pre>
+<p>
+    返回日期对象日期部分的字符串，使用本地语言环境。
+</p>
+<h2>
+    toLocaleTimeString()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.toLocaleTimeString(locales, options)
+</pre>
+<p>
+    返回日期对象时间部分的字符串，使用本地语言环境。
+</p>
+<h2>
+    toLocaleString()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+date.toLocaleString(locales, options)
+</pre>
+<p>
+    返回日期对象的字符串表示，使用本地语言环境。
+</p>
+<h2>
+    parse()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Date.parse(dateString)
+</pre>
+<p>
+    解析一个日期字符串，并返回自 1970 年 1 月 1 日以来的毫秒数。
+</p>
+<h2>
+    now()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Date.now()
+</pre>
+<p>
+    返回当前时间自 1970 年 1 月 1 日以来的毫秒数。等同于 +new Date()。
+</p>
+<h2>
+    UTC()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Date.UTC(year, month, day, hour, minute, second, millisecond)
+</pre>
+<p>
+    根据世界时（UTC）来计算，返回从 1970 年 1 月 1 日起到该日期的毫秒数。
+</p>

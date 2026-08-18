@@ -1,0 +1,59 @@
+<header>
+    数据库操作
+</header>
+<h2>
+    连接数据库
+</h2>
+<pre tag="sql">
+psql -U postgres -h localhost -p 5432
+psql -U username -d database_name
+</pre>
+<h2>
+    创建数据库
+</h2>
+<pre tag="sql">
+CREATE DATABASE mydb;
+CREATE DATABASE mydb WITH ENCODING 'UTF8';
+CREATE DATABASE mydb
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'zh_CN.UTF-8'
+    LC_CTYPE = 'zh_CN.UTF-8'
+    TEMPLATE = template0;
+</pre>
+<h2>
+    查看数据库
+</h2>
+<pre tag="sql">
+\l
+\l+
+SELECT datname FROM pg_database;
+</pre>
+<h2>
+    切换数据库
+</h2>
+<pre tag="sql">
+\c mydb
+</pre>
+<h2>
+    删除数据库
+</h2>
+<pre tag="sql">
+DROP DATABASE IF EXISTS mydb;
+</pre>
+<h2>
+    修改数据库
+</h2>
+<pre tag="sql">
+ALTER DATABASE mydb RENAME TO newdb;
+ALTER DATABASE mydb OWNER TO newowner;
+ALTER DATABASE mydb CONNECTION LIMIT = 100;
+</pre>
+<h2>
+    Schema 操作
+</h2>
+<pre tag="sql">
+CREATE SCHEMA myschema;
+DROP SCHEMA IF EXISTS myschema CASCADE;
+SET search_path TO myschema, public;
+</pre>

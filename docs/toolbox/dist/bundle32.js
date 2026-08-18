@@ -68,7 +68,7 @@ __pkg__scope_bundle__.default= function (obj, props) {
 window.__pkg__bundleSrc__['324']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"代码例子","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"content"},"childNodes":[10,12]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"textarea-eraser"},"childNodes":[11]},{"type":"text","content":"一个简单的多行文本擦除显示动画效果","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"colorful-dice"},"childNodes":[13]},{"type":"text","content":"一个旋转的3D彩色骰子","childNodes":[]}]
+    __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,9]},{"type":"tag","name":"header","attrs":{"ui-dragdrop:desktop":""},"childNodes":[2,7]},{"type":"tag","name":"div","attrs":{"class":"win-btns"},"childNodes":[3,5]},{"type":"tag","name":"button","attrs":{"class":"min","ui-on:click.stop":"$minView"},"childNodes":[4]},{"type":"text","content":"最小化","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"h2","attrs":{},"childNodes":[8]},{"type":"text","content":"代码例子","childNodes":[]},{"type":"tag","name":"ul","attrs":{"class":"content"},"childNodes":[10,12,14]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"textarea-eraser"},"childNodes":[11]},{"type":"text","content":"一个简单的多行文本擦除显示动画效果","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"colorful-dice"},"childNodes":[13]},{"type":"text","content":"一个旋转的3D彩色骰子","childNodes":[]},{"type":"tag","name":"li","attrs":{"class":"button","ui-on:click":"openExamples","tag":"sphere-rotate"},"childNodes":[15]},{"type":"text","content":"动态生成的拼接球体","childNodes":[]}]
 
     return __pkg__scope_bundle__;
 }
@@ -113,6 +113,9 @@ window.__pkg__bundleSrc__['327']=function(){
     },
     "colorful-dice": function () {
         return window.__pkg__getLazyBundle('./dist/bundle82.js','329')
+    },
+    "sphere-rotate": function () {
+        return window.__pkg__getLazyBundle('./dist/bundle83.js','330')
     }
 };
 

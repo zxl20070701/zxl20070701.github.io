@@ -1,0 +1,81 @@
+<header>
+    SQL 基础查询
+</header>
+<h2>
+    SELECT 查询
+</h2>
+<pre tag="sql">
+SELECT * FROM users;
+SELECT id, name, age FROM users;
+SELECT DISTINCT city FROM users;
+SELECT name AS "姓名", age AS "年龄" FROM users;
+-- 计算列
+SELECT name, age, age + 1 AS "明年年龄" FROM users;
+</pre>
+<h2>
+    WHERE 条件
+</h2>
+<pre tag="sql">
+SELECT * FROM users WHERE age > 18;
+SELECT * FROM users WHERE name = '张三';
+SELECT * FROM users WHERE age BETWEEN 20 AND 30;
+SELECT * FROM users WHERE city IN ('北京', '上海', '广州');
+SELECT * FROM users WHERE name LIKE '张%';
+SELECT * FROM users WHERE email IS NOT NULL;
+SELECT * FROM users WHERE age > ALL (SELECT age FROM users WHERE city = '北京');
+</pre>
+<h2>
+    ORDER BY
+</h2>
+<pre tag="sql">
+SELECT * FROM users ORDER BY age ASC;
+SELECT * FROM users ORDER BY age DESC, name ASC;
+SELECT * FROM users ORDER BY 1, 2;
+</pre>
+<h2>
+    LIMIT 和 OFFSET
+</h2>
+<pre tag="sql">
+SELECT * FROM users LIMIT 10;
+SELECT * FROM users LIMIT 10 OFFSET 20;
+-- 分页查询
+SELECT * FROM users LIMIT 10 OFFSET (page-1)*10;
+</pre>
+<h2>
+    INSERT
+</h2>
+<pre tag="sql">
+INSERT INTO users (name, age, email) VALUES ('张三', 20, 'test@test.com');
+INSERT INTO users (name, age) VALUES ('李四', 25), ('王五', 30);
+-- 从查询插入
+INSERT INTO users_archive SELECT * FROM users WHERE age > 60;
+</pre>
+<h2>
+    UPDATE
+</h2>
+<pre tag="sql">
+UPDATE users SET age = 25 WHERE name = '张三';
+UPDATE users SET age = age + 1;
+UPDATE users SET (age, city) = (25, '北京') WHERE name = '张三';
+-- 基于其他表更新
+UPDATE orders o SET status = 'confirmed'
+FROM users u WHERE o.user_id = u.id AND u.city = '北京';
+</pre>
+<h2>
+    DELETE
+</h2>
+<pre tag="sql">
+DELETE FROM users WHERE id = 1;
+DELETE FROM users WHERE age < 18;
+DELETE FROM users WHERE id IN (SELECT user_id FROM orders);
+-- 基于其他表删除
+DELETE FROM orders o USING users u
+WHERE o.user_id = u.id AND u.city = '北京';
+</pre>
+<h2>
+    DISTINCT 去重
+</h2>
+<pre tag="sql">
+SELECT DISTINCT ON (city) city, name, age
+FROM users ORDER BY city, age DESC;
+</pre>

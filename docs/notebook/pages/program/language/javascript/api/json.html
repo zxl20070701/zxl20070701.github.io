@@ -1,0 +1,83 @@
+<header>
+    JSON 对象
+</header>
+<h2>
+    parse()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+JSON.parse(text, reviver)
+</pre>
+<p>
+    将 JSON 字符串解析成 JavaScript 值。text 为要解析的 JSON 字符串，reviver 为可选的转换函数。
+</p>
+<h3>
+    示例
+</h3>
+<pre tag="javascript">
+let obj = JSON.parse('{"name":"John","age":30}');
+// obj = { name: "John", age: 30 }
+</pre>
+<h2>
+    stringify()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+JSON.stringify(value, replacer, space)
+</pre>
+<p>
+    将 JavaScript 值转换为 JSON 字符串。value 为要转换的值，replacer 为可选的过滤函数或数组，space 为指定缩进空格数。
+</p>
+<h3>
+    示例
+</h3>
+<pre tag="javascript">
+let json = JSON.stringify({ name: "John", age: 30 });
+// json = '{"name":"John","age":30}'
+</pre>
+<h2>
+    reviver 参数
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+JSON.parse(text, function(key, value) {
+    if (key === 'age') return value + 1;
+    return value;
+})
+</pre>
+<p>
+    reviver 函数可用于在解析时转换结果值。该函数会递归地对 JSON 中的每个键值对调用。
+</p>
+<h2>
+    replacer 参数
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+JSON.stringify(value, function(key, value) {
+    if (key === 'password') return undefined;
+    return value;
+})
+</pre>
+<p>
+    replacer 函数可用于在序列化时过滤或转换值。返回 undefined 则该属性会被移除。
+</p>
+<h2>
+    space 参数
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+JSON.stringify(value, null, 2)
+</pre>
+<p>
+    space 参数用于控制输出格式。可以是数字（表示缩进空格数，最大 10）或字符串（用于缩进的字符）。
+</p>

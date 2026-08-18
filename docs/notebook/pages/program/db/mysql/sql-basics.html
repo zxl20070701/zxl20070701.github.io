@@ -1,0 +1,112 @@
+<header>
+    SQL 基础查询
+</header>
+<h2>
+    SELECT 查询
+</h2>
+<h3>
+    查询所有字段
+</h3>
+<pre tag="sql">
+SELECT * FROM users;
+</pre>
+<h3>
+    查询指定字段
+</h3>
+<pre tag="sql">
+SELECT id, name, age FROM users;
+</pre>
+<h3>
+    去重查询
+</h3>
+<pre tag="sql">
+SELECT DISTINCT city FROM users;
+</pre>
+<h3>
+    起别名
+</h3>
+<pre tag="sql">
+SELECT name AS '姓名', age AS '年龄' FROM users;
+SELECT u.name FROM users AS u;
+</pre>
+<h2>
+    WHERE 条件
+</h2>
+<h3>
+    基础条件
+</h3>
+<pre tag="sql">
+SELECT * FROM users WHERE age > 18;
+SELECT * FROM users WHERE name = '张三';
+</pre>
+<h3>
+    多条件组合
+</h3>
+<pre tag="sql">
+SELECT * FROM users WHERE age > 18 AND city = '北京';
+SELECT * FROM users WHERE age > 18 OR city = '上海';
+</pre>
+<h3>
+    IN 条件
+</h3>
+<pre tag="sql">
+SELECT * FROM users WHERE city IN ('北京', '上海', '广州');
+</pre>
+<h3>
+    BETWEEN 范围
+</h3>
+<pre tag="sql">
+SELECT * FROM users WHERE age BETWEEN 20 AND 30;
+</pre>
+<h3>
+    LIKE 模糊查询
+</h3>
+<pre tag="sql">
+SELECT * FROM users WHERE name LIKE '张%';
+SELECT * FROM users WHERE name LIKE '%三';
+SELECT * FROM users WHERE name LIKE '%小%';
+SELECT * FROM users WHERE name LIKE '张_';
+</pre>
+<h3>
+    IS NULL / IS NOT NULL
+</h3>
+<pre tag="sql">
+SELECT * FROM users WHERE email IS NULL;
+SELECT * FROM users WHERE email IS NOT NULL;
+</pre>
+<h2>
+    ORDER BY 排序
+</h2>
+<pre tag="sql">
+SELECT * FROM users ORDER BY age ASC;
+SELECT * FROM users ORDER BY age DESC;
+SELECT * FROM users ORDER BY age DESC, name ASC;
+</pre>
+<h2>
+    LIMIT 限制
+</h2>
+<pre tag="sql">
+SELECT * FROM users LIMIT 10;
+SELECT * FROM users LIMIT 0, 10;
+SELECT * FROM users LIMIT 10 OFFSET 20;
+</pre>
+<h2>
+    子查询
+</h2>
+<pre tag="sql">
+SELECT * FROM users
+WHERE id IN (SELECT user_id FROM orders WHERE amount > 100);
+
+SELECT * FROM users u
+WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
+</pre>
+<h2>
+    分页查询
+</h2>
+<pre tag="sql">
+-- 第1页，每页10条
+SELECT * FROM users LIMIT 0, 10;
+-- 第2页，每页10条
+SELECT * FROM users LIMIT 10, 10;
+-- 通用公式：LIMIT (page-1)*pageSize, pageSize
+</pre>

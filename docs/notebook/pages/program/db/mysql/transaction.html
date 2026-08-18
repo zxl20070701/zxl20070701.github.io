@@ -1,0 +1,83 @@
+<header>
+    事务控制
+</header>
+<h2>
+    事务特性（ACID）
+</h2>
+<pre tag="sql">
+-- 原子性（Atomicity）：事务中的操作要么全部成功，要么全部失败
+-- 一致性（Consistency）：事务执行前后数据保持一致状态
+-- 隔离性（Isolation）：并发事务之间互不干扰
+-- 持久性（Durability）：事务提交后对数据的修改是永久的
+</pre>
+<h2>
+    事务控制语句
+</h2>
+<pre tag="sql">
+-- 开始事务
+START TRANSACTION;
+-- 或
+BEGIN;
+
+-- 提交事务
+COMMIT;
+
+-- 回滚事务
+ROLLBACK;
+
+-- 保存点
+SAVEPOINT sp1;
+ROLLBACK TO SAVEPOINT sp1;
+RELEASE SAVEPOINT sp1;
+</pre>
+<h2>
+    事务示例
+</h2>
+<pre tag="sql">
+-- 转账示例
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;
+
+-- 出错回滚
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 999;
+-- 如果id=999不存在，回滚
+ROLLBACK;
+</pre>
+<h2>
+    事务隔离级别
+</h2>
+<pre tag="sql">
+-- 读未提交（READ UNCOMMITTED）：最低隔离级别
+-- 读已提交（READ COMMITTED）：Oracle 默认级别
+-- 可重复读（REPEATABLE READ）：MySQL InnoDB 默认级别
+-- 串行化（SERIALIZABLE）：最高隔离级别
+
+-- 设置隔离级别
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- 查看隔离级别
+SELECT @@transaction_isolation;
+</pre>
+<h2>
+    自动提交
+</h2>
+<pre tag="sql">
+-- 查看自动提交状态
+SELECT @@autocommit;
+-- 关闭自动提交
+SET AUTOCOMMIT = 0;
+-- 开启自动提交
+SET AUTOCOMMIT = 1;
+</pre>
+<h2>
+    锁机制
+</h2>
+<pre tag="sql">
+-- 共享锁（读锁）：多个事务可同时读
+SELECT * FROM users WHERE id = 1 LOCK IN SHARE MODE;
+-- 排他锁（写锁）：阻止其他事务读写
+SELECT * FROM users WHERE id = 1 FOR UPDATE;
+</pre>

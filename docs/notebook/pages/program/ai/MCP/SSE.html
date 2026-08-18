@@ -1,0 +1,49 @@
+<header>
+    HTTP+SSE 架构
+</header>
+<p>
+    简单的理解就是：「SSE 下行 + HTTP POST 上行」组合实现 MCP 完整双向 RPC 交互。
+</p>
+<ul>
+    <li>
+        SSE 下行：服务 → H5，就是一个 SSE，在一次 MCP 过程中，SSE 长连接全程不关闭，期间可以无限次推送消息。
+    </li>
+    <li>
+        HTTP POST 上行：H5 → 服务，就是一个普通的 POST 请求。
+    </li>
+</ul>
+<p>
+    一次完整 MCP 生命周期分三大阶段：握手初始化 → 多轮业务 RPC 交互 → 关闭销毁
+</p>
+<p>
+    下面是一次真实的请求流转：
+</p>
+<ol>
+    <li>
+        ES 建立 SSE，拿到 sessionId
+    </li>
+    <li>
+        POST → initialize（上行 1）→ SSE 返回结果（下行 1）
+    </li>
+    <li>
+        POST → initialized（上行 2）
+    </li>
+    <li>
+        POST → tools/list 查询工具（上行 3）→ SSE 返回工具列表（下行 2）
+    </li>
+    <li>
+        POST → tools/call 修改文件（上行 4）→ SSE 返回文件内容（下行 3）
+    </li>
+    <li>
+        POST → tools/call 查询文件（上行 5）→ SSE 返回成功状态（下行 4）
+    </li>
+    <li>
+        空闲时：服务 SSE ping（下行 5）→ 客户端 POST ping（上行 6）
+    </li>
+    <li>
+        最后 POST shutdown、关闭 EventSource
+    </li>
+</ol>
+<p>
+    上面的1～3就是握手初始化，然后4～7是多轮业务 RPC 交互，最后8结束的时候关闭销毁。
+</p>

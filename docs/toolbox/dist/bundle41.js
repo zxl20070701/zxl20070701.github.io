@@ -5,10 +5,10 @@
 window.__pkg__bundleSrc__['104']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
-    __pkg__scope_args__=window.__pkg__getBundle('350');
+    __pkg__scope_args__=window.__pkg__getBundle('351');
 var template =__pkg__scope_args__.default;
 
-__pkg__scope_args__=window.__pkg__getBundle('351');
+__pkg__scope_args__=window.__pkg__getBundle('352');
 
 
 __pkg__scope_args__=window.__pkg__getBundle('313');
@@ -199,7 +199,7 @@ __pkg__scope_bundle__.default= function (obj) {
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/npm-download/index.html
 /*****************************************************************/
-window.__pkg__bundleSrc__['350']=function(){
+window.__pkg__bundleSrc__['351']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     __pkg__scope_bundle__.default= [{"type":"tag","name":"root","attrs":{},"childNodes":[1,7]},{"type":"tag","name":"header","attrs":{"class":"top-title"},"childNodes":[2]},{"type":"tag","name":"div","attrs":{},"childNodes":[3,5]},{"type":"tag","name":"h2","attrs":{},"childNodes":[4]},{"type":"text","content":"Npm Download","childNodes":[]},{"type":"tag","name":"button","attrs":{"class":"close","ui-on:click.stop":"$closeView"},"childNodes":[6]},{"type":"text","content":"关闭","childNodes":[]},{"type":"tag","name":"div","attrs":{"class":"chart-container"},"childNodes":[8,12]},{"type":"tag","name":"div","attrs":{"class":"chart-header"},"childNodes":[9]},{"type":"tag","name":"div","attrs":{"class":"legend"},"childNodes":[10,11]},{"type":"tag","name":"span","attrs":{"class":"legend-color"},"childNodes":[]},{"type":"tag","name":"span","attrs":{"class":"legend-text"},"childNodes":[]},{"type":"tag","name":"canvas","attrs":{"ref":"mycanvas"},"childNodes":[13]},{"type":"text","content":"非常抱歉，您的浏览器不支持canvas!","childNodes":[]}]
@@ -210,7 +210,7 @@ window.__pkg__bundleSrc__['350']=function(){
 /*************************** [bundle] ****************************/
 // Original file:./src/mobile/npm-download/index.scss
 /*****************************************************************/
-window.__pkg__bundleSrc__['351']=function(){
+window.__pkg__bundleSrc__['352']=function(){
     var __pkg__scope_bundle__={};
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');

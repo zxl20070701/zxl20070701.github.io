@@ -1,0 +1,88 @@
+<header>
+    输入如何转成向量数据？
+</header>
+<p>
+    和大模型对话的时候，你的输入如何转成AI可以理解的向量数据？本文讲清楚 Transformer 输入数据转为向量完整流程。
+</p>
+<h2>
+    整体流程
+</h2>
+<p>
+    原始文本 → 子词切分 (Tokens) → Token Embedding (词嵌入) → + Positional Encoding (位置编码逐维相加) → Transformer Encoder/Decoder
+</p>
+<p>
+    用一张图来表示其在 Transformer 中的对应位置方便直观理解：
+</p>
+<img width="400px" src="./images/neural-network/input-to-vector/1.png">
+<p>
+    我们把相关流程更直观的展开看，就是：
+</p>
+<img width="600px" src="./images/neural-network/input-to-vector/2.png">
+<p>
+    下面我们来对具体步骤进行详细解读。
+</p>
+<h2>
+    子词切分 (Tokens)
+</h2>
+<p>
+    简单的理解就是把用户输入的句子，切割成一个个词元，比如用户输入"I go to work by"：
+</p>
+<img width="400px" src="./images/neural-network/input-to-vector/3.png">
+<p>
+    从上面的例子，你可能感觉我们会把一个单词分成一个词元（空格、标点符号等单独一个词元）？事实上，会有更好的策略，我们看一个例子：
+</p>
+<img width="400px" src="./images/neural-network/input-to-vector/4.png">
+<div class="tips">
+     子词切分的优势：webinarification这个单词属于行业口语 / 文案自造词，不属于词典标准固定单词，LLM知道webinar这个单词，也理解ification这个名词后缀，当把webinarification拆分成两个词元的时候，就理解了这个新词。
+</div>
+<p>
+    类似的还有unhappy=un+happy，类似这样的句子中：
+</p>
+<img width="400px" src="./images/neural-network/input-to-vector/5.png">
+<p>
+    主流子词分词算法有：WordPiece、BPE、SentencePiece、Unigram（有很多开源库实现了这些算法，后续如果有必要或有机会，我们再都相关实践一下）。
+</p>
+<h2>
+    Token Embedding (词嵌入)
+</h2>
+<p>
+    第一反应，如果完成分词后，是不是一个词元用一个数字表示即可，就像这样：
+</p>
+<img width="400px" src="./images/neural-network/input-to-vector/6.png">
+<p>
+    而事实上，是用一个向量来表示一个词元（我们这里举例子是长度为10，实际上长很多）：
+</p>
+<img width="400px" src="./images/neural-network/input-to-vector/7.png">
+<p>
+    为什么要用向量？看一个例子：
+</p>
+<img width="400px" src="./images/neural-network/input-to-vector/8.png">
+<p>
+    我们有四个词元：man、woman、boy、girl，向量的第一个位置表示性别，可以看出来，man和boy值比较接近、woman和girl值比较接近。
+</p>
+<p>
+    然后再看第二个位置：
+</p>
+<img width="400px" src="./images/neural-network/input-to-vector/9.png">
+<p>
+    表示年龄，明显man、woman年龄可能比boy、girl要大一些。
+</p>
+<h2>
+    Positional Encoding (位置编码逐维相加)
+</h2>
+<p>
+    最终输入给大模型的输入向量 = Token嵌入向量 + 位置编码向量：
+</p>
+<div class="tips">
+    不是 "拼接"，是逐元素相加，嵌入向量和位置编码维度完全相同，直接对应维度数值相加，而非左右拼接扩容维度。
+</div>
+<img width="400px" src="./images/neural-network/input-to-vector/10.png">
+<p>
+    所以最终的输入向量只需要再求出位置编码向量就可以了。你可能好奇，为什么需要位置编码向量？
+</p>
+<p>
+    举例子，有两个句子：“我喜欢吃苹果” 和 “我喜欢吃苹果”，完全不是一个意思。所以Transformer需要知道"我"、"喜欢"、"吃"、"苹果"他们在句子中的位置，也就需要位置编码向量。
+</p>
+<p>
+    那位置编码向量如何来的，标准的Transformer采用正弦位置编码（出自《Attention Is All You Need》原始论文）。
+</p>

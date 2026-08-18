@@ -1,0 +1,83 @@
+<header>
+    用户与权限管理
+</header>
+<h2>
+    创建用户
+</h2>
+<pre tag="sql">
+-- 创建本地用户
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+-- 创建远程用户
+CREATE USER 'username'@'%' IDENTIFIED BY 'password';
+CREATE USER 'username'@'192.168.1.100' IDENTIFIED BY 'password';
+-- 查看用户
+SELECT user, host FROM mysql.user;
+</pre>
+<h2>
+    修改用户
+</h2>
+<pre tag="sql">
+-- 修改密码
+ALTER USER 'username'@'localhost' IDENTIFIED BY 'new_password';
+-- 重命名用户
+RENAME USER 'old_user'@'localhost' TO 'new_user'@'localhost';
+-- 锁定/解锁用户
+ALTER USER 'username'@'localhost' ACCOUNT LOCK;
+ALTER USER 'username'@'localhost' ACCOUNT UNLOCK;
+</pre>
+<h2>
+    删除用户
+</h2>
+<pre tag="sql">
+DROP USER 'username'@'localhost';
+DROP USER 'username'@'%';
+</pre>
+<h2>
+    授权
+</h2>
+<pre tag="sql">
+-- 授予所有权限
+GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost';
+-- 授予指定数据库权限
+GRANT SELECT, INSERT, UPDATE, DELETE ON mydb.* TO 'username'@'localhost';
+-- 授予指定表权限
+GRANT SELECT ON mydb.users TO 'username'@'localhost';
+-- 授予所有权限并允许授权
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;
+-- 刷新权限
+FLUSH PRIVILEGES;
+</pre>
+<h2>
+    撤销权限
+</h2>
+<pre tag="sql">
+-- 撤销指定权限
+REVOKE INSERT, UPDATE ON mydb.* FROM 'username'@'localhost';
+-- 撤销所有权限
+REVOKE ALL PRIVILEGES ON *.* FROM 'username'@'localhost';
+REVOKE GRANT OPTION ON *.* FROM 'username'@'localhost';
+FLUSH PRIVILEGES;
+</pre>
+<h2>
+    查看权限
+</h2>
+<pre tag="sql">
+SHOW GRANTS FOR 'username'@'localhost';
+SHOW GRANTS FOR CURRENT_USER;
+</pre>
+<h2>
+    常用权限说明
+</h2>
+<pre tag="sql">
+-- SELECT：查询
+-- INSERT：插入
+-- UPDATE：更新
+-- DELETE：删除
+-- CREATE：创建数据库/表
+-- DROP：删除数据库/表
+-- ALTER：修改表结构
+-- INDEX：创建/删除索引
+-- REFERENCES：创建外键
+-- CREATE TEMPORARY TABLES：创建临时表
+-- ALL PRIVILEGES：所有权限
+</pre>

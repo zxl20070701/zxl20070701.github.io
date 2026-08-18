@@ -40,3 +40,243 @@
 <p>
     返回当前节点最近的匹配选择符的祖先元素。
 </p>
+<h3>
+    getElementById()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+document.getElementById(id)
+</pre>
+<p>
+    返回对拥有指定 id 的第一个对象的引用。
+</p>
+<h3>
+    getElementsByClassName()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+document.getElementsByClassName(classname)
+</pre>
+<p>
+    返回文档中所有指定类名的元素集合，返回值是一个 HTMLCollection。
+</p>
+<h3>
+    getElementsByTagName()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+document.getElementsByTagName(tagname)
+</pre>
+<p>
+    返回文档中所有指定标签名的元素集合，返回值是一个 HTMLCollection。
+</p>
+<h2>
+    属性操作
+</h2>
+<h3>
+    getAttribute()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.getAttribute(attribute)
+</pre>
+<p>
+    返回指定属性名的属性值。如果属性不存在则返回 null。
+</p>
+<h3>
+    setAttribute()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.setAttribute(attribute, value)
+</pre>
+<p>
+    在元素上设置指定属性的值。如果属性不存在则创建它。
+</p>
+<h3>
+    removeAttribute()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.removeAttribute(attribute)
+</pre>
+<p>
+    移除元素的指定属性。
+</p>
+<h3>
+    hasAttribute()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.hasAttribute(attribute)
+</pre>
+<p>
+    判断元素是否有指定的属性，返回 true 或 false。
+</p>
+<h2>
+    样式操作
+</h2>
+<h3>
+    style
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.style.property = value
+</pre>
+<p>
+    设置或返回元素的内联样式属性。property 为样式名（如 color、backgroundColor）。
+</p>
+<h3>
+    classList.add()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.classList.add(class1, class2, ...)
+</pre>
+<p>
+    向元素添加一个或多个类名。如果已存在则忽略。
+</p>
+<h3>
+    classList.remove()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.classList.remove(class1, class2, ...)
+</pre>
+<p>
+    从元素移除一个或多个类名。
+</p>
+<h3>
+    classList.toggle()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.classList.toggle(classname, force)
+</pre>
+<p>
+    切换元素的类名。如果类名存在则移除，不存在则添加。force 为 true 时强制添加，为 false 时强制移除。
+</p>
+<h2>
+    内容操作
+</h2>
+<h3>
+    textContent
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.textContent = text
+</pre>
+<p>
+    设置或返回元素的文本内容。会忽略 HTML 标签，只返回纯文本。
+</p>
+<h3>
+    innerHTML
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.innerHTML = html
+</pre>
+<p>
+    设置或返回元素的 HTML 内容。可以包含 HTML 标签。
+</p>
+<h3>
+    innerText
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+el.innerText = text
+</pre>
+<p>
+    设置或返回元素的可见文本内容。与 textContent 类似，但受 CSS 样式影响。
+</p>
+<h2>
+    DOM 操作
+</h2>
+<h3>
+    createElement()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+document.createElement(tagName)
+</pre>
+<p>
+    创建一个指定元素的 HTML 元素。返回新创建的元素。
+</p>
+<h3>
+    appendChild()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+parent.appendChild(child)
+</pre>
+<p>
+    向父元素末尾添加新的子元素。如果子元素是 DOM 中已有元素，则将其移动到新位置。
+</p>
+<h3>
+    removeChild()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+parent.removeChild(child)
+</pre>
+<p>
+    从父元素中移除指定的子元素。返回被移除的元素。
+</p>
+<h3>
+    insertBefore()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+parent.insertBefore(newChild, referenceChild)
+</pre>
+<p>
+    在指定的子节点之前插入新的子节点。referenceChild 为 null 时，将插入到末尾。
+</p>
+<h3>
+    replaceChild()
+</h3>
+<h4>
+    语法
+</h4>
+<pre tag="javascript">
+parent.replaceChild(newChild, oldChild)
+</pre>
+<p>
+    用新节点替换父元素中的指定子节点。
+</p>

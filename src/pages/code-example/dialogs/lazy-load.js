@@ -4,5 +4,8 @@ export default {
     },
     "colorful-dice": function () {
         return import('./colorful-dice/index.js')
+    },
+    "sphere-rotate": function () {
+        return import('./sphere-rotate/index.js')
     }
 };
