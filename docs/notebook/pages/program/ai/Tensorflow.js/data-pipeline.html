@@ -1,0 +1,100 @@
+<header>
+    数据准备与 tf.data
+</header>
+
+<p>
+    训练模型前，数据通常需要经历加载、清洗、打乱、归一化、切分训练集和验证集等步骤。TensorFlow.js 可以直接使用 Tensor，也可以使用 tf.data 构建数据流水线。
+</p>
+
+<h2>
+    直接使用 Tensor
+</h2>
+
+<p>
+    小数据集可以直接转成 Tensor，然后传给 model.fit。
+</p>
+
+<pre tag="javascript">
+const xs = tf.tensor2d([
+    20, 60,
+    25, 70,
+    30, 80
+], [3, 2]);
+
+const ys = tf.tensor2d([0, 1, 1], [3, 1]);
+</pre>
+
+<h2>
+    数据归一化
+</h2>
+
+<p>
+    神经网络更喜欢范围相对稳定的数据。常见做法是把数据缩放到 0 到 1，或转成均值接近 0 的分布。
+</p>
+
+<pre tag="javascript">
+const min = xs.min();
+const max = xs.max();
+const normalizedXs = xs.sub(min).div(max.sub(min));
+</pre>
+
+<div class="tips">
+    用训练集计算出来的 min、max、mean、std 要保存下来，预测新数据时继续用同一套参数。
+</div>
+
+<h2>
+    使用 tf.data.array
+</h2>
+
+<p>
+    数据量较大，或者需要边加载边训练时，可以用 Dataset。
+</p>
+
+<pre tag="javascript">
+const rawData = [
+    { x: [20, 60], y: [0] },
+    { x: [25, 70], y: [1] },
+    { x: [30, 80], y: [1] }
+];
+
+const ds = tf.data.array(rawData)
+    .shuffle(rawData.length)
+    .map(item => ({
+        xs: item.x,
+        ys: item.y
+    }))
+    .batch(2);
+
+await model.fitDataset(ds, {
+    epochs: 10
+});
+</pre>
+
+<h2>
+    训练集与验证集
+</h2>
+
+<p>
+    验证集用来观察模型是否真的学到了规律，而不是只记住训练样本。数据较少时可以使用 validationSplit，数据较多时建议自己提前切分。
+</p>
+
+<pre tag="javascript">
+await model.fit(xs, ys, {
+    epochs: 30,
+    batchSize: 32,
+    validationSplit: 0.2,
+    shuffle: true
+});
+</pre>
+
+<h2>
+    数据准备检查清单
+</h2>
+
+<ul>
+    <li>输入特征是否都转成数字。</li>
+    <li>训练和预测是否使用同一种归一化方式。</li>
+    <li>分类标签是否和 loss 函数匹配。</li>
+    <li>训练集和验证集是否存在数据泄漏。</li>
+    <li>xs.shape[0] 是否等于 ys.shape[0]。</li>
+</ul>

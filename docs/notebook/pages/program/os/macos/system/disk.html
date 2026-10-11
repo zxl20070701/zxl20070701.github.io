@@ -1,0 +1,11 @@
+<header>磁盘和存储</header>
+<p>
+    查看磁盘空间、磁盘列表、APFS 容器和磁盘健康状态。
+</p>
+<pre>
+df -h
+diskutil list
+diskutil info disk0
+diskutil apfs list
+diskutil info disk0 | grep SMART
+</pre>

@@ -1,0 +1,17 @@
+<header>PATH 管理</header>
+<h2>语法</h2>
+<pre>
+# 中间用冒号隔开
+export PATH=$PATH:&lt;PATH 1&gt;:&lt;PATH 2&gt;:&lt;PATH 3&gt;
+</pre>
+<h2>path_helper</h2>
+<p>
+    macOS 会通过 <span class="special">path_helper</span> 读取 <span class="special">/etc/paths</span> 和
+    <span class="special">/etc/paths.d</span> 来生成 PATH。
+</p>
+<pre>
+    /usr/libexec/path_helper
+</pre>
+<p>
+    如果是系统级工具路径，也可以在 <span class="special">/etc/paths.d</span> 中新增一个文件。
+</p>

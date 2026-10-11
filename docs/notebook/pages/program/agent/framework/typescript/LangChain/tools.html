@@ -1,0 +1,163 @@
+<header>
+    工具与运行时
+</header>
+
+<p>
+    只靠模型自身的知识，智能体能做的事情很有限。通过给 Agent 挂载<strong>工具（Tool）</strong>，模型就可以在对话过程中自主决定调用哪些外部能力（查天气、读文件、请求接口等），拿到结果后再继续推理。
+</p>
+
+<h2>
+    定义工具
+</h2>
+
+<p>
+    使用 <span class="warn">tool</span> 函数把一个普通的 JS 函数变成工具。需要提供 <span class="warn">name</span>、<span class="warn">description</span>（模型靠它判断何时使用工具）以及 <span class="warn">schema</span>（用 zod 描述的入参结构）。比如下面给 Agent 挂一个"查询天气"的工具：
+</p>
+
+<pre tag="javascript">
+import { ChatOpenAI } from "@langchain/openai";
+import { createAgent, tool } from "langchain";
+import * as z from "zod";
+
+const llm = new ChatOpenAI({
+    model: "qwen3.5",
+    apiKey: "ollama",
+    configuration: {
+        baseURL: "http://localhost:11434/v1",
+    },
+});
+
+// 使用 tool() 定义工具：name + description + zod schema
+const getWeather = tool(
+    async ({ city }) => `${city}总是阳光明媚！`,
+    {
+        name: "get_weather",
+        description: "获取指定城市的天气。",
+        schema: z.object({
+            city: z.string().describe("城市名称"),
+        }),
+    }
+);
+
+const agent = createAgent({
+    model: llm,
+    tools: [getWeather],
+});
+
+// 运行代理
+agent.invoke({
+    messages: [{ role: "user", content: "南京的天气怎么样？" }],
+}).then((result: any) => {
+    console.log(result.messages[result.messages.length - 1].content);
+});
+</pre>
+
+<p>
+    提问"南京的天气怎么样？"时，模型会识别出需要使用 <span class="warn">get_weather</span> 工具，按 <span class="warn">schema</span> 生成入参 <span class="warn">{ city: "南京" }</span>，框架执行函数并把结果回传给模型，模型再基于工具结果组织最终回复。
+</p>
+
+<div class="tips">
+    <span class="warn">description</span> 和 zod schema 里的 <span class="warn">describe</span> 写清楚非常关键——模型就是靠它们来判断"什么时候该用这个工具、参数该怎么填"的。另外建议工具名使用 snake_case（例如 <span class="warn">get_weather</span>），避免某些模型提供商拒绝带空格或特殊字符的命名。
+</div>
+
+<h2>
+    访问运行时信息
+</h2>
+
+<p>
+    有时候工具内部需要感知当前的对话上下文，比如查看之前的消息、拿到执行信息等。这时可以给工具的回调函数声明第二个参数为 <span class="warn">ToolRuntime</span> 类型，框架会自动注入运行时对象：
+</p>
+
+<pre tag="javascript">
+import { ChatOpenAI } from "@langchain/openai";
+import { createAgent, tool, type ToolRuntime } from "langchain";
+import * as z from "zod";
+
+const llm = new ChatOpenAI({
+    model: "qwen3.5",
+    apiKey: "ollama",
+    configuration: {
+        baseURL: "http://localhost:11434/v1",
+    },
+});
+
+const getWeather = tool(
+    async ({ city }, runtime: ToolRuntime) => {
+
+        console.log("当前会话若干信息：", runtime);
+
+        return `${city}总是阳光明媚！`;
+    },
+    {
+        name: "get_weather",
+        description: "获取指定城市的天气。",
+        schema: z.object({
+            city: z.string().describe("城市名称"),
+        }),
+    }
+);
+
+const agent = createAgent({
+    model: llm,
+    tools: [getWeather],
+});
+
+// 运行代理
+agent.invoke({
+    messages: [{ role: "user", content: "南京的天气怎么样？" }],
+}).then((result: any) => {
+    console.log(result.messages[result.messages.length - 1].content);
+});
+</pre>
+
+<p>
+    <span class="warn">runtime</span> 参数不需要模型来填，框架在执行工具时会自动注入。通过 <span class="warn">runtime.state</span> 可以拿到当前的状态快照，比如完整的消息列表；通过 <span class="warn">runtime.executionInfo</span> 可以拿到 threadId、runId 等执行信息。
+</p>
+
+<div class="tips">
+    可信信息（如用户 ID、租户、权限）不应该让模型来填——既可能填错，也可能被提示注入利用。正确的做法是让工具通过 <span class="warn">ToolRuntime</span> 从运行时读取，或者通过 <span class="warn">context</span> 在调用 <span class="warn">invoke</span> 时一并传入。
+</div>
+
+<h2>
+    结构化输出
+</h2>
+
+<p>
+    除了自由文本，也可以让模型按指定的 zod schema 返回结构化数据。在调用 <span class="warn">invoke</span> 时传入 <span class="warn">responseFormat</span> 配置，结果可以直接作为对象被程序消费：
+</p>
+
+<pre tag="javascript">
+import { ChatOpenAI } from "@langchain/openai";
+import { createAgent } from "langchain";
+import * as z from "zod";
+
+const llm = new ChatOpenAI({
+    model: "qwen3.5",
+    apiKey: "ollama",
+    configuration: {
+        baseURL: "http://localhost:11434/v1",
+    },
+});
+
+const agent = createAgent({
+    model: llm,
+    tools: [],
+    responseFormat: z.object({
+        answer: z.string().describe("最终回答"),
+        confidence: z.number().describe("置信度，0~1 之间"),
+    }),
+});
+
+agent.invoke({
+    messages: [{ role: "user", content: "南京属于哪个省？" }],
+}).then((result: any) => {
+
+    // 结构化输出会出现在 structuredResponse 字段里
+    console.log(result.structuredResponse);
+
+});
+</pre>
+
+<p>
+    这在需要把模型输出直接交给程序消费的场景（渲染列表、写入数据库、驱动后续流程）中非常有用，不用再自己解析和清洗自然语言回复。
+</p>

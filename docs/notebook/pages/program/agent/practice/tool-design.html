@@ -1,0 +1,148 @@
+<header>
+    工具设计实战
+</header>
+
+<p>
+    Agent 的能力上限常常不是模型决定的，而是工具决定的。工具设计得清楚，模型就容易正确调用；工具边界模糊，再强的模型也会频繁传错参数或做错动作。
+</p>
+
+<h2>
+    一个好工具的标准
+</h2>
+
+<ul>
+    <li>名称能表达动作，例如 search_docs、read_file、create_ticket。</li>
+    <li>描述说明何时使用，而不只是重复工具名。</li>
+    <li>参数结构明确，尽量少用自由文本。</li>
+    <li>返回结果简洁，包含下一步需要的信息。</li>
+    <li>错误信息可恢复，告诉模型应该怎么修正。</li>
+</ul>
+
+<h2>
+    工具粒度怎么拆？
+</h2>
+
+<p>
+    工具粒度可以按“一个业务动作”拆分。比如订单系统里，get_order、update_address、cancel_order 就比一个万能的 operate_order 更容易控制。
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>设计</th>
+            <th>问题</th>
+            <th>更好的方式</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>do_anything(command)</td>
+            <td>权限不可控，参数不可验证</td>
+            <td>拆成多个明确工具</td>
+        </tr>
+        <tr>
+            <td>query(sql)</td>
+            <td>可能产生危险查询</td>
+            <td>提供受限查询接口</td>
+        </tr>
+        <tr>
+            <td>update(data)</td>
+            <td>不知道更新对象和影响范围</td>
+            <td>指定 id、字段、预期版本</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    参数设计
+</h2>
+
+<p>
+    参数越接近业务结构，Agent 越稳定。日期、状态、枚举、数量、id 等都应该显式声明。
+</p>
+
+<pre tag="json">
+{
+  "name": "search_orders",
+  "description": "按条件查询订单。适合用户想查看订单状态、筛选异常订单时使用。",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": ["pending", "paid", "shipped", "cancelled"]
+      },
+      "start_date": {
+        "type": "string",
+        "description": "开始日期，格式 YYYY-MM-DD"
+      },
+      "end_date": {
+        "type": "string",
+        "description": "结束日期，格式 YYYY-MM-DD"
+      },
+      "limit": {
+        "type": "number",
+        "default": 20
+      }
+    },
+    "required": ["status"]
+  }
+}
+</pre>
+
+<h2>
+    返回值设计
+</h2>
+
+<p>
+    返回值不要把数据库整行都塞给模型，只返回本次决策需要的信息。必要时返回 summary + items 的结构。
+</p>
+
+<pre tag="json">
+{
+  "summary": "找到 3 个待发货订单",
+  "items": [
+    {
+      "order_id": "A1024",
+      "status": "paid",
+      "amount": 199,
+      "created_at": "2026-08-28"
+    }
+  ],
+  "next_actions": ["查看详情", "标记异常", "创建发货单"]
+}
+</pre>
+
+<h2>
+    幂等性
+</h2>
+
+<p>
+    写入类工具最好支持 idempotency_key。Agent 遇到网络超时或中断时可能重试，如果没有幂等键，可能重复创建订单、重复发送邮件或重复扣费。
+</p>
+
+<h2>
+    权限与确认
+</h2>
+
+<p>
+    可以把工具分成三类：
+</p>
+
+<ul>
+    <li>只读工具：一般可自动执行。</li>
+    <li>可回滚写入工具：执行前说明影响范围，必要时确认。</li>
+    <li>不可回滚高风险工具：必须人工确认，并记录审批人和审批时间。</li>
+</ul>
+
+<h2>
+    调试清单
+</h2>
+
+<ul>
+    <li>模型是否总能选对工具？如果不能，工具描述可能不清楚。</li>
+    <li>模型是否经常传错参数？如果是，Schema 可能太松。</li>
+    <li>工具结果是否太长？如果是，需要摘要和分页。</li>
+    <li>失败后模型是否知道怎么修？如果不知道，错误信息需要改写。</li>
+    <li>重试是否会产生副作用？如果会，需要幂等设计。</li>
+</ul>

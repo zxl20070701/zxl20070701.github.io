@@ -1,0 +1,101 @@
+<header>
+    基本使用
+</header>
+
+<p>
+    LangGraph 是一个基于<strong>图（Graph）</strong>的 Agent 编排框架。它把一次任务的执行过程拆成一个个节点（Node），用边（Edge）把节点连成确定的路径，并在节点之间共享一份状态（State）。相比让模型自由发挥，图方式流程可控，适合"步骤确定、需要精确编排"的场景。
+</p>
+
+<h2>
+    安装
+</h2>
+
+<p>
+    在一个 Node.js 项目中安装 LangGraph 和 OpenAI 协议的模型接入包，以及消息类型依赖的 core 包：
+</p>
+
+<pre>
+    npm install @langchain/langgraph @langchain/openai @langchain/core
+</pre>
+
+<div class="tips">
+    本文的示例使用本地 Ollama 服务提供的模型，需要提前启动 Ollama 并拉取好模型（默认使用 <span class="warn">qwen3.5</span>）。如果你使用其他模型提供商，只需要修改 <span class="warn">ChatOpenAI</span> 的配置即可。
+</div>
+
+<h2>
+    搭建第一个图
+</h2>
+
+<p>
+    搭建一张图需要三步：定义状态、定义节点、用边把节点连起来。下面搭建一个最简单的图——只有一个"调用模型"的节点：
+</p>
+
+<pre tag="javascript">
+import { StateGraph, Annotation } from "@langchain/langgraph";
+import { BaseMessage, HumanMessage } from "@langchain/core/messages";
+import { ChatOpenAI } from "@langchain/openai";
+
+// 初始化 ChatOpenAI 模型，连接到本地 Ollama 服务
+const llm = new ChatOpenAI({
+    model: "qwen3.5",
+    apiKey: "ollama",
+    configuration: {
+        baseURL: "http://localhost:11434/v1",
+    },
+});
+
+// 使用 Annotation 定义状态 schema，StateGraph 通过它自动管理状态
+// messages 字段用于存储对话历史，是一个 BaseMessage 类型的数组
+const GraphState = Annotation.Root({
+    messages: Annotation&lt;BaseMessage[]&gt;(),
+});
+
+// 节点函数：调用 LLM 生成回复
+// 接收当前状态（包含所有历史消息），返回更新后的状态（追加 LLM 回复）
+async function callModel(state: typeof GraphState.State): Promise&lt;Partial&lt;typeof GraphState.State&gt;&gt; {
+    const messages = state.messages;
+    const response = await llm.invoke(messages);
+    return { messages: [...messages, response] };
+}
+
+// 创建 StateGraph 工作流
+const workflow = new StateGraph(GraphState)
+    .addNode("model", callModel) // 添加一个名为 "model" 的节点，节点逻辑是 callModel 函数
+    .addEdge("__start__", "model") // "__start__" 是 LangGraph 内置的起始节点，将流程导向 "model" 节点
+    .addEdge("model", "__end__"); // "model" 节点执行完后，将流程导向 "__end__" 结束节点
+
+// 编译工作流为可执行的 app
+const app = workflow.compile();
+
+// 调用编译后的 app，传入初始状态（用户消息）
+app.invoke({
+    messages: [new HumanMessage("你是谁?")],
+}).then((result: any) => {
+    // 打印 LLM 回复的内容（取消息数组的最后一个元素）
+    console.log(result.messages[result.messages.length - 1].content);
+});
+</pre>
+
+<h2>
+    逐段解读
+</h2>
+
+<p>
+    <strong>状态（State）</strong>：用 <span class="warn">Annotation.Root</span> 定义整张图共享的数据结构，这里只有一个消息列表 <span class="warn">messages</span>。每个节点都从状态里读数据、往状态里写数据。
+</p>
+
+<p>
+    <strong>节点（Node）</strong>：一个普通的 async 函数，入参是当前状态（<span class="warn">typeof GraphState.State</span>），返回值是要合并进状态的增量数据。<span class="warn">callModel</span> 做的事情就是把当前消息列表交给模型，再把模型的回复追加到列表里。
+</p>
+
+<p>
+    <strong>边（Edge）</strong>：通过 <span class="warn">addEdge</span> 声明节点的执行顺序。<span class="warn">__start__</span> 和 <span class="warn">__end__</span> 是两个特殊的虚拟节点，分别表示图的入口和出口。
+</p>
+
+<div class="tips">
+    图定义好之后必须调用 <span class="warn">compile()</span> 编译才能运行；编译后的应用通过 <span class="warn">invoke</span> 传入初始状态启动整张图。
+</div>
+
+<p>
+    这个例子只有一个节点，和直接调用模型差别不大；LangGraph 真正的威力在于多个节点组合——比如"模型节点 → 工具节点 → 模型节点"的循环，或者根据状态走不同分支的条件边，都可以用同样的方式搭建。
+</p>

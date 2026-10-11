@@ -1,0 +1,24 @@
+<header>
+    DNS 和 SSH
+</header>
+<h2>DNS 查询</h2>
+<p>
+    DNS 查询用于确认域名解析是否正确。<span class="special">dig</span> 输出最详细，
+    <span class="special">host</span> 更简洁，<span class="special">nslookup</span> 兼容性较好。
+</p>
+<pre>
+nslookup www.baidu.com
+dig www.baidu.com
+dig www.baidu.com A
+dig www.baidu.com MX
+host www.baidu.com
+</pre>
+<h2>SSH</h2>
+<p>
+    SSH 用于登录远程服务器。常见场景是指定端口或使用密钥登录。
+</p>
+<pre>
+ssh username@ip
+ssh -p 2222 username@ip
+ssh -i ~/.ssh/id_rsa username@ip
+</pre>

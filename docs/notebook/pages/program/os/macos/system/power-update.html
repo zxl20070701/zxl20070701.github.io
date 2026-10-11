@@ -1,0 +1,32 @@
+<header>电源和软件更新</header>
+<h2>运行状态</h2>
+<p>
+    查看系统负载、进程资源占用、虚拟内存和 CPU 功耗。
+</p>
+<pre>
+uptime
+top
+top -o cpu
+top -o mem
+vm_stat
+sudo powermetrics --samplers cpu_power -n 1
+</pre>
+<h2>电源和休眠</h2>
+<p>
+    <span class="special">pmset</span> 查看电源策略和电池状态；
+    <span class="special">caffeinate</span> 可以临时阻止系统休眠。
+</p>
+<pre>
+pmset -g
+pmset -g batt
+pmset -g log | grep -i "wake"
+caffeinate -dimsu
+</pre>
+<h2>软件更新</h2>
+<p>
+    查看并安装 macOS 系统更新。
+</p>
+<pre>
+softwareupdate -l
+sudo softwareupdate -ia
+</pre>

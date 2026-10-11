@@ -1,0 +1,19 @@
+<header>网络配置查看</header>
+<p>
+    macOS 常用 <span class="special">ifconfig</span> 查看网卡信息，
+    <span class="special">networksetup</span> 管理网络服务，
+    <span class="special">scutil</span> 查看 DNS 和主机名。
+</p>
+<pre>
+ifconfig
+ifconfig en0
+networksetup -listallnetworkservices
+networksetup -getinfo "Wi-Fi"
+networksetup -getairportpower en0
+networksetup -setairportpower en0 on
+networksetup -setairportpower en0 off
+scutil --dns
+scutil --get HostName
+scutil --get ComputerName
+scutil --get LocalHostName
+</pre>

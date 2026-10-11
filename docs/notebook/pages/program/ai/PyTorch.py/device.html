@@ -1,0 +1,97 @@
+<header>
+    设备管理 CPU / CUDA / MPS
+</header>
+
+<p>
+    PyTorch Tensor 和模型都运行在某个设备上，例如 CPU、NVIDIA CUDA GPU、Apple Silicon 的 MPS。模型和输入数据必须在同一个设备上，否则会报错。
+</p>
+
+<h2>
+    选择设备
+</h2>
+
+<pre tag="python">
+import torch
+
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+elif torch.backends.mps.is_available():
+    device = torch.device("mps")
+else:
+    device = torch.device("cpu")
+
+print(device)
+</pre>
+
+<h2>
+    移动模型和数据
+</h2>
+
+<pre tag="python">
+model = SimpleNet().to(device)
+
+for x, y in loader:
+    x = x.to(device)
+    y = y.to(device)
+    pred = model(x)
+</pre>
+
+<div class="tips">
+    x.to(device) 会返回新 Tensor，不会原地修改 x，所以要写成 x = x.to(device)。
+</div>
+
+<h2>
+    常见设备错误
+</h2>
+
+<p>
+    如果看到类似“Expected all tensors to be on the same device”的错误，通常说明模型在 GPU，但输入或标签还在 CPU，或者反过来。
+</p>
+
+<h2>
+    显存不足怎么办？
+</h2>
+
+<ul>
+    <li>减小 batch_size。</li>
+    <li>减小输入图片尺寸。</li>
+    <li>使用更小的模型。</li>
+    <li>验证和推理时加 torch.no_grad()。</li>
+    <li>删除不再使用的大 Tensor，必要时清理缓存。</li>
+</ul>
+
+<pre tag="python">
+del loss
+torch.cuda.empty_cache()
+</pre>
+
+<h2>
+    CPU、CUDA、MPS 的取舍
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>设备</th>
+            <th>特点</th>
+            <th>适合场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>CPU</td>
+            <td>兼容性最好，速度较慢</td>
+            <td>小模型、调试、部署简单任务</td>
+        </tr>
+        <tr>
+            <td>CUDA</td>
+            <td>NVIDIA GPU 加速，生态成熟</td>
+            <td>深度学习训练和大规模推理</td>
+        </tr>
+        <tr>
+            <td>MPS</td>
+            <td>Apple Silicon 加速</td>
+            <td>Mac 本地实验和中小模型训练</td>
+        </tr>
+    </tbody>
+</table>

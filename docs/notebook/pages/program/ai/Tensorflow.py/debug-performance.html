@@ -1,0 +1,63 @@
+<header>
+    调试与性能优化
+</header>
+
+<p>
+    TensorFlow 调试时要同时关注模型逻辑、数据流水线和硬件使用情况。很多训练问题都来自 shape、dtype、预处理或设备配置。
+</p>
+
+<h2>
+    查看设备
+</h2>
+
+<pre tag="python">
+import tensorflow as tf
+
+print(tf.config.list_physical_devices())
+print(tf.config.list_physical_devices("GPU"))
+</pre>
+
+<h2>
+    打印 shape
+</h2>
+
+<pre tag="python">
+for x_batch, y_batch in train_ds.take(1):
+    print(x_batch.shape)
+    print(y_batch.shape)
+</pre>
+
+<h2>
+    检查数值
+</h2>
+
+<pre tag="python">
+print(tf.reduce_min(x_batch).numpy())
+print(tf.reduce_max(x_batch).numpy())
+print(tf.reduce_mean(x_batch).numpy())
+</pre>
+
+<p>
+    图像模型通常希望像素范围是 0 到 1，或者经过标准化后的稳定范围。
+</p>
+
+<h2>
+    性能建议</h2>
+
+<ul>
+    <li>tf.data 中使用 map(..., num_parallel_calls=tf.data.AUTOTUNE)。</li>
+    <li>数据流水线最后使用 prefetch(tf.data.AUTOTUNE)。</li>
+    <li>图片数据可以根据任务适当降低分辨率。</li>
+    <li>先用小数据跑通，再扩大数据集和模型规模。</li>
+</ul>
+
+<h2>
+    常见问题定位
+</h2>
+
+<ul>
+    <li>loss 为 nan：检查学习率、输入异常值、除以 0。</li>
+    <li>训练很慢：检查是否使用 GPU、数据读取是否成为瓶颈。</li>
+    <li>验证指标异常：检查训练集和验证集是否预处理一致。</li>
+    <li>显存不足：减小 batch_size、图片尺寸或模型规模。</li>
+</ul>

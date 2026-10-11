@@ -1,0 +1,18 @@
+<header>连通性和端口</header>
+<p>
+    用这些命令确认网络是否可达、接口是否正常响应，以及本机端口是否被占用。
+</p>
+<pre>
+ping www.baidu.com
+ping -c 4 www.baidu.com
+traceroute www.baidu.com
+curl -I https://example.com
+curl ifconfig.me
+lsof -i :8080
+lsof -i -P | grep LISTEN
+netstat -an | grep LISTEN
+</pre>
+<p>
+    <span class="special">curl -I</span> 只查看响应头；
+    <span class="special">lsof -i :8080</span> 可以看到 8080 端口被哪个进程占用。
+</p>

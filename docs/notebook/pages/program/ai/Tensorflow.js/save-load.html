@@ -1,0 +1,86 @@
+<header>
+    模型保存与加载
+</header>
+
+<p>
+    TensorFlow.js 可以把模型保存到浏览器、本地文件、服务器或 IndexedDB 中。保存模型后，可以用于推理、继续训练或部署。
+</p>
+
+<h2>
+    浏览器下载模型
+</h2>
+
+<pre tag="javascript">
+await model.save("downloads://my-model");
+</pre>
+
+<p>
+    浏览器会下载两个文件：model.json 和权重文件。model.json 保存模型结构和权重索引，权重文件保存具体参数。
+</p>
+
+<h2>
+    从文件加载模型
+</h2>
+
+<pre tag="javascript">
+const model = await tf.loadLayersModel("/models/my-model/model.json");
+</pre>
+
+<h2>
+    保存到 IndexedDB
+</h2>
+
+<p>
+    IndexedDB 适合浏览器端长期保存模型，用户下次打开页面时可以直接加载，不必重新训练。
+</p>
+
+<pre tag="javascript">
+await model.save("indexeddb://my-model");
+
+const model = await tf.loadLayersModel("indexeddb://my-model");
+</pre>
+
+<h2>
+    查看已保存模型
+</h2>
+
+<pre tag="javascript">
+const models = await tf.io.listModels();
+console.log(models);
+</pre>
+
+<h2>
+    删除模型
+</h2>
+
+<pre tag="javascript">
+await tf.io.removeModel("indexeddb://my-model");
+</pre>
+
+<h2>
+    继续训练
+</h2>
+
+<pre tag="javascript">
+const model = await tf.loadLayersModel("indexeddb://my-model");
+
+model.compile({
+    optimizer: tf.train.adam(0.001),
+    loss: "meanSquaredError"
+});
+
+await model.fit(newXs, newYs, {
+    epochs: 10
+});
+</pre>
+
+<h2>
+    实践建议
+</h2>
+
+<ul>
+    <li>发布推理模型时，把 model.json 和权重文件放在同一个目录。</li>
+    <li>加载模型后先用一条样本预测，确认输入 shape 正确。</li>
+    <li>继续训练前需要重新 compile。</li>
+    <li>浏览器端保存大模型前，注意 IndexedDB 容量和用户设备性能。</li>
+</ul>

@@ -1,0 +1,99 @@
+<header>
+    入门简介
+</header>
+
+<p>
+    TensorFlow 是一个开源机器学习框架，常用于深度学习模型的训练、推理和部署。Python 版本生态最完整，适合系统学习神经网络、计算机视觉、自然语言处理和生产部署。
+</p>
+
+<p>
+    官方文档地址：<a href="https://www.tensorflow.org/?hl=zh-cn" target="_blank">https://www.tensorflow.org/?hl=zh-cn</a>。
+</p>
+
+<h2>
+    安装
+</h2>
+
+<pre tag="python">
+pip install tensorflow
+</pre>
+
+<p>
+    验证安装：
+</p>
+
+<pre tag="python">
+import tensorflow as tf
+
+print(tf.__version__)
+print(tf.config.list_physical_devices("GPU"))
+</pre>
+
+<h2>
+    TensorFlow 2 的特点
+</h2>
+
+<ul>
+    <li>默认使用 Eager Execution，代码会立即执行，调试方式更接近普通 Python。</li>
+    <li>推荐使用 Keras API 搭建和训练模型，写法简洁。</li>
+    <li>支持 tf.data 构建高性能数据流水线。</li>
+    <li>支持 TensorBoard 可视化训练过程。</li>
+    <li>可以导出 SavedModel，用于部署到服务器、移动端或浏览器。</li>
+</ul>
+
+<h2>
+    常用模块
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>模块</th>
+            <th>作用</th>
+            <th>常见 API</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>tf.Tensor</td>
+            <td>表示多维数组</td>
+            <td>tf.constant、tf.Variable、tf.reshape</td>
+        </tr>
+        <tr>
+            <td>tf.keras</td>
+            <td>搭建和训练模型</td>
+            <td>Sequential、Model、layers、fit</td>
+        </tr>
+        <tr>
+            <td>tf.data</td>
+            <td>构建数据输入流水线</td>
+            <td>Dataset、map、batch、prefetch</td>
+        </tr>
+        <tr>
+            <td>tf.GradientTape</td>
+            <td>自动求导</td>
+            <td>tape.gradient</td>
+        </tr>
+        <tr>
+            <td>tf.saved_model</td>
+            <td>模型保存和部署</td>
+            <td>model.save、tf.keras.models.load_model</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    推荐学习路线
+</h2>
+
+<ol>
+    <li>先学习 Tensor 与 Shape，理解数据如何表示。</li>
+    <li>再学习 Keras 模型搭建方式：Sequential、Functional、Subclassing。</li>
+    <li>然后学习 model.compile、model.fit 和训练流程。</li>
+    <li>接着学习 tf.data，把数据加载、清洗、打乱、batch 拆清楚。</li>
+    <li>最后学习模型保存、TensorBoard 可视化和一个 CNN 图像分类实战。</li>
+</ol>
+
+<p>
+    学 TensorFlow 时最重要的调试习惯是：打印 Tensor 的 shape，观察训练曲线，并确认训练、验证、推理使用同样的数据预处理流程。
+</p>

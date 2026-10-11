@@ -1,0 +1,62 @@
+<header>
+    入门简介
+</header>
+
+<p>
+    Python TensorFlow 常用的可视化工具包括 TensorBoard、Matplotlib、Seaborn 和 scikit-learn 的评估工具。其中 TensorBoard 最适合观察训练过程，Matplotlib 和 Seaborn 适合自定义图表。
+</p>
+
+<h2>
+    安装
+</h2>
+
+<pre tag="python">
+pip install tensorboard matplotlib seaborn scikit-learn
+</pre>
+
+<h2>
+    常见可视化内容
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>内容</th>
+            <th>工具</th>
+            <th>用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>训练曲线</td>
+            <td>TensorBoard / Matplotlib</td>
+            <td>观察 loss、accuracy、val_loss</td>
+        </tr>
+        <tr>
+            <td>模型结构</td>
+            <td>model.summary / plot_model</td>
+            <td>检查层顺序和输出 shape</td>
+        </tr>
+        <tr>
+            <td>混淆矩阵</td>
+            <td>Seaborn / scikit-learn</td>
+            <td>分析分类错误</td>
+        </tr>
+        <tr>
+            <td>权重和分布</td>
+            <td>TensorBoard Histograms</td>
+            <td>观察参数和激活值变化</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    推荐学习路线
+</h2>
+
+<ol>
+    <li>先学习用 Matplotlib 画 Keras History 曲线。</li>
+    <li>再学习 TensorBoard 回调和启动方式。</li>
+    <li>然后学习模型结构可视化。</li>
+    <li>最后用混淆矩阵分析分类任务。</li>
+</ol>

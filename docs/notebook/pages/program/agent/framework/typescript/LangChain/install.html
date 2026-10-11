@@ -1,0 +1,100 @@
+<header>
+    快速入门
+</header>
+
+<p>
+    LangChain 是一个开源的 AI Agent 开发框架，同时提供了 TypeScript / JavaScript 版本。从 1.0 版本开始，它统一了 Agent 的创建方式，用 <span class="warn">createAgent</span> 一个入口就可以搭建智能体。
+</p>
+
+<h2>
+    安装
+</h2>
+
+<p>
+    在一个 Node.js 项目中安装核心包和 OpenAI 协议的模型接入包，以及用于描述工具入参的 zod：
+</p>
+
+<pre>
+    npm install langchain @langchain/openai
+</pre>
+
+<div class="tips">
+    本文的所有示例都使用本地 Ollama 服务提供的模型，需要提前启动 Ollama 并拉取好模型（默认使用 <span class="warn">qwen3.5</span>）。如果你使用其他模型提供商，只需要修改 <span class="warn">ChatOpenAI</span> 的配置即可。
+</div>
+
+<h2>
+    直接调用模型
+</h2>
+
+<p>
+    在搭建 Agent 之前，先看一下最基础的模型调用。使用 <span class="warn">ChatOpenAI</span> 初始化模型（Ollama 提供了 OpenAI 兼容接口，所以可以直接用），把消息组织成数组后调用 <span class="warn">invoke</span>：
+</p>
+
+<pre tag="javascript">
+import { ChatOpenAI } from "@langchain/openai";
+import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+
+// 初始化模型（连接到本地 Ollama 服务）
+const llm = new ChatOpenAI({
+    model: "qwen3.5",
+    apiKey: "ollama",
+    configuration: {
+        baseURL: "http://localhost:11434/v1",
+    },
+});
+
+// 发送消息
+const messages = [
+    new SystemMessage(""),
+    new HumanMessage("你是谁？"),
+];
+
+llm.invoke(messages).then((response: any) => {
+    console.log(response.content);
+});
+</pre>
+
+<p>
+    其中，<span class="warn">SystemMessage</span> 是系统消息，相当于角色设定；<span class="warn">HumanMessage</span> 是用户消息。模型的回复在 <span class="warn">response.content</span> 中。
+</p>
+
+<h2>
+    创建第一个 Agent
+</h2>
+
+<p>
+    用 <span class="warn">createAgent</span> 创建智能体，传入模型、工具列表和系统提示词，然后调用 <span class="warn">invoke</span> 进行对话：
+</p>
+
+<pre tag="javascript">
+import { ChatOpenAI } from "@langchain/openai";
+import { createAgent } from "langchain";
+
+// 初始化 ChatOpenAI 模型
+const llm = new ChatOpenAI({
+    model: "qwen3.5",
+    apiKey: "ollama",
+    configuration: {
+        baseURL: "http://localhost:11434/v1",
+    },
+});
+
+// 使用 langchain 的 createAgent 创建智能体
+const agent = createAgent({
+    model: llm, // 指定使用的 LLM 模型
+    tools: [], // 工具列表（此处为空，表示纯对话模式）
+});
+
+// 调用智能体进行对话
+agent.invoke({
+    messages: [{ role: "user", content: "你是谁？" }], // 用户消息
+}).then((result: any) => {
+
+    // 打印智能体回复（取消息数组的最后一个元素）
+    console.log(result.messages[result.messages.length - 1].content);
+});
+</pre>
+
+<p>
+    入参使用 <span class="warn">{ messages: [...] }</span> 的对象结构，返回值的 <span class="warn">result.messages</span> 里保存了完整的对话过程，取最后一条消息的 <span class="warn">content</span> 就是模型的最终回复。
+</p>

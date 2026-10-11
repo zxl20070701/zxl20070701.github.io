@@ -1,0 +1,25 @@
+<header>运行状态和日志</header>
+<h2>运行状态</h2>
+<p>
+    查看系统负载、CPU、内存和磁盘 IO。机器变慢时可以先从这些命令开始。
+</p>
+<pre>
+uptime
+top
+htop
+vmstat 1 5
+iostat -xz 1
+</pre>
+<h2>日志</h2>
+<p>
+    <span class="special">dmesg</span> 查看内核日志；
+    <span class="special">journalctl</span> 查看 systemd 日志和服务日志。
+</p>
+<pre>
+dmesg | tail -n 50
+journalctl -xe
+journalctl -u nginx
+journalctl -u nginx -f
+date
+timedatectl
+</pre>

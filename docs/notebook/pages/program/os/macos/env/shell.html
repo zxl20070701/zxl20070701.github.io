@@ -1,0 +1,36 @@
+<header>Shell 配置文件</header>
+<h2>bash</h2>
+<pre>
+/etc/profile
+/etc/paths
+~/.bash_profile
+~/.bash_login
+~/.profile
+~/.bashrc
+</pre>
+<p>
+    <span class="special">/etc/profile</span> 和 <span class="special">/etc/paths</span> 是系统级别；后面几个是当前用户级别。
+</p>
+<p>
+    bash 登录 shell 会按顺序查找 <span class="special">~/.bash_profile</span>、<span class="special">~/.bash_login</span>、<span class="special">~/.profile</span>，找到一个后通常不再继续读取。
+</p>
+<h2>zsh</h2>
+<p>
+    从 macOS Catalina 开始，新建用户默认 shell 通常是 zsh。
+</p>
+<pre>
+/etc/zprofile
+~/.zprofile
+~/.zshrc
+</pre>
+<h2>生效</h2>
+<pre>
+source ~/.profile
+source ~/.zprofile
+source ~/.zshrc
+</pre>
+<h2>查看当前 Shell</h2>
+<pre>
+echo $SHELL
+cat /etc/shells
+</pre>

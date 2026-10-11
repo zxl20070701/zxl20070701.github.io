@@ -1,0 +1,95 @@
+<header>
+    工具循环 Agent
+</header>
+
+<p>
+    LangGraph 可以显式搭建“模型节点 + 工具节点”的循环。相比直接使用 create_agent，这种写法更啰嗦，但流程完全透明，适合学习 Agent 运行机制和定制复杂流程。
+</p>
+
+<h2>
+    核心流程
+</h2>
+
+<pre>
+START
+  ↓
+call_model
+  ↓
+是否有 tool_calls？
+  ├─ 是：tools → call_model
+  └─ 否：END
+</pre>
+
+<h2>
+    路由函数
+</h2>
+
+<pre tag="python">
+def should_continue(state):
+    messages = state["messages"]
+    last_message = messages[-1]
+
+    if getattr(last_message, "tool_calls", None):
+        return "tools"
+
+    return "__end__"
+</pre>
+
+<h2>
+    工具节点思路
+</h2>
+
+<p>
+    工具节点读取模型产生的 tool_calls，逐个执行对应工具，再把 ToolMessage 追加回 messages。模型下一轮看到工具结果后，就可以继续判断或输出最终答案。
+</p>
+
+<pre tag="python">
+def call_tools(state):
+    messages = state["messages"]
+    last_message = messages[-1]
+    tool_messages = []
+
+    for tool_call in last_message.tool_calls:
+        tool_name = tool_call["name"]
+        tool_args = tool_call["args"]
+        result = tool_map[tool_name].invoke(tool_args)
+        tool_messages.append({
+            "role": "tool",
+            "tool_call_id": tool_call["id"],
+            "content": str(result),
+        })
+
+    return {"messages": messages + tool_messages}
+</pre>
+
+<h2>
+    条件边连接
+</h2>
+
+<pre tag="python">
+workflow.add_node("model", call_model)
+workflow.add_node("tools", call_tools)
+
+workflow.add_edge("__start__", "model")
+workflow.add_conditional_edges(
+    "model",
+    should_continue,
+    {
+        "tools": "tools",
+        "__end__": "__end__",
+    }
+)
+workflow.add_edge("tools", "model")
+</pre>
+
+<h2>
+    为什么要手写这个循环？
+</h2>
+
+<ul>
+    <li>可以插入人工审核节点。</li>
+    <li>可以限制最大工具调用次数。</li>
+    <li>可以对不同工具走不同分支。</li>
+    <li>可以把状态持久化，支持长任务恢复。</li>
+    <li>可以更清楚地调试每一步发生了什么。</li>
+</ul>

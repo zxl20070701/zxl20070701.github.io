@@ -1,0 +1,72 @@
+<header>
+    分类评估与混淆矩阵
+</header>
+
+<p>
+    混淆矩阵可以显示每个真实类别被预测成各类别的数量，比单一 accuracy 更容易定位分类错误。
+</p>
+
+<h2>
+    获取预测类别
+</h2>
+
+<pre tag="python">
+import numpy as np
+
+y_prob = model.predict(x_test)
+y_pred = np.argmax(y_prob, axis=1)
+</pre>
+
+<p>
+    如果 y_test 是 one-hot，需要先转成类别编号。
+</p>
+
+<pre tag="python">
+y_true = np.argmax(y_test, axis=1)
+</pre>
+
+<h2>
+    计算混淆矩阵
+</h2>
+
+<pre tag="python">
+from sklearn.metrics import confusion_matrix
+
+cm = confusion_matrix(y_true, y_pred)
+print(cm)
+</pre>
+
+<h2>
+    绘制热力图
+</h2>
+
+<pre tag="python">
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+class_names = ["猫", "狗", "鸟"]
+
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt="d",
+    cmap="Blues",
+    xticklabels=class_names,
+    yticklabels=class_names
+)
+
+plt.xlabel("Predicted")
+plt.ylabel("True")
+plt.show()
+</pre>
+
+<h2>
+    如何分析
+</h2>
+
+<ul>
+    <li>对角线越大，说明对应类别预测越准。</li>
+    <li>某一行分散，说明该真实类别容易被误判。</li>
+    <li>两个类别互相混淆，可能需要更多样本或更清晰特征。</li>
+    <li>类别样本数差距大时，还要结合 precision、recall、F1 分析。</li>
+</ul>

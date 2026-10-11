@@ -1,0 +1,89 @@
+<header>
+    Callback 回调
+</header>
+
+<p>
+    Callback 可以在训练过程的关键节点执行额外逻辑，例如保存最优模型、提前停止、调整学习率、写入 TensorBoard 日志。
+</p>
+
+<h2>
+    EarlyStopping
+</h2>
+
+<pre tag="python">
+early_stop = tf.keras.callbacks.EarlyStopping(
+    monitor="val_loss",
+    patience=5,
+    restore_best_weights=True
+)
+</pre>
+
+<p>
+    当验证集 loss 连续多个 epoch 没有改善时停止训练，避免过拟合和浪费时间。
+</p>
+
+<h2>
+    ModelCheckpoint
+</h2>
+
+<pre tag="python">
+checkpoint = tf.keras.callbacks.ModelCheckpoint(
+    "best_model.keras",
+    monitor="val_accuracy",
+    save_best_only=True,
+    mode="max"
+)
+</pre>
+
+<h2>
+    ReduceLROnPlateau
+</h2>
+
+<pre tag="python">
+reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(
+    monitor="val_loss",
+    factor=0.5,
+    patience=3,
+    min_lr=1e-6
+)
+</pre>
+
+<h2>
+    TensorBoard
+</h2>
+
+<pre tag="python">
+tensorboard = tf.keras.callbacks.TensorBoard(
+    log_dir="logs/exp01",
+    histogram_freq=1
+)
+</pre>
+
+<h2>
+    组合使用
+</h2>
+
+<pre tag="python">
+model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=50,
+    callbacks=[
+        early_stop,
+        checkpoint,
+        reduce_lr,
+        tensorboard
+    ]
+)
+</pre>
+
+<h2>
+    常用建议
+</h2>
+
+<ul>
+    <li>正式训练时至少使用 ModelCheckpoint。</li>
+    <li>验证集指标开始变差时，用 EarlyStopping 控制过拟合。</li>
+    <li>loss 平台期可以用 ReduceLROnPlateau 降低学习率。</li>
+    <li>需要分析训练过程时，加入 TensorBoard。</li>
+</ul>

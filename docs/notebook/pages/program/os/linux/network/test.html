@@ -1,0 +1,32 @@
+<header>
+    网络连接测试
+</header>
+<h2>ping / traceroute / mtr</h2>
+<p>
+    <span class="special">ping</span> 测试目标是否可达；
+    <span class="special">traceroute</span> 查看数据包经过的路径；
+    <span class="special">mtr</span> 会持续统计每一跳的延迟和丢包。
+</p>
+<pre>
+ping www.baidu.com
+ping -c 4 www.baidu.com
+traceroute www.baidu.com
+mtr www.baidu.com
+</pre>
+<h2>curl</h2>
+<p>
+    <span class="special">curl</span> 常用于测试 HTTP 接口、查看响应头或模拟请求。
+</p>
+<pre>
+curl https://example.com
+curl -I https://example.com
+curl -X POST -H "Content-Type: application/json" -d '{"name":"test"}' http://localhost:8080/api
+</pre>
+<h2>wget</h2>
+<p>
+    <span class="special">wget</span> 主要用于下载文件，<span class="special">-c</span> 可以断点续传。
+</p>
+<pre>
+wget https://example.com/file.zip
+wget -c https://example.com/file.zip
+</pre>

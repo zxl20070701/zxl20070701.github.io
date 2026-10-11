@@ -1,0 +1,80 @@
+<header>
+    Agent 框架选型
+</header>
+
+<p>
+    Agent 框架的作用不是替你“变聪明”，而是帮你把模型、工具、状态、工作流、记忆和观测组织起来。选框架时要先看任务形态，再看语言生态，最后看团队能否长期维护。
+</p>
+
+<h2>
+    常见框架定位
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>框架</th>
+            <th>特点</th>
+            <th>适合场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>LangChain</td>
+            <td>生态完整，模型、工具、Agent 接入丰富</td>
+            <td>快速搭建工具型 Agent、接入多模型和多工具</td>
+        </tr>
+        <tr>
+            <td>LangGraph</td>
+            <td>用图和状态机控制执行流程</td>
+            <td>需要分支、循环、可恢复状态的复杂任务</td>
+        </tr>
+        <tr>
+            <td>Mastra</td>
+            <td>TypeScript 优先，Agent、Workflow、Memory、Tool 组合完整</td>
+            <td>Node.js 服务端、业务流程自动化、产品化 Agent</td>
+        </tr>
+        <tr>
+            <td>DeepAgents</td>
+            <td>基于 LangChain / LangGraph 的高层封装</td>
+            <td>研究任务、文件任务、多步骤深度执行</td>
+        </tr>
+        <tr>
+            <td>Pi Agent</td>
+            <td>更偏 Agent 产品和运行时内核拆解</td>
+            <td>学习 coding agent 架构、CLI Agent 产品形态</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    选型问题清单
+</h2>
+
+<ul>
+    <li>你的项目主要语言是 Python 还是 TypeScript？</li>
+    <li>任务是自由探索，还是固定流程？</li>
+    <li>是否需要长期状态、暂停恢复和人工审批？</li>
+    <li>是否需要接大量第三方工具或 MCP Server？</li>
+    <li>是否需要线上 trace、评估、重放测试和成本控制？</li>
+</ul>
+
+<h2>
+    简单建议
+</h2>
+
+<ul>
+    <li>想快速理解 Agent 工具调用：先学 LangChain。</li>
+    <li>想做可控流程：重点学 LangGraph。</li>
+    <li>项目是 TypeScript 后端：优先看 Mastra。</li>
+    <li>想研究 coding agent 或深度任务：看 DeepAgents 和 Pi Agent。</li>
+    <li>生产系统不要只选“最火”的框架，要看可观测、状态持久化和权限控制。</li>
+</ul>
+
+<h2>
+    组合使用
+</h2>
+
+<p>
+    很多框架不是互斥的。LangChain 提供模型和工具抽象，LangGraph 负责图编排，DeepAgents 在其上封装深度任务能力。实际项目中可以先用高层 API 起步，遇到流程控制问题时再下沉到图或工作流。
+</p>

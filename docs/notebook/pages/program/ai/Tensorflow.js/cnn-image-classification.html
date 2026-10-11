@@ -1,0 +1,106 @@
+<header>
+    CNN 图像分类实战
+</header>
+
+<p>
+    图像分类任务的目标是输入一张图片，输出它属于每个类别的概率。TensorFlow.js 中常用 conv2d、maxPooling2d、flatten、dense 组合搭建 CNN。
+</p>
+
+<h2>
+    输入 shape
+</h2>
+
+<p>
+    浏览器图像通常先转成 [height, width, channels]，训练时再加上 batch 维度，变成 [batch, height, width, channels]。
+</p>
+
+<pre tag="javascript">
+const input = tf.browser.fromPixels(img)
+    .resizeNearestNeighbor([28, 28])
+    .toFloat()
+    .div(255)
+    .expandDims(0);
+</pre>
+
+<h2>
+    模型结构
+</h2>
+
+<pre tag="javascript">
+const model = tf.sequential();
+
+model.add(tf.layers.conv2d({
+    inputShape: [28, 28, 1],
+    filters: 16,
+    kernelSize: 3,
+    activation: "relu"
+}));
+
+model.add(tf.layers.maxPooling2d({
+    poolSize: 2,
+    strides: 2
+}));
+
+model.add(tf.layers.conv2d({
+    filters: 32,
+    kernelSize: 3,
+    activation: "relu"
+}));
+
+model.add(tf.layers.maxPooling2d({
+    poolSize: 2,
+    strides: 2
+}));
+
+model.add(tf.layers.flatten());
+model.add(tf.layers.dense({
+    units: 10,
+    activation: "softmax"
+}));
+</pre>
+
+<h2>
+    编译与训练
+</h2>
+
+<pre tag="javascript">
+model.compile({
+    optimizer: tf.train.adam(0.001),
+    loss: "categoricalCrossentropy",
+    metrics: ["accuracy"]
+});
+
+await model.fit(trainXs, trainYs, {
+    epochs: 10,
+    batchSize: 64,
+    validationSplit: 0.15,
+    shuffle: true
+});
+</pre>
+
+<h2>
+    预测类别
+</h2>
+
+<pre tag="javascript">
+const logits = model.predict(input);
+const classId = logits.argMax(-1);
+const value = (await classId.data())[0];
+
+console.log(value);
+
+input.dispose();
+logits.dispose();
+classId.dispose();
+</pre>
+
+<h2>
+    常见错误
+</h2>
+
+<ul>
+    <li>彩色图像 channels 是 3，灰度图像 channels 是 1。</li>
+    <li>softmax 多分类要配 one-hot 标签和 categoricalCrossentropy。</li>
+    <li>图片像素通常要除以 255，否则训练不稳定。</li>
+    <li>flatten 后接 dense，输出 units 要等于类别数量。</li>
+</ul>

@@ -1,0 +1,22 @@
+<header>特殊权限和 umask</header>
+<h2>SUID / SGID / Sticky Bit</h2>
+<pre>
+chmod u+s file.txt
+chmod g+s file.txt
+chmod g+s directory/
+chmod +t directory/
+</pre>
+<p>
+    查看特殊权限时，<span class="special">s</span> 和 <span class="special">t</span> 会出现在执行权限的位置。
+</p>
+<h2>umask</h2>
+<pre>
+umask
+umask 022
+
+文件默认权限 = 666 - umask
+目录默认权限 = 777 - umask
+</pre>
+<p>
+    常见的 <span class="special">022</span> 表示：新建文件通常是 644，新建目录通常是 755。
+</p>

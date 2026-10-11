@@ -1,0 +1,119 @@
+<header>
+    Dataset 与 DataLoader
+</header>
+
+<p>
+    数据处理代码如果和训练循环写在一起，很快会变乱。PyTorch 用 <span class="warn">Dataset</span> 表示“数据怎么取”，用 <span class="warn">DataLoader</span> 表示“数据怎么批量加载”。
+</p>
+
+<h2>
+    Dataset 的职责
+</h2>
+
+<p>
+    一个 Dataset 至少需要实现两个方法：<span class="warn">__len__</span> 返回样本数量，<span class="warn">__getitem__</span> 根据索引返回一个样本。
+</p>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+from torch.utils.data import Dataset
+
+class MyDataset(Dataset):
+    def __init__(self, samples):
+        self.samples = samples
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, index):
+        x, y = self.samples[index]
+        return x, y
+</pre>
+
+<h2>
+    DataLoader 的职责
+</h2>
+
+<p>
+    DataLoader 会把 Dataset 包装成可迭代对象，负责 batch、shuffle、多进程加载等工作。
+</p>
+
+<pre tag="python">
+from torch.utils.data import DataLoader
+
+dataset = MyDataset(samples)
+loader = DataLoader(
+    dataset,
+    batch_size=32,
+    shuffle=True,
+)
+
+for x, y in loader:
+    print(x.shape, y.shape)
+</pre>
+
+<h2>
+    图像分类目录结构
+</h2>
+
+<p>
+    图像分类任务可以用 torchvision 的 ImageFolder，它要求目录按类别组织：
+</p>
+
+<pre>
+data/
+  train/
+    cat/
+      001.jpg
+      002.jpg
+    dog/
+      001.jpg
+  val/
+    cat/
+    dog/
+</pre>
+
+<pre tag="python">
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+
+transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+])
+
+train_dataset = datasets.ImageFolder("data/train", transform=transform)
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+</pre>
+
+<h2>
+    Transform
+</h2>
+
+<p>
+    Transform 用于把原始数据处理成模型需要的形式，例如图片缩放、裁剪、转 Tensor、归一化、数据增强等。
+</p>
+
+<pre tag="python">
+transform = transforms.Compose([
+    transforms.RandomHorizontalFlip(),
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225],
+    ),
+])
+</pre>
+
+<h2>
+    实践建议
+</h2>
+
+<ul>
+    <li>先打印一个 batch 的 shape，确认输入是否符合模型要求。</li>
+    <li>训练集可以 shuffle，验证集一般不需要 shuffle。</li>
+    <li>数据增强只用于训练集，验证集保持稳定。</li>
+    <li>自定义 Dataset 里不要做太慢的操作，必要时提前预处理。</li>
+</ul>

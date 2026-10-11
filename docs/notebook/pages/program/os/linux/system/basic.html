@@ -1,0 +1,24 @@
+<header>系统基本和硬件信息</header>
+<h2>系统版本</h2>
+<p>
+    查看内核版本、发行版和操作系统基础信息。排查环境差异时，通常先看这些。
+</p>
+<pre>
+uname -a
+uname -r
+lsb_release -a
+cat /etc/os-release
+</pre>
+<h2>硬件信息</h2>
+<p>
+    查看 CPU、内存、块设备、PCI 和 USB 设备信息。
+</p>
+<pre>
+lscpu
+free -h
+free -h -s 2
+lsblk
+lsblk -f
+lspci
+lsusb
+</pre>

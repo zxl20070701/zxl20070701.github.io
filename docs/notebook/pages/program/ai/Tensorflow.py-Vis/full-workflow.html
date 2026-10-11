@@ -1,0 +1,72 @@
+<header>
+    可视化完整工作流
+</header>
+
+<p>
+    TensorFlow Python 项目中，可视化一般贯穿训练前、训练中、训练后三个阶段。它的目标不是让图好看，而是帮助判断模型到底学得怎么样。
+</p>
+
+<h2>
+    推荐流程
+</h2>
+
+<pre>
+1. 训练前：查看样本、类别数量、特征分布
+2. 建模时：model.summary 或 plot_model 检查结构
+3. 训练中：History 曲线或 TensorBoard 观察 loss / accuracy
+4. 训练后：混淆矩阵、分类报告、错误样本分析
+5. 调参后：对比不同实验的曲线和指标
+</pre>
+
+<h2>
+    基础骨架
+</h2>
+
+<pre tag="python">
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+tensorboard_cb = tf.keras.callbacks.TensorBoard(
+    log_dir="logs/exp01"
+)
+
+checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
+    "best_model.keras",
+    save_best_only=True,
+    monitor="val_loss"
+)
+
+history = model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=20,
+    callbacks=[tensorboard_cb, checkpoint_cb]
+)
+
+plt.plot(history.history["loss"], label="loss")
+plt.plot(history.history["val_loss"], label="val_loss")
+plt.legend()
+plt.show()
+</pre>
+
+<h2>
+    实验记录建议
+</h2>
+
+<ul>
+    <li>每次实验记录数据集、模型结构、学习率、batch_size、epoch。</li>
+    <li>保存最佳模型，而不是只保存最后一个 epoch。</li>
+    <li>曲线异常时先检查数据，再调整模型。</li>
+    <li>分类任务训练后至少查看一次混淆矩阵。</li>
+</ul>
+
+<h2>
+    常见结论
+</h2>
+
+<ul>
+    <li>训练和验证都差：模型可能太弱，或数据特征不足。</li>
+    <li>训练好、验证差：过拟合，考虑数据增强、正则化、早停。</li>
+    <li>验证曲线很抖：验证集太小，或数据分布不稳定。</li>
+    <li>某个类别一直错：重点检查该类别样本质量和数量。</li>
+</ul>

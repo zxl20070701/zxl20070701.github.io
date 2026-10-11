@@ -10,6 +10,12 @@
 <p>
     然后输入密码即可登录。
 </p>
+<p>
+    使用密钥登录：
+</p>
+<pre>
+    sftp -i ~/.ssh/id_rsa -P 22 username@ip
+</pre>
 <h2>
     文件传输
 </h2>
@@ -17,22 +23,49 @@
     上传文件
 </h3>
 <pre>
-    put -r /User/zxl20070701/Desktop/demo.html /root/zxl20070701
+    put /Users/zxl20070701/Desktop/demo.html /root/zxl20070701
 </pre>
 <p>
-    上面的例子就是把本机电脑的<span class="special">/User/zxl20070701/Desktop/demo.html</span>文件上传到服务器的
+    上面的例子就是把本机电脑的<span class="special">/Users/zxl20070701/Desktop/demo.html</span>文件上传到服务器的
     <span class="special">/root/zxl20070701</span>文件夹下。
 </p>
+<p>
+    上传整个目录时使用 <span class="special">-r</span>：
+</p>
+<pre>
+    put -r ./dist /var/www/html
+</pre>
 <h3>
     下载文件
 </h3>
 <pre>
-    get -r /root/zxl20070701/demo.html /User/zxl20070701/Desktop
+    get /root/zxl20070701/demo.html /Users/zxl20070701/Desktop
 </pre>
 <p>
     上面的例子就是把服务器的<span class="special">/root/zxl20070701/demo.html</span>文件下载到本机电脑的
-    <span class="special">/User/zxl20070701/Desktop</span>文件夹下。
+    <span class="special">/Users/zxl20070701/Desktop</span>文件夹下。
 </p>
+<p>
+    下载整个目录：
+</p>
+<pre>
+    get -r /var/www/html ./backup
+</pre>
+<h3>
+    批量传输
+</h3>
+<p>
+    使用通配符上传多个文件：
+</p>
+<pre>
+    mput *.html
+</pre>
+<p>
+    下载多个文件：
+</p>
+<pre>
+    mget *.log
+</pre>
 <h2>
     服务器操作
 </h2>
@@ -48,6 +81,12 @@
     </li>
     <li>
         mkdir 为服务器创建目录
+    </li>
+    <li>
+        rm 删除服务器文件
+    </li>
+    <li>
+        rmdir 删除服务器空目录
     </li>
 </ul>
 <h2>
@@ -70,3 +109,12 @@
         lmkdir 为本机创建目录
     </li>
 </ul>
+<h2>
+    退出
+</h2>
+<pre>
+    bye
+</pre>
+<p>
+    也可以使用 <span class="special">exit</span> 或 <span class="special">quit</span>。
+</p>

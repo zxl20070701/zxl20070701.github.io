@@ -1,0 +1,82 @@
+<header>
+    工作区与技能
+</header>
+
+<p>
+    想让 Agent 像 coding agent 一样"在真实目录里读写文件、执行脚本"，需要给它配置一个<strong>工作区（Workspace）</strong>。工作区包含三样东西：文件系统、沙箱，以及一组<strong>技能（Skill）</strong>。
+</p>
+
+<div class="tips">
+    技能是遵循 Skill 规范的能力包，可以理解为"写给模型看的操作手册 + 配套资源"。规范的详细内容可以参考<a href="./index.html#/program/agent/Skill/standard" target="_blank">《Skill 官方规范详解》</a>。
+</div>
+
+<h2>
+    给 Agent 挂载工作区
+</h2>
+
+<p>
+    通过 <span class="warn">Workspace</span> 把本地目录、沙箱和技能目录组装起来，再传给 Agent：
+</p>
+
+<pre tag="javascript">
+import { Workspace, LocalFilesystem, LocalSandbox } from '@mastra/core/workspace';
+import { Agent } from '@mastra/core/agent';
+
+// 组装工作区：文件系统 + 沙箱 + 技能目录
+const workspace = new Workspace({
+    // 文件系统：Agent 可以读写的本地目录
+    filesystem: new LocalFilesystem({ basePath: './workspace' }),
+
+    // 沙箱：代码执行的工作目录
+    sandbox: new LocalSandbox({
+        workingDirectory: './workspace',
+    }),
+
+    // 技能目录列表
+    skills: ['./skills'],
+});
+
+const myAgent = new Agent({
+    id: 'simple-agent',
+    name: 'Simple Agent',
+    instructions: ``,
+    model: {
+        providerId: 'ollama',
+        modelId: 'qwen3.5',
+        apiKey: 'ollama',
+        url: 'http://127.0.0.1:11434/v1',
+    },
+    workspace,
+});
+
+// 让 Agent 在工作区里写文件
+myAgent
+    .generate('在 ./circle.js 中，生成绘制红色圆形的代码')
+    .then((res) => {
+        console.log(res.text);
+    });
+</pre>
+
+<h2>
+    工作流程
+</h2>
+
+<p>
+    配置好工作区之后，当用户提出"在 ./circle.js 中生成使用 Canvas 绘制红色圆形的代码"这类请求时：
+</p>
+
+<ul>
+    <li>
+        Agent 从技能目录中发现相关的技能，阅读其中的说明文档，了解 Canvas 的 API 用法；
+    </li>
+    <li>
+        在文件系统中创建或修改 <span class="warn">./circle.js</span>；
+    </li>
+    <li>
+        如果需要验证，可以在沙箱里执行生成的代码。
+    </li>
+</ul>
+
+<p>
+    也就是说，技能解决"模型知道怎么做"的问题，文件系统和沙箱解决"模型有地方做"的问题，三者组合起来就构成了一个具备领域能力的执行环境。
+</p>

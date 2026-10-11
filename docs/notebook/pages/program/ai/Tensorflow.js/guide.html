@@ -29,6 +29,15 @@ import * as tf from '@tensorflow/tfjs';
 &lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"&gt;&lt;/script&gt;
 </pre>
 <h2>
+    适合做什么
+</h2>
+<ul>
+    <li>在浏览器里运行已经训练好的模型，例如图片分类、姿态检测、文本分类。</li>
+    <li>直接在浏览器里训练小模型，适合教学、交互式实验和轻量应用。</li>
+    <li>在 Node.js 中训练或推理，并和 JavaScript 工程体系整合。</li>
+    <li>把机器学习能力嵌入前端页面，不一定需要单独部署 Python 服务。</li>
+</ul>
+<h2>
     基本概念
 </h2>
 <h3>
@@ -88,4 +97,56 @@ myFun();
 </pre>
 <p>
     所有myFun定义的函数体内，创建的中间张量，都会被清除和释放它的GPU内存，除了函数需要返回的值。
+</p>
+<h2>
+    常用模块
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>模块</th>
+            <th>作用</th>
+            <th>常见 API</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Tensor</td>
+            <td>保存和计算多维数据</td>
+            <td>tf.tensor、tf.reshape、tf.add</td>
+        </tr>
+        <tr>
+            <td>Layers</td>
+            <td>搭建神经网络模型</td>
+            <td>tf.sequential、tf.layers.dense、tf.layers.conv2d</td>
+        </tr>
+        <tr>
+            <td>Training</td>
+            <td>配置训练过程</td>
+            <td>model.compile、model.fit、tf.train.adam</td>
+        </tr>
+        <tr>
+            <td>IO</td>
+            <td>保存和加载模型</td>
+            <td>model.save、tf.loadLayersModel</td>
+        </tr>
+        <tr>
+            <td>Browser</td>
+            <td>处理浏览器输入</td>
+            <td>tf.browser.fromPixels、tf.nextFrame</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    推荐学习路线
+</h2>
+<ol>
+    <li>先学习 Tensor 与 Shape，理解数据如何表示。</li>
+    <li>再学习常见运算、广播机制和内存管理。</li>
+    <li>然后学习 tf.sequential、layers、compile、fit。</li>
+    <li>接着学习数据准备、归一化、训练集和验证集。</li>
+    <li>最后完成一个浏览器推理或 CNN 图像分类小项目。</li>
+</ol>
+<p>
+    学 TensorFlow.js 时最重要的调试习惯是：打印 shape、观察 loss 曲线、检查 Tensor 是否释放。前端项目里，模型正确只是第一步，页面不卡、内存不涨也同样重要。
 </p>

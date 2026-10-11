@@ -1,0 +1,76 @@
+<header>
+    模型保存与加载
+</header>
+
+<p>
+    TensorFlow 推荐使用 Keras 格式或 SavedModel 保存模型。保存内容通常包括模型结构、权重和训练配置。
+</p>
+
+<h2>
+    保存完整模型
+</h2>
+
+<pre tag="python">
+model.save("my_model.keras")
+</pre>
+
+<h2>
+    加载完整模型
+</h2>
+
+<pre tag="python">
+model = tf.keras.models.load_model("my_model.keras")
+model.summary()
+</pre>
+
+<h2>
+    SavedModel 格式
+</h2>
+
+<p>
+    SavedModel 适合部署到 TensorFlow Serving、TFLite 转换等场景。
+</p>
+
+<pre tag="python">
+model.export("saved_model")
+</pre>
+
+<h2>
+    只保存权重
+</h2>
+
+<pre tag="python">
+model.save_weights("checkpoint.weights.h5")
+
+new_model = build_model()
+new_model.load_weights("checkpoint.weights.h5")
+</pre>
+
+<h2>
+    训练检查点</h2>
+
+<pre tag="python">
+checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
+    filepath="checkpoints/best.keras",
+    save_best_only=True,
+    monitor="val_loss"
+)
+
+model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=20,
+    callbacks=[checkpoint_cb]
+)
+</pre>
+
+<h2>
+    实践建议
+</h2>
+
+<ul>
+    <li>日常保存完整 Keras 模型，可以优先使用 .keras。</li>
+    <li>只保存权重时，加载前必须先创建相同结构的模型。</li>
+    <li>部署前用一条样本跑 predict，确认输入输出 shape。</li>
+    <li>继续训练时，加载模型后检查 optimizer 和学习率配置。</li>
+</ul>

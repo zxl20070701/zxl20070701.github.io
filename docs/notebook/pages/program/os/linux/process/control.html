@@ -1,0 +1,27 @@
+<header>进程控制和后台任务</header>
+<h2>kill / pkill / killall</h2>
+<pre>
+kill PID
+kill -SIGTERM PID
+kill -9 PID
+pkill process_name
+pkill -9 process_name
+killall process_name
+</pre>
+<pre>
+1 (HUP) - 挂起，重新读取配置文件
+9 (KILL) - 强制终止
+15 (TERM) - 正常终止（默认）
+</pre>
+<p class="warn">
+    温馨提示：优先使用默认的 TERM 信号，只有进程无法正常退出时再考虑 <span class="special">-9</span>。
+</p>
+<h2>jobs / fg / bg / nohup / disown</h2>
+<pre>
+jobs
+fg %1
+bg %1
+nohup command > app.log 2>&1 &
+command &
+disown
+</pre>

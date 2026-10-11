@@ -1,0 +1,83 @@
+<header>
+    浏览器推理流程
+</header>
+
+<p>
+    TensorFlow.js 的一个重要优势是可以直接在浏览器里做推理。常见流程是：加载模型、读取输入、转成 Tensor、预测、释放中间 Tensor。
+</p>
+
+<h2>
+    基本流程
+</h2>
+
+<pre>
+1. await tf.loadLayersModel 加载模型
+2. 从页面、图片、摄像头或表单获取输入
+3. 把输入转成 Tensor，并处理 shape
+4. model.predict 得到输出
+5. 解析输出并展示结果
+6. dispose 或 tf.tidy 释放中间 Tensor
+</pre>
+
+<h2>
+    表单数据预测
+</h2>
+
+<pre tag="javascript">
+const model = await tf.loadLayersModel("/models/house-price/model.json");
+
+function predict(area, rooms) {
+    return tf.tidy(() => {
+        const input = tf.tensor2d([[area, rooms]], [1, 2]);
+        const output = model.predict(input);
+        return output.dataSync()[0];
+    });
+}
+
+console.log(predict(90, 3));
+</pre>
+
+<h2>
+    图片数据预测
+</h2>
+
+<pre tag="javascript">
+const img = document.querySelector("img");
+
+const input = tf.tidy(() => {
+    return tf.browser.fromPixels(img)
+        .resizeNearestNeighbor([224, 224])
+        .toFloat()
+        .div(255)
+        .expandDims(0);
+});
+
+const pred = model.predict(input);
+const scores = await pred.data();
+
+input.dispose();
+pred.dispose();
+</pre>
+
+<h2>
+    async 与 data</h2>
+
+<p>
+    Tensor 的数据在 GPU 或后端中，读取结果时常用 data 或 dataSync。页面交互中更推荐 await tensor.data()，避免同步阻塞。
+</p>
+
+<pre tag="javascript">
+const output = model.predict(input);
+const values = await output.data();
+</pre>
+
+<h2>
+    性能与内存
+</h2>
+
+<ul>
+    <li>推理函数内部尽量使用 tf.tidy。</li>
+    <li>循环预测时观察 tf.memory().numTensors 是否持续增长。</li>
+    <li>图片输入要统一尺寸、通道和归一化方式。</li>
+    <li>复杂模型可以显示加载中状态，避免用户以为页面卡死。</li>
+</ul>

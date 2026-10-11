@@ -1,0 +1,39 @@
+<header>
+    端口和网络服务
+</header>
+<h2>netstat / ss</h2>
+<p>
+    <span class="special">netstat</span> 和 <span class="special">ss</span> 都可以查看当前机器的网络连接和监听端口。
+    新系统更推荐使用 <span class="special">ss</span>，速度更快，信息也更直接。
+</p>
+<pre>
+netstat -tuln
+netstat -tuln | grep LISTEN
+ss -tuln
+ss -tulnp
+</pre>
+<p>
+    参数含义：<span class="special">-t</span> 表示 TCP，<span class="special">-u</span> 表示 UDP，
+    <span class="special">-l</span> 只看监听端口，<span class="special">-n</span> 不解析域名和服务名，
+    <span class="special">-p</span> 显示占用端口的进程。
+</p>
+<h2>lsof / nc</h2>
+<p>
+    <span class="special">lsof</span> 用来查看某个端口被哪个进程占用；
+    <span class="special">nc</span> 常用来测试本机或远程端口是否能连通。
+</p>
+<pre>
+lsof -i :8080
+nc -vz 127.0.0.1 8080
+</pre>
+<h2>firewall-cmd</h2>
+<p>
+    如果服务器启用了 firewalld，服务已经启动但外部访问不到时，可能需要放行端口。
+</p>
+<pre>
+sudo firewall-cmd --add-port=8080/tcp --permanent
+sudo firewall-cmd --reload
+</pre>
+<p class="warn">
+    温馨提示：放行端口前先确认服务确实需要对外暴露。
+</p>

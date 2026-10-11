@@ -1,0 +1,85 @@
+<header>
+    与训练代码整合
+</header>
+
+<p>
+    一个完整的 TensorFlow.js 学习项目，可以用 tfjs-vis 同时观察数据、模型结构、训练曲线和最终评估。
+</p>
+
+<h2>
+    推荐流程
+</h2>
+
+<pre>
+1. render.scatterplot 或 render.barchart 观察数据
+2. show.modelSummary 检查模型结构
+3. show.fitCallbacks 观察训练曲线
+4. render.confusionMatrix 或 linechart 分析效果
+5. 根据图表调整数据、模型和超参数
+</pre>
+
+<h2>
+    完整骨架
+</h2>
+
+<pre tag="javascript">
+const xs = tf.tensor2d(features);
+const ys = tf.tensor2d(labels);
+
+tfvis.render.scatterplot(
+    { name: "原始数据", tab: "数据" },
+    { values: points, series: ["样本"] },
+    { xLabel: "x", yLabel: "y" }
+);
+
+const model = tf.sequential();
+model.add(tf.layers.dense({
+    inputShape: [xs.shape[1]],
+    units: 16,
+    activation: "relu"
+}));
+model.add(tf.layers.dense({
+    units: 1
+}));
+
+tfvis.show.modelSummary(
+    { name: "模型结构", tab: "模型" },
+    model
+);
+
+model.compile({
+    optimizer: tf.train.adam(0.001),
+    loss: "meanSquaredError"
+});
+
+await model.fit(xs, ys, {
+    epochs: 30,
+    batchSize: 32,
+    validationSplit: 0.2,
+    callbacks: tfvis.show.fitCallbacks(
+        { name: "训练曲线", tab: "训练" },
+        ["loss", "val_loss"],
+        { callbacks: ["onEpochEnd"] }
+    )
+});
+</pre>
+
+<h2>
+    学习时怎么用图表</h2>
+
+<ul>
+    <li>数据图：判断样本是否异常、类别是否均衡。</li>
+    <li>模型摘要：检查 shape 和参数量。</li>
+    <li>训练曲线：判断学习是否有效。</li>
+    <li>评估图：定位具体错误类型。</li>
+</ul>
+
+<h2>
+    常见调整方向</h2>
+
+<ul>
+    <li>欠拟合：增加模型容量、训练轮数，或改善特征。</li>
+    <li>过拟合：增加数据、降低模型复杂度、加入正则化。</li>
+    <li>训练慢：减小模型、减小图片尺寸、检查后端。</li>
+    <li>指标异常：检查标签编码、归一化和数据切分。</li>
+</ul>

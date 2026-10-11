@@ -1,0 +1,40 @@
+<header>
+    文件内容查看
+</header>
+<h2>
+    cat
+</h2>
+<p>
+    查看小文件内容：
+</p>
+<pre>
+    cat app.log
+</pre>
+<h2>
+    less
+</h2>
+<p>
+    分页查看大文件：
+</p>
+<pre>
+    less app.log
+</pre>
+<p>
+    常用快捷键：<span class="special">空格</span> 向下翻页，<span class="special">b</span> 向上翻页，<span class="special">/关键字</span> 搜索，<span class="special">q</span> 退出。
+</p>
+<h2>
+    head / tail
+</h2>
+<p>
+    查看文件开头或结尾：
+</p>
+<pre>
+head -n 20 app.log
+tail -n 50 app.log
+</pre>
+<p>
+    实时查看日志新增内容：
+</p>
+<pre>
+    tail -f app.log
+</pre>

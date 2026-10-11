@@ -1,0 +1,128 @@
+<header>
+    CNN 图像分类实战
+</header>
+
+<p>
+    CNN（卷积神经网络）常用于图像分类。一个典型流程是：准备图片数据、定义 transforms、构建 DataLoader、定义 CNN、训练、验证、保存模型。
+</p>
+
+<h2>
+    数据目录
+</h2>
+
+<pre>
+data/
+  train/
+    cat/
+    dog/
+  val/
+    cat/
+    dog/
+</pre>
+
+<h2>
+    加载数据
+</h2>
+
+<pre tag="python">
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+
+train_transform = transforms.Compose([
+    transforms.Resize((128, 128)),
+    transforms.RandomHorizontalFlip(),
+    transforms.ToTensor(),
+])
+
+val_transform = transforms.Compose([
+    transforms.Resize((128, 128)),
+    transforms.ToTensor(),
+])
+
+train_dataset = datasets.ImageFolder("data/train", transform=train_transform)
+val_dataset = datasets.ImageFolder("data/val", transform=val_transform)
+
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=32)
+
+print(train_dataset.classes)
+</pre>
+
+<h2>
+    定义 CNN
+</h2>
+
+<pre tag="python">
+import torch
+from torch import nn
+
+class SmallCNN(nn.Module):
+    def __init__(self, num_classes):
+        super().__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 16, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(16, 32, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+        )
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(32 * 32 * 32, 128),
+            nn.ReLU(),
+            nn.Linear(128, num_classes),
+        )
+
+    def forward(self, x):
+        x = self.features(x)
+        return self.classifier(x)
+</pre>
+
+<h2>
+    训练入口
+</h2>
+
+<pre tag="python">
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+model = SmallCNN(num_classes=len(train_dataset.classes)).to(device)
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+for epoch in range(10):
+    train_loss = train_one_epoch(model, train_loader, loss_fn, optimizer, device)
+    val_loss, val_acc = evaluate(model, val_loader, loss_fn, device)
+    print(epoch, train_loss, val_loss, val_acc)
+</pre>
+
+<h2>
+    shape 推导
+</h2>
+
+<p>
+    输入图片是 128x128，经过两次 MaxPool2d(2) 后，高宽变成 32x32。最后一层卷积输出通道是 32，所以 Flatten 后维度是 <span class="warn">32 * 32 * 32</span>。
+</p>
+
+<h2>
+    常见优化
+</h2>
+
+<ul>
+    <li>数据增强：RandomCrop、RandomHorizontalFlip、ColorJitter。</li>
+    <li>归一化：使用和预训练模型一致的 mean/std。</li>
+    <li>学习率调整：使用 StepLR、CosineAnnealingLR 等调度器。</li>
+    <li>迁移学习：使用 torchvision.models 中的预训练模型。</li>
+    <li>早停：验证集长期不提升时停止训练。</li>
+</ul>
+
+<h2>
+    排错重点
+</h2>
+
+<ul>
+    <li>Linear 输入维度不对：打印 features 输出 shape。</li>
+    <li>类别数不对：检查 ImageFolder 的 classes。</li>
+    <li>loss 不下降：检查标签、学习率和数据是否读对。</li>
+    <li>验证准确率异常：确认训练集和验证集目录没有混淆。</li>
+</ul>

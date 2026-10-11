@@ -1,0 +1,109 @@
+<header>
+    Tensor 张量基础
+</header>
+
+<p>
+    Tensor 是 PyTorch 中最基础的数据结构，可以理解为支持自动求导和硬件加速的多维数组。标量是 0 维 Tensor，向量是 1 维 Tensor，矩阵是 2 维 Tensor，图像和批量数据通常会变成更高维的 Tensor。
+</p>
+
+<h2>
+    创建 Tensor
+</h2>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+import torch
+
+# 从 Python 列表创建
+x = torch.tensor([[1, 2], [3, 4]])
+
+# 全 0、全 1、随机数
+zeros = torch.zeros(2, 3)
+ones = torch.ones(2, 3)
+rand = torch.rand(2, 3)
+
+print(x)
+print(x.shape)
+print(x.dtype)
+</pre>
+
+<h2>
+    shape 的理解
+</h2>
+
+<p>
+    shape 表示每个维度的长度。例如图片分类里常见的输入形状是 <span class="warn">[batch, channel, height, width]</span>，也就是一批图片、每张图片的通道数、高度和宽度。
+</p>
+
+<pre tag="python">
+images = torch.rand(32, 3, 224, 224)
+
+print(images.shape)      # torch.Size([32, 3, 224, 224])
+print(images.shape[0])   # batch size: 32
+</pre>
+
+<h2>
+    常用变形操作
+</h2>
+
+<pre tag="python">
+x = torch.arange(12)
+
+# 改变形状
+y = x.reshape(3, 4)
+
+# 增加一个维度
+z = y.unsqueeze(0)
+
+# 去掉长度为 1 的维度
+w = z.squeeze(0)
+
+print(y.shape)  # [3, 4]
+print(z.shape)  # [1, 3, 4]
+print(w.shape)  # [3, 4]
+</pre>
+
+<h2>
+    广播机制
+</h2>
+
+<p>
+    当两个 Tensor 形状不完全相同但可以兼容时，PyTorch 会自动扩展较小的维度，这叫广播。广播能让代码更简洁，但也容易造成 shape 错误。
+</p>
+
+<pre tag="python">
+x = torch.ones(3, 4)
+bias = torch.tensor([1, 2, 3, 4])
+
+print(x + bias)
+</pre>
+
+<h2>
+    与 NumPy 转换
+</h2>
+
+<pre tag="python">
+import numpy as np
+import torch
+
+arr = np.array([1, 2, 3])
+t = torch.from_numpy(arr)
+
+arr2 = t.numpy()
+</pre>
+
+<div class="tips">
+    Tensor 和 NumPy 数组在 CPU 上可能共享内存，修改其中一个可能影响另一个。需要彻底复制时，可以使用 clone() 或 copy()。
+</div>
+
+<h2>
+    学习重点
+</h2>
+
+<ul>
+    <li>熟悉 Tensor 的 shape、dtype、device。</li>
+    <li>理解 reshape、unsqueeze、squeeze、permute 的作用。</li>
+    <li>训练模型时重点关注 batch 维度是否存在。</li>
+    <li>报错里出现 size mismatch 时，优先打印每一步的 shape。</li>
+</ul>

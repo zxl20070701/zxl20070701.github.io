@@ -1,0 +1,89 @@
+<header>
+    调试与性能优化
+</header>
+
+<p>
+    TensorFlow.js 运行在浏览器或 Node.js 中，调试时除了看模型效果，还要关注 Tensor 数量、后端类型、数据读取方式和页面是否被阻塞。
+</p>
+
+<h2>
+    查看当前后端
+</h2>
+
+<pre tag="javascript">
+console.log(tf.getBackend());
+
+await tf.setBackend("webgl");
+await tf.ready();
+</pre>
+
+<p>
+    常见后端包括 cpu、webgl、wasm。浏览器中一般优先使用 webgl，具体性能要看设备和模型类型。
+</p>
+
+<h2>
+    查看内存</h2>
+
+<pre tag="javascript">
+console.log(tf.memory());
+</pre>
+
+<p>
+    如果 numTensors 随着按钮点击或预测次数不断增长，通常说明中间 Tensor 没有释放。
+</p>
+
+<h2>
+    使用 tf.tidy
+</h2>
+
+<pre tag="javascript">
+const result = tf.tidy(() => {
+    const a = tf.tensor1d([1, 2, 3]);
+    const b = a.square();
+    return b.mean();
+});
+
+result.print();
+result.dispose();
+</pre>
+
+<p>
+    tidy 会释放函数内部创建、但没有被返回的 Tensor。模型参数不会被 tidy 自动清掉。
+</p>
+
+<h2>
+    使用 tf.time 测量耗时
+</h2>
+
+<pre tag="javascript">
+const timing = await tf.time(() => {
+    return model.predict(input);
+});
+
+console.log(timing);
+</pre>
+
+<h2>
+    避免频繁 dataSync
+</h2>
+
+<p>
+    dataSync 会同步读取 Tensor 数据，可能阻塞页面。交互场景更建议使用 await tensor.data()。
+</p>
+
+<pre tag="javascript">
+const output = model.predict(input);
+const values = await output.data();
+</pre>
+
+<h2>
+    调试清单
+</h2>
+
+<ul>
+    <li>打印每一层输入和输出 shape。</li>
+    <li>确认训练和推理使用同样的预处理流程。</li>
+    <li>观察 loss 和 val_loss，判断欠拟合或过拟合。</li>
+    <li>检查 tf.memory().numTensors 是否稳定。</li>
+    <li>用小样本先跑通，再扩大数据集。</li>
+</ul>

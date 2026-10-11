@@ -1,0 +1,30 @@
+<header>
+    find 文件查找
+</header>
+<p>
+    在当前目录查找名称包含 pre 前缀的文件或文件夹：
+</p>
+<pre>
+find . -name "pre*"
+</pre>
+<p>
+    查找最近 1 天内修改过的文件：
+</p>
+<pre>
+    find . -type f -mtime -1
+</pre>
+<p>
+    查找大于 100M 的文件：
+</p>
+<pre>
+    find . -type f -size +100M
+</pre>
+<p>
+    查找后直接执行命令，比如删除所有 <span class="special">.log</span> 文件：
+</p>
+<pre>
+    find . -name "*.log" -delete
+</pre>
+<p class="warn">
+    温馨提示：不区分大小写可以把 <span class="special">-name</span> 改成 <span class="special">-iname</span>。
+</p>

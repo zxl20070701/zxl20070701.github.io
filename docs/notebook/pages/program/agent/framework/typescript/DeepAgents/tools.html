@@ -1,0 +1,51 @@
+<header>
+    工具
+</header>
+
+<p>
+    DeepAgents 的工具定义沿用了 LangChain 的 <span class="warn">tool()</span> 函数 + zod schema 的写法：先用 zod 描述入参结构，再把真正的执行逻辑包到 <span class="warn">tool()</span> 里，最后交给 <span class="warn">createDeepAgent</span> 的 <span class="warn">tools</span> 字段。下面给 Agent 挂一个"查询天气"的工具：
+</p>
+
+<pre tag="javascript">
+import { createDeepAgent } from "deepagents";
+import { ChatOpenAI } from "@langchain/openai";
+import { tool } from "langchain";
+import * as z from "zod";
+
+const llm = new ChatOpenAI({
+    model: "qwen3.5",
+    apiKey: "ollama",
+    configuration: {
+        baseURL: "http://localhost:11434/v1",
+    },
+});
+
+// 使用 tool() 定义工具：name + description + zod schema
+const getWeather = tool(
+    async ({ city }) => `${city}总是阳光明媚！`,
+    {
+        name: "get_weather",
+        description: "获取指定城市的天气。",
+        schema: z.object({
+            city: z.string().describe("城市名称"),
+        }),
+    }
+);
+
+const agent = createDeepAgent({
+    model: llm,
+    tools: [getWeather],
+    systemPrompt: "",
+});
+
+// 运行代理
+agent.invoke({
+    messages: [{ role: "user", content: "南京的天气怎么样？" }],
+}).then((result: any) => {
+    console.log(result.messages[result.messages.length - 1].content);
+});
+</pre>
+
+<p>
+    提问"南京的天气怎么样？"时，模型会识别出需要使用 <span class="warn">get_weather</span> 工具，按 <span class="warn">schema</span> 生成入参 <span class="warn">{ city: "南京" }</span>，框架执行函数并把结果回传给模型，模型再基于工具结果组织最终回复，整个调用机制和 LangChain 一致。
+</p>

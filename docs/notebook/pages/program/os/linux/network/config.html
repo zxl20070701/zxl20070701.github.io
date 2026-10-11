@@ -1,0 +1,29 @@
+<header>
+    网络配置查看
+</header>
+<h2>ip addr / ifconfig</h2>
+<p>
+    查看网卡、IP 地址、MAC 地址等信息。Linux 新系统通常推荐使用 <span class="special">ip</span> 命令。
+</p>
+<pre>
+ip addr show
+ifconfig
+ip addr show eth0
+ifconfig eth0
+</pre>
+<h2>ip route</h2>
+<p>
+    查看路由表和默认网关。排查“能连内网但不能上网”时很常用。
+</p>
+<pre>
+ip route show
+ip route | grep default
+</pre>
+<h2>hostname</h2>
+<p>
+    查看主机名和本机 IP 地址。
+</p>
+<pre>
+hostname
+hostname -I
+</pre>

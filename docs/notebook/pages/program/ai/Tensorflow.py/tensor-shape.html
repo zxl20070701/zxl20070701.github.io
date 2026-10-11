@@ -1,0 +1,88 @@
+<header>
+    Tensor 与 Shape
+</header>
+
+<p>
+    Tensor 是 TensorFlow 中最基础的数据结构，可以理解为带有 dtype 和 shape 的多维数组。
+</p>
+
+<h2>
+    创建 Tensor
+</h2>
+
+<pre tag="python">
+import tensorflow as tf
+
+x = tf.constant([[1, 2, 3], [4, 5, 6]])
+
+print(x.shape) # (2, 3)
+print(x.dtype) # int32
+print(x.ndim)  # 2
+</pre>
+
+<h2>
+    常见创建方式
+</h2>
+
+<pre tag="python">
+tf.constant([1, 2, 3])
+tf.zeros((2, 3))
+tf.ones((2, 3))
+tf.random.normal((2, 3))
+tf.random.uniform((2, 3))
+</pre>
+
+<h2>
+    Variable
+</h2>
+
+<p>
+    Tensor 通常不可变，模型参数需要用 tf.Variable 表示，这样训练时才能更新。
+</p>
+
+<pre tag="python">
+w = tf.Variable([1.0, 2.0, 3.0])
+w.assign([3.0, 2.0, 1.0])
+print(w)
+</pre>
+
+<h2>
+    reshape
+</h2>
+
+<pre tag="python">
+x = tf.constant([1, 2, 3, 4, 5, 6])
+y = tf.reshape(x, (2, 3))
+
+print(y)
+</pre>
+
+<p>
+    reshape 只改变观察数据的维度方式，不改变元素总数。
+</p>
+
+<h2>
+    广播机制
+</h2>
+
+<pre tag="python">
+x = tf.constant([[1, 2, 3], [4, 5, 6]])
+b = tf.constant([10, 20, 30])
+
+print(x + b)
+</pre>
+
+<p>
+    b 的 shape 是 (3,)，会自动扩展到每一行，相当于给每一列加一个偏置。
+</p>
+
+<h2>
+    调试建议
+</h2>
+
+<ul>
+    <li>图像常见 shape 是 (batch, height, width, channels)。</li>
+    <li>文本序列常见 shape 是 (batch, sequence_length)。</li>
+    <li>Dense 层输入通常是二维：(batch, features)。</li>
+    <li>遇到 shape mismatch，优先打印输入、输出、标签的 shape。</li>
+</ul>

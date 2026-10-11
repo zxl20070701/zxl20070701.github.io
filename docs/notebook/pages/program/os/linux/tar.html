@@ -34,6 +34,24 @@
 <pre>
     tar -zcvf test.tar.gz -C /home/testDir/ .
 </pre>
+<h3>
+    查看压缩包内容
+</h3>
+<p>
+    不解压，只查看里面有哪些文件：
+</p>
+<pre>
+    tar -ztvf test.tar.gz
+</pre>
+<h3>
+    排除文件
+</h3>
+<p>
+    打包时排除日志文件和依赖目录：
+</p>
+<pre>
+    tar -zcvf app.tar.gz ./app --exclude="*.log" --exclude="node_modules"
+</pre>
 <h2>
     常用参数
 </h2>
@@ -44,4 +62,40 @@
 -z, --gzip, --gunzip, --ungzip 通过 gzip 过滤归档
 -C, --directory=DIR 改变至目录 DIR
 -v, --verbose 详细地列出处理的文件
+</pre>
+<h2>
+    zip / unzip
+</h2>
+<p>
+    压缩目录：
+</p>
+<pre>
+    zip -r app.zip app/
+</pre>
+<p>
+    解压到当前目录：
+</p>
+<pre>
+    unzip app.zip
+</pre>
+<p>
+    解压到指定目录：
+</p>
+<pre>
+    unzip app.zip -d /home/app
+</pre>
+<h2>
+    gzip / gunzip
+</h2>
+<p>
+    压缩单个文件：
+</p>
+<pre>
+    gzip access.log
+</pre>
+<p>
+    解压 <span class="special">.gz</span> 文件：
+</p>
+<pre>
+    gunzip access.log.gz
 </pre>

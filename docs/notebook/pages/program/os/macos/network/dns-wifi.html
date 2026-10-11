@@ -1,0 +1,26 @@
+<header>DNS 和 Wi-Fi 诊断</header>
+<h2>DNS</h2>
+<p>
+    域名解析异常时，可以先查询 DNS 结果，再刷新 macOS 的 DNS 缓存。
+</p>
+<pre>
+dscacheutil -q host -a name example.com
+sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
+</pre>
+<h2>Wi-Fi</h2>
+<p>
+    <span class="special">airport</span> 是 macOS 内置的 Wi-Fi 诊断工具，可以查看当前连接和附近热点。
+</p>
+<pre>
+/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I
+/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s
+</pre>
+<h2>代理</h2>
+<p>
+    检查或关闭系统网络服务上的 HTTP 代理。
+</p>
+<pre>
+networksetup -getwebproxy "Wi-Fi"
+networksetup -setwebproxystate "Wi-Fi" off
+</pre>

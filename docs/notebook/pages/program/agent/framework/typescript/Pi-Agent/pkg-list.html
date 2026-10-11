@@ -1,0 +1,348 @@
+<header>
+    核心包全景图
+</header>
+
+<p>
+    Pi Agent 由 Mario Zechner（libGDX 作者）主导开发，整体以 TypeScript monorepo 形式组织，遵循"核心极简、行为由扩展装配"的理念。所有核心包都发布在 <span class="warn">@earendil-works</span> 命名空间下（早期版本为 <span class="warn">@mariozechner</span>），按职责拆分为 7 个互相独立的 npm 包，依赖方向严格单向，便于单独复用或组合。
+</p>
+
+<h2>
+    包一览
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                包名
+            </th>
+            <th>
+                路径
+            </th>
+            <th>
+                职责定位
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @earendil-works/pi-ai
+            </td>
+            <td>
+                packages/ai
+            </td>
+            <td>
+                统一的多 provider LLM 流式接口、模型注册表、凭据存储。屏蔽 OpenAI / Anthropic / Google / Bedrock 等 20+ 提供商的差异
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @earendil-works/pi-agent-core
+            </td>
+            <td>
+                packages/agent
+            </td>
+            <td>
+                通用 Agent 运行时：状态管理、Agent 主循环、事件流（9 种 AgentEvent）、Session 树结构、压缩（compaction）
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @earendil-works/pi-tui
+            </td>
+            <td>
+                packages/tui
+            </td>
+            <td>
+                自研终端 UI 框架：差分渲染、键盘输入解析、组件（编辑器、Markdown、SelectList）、Overlay、终端抽象层
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @earendil-works/pi-coding-agent
+            </td>
+            <td>
+                packages/coding-agent
+            </td>
+            <td>
+                CLI 入口 + 内置 coding 工具（read / write / edit / bash / grep）、Session 持久化、Extension / Skill 加载、交互模式
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @earendil-works/pi-web-ui
+            </td>
+            <td>
+                packages/web-ui
+            </td>
+            <td>
+                浏览器侧 Web Components：聊天界面、JavaScript REPL、Artifact 渲染（HTML / SVG / Markdown）、IndexedDB 本地存储
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @earendil-works/pi-mom
+            </td>
+            <td>
+                packages/mom
+            </td>
+            <td>
+                Slack Bot：Socket Mode 连接、按 channel 启动 runner，把 pi-coding-agent 的会话能力嵌入聊天产品形态（bin: mom）
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @earendil-works/pi-pods
+            </td>
+            <td>
+                packages/pods
+            </td>
+            <td>
+                GPU Pod 管理 CLI：远程 GPU pod 上 vLLM 部署的创建、扩缩容、监控，面向自托管模型场景
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="tips">
+    关键区分：<span class="warn">pi-agent-core</span> 是与领域无关的 Agent 内核（循环 + Session + 事件），<span class="warn">pi-coding-agent</span> 才是面向软件工程领域、在其之上构建的完整 CLI 产品。
+</div>
+
+<h2>
+    分层与依赖
+</h2>
+
+<p>
+    7 个包并不是平铺的菜单选项，而是<strong>自底向上逐层堆叠</strong>的栈，依赖方向严格单向，下层不知道上层的存在：
+</p>
+
+<pre>
+┌──────────────────────────────────────────────────────┐
+│  产品层    pi-coding-agent  pi-web-ui  pi-mom  pi-pods │  ← 面向最终用户的产品 / CLI
+├──────────────────────────────────────────────────────┤
+│  运行时层  pi-agent-core                pi-tui         │  ← Agent 循环 + 终端 UI 框架
+├──────────────────────────────────────────────────────┤
+│  基础层                      pi-ai                     │  ← 统一 LLM 抽象
+└──────────────────────────────────────────────────────┘
+</pre>
+
+<ul>
+    <li>
+        <strong>基础层 pi-ai</strong>：唯一与具体 LLM 提供商对话的包。上层不需要关心底层协议、OAuth、上下文标准化。
+    </li>
+    <li>
+        <strong>运行时层</strong>：<span class="warn">pi-agent-core</span> 提供 Agent 主循环（user message → LLM 调用 → 工具执行 → 结果回灌），对外暴露事件流供扩展订阅；<span class="warn">pi-tui</span> 与 Agent 无关，单纯做终端渲染。
+    </li>
+    <li>
+        <strong>产品层</strong>：在运行时之上各自面向不同的产品形态——<span class="warn">pi-coding-agent</span> 是最完整的终端 CLI；<span class="warn">pi-web-ui</span> 把 Agent 装进浏览器；<span class="warn">pi-mom</span> 把 Agent 接到 Slack；<span class="warn">pi-pods</span> 管理底层 vLLM 部署，让上面三层能指到自托管模型。
+    </li>
+</ul>
+
+<p>
+    每个包的直接依赖与反向依赖如下：
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                包
+            </th>
+            <th>
+                直接依赖
+            </th>
+            <th>
+                反向依赖
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                pi-ai
+            </td>
+            <td>
+                无（仅基础运行时）
+            </td>
+            <td>
+                pi-agent-core、pi-coding-agent、pi-mom、pi-web-ui、pi-pods
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pi-agent-core
+            </td>
+            <td>
+                pi-ai
+            </td>
+            <td>
+                pi-coding-agent、pi-mom、pi-web-ui
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pi-tui
+            </td>
+            <td>
+                无（仅终端抽象）
+            </td>
+            <td>
+                pi-coding-agent
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pi-coding-agent
+            </td>
+            <td>
+                pi-ai + pi-agent-core + pi-tui
+            </td>
+            <td>
+                （顶层产品，不再被依赖）
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pi-web-ui
+            </td>
+            <td>
+                pi-ai + pi-agent-core
+            </td>
+            <td>
+                （顶层产品）
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pi-mom
+            </td>
+            <td>
+                pi-ai + pi-agent-core
+            </td>
+            <td>
+                （顶层产品）
+            </td>
+        </tr>
+        <tr>
+            <td>
+                pi-pods
+            </td>
+            <td>
+                pi-ai（可选）
+            </td>
+            <td>
+                （独立运维工具，可被其他产品调用）
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="tips">
+    注意：<span class="warn">pi-tui</span> 与 <span class="warn">pi-agent-core</span> 互不依赖——TUI 是纯渲染层，只在 <span class="warn">pi-coding-agent</span> 中才被两者串到一起。这种"渲染与逻辑解耦"的设计让 <span class="warn">pi-web-ui</span> 可以独立存在，不复用 TUI。
+</div>
+
+<h2>
+    数据流：以一次用户提问为例
+</h2>
+
+<p>
+    在 <span class="warn">pi-coding-agent</span> 中输入一条消息，事件沿依赖链向下、结果再向上回流：
+</p>
+
+<pre>
+用户输入
+   │
+   ▼
+[pi-coding-agent]  解析命令 / 加载扩展 / 构造 AgentSession
+   │
+   ▼
+[pi-agent-core]    agentLoop() 循环：systemPrompt + tools + history → AgentContext
+   │
+   ▼
+[pi-ai]            streamSimple(model, messages) → EventStream
+   │                 ↳  选 provider、发请求、流式返回 token / tool_call
+   ▼
+[pi-agent-core]    收到 tool_call → 触发 beforeToolCall / 执行 / afterToolCall
+   │                 ↳  把结果写回 messages，再调一次 LLM
+   ▼
+[pi-coding-agent]  持久化 Session（JSONL）、可选 compaction
+   │
+   ▼
+[pi-tui]           差分渲染到终端
+</pre>
+
+<p>
+    同一条 Agent 循环可以替换不同的"外壳"——把 <span class="warn">pi-coding-agent</span> 换成 <span class="warn">pi-web-ui</span> 就变成浏览器聊天；换成 <span class="warn">pi-mom</span> 就变成 Slack 机器人——共享的是 <span class="warn">pi-agent-core</span> 这条脊柱。
+</p>
+
+<h2>
+    选用指南
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                你的目标
+            </th>
+            <th>
+                应该用
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                终端里直接跑一个 coding agent
+            </td>
+            <td>
+                <span class="warn">pi-coding-agent</span>（全局安装 <span class="warn">pi</span> 命令）
+            </td>
+        </tr>
+        <tr>
+            <td>
+                自己组装一个 Agent（自定义工具 / 流程）
+            </td>
+            <td>
+                <span class="warn">pi-agent-core</span> + <span class="warn">pi-ai</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                想做 Web 端的 AI 聊天界面
+            </td>
+            <td>
+                <span class="warn">pi-web-ui</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                把 Agent 接入 Slack / 飞书
+            </td>
+            <td>
+                <span class="warn">pi-mom</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                自托管模型（GPU 上跑 vLLM）
+            </td>
+            <td>
+                <span class="warn">pi-pods</span> + 上面任意 Agent 包
+            </td>
+        </tr>
+        <tr>
+            <td>
+                只想要统一的多 provider LLM 接口
+            </td>
+            <td>
+                <span class="warn">pi-ai</span> 单独使用
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="tips">
+    设计哲学一句话总结：核心要小，行为由扩展装配。下层越来越"通用"，上层越来越"产品"——你需要的颗粒度，决定了你该从哪一层入手。
+</div>

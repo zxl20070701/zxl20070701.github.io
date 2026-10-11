@@ -100,3 +100,19 @@ print(torch.cuda.is_available())
 <p>
     Python代码 → C++核心计算 → 底层CUDA/C库加速 → 返回结果。
 </p>
+
+<h2>
+    推荐学习路线
+</h2>
+
+<ol>
+    <li>先学习 Tensor，掌握 shape、dtype、device。</li>
+    <li>再学习 Autograd，理解 loss.backward() 为什么能计算梯度。</li>
+    <li>然后学习 Dataset 和 DataLoader，把数据处理和训练循环拆开。</li>
+    <li>接着学习 nn.Module，自己定义模型结构。</li>
+    <li>最后把训练循环、验证、保存加载、GPU 设备管理串起来。</li>
+</ol>
+
+<p>
+    PyTorch 学习时最重要的调试习惯是：遇到问题先打印 Tensor 的 shape。很多训练错误本质上都是维度、设备或标签格式不匹配。
+</p>

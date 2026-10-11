@@ -1,0 +1,27 @@
+<header>macOS 文件特色工具</header>
+<h2>open</h2>
+<pre>
+open file.txt
+open .
+open -a "Visual Studio Code" .
+open -R file.txt
+</pre>
+<h2>pbcopy / pbpaste</h2>
+<pre>
+pwd | pbcopy
+pbpaste
+</pre>
+<h2>mdfind / mdls</h2>
+<pre>
+mdfind "filename"
+mdfind -onlyin ~/Documents "合同"
+mdls file.txt
+</pre>
+<h2>xattr</h2>
+<pre>
+xattr file.dmg
+xattr -d com.apple.quarantine app.dmg
+</pre>
+<p class="warn">
+    温馨提示：只对来源可信的文件使用 <span class="special">xattr -d com.apple.quarantine</span>。
+</p>
