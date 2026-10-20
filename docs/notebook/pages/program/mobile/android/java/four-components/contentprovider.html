@@ -1,0 +1,93 @@
+<header>
+    ContentProvider
+</header>
+<p>
+    ContentProvider 用于在不同应用之间共享数据，是 Android 实现跨进程通信的标准方式之一。
+</p>
+<h2>
+    核心方法
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>方法</td>
+            <td>作用</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>query</td>
+            <td>查询数据。</td>
+        </tr>
+        <tr>
+            <td>insert</td>
+            <td>插入数据。</td>
+        </tr>
+        <tr>
+            <td>update</td>
+            <td>更新数据。</td>
+        </tr>
+        <tr>
+            <td>delete</td>
+            <td>删除数据。</td>
+        </tr>
+        <tr>
+            <td>getType</td>
+            <td>返回数据类型（MIME）。</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    自定义 ContentProvider 示例
+</h2>
+<pre tag="java">
+public class BookProvider extends ContentProvider {
+    @Override
+    public boolean onCreate() {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public Cursor query(Uri uri, String[] projection,
+                        String selection, String[] selectionArgs, String sortOrder) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String getType(Uri uri) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        return null;
+    }
+
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        return 0;
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values,
+                      String selection, String[] selectionArgs) {
+        return 0;
+    }
+}
+</pre>
+<h2>
+    通过 ContentResolver 访问
+</h2>
+<pre tag="java">
+ContentResolver resolver = getContentResolver();
+Cursor cursor = resolver.query(
+    Uri.parse("content://com.example.provider/book"),
+    null, null, null, null);
+while (cursor.moveToNext()) {
+    // 读取数据
+}
+cursor.close();
+</pre>

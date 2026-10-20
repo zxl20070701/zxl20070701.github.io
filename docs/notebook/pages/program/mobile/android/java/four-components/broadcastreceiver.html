@@ -1,0 +1,62 @@
+<header>
+    BroadcastReceiver
+</header>
+<p>
+    BroadcastReceiver 用于监听系统或应用发出的广播通知。
+</p>
+<h2>
+    分类
+</h2>
+<ul>
+    <li>
+        <span class="important">静态注册</span>
+        ：在清单文件中注册，应用未启动也能接收广播。
+    </li>
+    <li>
+        <span class="important">动态注册</span>
+        ：在代码中注册，组件销毁时需要取消注册。
+    </li>
+</ul>
+<h2>
+    自定义广播接收器
+</h2>
+<pre tag="java">
+public class MyReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        // 处理广播逻辑
+    }
+}
+</pre>
+<h2>
+    静态注册
+</h2>
+<pre tag="xml">
+&lt;receiver android:name=".MyReceiver"&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name="com.example.MY_BROADCAST" /&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</pre>
+<h2>
+    动态注册
+</h2>
+<pre tag="java">
+MyReceiver receiver = new MyReceiver();
+IntentFilter filter = new IntentFilter("com.example.MY_BROADCAST");
+// Android 14（API 34）起需显式声明导出标志
+ContextCompat.registerReceiver(this, receiver, filter,
+        ContextCompat.RECEIVER_NOT_EXPORTED);
+
+// 记得取消注册
+unregisterReceiver(receiver);
+</pre>
+<h2>
+    发送自定义广播
+</h2>
+<pre tag="java">
+Intent intent = new Intent("com.example.MY_BROADCAST");
+intent.putExtra("msg", "hello");
+sendBroadcast(intent);
+</pre>

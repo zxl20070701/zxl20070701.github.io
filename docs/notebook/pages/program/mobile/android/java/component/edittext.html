@@ -1,0 +1,54 @@
+<header>
+    EditText
+</header>
+<p>
+    EditText 是 TextView 的子类，允许用户输入文本。
+</p>
+<h2>
+    常用属性
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>属性</td>
+            <td>描述</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>android:hint</td>
+            <td>输入框为空时显示的提示文字。</td>
+        </tr>
+        <tr>
+            <td>android:inputType</td>
+            <td>输入类型，如 text、number、textPassword、phone 等。</td>
+        </tr>
+        <tr>
+            <td>android:maxLength</td>
+            <td>最大输入长度。</td>
+        </tr>
+        <tr>
+            <td>android:maxLines</td>
+            <td>最多显示行数，设为 1 即单行（替代已废弃的 singleLine）。</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    示例
+</h2>
+<pre tag="xml">
+&lt;EditText
+    android:id="@+id/et_name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="请输入姓名"
+    android:inputType="text"
+    android:maxLength="20" /&gt;
+</pre>
+<h2>
+    获取输入内容
+</h2>
+<pre tag="java">
+EditText et = findViewById(R.id.et_name);
+String name = et.getText().toString();
+</pre>

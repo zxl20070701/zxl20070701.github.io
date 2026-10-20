@@ -1,0 +1,57 @@
+<header>
+    基于监听的事件处理机制
+</header>
+<p>
+    Android 中最常用的事件处理方式是基于监听（Listener），将事件源（View）和事件处理逻辑解耦。
+</p>
+<h2>
+    常见事件监听器
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>监听器</td>
+            <td>触发时机</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>OnClickListener</td>
+            <td>点击事件。</td>
+        </tr>
+        <tr>
+            <td>OnLongClickListener</td>
+            <td>长按事件。</td>
+        </tr>
+        <tr>
+            <td>OnTouchListener</td>
+            <td>触摸事件。</td>
+        </tr>
+        <tr>
+            <td>OnFocusChangeListener</td>
+            <td>焦点变化。</td>
+        </tr>
+        <tr>
+            <td>OnCheckedChangeListener</td>
+            <td>勾选状态变化（RadioGroup / CheckBox）。</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    示例：按钮点击
+</h2>
+<pre tag="java">
+Button btn = findViewById(R.id.btn);
+btn.setOnClickListener(v -&gt; {
+    Toast.makeText(this, "按钮被点击", Toast.LENGTH_SHORT).show();
+});
+</pre>
+<h2>
+    示例：长按事件
+</h2>
+<pre tag="java">
+btn.setOnLongClickListener(v -&gt; {
+    Toast.makeText(this, "长按了按钮", Toast.LENGTH_SHORT).show();
+    return true; // true 表示消费该事件
+});
+</pre>

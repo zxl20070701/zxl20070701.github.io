@@ -7,6 +7,15 @@ var htmlColors = {
     "attrValue": "#ac4c1e"/*属性值颜色*/
 };
 
+var xmlColors = {
+    "text": "#000000",/*文本颜色*/
+    "annotation": "#6a9955",/*注释颜色*/
+    "insign": "#9e9e9e",/*符号颜色*/
+    "node": "#1e50b3",/*结点颜色*/
+    "attrKey": "#1e83b1",/*属性名称颜色*/
+    "attrValue": "#ac4c1e"/*属性值颜色*/
+};
+
 var cssColors = {
     "annotation": "#6a9955",/*注释颜色*/
     "insign": "#9e9e9e",/*符号颜色*/
@@ -65,6 +74,16 @@ var goColors = {
 };
 
 var cColors = {
+    "text": "#000000",/*文本颜色*/
+    "annotation": "#6a9955",/*注释颜色*/
+    "insign": "#9e9e9e",/*符号颜色*/
+    "key": "#ff0000",/*关键字颜色*/
+    "string": "#ac4c1e",/*字符串颜色*/
+    "funName": "#1e50b3",/*函数名称颜色*/
+    "execName": "#1e83b1"/*执行方法颜色*/
+};
+
+var kotlinColors = {
     "text": "#000000",/*文本颜色*/
     "annotation": "#6a9955",/*注释颜色*/
     "insign": "#9e9e9e",/*符号颜色*/
@@ -635,6 +654,286 @@ var _htmlShader = function (textString, colors) {
                     i = oldI;
                 }
 
+            }
+
+        }
+
+        /* 追加字符 */
+
+        else {
+            if (i >= textString.length) {
+                initTemplate();
+                break;
+            } else {
+                template += textString[i++];
+            }
+        }
+
+    }
+
+    for (i = 0; i < shaderArray.length; i++) {
+        shaderArray[i].content = shaderArray[i].content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    return shaderArray;
+
+};
+
+var _xmlShader = function (textString, colors) {
+
+    textString = textString.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+    var shaderArray = [];
+
+    // 当前面对的
+    var i = 0;
+
+    // 获取往后n个值
+    var nextNValue = function (n) {
+        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
+    };
+
+    var template = "";
+
+    // 初始化模板，开始文本捕获
+    var initTemplate = function () {
+        if (template != "") {
+            shaderArray.push({
+                color: colors.text,
+                content: template
+            });
+        }
+
+        template = "";
+    };
+
+    // 匹配属性值模板
+    var getAttrValueTemplate = function () {
+        var endStr = " ";
+        // 寻找属性值边界
+        if (nextNValue(1) == '"') endStr = '"';
+        if (nextNValue(1) == "'") endStr = "'";
+
+        // 到达边界前一直寻找下一个
+        do {
+            template += textString[i++];
+        } while (nextNValue(1) != endStr && i < textString.length);
+
+        // 如果是匹配成功而不是匹配到末尾
+        if (endStr != " " && i < textString.length) {
+            template += endStr;
+            i += 1;
+        }
+
+        shaderArray.push({
+            color: colors.attrValue,
+            content: template
+        });
+        template = "";
+    };
+
+    // 匹配标签（或xml声明）中的属性，
+    // isDeclaration为true时以?>结束，否则以>或/>结束
+    var getAttrTemplate = function (isDeclaration) {
+
+        while (i < textString.length) {
+
+            // 边界：声明结束
+            if (isDeclaration && nextNValue(2) == '?>') {
+                initTemplate();
+                shaderArray.push({
+                    color: colors.insign,
+                    content: "?>"
+                });
+                i += 2;
+                break;
+            }
+
+            // 边界：自闭合标签结束
+            if (!isDeclaration && nextNValue(2) == '/>') {
+                initTemplate();
+                shaderArray.push({
+                    color: colors.insign,
+                    content: "/>"
+                });
+                i += 2;
+                break;
+            }
+
+            // 边界：标签结束
+            if (!isDeclaration && nextNValue(1) == '>') {
+                initTemplate();
+                shaderArray.push({
+                    color: colors.insign,
+                    content: ">"
+                });
+                i += 1;
+                break;
+            }
+
+            // 空格表示属性之间，接着查看下一个即可
+            if (nextNValue(1) == ' ') {
+                template += textString[i++];
+                continue;
+            }
+
+            initTemplate();
+
+            // 匹配属性名称
+            while (nextNValue(1) != "=" && nextNValue(1) != '>' && nextNValue(1) != '/' && nextNValue(1) != '?' && nextNValue(1) != ' ' && i < textString.length) {
+                template += textString[i++];
+            }
+
+            if (template != "") {
+                shaderArray.push({
+                    color: colors.attrKey,
+                    content: template
+                });
+                template = "";
+
+                // 如果下一个是=，就接着找属性值
+                if (nextNValue(1) == '=') {
+                    shaderArray.push({
+                        color: colors.insign,
+                        content: "="
+                    });
+                    i += 1;
+
+                    // 属性值存在时才继续寻找
+                    if (i < textString.length && nextNValue(1) != ' ') {
+                        var atValueEnd = isDeclaration ? nextNValue(2) == '?>' : (nextNValue(1) == '>' || nextNValue(2) == '/>');
+                        if (!atValueEnd) {
+                            getAttrValueTemplate();
+                        }
+                    }
+                }
+            } else {
+                template += textString[i++];
+            }
+
+        }
+    };
+
+    while (true) {
+
+        /* 1.注释 */
+
+        if (nextNValue(4) == '<!--') {
+
+            initTemplate();
+            while (nextNValue(3) !== '-->' && i < textString.length) {
+                template += textString[i++];
+            }
+
+            shaderArray.push({
+                color: colors.annotation,
+                content: template + nextNValue(3)
+            });
+            i += 3;
+            template = "";
+
+        }
+
+        /* 2.CDATA */
+
+        else if (nextNValue(9) == '<![CDATA[') {
+
+            initTemplate();
+            while (nextNValue(3) !== ']]>' && i < textString.length) {
+                template += textString[i++];
+            }
+
+            shaderArray.push({
+                color: colors.attrValue,
+                content: template + nextNValue(3)
+            });
+            i += 3;
+            template = "";
+
+        }
+
+        /* 3.xml声明 */
+
+        else if (nextNValue(2) == '<?') {
+
+            initTemplate();
+            shaderArray.push({
+                color: colors.insign,
+                content: "<?"
+            });
+            i += 2;
+
+            // 声明名称（如xml）
+            while (nextNValue(1) != '?' && nextNValue(1) != ' ' && i < textString.length) {
+                template += textString[i++];
+            }
+            if (template != "") {
+                shaderArray.push({
+                    color: colors.node,
+                    content: template
+                });
+                template = "";
+            }
+
+            getAttrTemplate(true);
+
+        }
+
+        /* 4.结束标签 */
+
+        else if (nextNValue(2) == '</') {
+
+            initTemplate();
+            shaderArray.push({
+                color: colors.insign,
+                content: "</"
+            });
+            i += 2;
+
+            while (nextNValue(1) !== '>' && i < textString.length) {
+                template += textString[i++];
+            }
+
+            if (template != "") {
+                shaderArray.push({
+                    color: colors.node,
+                    content: template
+                });
+                template = "";
+
+                if (i < textString.length) {
+                    shaderArray.push({
+                        color: colors.insign,
+                        content: ">"
+                    });
+                    i += 1;
+                }
+
+            }
+        }
+
+        /* 5.开始标签 */
+
+        else if (nextNValue(1) == '<') {
+
+            initTemplate();
+            shaderArray.push({
+                color: colors.insign,
+                content: "<"
+            });
+            i += 1;
+
+            // 寻找标签名称
+            while (nextNValue(1) != '>' && nextNValue(1) != '/' && nextNValue(1) != ' ' && i < textString.length) {
+                template += textString[i++];
+            }
+            if (template != "") {
+                shaderArray.push({
+                    color: colors.node,
+                    content: template
+                });
+                template = "";
+
+                getAttrTemplate(false);
             }
 
         }
@@ -1470,6 +1769,215 @@ var _cShader = function (textString, colors) {
     return shaderArray;
 };
 
+var _kotlinShader = function (textString, colors) {
+
+    // Kotlin关键字
+    var keyWords = [
+        // 硬关键字
+        "as", "break", "class", "continue", "do",
+        "else", "false", "for", "fun", "if",
+        "in", "interface", "is", "null", "object",
+        "package", "return", "super", "this", "throw",
+        "true", "try", "typealias", "typeof", "val",
+        "var", "when", "while",
+        // 软关键字
+        "by", "catch", "constructor", "delegate", "dynamic",
+        "field", "file", "finally", "get", "import",
+        "init", "param", "property", "receiver", "set",
+        "setparam", "where",
+        // 修饰符
+        "abstract", "actual", "annotation", "companion", "const",
+        "crossinline", "data", "enum", "expect", "external",
+        "final", "infix", "inline", "inner", "internal",
+        "lateinit", "noinline", "open", "operator", "out",
+        "override", "private", "protected", "public", "reified",
+        "sealed", "suspend", "tailrec", "vararg"
+    ];
+
+    var shaderArray = [];
+
+    // 当前面对的
+    var i = 0;
+
+    // 获取往后n个值
+    var nextNValue = function (n) {
+        return textString.substring(i, n + i > textString.length ? textString.length : n + i);
+    };
+
+    var template = "";
+
+    // 初始化模板，开始文本捕获
+    var initTemplate = function () {
+        if (template != "") {
+
+            // 考虑开始的(
+            if (template[0] == '(') {
+                shaderArray.push({
+                    color: colors.insign,
+                    content: "("
+                });
+                template = template.substring(1);
+            }
+
+            shaderArray.push({
+                color: colors.text,
+                content: template
+            });
+        }
+
+        template = "";
+    };
+
+    while (true) {
+
+        /* 1.注释1 */
+
+        if (nextNValue(2) == '/*') {
+
+            initTemplate();
+            while (nextNValue(2) !== '*/' && i < textString.length) {
+                template += textString[i++];
+            }
+
+            shaderArray.push({
+                color: colors.annotation,
+                content: template + nextNValue(2)
+            });
+            i += 2;
+            template = "";
+
+        }
+
+        /* 2.注释2 */
+
+        else if (nextNValue(2) == '//') {
+            initTemplate();
+            while (nextNValue(1) !== '\n' && i < textString.length) {
+                template += textString[i++];
+            }
+            shaderArray.push({
+                color: colors.annotation,
+                content: template
+            });
+            template = "";
+        }
+
+        /* 3.字符串 */
+
+        else if (["'", '"', '`'].indexOf(nextNValue(1)) > -1) {
+
+            var strBorder = nextNValue(1);
+            initTemplate();
+
+            // 三引号字符串（Kotlin 原生字符串）
+            if (nextNValue(3) == '"""' || nextNValue(3) == "'''") {
+                var triBorder = nextNValue(3);
+                template += triBorder;
+                i += 3;
+                while (nextNValue(3) != triBorder && i < textString.length) {
+                    template += textString[i++];
+                }
+                if (i < textString.length) {
+                    template += triBorder;
+                    i += 3;
+                }
+                shaderArray.push({
+                    color: colors.string,
+                    content: template
+                });
+                template = "";
+            } else {
+                do {
+                    template += textString[i++];
+                    // 处理转义字符
+                    if (nextNValue(1) == '\\') {
+                        template += textString[i++];
+                        template += textString[i++];
+                    }
+                } while (nextNValue(1) != strBorder && i < textString.length)
+
+                // 因为可能是没有字符导致的结束
+                if (nextNValue(1) != strBorder) {
+                    strBorder = "";
+                } else {
+                    i += 1;
+                }
+
+                shaderArray.push({
+                    color: colors.string,
+                    content: template + strBorder
+                });
+                template = "";
+            }
+
+        }
+
+        /* 4.函数定义 */
+
+        else if (nextNValue(1) == '(' && (template[0] == ' ' || (i - template.length - 1 >= 0 && textString[i - template.length - 1] == " "))) {
+            shaderArray.push({
+                color: colors.funName,
+                content: template
+            });
+            i += 1;
+            template = "(";
+
+        }
+
+        /* 5.方法调用 */
+
+        else if (nextNValue(1) == '(') {
+
+            shaderArray.push({
+                color: colors.execName,
+                content: template
+            });
+            i += 1;
+            template = "(";
+        }
+
+        /* 6.边界 */
+
+        else if ([";", '{', '}', '(', ')', '.', '\n', '=', '+', '>', '<', '[', ']', '-', '*', '/', '^', '*', '!', '@', '?', ':'].indexOf(nextNValue(1)) > -1) {
+
+            initTemplate();
+            shaderArray.push({
+                color: colors.insign,
+                content: nextNValue(1)
+            });
+            template = "";
+            i += 1;
+        }
+
+        /* 7.关键字 */
+
+        else if (nextNValue(1) == ' ' && keyWords.indexOf(template.trim()) > -1) {
+
+            shaderArray.push({
+                color: colors.key,
+                content: template + " "
+            });
+            template = "";
+            i += 1;
+
+        }
+
+        /* 追加字符 */
+
+        else {
+            if (i >= textString.length) {
+                initTemplate();
+                break;
+            } else {
+                template += textString[i++];
+            }
+        }
+
+    }
+
+    return shaderArray;
+};
+
 var _shellShader = function (textString, colors) {
     // Shell关键字和内置命令
     var keyWords = [
@@ -1919,6 +2427,10 @@ window.doShader = function (el) {
                 shaderJSON = _htmlShader(source, htmlColors);
                 break
             }
+            case "xml": {
+                shaderJSON = _xmlShader(source, xmlColors);
+                break
+            }
             case "css": {
                 shaderJSON = _cssShader(source, cssColors);
                 break
@@ -1945,6 +2457,10 @@ window.doShader = function (el) {
             }
             case "c": {
                 shaderJSON = _cShader(source, cColors);
+                break
+            }
+            case "kotlin": {
+                shaderJSON = _kotlinShader(source, kotlinColors);
                 break
             }
             case "shell": {

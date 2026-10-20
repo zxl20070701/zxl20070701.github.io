@@ -1,0 +1,50 @@
+<header>
+    RelativeLayout（相对布局）
+</header>
+<p>
+    RelativeLayout 通过相对参照（父容器或兄弟控件）来定位子视图。
+</p>
+<h2>
+    常用属性
+</h2>
+<h3>
+    相对于父容器
+</h3>
+<ul>
+    <li>android:layout_alignParentStart / End / Top / Bottom</li>
+    <li>android:layout_centerInParent / centerHorizontal / centerVertical</li>
+</ul>
+<h3>
+    相对于兄弟控件
+</h3>
+<ul>
+    <li>android:layout_toStartOf / toEndOf</li>
+    <li>android:layout_above / below</li>
+    <li>android:layout_alignStart / alignTop / alignEnd / alignBottom</li>
+</ul>
+<h2>
+    示例
+</h2>
+<pre tag="xml">
+&lt;RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"&gt;
+
+    &lt;TextView
+        android:id="@+id/tv_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="顶部居中" /&gt;
+
+    &lt;Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_top"
+        android:layout_alignParentEnd="true"
+        android:text="右下角按钮" /&gt;
+
+&lt;/RelativeLayout&gt;
+</pre>

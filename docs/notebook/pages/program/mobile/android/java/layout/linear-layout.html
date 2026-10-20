@@ -1,0 +1,84 @@
+<header>
+    LinearLayout（线性布局）
+</header>
+<p>
+    LinearLayout 是 Android 中最常用的布局之一，将子视图按水平或垂直方向依次排列。
+</p>
+<h2>
+    属性
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>名称</td>
+            <td>描述</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>android:orientation</td>
+            <td>排列方向，vertical（默认） 或 horizontal。</td>
+        </tr>
+        <tr>
+            <td>android:layout_width</td>
+            <td>布局宽度，常用 match_parent、wrap_content、固定 dp。</td>
+        </tr>
+        <tr>
+            <td>android:layout_height</td>
+            <td>布局高度，取值同上。</td>
+        </tr>
+        <tr>
+            <td>android:gravity</td>
+            <td>内部子元素的对齐方式。</td>
+        </tr>
+        <tr>
+            <td>android:layout_weight</td>
+            <td>按比例分配剩余空间（常用于宽度或高度分配）。</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    示例：垂直方向
+</h2>
+<pre tag="xml">
+&lt;LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"&gt;
+
+    &lt;TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="第一行" /&gt;
+
+    &lt;TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="第二行" /&gt;
+
+&lt;/LinearLayout&gt;
+</pre>
+<h2>
+    示例：水平方向 + weight
+</h2>
+<pre tag="xml">
+&lt;LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"&gt;
+
+    &lt;Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="按钮1" /&gt;
+
+    &lt;Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="按钮2" /&gt;
+
+&lt;/LinearLayout&gt;
+</pre>
