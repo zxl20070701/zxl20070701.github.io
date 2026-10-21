@@ -1,0 +1,91 @@
+<header>
+    算术运算符
+</header>
+<p>
+    算术运算符用于执行基本的数学运算。Kotlin 中所有数值类型（Byte、Short、Int、Long、Float、Double）都支持下面的算术运算符，且 <span class="special">+</span>、<span class="special">*</span> 还可以用于字符串拼接与重复。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>运算符</th>
+            <th>描述</th>
+            <th>示例</th>
+            <th>结果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>+</td>
+            <td>加法 / 一元正号 / 字符串拼接</td>
+            <td>5 + 3 / +5 / "ab" + "cd"</td>
+            <td>8 / 5 / "abcd"</td>
+        </tr>
+        <tr>
+            <td>-</td>
+            <td>减法 / 一元负号</td>
+            <td>10 - 4 / -5</td>
+            <td>6 / -5</td>
+        </tr>
+        <tr>
+            <td>*</td>
+            <td>乘法 / 字符串重复</td>
+            <td>3 * 4 / "ab" * 2</td>
+            <td>12 / "abab"</td>
+        </tr>
+        <tr>
+            <td>/</td>
+            <td>除法</td>
+            <td>7 / 2</td>
+            <td>3（Int 之间是整数除法）</td>
+        </tr>
+        <tr>
+            <td>%</td>
+            <td>取余 / 取模</td>
+            <td>7 % 3 / -7 % 3</td>
+            <td>1 / -1</td>
+        </tr>
+        <tr>
+            <td>++</td>
+            <td>自增</td>
+            <td>a++ / ++a</td>
+            <td>先返回后自增 / 先自增后返回</td>
+        </tr>
+        <tr>
+            <td>--</td>
+            <td>自减</td>
+            <td>a-- / --a</td>
+            <td>同上</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+val a = 10
+val b = 3
+
+println(a + b) // 13
+println(a - b) // 7
+println(a * b) // 30
+println(a / b) // 3，Int 之间相除是整数除法
+println(a % b) // 1
+
+// 浮点数之间才是真正的除法
+val x = 10.0 / 3.0
+println(x) // 3.3333333333333335
+
+// 一元运算
+val p = 5
+println(+p) // 5
+println(-p) // -5
+
+// 自增自减
+var i = 1
+val a1 = i++ // a1 = 1, i = 2
+val a2 = ++i // a2 = 3, i = 3
+
+// 字符串相关
+val s = "ab" + "cd" // "abcd"
+val r = "ha" * 3    // "hahaha"
+</pre>
+<p class="warn">
+    Kotlin 没有 Java 中的三目运算符，取而代之的是 <span class="special">if</span> 表达式或 <span class="special">when</span>。
+</p>

@@ -1,0 +1,238 @@
+<header>
+    Collection（集合）
+</header>
+<p>
+    Kotlin 标准库提供丰富的集合类型。集合分两大类：<span class="warn">只读</span>集合（<span class="special">List</span>、<span class="special">Set</span>、<span class="special">Map</span>）与<span class="warn">可变</span>集合（<span class="special">MutableList</span>、<span class="special">MutableSet</span>、<span class="special">MutableMap</span>）。默认推荐使用只读集合，只在确实需要修改时才用可变集合。
+</p>
+<h2>
+    List
+</h2>
+<pre tag="kotlin">
+// 创建只读 List
+val list1 = listOf("Kotlin", "Java", "JS")
+val list2 = listOf(1, 2, 3, 4)
+
+// 创建可变 List
+val mlist = mutableListOf("a", "b", "c")
+mlist.add("d")
+mlist.remove("b")
+
+// 元素访问
+println(list1[0])      // Kotlin
+println(list1.first()) // Kotlin
+println(list1.last())  // JS
+println(list1.size)    // 3
+
+// 判断
+println(list1.contains("Kotlin"))   // true
+println(list1.indexOf("Java"))      // 1
+println(list1.containsAll(listOf("Kotlin","JS"))) // true
+
+// 增删改
+val mlist2 = mutableListOf(1, 2, 3)
+mlist2.add(4)         // [1, 2, 3, 4]
+mlist2.add(0, 0)      // [0, 1, 2, 3, 4]
+mlist2.remove(2)      // 移除第一个等于 2 的元素
+mlist2.removeAt(0)    // 移除下标 0
+mlist2[1] = 100       // 修改
+</pre>
+<h2>
+    Set
+</h2>
+<p>
+    Set 中的元素是不可重复的。
+</p>
+<pre tag="kotlin">
+// 只读 Set
+val set1 = setOf(1, 2, 3, 3) // 重复元素会被去重，[1, 2, 3]
+
+// 可变 Set
+val mset = mutableSetOf("a", "b", "c")
+mset.add("a") // 已存在，不会有变化
+mset.remove("b")
+
+// 数学运算
+val a = setOf(1, 2, 3, 4)
+val b = setOf(3, 4, 5, 6)
+
+println(a intersect b) // [3, 4]
+println(a union b)     // [1, 2, 3, 4, 5, 6]
+println(a - b)         // [1, 2]
+println(b - a)         // [5, 6]
+
+// 判断
+println(a.containsAll(setOf(1, 2))) // true
+</pre>
+<h2>
+    Map
+</h2>
+<pre tag="kotlin">
+// 只读 Map
+val map = mapOf(
+    "name" to "Kotlin",
+    "version" to 1.9,
+    "year" to 2016
+)
+
+// 可变 Map
+val mmap = mutableMapOf<String, Int>()
+mmap["Alice"] = 90
+mmap["Bob"] = 85
+
+// 取值
+println(map["name"])      // Kotlin
+println(map.getValue("name"))
+println(map.getOrDefault("author", "JetBrains")) // 默认值
+
+// 取键、值、条目
+println(map.keys)   // [name, version, year]
+println(map.values) // [Kotlin, 1.9, 2016]
+println(map.entries)
+
+// 遍历
+for ((k, v) in map) {
+    println("$k -> $v")
+}
+
+// 修改
+mmap["Alice"] = 95   // 修改
+mmap.remove("Bob")   // 删除
+mmap.putIfAbsent("Carol", 70) // 不存在才放
+</pre>
+<h2>
+    集合的常用函数
+</h2>
+<pre tag="kotlin">
+val nums = listOf(3, 1, 4, 1, 5, 9, 2, 6)
+
+// 元素访问
+println(nums.first())            // 3
+println(nums.last())             // 6
+println(nums.elementAt(2))       // 4
+println(nums.firstOrNull { it > 100 }) // null
+
+// 聚合
+println(nums.sum())              // 31
+println(nums.average())          // 3.875
+println(nums.count { it > 3 })   // 4
+println(nums.maxOrNull())        // 9
+println(nums.minOrNull())        // 1
+
+// 过滤
+val even = nums.filter { it % 2 == 0 }   // [4, 2, 6]
+val not = nums.filterNot { it % 2 == 0 } // [3, 1, 1, 5, 9]
+val first3 = nums.take(3)               // [3, 1, 4]
+val drop3 = nums.drop(3)                // [1, 5, 9, 2, 6]
+
+// 映射
+val sq = nums.map { it * it }           // [9, 1, 16, 1, 25, 81, 4, 36]
+
+// 排序
+val asc = nums.sorted()                 // [1, 1, 2, 3, 4, 5, 6, 9]
+val desc = nums.sortedDescending()
+val byMod = nums.sortedBy { it % 3 }
+
+// 转换与扁平化
+val pairs = nums.map { listOf(it, it * 10) }
+println(pairs.flatten()) // [3, 30, 1, 10, ...]
+
+// 分组与分区
+val grouped = nums.groupBy { if (it % 2 == 0) "偶数" else "奇数" }
+println(grouped) // {奇数=[3, 1, 1, 5, 9], 偶数=[4, 2, 6]}
+
+// 折叠
+val sum = nums.reduce { acc, n -> acc + n }
+val total = nums.fold(100) { acc, n -> acc + n } // 131
+</pre>
+<h2>
+    序列（Sequence）
+</h2>
+<p>
+    当集合很大，并且需要执行多次延迟操作（<span class="special">map</span>、<span class="special">filter</span>…）时，可以转成 <span class="warn">Sequence</span> 减少中间集合的产生。
+</p>
+<pre tag="kotlin">
+val nums = (1..1_000_000).toList()
+
+// 直接操作集合：会立即产生中间集合
+val result1 = nums.filter { it % 3 == 0 }
+    .map { it * it }
+    .take(5)
+
+// 用 asSequence：惰性求值
+val result2 = nums.asSequence()
+    .filter { it % 3 == 0 }
+    .map { it * it }
+    .take(5)
+    .toList()
+
+println(result2) // [9, 36, 81, 144, 225]
+</pre>
+<h2>
+    集合与数组互转
+</h2>
+<pre tag="kotlin">
+val arr = intArrayOf(1, 2, 3)
+val list = arr.toList()
+val ml = arr.toMutableList()
+
+val back = list.toIntArray()
+val mlist = mutableListOf("a", "b", "c")
+val array = mlist.toTypedArray()
+</pre>
+<h2>
+    常用内置函数速查
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>函数</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>forEach / forEachIndexed</td>
+            <td>遍历</td>
+        </tr>
+        <tr>
+            <td>map / mapIndexed</td>
+            <td>逐元素变换</td>
+        </tr>
+        <tr>
+            <td>filter / filterNot</td>
+            <td>过滤</td>
+        </tr>
+        <tr>
+            <td>any / all / none</td>
+            <td>判断元素是否满足条件</td>
+        </tr>
+        <tr>
+            <td>count / sum / average / maxOrNull / minOrNull</td>
+            <td>聚合</td>
+        </tr>
+        <tr>
+            <td>find / firstOrNull</td>
+            <td>查找首个匹配元素</td>
+        </tr>
+        <tr>
+            <td>groupBy / partition</td>
+            <td>分组</td>
+        </tr>
+        <tr>
+            <td>sorted / sortedBy / sortedDescending</td>
+            <td>排序</td>
+        </tr>
+        <tr>
+            <td>take / drop</td>
+            <td>取/丢前 n 个</td>
+        </tr>
+        <tr>
+            <td>flatten / flatMap</td>
+            <td>扁平化</td>
+        </tr>
+        <tr>
+            <td>reduce / fold</td>
+            <td>累积计算</td>
+        </tr>
+    </tbody>
+</table>

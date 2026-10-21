@@ -1,0 +1,120 @@
+<header>
+    运算符优先级
+</header>
+<p>
+    Kotlin 中运算符本质上都是函数，按照函数的优先级决定计算顺序。括号 <span class="special">()</span> 的优先级最高，所有不确定优先级的地方推荐加括号。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>优先级</th>
+            <th>类别</th>
+            <th>运算符</th>
+            <th>结合性</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>高</td>
+            <td>后缀</td>
+            <td><span class="warn">++</span> <span class="warn">--</span> <span class="warn">?.</span> <span class="warn">?:</span> <span class="warn">.</span> <span class="warn">[]</span> <span class="warn">()</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>前缀</td>
+            <td><span class="warn">-</span> <span class="warn">+</span> <span class="warn">!</span> <span class="warn">not</span> <span class="warn">++</span> <span class="warn">--</span></td>
+            <td>右</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>区间</td>
+            <td><span class="warn">..</span></td>
+            <td>右</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>乘性</td>
+            <td><span class="warn">*</span> <span class="warn">/</span> <span class="warn">%</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>加性</td>
+            <td><span class="warn">+</span> <span class="warn">-</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>区间扩展</td>
+            <td><span class="warn">until</span> <span class="warn">downTo</span> <span class="warn">step</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>位移</td>
+            <td><span class="warn">shl</span> <span class="warn">shr</span> <span class="warn">ushr</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>比较</td>
+            <td><span class="warn">&lt;</span> <span class="warn">&lt;=</span> <span class="warn">&gt;</span> <span class="warn">&gt;=</span> <span class="warn">in</span> <span class="warn">!in</span> <span class="warn">is</span> <span class="warn">!is</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>相等</td>
+            <td><span class="warn">==</span> <span class="warn">!=</span> <span class="warn">===</span> <span class="warn">!==</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>位与</td>
+            <td><span class="warn">and</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>位异或</td>
+            <td><span class="warn">xor</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>位或</td>
+            <td><span class="warn">or</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>短路与</td>
+            <td><span class="warn">&amp;&amp;</span></td>
+            <td>左</td>
+        </tr>
+        <tr>
+            <td>低</td>
+            <td>短路或</td>
+            <td><span class="warn">||</span></td>
+            <td>左</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+// 算术运算优先级
+val r1 = 2 + 3 * 4        // 14，先乘后加
+val r2 = (2 + 3) * 4      // 20
+
+// 位运算、比较与短路逻辑混合
+val r3 = 1 + 2 shl 2      // (1 + 2) << 2 = 12
+val r4 = 1 + (2 shl 2)    // 1 + 8 = 9
+
+// in 优先级较低
+val r5 = 5 in 1..10 && true  // (5 in 1..10) && true
+
+// 不确定就加括号
+val r6 = (a + b) and (c or d)
+</pre>
+<p class="warn">
+    单词形式运算符（如 <span class="special">and</span>、<span class="special">or</span>、<span class="special">xor</span>）的优先级与对应的短路运算符（<span class="special">&amp;&amp;</span>、<span class="special">||</span>、<span class="special">^</span>）一致。单词形式是函数调用，整个表达式两侧都会被求值。
+</p>

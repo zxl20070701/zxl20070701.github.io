@@ -1,0 +1,167 @@
+<header>
+    Number（数字）
+</header>
+<p>
+    Kotlin 的数字类型和 Java 非常相似，但在代码层面它们都是对象，可以调用方法（例如 <span class="special">toDouble()</span>）。整数类型有 <span class="special">Byte</span>、<span class="special">Short</span>、<span class="special">Int</span>、<span class="special">Long</span>，浮点类型有 <span class="special">Float</span> 和 <span class="special">Double</span>，另外还有字符 <span class="special">Char</span> 和布尔 <span class="special">Boolean</span>。
+</p>
+<h2>
+    整数类型
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>宽度</th>
+            <th>取值范围</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Byte</td>
+            <td>8 位</td>
+            <td>-128 ~ 127</td>
+        </tr>
+        <tr>
+            <td>Short</td>
+            <td>16 位</td>
+            <td>-32768 ~ 32767</td>
+        </tr>
+        <tr>
+            <td>Int</td>
+            <td>32 位</td>
+            <td>-2³¹ ~ 2³¹-1</td>
+        </tr>
+        <tr>
+            <td>Long</td>
+            <td>64 位</td>
+            <td>-2⁶³ ~ 2⁶³-1</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+val a: Int = 100
+val b: Long = 100L         // 必须加 L，否则默认推断为 Int
+val c: Byte = 1            // 推断失败时会编译报错
+val d: Short = 30_000      // 可以用下划线增加可读性
+
+// 进制表示
+val hex = 0xFF             // 255
+val bin = 0b0000_0011      // 3
+val oct = 0o17             // 15（Kotlin 不支持八进制字面量，仅这里举例）
+</pre>
+<p class="warn">
+    八进制字面量在 Kotlin 中已废弃，请使用 <span class="special">0b</span>（二进制）或 <span class="special">0x</span>（十六进制）。
+</p>
+<h2>
+    浮点类型
+</h2>
+<pre tag="kotlin">
+val pi: Double = 3.14159   // 默认推断为 Double
+val e: Float = 2.71828F    // 必须加 F
+val big = 1.23e5           // 科学计数法 → 123000.0
+
+// 浮点精度问题
+println(0.1 + 0.2)        // 0.30000000000000004
+println(0.1 + 0.2 == 0.3)  // false
+
+// 使用 BigDecimal 做精确计算
+import java.math.BigDecimal
+val sum = BigDecimal("0.1").add(BigDecimal("0.2"))
+println(sum)               // 0.3
+</pre>
+<h2>
+    类型转换
+</h2>
+<p>
+    Kotlin 不支持 Java 那种小类型自动提升到大类型，所有转换必须显式调用方法。
+</p>
+<pre tag="kotlin">
+val i: Int = 10
+val l: Long = i.toLong()
+val d: Double = i.toDouble()
+val s: String = i.toString()
+
+// 字符串转数字
+val n: Int = "123".toInt()
+val safe: Int? = "abc".toIntOrNull() // 失败返回 null
+</pre>
+<h2>
+    常用数学运算
+</h2>
+<pre tag="kotlin">
+val a = 10
+val b = 3
+
+println(a + b) // 13
+println(a - b) // 7
+println(a * b) // 30
+println(a / b) // 3  （Int 之间相除是整数除法）
+println(a % b) // 1
+
+// Double / Float 之间才是真正的除法
+val x = 10.0 / 3.0 // 3.3333333333333335
+
+// 自增自减
+var c = 1
+c++ // 2
+c-- // 1
+</pre>
+<h2>
+    复合赋值运算符
+</h2>
+<pre tag="kotlin">
+var n = 5
+n += 3   // n = 8
+n -= 2   // n = 6
+n *= 4   // n = 24
+n /= 3   // n = 8
+n %= 5   // n = 3
+</pre>
+<h2>
+    位运算
+</h2>
+<pre tag="kotlin">
+val a = 0b1100
+val b = 0b1010
+
+println(a and b)   // 1000 = 8
+println(a or b)    // 1110 = 14
+println(a xor b)   // 0110 = 6
+println(a shl 1)   // 1_1000 = 24
+println(a shr 1)   // 0110 = 6
+println(a ushr 1)  // 无符号右移
+println(a.inv())   // 按位取反
+</pre>
+<h2>
+    Char 与 Boolean
+</h2>
+<pre tag="kotlin">
+// Char 用单引号，UTF-16 编码
+val c1: Char = 'A'
+val c2: Char = '\n'
+val c3: Char = '\u0041' // Unicode 转义
+println(c1.code)        // 65，code 属性返回 Int
+
+// 比较数字字符
+fun isDigit(ch: Char): Boolean = ch in '0'..'9'
+
+// Boolean
+val isOk: Boolean = true
+val isAdult = age >= 18
+</pre>
+<h2>
+    随机数
+</h2>
+<pre tag="kotlin">
+import kotlin.random.Random
+
+// [0, 1)
+println(Random.nextDouble())
+
+// [1, 10]
+println(Random.nextInt(1, 11))
+
+// 设置随机种子以便复现结果
+val rng = Random(42)
+println(rng.nextInt())
+</pre>

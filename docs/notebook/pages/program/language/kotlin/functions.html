@@ -1,0 +1,178 @@
+<header>
+    函数基础概念
+</header>
+<p>
+    Kotlin 中使用 <span class="warn">fun</span> 关键字定义函数，函数可以独立存在，不必写在类里，这就是所谓的“顶层函数”。Kotlin 函数支持默认参数、命名参数、扩展函数、Lambda 等特性，灵活度比 Java 高很多。
+</p>
+<h2>
+    基本语法
+</h2>
+<pre tag="kotlin">
+fun 函数名(参数列表): 返回类型 {
+    // 函数体
+    return 值
+}
+</pre>
+<h3>示例</h3>
+<pre tag="kotlin">
+// 完整写法
+fun add(a: Int, b: Int): Int {
+    return a + b
+}
+
+// 单表达式函数，推荐用等号表示
+fun multiply(a: Int, b: Int): Int = a * b
+
+// 返回类型可推断时，可以省略
+fun greet(name: String) = "Hello, $name!"
+
+// 没有返回值，使用 Unit（类似 void）
+fun printInfo(name: String): Unit {
+    println("姓名: $name")
+}
+
+// 可以简写为
+fun printInfo2(name: String) {
+    println("姓名: $name")
+}
+
+println(add(1, 2))         // 3
+println(multiply(3, 4))    // 12
+println(greet("Kotlin"))   // Hello, Kotlin
+printInfo("Alice")
+</pre>
+<h2>
+    默认参数
+</h2>
+<p>
+    Kotlin 函数参数可以带默认值，调用方可以省略。
+</p>
+<pre tag="kotlin">
+fun greet(name: String = "World", prefix: String = "Hello"): String {
+    return "$prefix, $name!"
+}
+
+println(greet())                       // Hello, World!
+println(greet("Kotlin"))               // Hello, Kotlin!
+println(greet(prefix = "Hi"))          // Hi, World!
+println(greet("Kotlin", "Hi"))         // Hi, Kotlin!
+println(greet(prefix = "Hi", name = "Kotlin")) // 命名参数顺序无关
+</pre>
+<h2>
+    命名参数
+</h2>
+<p>
+    调用函数时，参数顺序也可以打乱，只要通过名字指定即可。
+</p>
+<pre tag="kotlin">
+fun config(host: String, port: Int, enableLog: Boolean) {
+    println("$host:$port, log=$enableLog")
+}
+
+config(host = "127.0.0.1", port = 8080, enableLog = true)
+config(enableLog = false, port = 80, host = "localhost") // 顺序可乱
+</pre>
+<h2>
+    可变参数（vararg）
+</h2>
+<pre tag="kotlin">
+// 一个参数可以接收任意多个同类型参数
+fun sum(vararg nums: Int): Int {
+    return nums.sum()
+}
+
+println(sum(1, 2, 3))           // 6
+println(sum(1, 2, 3, 4, 5))     // 15
+
+// 传数组时加 * 展开
+val arr = intArrayOf(1, 2, 3)
+println(sum(*arr))              // 6
+</pre>
+<h2>
+    局部函数
+</h2>
+<p>
+    函数内部可以定义函数，常用于抽取重复逻辑。
+</p>
+<pre tag="kotlin">
+fun isAdult(age: Int): Boolean {
+    fun parsePositive(value: Int): Int = if (value < 0) 0 else value
+    return parsePositive(age) >= 18
+}
+println(isAdult(20)) // true
+</pre>
+<h2>
+    单表达式函数
+</h2>
+<p>
+    函数体只有一句表达式时，可以用 <span class="special">=</span> 简化语法。
+</p>
+<pre tag="kotlin">
+fun double(x: Int): Int = x * 2
+fun isEven(n: Int): Boolean = n % 2 == 0
+fun describe(obj: Any): String = when (obj) {
+    1 -> "One"
+    "Hello" -> "字符串"
+    is Long -> "Long 类型"
+    else -> "其他"
+}
+</pre>
+<h2>
+    扩展函数
+</h2>
+<p>
+    Kotlin 允许在不修改类源码的情况下，为现有类添加新函数，调用方式与成员函数完全相同。
+</p>
+<pre tag="kotlin">
+// 为 String 添加一个 .last 符号！
+fun String.last(): String {
+    if (isEmpty()) return ""
+    return this[length - 1].toString()
+}
+</pre>
+<h2>
+    泛型函数
+</h2>
+<pre tag="kotlin">
+fun &lt;T&gt; identity(value: T): T = value
+
+println(identity(123))      // 123
+println(identity("Kotlin")) // Kotlin
+</pre>
+<h2>
+    内联函数（inline）
+</h2>
+<p>
+    以 <span class="warn">inline</span> 修饰的函数，编译器会把函数体直接展开到调用处，避免 Lambda 产生额外对象。适合参数里有 Lambda 且没有重载的小函数。
+</p>
+<pre tag="kotlin">
+inline fun measure(block: () -> Unit): Long {
+    val start = System.nanoTime()
+    block()
+    return System.nanoTime() - start
+}
+
+val t = measure {
+    (1..100_000).sum()
+}
+println("耗时 $t ns")
+</pre>
+<h2>
+    函数引用（::）
+</h2>
+<p>
+    可以用 <span class="warn">::</span> 把函数作为值传递给高阶函数。
+</p>
+<pre tag="kotlin">
+fun isOdd(n: Int): Boolean = n % 2 != 0
+
+val list = listOf(1, 2, 3, 4, 5)
+// 把 isOdd 当成谓词传进去
+val odds = list.filter(::isOdd)
+println(odds) // [1, 3, 5]
+
+// 绑定方法引用
+val name = "kotlin"
+val upper = name::uppercase
+println(upper()) // KOTLIN
+</pre>

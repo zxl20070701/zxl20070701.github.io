@@ -1,0 +1,89 @@
+<header>
+    比较运算符
+</header>
+<p>
+    比较运算符用于比较两个值，结果为 <span class="special">Boolean</span>。Kotlin 中的 <span class="special">==</span> 比较的是结构相等（内容），而 <span class="special">===</span> 比较的是引用相等（地址），这一点和 Java 的 <span class="special">==</span> 不同。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>运算符</th>
+            <th>描述</th>
+            <th>示例</th>
+            <th>结果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>&lt;</td>
+            <td>小于</td>
+            <td>1 &lt; 2</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>&lt;=</td>
+            <td>小于等于</td>
+            <td>2 &lt;= 2</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>&gt;</td>
+            <td>大于</td>
+            <td>3 &gt; 1</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>&gt;=</td>
+            <td>大于等于</td>
+            <td>2 &gt;= 3</td>
+            <td>false</td>
+        </tr>
+        <tr>
+            <td>==</td>
+            <td>结构相等（内容相同）</td>
+            <td>"Kotlin" == "Kotlin"</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>!=</td>
+            <td>结构不等</td>
+            <td>1 != 2</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>===</td>
+            <td>引用相等（同一对象）</td>
+            <td>obj1 === obj2</td>
+            <td>true / false</td>
+        </tr>
+        <tr>
+            <td>!==</td>
+            <td>引用不等</td>
+            <td>obj1 !== obj2</td>
+            <td>true / false</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+val a = 1
+val b = 2
+
+println(a < b)    // true
+println(a <= b)   // true
+println(a > b)    // false
+println(a >= b)   // false
+println(a == b)   // false
+println(a != b)   // true
+
+// 字符串字典序比较
+println("apple" < "banana")  // true
+
+// === 与 == 的差异
+val s1 = String(charArrayOf('a', 'b'))
+val s2 = String(charArrayOf('a', 'b'))
+println(s1 == s2)   // true，内容相等
+println(s1 === s2)  // false，是不同对象
+</pre>
+<p class="warn">
+    Kotlin 中 <span class="special">==</span> 比较结构相等（内容），而 <span class="special">===</span> 比较引用相等（地址）。这一点和 Java 不同。
+</p>

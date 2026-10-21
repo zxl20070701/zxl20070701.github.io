@@ -1,0 +1,67 @@
+<header>
+    赋值运算符
+</header>
+<p>
+    赋值运算符用来给变量赋值。Kotlin 中 <span class="special">=</span> 用于赋值，<span class="special">==</span> 用于比较，这一点和 C、Java 一致。除此之外 Kotlin 还提供了 <span class="special">+=</span>、<span class="special">-=</span> 等复合赋值运算符，它们会就地修改左边的变量并返回新值。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>运算符</th>
+            <th>描述</th>
+            <th>示例</th>
+            <th>等价于</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>=</td>
+            <td>简单赋值</td>
+            <td>a = 5</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>+=</td>
+            <td>加后赋值</td>
+            <td>a += 3</td>
+            <td>a = a + 3</td>
+        </tr>
+        <tr>
+            <td>-=</td>
+            <td>减后赋值</td>
+            <td>a -= 3</td>
+            <td>a = a - 3</td>
+        </tr>
+        <tr>
+            <td>*=</td>
+            <td>乘后赋值</td>
+            <td>a *= 3</td>
+            <td>a = a * 3</td>
+        </tr>
+        <tr>
+            <td>/=</td>
+            <td>除后赋值</td>
+            <td>a /= 3</td>
+            <td>a = a / 3</td>
+        </tr>
+        <tr>
+            <td>%=</td>
+            <td>取模后赋值</td>
+            <td>a %= 3</td>
+            <td>a = a % 3</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+var n = 5
+n += 3   // n = 8
+n -= 2   // n = 6
+n *= 4   // n = 24
+n /= 3   // n = 8
+n %= 5   // n = 3
+
+println(n) // 3
+</pre>
+<p class="warn">
+    <span class="special">val</span> 声明的是只读变量，不能使用任何赋值运算符重新赋值；<span class="special">var</span> 声明的可变变量才能使用 <span class="special">+=</span>、<span class="special">-=</span> 等复合赋值运算符。
+</p>

@@ -1,0 +1,67 @@
+<header>
+    位运算符
+</header>
+<p>
+    Kotlin 的位运算用单词而不是符号，原因是符号形式（<span class="special">&amp;</span>、<span class="special">|</span>、<span class="special">&lt;&lt;</span> 等）可能与变量名或普通字符混淆。所有位运算符都适用于 <span class="special">Int</span> 和 <span class="special">Long</span>。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>Java 写法</th>
+            <th>Kotlin 写法</th>
+            <th>含义</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>&amp;</td>
+            <td>and</td>
+            <td>按位与</td>
+        </tr>
+        <tr>
+            <td>|</td>
+            <td>or</td>
+            <td>按位或</td>
+        </tr>
+        <tr>
+            <td>^</td>
+            <td>xor</td>
+            <td>按位异或</td>
+        </tr>
+        <tr>
+            <td>~</td>
+            <td>inv()</td>
+            <td>按位取反</td>
+        </tr>
+        <tr>
+            <td>&lt;&lt;</td>
+            <td>shl</td>
+            <td>左移</td>
+        </tr>
+        <tr>
+            <td>&gt;&gt;</td>
+            <td>shr</td>
+            <td>算术右移（保留符号位）</td>
+        </tr>
+        <tr>
+            <td>&gt;&gt;&gt;</td>
+            <td>ushr</td>
+            <td>无符号右移</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+val a = 0b1100   // 12
+val b = 0b1010   // 10
+
+println(a and b)   // 1000 = 8
+println(a or b)    // 1110 = 14
+println(a xor b)   // 0110 = 6
+println(a.inv())   // -13（按位取反）
+println(a shl 1)   // 11000 = 24
+println(a shr 1)   // 0110 = 6
+println(a ushr 1)  // 0110 = 6（高位填 0）
+</pre>
+<p class="warn">
+    Kotlin 中没有 Java 风格的符号位运算符，必须使用 <span class="special">and</span>、<span class="special">or</span>、<span class="special">xor</span>、<span class="special">shl</span> 等函数形式。
+</p>
