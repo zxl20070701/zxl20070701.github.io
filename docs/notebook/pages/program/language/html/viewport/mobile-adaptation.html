@@ -1,0 +1,308 @@
+<header>
+    移动端适配实践
+</header>
+<p>
+    视口配置只是移动端适配的起点。真正稳定的页面，需要把视口设置、流式布局、媒体查询、安全区域、软键盘和图片资源等环节配合起来。这一篇把常见做法和排查清单整理在一起。
+</p>
+<h2>
+    基础模板
+</h2>
+<p>
+    一个最小可用的移动端页面结构如下：
+</p>
+<pre tag="html">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"&gt;
+    &lt;meta name="theme-color" content="#0a1a2f"&gt;
+    &lt;title&gt;移动端页面&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="page"&gt;内容&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+    对应的基础样式：
+</p>
+<pre tag="css">
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "PingFang SC", sans-serif;
+}
+
+img,
+video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+</pre>
+<p>
+    -webkit-text-size-adjust: 100% 用于避免 iOS 横竖屏切换时自动放大文字，导致排版错乱。
+</p>
+<h2>
+    布局策略
+</h2>
+<h3>
+    流式宽度优先
+</h3>
+<p>
+    移动端宽度跨度大，元素尽量使用百分比、flex、grid 等弹性方式，避免写死大宽度。桌面端再通过 max-width 限制内容的最大宽度：
+</p>
+<pre tag="css">
+.page {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px;
+}
+</pre>
+<h3>
+    弹性布局
+</h3>
+<pre tag="css">
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toolbar .title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+</pre>
+<p>
+    给可伸缩的文本容器加上 min-width: 0，可以避免它把 flex 容器撑破。
+</p>
+<h3>
+    自适应网格
+</h3>
+<pre tag="css">
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+</pre>
+<p>
+    这样在不同宽度下会自动改变列数，不需要为每个断点写一套规则。
+</p>
+<h2>
+    移动优先的媒体查询
+</h2>
+<p>
+    先写小屏幕的默认样式，再用 min-width 逐步增强大屏幕，可以避免样式相互覆盖：
+</p>
+<pre tag="css">
+.container {
+    padding: 12px;
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1080px;
+    }
+}
+</pre>
+<p>
+    断点应结合内容变化来确定，而不是照抄某套设备的像素值。常见参考值是 480、768、1024、1200，但真正的标准是“内容开始显得拥挤或过空的位置”。
+</p>
+<h2>
+    安全区域
+</h2>
+<p>
+    在刘海屏上，viewport-fit=cover 让背景铺满屏幕，内容层则需要用 env() 避让：
+</p>
+<pre tag="css">
+.page {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+</pre>
+<p>
+    顶栏、底栏、侧边抽屉是重点处理对象。安全距离不是固定像素，横竖屏也不同，详见《viewport-fit 与安全区域》一篇。
+</p>
+<h2>
+    高度与视口单位
+</h2>
+<p>
+    移动端不要轻易使用 100vh 做整屏高度，它对应的是浏览器工具栏收起时的大视口。推荐使用 svh 或 dvh，并保留回退：
+</p>
+<pre tag="css">
+.page-full {
+    min-height: 100vh;
+    min-height: 100svh;
+}
+</pre>
+<p>
+    普通内容页用 min-height: 100% 或由内容撑开即可，只有全屏主视觉、地图、画布这类场景才需要严格占满视口。
+</p>
+<h2>
+    输入框与软键盘
+</h2>
+<ul>
+    <li>
+        输入框聚焦时页面可能被键盘遮挡，优先通过 Visual Viewport API 计算遮挡高度；
+    </li>
+    <li>
+        不要把底部按钮深度嵌套在不可滚动的固定容器里，键盘弹出后很难自动露出；
+    </li>
+    <li>
+        表单控件字号不要小于 16px，部分 iOS 版本在字号过小时会自动放大页面；
+    </li>
+    <li>
+        需要键盘改变整体布局时，可以考虑 interactive-widget=resizes-content，但要确认目标浏览器支持。
+    </li>
+</ul>
+<pre tag="css">
+input,
+textarea,
+select,
+button {
+    font-size: 16px;
+}
+</pre>
+<h2>
+    横竖屏切换
+</h2>
+<p>
+    可以通过媒体查询针对横屏调整布局，例如把单列改为左右分栏：
+</p>
+<pre tag="css">
+@media (orientation: landscape) {
+    .layout {
+        display: flex;
+    }
+
+    .layout .content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .layout .sidebar {
+        width: 240px;
+    }
+}
+</pre>
+<p>
+    横屏时还要注意左右安全区域，以及部分浏览器工具栏高度变化导致的视口变化，布局不要依赖一次性的宽高计算结果。
+</p>
+<h2>
+    1px 边框
+</h2>
+<p>
+    高分屏上，CSS 的 1px 会被渲染成多个物理像素，看起来偏粗。可以用伪元素加 transform: scaleY(0.5) 模拟更细的线条：
+</p>
+<pre tag="css">
+.hairline {
+    position: relative;
+}
+
+.hairline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+    transform: scaleY(0.5);
+    transform-origin: bottom;
+}
+</pre>
+<p>
+    如果只是想简单处理，也可以使用 border: 0.5px，但不同浏览器、不同缩放比例下的表现不完全一致，重要界面建议用伪元素方案。
+</p>
+<h2>
+    响应式图片
+</h2>
+<p>
+    使用 srcset 和 sizes 让浏览器根据屏幕宽度与像素密度选择合适的图片，避免在手机上加载过大的桌面图：
+</p>
+<pre tag="html">
+&lt;img
+    src="cover-800.jpg"
+    srcset="cover-400.jpg 400w, cover-800.jpg 800w, cover-1200.jpg 1200w"
+    sizes="(max-width: 600px) 100vw, 600px"
+    alt="封面图"
+&gt;
+</pre>
+<p>
+    同时不要忘记给图片设置 max-width: 100%，避免单张大图把页面撑出横向滚动。
+</p>
+<h2>
+    可访问性与交互
+</h2>
+<ul>
+    <li>
+        不要使用 user-scalable=no 或 maximum-scale=1 禁止缩放，视力受限的用户需要放大阅读；
+    </li>
+    <li>
+        可点击区域建议不小于 44 × 44 CSS 像素，按钮之间的间距也要足够；
+    </li>
+    <li>
+        字号使用 rem、em 或 clamp()，不要全部写死成 px，便于跟随系统字体设置；
+    </li>
+    <li>
+        悬停效果不是必需的，触摸设备上更依赖按下、聚焦等状态反馈。
+    </li>
+</ul>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    页面仍然是缩小后的桌面布局
+</h3>
+<p>
+    检查 head 中是否存在 meta viewport，是否被脚本动态修改，或者页面是否运行在设置了缩放的原生 WebView 中。可以在控制台查看 document.documentElement.clientWidth，正常应接近设备宽度。
+</p>
+<h3>
+    出现横向滚动条
+</h3>
+<p>
+    常见原因包括：固定宽度过大、100vw 包含滚动条、绝对定位元素超出边界、长单词或长链接不换行、图片未设置 max-width。可以临时给元素加 outline 定位，而不是直接 overflow-x: hidden 把问题藏起来。
+</p>
+<h3>
+    底部按钮被键盘遮挡
+</h3>
+<p>
+    确认容器是否固定定位、是否监听了 visualViewport 的 resize 和 scroll，并检查浏览器是否支持 interactive-widget。iOS 与 Android 的键盘行为差异较大，必须分开验证。
+</p>
+<h3>
+    100vh 区域超出屏幕
+</h3>
+<p>
+    改用 100svh 或 100dvh，并为旧浏览器保留 100vh 回退。软键盘场景下，即使在桌面端表现正常，也不能代表移动端正常。
+</p>
+<h3>
+    横屏后内容被刘海遮挡
+</h3>
+<p>
+    检查 viewport-fit 是否为 cover，左右两侧是否使用了 safe-area-inset-left / right，以及固定定位的侧边栏是否单独做了避让。
+</p>

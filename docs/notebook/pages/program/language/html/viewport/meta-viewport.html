@@ -1,0 +1,208 @@
+<header>
+    视口与 meta viewport
+</header>
+<p>
+    移动端页面的 head 中，几乎都会出现下面这一行代码：
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"&gt;
+</pre>
+<p>
+    它用来告诉浏览器如何设置页面的视口：页面以多宽的逻辑宽度来布局、初始缩放比例是多少，以及页面能否延伸到刘海屏、圆角等安全区域之外。理解这行代码，是做好移动端适配的第一步。
+</p>
+<h2>
+    为什么需要 meta viewport
+</h2>
+<p>
+    在移动端，浏览器中其实同时存在三种“视口”，它们的含义并不相同：
+</p>
+<ul>
+    <li>
+        <span class="special">布局视口（layout viewport）</span>：CSS 布局、百分比宽度、媒体查询所依据的视口，决定了页面“有多宽可以排版”；
+    </li>
+    <li>
+        <span class="special">视觉视口（visual viewport）</span>：用户此刻真正看到的区域。双指缩放后，它会在布局视口上移动、放大或缩小；
+    </li>
+    <li>
+        <span class="special">理想视口（ideal viewport）</span>：设备屏幕在 CSS 像素下的宽度，比如 390px、414px，是移动端最舒服的布局宽度。
+    </li>
+</ul>
+<p>
+    早期移动浏览器为了让只适配了桌面端的网页也能显示，会把布局视口默认设为约 980px，然后把整页缩小塞进屏幕。结果就是文字极小、需要放大才能看清。meta viewport 的作用，就是把布局视口改成我们期望的宽度，从而摆脱这种“默认缩放”。
+</p>
+<div class="tips">
+    没有 meta viewport 时，手机会用一个很宽的虚拟布局视口（通常约 980px）排版，再把页面整体缩小显示；加上 width=device-width 后，布局视口才会等于手机屏幕宽度。
+</div>
+<h2>
+    基本写法
+</h2>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+</pre>
+<p>
+    content 是一组用逗号分隔的“键=值”配置，浏览器会逐项解析。最常用的组合就是上面的 <span class="important">width=device-width</span> 加 <span class="important">initial-scale=1</span>。
+</p>
+<h2>
+    属性详解
+</h2>
+<h3>
+    width
+</h3>
+<p>
+    设置布局视口的宽度，单位是 CSS 像素。可以写一个具体的数值（如 width=600），也可以使用特殊值 <span class="special">device-width</span>，表示设备屏幕宽度。
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width"&gt;
+</pre>
+<h3>
+    height
+</h3>
+<p>
+    设置布局视口的高度，用法和 width 类似，可取值包括具体数值和 <span class="special">device-height</span>。实际开发中很少显式设置，因为高度通常交给内容或视口单位决定。
+</p>
+<h3>
+    initial-scale
+</h3>
+<p>
+    页面首次加载时的缩放比例。1 表示不缩放，即 1 个 CSS 像素对应 1 个设备独立像素（在默认缩放下）。小于 1 会缩小，大于 1 会放大。
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="initial-scale=1"&gt;
+</pre>
+<h3>
+    minimum-scale 和 maximum-scale
+</h3>
+<p>
+    分别限制用户可以缩放到的最小、最大比例。例如 maximum-scale=1 会禁止用户放大页面：
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"&gt;
+</pre>
+<p>
+    这类限制会破坏无障碍体验，视力不佳的用户将无法放大阅读，一般不建议使用。
+</p>
+<h3>
+    user-scalable
+</h3>
+<p>
+    是否允许用户通过双指缩放页面，取值为 yes 或 no。设置为 no 同样会阻止用户放大，属于不推荐的做法。
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"&gt;
+</pre>
+<div class="tips">
+    从 iOS 10 开始，Safari 出于无障碍考虑会忽略 user-scalable=no；部分 Android 浏览器在系统开启“强制缩放”时也会忽略它。与其依赖它，不如把布局做得足够稳健。
+</div>
+<h3>
+    viewport-fit
+</h3>
+<p>
+    控制页面是否延伸到刘海屏、挖孔屏等安全区域，取值有 auto、contain、cover。它和 CSS 的 env(safe-area-inset-*) 配合使用，具体见后续《viewport-fit 与安全区域》一篇。
+</p>
+<h3>
+    interactive-widget
+</h3>
+<p>
+    较新的配置项，用来控制软键盘弹出时如何改变视口，常见取值为 resizes-visual、resizes-content、overlays-content。它主要影响软键盘场景下的布局，具体见《Visual Viewport API 与软键盘》一篇。
+</p>
+<h2>
+    三种视口之间的关系
+</h2>
+<p>
+    可以把布局视口理解为一张固定大小的“画布”，视觉视口则是用户举着放大镜在看这张画布：
+</p>
+<ul>
+    <li>
+        缩放比例为 1 时，视觉视口与布局视口大小一致，用户看到的就是整张画布；
+    </li>
+    <li>
+        双指放大后，视觉视口变小（CSS 像素变小），但布局视口不变，页面排版不会因为缩放而重排；
+    </li>
+    <li>
+        视觉视口可以在布局视口内平移，这就是放大后可以拖动页面的原因。
+    </li>
+</ul>
+<p>
+    浏览器提供了 Visual Viewport API 来读取视觉视口的信息，例如：
+</p>
+<pre tag="javascript">
+// 布局视口宽度（CSS 像素）
+console.log(document.documentElement.clientWidth);
+
+// 视觉视口宽度与缩放比例
+if (window.visualViewport) {
+    console.log(window.visualViewport.width);
+    console.log(window.visualViewport.scale);
+}
+</pre>
+<h2>
+    常见误区
+</h2>
+<h3>
+    只写 width 或只写 initial-scale
+</h3>
+<p>
+    两个属性同时设置才最稳妥。当 width 和 initial-scale 推导出的结果互相矛盾时，不同浏览器内核的处理策略并不完全一致，容易出现“同一个页面在不同手机上宽度不同”的问题。
+</p>
+<h3>
+    把 meta viewport 当成响应式的全部
+</h3>
+<p>
+    meta viewport 只负责确定布局视口的宽度，页面内部的布局仍然需要使用流式宽度、弹性布局、媒体查询等手段配合。只加这一行代码，并不会让桌面端的固定宽度布局自动适配手机。
+</p>
+<h3>
+    在桌面端依赖 meta viewport
+</h3>
+<p>
+    桌面浏览器一般会忽略 width、initial-scale 等设置，这行代码主要面向移动端浏览器和 WebView。桌面端的适配要靠媒体查询和弹性布局完成。
+</p>
+<h3>
+    认为 initial-scale=1 可以禁止缩放
+</h3>
+<p>
+    initial-scale 只决定首次加载的缩放比例，用户仍然可以双指缩放。要禁止缩放需要 maximum-scale=1 或 user-scalable=no，而这通常并不推荐。
+</p>
+<h3>
+    使用了过时的 shrink-to-fit
+</h3>
+<p>
+    iOS 9 的 Safari 曾经会在内容溢出时自动缩小页面，可以通过 shrink-to-fit=no 关闭。现代浏览器已经不再需要这个配置，看到旧项目里的它不必照抄。
+</p>
+<h2>
+    推荐写法
+</h2>
+<p>
+    当前移动端最常见、也最通用的写法是：
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"&gt;
+</pre>
+<p>
+    如果页面需要针对软键盘做特殊布局，可以再追加 interactive-widget 配置：
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"&gt;
+</pre>
+<h2>
+    如何调试
+</h2>
+<p>
+    在真机或浏览器开发者工具的设备模拟中，可以通过下面几个值判断当前视口状态：
+</p>
+<pre tag="javascript">
+// 布局视口宽度
+console.log(document.documentElement.clientWidth);
+
+// 窗口内部宽度（移动端通常与布局视口一致）
+console.log(window.innerWidth);
+
+// 视觉视口信息（支持 Visual Viewport API 的浏览器）
+console.log(window.visualViewport &amp;&amp; {
+    width: window.visualViewport.width,
+    height: window.visualViewport.height,
+    scale: window.visualViewport.scale
+});
+</pre>
+<p>
+    如果 clientWidth 明显大于设备屏幕宽度（比如仍然是 980），首先要检查 meta viewport 是否真的写在了 head 中、是否被后续的脚本覆盖，或者页面是否处在被整体缩放的 WebView 容器里。
+</p>

@@ -1,0 +1,202 @@
+<header>
+    视口单位 vw / vh / dvh
+</header>
+<p>
+    视口单位是相对于视口尺寸计算的长度单位，常见于全屏布局、等比缩放和移动端适配。移动浏览器工具栏的收起展开、软键盘的弹出，又让这套单位出现了不少需要特别注意的地方。
+</p>
+<h2>
+    传统视口单位
+</h2>
+<h3>
+    vw 和 vh
+</h3>
+<p>
+    <span class="special">1vw</span> 等于视口宽度的 1%，<span class="special">1vh</span> 等于视口高度的 1%。因此 100vw 就是整个视口宽度，100vh 就是整个视口高度。
+</p>
+<pre tag="css">
+.banner {
+    width: 100vw;
+    height: 60vh;
+}
+</pre>
+<h3>
+    vmin 和 vmax
+</h3>
+<ul>
+    <li>
+        <span class="special">vmin</span>：取视口宽高中较小者的 1%；
+    </li>
+    <li>
+        <span class="special">vmax</span>：取视口宽高中较大者的 1%。
+    </li>
+</ul>
+<p>
+    它们适合做宽高比固定的元素，比如始终是正方形的图标：
+</p>
+<pre tag="css">
+.square {
+    width: 40vmin;
+    height: 40vmin;
+}
+</pre>
+<h2>
+    视口单位与百分比的区别
+</h2>
+<p>
+    百分比是相对于<span class="important">包含块</span>计算的，而视口单位是相对于<span class="important">视口</span>计算的，与父元素无关。比如一个 div 宽度的 50% 是父元素宽度的一半，而 50vw 始终是屏幕宽度的一半，即使它被放在一个很窄的侧边栏里。
+</p>
+<div class="tips">
+    需要跟随容器变化时用百分比或容器查询单位（cqw、cqh）；需要跟随屏幕变化时才用视口单位。
+</div>
+<h2>
+    移动端的 100vh 问题
+</h2>
+<p>
+    在移动浏览器中，地址栏、底部工具栏会随着滚动收起或展开，视口高度并不是一个固定值。按照规范，传统的 <span class="special">vh</span> 单位以“大视口”（工具栏收起时的最大高度）为基准，因此 100vh 往往会比当前真正可见的高度更高，导致：
+</p>
+<ul>
+    <li>
+        底部内容被浏览器工具栏遮挡；
+    </li>
+    <li>
+        页面出现多余的纵向滚动条；
+    </li>
+    <li>
+        固定高度的全屏区域在地址栏展开时超出屏幕。
+    </li>
+</ul>
+<p>
+    软键盘弹出时问题更明显：多数浏览器不会因为软键盘而改变布局视口的高度，100vh 依然是原来的高度，输入框或底部按钮就可能被键盘挡住。
+</p>
+<h2>
+    新一代视口单位
+</h2>
+<p>
+    为了解决浏览器界面动态变化的问题，CSS 新增了一组视口单位，按视口的不同状态分为三类：
+</p>
+<ul>
+    <li>
+        <span class="special">svh / svw</span>（small viewport）：浏览器工具栏完全展开时的小视口；
+    </li>
+    <li>
+        <span class="special">lvh / lvw</span>（large viewport）：浏览器工具栏完全收起时的大视口；
+    </li>
+    <li>
+        <span class="special">dvh / dvw</span>（dynamic viewport）：当前时刻的实际视口，会随工具栏变化而动态改变。
+    </li>
+</ul>
+<p>
+    同样存在 svmin、svmax、dvmin、dvmax、lvmin、lvmax 等组合形式。传统 vw / vh 的基准相当于 lv*。
+</p>
+<h3>
+    如何选择
+</h3>
+<pre tag="css">
+/* 内容必须完整可见：以小视口为准，避免被工具栏遮住 */
+.hero-safe {
+    min-height: 100svh;
+}
+
+/* 希望始终铺满当前可见区域：随工具栏动态变化 */
+.hero-dynamic {
+    height: 100dvh;
+}
+</pre>
+<p>
+    svh 更稳定，但工具栏收起后底部可能留白；dvh 更贴合当前屏幕，但工具栏变化时会触发重排，频繁变化可能带来性能开销。全屏主视觉通常优先考虑 svh 或 dvh，而普通内容区域直接用 min-height: 100% 或 auto 往往更合适。
+</p>
+<h3>
+    兼容写法
+</h3>
+<p>
+    老浏览器不认识新单位，会把整条声明丢弃，因此需要在前面写一条传统单位的回退声明：
+</p>
+<pre tag="css">
+.fullscreen {
+    height: 100vh;
+    height: 100dvh;
+}
+</pre>
+<p>
+    也可以配合 @supports 使用：
+</p>
+<pre tag="css">
+.fullscreen {
+    height: 100vh;
+}
+
+@supports (height: 100dvh) {
+    .fullscreen {
+        height: 100dvh;
+    }
+}
+</pre>
+<h2>
+    vw 与桌面端滚动条
+</h2>
+<p>
+    桌面浏览器的经典滚动条会占据宽度，而 100vw 包含滚动条所占的宽度。当页面出现纵向滚动条时，width: 100vw 往往比可用内容宽度略宽，从而产生横向滚动条。
+</p>
+<pre tag="css">
+/* 可能引起横向滚动 */
+.container {
+    width: 100vw;
+}
+</pre>
+<p>
+    常见的处理方式：
+</p>
+<pre tag="css">
+/* 1. 首选 100%，跟随包含块宽度 */
+.container {
+    width: 100%;
+}
+
+/* 2. 确实需要相对视口时，把滚动条宽度扣掉 */
+.container {
+    width: calc(100vw - var(--scrollbar-width, 0px));
+}
+</pre>
+<p>
+    其中 --scrollbar-width 可以通过脚本测量：window.innerWidth 减去 document.documentElement.clientWidth 就是滚动条宽度。移动端滚动条通常是悬浮样式，不占宽度，这个问题不明显，但同一套代码在桌面端就可能暴露出来。
+</p>
+<h2>
+    设计稿换算
+</h2>
+<p>
+    以 750px 宽的设计稿为例，1vw 等于 7.5 个设计稿像素，所以设计稿上 75px 的宽度可以写成 10vw：
+</p>
+<pre tag="css">
+.card {
+    width: 10vw;          /* 设计稿 75px */
+    padding: 2.6667vw;    /* 设计稿 20px */
+}
+</pre>
+<p>
+    纯 vw 布局在超宽屏上会把元素放得过大，因此常配合 clamp() 限制范围：
+</p>
+<pre tag="css">
+.title {
+    font-size: clamp(18px, 4.2vw, 28px);
+}
+</pre>
+<h2>
+    注意事项
+</h2>
+<ul>
+    <li>
+        视口单位基于初始包含块，双指缩放时数值不会改变，不能用来感知用户的缩放级别；
+    </li>
+    <li>
+        字号不要只用一个 vw 值，屏幕过窄或过宽时都会失控，建议用 clamp() 设置上下限；
+    </li>
+    <li>
+        全屏布局优先使用 svh / dvh，而不是盲目使用 100vh；
+    </li>
+    <li>
+        dvh 的变化会引发重排，不要在大量元素上同时使用，也不要把它当动画属性频繁驱动；
+    </li>
+    <li>
+        需要相对某个组件尺寸计算时，考虑容器查询单位 cqw / cqh，而不是视口单位。
+    </li>
+</ul>
