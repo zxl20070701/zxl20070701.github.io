@@ -1,0 +1,402 @@
+<header>
+    自定义 Skills
+</header>
+<p>
+    Skill 是给 Claude Code 编写的"专属能力包"——本质上就是一个文件夹，里面放一份 <span class="special">SKILL.md</span> 当说明书，可选再加点脚本和参考文档。Claude Code 读了说明书，就知道"遇到什么情况该怎么干"。
+</p>
+<p>
+    和 MCP（给 Claude 加新工具）不同，Skill 给 Claude 加的是<span class="important">做事的方法和步骤</span>。MCP 回答"能做什么"，Skill 回答"该怎么做"。
+</p>
+<h2>
+    Skill 的两种触发方式
+</h2>
+<p>
+    Claude Code 里的 Skill 有两种被调用的方式，这是理解 Skill 怎么"生效"的关键：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>触发方式</th>
+            <th>谁来决定</th>
+            <th>写法</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">模型自动触发</span></td>
+            <td>Claude 自己判断你的请求匹配 Skill 的 description</td>
+            <td>直接对 Claude 说需求，比如"帮我看一下 git diff"</td>
+        </tr>
+        <tr>
+            <td><span class="special">用户手动触发</span></td>
+            <td>你打斜杠命令</td>
+            <td><span class="special">/skill-name</span></td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    自定义命令（.claude/commands/*.md）已经被合并进 Skill 体系了。以前写在 .claude/commands/deploy.md 里的内容，现在放进 .claude/skills/deploy/SKILL.md 效果一样，而且还能多一些高级特性（比如 allowed-tools、动态上下文注入）。
+</div>
+<h2>
+    让 Skill 生效：放对位置
+</h2>
+<p>
+    Skill 放在哪，决定了它在什么范围内自动被发现和加载：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>路径</th>
+            <th>生效范围</th>
+            <th>典型用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Personal</span></td>
+            <td>~/.claude/skills/&lt;name&gt;/SKILL.md</td>
+            <td>你本机上的所有项目</td>
+            <td>个人工作流、实验性 Skill</td>
+        </tr>
+        <tr>
+            <td><span class="special">Project</span></td>
+            <td>.claude/skills/&lt;name&gt;/SKILL.md</td>
+            <td>仅当前项目</td>
+            <td>团队协作、项目特定流程（可提交 git）</td>
+        </tr>
+        <tr>
+            <td><span class="special">Nested</span></td>
+            <td>&lt;子目录&gt;/.claude/skills/&lt;name&gt;/SKILL.md</td>
+            <td>该子目录及以下</td>
+            <td>monorepo 里某个模块专属的 Skill</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    目录名最好和 SKILL.md frontmatter 里的 <span class="special">name</span> 保持一致：<span class="special">name</span> 决定斜杠命令叫什么，省略时就用目录名兜底，两者不一致很容易自己把自己绕晕。下面是一个完整的目录结构示例：
+</p>
+<pre>
+.claude/skills/summarize-changes/
+├── SKILL.md          （必需，核心说明书）
+├── reference.md      （可选，补充文档）
+├── scripts/
+│   └── helper.py     （可选，可执行脚本）
+└── templates/
+    └── commit-msg.txt（可选，模板文件）
+</pre>
+<p>
+    Claude 只会在 Skill 被加载时才去读这些补充文件，平时不占 context，所以 Skill 写长一点也没关系。
+</p>
+<h2>
+    SKILL.md 结构
+</h2>
+<p>
+    SKILL.md 分两部分：<span class="special">YAML frontmatter</span>（元数据，写在 --- 之间）和 <span class="special">Markdown 正文</span>（给 Claude 的指令）。最小可用版本如下：
+</p>
+<pre tag="markdown">
+---
+name: summarize-changes
+description: Summarizes uncommitted changes and flags anything risky. Use when user asks what changed, wants a commit message, or asks to review their diff.
+---
+
+## Current changes
+!`git diff HEAD`
+
+## Instructions
+Summarize the changes above in 2-3 bullet points, then list any risks you notice.
+If the diff is empty, say there are no uncommitted changes.
+</pre>
+<h3>
+    frontmatter 常用字段
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>字段</th>
+            <th>约束</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">name</span></td>
+            <td>小写字母、数字、连字符，最多 64 字符</td>
+            <td>Skill 的命令名，对应 /skill-name；省略时用目录名</td>
+        </tr>
+        <tr>
+            <td><span class="special">description</span></td>
+            <td>简短，建议包含"做什么 + 什么时候用"</td>
+            <td><span class="important">Claude 自动触发的唯一依据</span>。写得越清晰，触发越精准</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    description 是自动触发的关键。如果 Claude 总是不触发你的 Skill，90% 的原因是 description 没写清楚"什么时候用"。比如只写"帮我写代码"太泛了，写成"根据 OpenAPI 定义生成 TypeScript 接口类型。当用户说'从 swagger 生成'或贴出 openapi.yaml 时使用"就精准得多。<br />
+    另外它在 Skill 列表里是会被截断的（和 <span class="special">when_to_use</span> 合计约 1500 字符），所以把最关键的触发条件写在最前面。
+</div>
+<h3>
+    frontmatter 进阶字段
+</h3>
+<h4>
+    allowed-tools：预授权工具
+</h4>
+<p>
+    用逗号或空格分隔列出工具名，Skill 激活后 Claude 可以直接调用这些工具，不用每次都问你审批：
+</p>
+<pre tag="markdown">
+---
+name: safe-file-reader
+description: Read files without making changes. Use when you need read-only access.
+allowed-tools: Read, Grep, Glob
+---
+</pre>
+<div class="tips">
+    这个授权只管"调用该 Skill 的那一轮"，你下一条消息发出后就失效了，不会变成永久放行。
+</div>
+<h4>
+    disable-model-invocation：只允许手动触发
+</h4>
+<p>
+    默认情况下 Claude 会根据 description 自动判断要不要触发。如果你希望<span class="important">只能用户手动 /skill-name 触发</span>，加一行 <span class="special">disable-model-invocation: true</span>：
+</p>
+<pre tag="markdown">
+---
+name: deploy
+description: Deploy this service to production.
+disable-model-invocation: true
+---
+</pre>
+<p>
+    反过来，如果希望这个 Skill 只给 Claude 自动调用、<span class="important">不出现在 / 菜单里、你打 /skill-name 也调不起来</span>，用 <span class="special">user-invocable: false</span>（适合当"背景知识"用的 Skill）。
+</p>
+<h2>
+    动态上下文注入
+</h2>
+<p>
+    这是 Skill 最强大的特性之一。用 <span class="special">!`命令`</span> 语法，Claude Code 会在把 Skill 内容交给 Claude 之前先执行那条命令，把输出直接内联进 Skill 正文：
+</p>
+<pre tag="markdown">
+## 当前分支状态
+!`git branch --show-current`
+
+## 最近 5 条 commit
+!`git log --oneline -5`
+</pre>
+<p>
+    这样 Claude 读到的就不是一段命令字符串，而是命令真实的输出结果。上一节的 summarize-changes 例子里，就是用 <span class="special">!`git diff HEAD`</span> 把当前 diff 拉进 prompt，让回答永远基于你工作区的最新状态，而不是 Claude 的"猜测"。
+</p>
+<h2>
+    生效验证
+</h2>
+<p>
+    Skill 放好后，启动或重启 Claude Code，它就会自动扫描所有位置的 Skill 文件夹并加载。验证方法：
+</p>
+<ul>
+    <li><span class="special">/skills</span>：列出当前会话所有可用 Skill，可以按名字、description 或来源过滤</li>
+    <li><span class="special">/ 菜单</span>：在输入框里打一个 /，会自动弹出命令与 Skill 列表，可以直接选</li>
+    <li><span class="special">手动触发</span>：直接打 <span class="special">/skill-name</span>，看 Claude 是否按 SKILL.md 的指令执行</li>
+    <li><span class="special">自动触发</span>：问一句匹配 description 的话，比如"我今天改了啥"，看 Claude 是否自动加载 Skill</li>
+</ul>
+<div class="tips">
+    修改了 SKILL.md 之后不需要重启整个 Claude Code，Claude Code 会在下次调用时自动检测文件变化并重新读取内容（Live Change Detection）。
+</div>
+<h2>
+    和 MCP 的关系
+</h2>
+<p>
+    Skill 和 MCP 是互补的：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>MCP</th>
+            <th>Skill</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>回答什么</strong></td>
+            <td>"能做什么事"</td>
+            <td>"该怎么做这件事"</td>
+        </tr>
+        <tr>
+            <td><strong>形态</strong></td>
+            <td>独立进程/远程服务，暴露工具</td>
+            <td>文件夹 + SKILL.md 说明书</td>
+        </tr>
+        <tr>
+            <td><strong>生效方式</strong></td>
+            <td>注册到 scope 后自动加载</td>
+            <td>放到约定目录后自动发现</td>
+        </tr>
+        <tr>
+            <td><strong>典型例子</strong></td>
+            <td>Notion、GitHub、PostgreSQL 工具集</td>
+            <td>git 变更摘要、部署流程、代码规范检查清单</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    进阶用法示例
+</h2>
+<p>
+    下面给几个真实可用的 Skill 模板，直接拷进你的 <span class="special">~/.claude/skills/</span> 或项目的 <span class="special">.claude/skills/</span> 就能用。
+</p>
+<h3>
+    示例一：研究型 Skill（驱动子 Agent 并行调查）
+</h3>
+<p>
+    当你需要从多个独立的角度调查一个代码问题时，让主 Skill 充当调度器，把每个调查任务派给一个子 Agent。每个子 Agent 有自己独立的 context window，互不污染：
+</p>
+<pre tag="markdown">
+---
+name: research-explore
+description: Investigate how a codebase handles a specific topic across multiple angles. Use when the user asks to 'explore', 'research', or 'trace' how something works, or when understanding requires reading dozens of files.
+disable-model-invocation: true
+---
+
+## 研究计划
+
+针对用户的研究主题，先列出 3-5 个独立的调查维度（比如：入口调用链、配置项读取、错误处理路径、测试覆盖），每个维度启动一个 Explore 子 Agent，并行执行。
+
+## 给每个子 Agent 的指令模板
+
+你是 Explore 子 Agent，只负责一个调查维度。完成后只返回：
+1. 关键文件路径列表
+2. 核心逻辑的一句话总结
+3. 可疑点或需要主 Agent 关注的风险
+
+不要返回原文片段，不要解释你是怎么找到的。
+
+## 汇总结论
+
+所有子 Agent 返回后，主 Agent 把它们的发现整合成一份结构化的调查报告。
+</pre>
+<p>
+    这里用了 <span class="special">disable-model-invocation: true</span>，因为研究型 Skill 通常需要你主动启动，而不是让 Claude 在回答普通问题时自动触发。
+</p>
+<h3>
+    示例二：安全红线 Skill（allowed-tools + 动态注入）
+</h3>
+<p>
+    团队协作里，你可能希望 Claude 在某个仓库里只能<span class="important">读文件、搜代码、跑只读命令</span>，不碰写操作。用 allowed-tools 去掉写文件的工具（Edit / Write），再用动态注入把 lint 结果拉进来：
+</p>
+<pre tag="markdown">
+---
+name: read-only-review
+description: Review code without making changes. Use when auditing pull requests, doing security reviews, or when the user says 'review only' or 'don't modify anything'.
+allowed-tools: Read, Grep, Glob, Bash, WebSearch
+---
+
+## 当前项目 lint 结果
+!`npm run lint 2>&1 | head -50`
+
+## 只在 Bash 里允许 read-only 命令
+
+执行 Bash 时，只能运行以下命令：
+- git (任意子命令)
+- npm run lint / npm run test / npm run build
+- ls / cat / find
+- grep
+
+遇到 rm、mv、chmod、sed -i、curl 带 -o 写文件 等破坏性命令，必须先询问用户。
+
+## 审查清单
+
+按以下顺序输出：
+1. lint / test 是否通过，失败点在哪里
+2. 未处理的 error / catch 块
+3. 硬编码的密钥或敏感信息
+4. 依赖版本是否有已知漏洞
+5. 总结：风险等级（低/中/高）+ 一句话结论
+</pre>
+<h3>
+    示例三：部署 Skill（disable-model-invocation: true + 多阶段检查清单）
+</h3>
+<p>
+    部署是高风险操作，不希望 Claude 自动触发，而是你手动打 /deploy 才启动。Skill 里写死检查清单，每一步都不能跳过：
+</p>
+<pre tag="markdown">
+---
+name: deploy
+description: Deploy this service to staging or production. Only invoke when the user explicitly requests a deployment.
+disable-model-invocation: true
+allowed-tools: Bash, Read, Edit, Write
+---
+
+## 当前 git 状态
+!`git status --short`
+!`git log --oneline -3`
+
+## 部署前检查清单（必须逐一确认）
+
+### 1. 工作区是否干净
+如果 `git status --short` 输出非空，停止部署并让用户先提交或 stash。
+
+### 2. 测试是否通过
+运行 `npm run test`（或项目对应的测试命令）。
+如果任何测试失败，停止部署。
+
+### 3. 构建是否成功
+运行 `npm run build`。如果失败，停止部署。
+
+### 4. 数据库迁移
+检查是否有未执行的 migration 文件（项目约定路径下比对）。
+如果有，提示用户先执行 migration 或确认是否跳过。
+
+## 执行部署
+
+通过全部检查后，执行：
+!`cat package.json | grep -A1 '"deploy"'`
+
+## 部署后验证
+部署命令结束后，检查健康检查端点（如 http://localhost:8080/health）是否返回 200。
+如果超时或返回非 200，立即回滚并通知用户。
+</pre>
+<h2>
+    Skill 不触发 / 频繁触发怎么调
+</h2>
+<p>
+    这是最常见的两个问题。核心都在 <span class="special">description</span> 写得好不好：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>症状</th>
+            <th>大概率原因</th>
+            <th>怎么改</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Skill 从不自动触发</td>
+            <td>description 没写"什么时候用"，只写了"做什么"</td>
+            <td>在 description 里加上明确的触发词，比如"当用户说 XXX 或贴出 YYY 文件时使用"</td>
+        </tr>
+        <tr>
+            <td>Skill 几乎每次对话都触发</td>
+            <td>description 写得太宽泛</td>
+            <td>加上<span class="important">排除条件</span>，比如"不用于简单问答、不用于少于 X 个文件的小改动"</td>
+        </tr>
+        <tr>
+            <td>手动 /skill-name 报错找不到</td>
+            <td><span class="special">name</span> 里写了非法字符，或者大小写、空格和你想的不一样</td>
+            <td>只用小写字母、数字、连字符；最省事的做法是 frontmatter 里不写 name，直接用目录名当命令</td>
+        </tr>
+        <tr>
+            <td>动态注入命令报错</td>
+            <td>命令在非 git 仓库或目录不存在时退出码非 0</td>
+            <td>给命令加兜底，比如 <span class="special">!`git diff HEAD 2>/dev/null || echo 'no changes'`</span></td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    调试小技巧
+</h2>
+<ul>
+    <li><span class="special">/skills</span> 能列出当前会话所有可用的 Skill，如果你的 Skill 不在里面，说明目录放错了或 frontmatter 格式有问题</li>
+    <li>临时加上 <span class="special">disable-model-invocation: true</span>，手动打 /skill-name 测试，能看到 Skill 正文和动态注入的结果是否符合预期</li>
+    <li>Skill 里的 <span class="special">!`命令`</span> 写错了也不会让 Claude 报错，只会把命令的 stderr 输出原样塞进 prompt，所以写复杂命令时建议先在终端单独跑一遍</li>
+</ul>

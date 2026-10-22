@@ -1,0 +1,229 @@
+<header>
+    MCP 模型上下文协议
+</header>
+<p>
+    CodeX 同样支持 MCP（Model Context Protocol）。MCP 是一套开放标准，让 AI Agent 用统一的方式连接外部工具和数据源——你可以理解成 AI 工具界的 USB-C：只要对方实现了 MCP 协议，CodeX 就能直接调用，不用为每个工具单独写集成。
+</p>
+<p>
+    实际场景很直观：你不需要再把 Jira 看板内容复制粘贴进对话，而是接上 Jira 的 MCP Server，说一句"看下 ENG-4521 这个 issue 现在什么状态"，CodeX 自己就能查到并基于真实数据干活。
+</p>
+<h2>
+    配置的三个层级
+</h2>
+<p>
+    和 CodeX 其他配置一样，MCP 配置遵循<span class="important">后者覆盖前者</span>的优先级链，三个层级从上到下依次覆盖：
+</p>
+<pre tag="toml">
+/etc/codex/config.toml        # 系统级（企业策略，普通用户用不到）
+~/.codex/config.toml          # 用户全局级
+./.codex/config.toml          # 项目级
+</pre>
+<table>
+    <thead>
+        <tr>
+            <th>层级</th>
+            <th>存储位置</th>
+            <th>生效范围</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>系统级</td>
+            <td>/etc/codex/config.toml</td>
+            <td>整台机器上的所有用户</td>
+            <td>企业统一策略，个人开发一般用不到</td>
+        </tr>
+        <tr>
+            <td>用户全局</td>
+            <td>~/.codex/config.toml</td>
+            <td>你本机所有项目</td>
+            <td>个人常用工具，比如文件系统、文档检索</td>
+        </tr>
+        <tr>
+            <td>项目级</td>
+            <td>./.codex/config.toml</td>
+            <td>仅当前仓库</td>
+            <td>项目专属工具，比如接本项目的数据库、Jira</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    项目级的 <span class="special">./.codex/config.toml</span> <span class="important">只在被标记为"可信"的项目里才会加载</span>。首次进入一个仓库时 CodeX 会询问你是否信任，确认后才会生效。
+</div>
+<h2>
+    两种传输方式
+</h2>
+<h3>
+    stdio（本地子进程）
+</h3>
+<p>
+    最常见的形式，CodeX 会把 MCP Server 作为子进程拉起来，通过标准输入输出通信。绝大多数社区 Server 都是这种：
+</p>
+<pre tag="toml">
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+
+[mcp_servers.filesystem]
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/Users/you/projects"]
+env = { LOG_LEVEL = "info" }
+</pre>
+<p>
+    如果某个 Server 挂了会导致整个工作流无法进行，可以加 <span class="special">required = true</span>，让 CodeX 在启动时连不上就直接报错，而不是让你在后续某个环节才发现：
+</p>
+<pre tag="toml">
+[mcp_servers.context7]
+enabled = true
+required = true
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+</pre>
+<h3>
+    Streamable HTTP（远程服务）
+</h3>
+<p>
+    连远程托管的 MCP Server 用 HTTP 传输，认证方式支持 Bearer Token 和 OAuth：
+</p>
+<pre tag="toml">
+[mcp_servers.figma]
+url = "https://mcp.figma.com/mcp"
+bearer_token_env_var = "FIGMA_OAUTH_TOKEN"
+http_headers = { "X-Figma-Region" = "us-east-1" }
+</pre>
+<p>
+    两个安全相关的字段值得注意：
+</p>
+<ul>
+    <li><span class="special">bearer_token_env_var</span>：写"环境变量名"而不是 key 本身，CodeX 启动时从环境变量里读，避免密钥明文躺在配置文件里</li>
+    <li><span class="special">env_http_headers</span>：需要动态生成的 Header（比如每次签名一次）时用它，值同样从环境变量取</li>
+</ul>
+<h2>
+    常用配置字段
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>字段</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">command</span> / <span class="special">args</span></td>
+            <td>stdio 模式的启动命令和参数</td>
+        </tr>
+        <tr>
+            <td><span class="special">env</span></td>
+            <td>传给 Server 进程的静态环境变量</td>
+        </tr>
+        <tr>
+            <td><span class="special">cwd</span></td>
+            <td>Server 进程的工作目录</td>
+        </tr>
+        <tr>
+            <td><span class="special">url</span></td>
+            <td>HTTP 模式的 Server 地址</td>
+        </tr>
+        <tr>
+            <td><span class="special">enabled</span></td>
+            <td>设为 false 可以临时禁用但保留配置</td>
+        </tr>
+        <tr>
+            <td><span class="special">startup_timeout_sec</span></td>
+            <td>启动超时，默认 10 秒。npx 拉包慢时可以调大</td>
+        </tr>
+        <tr>
+            <td><span class="special">tool_timeout_sec</span></td>
+            <td>单次工具调用超时，默认 60 秒。跑长查询时可以调大</td>
+        </tr>
+        <tr>
+            <td><span class="special">enabled_tools</span> / <span class="special">disabled_tools</span></td>
+            <td>白名单 / 黑名单，控制暴露哪些工具</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    CLI 管理命令
+</h2>
+<pre>
+# 列出所有 Server 及其状态
+codex mcp list
+
+# 添加一个 stdio Server
+codex mcp add context7 -- npx -y @upstash/context7-mcp
+
+# 移除
+codex mcp remove context7
+</pre>
+<p>
+    不想手写 TOML 时，用 <span class="special">codex mcp add</span> 让它自动写好配置。CLI 和 IDE 扩展共享同一份配置，改一处两边都生效。
+    会话里想看当前实际连上了哪些 Server、暴露了哪些工具，直接输 <span class="special">/mcp</span>。
+</p>
+<h2>
+    工具审批策略
+</h2>
+<p>
+    MCP Server 提供的工具默认可能需要你逐次确认。可以按 Server 或按单个工具设置审批模式：
+</p>
+<pre tag="toml">
+[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+default_tools_approval_mode = "auto"
+
+# 只读类工具自动放行，写操作仍然需要确认
+[mcp_servers.github.tools.list_issues]
+approval_mode = "auto"
+
+[mcp_servers.github.tools.create_pull_request]
+approval_mode = "prompt"
+</pre>
+<p>
+    可选值：
+</p>
+<ul>
+    <li><span class="special">auto</span>：自动执行，不问</li>
+    <li><span class="special">prompt</span>：每次都问（最保险）</li>
+    <li><span class="special">writes</span>：读操作自动，写操作才问（<span class="important">比较推荐的折中方案</span>）</li>
+    <li><span class="special">approve</span>：视为已批准，直接放行（比 auto 更宽松，慎用）</li>
+</ul>
+<h2>
+    项目级 MCP 最佳实践
+</h2>
+<ul>
+    <li><span class="important">项目专属的 Server 放项目级</span>，让团队成员 clone 下来就能用，不用各自配一遍</li>
+    <li><span class="important">密钥一律用环境变量</span>，配置文件里只写变量名</li>
+    <li>给可能超时的 Server 调大 <span class="special">tool_timeout_sec</span>，避免长查询被腰斩</li>
+    <li>工具很多时用 <span class="special">enabled_tools</span> 只暴露真正会用的，既加快启动也减少误调用</li>
+    <li>接入前先确认这个 Server 是否值得信任——能拉取外部内容的 Server 存在提示注入风险</li>
+</ul>
+<h2>
+    常见问题
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>现象</th>
+            <th>排查方向</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Server 不显示</td>
+            <td>项目级配置是否被信任；TOML 语法是否正确；Server 名字是否重复</td>
+        </tr>
+        <tr>
+            <td>启动超时</td>
+            <td>npx 首次拉包很慢，调大 <span class="special">startup_timeout_sec</span>，或改成全局安装</td>
+        </tr>
+        <tr>
+            <td>工具没被调用</td>
+            <td>是否被 <span class="special">disabled_tools</span> 过滤；请求是否太笼统，明确说明"用 XX Server 的 XX 工具查一下"</td>
+        </tr>
+        <tr>
+            <td>认证失败</td>
+            <td>环境变量是否真的导出；OAuth 是否需要先执行登录命令</td>
+        </tr>
+    </tbody>
+</table>

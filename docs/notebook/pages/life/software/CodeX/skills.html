@@ -1,0 +1,239 @@
+<header>
+    自定义 Skills
+</header>
+<p>
+    Skill 是给 CodeX 写的"专属能力说明书"——一个文件夹，里面放一份 <span class="special">SKILL.md</span>，可选再放脚本和参考文档。CodeX 读了它，就知道"遇到什么情况该怎么做"。
+</p>
+<p>
+    CodeX 的 Skill 遵循 <span class="special">Agent Skills</span> 开放标准，和 Claude Code 用的是同一套规范（<span class="special">SKILL.md</span> + frontmatter），两边的
+    <span class="special">name</span> / <span class="special">description</span> 写法完全通用，方便互相迁移。差别在扩展字段上：Claude Code 额外支持 <span
+        class="special">allowed-tools</span>、<span class="special">disable-model-invocation</span> 这类 frontmatter，CodeX 则把这些策略放到 <span
+        class="special">agents/openai.yaml</span> 里。
+</p>
+<h2>
+    Skill 的存放位置
+</h2>
+<p>
+    这是最需要注意的一点：CodeX <span class="important">不用</span> <span class="special">.claude/skills/</span>，而是扫描 <span class="special">.agents/skills/</span>。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>路径</th>
+            <th>生效范围</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>项目级</td>
+            <td>./.agents/skills/&lt;name&gt;/SKILL.md</td>
+            <td>当前仓库</td>
+        </tr>
+        <tr>
+            <td>全局</td>
+            <td>~/.agents/skills/&lt;name&gt;/SKILL.md</td>
+            <td>你本机所有项目</td>
+        </tr>
+        <tr>
+            <td>企业级</td>
+            <td>/etc/codex/skills/&lt;name&gt;/SKILL.md</td>
+            <td>整台机器的所有用户</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    CodeX 会<span class="important">从当前工作目录一路向上扫描到仓库根</span>，沿途每个目录下的 <span class="special">.agents/skills/</span> 都会被发现。所以在 monorepo 的子模块里放 Skill 也能生效，不需要提到根目录。
+</div>
+<h2>
+    调用方式
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>方式</th>
+            <th>写法</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>显式调用</td>
+            <td><span class="special">$skill-name</span></td>
+            <td>最直接的方式，输入 $ 加 Skill 名</td>
+        </tr>
+        <tr>
+            <td>Skill 列表</td>
+            <td><span class="special">/skills</span></td>
+            <td>查看当前可用全部 Skill</td>
+        </tr>
+        <tr>
+            <td>隐式调用</td>
+            <td>无需任何操作</td>
+            <td>CodeX 根据 description 自动判断该不该用</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    SKILL.md 最小结构
+</h2>
+<pre tag="markdown">
+---
+name: skill-name
+description: Explain exactly when this skill should and should not trigger.
+---
+
+Skill instructions for Codex to follow.
+</pre>
+<p>
+    <span class="special">name</span> 和 <span class="special">description</span> 是<span class="important">必填</span>字段，作用和 Claude Code 完全一致：<span class="special">name</span> 是标识符，<span class="special">description</span> 决定 CodeX 什么时候该自动加载这个 Skill。
+</p>
+<div class="tips">
+    description 里要同时写清楚<span class="important">"什么时候该用"和"什么时候不该用"</span>。CodeX 官方模板明确建议这么写。比如：<br />
+    <span class="special">description: Generate TypeScript types from OpenAPI definitions. Use when user says 'from swagger' or pastes an openapi.yaml. Do not use for runtime API calls or when generating REST clients.</span>
+</div>
+<h2>
+    一个实用示例：提交前自检
+</h2>
+<pre tag="markdown">
+---
+name: pre-commit-check
+description: Review uncommitted changes and flag risky edits before committing. Use when the user asks for a commit message, mentions committing, or asks 'what did I change'. Do not use for reviewing already-pushed commits.
+---
+
+## 当前改动
+运行 git diff --stat 和 git diff HEAD，把结果作为上下文。
+
+## 检查清单
+
+按顺序检查并报告：
+
+1. **错误处理**：新增的异步调用是否有对应的 error 分支
+2. **硬编码值**：是否有密钥、URL、魔法数字直接写死
+3. **测试同步**：改动是否需要同步更新测试用例
+4. **命名规范**：是否遵循项目已有的命名约定
+
+## 输出格式
+
+- 用 2-3 条要点总结改动内容
+- 然后单独列出风险项，每项标注文件路径和行号
+- 如果没有发现风险，明确说"未发现明显风险"
+</pre>
+<h2>
+    控制是否允许自动触发
+</h2>
+<p>
+    默认情况下 CodeX 可以隐式调用 Skill。如果某个 Skill 只应该在你明确要求时执行，可以在同目录放一个 <span class="special">agents/openai.yaml</span> 声明策略：
+</p>
+<pre tag="yaml">
+policy:
+  allow_implicit_invocation: false
+</pre>
+<div class="tips">
+    这个开关和 Claude Code 的 <span class="special">disable-model-invocation: true</span> 是一回事，只是落点不同——CodeX 放在附加的 YAML 文件里，Claude Code 直接写在 SKILL.md 的 frontmatter。
+</div>
+<h2>
+    禁用某个 Skill
+</h2>
+<p>
+    在 <span class="special">~/.codex/config.toml</span> 里用 <span class="special">[[skills.config]]</span> 关掉某个 Skill，不用删目录：
+</p>
+<pre tag="toml">
+[[skills.config]]
+path = "/Users/you/.agents/skills/pre-commit-check/SKILL.md"
+enabled = false
+</pre>
+<div class="tips">
+    这里的键是 <span class="special">path</span>（指向具体的 SKILL.md 文件路径），不是 Skill 名。改完要重启 CodeX 才会生效。
+</div>
+<h2>
+    进阶技巧
+</h2>
+<h3>
+    组合多个 Skill
+</h3>
+<p>
+    Skill 之间是可以叠加的。比如先跑 <span class="special">$pre-commit-check</span> 确认改动没问题，再跑部署类的 Skill。可以一句话把顺序说清楚：
+</p>
+<pre>
+先跑 $pre-commit-check 确认没有风险项，确认通过后再执行部署流程。
+</pre>
+<h3>
+    Skill 和 AGENTS.md 的分工
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>AGENTS.md</th>
+            <th>Skill</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>加载时机</strong></td>
+            <td>每次启动必读</td>
+            <td>被触发时才加载</td>
+        </tr>
+        <tr>
+            <td><strong>适合放</strong></td>
+            <td>事实：技术栈、构建命令、不可违反的约定</td>
+            <td>流程：操作步骤、检查清单、模板</td>
+        </tr>
+        <tr>
+            <td><strong>成本</strong></td>
+            <td>常驻占用上下文</td>
+            <td>几乎零成本，不用不加载</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    判断标准很简单：<span class="important">如果这段内容膨胀成了一份"操作步骤"，它就该搬到 Skill 里去</span>。
+</p>
+<h3>
+    目录结构建议
+</h3>
+<pre>
+.agents/skills/pre-commit-check/
+├── SKILL.md          （必需）
+├── CHECKLIST.md      （可选，展开的检查清单）
+├── scripts/
+│   └── diff-stats.sh （可选，脚本辅助）
+└── templates/
+    └── commit-msg.txt（可选，commit message 模板）
+</pre>
+<p>
+    SKILL.md 正文建议控制在 500 行以内，超出部分挪到单独文件里按需引用。CodeX 只在需要时才读取这些辅助文件。
+</p>
+<h3>
+    常见问题排查
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>现象</th>
+            <th>原因</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>CodeX 完全看不到这个 Skill</td>
+            <td>目录不是 <span class="special">.agents/skills/</span>（最常见的错），或者 frontmatter 没写 <span class="special">---</span> 分隔符</td>
+        </tr>
+        <tr>
+            <td><span class="special">$</span> 调用提示找不到</td>
+            <td>目录名和 frontmatter 的 <span class="special">name</span> 不一致，两者必须完全相同</td>
+        </tr>
+        <tr>
+            <td>从不自动触发</td>
+            <td>description 太笼统，缺"当用户说 XXX 时使用"这类明确触发词</td>
+        </tr>
+        <tr>
+            <td>每次都触发，太吵</td>
+            <td>description 没写排除条件，或者没设 <span class="special">allow_implicit_invocation: false</span></td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    排查第一步永远是 <span class="special">/skills</span>：如果你的 Skill 不在这个列表里，说明根本没被加载，和 description 写得好不好无关。
+</div>
