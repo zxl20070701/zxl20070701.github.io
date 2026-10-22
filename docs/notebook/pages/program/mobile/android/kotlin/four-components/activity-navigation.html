@@ -1,0 +1,65 @@
+<header>
+    Activity 导航
+</header>
+<p>
+    单 Activity 多页面的应用，页面跳转统一交给
+    <span class="important">Navigation Compose</span> 管理。
+    核心是 <span class="important">NavController</span> 控制跳转、
+    <span class="important">NavHost</span> 承载页面。
+</p>
+<h2>
+    NavHost 基础用法
+</h2>
+<pre tag="kotlin">
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val navController = rememberNavController()
+            NavHost(navController, startDestination = "home") {
+                composable("home") { HomeScreen(navController) }
+                composable("detail") { DetailScreen(navController) }
+            }
+        }
+    }
+}
+
+@Composable
+fun HomeScreen(navController: NavController) {
+    Button(onClick = { navController.navigate("detail") }) {
+        Text("跳转到详情页")
+    }
+}
+
+@Composable
+fun DetailScreen(navController: NavController) {
+    Button(onClick = { navController.popBackStack() }) {
+        Text("返回")
+    }
+}
+</pre>
+<h2>
+    常用跳转操作
+</h2>
+<pre tag="kotlin">
+// 普通跳转
+navController.navigate("detail")
+
+// 带参数跳转
+navController.navigate("detail/123")
+
+// 清空回退栈再跳转（如登录后进入主页）
+navController.navigate("home") {
+    popUpTo(0) { inclusive = true }
+}
+
+// 返回上一页
+navController.popBackStack()
+
+// 返回到指定路由
+navController.popBackStack("home", inclusive = false)
+</pre>
+<div class="tips">
+    完整路由用法（类型安全路由、传参、转场动画、DeepLink）
+    见 <span class="warn">Jetpack Compose → NavHost 路由跳转</span>。
+</div>

@@ -1,0 +1,148 @@
+<header>
+    运行时权限
+</header>
+<p>
+    Android 6.0 起危险权限必须运行时动态申请。
+    Compose 中使用 <span class="important">rememberLauncherForActivityResult</span>，
+    彻底告别 <span class="warn">onRequestPermissionsResult</span> 回调。
+</p>
+<h2>
+    声明权限
+</h2>
+<pre tag="xml">
+&lt;manifest&gt;
+    &lt;uses-permission android:name="android.permission.CAMERA" /&gt;
+    &lt;uses-permission android:name="android.permission.POST_NOTIFICATIONS" /&gt;
+    &lt;uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /&gt;
+&lt;/manifest&gt;
+</pre>
+<h2>
+    Compose 中申请单个权限
+</h2>
+<pre tag="kotlin">
+@Composable
+fun CameraScreen() {
+    var hasPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                LocalContext.current, Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    // 1. 创建 Launcher
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted -&gt;
+        hasPermission = granted
+        if (!granted) {
+            // 用户拒绝，提示或降级
+        }
+    }
+
+    // 2. 触发申请
+    Button(onClick = { launcher.launch(Manifest.permission.CAMERA) }) {
+        Text(if (hasPermission) "已授权" else "申请相机权限")
+    }
+}
+</pre>
+<h2>
+    一次申请多个权限
+</h2>
+<pre tag="kotlin">
+val multiLauncher = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.RequestMultiplePermissions()
+) { result: Map&lt;String, Boolean&gt; -&gt;
+    result.forEach { (perm, granted) -&gt;
+        Log.d("Perm", "$perm = $granted")
+    }
+}
+
+multiLauncher.launch(
+    arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.RECORD_AUDIO
+    )
+)
+</pre>
+<h2>
+    Accompanist 封装（推荐）
+</h2>
+<pre tag="kotlin">
+// build.gradle.kts
+implementation("com.google.accompanist:accompanist-permissions:0.36.0")
+
+// 使用
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun CameraScreen() {
+    val cameraPermission = rememberPermissionState(Manifest.permission.CAMERA)
+
+    when {
+        cameraPermission.status.isGranted -&gt; {
+            CameraPreview()
+        }
+        cameraPermission.status.shouldShowRationale -&gt; {
+            // 用户拒绝过一次，弹解释
+            AlertDialog(
+                onDismissRequest = {},
+                confirmButton = {
+                    TextButton(onClick = { cameraPermission.launchPermissionRequest() }) {
+                        Text("去授权")
+                    }
+                },
+                text = { Text("需要相机权限才能扫码") }
+            )
+        }
+        else -&gt; {
+            // 首次申请
+            LaunchedEffect(Unit) { cameraPermission.launchPermissionRequest() }
+        }
+    }
+}
+</pre>
+<h2>
+    各版本媒体权限对照
+</h2>
+<ul>
+    <li>
+        <span class="important">Android 13（API 33）+</span>
+        ：READ_MEDIA_IMAGES / READ_MEDIA_VIDEO / READ_MEDIA_AUDIO，
+        不再用 READ_EXTERNAL_STORAGE。
+    </li>
+    <li>
+        <span class="important">Android 12（API 32）及以下</span>
+        ：READ_EXTERNAL_STORAGE。
+    </li>
+    <li>
+        <span class="important">Android 10（API 29）+</span>
+        ：写入公共目录用 MediaStore，无需存储权限。
+    </li>
+    <li>
+        <span class="important">Android 13+</span>
+        ：POST_NOTIFICATIONS 通知权限必须动态申请。
+    </li>
+</ul>
+<pre tag="kotlin">
+// 根据版本选择权限
+val imagePerm = if (Build.VERSION.SDK_INT &gt;= 33) {
+    Manifest.permission.READ_MEDIA_IMAGES
+} else {
+    Manifest.permission.READ_EXTERNAL_STORAGE
+}
+</pre>
+<h2>
+    永久拒绝后引导跳设置
+</h2>
+<pre tag="kotlin">
+val context = LocalContext.current
+val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+    data = Uri.fromParts("package", context.packageName, null)
+}
+context.startActivity(intent)
+</pre>
+<div class="tips">
+    权限申请前先检查 <span class="warn">shouldShowRequestPermissionRationale</span>，
+    返回 true 表示用户拒绝过一次但未勾选"不再询问"，
+    此时应先弹解释再发起申请，通过率更高。
+</div>

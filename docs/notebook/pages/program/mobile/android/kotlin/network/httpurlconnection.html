@@ -1,0 +1,112 @@
+<header>
+    HttpURLConnection
+</header>
+<p>
+    HttpURLConnection 是 Java 自带的轻量级网络请求类。现代项目更推荐 OkHttp（简洁、功能更全），
+    但 HttpURLConnection 无需引入额外依赖，适合学习和简单场景。
+</p>
+<h2>
+    注意
+</h2>
+<ul>
+    <li>网络操作必须在 IO 线程中执行。</li>
+    <li>需要在 AndroidManifest.xml 中声明权限：
+        <pre tag="xml">&lt;uses-permission android:name="android.permission.INTERNET" /&gt;</pre>
+    </li>
+    <li>Android 9+ 默认禁用明文 HTTP，HTTPS 自动支持；HTTP 需额外配置 networkSecurityConfig。</li>
+</ul>
+<h2>
+    GET 请求（协程写法，推荐）
+</h2>
+<pre tag="kotlin">
+// 需依赖：androidx.lifecycle:lifecycle-runtime-ktx + kotlinx.coroutines:kotlinx-coroutines-android
+// lifecycleScope 默认在 Main 线程
+lifecycleScope.launch {
+    // IO 线程执行网络请求
+    val result = withContext(Dispatchers.IO) {
+        try {
+            val url = URL("https://zxl20070701.github.io/notebook/index.html")
+            val conn = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "GET"
+            conn.connectTimeout = 5000
+            conn.readTimeout = 5000
+
+            if (conn.responseCode == 200) {
+                // 自动关闭 InputStream
+                conn.inputStream.bufferedReader().use { it.readText() }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+    // result 回到主线程，可直接更新 UI
+    uiState = result
+}
+</pre>
+<h2>
+    POST 请求
+</h2>
+<pre tag="kotlin">
+withContext(Dispatchers.IO) {
+    val url = URL("https://example.com/api")
+    val conn = url.openConnection() as HttpURLConnection
+    conn.requestMethod = "POST"
+    conn.doOutput = true
+    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+
+    val params = "name=zxl&amp;age=18"
+    conn.outputStream.use { it.write(params.toByteArray(Charsets.UTF_8)) }
+}
+</pre>
+<h2>
+    Compose 中展示结果
+</h2>
+<pre tag="kotlin">
+@Composable
+fun NetworkDemo() {
+    var result by remember { mutableStateOf("等待请求...") }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        Button(onClick = {
+            CoroutineScope(Dispatchers.IO).launch {
+                val data = fetchData()
+                withContext(Dispatchers.Main) {
+                    result = data ?: "请求失败"
+                }
+            }
+        }) {
+            Text("发起请求")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = result,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+</pre>
+<h2>
+    推荐：OkHttp（更现代）
+</h2>
+<pre tag="kotlin">
+// build.gradle.kts
+// implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+val client = OkHttpClient()
+val request = Request.Builder()
+    .url("https://zxl20070701.github.io/notebook/index.html")
+    .get()
+    .build()
+
+lifecycleScope.launch {
+    val result = withContext(Dispatchers.IO) {
+        client.newCall(request).execute().body?.string()
+    }
+    uiState = result
+}
+</pre>

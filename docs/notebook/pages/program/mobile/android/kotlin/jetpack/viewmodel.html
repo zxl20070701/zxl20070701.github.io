@@ -1,0 +1,159 @@
+<header>
+    ViewModel + StateFlow
+</header>
+<p>
+    ViewModel 负责管理 UI 相关数据，旋转屏幕时数据不丢失；
+    StateFlow 作为状态容器，驱动 Compose 自动重组。
+    二者搭配构成 Jetpack 官方推荐的 <span class="important">MVVM</span> 架构。
+</p>
+<h2>
+    添加依赖
+</h2>
+<pre tag="kotlin">
+implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+</pre>
+<h2>
+    定义 ViewModel
+</h2>
+<pre tag="kotlin">
+data class HomeUiState(
+    val loading: Boolean = false,
+    val list: List&lt;Item&gt; = emptyList(),
+    val error: String? = null
+)
+
+class HomeViewModel(
+    private val repo: HomeRepository = HomeRepository()
+) : ViewModel() {
+
+    // 私有可变 + 公有只读，是官方推荐写法
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow&lt;HomeUiState&gt; = _uiState.asStateFlow()
+
+    init {
+        load()
+    }
+
+    fun load() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(loading = true, error = null) }
+            try {
+                val data = repo.fetch()
+                _uiState.update { it.copy(loading = false, list = data) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(loading = false, error = e.message) }
+            }
+        }
+    }
+}
+</pre>
+<div class="tips">
+    使用 <span class="warn">MutableStateFlow.update { it.copy(...) }</span> 而不是
+    <span class="warn">value = ...</span>，可在多协程并发修改时保证原子性。
+</div>
+<h2>
+    Compose 中订阅
+</h2>
+<pre tag="kotlin">
+@Composable
+fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+    // 感知生命周期，后台自动停止收集
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Box(Modifier.fillMaxSize()) {
+        when {
+            state.loading -&gt; CircularProgressIndicator(Modifier.align(Alignment.Center))
+            state.error != null -&gt; Text("出错：${state.error}")
+            else -&gt; LazyColumn {
+                items(state.list) { ItemRow(it) }
+            }
+        }
+    }
+}
+</pre>
+<h2>
+    一次性事件：SharedFlow
+</h2>
+<p>
+    StateFlow 会一直保留最新值，旋转屏幕后会重放，不适合 toast、导航等一次性事件。
+    使用 <span class="important">SharedFlow</span>：
+</p>
+<pre tag="kotlin">
+class HomeViewModel : ViewModel() {
+
+    sealed class UiEvent {
+        data class ShowToast(val msg: String) : UiEvent()
+        data class Navigate(val route: String) : UiEvent()
+    }
+
+    private val _event = MutableSharedFlow&lt;UiEvent&gt;()
+    val event = _event.asSharedFlow()
+
+    fun onRefresh() {
+        viewModelScope.launch {
+            // ...刷新逻辑
+            _event.emit(UiEvent.ShowToast("刷新成功"))
+        }
+    }
+}
+
+// Compose 中监听
+@Composable
+fun HomeScreen(viewModel: HomeViewModel = viewModel(), nav: NavController) {
+    LaunchedEffect(Unit) {
+        viewModel.event.collect { e -&gt;
+            when (e) {
+                is UiEvent.ShowToast -&gt; Toast.makeText(ctx, e.msg, Toast.LENGTH_SHORT).show()
+                is UiEvent.Navigate -&gt; nav.navigate(e.route)
+            }
+        }
+    }
+}
+</pre>
+<h2>
+    Repository 数据流：Flow → StateFlow
+</h2>
+<pre tag="kotlin">
+class UserViewModel(repo: UserRepository) : ViewModel() {
+
+    // 把 Repository 暴露的 Flow 转换为 StateFlow
+    val users: StateFlow&lt;List&lt;User&gt;&gt; = repo.observeUsers()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+}
+</pre>
+<h2>
+    带参数创建 ViewModel
+</h2>
+<pre tag="kotlin">
+// 1. 定义 Factory
+class DetailViewModel(private val id: Int) : ViewModel() {
+    companion object {
+        fun factory(id: Int) = viewModelFactory {
+            initializer { DetailViewModel(id) }
+        }
+    }
+}
+
+// 2. Compose 中调用
+val vm: DetailViewModel = viewModel(factory = DetailViewModel.factory(id))
+</pre>
+<h2>
+    Navigation 传参场景
+</h2>
+<pre tag="kotlin">
+// Navigation 2.5+，ViewModel 直接从 SavedStateHandle 取路由参数
+class DetailViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+    private val id: Int = checkNotNull(savedStateHandle["id"])
+    // ...
+}
+</pre>
+<div class="tips">
+    牢记单一数据源（SSOT）：Composable 只渲染 StateFlow，
+    所有修改通过 ViewModel 方法发起，不要在 UI 层直接改状态。
+</div>

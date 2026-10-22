@@ -1,0 +1,145 @@
+<header>
+    Text
+</header>
+<p>
+    Compose 中的 <span class="important">Text</span> 用于显示文本，
+    替代 View 时代的 TextView。
+</p>
+<h2>
+    基础用法
+</h2>
+<pre tag="kotlin">
+@Composable
+fun TextDemo() {
+    Text(
+        text = "Hello Compose",
+        color = Color(0xFF1A1A1A),
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+        fontStyle = FontStyle.Italic,
+        textAlign = TextAlign.Center,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    )
+}
+</pre>
+<h2>
+    常用属性对照表
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>Compose 属性</td>
+            <td>原 XML 属性</td>
+            <td>说明</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>color</td>
+            <td>android:textColor</td>
+            <td>文字颜色</td>
+        </tr>
+        <tr>
+            <td>fontSize</td>
+            <td>android:textSize</td>
+            <td>字号（sp）</td>
+        </tr>
+        <tr>
+            <td>fontWeight</td>
+            <td>android:textStyle="bold"</td>
+            <td>字重</td>
+        </tr>
+        <tr>
+            <td>fontStyle</td>
+            <td>android:textStyle="italic"</td>
+            <td>斜体</td>
+        </tr>
+        <tr>
+            <td>textAlign</td>
+            <td>android:gravity</td>
+            <td>对齐方式</td>
+        </tr>
+        <tr>
+            <td>maxLines</td>
+            <td>android:maxLines</td>
+            <td>最大行数</td>
+        </tr>
+        <tr>
+            <td>overflow</td>
+            <td>android:ellipsize</td>
+            <td>溢出处理</td>
+        </tr>
+        <tr>
+            <td>lineHeight</td>
+            <td>android:lineHeight</td>
+            <td>行高</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    主题样式
+</h2>
+<pre tag="kotlin">
+Text(
+    text = "标题",
+    style = MaterialTheme.typography.titleLarge
+)
+
+Text(
+    text = "正文",
+    style = MaterialTheme.typography.bodyMedium
+)
+</pre>
+<h2>
+    富文本（AnnotatedString）
+</h2>
+<pre tag="kotlin">
+val annotatedText = buildAnnotatedString {
+    append("点击")
+    withStyle(SpanStyle(color = Color.Blue, fontWeight = FontWeight.Bold)) {
+        append("查看详情")
+    }
+    append("了解更多")
+}
+
+Text(text = annotatedText)
+</pre>
+<h2>
+    可点击的文字片段
+</h2>
+<pre tag="kotlin">
+val uriHandler = LocalUriHandler.current
+val annotatedString = buildAnnotatedString {
+    append("阅读并同意")
+    withLink(
+        LinkAnnotation.Url(
+            url = "https://example.com/agreement",
+            styles = TextLinkStyles(SpanStyle(color = Color.Blue))
+        )
+    ) {
+        append("《用户协议》")
+    }
+}
+
+Text(text = annotatedString)
+</pre>
+<h2>
+    选择复制
+</h2>
+<pre tag="kotlin">
+SelectionContainer {
+    Column {
+        Text("这段文字可以被选择复制")
+        Text("也可以复制这一段")
+    }
+}
+</pre>
+<div class="tips">
+    Compose 中 <span class="warn">fontSize</span> 直接用 sp 单位，
+    <span class="warn">padding</span> 等用 dp；不再需要像 XML 那样区分
+    <span class="warn">android:textSize="20sp"</span> 的字符串写法。
+</div>

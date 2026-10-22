@@ -1,0 +1,128 @@
+<header>
+    Activity
+</header>
+<p>
+    Activity 是 Android 中负责界面交互的组件，是用户操作的入口。
+    现代 Android 开发使用 <span class="important">Jetpack Compose</span> 构建 UI。
+</p>
+<h2>
+    基本用法（Compose）
+</h2>
+<h3>
+    创建 Compose Activity
+</h3>
+<pre tag="kotlin">
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge() // 边缘到边缘显示
+        setContent {
+            MyAppTheme {
+                HomeScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun HomeScreen() {
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("首页") })
+        }
+    ) { innerPadding -&gt;
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Text("Hello Compose!")
+        }
+    }
+}
+</pre>
+<h3>
+    在清单文件中注册
+</h3>
+<pre tag="xml">
+&lt;application android:label="@string/app_name"&gt;
+    &lt;activity android:name=".MainActivity"
+              android:exported="true"&gt;
+        &lt;intent-filter&gt;
+            &lt;action android:name="android.intent.action.MAIN" /&gt;
+            &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+        &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+&lt;/application&gt;
+</pre>
+<h2>
+    生命周期
+</h2>
+<ul>
+    <li>
+        <span class="important">onCreate</span>
+        ：Activity 被创建时调用。
+    </li>
+    <li>
+        <span class="important">onStart</span>
+        ：Activity 即将可见。
+    </li>
+    <li>
+        <span class="important">onResume</span>
+        ：Activity 获得焦点，可以交互。
+    </li>
+    <li>
+        <span class="important">onPause</span>
+        ：Activity 失去焦点。
+    </li>
+    <li>
+        <span class="important">onStop</span>
+        ：Activity 不可见。
+    </li>
+    <li>
+        <span class="important">onDestroy</span>
+        ：Activity 被销毁。
+    </li>
+</ul>
+<h2>
+    启动方式
+</h2>
+<h3>
+    显式 Intent
+</h3>
+<pre tag="kotlin">
+val intent = Intent(this, SecondActivity::class.java)
+startActivity(intent)
+</pre>
+<h3>
+    隐式 Intent
+</h3>
+<pre tag="kotlin">
+val intent = Intent(Intent.ACTION_VIEW)
+intent.data = Uri.parse("https://zxl20070701.github.io/notebook/index.html")
+startActivity(intent)
+</pre>
+<h2>
+    View-based Activity（兼容旧代码）
+</h2>
+<pre tag="kotlin">
+// 传统 View-based 用 AppCompatActivity（已内置 ViewBinding、enableEdgeToEdge）
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        // ViewBinding 替代 setContentView + findViewById
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
+}
+</pre>
+<div class="tips">
+    新项目建议直接使用 <span class="warn">ComponentActivity + Compose</span>；
+    导航见「Activity 导航」，页面间结果回调见「Activity Result」，
+    与旧 View 体系共存见「Compose 与 View 混合使用」。
+</div>

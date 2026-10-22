@@ -1,0 +1,134 @@
+<header>
+    ContentProvider
+</header>
+<p>
+    ContentProvider 用于在不同应用之间共享数据，是 Android 实现跨进程通信的标准方式之一。
+</p>
+<h2>
+    核心方法
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>方法</td>
+            <td>作用</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>query</td>
+            <td>查询数据。</td>
+        </tr>
+        <tr>
+            <td>insert</td>
+            <td>插入数据。</td>
+        </tr>
+        <tr>
+            <td>update</td>
+            <td>更新数据。</td>
+        </tr>
+        <tr>
+            <td>delete</td>
+            <td>删除数据。</td>
+        </tr>
+        <tr>
+            <td>getType</td>
+            <td>返回数据类型（MIME）。</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    自定义 ContentProvider 示例
+</h2>
+<pre tag="kotlin">
+class BookProvider : ContentProvider() {
+
+    override fun onCreate(): Boolean {
+        // 初始化数据库等
+        return true
+    }
+
+    override fun query(
+        uri: Uri,
+        projection: Array&lt;out String&gt;?,
+        selection: String?,
+        selectionArgs: Array&lt;out String&gt;?,
+        sortOrder: String?
+    ): Cursor? {
+        return null
+    }
+
+    override fun getType(uri: Uri): String? = null
+
+    override fun insert(uri: Uri, values: ContentValues?): Uri? = null
+
+    override fun delete(
+        uri: Uri, selection: String?, selectionArgs: Array&lt;out String&gt;?
+    ): Int = 0
+
+    override fun update(
+        uri: Uri, values: ContentValues?,
+        selection: String?, selectionArgs: Array&lt;out String&gt;?
+    ): Int = 0
+}
+</pre>
+<h2>
+    清单文件注册
+</h2>
+<pre tag="xml">
+&lt;provider
+    android:name=".BookProvider"
+    android:authorities="com.example.provider.book"
+    android:exported="false"
+    android:grantUriPermissions="true" /&gt;
+</pre>
+<h2>
+    通过 ContentResolver 访问
+</h2>
+<pre tag="kotlin">
+// query 返回的 Cursor 用 use 自动关闭
+contentResolver.query(
+    Uri.parse("content://com.example.provider/book"),
+    null, null, null, null
+)?.use { cursor -&gt;
+    val idIndex = cursor.getColumnIndexOrThrow("_id")
+    while (cursor.moveToNext()) {
+        val id = cursor.getLong(idIndex)
+        // 读取其他列
+    }
+}
+</pre>
+<h2>
+    Compose 中查询并展示
+</h2>
+<pre tag="kotlin">
+@Composable
+fun ContactsScreen() {
+    val context = LocalContext.current
+    var contacts by remember { mutableStateOf(listOf&lt;String&gt;()) }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            val list = mutableListOf&lt;String&gt;()
+            context.contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null, null, null, null
+            )?.use { cursor -&gt;
+                val nameIndex = cursor.getColumnIndexOrThrow(
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+                )
+                while (cursor.moveToNext()) {
+                    list.add(cursor.getString(nameIndex))
+                }
+            }
+            contacts = list
+        }
+    }
+
+    LazyColumn {
+        items(contacts) { name -&gt;
+            Text(name, modifier = Modifier.padding(16.dp))
+        }
+    }
+}
+</pre>

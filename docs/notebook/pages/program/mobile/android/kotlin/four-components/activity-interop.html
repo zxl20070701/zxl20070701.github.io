@@ -1,0 +1,177 @@
+<header>
+    Compose 与 View 混合使用
+</header>
+<p>
+    存量项目迁移时，两套体系往往需要长期共存。Compose 官方提供了双向互操作：
+    <span class="important">ComposeView</span> 把 Compose 塞进 XML，
+    <span class="important">AndroidView</span> 把 View 塞进 Compose。
+</p>
+<h2>
+    方式一：ComposeView 嵌入 XML 布局（View → Compose）
+</h2>
+<pre tag="xml">
+&lt;LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"&gt;
+
+    &lt;!-- 传统 View --&gt;
+    &lt;TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="旧页面标题" /&gt;
+
+    &lt;!-- Compose 容器 --&gt;
+    &lt;androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" /&gt;
+&lt;/LinearLayout&gt;
+</pre>
+<pre tag="kotlin">
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        findViewById&lt;TextView&gt;(R.id.tv_title).text = "来自 View 的标题"
+
+        findViewById&lt;ComposeView&gt;(R.id.compose_view).apply {
+            // 跟随宿主生命周期销毁组合，避免内存泄漏
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+            setContent {
+                MyAppTheme {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("这段文字由 Compose 渲染")
+                        Button(onClick = { /* ... */ }) {
+                            Text("Compose 按钮")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</pre>
+<div class="tips">
+    <span class="warn">ComposeView</span> 默认的释放策略是
+    <span class="warn">DisposeOnDetachedFromWindow</span>，
+    放在 <span class="warn">RecyclerView / ViewPager</span> 中会因视图回收丢失状态，
+    务必显式改为 <span class="warn">DisposeOnViewTreeLifecycleDestroyed</span>。
+</div>
+<h2>
+    方式二：Activity 整体使用 Compose
+</h2>
+<p>
+    <span class="warn">AppCompatActivity</span> 同样支持
+    <span class="warn">setContent</span>，迁移期无需改基类：
+</p>
+<pre tag="kotlin">
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        // 整个页面由 Compose 绘制
+        setContent {
+            MyAppTheme {
+                HomeScreen()
+            }
+        }
+    }
+}
+</pre>
+<h2>
+    方式三：AndroidView 嵌入传统 View（Compose → View）
+</h2>
+<pre tag="kotlin">
+@Composable
+fun MapScreen() {
+    val context = LocalContext.current
+    var zoom by remember { mutableFloatStateOf(10f) }
+    // remember 保证重组时不会重复创建 View
+    val mapView = remember { MapView(context) }
+
+    AndroidView(
+        factory = { mapView },
+        modifier = Modifier.fillMaxSize(),
+        update = { view -&gt;
+            // 每次重组时回调，可在这里同步最新状态
+            view.setZoom(zoom)
+        }
+    )
+
+    // 组合退出时释放资源
+    DisposableEffect(Unit) {
+        onDispose { mapView.onDestroy() }
+    }
+}
+</pre>
+<p>
+    嵌入 <span class="warn">WebView</span> 等需要跟随生命周期的 View 时，
+    同样在 <span class="warn">DisposableEffect</span> 中做清理。
+</p>
+<h2>
+    状态互通：共享 ViewModel
+</h2>
+<p>
+    View 与 Compose 之间不要直接互相持有控件，统一通过
+    <span class="warn">ViewModel + StateFlow</span> 交换数据：
+</p>
+<pre tag="kotlin">
+class SharedViewModel : ViewModel() {
+    private val _count = MutableStateFlow(0)
+    val count: StateFlow&lt;Int&gt; = _count.asStateFlow()
+
+    fun increase() {
+        _count.update { it + 1 }
+    }
+}
+</pre>
+<pre tag="kotlin">
+// View 侧：手动收集并更新控件
+lifecycleScope.launch {
+    repeatOnLifecycle(Lifecycle.State.STARTED) {
+        sharedViewModel.count.collect { value -&gt;
+            binding.tvCount.text = "计数：$value"
+        }
+    }
+}
+
+// Compose 侧：自动感知生命周期
+@Composable
+fun CounterText(viewModel: SharedViewModel) {
+    val count by viewModel.count.collectAsStateWithLifecycle()
+    Text("计数：$count", modifier = Modifier.clickable { viewModel.increase() })
+}
+</pre>
+<h2>
+    混合使用的注意事项
+</h2>
+<ul>
+    <li>
+        <span class="important">主题独立</span>：XML 的 AppCompat 主题不会传递给 Compose，
+        Compose 内容必须包一层 <span class="warn">MaterialTheme</span>（或自定义 Theme）。
+    </li>
+    <li>
+        <span class="important">导航不要混用</span>：同一页面栈内不要同时使用
+        Navigation Compose 和 Fragment Navigation，二者回退栈互不相通。
+    </li>
+    <li>
+        <span class="important">尺寸单位</span>：View 侧用 px/dp 换算，Compose 用 dp/sp，
+        跨边界传值统一使用 dp 值。
+    </li>
+    <li>
+        <span class="important">减少嵌套层级</span>：先把整块区域迁移为 Compose，
+        再逐步替换外围 View，避免 View ↔ Compose 反复嵌套。
+    </li>
+</ul>
+<div class="tips">
+    新项目建议直接使用 <span class="warn">ComponentActivity + Compose</span>；
+    旧项目可保留 <span class="warn">AppCompatActivity</span>，
+    按页或按模块用 <span class="warn">ComposeView</span> 逐步替换，无需一次性重写。
+</div>

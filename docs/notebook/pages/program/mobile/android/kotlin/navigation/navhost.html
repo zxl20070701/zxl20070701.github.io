@@ -1,0 +1,166 @@
+<header>
+    NavHost 路由跳转
+</header>
+<p>
+    Navigation 是 Jetpack 官方路由组件，负责在 Compose 各页面之间跳转、传参、回退。
+    核心三要素：<span class="important">NavController</span>（跳转动作）、
+    <span class="important">NavHost</span>（页面容器）、
+    <span class="important">NavGraph</span>（路由表）。
+</p>
+<h2>
+    添加依赖
+</h2>
+<pre tag="kotlin">
+// build.gradle.kts (app)
+implementation("androidx.navigation:navigation-compose:2.8.4")
+// 类型安全路由（Kotlin 序列化，推荐）
+implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+</pre>
+<h2>
+    方式一：字符串路由（简单场景）
+</h2>
+<h3>
+    定义路由表
+</h3>
+<pre tag="kotlin">
+@Composable
+fun AppNavHost() {
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "home" // 起始页
+    ) {
+        composable("home") { HomeScreen(navController) }
+        composable("detail/{id}") { backStackEntry -&gt;
+            // 取出路径参数
+            val id = backStackEntry.arguments?.getString("id")
+            DetailScreen(id, navController)
+        }
+    }
+}
+</pre>
+<h3>
+    跳转与传参
+</h3>
+<pre tag="kotlin">
+// 普通跳转
+navController.navigate("detail/123")
+
+// 带 query 参数
+navController.navigate("detail/123?from=home")
+
+// 清空回退栈再跳转（常用于登录后进入主页）
+navController.navigate("home") {
+    popUpTo(0) { inclusive = true }
+}
+
+// 返回上一页
+navController.popBackStack()
+
+// 返回到指定路由
+navController.popBackStack("home", inclusive = false)
+</pre>
+<h3>
+    页面接收参数
+</h3>
+<pre tag="kotlin">
+composable(
+    route = "detail/{id}?from={from}",
+    arguments = listOf(
+        navArgument("id") { type = NavType.IntType },
+        navArgument("from") {
+            type = NavType.StringType
+            defaultValue = ""
+        }
+    )
+) { entry -&gt;
+    val id = entry.arguments?.getInt("id") ?: 0
+    val from = entry.arguments?.getString("from") ?: ""
+    DetailScreen(id, from)
+}
+</pre>
+<h2>
+    方式二：类型安全路由（推荐）
+</h2>
+<p>
+    Navigation 2.8+ 官方推荐，使用 <span class="important">@Serializable</span> 对象定义路由，
+    编译期检查参数类型，避免字符串拼错。
+</p>
+<pre tag="kotlin">
+// 1. 声明路由
+@Serializable
+object Home
+
+@Serializable
+data class Detail(val id: Int, val from: String = "")
+
+// 2. NavHost 中使用泛型注册
+NavHost(navController, startDestination = Home) {
+    composable&lt;Home&gt; { HomeScreen(navController) }
+    composable&lt;Detail&gt; { entry -&gt;
+        val detail = entry.toRoute&lt;Detail&gt;() // 直接拿强类型对象
+        DetailScreen(detail.id, detail.from)
+    }
+}
+
+// 3. 跳转：直接传对象
+navController.navigate(Detail(id = 123, from = "home"))
+</pre>
+<h2>
+    常用配套能力
+</h2>
+<h3>
+    监听路由变化
+</h3>
+<pre tag="kotlin">
+// 在 Scaffold 中根据当前路由决定是否显示底栏
+val backStackEntry by navController.currentBackStackEntryAsState()
+val currentRoute = backStackEntry?.destination?.route
+
+Scaffold(
+    bottomBar = {
+        if (currentRoute in listOf("home", "mine")) {
+            BottomNavigationBar(navController)
+        }
+    }
+) { innerPadding -&gt;
+    AppNavHost(Modifier.padding(innerPadding))
+}
+</pre>
+<h3>
+    跳转动画
+</h3>
+<pre tag="kotlin">
+composable(
+    route = "detail/{id}",
+    enterTransition = { slideInHorizontally { it } },       // 从右往左滑入
+    exitTransition = { slideOutHorizontally { -it } },      // 向左滑出
+    popEnterTransition = { slideInHorizontally { -it } },   // 返回时从左滑入
+    popExitTransition = { slideOutHorizontally { it } }     // 返回时向右滑出
+) { /* ... */ }
+</pre>
+<h3>
+    深层链接（DeepLink）
+</h3>
+<pre tag="kotlin">
+composable(
+    route = "detail/{id}",
+    deepLinks = listOf(
+        navDeepLink { uriPattern = "myapp://detail/{id}" }
+    )
+) { /* ... */ }
+</pre>
+<p>
+    同时在清单文件中给 Activity 注册 <span class="warn">&lt;nav-graph&gt;</span>：
+</p>
+<pre tag="xml">
+&lt;activity android:name=".MainActivity" android:exported="true"&gt;
+    &lt;nav-graph android:value="@navigation/nav_graph" /&gt;
+&lt;/activity&gt;
+</pre>
+<div class="tips">
+    建议在 <span class="warn">ViewModel</span> 中发导航事件（通过 Channel/SharedFlow），
+    由 Composable 统一调用 <span class="warn">navController.navigate</span>，
+    避免业务逻辑直接持有 NavController，便于单测与预览。
+</div>

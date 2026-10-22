@@ -1,0 +1,161 @@
+<header>
+    WebView
+</header>
+<p>
+    WebView 用于在 App 内显示网页内容，也可以与 JavaScript 双向交互。
+    在 Compose 中使用 <span class="important">AndroidView</span> 承载 WebView。
+</p>
+<h2>
+    Compose 中嵌入 WebView
+</h2>
+<pre tag="kotlin">
+@Composable
+fun WebPage(url: String) {
+    var webView: WebView? by remember { mutableStateOf(null) }
+
+    AndroidView(
+        modifier = Modifier.fillMaxSize(),
+        factory = { context -&gt;
+            WebView(context).apply {
+                settings.apply {
+                    javaScriptEnabled = true
+                    domStorageEnabled = true
+                    setSupportZoom(true)
+                }
+                webViewClient = WebViewClient()
+                webChromeClient = WebChromeClient()
+                loadUrl(url)
+                webView = this
+            }
+        }
+    )
+
+    // 监听返回键
+    BackHandler(enabled = webView?.canGoBack() == true) {
+        webView?.goBack()
+    }
+}
+</pre>
+<h2>
+    与 JavaScript 交互
+</h2>
+<h3>
+    Android 调用 JS
+</h3>
+<pre tag="kotlin">
+webView?.evaluateJavascript("javascript:showMessage('Hello')", null)
+</pre>
+<h3>
+    JS 调用 Android
+</h3>
+<pre tag="kotlin">
+val jsInterface = object {
+    @android.webkit.JavascriptInterface
+    fun callFromJs(msg: String) {
+        // 在主线程弹 Toast
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+}
+
+webView.addJavascriptInterface(jsInterface, "Android")
+</pre>
+<h2>
+    加载本地 HTML
+</h2>
+<pre tag="kotlin">
+val htmlContent = """
+    &lt;html&gt;&lt;body&gt;
+        &lt;h1&gt;Hello Compose&lt;/h1&gt;
+        &lt;button onclick="Android.callFromJs('Hello from JS')"&gt;点击我&lt;/button&gt;
+    &lt;/body&gt;&lt;/html&gt;
+"""
+
+webView?.loadDataWithBaseURL(null, htmlContent, "text/html", "utf-8", null)
+</pre>
+<h2>
+    加载进度与错误处理
+</h2>
+<pre tag="kotlin">
+@Composable
+fun WebPageWithProgress(url: String) {
+    var progress by remember { mutableIntStateOf(0) }
+    var isError by remember { mutableStateOf(false) }
+    var errorMsg by remember { mutableStateOf("") }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = { context -&gt;
+                WebView(context).apply {
+                    settings.javaScriptEnabled = true
+                    webViewClient = object : WebViewClient() {
+                        override fun onPageFinished(view: WebView?, url: String?) {
+                            progress = 100
+                        }
+                        override fun onReceivedError(
+                            view: WebView?,
+                            request: WebResourceRequest?,
+                            error: WebResourceError?
+                        ) {
+                            isError = true
+                            errorMsg = error?.description?.toString() ?: "未知错误"
+                        }
+                    }
+                    webChromeClient = object : WebChromeClient() {
+                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                            progress = newProgress
+                        }
+                    }
+                    loadUrl(url)
+                }
+            }
+        )
+
+        // 进度条
+        if (progress &lt; 100) {
+            LinearProgressIndicator(
+                progress = { progress / 100f },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        // 错误提示
+        if (isError) {
+            Text(
+                text = "加载失败: $errorMsg",
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.Red
+            )
+        }
+    }
+}
+</pre>
+<h2>
+    常用设置
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>设置</td>
+            <td>说明</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>javaScriptEnabled = true</td>
+            <td>启用 JavaScript。</td>
+        </tr>
+        <tr>
+            <td>domStorageEnabled = true</td>
+            <td>启用 DOM localStorage / sessionStorage。</td>
+        </tr>
+        <tr>
+            <td>setSupportZoom(true)</td>
+            <td>支持双指缩放。</td>
+        </tr>
+        <tr>
+            <td>cacheMode</td>
+            <td>NETWORK_DEFAULT / LOAD_DEFAULT / LOAD_NO_CACHE / LOAD_CACHE_ELSE_NETWORK。</td>
+        </tr>
+    </tbody>
+</table>

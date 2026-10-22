@@ -1,0 +1,124 @@
+<header>
+    文件存储
+</header>
+<p>
+    Android 中常见的文件存储方式有两种：内部存储和外部存储。
+    在 Compose 中读写文件后，通过 State 驱动 UI 更新。
+</p>
+<h2>
+    内部存储
+</h2>
+<p>
+    位于 <span class="warn">/data/data/&lt;packageName&gt;/files</span> 下，应用卸载时会一并删除，无需申请权限。
+</p>
+<pre tag="kotlin">
+// 需依赖：androidx.lifecycle:lifecycle-runtime-ktx + kotlinx.coroutines:kotlinx-coroutines-android
+// 写入（建议放在 IO 协程中）
+lifecycleScope.launch(Dispatchers.IO) {
+    try {
+        openFileOutput("data.txt", MODE_PRIVATE).use { fos -&gt;
+            fos.write("hello".toByteArray(Charsets.UTF_8))
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+}
+
+// 读取
+lifecycleScope.launch(Dispatchers.IO) {
+    try {
+        val content = openFileInput("data.txt").use { fis -&gt;
+            String(fis.readBytes(), Charsets.UTF_8)
+        }
+        // 回到主线程更新 State
+        uiState = content
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+}
+</pre>
+<h2>
+    Compose 中读写并展示
+</h2>
+<pre tag="kotlin">
+@Composable
+fun FileStorageDemo() {
+    val context = LocalContext.current
+    var content by remember { mutableStateOf("") }
+    var input by remember { mutableStateOf("") }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        OutlinedTextField(
+            value = input,
+            onValueChange = { input = it },
+            label = { Text("输入内容") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(onClick = {
+                CoroutineScope(Dispatchers.IO).launch {
+                    context.openFileOutput("data.txt", Context.MODE_PRIVATE).use {
+                        it.write(input.toByteArray(Charsets.UTF_8))
+                    }
+                }
+            }) {
+                Text("写入")
+            }
+            Button(onClick = {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val result = try {
+                        context.openFileInput("data.txt").use {
+                            String(it.readBytes(), Charsets.UTF_8)
+                        }
+                    } catch (e: IOException) {
+                        "读取失败"
+                    }
+                    withContext(Dispatchers.Main) {
+                        content = result
+                    }
+                }
+            }) {
+                Text("读取")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text("文件内容：$content")
+    }
+}
+</pre>
+<h2>
+    外部存储
+</h2>
+<p>
+    一般指手机内置共享存储或外置 SD 卡。
+    应用专属目录（<span class="warn">getExternalFilesDir()</span>）无需权限；
+    写入共享目录（Documents、Download 等）在 Android 11+ 受 <span class="important">分区存储</span> 限制，
+    应使用 Storage Access Framework（SAF）或 MediaStore。
+</p>
+<pre tag="xml">
+&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    android:maxSdkVersion="28" /&gt;
+&lt;uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    android:maxSdkVersion="32" /&gt;
+&lt;!-- Android 13+ 读取媒体文件用以下权限替代 READ_EXTERNAL_STORAGE --&gt;
+&lt;uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /&gt;
+&lt;uses-permission android:name="android.permission.READ_MEDIA_VIDEO" /&gt;
+&lt;uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /&gt;
+</pre>
+<pre tag="kotlin">
+// 应用专属外部目录（无需权限，跨版本安全）
+lifecycleScope.launch(Dispatchers.IO) {
+    val dir = getExternalFilesDir(null)
+    val file = File(dir, "test.txt")
+    try {
+        file.writeText("hello", Charsets.UTF_8)
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+}
+</pre>

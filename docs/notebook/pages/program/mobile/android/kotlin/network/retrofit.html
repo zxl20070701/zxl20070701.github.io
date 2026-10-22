@@ -1,0 +1,183 @@
+<header>
+    Retrofit 网络请求
+</header>
+<p>
+    Retrofit 是 Square 开源的类型安全 HTTP 客户端，
+    配合 Kotlin 协程与 Moshi / Gson 解析，是事实上的行业标准。
+</p>
+<h2>
+    添加依赖
+</h2>
+<pre tag="kotlin">
+implementation("com.squareup.retrofit2:retrofit:2.11.0")
+implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+</pre>
+<pre tag="xml">
+&lt;uses-permission android:name="android.permission.INTERNET" /&gt;
+</pre>
+<h2>
+    三步走
+</h2>
+<h3>
+    1. 定义数据类
+</h3>
+<pre tag="kotlin">
+data class User(
+    val id: Int,
+    val name: String,
+    val avatar: String
+)
+</pre>
+<h3>
+    2. 定义接口
+</h3>
+<pre tag="kotlin">
+interface ApiService {
+
+    @GET("users/{id}")
+    suspend fun getUser(@Path("id") id: Int): User
+
+    @GET("users")
+    suspend fun listUsers(
+        @Query("page") page: Int,
+        @Query("size") size: Int = 20
+    ): List&lt;User&gt;
+
+    @POST("users")
+    suspend fun createUser(@Body user: User): User
+
+    @Multipart
+    @POST("upload")
+    suspend fun upload(
+        @Part file: MultipartBody.Part
+    ): UploadResponse
+
+    @GET("download")
+    @Streaming // 大文件流式下载
+    suspend fun download(): ResponseBody
+}
+</pre>
+<h3>
+    3. 构建 Retrofit
+</h3>
+<pre tag="kotlin">
+object ApiClient {
+    private val okHttp = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        })
+        // 通用拦截器：加 token、加 UA
+        .addInterceptor { chain -&gt;
+            val newReq = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer ${TokenHolder.token}")
+                .build()
+            chain.proceed(newReq)
+        }
+        .build()
+
+    val api: ApiService = Retrofit.Builder()
+        .baseUrl("https://api.example.com/")
+        .client(okHttp)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(ApiService::class.java)
+}
+</pre>
+<h2>
+    在 ViewModel 中调用
+</h2>
+<pre tag="kotlin">
+class UserViewModel : ViewModel() {
+
+    private val _user = MutableStateFlow&lt;User?&gt;(null)
+    val user = _user.asStateFlow()
+
+    fun load(id: Int) {
+        viewModelScope.launch {
+            try {
+                _user.value = ApiClient.api.getUser(id)
+            } catch (e: HttpException) {
+                // HTTP 4xx / 5xx
+            } catch (e: IOException) {
+                // 网络断开 / 超时
+            }
+        }
+    }
+}
+</pre>
+<h2>
+    统一封装网络层
+</h2>
+<h3>
+    通用返回结构
+</h3>
+<pre tag="kotlin">
+data class ApiResponse&lt;T&gt;(
+    val code: Int,
+    val message: String,
+    val data: T?
+)
+
+// 密封类表示结果
+sealed class Result&lt;out T&gt; {
+    data class Success&lt;T&gt;(val data: T) : Result&lt;T&gt;()
+    data class Error(val code: Int, val msg: String) : Result&lt;Nothing&gt;()
+    object Loading : Result&lt;Nothing&gt;()
+}
+
+// 统一入口
+suspend fun &lt;T&gt; safeCall(block: suspend () -&gt; ApiResponse&lt;T&gt;): Result&lt;T&gt; {
+    return try {
+        val resp = block()
+        if (resp.code == 0 &amp;&amp; resp.data != null) {
+            Result.Success(resp.data)
+        } else {
+            Result.Error(resp.code, resp.message)
+        }
+    } catch (e: HttpException) {
+        Result.Error(e.code(), e.message())
+    } catch (e: IOException) {
+        Result.Error(-1, "网络异常")
+    }
+}
+
+// 使用
+when (val r = safeCall { ApiClient.api.getUser(1) }) {
+    is Result.Success -&gt; show(r.data)
+    is Result.Error -&gt; toast(r.msg)
+    Result.Loading -&gt; showLoading()
+}
+</pre>
+<h2>
+    文件上传
+</h2>
+<pre tag="kotlin">
+suspend fun uploadAvatar(file: File): UploadResponse {
+    val reqBody = file.asRequestBody("image/*".toMediaTypeOrNull())
+    val part = MultipartBody.Part.createFormData("file", file.name, reqBody)
+    return ApiClient.api.upload(part)
+}
+</pre>
+<h2>
+    与 Flow 配合（轮询 / 流式更新）
+</h2>
+<pre tag="kotlin">
+fun pollUser(id: Int): Flow&lt;User&gt; = flow {
+    while (true) {
+        emit(ApiClient.api.getUser(id))
+        delay(5000) // 5 秒轮询一次
+    }
+}.flowOn(Dispatchers.IO)
+</pre>
+<div class="tips">
+    <span class="warn">suspend 函数 + Retrofit</span> 是首选写法；
+    不要再返回 <span class="warn">Call&lt;T&gt;</span> 并调用 execute()（会阻塞线程）
+    或 enqueue()（回调地狱）。
+</div>

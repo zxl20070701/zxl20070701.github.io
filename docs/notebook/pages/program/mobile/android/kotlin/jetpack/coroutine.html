@@ -1,0 +1,201 @@
+<header>
+    Kotlin 协程
+</header>
+<p>
+    协程是 Kotlin 官方异步方案，用同步写法实现异步逻辑，替代回调与 RxJava。
+    核心概念：<span class="important">suspend 函数</span>、
+    <span class="important">CoroutineScope</span>、
+    <span class="important">Dispatcher</span>、
+    <span class="important">Flow</span>。
+</p>
+<h2>
+    添加依赖
+</h2>
+<pre tag="kotlin">
+implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+</pre>
+<h2>
+    三大作用域
+</h2>
+<h3>
+    viewModelScope（首选）
+</h3>
+<pre tag="kotlin">
+class MainViewModel : ViewModel() {
+    fun loadData() {
+        viewModelScope.launch {
+            // ViewModel 销毁时自动取消，无内存泄漏
+            val data = repository.fetch()
+            _uiState.value = data
+        }
+    }
+}
+</pre>
+<h3>
+    lifecycleScope（Activity / Fragment）
+</h3>
+<pre tag="kotlin">
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            // 与生命周期绑定，DESTROYED 时取消
+        }
+    }
+}
+</pre>
+<h3>
+    repeatOnLifecycle（UI 收集 Flow）
+</h3>
+<pre tag="kotlin">
+lifecycleScope.launch {
+    repeatOnLifecycle(Lifecycle.State.STARTED) {
+        // STARTED 时才收集，STOPPED 时暂停，避免后台耗电
+        viewModel.uiState.collect { state -&gt;
+            // 更新 UI
+        }
+    }
+}
+</pre>
+<p>
+    Compose 里等效写法：
+</p>
+<pre tag="kotlin">
+val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+</pre>
+<h2>
+    Dispatcher 调度器
+</h2>
+<ul>
+    <li>
+        <span class="important">Dispatchers.Main</span>
+        ：UI 线程，更新界面。
+    </li>
+    <li>
+        <span class="important">Dispatchers.IO</span>
+        ：网络、文件、数据库。
+    </li>
+    <li>
+        <span class="important">Dispatchers.Default</span>
+        ：CPU 密集型计算（解析 JSON、排序等）。
+    </li>
+</ul>
+<pre tag="kotlin">
+viewModelScope.launch {
+    // 默认在 Main
+    showLoading()
+    val data = withContext(Dispatchers.IO) {
+        api.fetchData() // 切到 IO
+    }
+    showData(data) // 回到 Main
+}
+</pre>
+<h2>
+    suspend 挂起函数
+</h2>
+<pre tag="kotlin">
+// 声明
+suspend fun fetchUser(id: Int): User {
+    return withContext(Dispatchers.IO) {
+        api.getUser(id) // 阻塞式写法，实际是非阻塞挂起
+    }
+}
+
+// 调用：只能在协程或其他 suspend 函数中
+viewModelScope.launch {
+    val user = fetchUser(1)
+}
+</pre>
+<h2>
+    并发与编排
+</h2>
+<h3>
+    async 并发执行
+</h3>
+<pre tag="kotlin">
+viewModelScope.launch {
+    val userDeferred = async { fetchUser(1) }
+    val ordersDeferred = async { fetchOrders(1) }
+    // 两个请求同时进行，等两者都完成
+    show(userDeferred.await(), ordersDeferred.await())
+}
+</pre>
+<h3>
+    超时
+</h3>
+<pre tag="kotlin">
+withTimeout(3000) {
+    api.fetch() // 超过 3 秒抛 TimeoutCancellationException
+}
+</pre>
+<h3>
+    异常处理
+</h3>
+<pre tag="kotlin">
+val handler = CoroutineExceptionHandler { _, e -&gt;
+    Log.e("VM", "协程异常", e)
+}
+viewModelScope.launch(handler) {
+    // ...
+}
+// 或用 try/catch（推荐，粒度更细）
+viewModelScope.launch {
+    try {
+        api.fetch()
+    } catch (e: IOException) {
+        _error.value = "网络异常"
+    }
+}
+</pre>
+<h2>
+    Flow 流
+</h2>
+<h3>
+    冷流 vs 热流
+</h3>
+<ul>
+    <li>
+        <span class="important">Flow</span>
+        ：冷流，collect 时才发射，每个收集者独立。
+    </li>
+    <li>
+        <span class="important">StateFlow</span>
+        ：热流，持有当前值，UI 状态首选。
+    </li>
+    <li>
+        <span class="important">SharedFlow</span>
+        ：热流，事件总线，可配置 replay。
+    </li>
+</ul>
+<h3>
+    常用操作符
+</h3>
+<pre tag="kotlin">
+flow {
+    emit(api.fetch())
+}
+    .map { it.toUiModel() }        // 转换
+    .filter { it.isValid }         // 过滤
+    .debounce(300)                 // 防抖（搜索框常用）
+    .distinctUntilChanged()        // 去重
+    .onStart { emit(Loading) }     // 前置发射
+    .catch { e -&gt; emit(Error(e)) } // 异常兜底
+    .flowOn(Dispatchers.IO)        // 上游切线程
+    .collect { /* 消费 */ }
+</pre>
+<h3>
+    回调转 Flow
+</h3>
+<pre tag="kotlin">
+fun locationFlow(): Flow&lt;Location&gt; = callbackFlow {
+    val listener = LocationListener { loc -&gt; trySend(loc) }
+    requestUpdates(listener)
+    awaitClose { removeUpdates(listener) } // 取消时清理资源
+}
+</pre>
+<div class="tips">
+    不要再使用 <span class="warn">GlobalScope</span>，它不受生命周期约束；
+    业务代码首选 viewModelScope，UI 层用 repeatOnLifecycle / collectAsStateWithLifecycle。
+</div>
