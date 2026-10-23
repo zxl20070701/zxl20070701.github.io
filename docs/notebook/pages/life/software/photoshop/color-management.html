@@ -1,0 +1,430 @@
+<header>
+    色彩管理
+</header>
+<p>
+    色彩管理是 PS 里<span class="important">看不见但决定成败</span>的一环。它的核心其实只有一个问题：<span
+        class="special">颜色是「设备相关」的，不同设备对同一个数值会产生不同的实际颜色</span>。色彩管理就是一套翻译机制，让颜色在不同设备间保持一致。
+</p>
+<h2>
+    为什么颜色会不一致
+</h2>
+<p>
+    三个层面的原因叠加在一起：
+</p>
+<h3>
+    设备无法再现全部颜色
+</h3>
+<p>
+    没有任何设备能再现人眼可见的全部颜色。每个设备都在自己的<span class="important">色域（gamut）</span>范围内工作：显示器有显示器的色域，喷墨打印机有打印机的色域，印刷厂有印刷机的色域。
+</p>
+<p>
+    所以你在屏幕上看到的那种鲜艳的蓝，<span class="special">很可能完全在打印机的色域之外</span>——不是调色调错了，是物理上印不出来。
+</p>
+<h3>
+    设备原理不同
+</h3>
+<ul>
+    <li>显示器用 RGB 磷光或 LED <span class="special">发光</span></li>
+    <li>打印机用 CMYK 油墨<span class="special">吸收</span>光线</li>
+</ul>
+<p>
+    发光和吸光的物理机制不同，同一组数值自然产生不同结果。
+</p>
+<h3>
+    色彩模型的性质差异
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>模型</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">设备无关</span></td>
+            <td>CIE Lab</td>
+            <td>直接对应<span class="important">人类视觉感知</span>，跨设备描述颜色一致</td>
+        </tr>
+        <tr>
+            <td><span class="special">设备相关</span></td>
+            <td>RGB、HSL、HSB、CMYK</td>
+            <td>同一组数值在不同设备上显示不同</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    一个直观的例子：RGB 的 <span class="special">(255, 0, 0)</span> 在你的显示器上是某种红，在同事的显示器上是<span
+        class="important">略微不同的红</span>，而要印刷出来必须先翻译成 CMYK 数值。<strong>数值相同不等于颜色相同</strong>，这就是色彩管理存在的原因。
+</div>
+<h3>
+    其它干扰因素
+</h3>
+<ul>
+    <li>显示器之间的制造差异</li>
+    <li>显示器的<span class="important">使用年限和校准状态</span></li>
+    <li>纸张类型和表面处理（哑光纸和光面纸的呈现完全不同）</li>
+    <li>环境光照</li>
+    <li>不同软件对色彩数值的解释方式</li>
+</ul>
+<h2>
+    ICC 配置文件
+</h2>
+<p>
+    色彩管理系统的工作方式，是通过 <span class="important">ICC 配置文件</span>——这是描述「某个设备如何处理颜色」的标准化文件。三种类型：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>配置文件</th>
+            <th>描述什么</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">显示器配置文件</span></td>
+            <td>这台显示器如何呈现颜色</td>
+        </tr>
+        <tr>
+            <td><span class="special">打印机配置文件</span></td>
+            <td>特定的「打印机 + 墨水 + 纸张」组合能再现哪些颜色</td>
+        </tr>
+        <tr>
+            <td><span class="special">文档配置文件</span></td>
+            <td>这个图像文件本身处于什么色彩空间</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    这些配置文件构成了一套<span class="important">通用语言</span>，让 PS 能在相机、显示器、打印机之间逐级翻译颜色，并处理那些超出目标设备色域的颜色。
+</p>
+<h2>
+    三种常用 RGB 工作空间
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>工作空间</th>
+            <th>色域</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="important">sRGB</span></td>
+            <td>标准</td>
+            <td><span class="special">默认首选</span>。网页、绝大多数数字分发场景</td>
+        </tr>
+        <tr>
+            <td><span class="important">Adobe RGB</span></td>
+            <td>较宽</td>
+            <td>包含较多青绿和橙色，适合<span class="special">印刷</span>、户外广告</td>
+        </tr>
+        <tr>
+            <td><span class="important">ProPhoto RGB</span></td>
+            <td><span class="special">很宽</span></td>
+            <td>包含大量高饱和色和 Lab 色域。<span class="important">大幅调色时提供最大余量</span>，但需 16 位</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    设置工作空间
+</h3>
+<p>
+    <span class="special">编辑 → 颜色设置</span>，在「RGB」下拉里选择。这一项决定的是<span class="important">新建文档的默认色彩空间</span>，以及没有配置文件时 PS 如何解释文件。
+</p>
+<div class="tips">
+    <span class="important">工作空间不是「越宽越好」</span>。ProPhoto RGB 虽然色域最宽，但它包含很多<span
+        class="special">屏幕根本无法显示的颜色</span>，在 sRGB 屏幕上会显得「发闷、发灰」。日常设计用 sRGB，需要印刷或大幅调色时再用 Adobe RGB / ProPhoto。
+</div>
+<h2>
+    分配与转换：最关键的区分
+</h2>
+<p>
+    这是色彩管理里最容易出错、后果最严重的一点。PS 提供了两个功能相近但性质完全不同的命令：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>命令</th>
+            <th>做了什么</th>
+            <th>结果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="important">指定配置文件</span><br>（编辑 → 指定配置文件）</td>
+            <td><span class="special">不改变任何像素数值</span>，只改变 PS 如何解释这些数值</td>
+            <td><span class="special">颜色可能剧烈变化</span></td>
+        </tr>
+        <tr>
+            <td><span class="important">转换配置文件</span><br>（编辑 → 转换为配置文件）</td>
+            <td><span class="special">真正转换像素值</span>，把颜色映射到新空间</td>
+            <td>颜色外观基本不变</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    Adobe 官方明确说了：<span class="important">「指定配置文件」不改变文档的颜色值，只改变 PS 对这些值的解释方式</span>，屏幕上看到的颜色可能因此大幅改变。
+    <br><br>
+    实际含义：<span class="special">「指定」是重新贴标签（图像实际颜色变了），「转换」才是真正换算（颜色看起来应该一样）</span>。想保持视觉一致就用「转换」；确实需要强行改变解释（比如文件被错误标记了配置文件）才用「指定」。
+</div>
+<h3>
+    指定配置文件
+</h3>
+<p>
+    <span class="special">编辑 → 指定配置文件</span>，三个选项：
+</p>
+<ul>
+    <li><span class="important">不对此文档进行色彩管理</span>：移除当前配置文件（危险，会导致颜色完全不可控）</li>
+    <li><span class="special">工作 RGB</span>：指定为当前工作空间</li>
+    <li><span class="special">配置文件</span>：手动指定某个具体配置文件</li>
+</ul>
+<h3>
+    转换为配置文件
+</h3>
+<p>
+    <span class="special">编辑 → 转换为配置文件</span>，选择目标空间后可配置转换选项：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>选项</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>引擎（Engine）</td>
+            <td>通常选 <span class="special">Adobe（ACE）</span></td>
+        </tr>
+        <tr>
+            <td>意图（Intent）</td>
+            <td>转换策略，见下文</td>
+        </tr>
+        <tr>
+            <td><span class="special">使用黑场补偿</span></td>
+            <td><span class="important">一般建议勾选</span>，改善暗部层次的过渡</td>
+        </tr>
+        <tr>
+            <td><span class="special">使用抖动（Dither）</span></td>
+            <td>用噪声模拟中间色，<span class="important">减少渐变色带</span>。位深低时必开</td>
+        </tr>
+        <tr>
+            <td>预览</td>
+            <td>实时预览转换效果</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    渲染意图
+</h2>
+<p>
+    超出目标色域的颜色必须被「裁掉」，而不同的裁剪策略（意图）会得到不同结果：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>意图</th>
+            <th>策略</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="important">感知（Perceptual）</span></td>
+            <td>保持色彩的<span class="special">视觉关系</span>，整体压缩色域</td>
+            <td><span class="important">照片首选</span>，尤其是有渐变和细腻过渡的</td>
+        </tr>
+        <tr>
+            <td><span class="important">相对比色（Relative Colorimetric）</span></td>
+            <td>尽量<span class="special">精确匹配</span>可呈现的颜色，裁掉超出的</td>
+            <td><span class="important">Logo、品牌色</span>等有明确色值要求的</td>
+        </tr>
+        <tr>
+            <td>绝对比色</td>
+            <td>相对方式基础上，<span class="special">同时还原纸张和墨水的绝对色偏</span></td>
+            <td>有打样要求的专业印刷</td>
+        </tr>
+        <tr>
+            <td>饱和度</td>
+            <td>优先保留饱和度</td>
+            <td>一般不用，会导致颜色失真</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    Adobe 的建议很直接：<span class="important">照片用「感知」，Logo 和图形用「相对比色」</span>。因为照片有柔和过渡，感知意图保住整体关系最重要；而品牌色必须准确，不能因为裁剪而偏移。
+</div>
+<h2>
+    位深
+</h2>
+<p>
+    位深决定每个通道能记录多少色阶：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>位深</th>
+            <th>每通道色阶</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+        <tbody>
+        <tr>
+            <td><span class="special">8 位</span></td>
+            <td>256</td>
+            <td>默认。JPG、网页图够用</td>
+        </tr>
+        <tr>
+            <td><span class="special">16 位</span></td>
+            <td>65536</td>
+            <td><span class="important">大幅调色、渐变、16 位 RAW 后期必用</span>。防止暗部断层</td>
+        </tr>
+        <tr>
+            <td>32 位</td>
+            <td>浮点</td>
+            <td>合成曝光、HDR 场景</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="important">大幅调色前先转 16 位</span>。8 位只有 256 级色阶，一旦暗部被推到接近 0，再也拉不回来——这就是「调完暗部一片死黑」的根本原因。转换是<span
+        class="special">无损</span>的（编辑 → 转换配置文件 → 位深选项），但已经丢掉的色阶找不回来。
+</div>
+<h2>
+    软打样
+</h2>
+<p>
+    <span class="special">视图 → 校样设置</span>，选择「自定」并指定配置文件，可以让屏幕模拟特定印刷条件的效果。
+</p>
+<p>
+    快捷开关在<span class="important">状态栏右下角</span>的图标上（两个叠放的三角形），点一下切换开/关，右键可以改配置文件、渲染意图、黑场补偿等。
+</p>
+<div class="tips">
+    软打样是<span class="special">模拟</span>，不是绝对准确——它无法还原纸张的纹理和墨水的物理堆叠。它能帮你发现明显偏色，但<span
+        class="important">不能替代实物打样</span>。真正要确认效果，必须打印出来看。
+</div>
+<h2>
+    嵌入配置文件
+</h2>
+<p>
+    <span class="special">文件 → 导出 → 导出为</span> 时，勾选 <span class="important">嵌入颜色配置文件</span>。这样别人打开你的文件时，PS 会<span
+        class="special">正确解释颜色</span>而不是当成 sRGB 猜。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>格式</th>
+            <th>能否嵌入配置文件</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>PSD / TIFF</td>
+            <td><span class="important">可以</span>，这两个是印刷行业标准</td>
+        </tr>
+        <tr>
+            <td>JPEG</td>
+            <td>可以（<span class="special">Adobe RGB</span> 图必须嵌入）</td>
+        </tr>
+        <tr>
+            <td>PNG / GIF</td>
+            <td>可以，但很多软件会忽略</td>
+        </tr>
+        <tr>
+            <td>WebP / AVIF</td>
+            <td>支持 ICC，兼容性需实测</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="important">不要用「转换为 sRGB」来解决 Adobe RGB 图在手机上偏色的问题</span>。正确做法是<span
+        class="special">嵌入 Adobe RGB 配置文件</span>并保持空间不变，或者一开始就用 sRGB 工作。强行转换会损失色域信息，是不可逆的。
+</div>
+<h2>
+    软打样之外：校准显示器
+</h2>
+<p>
+    色彩管理的前提是<span class="important">显示器本身准确</span>。需要校色仪（爱色、Datacolor 等），流程：
+</p>
+<p>
+    <span class="pip-block">显示器预热 30 分钟以上</span>
+    →
+    <span class="pip-block">环境光控制为中性灰（专业用 D50 5000K）</span>
+    →
+    <span class="pip-block">把显示器亮度调到接近正常工作亮度</span>
+    →
+    <span class="pip-block">用校色仪生成配置文件</span>
+    →
+    <span class="pip-block">在系统或 PS 中选用该配置文件</span>
+</p>
+<h3>
+    观察环境同样重要
+</h3>
+<p>
+    Adobe 特别强调：<span class="important">不稳定的照明会破坏准确的色彩判断</span>。要点：
+</p>
+<ul>
+    <li>太阳光随时间变化（早晨暖、中午冷、傍晚暖），<span class="special">固定时间做色彩关键工作</span></li>
+    <li>标准荧光灯偏蓝绿，<span class="special">专业色彩工作考虑 D50（5000K）</span> 照明</li>
+    <li><span class="important">墙壁和天花板用中性灰</span>，鲜艳的墙面会把色彩反射到屏幕上</li>
+    <li>桌面壁纸设为<span class="important">中性灰</span>，不要用彩色照片</li>
+    <li>看打样时，<span class="special">在最终受众的同等光照下观看</span>——家具画册在暖光下看，办公用品在冷光下看</li>
+</ul>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    图片在 PS 里正常，发给别人就偏色
+</h3>
+<p>
+    <span class="important">导出时没有嵌入配置文件</span>。对方按 sRGB 解释你的 Adobe RGB 图，饱和的颜色会明显变淡。修复：导出时勾选嵌入配置文件。
+</p>
+<h3>
+    「指定」和「转换」用错了
+</h3>
+<p>
+    判断标准：<span class="special">「指定」之后颜色变了，说明你用的是指定——这通常不是你想要的</span>。除非确实要改变解释（比如文件配置文件被错误标记），否则一律用「转换」。
+</p>
+<h3>
+    调完暗部变成一片死黑
+</h3>
+<p>
+    8 位色阶耗尽。预防：<span class="important">大幅调色前先转 16 位</span>（编辑 → 转换配置文件 → 位深 16 位）。已经丢失的色阶无法恢复。
+</p>
+<h3>
+    渐变出现色带（断层）
+</h3>
+<p>
+    同样是位深不足。转 16 位，或在 8 位下导出时勾选<span class="important">「使用抖动」</span>用噪声掩盖色带。
+</p>
+<h3>
+    打印机打出来的颜色和屏幕差很多
+</h3>
+<p>
+    三个可能：<span class="important">打印机未校准</span>（需要打一份校准图生成打印机配置文件）、<span
+        class="special">用的是Adobe RGB 图但转成了普通 CMYK</span>（应转成对应的印刷配置文件）、<span
+        class="special">纸换了但配置文件没换</span>。纸张对结果影响极大，换纸必须重新校准。
+</p>
+<h3>
+    选了 ProPhoto RGB 后画面「发灰」
+</h3>
+<p>
+    正常现象。ProPhoto 包含大量 sRGB 屏幕无法显示的颜色，<span
+        class="important">你看到的只是被裁剪后的结果</span>。用软打样模拟目标空间，或在导出时转换到 sRGB。
+</p>
+<h3>
+    CMYK 图在 PS 里「很暗」
+</h3>
+<p>
+    正常现象。CMYK 模式的默认视图会模拟墨水的实际效果，而<span class="special">未分色预览</span>下看到的是原始数值。用<span
+        class="important">视图 → 校样设置</span>切换到相应条件查看，或直接用 RGB 工作空间编辑（PS 允许在 RGB 下编辑 CMYK 图，会自动转换）。
+</p>
+<h3>
+    JPEG 打开后偏色
+</h3>
+<p>
+    颜色配置文件缺失或被错误指定。用 <span class="special">编辑 → 指定配置文件</span>（不是转换）纠正为正确的配置文件，图像会恢复正常显示。这是「指定」唯一正确的使用场景。
+</p>

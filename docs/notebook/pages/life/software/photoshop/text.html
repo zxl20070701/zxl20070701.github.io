@@ -1,0 +1,292 @@
+<header>
+    文字与排版
+</header>
+<p>
+    Photoshop 的文字本质是<span class="important">带排版参数的图层</span>，不是像素。这点和 GIMP 有本质区别，也是它做排版更省心的原因——只要不栅格化，文字随时可以改。
+</p>
+<h2>
+    文字工具基础
+</h2>
+<p>
+    <span class="pip-block">T 切换到文字工具</span>
+    →
+    <span class="pip-block">在画布上点击</span>
+    （生成一个<span class="special">点文字</span>，字号自动适应）<br>
+    →
+    <span class="pip-block">拖拽出文本框</span>
+    （生成一个<span class="special">段落文字</span>，自动换行）
+</p>
+<div class="tips">
+    两者的区别很重要：<span class="important">点文字不会自动换行</span>，适合标题；<span class="special">段落文字</span>在编辑时会在行尾显示一个弯箭头（<span
+        class="special">↵</span>），手动回车才换行。段落文字导出时才能正确折行。
+</div>
+<h2>
+    字符面板参数
+</h2>
+<p>
+    文字图层的<span class="special">字符</span>选项卡里，参数分为几组，按重要性排序：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>组</th>
+            <th>关键参数</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>字体</td>
+            <td>字型、<span class="special">字号</span>、行距</td>
+            <td>字号决定视觉层级，<span class="important">不是越大越醒目</span></td>
+        </tr>
+        <tr>
+            <td>基本字符</td>
+            <td>粗细、斜体、大小写、上下划线</td>
+            <td>找<span class="special">字体家族的真实字重</span>，不要用「加粗」硬凑</td>
+        </tr>
+        <tr>
+            <td>高级</td>
+            <td><span class="special">字距</span>、字距调整、基线偏移</td>
+            <td>中文标题必调项，见下文</td>
+        </tr>
+        <tr>
+            <td>外观</td>
+            <td>消除锯齿、字形替换、OpenType</td>
+            <td>OpenType 可以启用<span class="special">花体、真实小写、序数</span>等特性</td>
+        </tr>
+        <tr>
+            <td>颜色</td>
+            <td>填充、描边</td>
+            <td>可以用<span class="special">渐变</span>做填充</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    消除锯齿
+</h3>
+<p>
+    「消除锯齿」下拉里的选项直接影响最终清晰度：</p>
+<ul>
+    <li><span class="special">锐利/犀利/犀利/浑厚</span>：像素边缘锐利，适合<span class="important">大字号标题</span></li>
+    <li><span class="special">优化/平滑/柔和/自然</span>：带灰度过渡，适合<span class="important">小字号正文</span></li>
+</ul>
+<div class="tips">
+    小字用「锐利」会显得毛躁且有明显锯齿，正文一定用「平滑」类。字号越小，越应该选带灰度过渡的模式。
+</div>
+<h2>
+    段落面板
+</h2>
+<p>
+    段落排版的核心在这一栏，四个对齐按钮 + 一排缩进控制：
+</p>
+<ul>
+    <li><span class="special">左/中/右/两端对齐</span>：两端对齐会<span class="important">拉伸单词间距</span>，中文长段落慎用</li>
+    <li><span class="special">左缩进/右缩进</span>：整体段落缩进</li>
+    <li><span class="special">首行缩进</span>：中文排版常用 2 字符</li>
+    <li><span class="special">段前/段后间距</span>：<span class="important">段落间距比行距更能影响可读性</span></li>
+</ul>
+<p>
+    <span class="special">Alt+点击</span>某个段落样式图标，可以只把该属性应用到当前选中段落（而不是整个文字图层）。
+</p>
+<h2>
+    中文排版要点
+</h2>
+<p>
+    中文字体的默认西文间距往往不协调，调整参数是中文设计的必修课：
+</p>
+<h3>
+    字距（Tracking）
+</h3>
+<p>
+    字距控制<span class="important">字符间空隙的整体宽度</span>。中文大字号标题通常需要<span class="special">收紧</span>字距：
+</p>
+<pre>
+大字号标题（48px+）：字距 -20 ~ -50
+正文（14-16px）：字距 0
+小字号标签：字距 +10 ~ +50  （字太小会显拥挤）
+</pre>
+<div class="tips">
+    中文字距的判断标准：<span class="important">大标题字距收紧会让文字更「整块」，是专业排版的标志</span>。西文标题相反，通常要略微放大字距。
+</div>
+<h3>
+    避免标点挤压
+</h3>
+<p>
+    中文排版里 <span class="special">GB2312</span> 或 <span class="special">Adobe 大陆标准</span> 字符集能正确处理中文标点占位，比如句号后自动空出一格。默认的「无」会导致中英混排时标点位置不对。
+</p>
+<p>
+    在 <span class="special">文字 → 段落设置 → 中文和日文</span> 里可以指定「文本智能选项」，另外 <span class="special">文字工具选项 → 选定文本 → 沿路径</span> 附近有个「每行居中/左右对齐」可以微调标点对齐。
+</p>
+<h3>
+    中英混排
+</h3>
+<ul>
+    <li>中英文之间加空格是最保险的做法</li>
+    <li>数字使用<span class="special">「等宽数字」</span>，避免多行文字时数字宽度跳动</li>
+    <li>全角标点在一行末尾应该<span class="important">允许悬挂</span>（文字面板勾选「允许标点溢出边界」），否则行尾会出现大空隙</li>
+</ul>
+<h2>
+    变形文字
+</h2>
+<p>
+    选中文字图层 → <span class="special">编辑 → 变换 → 变形</span>，或 <span class="special">Ctrl+T</span> 切换到变形模式。可以做：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>变形类型</th>
+            <th>参数</th>
+            <th>典型用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>缩放</td>
+            <td>垂直/水平、定义比例</td>
+            <td>横向拉宽做标题字</td>
+        </tr>
+        <tr>
+            <td>倾斜</td>
+            <td>水平/垂直倾斜量</td>
+            <td>斜切效果</td>
+        </tr>
+        <tr>
+            <td>扭曲</td>
+            <td>上下弯曲</td>
+            <td>弧形排列</td>
+        </tr>
+        <tr>
+            <td>旋转</td>
+            <td>旋转角度</td>
+            <td>整体倾斜排版</td>
+        </tr>
+        <tr>
+            <td>自定义</td>
+            <td>网格 + 贝塞尔手柄</td>
+            <td>跟随曲线的异形排版</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    想做「文字沿弧线排列」：先用钢笔画出弧线路径 → 选中文字图层 → <span class="special">文字工具选项 → 勾选「沿路径」</span> → 选中该路径。改文字不用重排，路径随时能调。
+</div>
+<h3>
+    变形 + 栅格化的取舍
+</h3>
+<p>
+    变形在栅格化之前是可逆的，<span class="important">栅格化后变形信息就丢失了</span>（编辑菜单里的变形会变灰）。所以顺序永远是：先把文字参数和变形调到位，最后再栅格化。
+</p>
+<h2>
+    图层样式做标题
+</h2>
+<p>
+    双击文字图层打开样式面板，可以给文字加投影、描边、外发光等。这些效果是<span class="important">非破坏性</span>的，改文字内容不会丢失。
+</p>
+<h3>
+    立体标题的标准配方
+</h3>
+<ul>
+    <li>投影：距离 5px，角度 120°，大小 10px，不透明度 50%，颜色纯黑</li>
+    <li>描边：位置「外」，1px，颜色比填充深一档</li>
+    <li>渐变叠加：给填充加渐变，注意混合模式选<span class="special">「叠加」</span>保留原文字形状</li>
+</ul>
+<div class="tips">
+    文字图层的<span class="important">描边不会破坏文字的抗锯齿</span>，这是它比「给文字图层加个描边形状」优越的地方。如果描边让文字变糊，检查描边颜色是否和背景太接近导致视觉粘连。
+</div>
+<h3>
+    渐变文字
+</h3>
+<p>
+    最干净的做法是<span class="special">样式 → 渐变叠加</span>，混合模式选「正常」，用图层蒙版控制渐变范围。直接在文字填充里选渐变也行，但渐变是沿文字框方向铺的，不是沿字形。
+</p>
+<h2>
+    栅格化与排版交付
+</h2>
+<h3>
+    什么时候需要栅格化
+</h3>
+<p>
+    <span class="special">文字 → 栅格化文字图层</span> 会把文字变成普通像素图层。需求这些情况才做：
+</p>
+<ul>
+    <li>需要<span class="important">在别的软件里继续用</span>（对方没装字体）</li>
+    <li>需要用<span class="important">滤镜</span>直接作用于文字（滤镜不能作用于文字图层）</li>
+    <li>需要做<span class="important">变形 + 像素级效果</span>（如置换贴图）</li>
+</ul>
+<div class="tips">
+    栅格化是<span class="important">不可逆</span>的，且会按当前渲染精度固化，之后放大必然模糊。交付前最后一步才做，并且<span
+        class="important">先 Ctrl+J 备份一份文字图层</span>。
+</div>
+<h3>
+    导出给其它软件
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>方式</th>
+            <th>适用</th>
+            <th>注意</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>保留 PSD</td>
+            <td>对方用 PS 继续编辑</td>
+            <td><span class="special">唯一能保留图层结构的格式</span></td>
+        </tr>
+        <tr>
+            <td>转曲（文字 → 路径）</td>
+            <td>转 AI / 导出 SVG</td>
+            <td>保留矢量轮廓，但失去文字属性</td>
+        </tr>
+        <tr>
+            <td>转形状（Ctrl+Alt+Shift+O）</td>
+            <td>需要单独给形状加渐变/描边</td>
+            <td>文字变成路径，可编辑节点</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    转曲 vs 转形状：<span class="important">转形状</span>保留完整的矢量路径（能编辑节点、能加样式），<span class="special">转曲</span>会按当前外观生成轮廓（字形更复杂，节点更多）。优先转形状。
+</p>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    换电脑字体变了
+</h3>
+<p>
+    PSD 里的字体是<span class="important">按名字引用</span>的，没装就替换。要么打包字体，要么把文字栅格化。交付给别人前应该先做字体打包：<span
+        class="special">文件 → 打包 → 打包所有</span>，会生成 PDF 形式的字体包。
+</p>
+<h3>
+    文字边缘发虚
+</h3>
+<p>
+    三个可能：字号太小（<span class="important">小于 12px 的字在屏幕上必然发虚</span>）、消除锯齿模式选了平滑、图层被缩放或做了变形。用「锐利」模式，或把字放大处理后缩小图层。
+</p>
+<h3>
+    字距调了没反应
+</h3>
+<p>
+    检查是否选中了整个文字图层还是只选了一部分。另外<span class="special">「字距调整」和「字距」是两个参数</span>：前者是百分比（用于整体光学调整），后者是绝对像素值。
+</p>
+<h3>
+    两端对齐导致字距不均
+</h3>
+<p>
+    中文段落用两端对齐会拉伸字符间隙，因为中文没有词间距的概念。改用左对齐 + 手动换行，或用段落面板的<span class="special">「中文和日文 → 首尾对齐」</span>功能。
+</p>
+<h3>
+    变形后想改文字内容
+</h3>
+<p>
+    必须先 <span class="special">Ctrl+Shift+Z</span> 撤销变形，或者在未栅格化时用 <span class="special">编辑 → 变换 → 变形</span> 直接改。变形是「当前状态的渲染」，一旦栅格化就只能重做。
+</p>
+<h3>
+    图层样式里的渐变文字显示不对
+</h3>
+<p>
+    检查渐变叠加的混合模式。「叠加」「柔光」会受底下的文字填充影响，看起来和预期不同。要完全控制颜色，用<span class="important">「正常」模式</span>然后调整渐变本身。
+</p>

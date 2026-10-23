@@ -1,0 +1,384 @@
+<header>
+    调色与滤镜
+</header>
+<p>
+    调色的核心不是记住滤镜参数，而是<span class="important">建立顺序</span>。顺序错了，后面每一步都会把前一步的成果破坏掉。这篇先讲顺序，再讲每个环节的工具。
+</p>
+<h2>
+    调色顺序
+</h2>
+<p>
+    下面这个顺序是从摄影底片逻辑推出来的，适用于绝大多数照片和素材处理场景：
+</p>
+<pre>
+① 显示器校色        → 没有准确的颜色，后面全白搭
+② 曝光 / 白平衡      → 定基调
+③ 曲线                → 定明暗关系
+④ 色阶 / 可选色彩     → 定局部色调
+⑤ HSL / 色彩平衡      → 定颜色倾向
+⑥ 锐化                → 放最后，会放大噪点
+⑦ 输出                → 转 CMYK 或导出
+</pre>
+<div class="tips">
+    <span class="special">锐化永远放最后</span>。它会把前面所有的噪点和 JPEG 压缩瑕疵一起放大，先锐化再调色，等于把脏东西一起强化了。
+</div>
+<h2>
+    调整图层的两种用法
+</h2>
+<p>
+    每个调色工具都有对应的调整图层。它们和直接用菜单命令的本质区别是：<span
+        class="important">调整图层不改变像素，可以随时改参数，也可以随时关掉对比</span>。
+</p>
+<p>
+    <span class="pip-block">图层面板底部圆形半黑半白图标</span>
+    →
+    <span class="pip-block">选择需要的调整类型</span>
+    →
+    <span class="pip-block">在属性面板调参数</span>
+</p>
+<p>
+    想快速对比调整前后效果，按住 <span class="special">Alt</span> 点击调整图层眼睛，或者在属性面板勾选右下角的<span
+        class="important">「小眼睛」预览开关</span>。
+</p>
+<h3>
+    一次性调多个图层
+</h3>
+<p>
+    选中多个图层（Ctrl+点击），然后创建一个调整图层，它会<span class="special">同时作用于所有选中的图层</span>，并自动建立剪贴组。这是修图（比如统一调肤色）里最省时间的一招。
+</p>
+<h2>
+    曝光与白平衡
+</h2>
+<h3>
+    色阶（Levels）
+</h3>
+<p>
+    <span class="pip-block">Ctrl+L</span> 打开。它直接作用在图像的<span class="important">直方图</span>上，最直观的用途是修正欠曝/过曝：
+</p>
+<ul>
+    <li>拖动<span class="special">黑场滑块</span>：把最暗处提到 0，图像变反差更大</li>
+    <li>拖动<span class="special">白场滑块</span>：把最亮点拉到 255，图像变亮</li>
+    <li>拖动<span class="special">灰场滑块</span>：改变<span class="important">整体明暗</span>，不动黑白场</li>
+</ul>
+<div class="tips">
+    <span class="special">自动颜色</span> 按钮一键完成黑白场修正，是最快的「看起来不灰」的手段。但它会同时改变色相，人像慎用——肤色会被拉偏。
+</div>
+<h3>
+    曲线（Curves）
+</h3>
+<p>
+    <span class="pip-block">Ctrl+M</span> 打开。曲线是色阶的升级版，核心优势是<span class="important">只影响你动的那一段</span>。默认是 RGB 混合通道，左上角通道列表还有红、绿、蓝单独通道：
+</p>
+<ul>
+    <li>中间点上下移动：控制<span class="important">整体明暗（曝光）</span></li>
+    <li>S 形曲线：加强对比</li>
+    <li>暗部左下角往上提：<span class="important">提亮阴影</span>，是「胶片感」的来源</li>
+    <li>亮部右上角往下压：<span class="important">压暗高光</span>，保护高光不过曝</li>
+    <li>选择<span class="special">红/绿/蓝通道</span>调 S 形：分别控制三原色的对比，等效于分离色调</li>
+</ul>
+<div class="tips">
+    曲线里拖不动？按住 <span class="special">Ctrl</span> 点击曲线会自动添加控制点。想让某段更陡，把相邻两点拉开；想微调单侧，用 <span
+        class="special">Alt+点击</span> 添加点后单独调整。
+</div>
+<h3>
+    曝光度（Exposure）
+</h3>
+<p>
+    和曲线中点等价，区别在于它<span class="important">只做整体明暗</span>且以 2 的幂次计算，更接近真实曝光。适合需要大幅提亮而不动反差时使用。
+</p>
+<h2>
+    HSL 与色彩平衡
+</h2>
+<h3>
+    色相/饱和度/明度（HSL）
+</h3>
+<p>
+    按颜色范围分别调整，人像和风景的通用武器：
+</p>
+<p>
+    <span class="pip-block">属性面板点调整图层图标</span>
+    →
+    <span class="pip-block">HSL 下拉切到「红色」（肤色）</span>
+    →
+    <span class="pip-block">色相往橙推、明度略提</span>
+    →
+    <span class="pip-block">切到「黄色」降饱和</span>
+</p>
+<p>
+    常见调整逻辑：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>颜色</th>
+            <th>调整方向</th>
+            <th>效果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>红色（肤色）</td>
+            <td>色相 +5~+10，饱和度 -5，明度 +5</td>
+            <td>肤色自然、有血色，不过于发橙</td>
+        </tr>
+        <tr>
+            <td>黄色</td>
+            <td>饱和度 -10~-20</td>
+            <td>去黄，皮肤和建筑都受益</td>
+        </tr>
+        <tr>
+            <td>绿色</td>
+            <td>色相往蓝推一点，饱和度 -5</td>
+            <td>去除草木的荧光感</td>
+        </tr>
+        <tr>
+            <td>蓝色</td>
+            <td>色相往青推</td>
+            <td>让天空/海水更冷冽通透</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    自然饱和度 vs 饱和度
+</h3>
+<p>
+    <span class="special">自然饱和度</span> 会智能保护已经饱和的颜色，只提升接近灰色的部分；<span class="special">饱和度</span> 则是无脑拉高所有颜色。风景用<span
+        class="important">自然饱和度 +10~20</span> 通常比饱和度 +20 更耐看，人像更是几乎只用自然饱和度。
+</p>
+<h3>
+    色彩平衡（Color Balance）
+</h3>
+<p>
+    按<span class="important">阴影/中间调/高光</span>三个色调区间分别加冷暖。用途非常明确：
+</p>
+<ul>
+    <li>阴影加蓝/青，画面通透（风光大片常用）</li>
+    <li>高光加黄，模拟日出日落的暖调</li>
+    <li>中间调加一点红，人物皮肤更立体</li>
+</ul>
+<div class="tips">
+    调色别忘了最后一步：<span class="special">滤镜 → 摄影滤镜 → 滤镜库</span>里的胶片预设（VSCO 风格）能快速给一个色彩基调，然后在此基础上微调，比从零开始快得多。但预设容易过度，第一张图别用它。
+</div>
+<h2>
+    可选色彩与通道
+</h2>
+<h3>
+    可选色彩（Selective Color）
+</h3>
+<p>
+    它<span class="important">按颜色分量做加/减</span>，比 HSL 更精细，可以单独「把红色里的黄抽掉」而不影响蓝色。对齐色：
+</p>
+<ul>
+    <li>人像：肤色选项里减洋红、加黄，是最经典的操作</li>
+    <li>风景：蓝色减洋红能让天空更蓝更深</li>
+    <li>整体统一色偏：全色选项里统一调一个方向</li>
+</ul>
+<h3>
+    通道混合器（Channel Mixer）
+</h3>
+<p>
+    调整 RGB 三个通道之间的混合比例，<span class="important">可以做出单色调效果</span>：把红通道的红色降到 0，只保留蓝通道，就得到蓝调照片。这是黑白之外的第二种「去色」方式，比转灰度更有味道。
+</p>
+<h2>
+    黑白转换
+</h2>
+<p>
+    <span class="special">Image → Adjustments → BlackAndWhite</span>（黑白调整图层）比直接去色强得多，因为它可以<span
+        class="important">分别控制六个颜色范围的明暗</span>：
+</p>
+<ul>
+    <li>红色调亮 → 皮肤变白（最常用）</li>
+    <li>绿色调暗 → 树叶突出</li>
+    <li>蓝色调亮 → 天空天空云层次</li>
+</ul>
+<div class="tips">
+    黑白不是「去饱和」。它本质是<span class="important">调整颜色到灰度曲线的映射</span>，带色彩信息调出来的黑白，比直接转灰度有层次得多。这是黑白摄影最值得掌握的一个工具。
+</div>
+<h2>
+    滤镜
+</h2>
+<p>
+    滤镜分两类，用途完全不同：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>类别</th>
+            <th>特点</th>
+            <th>是否破坏像素</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>滤镜库（渐变、纹理、风格化）</td>
+            <td>直接<b>改变像素</b>，不可撤销（只能撤销历史那一步）</td>
+            <td><span class="important">是</span></td>
+        </tr>
+        <tr>
+            <td>智能滤镜（相机.raw、液化、模糊、锐化、噪点）</td>
+            <td>作为<span class="special">滤镜堆栈</span>挂在图层的下方，可反复开关</td>
+            <td><span class="special">否</span></td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    智能滤镜的正确用法
+</h3>
+<p>
+    把图层转成<span class="important">智能对象</span>后再加智能滤镜，可以获得两个额外能力：
+</p>
+<ul>
+    <li>滤镜随智能对象<span class="special">源文件更新而重新计算</span></li>
+    <li>滤镜可<span class="special">蒙版</span>：右键滤镜 → 添加蒙版，只让部分区域受滤镜影响</li>
+</ul>
+<p>
+    每个智能滤镜右侧的 <span class="special">眼睛图标</span>和<span class="special">Fx 蒙版图标</span>是核心控制点，蒙版上用黑笔刷即可关掉滤镜效果。
+</p>
+<div class="tips">
+    「滤镜库」的破坏是真实的：一旦应用，无法再修改参数，只能 Ctrl+Z。养成习惯——<span class="important">先 Ctrl+J 复制图层再试滤镜</span>，不满意直接删图层，比撤销历史干净。
+</div>
+<h3>
+    高斯模糊与景深
+</h3>
+<p>
+    <span class="special">滤镜 → 模糊 → 高斯模糊</span> 是几乎所有设计的依赖——卡片投影、光晕、背景虚化都靠它。
+</p>
+<ul>
+    <li>把它加在图层下方，用<span class="special">纯色层盖住原图</span>，形成柔和投影</li>
+    <li>给一个图层加高斯模糊+<span class="special">渐变蒙版</span>，就能做出景深效果</li>
+    <li><span class="special">滤镜库 → 风格化 → 动态模糊</span>做运动感</li>
+</ul>
+<h3>
+    液化与相机变形
+</h3>
+<p>
+    <span class="special">滤镜 → 液化</span>（智能滤镜）用于瘦身、拉伸，是修图里高频工具。它默认作用于当前图层，所以<span
+        class="important">记得先把图层转智能对象</span>，液化不会毁掉原图。
+</p>
+<h2>
+    锐化
+</h2>
+<p>
+    锐化放最后。三个常用命令：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>命令</th>
+            <th>作用</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>USM 锐化</td>
+            <td>数量 / 半径 / 阈值</td>
+            <td><span class="important">最通用</span>。阈值是关键，调高避免噪点被锐化</td>
+        </tr>
+        <tr>
+            <td>智能锐化</td>
+            <td>自动判断细节</td>
+            <td>边缘不产生白边，人像安全</td>
+        </tr>
+        <tr>
+            <td>高反差保留</td>
+            <td>边缘锐化更强</td>
+            <td>建筑、风景、极简设计</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    锐化的<span class="important">阈值</span>参数是防噪核心。它决定「多大的边缘差异才算需要锐化」，设为 3~5 可以避开 JPEG 压缩产生的色块边缘。数值设 0 会把噪点全部放大。
+</div>
+<h2>
+    输出
+</h2>
+<p>
+    调色完了才输出，格式和色彩空间的选择同样影响最终效果：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>用途</th>
+            <th>格式</th>
+            <th>色彩空间</th>
+            <th>注意</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>网络图片</td>
+            <td>JPEG</td>
+            <td>sRGB</td>
+            <td>质量 70–85 足够，<span class="important">不要用「最大」</span></td>
+        </tr>
+        <tr>
+            <td>印刷</td>
+            <td>TIFF / PSD</td>
+            <td>CMYK</td>
+            <td>先转 CMYK 再检查，RGB 转 CMYK 会掉色</td>
+        </tr>
+        <tr>
+            <td>需透明</td>
+            <td>PNG / WebP</td>
+            <td>sRGB</td>
+            <td>PNG 无损但大，WebP 更优</td>
+        </tr>
+        <tr>
+            <td>继续编辑</td>
+            <td>PSD</td>
+            <td>—</td>
+            <td>唯一能保留图层/调整图层的格式</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    转 CMYK 的正确位置：在调色<strong>全部完成后</strong>，用 <span class="special">编辑 → 转换配置 → 转换为CMYK</span>。转完再调色就是在 CMYK 的约束下挣扎，很多鲜艳的蓝绿做不到。
+</p>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    调色没有生效
+</h3>
+<p>
+    检查<span class="important">调整图层是否在目标图层上方</span>——调整图层只影响下方。或者被<span class="special">剪贴</span>限制在组内了，双击图层看属性面板的「剪贴到图层」勾选状态。
+</p>
+<h3>
+    颜色在不同设备上不一样
+</h3>
+<p>
+    <span class="important">没有校色显示器</span>是根本原因，其次是色彩空间不统一。确保：文档用 sRGB、显示器校色过、导出的图也是 sRGB。这三处任一不一致都会偏色。
+</p>
+<h3>
+    人像肤色发灰发绿
+</h3>
+<p>
+    通常是被 <span class="special">色彩平衡</span>或<span class="special">HSL 的绿色</span>误伤了。修法顺序：先在 HSL 里把红色（肤色）拉回橙色方向，再用<span
+        class="special">色彩平衡 → 阴影加一点红</span>。切记「自然饱和度优先，饱和度最后」。
+</p>
+<h3>
+    用了滤镜库想改参数
+</h3>
+<p>
+    改不了，只能撤销。所以滤镜库的正确流程是：<span class="pip-block">Ctrl+J 复制图层</span>
+    →
+    <span class="pip-block">在副本上试</span>
+    →
+    <span class="pip-block">满意后降低副本不透明度</span>
+    →
+    <span class="pip-block">合并</span>。
+</p>
+<h3>
+    直方图上「剪切」了
+</h3>
+<p>
+    高光或暗部像素已经到 255/0，<span class="important">信息已经丢失</span>，任何操作都救不回来。这正是曲线要「压暗高光、提亮阴影」的原因：<span
+        class="special">S 形曲线</span>比直线更能保留两端信息。
+</p>
+<h3>
+    画面看着「褪色」
+</h3>
+<p>
+    直方图数据集中在中间（对比不足）。修法是曲线上拉 S 形，或色阶里把黑白场拉开。这通常不是「加饱和度」能解决的，饱和度只会让颜色变艳，不会恢复对比。
+</p>

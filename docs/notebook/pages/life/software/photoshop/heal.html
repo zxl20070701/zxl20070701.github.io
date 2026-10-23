@@ -1,0 +1,484 @@
+<header>
+    修复与修饰
+</header>
+<p>
+    修图的核心工具都遵循同一个模式：<span class="important">设定一个源，然后把它「搬」或「算」到目标位置</span>。区别在于源怎么选、怎么混合、以及是否破坏原像素。理解这一层，工具选择就很简单了。
+</p>
+<h2>
+    修复工具总览
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>工具</th>
+            <th>快捷键</th>
+            <th>需要设定源</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="important">污点修复画笔</span></td>
+            <td>J</td>
+            <td><span class="special">不需要</span></td>
+            <td>小瑕疵：雀斑、灰尘、小划痕</td>
+        </tr>
+        <tr>
+            <td>修复画笔</td>
+            <td>同组</td>
+            <td>不需要</td>
+            <td>配合采样，<span class="special">保留纹理</span>地修复</td>
+        </tr>
+        <tr>
+            <td>修补工具</td>
+            <td>同组</td>
+            <td>不需要</td>
+            <td>用<span class="important">矩形选区</span>指定修复区域</td>
+        </tr>
+        <tr>
+            <td>内容感知移动</td>
+            <td>同组</td>
+            <td>不需要</td>
+            <td>移动物体并<span class="important">自动填补原位置</span></td>
+        </tr>
+        <tr>
+            <td>红眼工具</td>
+            <td>同组</td>
+            <td>不需要</td>
+            <td>去红眼</td>
+        </tr>
+        <tr>
+            <td><span class="important">仿制图章</span></td>
+            <td>S</td>
+            <td><span class="special">需要</span></td>
+            <td>精确复制，<span class="special">最强控制力</span></td>
+        </tr>
+        <tr>
+            <td>图案图章</td>
+            <td>同组</td>
+            <td>需要</td>
+            <td>用图案填充，修复纹理</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    PS 的修复工具都挤在一个分组里，用 <span class="special">Shift+单击</span> 循环切换。它们的共同点是<span
+        class="important">直接改像素、不可撤销到原状态之外</span>——所以每次修复前最好 <span class="special">Ctrl+J 复制图层</span>，修完不满意直接删图层。
+</div>
+<h2>
+    仿制图章
+</h2>
+<p>
+    最可控的修复工具，逻辑是<span class="special">手动指定源点，把那里的像素复制到目标位置</span>。
+</p>
+<h3>
+    基本用法
+</h3>
+<p>
+    <span class="pip-block">S 选中仿制图章</span>
+    →
+    <span class="pip-block">Alt+点击设置源点</span>
+    →
+    <span class="pip-block">拖拽涂抹到目标位置</span>
+</p>
+<h3>
+    Aligned（对齐）
+</h3>
+<p>
+    这是仿制图章<span class="important">最关键的开关</span>：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>设置</th>
+            <th>行为</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">勾选 Aligned</span></td>
+            <td>源点<span class="important">跟随涂抹位置一起移动</span>，复制的是相对区域</td>
+            <td><span class="important">连续涂抹不会「拉丝」</span>，大面积修复首选</td>
+        </tr>
+        <tr>
+            <td><span class="special">取消 Aligned</span></td>
+            <td>每次都<span class="important">从原始源点重新采样</span></td>
+            <td>重复纹理（草皮、砖墙），或需要反复覆盖同一样本</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">新手最常见的错误就是忘了开 Aligned</span>。不开的话连续涂抹会出现拉丝状的重复纹理，因为每一笔都在复制源点周围同一块内容。开启后源跟着走，纹理自然连续。
+</div>
+<h3>
+    取样来源（Sample）
+</h3>
+<ul>
+    <li><span class="special">当前图层</span>：只从当前图层取</li>
+    <li><span class="special">当前及下方图层</span>：从当前层和它下面的图层取</li>
+    <li><span class="special">所有图层</span>：从所有可见图层取</li>
+</ul>
+<div class="tips">
+    <span class="important">仿制图章不能在调整图层上工作</span>（Adobe 明确说明）。如果当前选中的是调整图层，工具会直接不可用——需要先回到像素图层上操作。
+</div>
+<h2>
+    污点修复画笔
+</h2>
+<p>
+    <span class="important">最省事的去瑕疵工具</span>：自动分析周围像素并融合，基本不需要调参。
+</p>
+<h3>
+    Type 的三种类型
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>原理</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="important">Content-Aware（内容识别）</span></td>
+            <td>比较附近图像内容，<span class="special">智能填补并保留阴影、物体边缘等细节</span></td>
+            <td><span class="important">最常用</span>。雀斑、污点、杂线</td>
+        </tr>
+        <tr>
+            <td>创建纹理</td>
+            <td>用周围纹理填充</td>
+            <td>皮肤、草地等纹理区域</td>
+        </tr>
+        <tr>
+            <td>邻近匹配</td>
+            <td>把边缘一侧的像素搬到另一侧</td>
+            <td><span class="special">选区边缘的杂物</span>、画面边缘的多余部分</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    关键选项
+</h3>
+<ul>
+    <li><span class="special">Sample All Layers（采样所有图层）</span>：<span
+        class="important">关键的非破坏性开关</span>。勾选后从所有可见图层取样，但<span
+        class="special">修复结果只落在当前图层</span>——这让修图变得可回溯</li>
+    <li><span class="special">Mode → Replace（替换）</span>：<span class="important">保留噪点、胶片颗粒和边缘纹理</span>。用软边笔刷时效果最好，避免修出来的区域比周围更干净</li>
+</ul>
+<div class="tips">
+    <span class="special">Sample All Layers + Replace</span> 是 Adobe 官方推荐的非破坏性修图组合。Sample All Layers 让取样更准确（能看到下层的内容），Replace 避免出现「这块皮肤突然特别干净」的违和感。
+</div>
+<p>
+    Adobe 还建议：<span class="important">笔刷尺寸要比瑕疵略大一点</span>，在画笔设置里把 Size 滑块往左调，让笔刷覆盖范围有余量。
+</p>
+<h2>
+    内容感知填充
+</h2>
+<p>
+    污点修复画笔的「手动版」，适合<span class="important">大块区域或不规则形状</span>的填充。
+</p>
+<h3>
+    两种用法
+</h3>
+<ul>
+    <li><span class="special">先选区，再编辑 → 填充 → 内容识别</span>：适合已有选区的情况</li>
+    <li><span class="special">直接编辑 → 填充 → 内容识别</span>：PS 自动分析选区周围（需先有选区）</li>
+</ul>
+<h3>
+    关键选项：自适应
+</h3>
+<p>
+    填充对话框里有个<span class="important">「自适应」</span>下拉，它决定了算法如何计算填充范围：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>自适应设置</th>
+            <th>采样范围</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>自定</td>
+            <td>手动指定宽/高</td>
+            <td>需要精确控制时</td>
+        </tr>
+        <tr>
+            <td><span class="special">连续</span></td>
+            <td>用边缘所有像素</td>
+            <td>最常用，适合大多数情况</td>
+        </tr>
+        <tr>
+            <td><span class="special">样条</span></td>
+            <td>用边缘延伸方向推断</td>
+            <td>纹理有方向性的区域（木纹、织物）</td>
+        </tr>
+        <tr>
+            <td>先前的颜色/背景色</td>
+            <td>用纯色填充</td>
+            <td>需要纯净色块时</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    扩展与其它选项
+</h3>
+<ul>
+    <li><span class="special">扩展</span>：填充区域向外扩张的量，用来处理选区边缘残留</li>
+    <li><span class="important">颜色容差</span>：颜色差异多大算「相近」</li>
+    <li><span class="important">不透明度</span>：填充内容的透明度</li>
+    <li>从路径面板的路径填充时，<span class="special">会应用路径自身的羽化</span></li>
+</ul>
+<h2>
+    修补工具
+</h2>
+<p>
+    与污点修复的区别：<span class="important">用选区指定修复区域</span>，而污点修复是用笔刷涂抹。
+</p>
+<h3>
+    两种工作方式
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>方式</th>
+            <th>操作</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="important">源</span>（默认）</td>
+            <td>框选要<span class="special">替换掉的</span>区域，PS 自动取样周围</td>
+            <td>小范围精确修复</td>
+        </tr>
+        <tr>
+            <td><span class="important">目标</span></td>
+            <td>先框选<span class="special">作为源的区域</span>，再框选要修复的区域</td>
+            <td>修复大块，源区域需要精确指定</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    修补工具的选区要用<span class="important">矩形选框</span>且边缘尽量贴紧瑕疵。太宽松会把旁边正常的像素也换掉，容易露馅。
+</div>
+<h2>
+    内容感知移动
+</h2>
+<p>
+    这个工具解决「想去掉某个物体但填什么」的问题：
+</p>
+<p>
+    <span class="pip-block">选中工具，Mode 选「移动」</span>
+    →
+    <span class="pip-block">框选要移动的物体</span>
+    →
+    <span class="pip-block">拖到目标位置</span>
+</p>
+<h3>
+    两个关键选项
+</h3>
+<ul>
+    <li><span class="special">结构</span>：<span class="important">越大越保留原物体的形状和结构</span></li>
+    <li><span class="special">颜色</span>：越大越保留原区域的色调</li>
+</ul>
+<h3>
+    扩展选项
+</h3>
+<ul>
+    <li><span class="special">取样范围</span>：周围多远的像素作为参考</li>
+    <li><span class="important">填充</span>：<span class="special">原位置如何填补</span>——内容识别 / 背景色 / 前景色 / 样例</li>
+</ul>
+<div class="tips">
+    典型用途是「路人甲入镜」：把人框出来移开，原位置自动用周围内容填上。但当背景很复杂时（花纹、密集人群），它填得并不好——这时改用<span
+        class="special">修补工具的「目标」模式</span>手动指定干净区域作为源，效果往往更好。
+</div>
+<h2>
+    减淡与加深
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>选项</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+        <tbody>
+        <tr>
+            <td><span class="special">减淡（Shift+O）</span></td>
+            <td><span class="important">提亮</span>。曝光不足的区域、眼神光、高光</td>
+        </tr>
+        <tr>
+            <td><span class="important">加深</span></td>
+            <td><span class="important">压暗</span>。需要压暗的区域、阴影加深</td>
+        </tr>
+    </tbody>
+    </table>
+<h3>
+    三个曝光选项
+</h3>
+<ul>
+    <li><span class="special">画笔</span>：传统方式，直接提亮压暗</li>
+    <li><span class="important">铅笔</span>：<span class="special">只作用在<span class="important">暗部</span></span>——用画笔工具的混合模式「变暗」，保护高光不受影响</li>
+    <li><span class="special">保护色调</span>：<span class="important">保持色相不变</span>，只改变明度。修肤色时必须勾选，否则容易出现「漂白感」</li>
+</ul>
+<div class="tips">
+    <span class="important">「保护色调」是减淡/加深里最该勾的选项</span>。不勾选时提亮会同时降低饱和度，肤色区域容易变成不自然的惨白。勾上之后只改明度，色相保持不变。
+</div>
+<h3>
+    范围限制
+</h3>
+<p>
+    选项栏有<span class="special">「限制范围」</span>下拉，决定影响的是阴影、中间调还是高光：
+</p>
+<ul>
+    <li><span class="special">阴影</span>：只影响暗部，适合加深阴影让层次出来</li>
+    <li><span class="special">中间调</span>：默认值</li>
+    <li><span class="special">高光</span>：只影响亮部</li>
+</ul>
+<div class="tips">
+    调整对比度时这个选项很有用：<span class="important">选「阴影」+ 减淡</span> 可以提亮暗部而不动高光，比用曲线更直观。范围 + 减淡/加深的组合，相当于局部明暗调整。
+</div>
+<h2>
+    锐化与模糊
+</h2>
+<p>
+    局部处理版（全局版见《调色与滤镜》）：
+</p>
+<ul>
+    <li><span class="special">锐化工具</span>（同组内）：锐化细节边缘</li>
+    <li><span class="special">模糊工具</span>：柔化区域</li>
+    <li><span class="special">涂抹工具</span>：<span class="important">取样周围颜色推抹</span>，用于柔化过渡</li>
+    <li><span class="special">减淡/加深</span>：见上文</li>
+</ul>
+<p>
+    它们的选项栏都有<span class="important">「保护色调」</span>，原理和减淡加深一致。
+</p>
+<h3>
+    涂抹工具的用法
+</h3>
+<p>
+    涂抹工具取样笔刷周围的像素并向前推进，最适合做<span class="special">柔和过渡</span>。修图时用来：
+</p>
+<ul>
+    <li>柔化生硬的修补边缘</li>
+    <li>在两个色块之间做渐变过渡</li>
+    <li>清理选区边缘的锯齿</li>
+</ul>
+<h2>
+    高低频磨皮
+</h2>
+<p>
+    专业人像修图的标准流程，核心思想是<span class="important">把皮肤分成两种频率分别处理</span>：
+</p>
+<h3>
+    双曲线磨皮
+</h3>
+<p>
+    <span class="pip-block">盖印可见图层</span>
+    →
+    <span class="pip-block">打开曲线，用管道工具在高低点各取一个控制点</span>
+    →
+    <span class="pip-block">压暗高光提亮暗部</span>
+    →
+    <span class="pip-block">再新建一层曲线，反向操作</span>
+    →
+    <span class="pip-block">两层曲线分别设「滤色」和「强光」混合模式</span>
+</p>
+<h3>
+    高低频磨皮
+</h3>
+<p>
+    <span class="pip-block">盖印图层</span>
+    →
+    <span class="pip-block">用磨皮 Action（或手动）分离高低频</span>
+    →
+    <span class="pip-block">低频层用画笔低流量整体涂抹，去除色斑</span>
+    →
+    <span class="pip-block">高频层保留皮肤纹理</span>
+</p>
+<div class="tips">
+    PS 自带<span class="important">动作库</span>里有「磨皮」动作：<span
+        class="special">窗口 → 动作 → 图层样式/图像修复 → 磨皮</span>，加载后播放即可完成高频分离。配合《动作与批处理》一篇的方法，可以把它改成自定义参数。
+</div>
+<h3>
+    保留质感
+</h3>
+<div class="tips">
+    磨皮最常见的问题是<span class="important">把皮肤纹理也磨没了</span>，结果脸变成「塑料感」。避免方法：磨皮幅度要克制，宁可分多次少量处理；<span
+        class="important">只磨色斑不磨整体</span>；最后用<span class="special">纹理滤镜或噪点层</span>补回一点质感。
+</div>
+<h2>
+    非破坏性修图流程
+</h2>
+<p>
+    一个规范的修图工作流，全程可回溯：
+</p>
+<p>
+    <span class="pip-block">Ctrl+J 复制背景图层</span>
+    →
+    <span class="pip-block">在新图层上用修复工具处理（勾 Sample All Layers）</span>
+    →
+    <span class="pip-block">需要大幅调色时盖印或加调整图层</span>
+    →
+    <span class="pip-block">满意后 Ctrl+Shift+E 合并</span>
+</p>
+<div class="tips">
+    <span class="important">修图前先复制图层</span>，这是 PS 里最容易省掉但后果最严重的步骤。修复工具是直接改像素的，一旦修坏只能靠历史记录回退（而历史记录默认只有 20 步）。
+</div>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    修复后出现明显的重复纹理
+</h3>
+<p>
+    仿制图章<span class="important">没开 Aligned</span>。勾上它，源点会跟着涂抹位置移动。
+</p>
+<h3>
+    修复区域比周围更干净 / 有塑料感
+</h3>
+<p>
+    污点修复画笔的 Mode 用了默认值。改成 <span class="special">Replace（替换）</span>可以保留噪点和纹理，避免出现「这块皮肤突然特别干净」的违和感。
+</p>
+<h3>
+    内容感知填充填得很奇怪
+</h3>
+<p>
+    试这几个方向：调整<span class="special">「自适应」范围</span>（连续/样条）、增大<span
+        class="special">扩展</span>值、扩大<span class="special">取样范围</span>。背景复杂时它确实会失败，这时改用修补工具手动指定干净源区域更可靠。
+</p>
+<h3>
+    仿制图章不可用
+</h3>
+<p>
+    当前选中的是<span class="important">调整图层</span>。仿制图章不能在调整图层上工作（Adobe 明确说明），需要切回像素图层。
+</p>
+<h3>
+    减淡后肤色发白不自然
+</h3>
+<p>
+    没勾<span class="important">「保护色调」</span>。勾上它只改明度不动色相。另外「范围」建议选「阴影」而不是中间调，避免影响高光。
+</p>
+<h3>
+    修复笔刷在图层边缘出现黑边
+</h3>
+<p>
+    采样到了图层外的透明区域（透明像素带黑色分量）。修法：先把图层边界扩到与画布一致（<span
+        class="special">图层 → 边界大小 → 图层边界</span>），再执行修复。
+</p>
+<h3>
+    磨皮后脸看着假
+</h3>
+<p>
+    磨过头了。专业修图本来就保留皮肤纹理。建议：<span class="important">只处理明显的色斑</span>，不要追求「平滑」；磨皮后用<span
+        class="special">杂色/噪点滤镜</span>补回微粒质感；人像磨皮宁保守勿激进。
+</p>
+<h3>
+    红眼去除把眼白也弄红了
+</h3>
+<p>
+    选区没框准。红眼工具需要<span class="important">精确框选眼睛区域</span>，框小了效果不彻底，框大了会波及眼白和周围皮肤。框好后可以再收缩一点选区。
+</p>
