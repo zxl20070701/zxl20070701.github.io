@@ -1,0 +1,325 @@
+<header>
+    脚本与批处理
+</header>
+<p>
+    这是 GIMP 相对 Photoshop <span class="important">最大的优势</span>：内置 Python-Fu 解释器，可以写脚本直接操作 PDB 命令，做真正的无人值守批处理。PS 的「动作」只能机械回放，而 GIMP 脚本可以读文件、判断尺寸、按条件分支。
+</p>
+<h2>
+    两种脚本语言
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>语言</th>
+            <th>特点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Python-Fu</span></td>
+            <td>Python 2.7 语法（GIMP 3.0 起支持 Python 3）。<span class="important">推荐首选</span>，生态丰富、可读性强</td>
+        </tr>
+        <tr>
+            <td><span class="special">Script-Fu</span></td>
+            <td>TinyScheme 方言，Lisp 风格。老脚本多是这套，无需额外依赖</td>
+        </tr>
+        <tr>
+            <td>其它</td>
+            <td>3.0 起还支持 <span class="special">JavaScript</span> 等更多语言</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    控制台
+</h2>
+<p>
+    <span class="special">过滤器 → Python-Fu → 控制台</span>（或 <span class="special">Script-Fu → 控制台</span>），这是最快的上手方式：
+</p>
+<pre tag="python">
+# 打开控制台后可以逐行执行
+img = pdb.gimp_file_load('/path/to/a.jpg', 'a.jpg')
+print(img.width, img.height)   # 打印图片尺寸
+</pre>
+<div class="tips">
+    控制台是<span class="important">边试边改</span>的工具：写一行跑一行，出错信息直接看到。脚本写完再粘到文件里跑，比一上来就保存执行文件调试快得多。
+</div>
+<h2>
+    PDB 基础
+</h2>
+<p>
+    所有脚本操作都基于 PDB（Procedure Database）。三个核心概念：
+</p>
+<ul>
+    <li><span class="special">image</span>：图像，脚本里的所有操作都挂在某个 image 上</li>
+    <li><span class="special">drawable</span>：可绘制对象，图层、通道、选区都算</li>
+    <li><span class="special">返回值句柄</span>：pdb 函数返回的是整数句柄，后续调用要传回去</li>
+</ul>
+<h3>
+    常用命令速查
+</h3>
+<pre tag="python">
+# 文件操作
+img = pdb.gimp_file_load(path, name)            # 加载图片
+img = pdb.gimp_image_new(w, h, 0)              # 新建图片
+pdb.gimp_image_insert_layer(img, layer, 0, -1) # 插入图层
+pdb.gimp_layer_new_from_drawable(...)          # 从现有对象创建图层
+
+# 缩放
+pdb.gimp_image_scale(img, w, h)                # 整图缩放
+pdb.gimp_layer_scale(l, w, h, FALSE)           # 图层缩放
+
+# 导出
+pdb.file_png_save(img, drawable, path, path, 0, 9, 1, 1, 1, 1, 1)
+pdb.file_jpeg_save(img, drawable, path, path, 0, 0.9, 0.0, 1)
+pdb.gimp_image_delete(img)                     # 清理
+
+# 效果
+pdb.gimp_brightness_contrast(layer, 0, 30)
+pdb.gimp_gaussian_blur(layer, 5, 1, 0)
+</pre>
+<p>
+    查命令用 <span class="special">帮助 → 搜索和运行一个 PDB 过程</span>，能看到每个命令的参数说明。不确定参数时别猜，这里一查就有。
+</p>
+<div class="tips">
+    3.2.6 起 PDB 命令在<span class="important">非交互模式</span>下不再往控制台刷错误信息。所以写批处理脚本时，<span
+        class="special">一定要检查返回值</span>，不要指望控制台给你报错。
+</div>
+<h2>
+    第一个脚本：批量改尺寸
+</h2>
+<p>
+    把它存成 <span class="special">~/.config/GIMP/3.2/scripts/resize.py</span>，重启 GIMP 后在 <span
+        class="special">过滤器 → Python-Fu → resize</span> 里就能找到。
+</p>
+<pre tag="python">
+import os
+
+def batch_resize(folder, out_folder, max_width=1200, quality=0.9):
+    if not os.path.exists(out_folder):
+        os.makedirs(out_folder)
+
+    for name in os.listdir(folder):
+        if not name.lower().endswith(('.jpg', '.jpeg', '.png')):
+            continue
+
+        src = os.path.join(folder, name)
+        img = pdb.gimp_file_load(src, name)
+
+        # 等比缩小
+        w = img.width
+        h = img.height
+        if w > max_width:
+            ratio = float(max_width) / w
+            pdb.gimp_image_scale(img, max_width, int(h * ratio))
+
+        # 拉平成一层再导出，避免透明区域变黑
+        flat = pdb.gimp_image_flatten(img)
+
+        dst = os.path.join(out_folder, name)
+        if dst.lower().endswith('.png'):
+            pdb.file_png_save(img, flat, dst, dst, 0, 9, 1, 1, 1, 1, 1)
+        else:
+            pdb.file_jpeg_save(img, flat, dst, dst, 0, quality, 0.0, 1)
+
+        pdb.gimp_image_delete(img)
+        print('done: ' + name)
+</pre>
+<div class="tips">
+    <span class="important">一定要调 <span class="special">gimp_image_delete</span></span>。不删的话图片会留在内存里，处理几百张就会把 GIMP 撑爆。这是新手写批处理脚本最常见的错误。
+</div>
+<h2>
+    插件注册
+</h2>
+<p>
+    想要脚本出现在菜单里，需要加注册代码。<span class="important">脚本主体和注册代码要分开</span>，否则 GIMP 加载时会把主体也执行一遍：
+</p>
+<pre tag="python">
+# ---- 主体逻辑 ----
+def batch_resize(folder, out_folder, max_width):
+    # ... 上面那些代码 ...
+    pass
+
+
+# ---- 注册 ----
+def run():
+    folder = '/path/to/input'
+    out_folder = '/path/to/output'
+    batch_resize(folder, out_folder, 1200)
+
+
+register = {
+    "name": "批量缩放",
+    "blurb": "批量缩放指定目录的图片",
+    "author": "you",
+    "version": "1.0",
+    "menu_path": "&lt;Image&gt;/File/",
+    "icon": None,
+    "run": run,
+}
+
+register_plugin("python-fu", register)
+</pre>
+<h3>
+    menu_path 的取值
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>写法</th>
+            <th>位置</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">&lt;Image&gt;</span></td>
+            <td>只有打开图片后才出现</td>
+        </tr>
+        <tr>
+            <td><span class="special">&lt;Tools&gt;</span></td>
+            <td>工具菜单</td>
+        </tr>
+        <tr>
+            <td><span class="special">&lt;File&gt;</span></td>
+            <td>总是出现</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    路径用 <span class="special">/</span> 连接子菜单。比如 <span class="special">&lt;Image&gt;/Filters/</span> 会出现在图像菜单的 Filters 子菜单里。
+</p>
+<h2>
+    命令行批处理
+</h2>
+<p>
+    不想开 GUI 批处理时，用 <span class="special">gimp -i -b</span> 无头模式。相关参数：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>参数</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">-i</span></td>
+            <td>无界面运行，批处理必备</td>
+        </tr>
+        <tr>
+            <td><span class="special">-b</span></td>
+            <td>执行批处理命令，<span class="special">-</span> 表示从标准输入读</td>
+        </tr>
+        <tr>
+            <td><span class="special">--batch-interpreter</span></td>
+            <td>指定解释器，默认 Script-Fu，用 Python 传 <span class="special">python-fu-eval</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">--quit</span></td>
+            <td>执行完立即退出</td>
+        </tr>
+        <tr>
+            <td><span class="special">-d</span></td>
+            <td>不加载笔刷、图案等，加快启动</td>
+        </tr>
+        <tr>
+            <td><span class="special">-c</span></td>
+            <td>错误输出到控制台，不弹对话框</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="shell">
+# 用 Script-Fu 合并两张图并导出
+gimp -i -b '(gimp-message "hello")' -b '(gimp-quit 0)'
+
+# 从文件读脚本（推荐，可读性好）
+gimp -i --batch-interpreter=python-fu-eval -b "$(cat script.py)" --quit
+
+# 批量转换某个目录（配合 shell）
+for f in *.jpg; do
+    gimp -i -b "(gimp-file-load RUN-NONINTERACTIVE \"$f\" \"$f\")" \
+            -b "(gimp-file-save RUN-NONINTERACTIVE 1 \"$f\" \"${f%.jpg}.png\" \"${f%.jpg}.png\")" \
+            -b "(gimp-quit 0)"
+done
+</pre>
+<div class="tips">
+    批处理第一件事永远是加 <span class="special">-c</span> 和 <span class="special">--quit</span>。少了 <span
+        class="special">--quit</span>，GIMP 会挂在那里等；少了 <span class="special">-c</span>，出错时会弹一个没人点的对话框，整个流程卡死。
+</div>
+<h2>
+    Script-Fu 快速示例
+</h2>
+<p>
+    如果现成脚本用的是 Script-Fu（很多网上流传的脚本都是），先掌握这几个函数：
+</p>
+<pre tag="scheme">
+(let* ((img (car (gimp-file-load RUN-NONINTERACTIVE path path)))
+       (drawable (car (gimp-image-flatten img))))
+  (gimp-file-save RUN-NONINTERACTIVE img drawable out out out)
+  (gimp-image-delete img))
+</pre>
+<p>
+    Script-Fu 的特点：<span class="special">返回值都是列表</span>，要 <span class="special">car</span> 取第一个元素；<span
+        class="special">RUN-NONINTERACTIVE</span> 是批处理必需的第二个参数。括号必须配平，报错信息通常只指出位置不指出原因。
+</p>
+<div class="tips">
+    <span class="important">优先用 Python-Fu</span>。Script-Fu 的括号地狱和静默失败会浪费大量调试时间，老脚本看不懂时可以直接按文档重写成 Python。
+</div>
+<h2>
+    文件路径约定
+</h2>
+<ul>
+    <li>Linux：<span class="special">~/.config/GIMP/3.2/scripts/</span></li>
+    <li>Windows：<span class="special">%APPDATA%\GIMP\3.2\scripts\</span></li>
+    <li>macOS：<span class="special">~/Library/Application Support/GIMP/3.2/scripts/</span></li>
+</ul>
+<p>
+    放进去后<span class="important">必须重启 GIMP</span>才会重新扫描脚本目录。
+</p>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    脚本没出现在菜单里
+</h3>
+<p>
+    三个可能：文件没放到正确的 scripts 目录、注册代码格式错误（<span class="special">register_plugin</span> 那几行必须在）、没重启 GIMP。
+</p>
+<h3>
+    处理几十张图片后崩溃 / 内存爆掉
+</h3>
+<p>
+    99% 是漏了 <span class="special">pdb.gimp_image_delete(img)</span>。每张处理完立刻删掉引用。
+</p>
+<h3>
+    导出的图和预览不一样
+</h3>
+<p>
+    GIMP 里显示的是合成结果，导出的是按图层混合计算的。常见原因是<span class="important">有图层处于隐藏或半透明状态</span>。用 <span
+        class="special">gimp_image_flatten</span> 拉平后再导出，导出结果就等于你看到的。
+</p>
+<h3>
+    透明区域导出后变黑
+</h3>
+<p>
+    直接导出会把透明像素的 RGB 分量（通常是黑色）带出来，某些查看器按黑色显示。修法：先 <span class="special">gimp_image_flatten</span>，或导出时指定合适的背景色。
+</p>
+<h3>
+    脚本报「找不到过程」
+</h3>
+<p>
+    命令名拼错，或该命令在新版本改名了。用 <span class="special">帮助 → 搜索和运行一个 PDB 过程</span> 搜索确认。注意 GIMP 3.0 移除了一些 2.x 的旧命令。
+</p>
+<h3>
+    批处理卡住不动
+</h3>
+<p>
+    缺 <span class="special">-c</span> 参数导致弹了模态对话框。加上 <span class="special">-c</span> 让错误走控制台，或在脚本里用 <span
+        class="special">pdb.gimp_progress_init</span> / <span class="special">gimp_progress_update</span> 加进度反馈。
+</p>
+<h3>
+    脚本执行到一半图不见了
+</h3>
+<p>
+    除了漏 delete，另一个原因是<span class="important">用变量持有句柄但没有引用图像</span>。GIMP 的垃圾回收基于引用计数，没有引用的对象会被立刻释放。所以一定要 <span
+        class="special">img = pdb.gimp_file_load(...)</span> 赋给变量保持引用。
+</p>

@@ -1,0 +1,408 @@
+<header>
+    图层与蒙版
+</header>
+<p>
+    GIMP 3.0 之后最大的变化就是<span class="important">非破坏性（Non-Destructive）工作流</span>：滤镜不再直接烙进像素，图层组、矢量图层、链接图层都可以反复编辑。这篇是 GIMP 里最值得花时间掌握的一块。
+</p>
+<h2>
+    图层基础
+</h2>
+<p>
+    和 Photoshop 基本一致，几个值得注意的差异：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>快捷键</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>新建图层</td>
+            <td>Ctrl+Shift+N</td>
+            <td>弹窗选项和 PS 很像</td>
+        </tr>
+        <tr>
+            <td>复制图层</td>
+            <td>Ctrl+Shift+D</td>
+            <td>注意 PS 是 Ctrl+J</td>
+        </tr>
+        <tr>
+            <td>上移/下移一层</td>
+            <td>Ctrl+] / Ctrl+[</td>
+            <td>相同</td>
+        </tr>
+        <tr>
+            <td>上移/下移到顶/底</td>
+            <td>Ctrl+Shift+] / Ctrl+Shift+[</td>
+            <td>相同</td>
+        </tr>
+        <tr>
+            <td>合并可见图层</td>
+            <td>Ctrl+M</td>
+            <td>相同</td>
+        </tr>
+        <tr>
+            <td>选中上方/下方图层</td>
+            <td>PageUp / PageDown</td>
+            <td>相同</td>
+        </tr>
+        <tr>
+            <td>悬停预览图层</td>
+            <td>无默认键</td>
+            <td><span class="important">GIMP 特有</span>：鼠标悬停即临时显示该图层，不影响实际激活项</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">悬停预览</span>是 GIMP 比 PS 顺手的地方——想看某个隐藏图层的内容，鼠标移上去就行，不用点它激活、再点回去取消隐藏。
+</div>
+<h2>
+    图层组与穿透模式
+</h2>
+<p>
+    GIMP 从 3.0 开始支持图层组，而且<span class="important">支持无限嵌套</span>。组的价值在于整体管理和承载效果。
+</p>
+<h3>
+    Pass Through（穿透）
+</h3>
+<p>
+    这是 GIMP 特有的混合选项，也是实现 PS「调整图层」的关键：</p>
+<table>
+    <thead>
+        <tr>
+            <th>组模式</th>
+            <th>行为</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Pass Through</span>（穿透）</td>
+            <td>组内图层和组<span class="important">下方的图层</span>一起参与混合。挂在组上的滤镜会影响到组外</td>
+        </tr>
+        <tr>
+            <td>Normal 等其它模式</td>
+            <td>组先合成一个整体，再与下方混合，效果被限制在组内</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <span class="important">用穿透组做调整图层</span>的标准流程：
+</p>
+<p>
+    <span class="pip-block">新建一个空图层组，模式设为 Pass Through</span>
+    →
+    <span class="pip-block">在组内新建一个调整用的 GEGL 滤镜效果</span>
+    →
+    <span class="pip-block">效果会自动作用于组下方所有像素</span>
+</p>
+<div class="tips">
+    3.2 进一步明确了这个用法：<span class="special">空的穿透组 + NDE 滤镜 = 传统软件的调整图层</span>。同组上可以叠加多个滤镜组合出复杂效果，效果不限于组内。
+</div>
+<h3>
+    组的其它能力
+</h3>
+<ul>
+    <li>整体调不透明度：组不透明度会把组内所有图层一起压暗</li>
+    <li>整体改混合模式：<span class="special">Normal</span> 模式下组可当容器，<span class="special">Pass Through</span> 则向外延伸</li>
+    <li>组内可以放组：<span class="important">没有嵌套层数上限</span>，只受内存限制</li>
+</ul>
+<h2>
+    图层蒙版
+</h2>
+<p>
+    GIMP 的图层蒙版逻辑和 Photoshop 一致：<span class="important">黑隐藏、白显示、灰半透明</span>，不影响原始像素。
+</p>
+<h3>
+    添加蒙版的几种方式
+</h3>
+<p>
+    <span class="special">图层 → 蒙版 → 添加图层蒙版</span>（无默认快捷键）会打开一个对话框，这比 PS 多给了几种初始化方式：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>初始化方式</th>
+            <th>效果</th>
+            <th>用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>白色（全不透明）</td>
+            <td>全部显示</td>
+            <td>从零开始擦</td>
+        </tr>
+        <tr>
+            <td>黑色（全透明）</td>
+            <td>全部隐藏</td>
+            <td>从零开始画显示区域</td>
+        </tr>
+        <tr>
+            <td><span class="special">图层的 Alpha 通道</span></td>
+            <td>用现有透明度生成，<span class="important">会加深半透明区域的透明</span></td>
+            <td>不太常用</td>
+        </tr>
+        <tr>
+            <td><span class="special">转移图层的 Alpha 通道</span></td>
+            <td>同上，但<span class="special">重置 Alpha 为全不透明</span>，外观不变</td>
+            <td>从已有透明度的图层生成蒙版</td>
+        </tr>
+        <tr>
+            <td><span class="special">选区</span></td>
+            <td>选区为白，未选为黑</td>
+            <td><span class="important">最常用</span>，先选后加</td>
+        </tr>
+        <tr>
+            <td>图层的灰度副本</td>
+            <td>用图层亮度生成</td>
+            <td>为后续叠加内容做准备</td>
+        </tr>
+        <tr>
+            <td>通道</td>
+            <td>用已存的通道生成</td>
+            <td>复用之前存好的蒙版</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    从 Photoshop 迁移过来最直接的对应关系：<span class="special">Alt+点击蒙版按钮</span>（PS）≈ 在对话框里选「Selection」（GIMP）。选区初始化是两边都最常用的方式。
+</div>
+<h3>
+    蒙版相关操作
+</h3>
+<ul>
+    <li>在<b>图层</b>面板上右键蒙版缩略图 → <span class="special">应用图层蒙版</span>：把蒙版烧进像素，<span class="important">不可逆</span></li>
+    <li><span class="special">停用图层蒙版</span>：临时关闭效果，可对比</li>
+    <li><span class="special">显示图层蒙版</span>：单独查看蒙版内容</li>
+    <li><span class="special">蒙版转选区</span> / <span class="special">添加到选区</span> / <span class="special">从选区减去</span> / <span class="special">与选区交叉</span>：四种组合运算</li>
+    <li>删除蒙版：图层对话框里右键蒙版缩略图 → 删除图层蒙版</li>
+</ul>
+<div class="tips">
+    3.0 之后所有这些蒙版命令都<span class="important">支持多选同时操作</span>——可以一次给多个图层加蒙版、一次应用全部蒙版。这是 3.0 新增的多选能力带来的直接好处。
+</div>
+<h3>
+    常用绘制技巧
+</h3>
+<ul>
+    <li>选蒙版面板后，<span class="special">Ctrl+点击</span>前景/背景色可直接把黑白填进蒙版</li>
+    <li><span class="special">Shift+X</span> 交换前景色和背景色，在黑白之间快速切换</li>
+    <li>蒙版上用<span class="important">柔边画笔</span>处理边缘，硬度调低到 20-40</li>
+</ul>
+<h2>
+    非破坏性滤镜（NDE）
+</h2>
+<p>
+    这是 GIMP 3.0 的核心特性，也是和 2.10 差别最大的地方。在 2.10 里，<span class="important">滤镜一旦应用就烙进像素</span>，想改参数只能反复撤销；3.0 之后默认行为是<span
+        class="special">滤镜保持激活、可反复编辑</span>。
+</p>
+<p>
+    应用滤镜后，图层面板会出现<span class="important">滤镜效果堆栈</span>：
+</p>
+<pre>
+图层：背景
+  └ 效果：亮度-对比度 → 曲线 → 高斯模糊
+     ↑ 可单独开关、删除、重排序
+</pre>
+<h3>
+    能做什么
+</h3>
+<ul>
+    <li>双击效果图标 → <span class="important">重新打开参数对话框</span>，随时改数值</li>
+    <li>点击效果左侧的<span class="special">眼睛图标</span> → 临时开关单个滤镜</li>
+    <li>右键 → <span class="special">删除效果</span> → 只删这一个，保留其他</li>
+    <li>右键 → <span class="special">合并滤镜（Merge Filters）</span> → <span class="important">一次性烘焙成像素</span>，回到传统行为</li>
+    <li>保存到 XCF 后重新打开，<span class="important">滤镜设置依然保留可编辑</span></li>
+</ul>
+<div class="tips">
+    想要 PS 那种「滤镜烙进像素」的确定感？在应用滤镜时选 <span class="special">Merge Filters</span>，而不是保持 NDE 状态。做一次性素材时这样更干净，避免一堆效果堆栈让文件变大。
+</div>
+<h3>
+    找到 GEGL 滤镜
+</h3>
+<p>
+    GIMP 的滤镜分两套系统：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GEGL 操作</td>
+            <td>底层运算引擎，<span class="important">滤镜基础都来自这里</span></td>
+        </tr>
+        <tr>
+            <td>GIMP 滤镜</td>
+            <td>传统菜单滤镜，基于 GEGL 或脚本实现</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    搜索 GEGL 滤镜的两种方式：
+</p>
+<p>
+    <span class="pip-block">按 / 打开搜索对话框，输入滤镜名</span>
+    →
+    <span class="pip-block">结果会显示菜单位置和帮助按钮</span>
+</p>
+<p>
+    或者用 <span class="special">工具 → GEGL 操作</span>，它是一个工具形态的滤镜浏览器，可以并排比较不同滤镜的参数效果。
+</p>
+<div class="tips">
+    按 <span class="special">/</span> 是找滤镜最快的路径——比在十几层菜单里翻找快得多。搜索结果里直接标出了「这个滤镜在菜单的哪个位置」，还能点帮助按钮看说明。
+</div>
+<h2>
+    矢量图层（3.2 新增）
+</h2>
+<p>
+    3.2 终于把「路径」升级成了真正的图层。用<span class="important">路径工具（B）</span>画出路径后，在路径对话框点<span
+        class="special">「转换为矢量图层」</span>，就得到一个带描边和填充的矢量图层：
+</p>
+<ul>
+    <li><span class="important">形状随路径自动更新</span>：改路径，图层跟着变</li>
+    <li>描边宽度、颜色、填充都可独立编辑</li>
+    <li>可以非破坏性地旋转、缩放、变换</li>
+    <li>把颜色或图案色块<span class="special">拖到图层上</span>即可改填充</li>
+</ul>
+<div class="tips">
+    需要破坏性编辑时用 <span class="special">Rasterize（栅格化）</span> 转为普通图层，之后可用 <span
+        class="special">Revert Rasterize</span> 撤回。矢量图层和文字图层、链接图层一样支持这组往返操作。
+</div>
+<h2>
+    链接图层（3.2 新增）
+</h2>
+<p>
+    链接图层（Link Layer）类似 Photoshop 的「链接智能对象」：把外部文件（如 SVG）链接进合成，<span
+        class="important">外部文件在别的软件里改动，GIMP 会自动更新</span>。
+</p>
+<p>
+    <span class="pip-block">文件 → 作为链接图层打开（Open as Link Layer）</span>
+    →
+    <span class="pip-block">选择外部文件（如 Inkscape 存的 SVG）</span>
+    →
+    <span class="pip-block">在 Inkscape 里编辑并保存</span>
+    →
+    <span class="pip-block">回到 GIMP，内容已同步</span>
+</p>
+<p>
+    更换链接的文件：双击图层打开图层属性对话框，或图层菜单 → 编辑图层属性。
+</p>
+<div class="tips">
+    SVG logo 用链接图层 + Inkscape 是很爽的组合：logo 保持矢量无损，编辑实时同步。做品牌物料时比来回导出 PNG 方便得多。
+</div>
+<h2>
+    文字图层
+</h2>
+<p>
+    GIMP 的文字图层也是非破坏性的，3.0 起做了不少改进：
+</p>
+<ul>
+    <li><span class="important">字体识别更准</span>：能区分同字体家族内的不同字重，显示真实的粗体/斜体而非「合成效果」</li>
+    <li>文字颜色支持<span class="important">浮点精度</span>，配合广色域色彩空间不再有色彩断层</li>
+    <li>非破坏性描边：直接在工具选项里设<span class="special">描边宽度、样式、颜色</span></li>
+    <li>3.2 支持描边方向：<span class="special">内描边 / 外描边 / 居中</span></li>
+    <li>画布上的文字编辑器<span class="important">可以拖动移开</span>，缩放时不想被挡住就拖到一边</li>
+    <li>编辑器内支持 <span class="special">Ctrl+B 加粗</span>、<span class="special">Ctrl+I 斜体</span>、<span class="special">Ctrl+Shift+V 粘贴无格式文本</span></li>
+</ul>
+<p>
+    矢量图层、链接图层、文字图层统称为<span class="special">非破坏性图层</span>，都可以挂 GEGL 滤镜，都用 Rasterize / Revert Rasterize 往返。
+</p>
+<h2>
+    调整图层
+</h2>
+<p>
+    GIMP 没有 PS 那种独立的「调整图层」类型，但有两个实现路径：
+</p>
+<h3>
+    方式一：穿透组 + NDE 滤镜（推荐）
+</h3>
+<p>
+    <span class="pip-block">新建空图层组，设为 Pass Through</span>
+    →
+    <span class="pip-block">组内用 GEGL 操作添加曲线/色平衡等</span>
+    →
+    <span class="important">效果作用于组下方所有内容</span>
+</p>
+<p>
+    这种方式的优势是<span class="special">组可以随意移动位置</span>，且能叠加多个滤镜组合，效果完全可回溯。
+</p>
+<h3>
+    方式二：纯色填充层 + 蒙版
+</h3>
+<p>
+    用<span class="important">纯色填充</span>或<span class="important">渐变填充</span>图层，混合模式设为<span class="special">叠加/柔光</span>等，再用蒙版控制范围。这是 PS 剪贴蒙版的等价做法。
+</p>
+<div class="tips">
+    两种方式可以叠加使用：穿透组做大范围色调，填充层+蒙版做局部强调。关键是记住<span
+        class="important">穿透组是「向下影响」，只能作用于组下方</span>，插错位置是新手最常见的问题。
+</div>
+<h2>
+    合并与整理
+</h2>
+<p>
+    GIMP 的图层数多起来同样会卡，但清理逻辑比 PS 简单——因为滤镜是堆栈，删掉效果不影响像素：
+</p>
+<ul>
+    <li><span class="special">图像 → 合并可见图层</span>（Ctrl+M）：只合并可见图层</li>
+    <li><span class="special">图像 → 展平图像</span>：合并全部并丢 alpha 通道</li>
+    <li>不想合并图层时，可只删掉不用的<span class="important">滤镜效果</span>来减负，效果删了像素不变</li>
+</ul>
+<p>
+    另外 GIMP 有<span class="important">图层组（Layer Set）</span>功能（3.0 新增），可以在同一个文档里分门别类放多个图层组切换显示，类似 PS 的图层组管理。配合图层搜索，找层更方便。
+</p>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    「很多操作都做不了」
+</h3>
+<p>
+    按官方文档的说法，第一个要查的是<span class="important">是否存在浮动选区（Floating Selection）</span>。有浮动选区时，大部分操作都会被阻止：
+</p>
+<p>
+    <span class="pip-block">按 Ctrl+L 打开图层面板，看最上层是否是「Floating Selection」</span>
+    →
+    <span class="pip-block">右键 → 锚定图层（Ctrl+H）</span>
+    或
+    →
+    <span class="pip-block">右键 → 转为新图层（Ctrl+Shift+N）</span>
+</p>
+<h3>
+    滤镜列表是空的 / 找不到滤镜
+</h3>
+<p>
+    按 <span class="special">/</span> 搜索能直接搜到 GEGL 操作，包括第三方滤镜。如果搜不到，检查图层是不是文字/矢量这类非破坏性图层（它们支持滤镜但列表可能为空），或者是否装了第三方滤镜但没装 GEGL 依赖。
+</p>
+<h3>
+    蒙版画了没反应
+</h3>
+<p>
+    检查：画笔颜色是否为黑/白、是否误点了「停用图层蒙版」、图层不透明度是否为 0。GIMP 特有的一种情况是<span class="important">画笔的 Dynamics 被意外关闭</span>——工具选项里的 <span
+        class="special">Enable Dynamics</span> 勾选框要确认是勾上的。
+</p>
+<h3>
+    穿透组没有影响下方
+</h3>
+<p>
+    两种可能：组不是 Pass Through 模式（点开组看混合模式）；或者效果加在了<span class="important">组外的图层</span>上。穿透只对<span
+        class="special">组内</span>的滤镜生效，且只向<span class="special">下</span>延伸。
+</p>
+<h3>
+    应用蒙版后想反悔
+</h3>
+<p>
+    用<span class="important">历史记录</span>回退。GIMP 的历史记录是线性且可无限回溯的（受首选项里「最小撤销级别」和内存限制影响），比 PS 的历史记录板更可靠。这也是 GIMP 里应该大胆尝试的原因。
+</p>
+<h3>
+    合成半透明边缘发灰
+</h3>
+<p>
+    从 PS 迁移过来常见的遗留问题。修法一样：在新背景上加一层混合模式为 <span class="special">Multiply（正片叠底）</span> 的图层，把主体副本放上去，让半透明边缘重新与背景融合。注意 GIMP 里「正片叠底」叫 <span
+        class="special">Multiply</span>，而 PS 的「滤色」在 GIMP 里叫 <span class="special">Linear Dodge（线性减淡）</span>。
+</p>

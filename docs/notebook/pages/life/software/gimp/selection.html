@@ -1,0 +1,445 @@
+<header>
+    选区与抠图
+</header>
+<p>
+    GIMP 的选区逻辑和 Photoshop 完全一致：选区只是「哪些像素会被后续操作影响」的标记，本身不改图像。差异主要在工具命名和快捷键上。
+</p>
+<h2>
+    基础操作
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>快捷键</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>全选</td>
+            <td>Ctrl+A</td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td><span class="important">取消选择</span></td>
+            <td>Shift+Ctrl+A</td>
+            <td>与 PS 相同</td>
+        </tr>
+        <tr>
+            <td>取消选择边界</td>
+            <td>Ctrl+D</td>
+            <td>GIMP 特有：取消「虚线边界」显示，选区本身仍在</td>
+        </tr>
+        <tr>
+            <td>浮动选区</td>
+            <td>Ctrl+Shift+L</td>
+            <td>PS 里是 Shift+Ctrl+L，位置刚好换了一下</td>
+        </tr>
+        <tr>
+            <td>反选</td>
+            <td>Ctrl+I</td>
+            <td>PS 里 Ctrl+I 是反相（蒙版），GIMP 里是反选</td>
+        </tr>
+        <tr>
+            <td>羽化</td>
+            <td>Shift+F6</td>
+            <td>相同</td>
+        </tr>
+        <tr>
+            <td>缩放选区</td>
+            <td>Shift+F6 后调整</td>
+            <td>GIMP 羽化对话框里能同时设定<span class="important">羽化半径和扩展量</span></td>
+        </tr>
+        <tr>
+            <td>变换选区</td>
+            <td>无默认键</td>
+            <td>选择 → 变换选区</td>
+        </tr>
+        <tr>
+            <td>快速蒙版</td>
+            <td>Shift+Q</td>
+            <td>PS 里是 Q</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">Ctrl+D 与 Shift+Ctrl+A 的区别</span>是 GIMP 新手最常混淆的点：Ctrl+D 只是把边界虚线藏起来（选区还在），Shift+Ctrl+A 才是真的清空选区。养成按 Shift+Ctrl+A 的习惯。
+</div>
+<h2>
+    四种选区模式
+</h2>
+<p>
+    和 PS 相同的四种组合方式，在选区工具状态下用图标或快捷键切换：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>快捷键</th>
+            <th>行为</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>新选区</td>
+            <td>默认</td>
+            <td>替换原选区</td>
+        </tr>
+        <tr>
+            <td>添加到选区</td>
+            <td>Shift</td>
+            <td>并集</td>
+        </tr>
+        <tr>
+            <td>从选区减去</td>
+            <td>Alt</td>
+            <td>差集，用于挖洞</td>
+        </tr>
+        <tr>
+            <td>与选区交叉</td>
+            <td>Shift+Alt</td>
+            <td>交集</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    更方便的做法是<span class="important">按住 Shift 拖拽</span>任意选区工具，直接进入加选状态，不用管当前是哪个图标。
+</p>
+<h2>
+    选择工具对照
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>工具</th>
+            <th>快捷键</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>矩形选择</td>
+            <td>R</td>
+            <td>按住 Shift 可加选；按住 Alt 从中心开始</td>
+        </tr>
+        <tr>
+            <td>椭圆选择</td>
+            <td>E</td>
+            <td>同上</td>
+        </tr>
+        <tr>
+            <td>自由选择</td>
+            <td>F</td>
+            <td>套索。<span class="important">按 F 两次</span>切换成多边形（自动闭合）</td>
+        </tr>
+        <tr>
+            <td>前景选择</td>
+            <td>无默认键</td>
+            <td>GIMP 2.10 引入的自动抠图，<span class="important">算法优于 PS 的同类工具</span></td>
+        </tr>
+        <tr>
+            <td>魔棒 / 模糊选择</td>
+            <td>U</td>
+            <td>按颜色相似度，PS 里是 W</td>
+        </tr>
+        <tr>
+            <td>按颜色选择</td>
+            <td>Shift+O</td>
+            <td>选择 → 浮动，PS 里是同一个键</td>
+        </tr>
+        <tr>
+            <td>剪刀</td>
+            <td>I</td>
+            <td>自动吸附边缘，PS 里是 P</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    前景选择值得重点说
+</h3>
+<p>
+    这是 GIMP 相对 PS 的一个优势工具。它基于机器学习模型，能自动识别主体边缘，包括一些 PS 处理不好的软边、半透明区域。官方文档也提醒：<span
+        class="important">它很吃内存，大图上容易变慢甚至崩溃</span>。
+</p>
+<p>
+    流程比想象中多一步，必须先<span class="important">手动画一个粗略轮廓把主体圈出来</span>：
+</p>
+<p>
+    <span class="pip-block">选择 → 前景选择</span>
+    →
+    <span class="pip-block">像自由套索一样沿主体画一圈（留一点背景），起点变黄时点击或双击闭合</span>
+    →
+    <span class="pip-block">按 Enter 或在圈内双击，进入笔刷状态</span>
+    →
+    <span class="pip-block">用画笔在主体上涂几笔标记「要保留」</span>
+    →
+    <span class="pip-block">Enter 预览 / 再按 Select 确认</span>
+</p>
+<h3>
+    三个绘制模式
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">绘制前景</span></td>
+            <td>画到的地方算主体，会被保留</td>
+        </tr>
+        <tr>
+            <td><span class="special">绘制背景</span></td>
+            <td>画到的地方排除，用来去掉误选的背景</td>
+        </tr>
+        <tr>
+            <td><span class="special">绘制未知</span></td>
+            <td>在轮廓外的「未知区」里画，<span class="important">扩展选区到圈外</span>，补上漏掉的部分</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    预览模式切到 <span class="special">Grayscale（灰度）</span> 时，看到的就是最终的灰度蒙版效果，和图层蒙版一致。主体与背景颜色接近时用灰度预览更容易分辨。
+</p>
+<div class="tips">
+    两个容易踩的点：一是<span class="important">必须先闭合轮廓</span>才能进入笔刷阶段，起点处鼠标变黄就是闭合信号；二是<span
+        class="important">Matting Levin 引擎在 Windows 上暂时被移除</span>（因崩溃），只能用 Matting Global，后者速度快但精度略低。大图上可以把 Levels 调高来换速度。
+</div>
+<h3>
+    魔棒的容差
+</h3>
+<p>
+    <span class="special">容差（Tolerance）</span> 默认值 32，表示颜色相似度阈值。与 PS 逻辑相同：太小选区断裂，太大连带背景。按住 <span
+        class="special">Shift</span> 加选、<span class="special">Alt</span> 减选，可多区域累积。
+</p>
+<h2>
+    通道
+</h2>
+<p>
+    GIMP 的通道面板（<span class="special">Windows → Dockable Dialogs → 通道</span>）和 PS 概念一致，但有一个 3.0 新增的重要能力：
+</p>
+<div class="tips">
+    <span class="important">GIMP 3.0 起，通道也能挂非破坏性滤镜</span>。这意味着你可以对 Alpha 通道做模糊而不影响颜色，比 PS 只能在外挂滤镜里折腾方便得多。
+</div>
+<h3>
+    通道选区的标准工作流
+</h3>
+<p>
+    通道的真正用途是<span class="important">精细处理半透明边缘</span>。以头发抠图为例：
+</p>
+<p>
+    <span class="pip-block">先用前景选择/魔棒粗选出主体</span>
+    →
+    <span class="pip-block">选择 → 转子为通道（Shift+Ctrl+C）</span>
+    →
+    <span class="pip-block">在通道面板用柔边黑白画笔涂抹发丝区域</span>
+    →
+    <span class="pip-block">重复涂抹加深，过渡到半灰</span>
+    →
+    <span class="pip-block">转回选区（Shift+Ctrl+V）</span>
+    →
+    <span class="pip-block">用这个选区生成图层蒙版</span>
+</p>
+<div class="tips">
+    通道能处理 PS 的选区做不到的事：<span class="important">连续的灰度过渡</span>。选区只有「选中/不选中」两种状态（加羽化算例外），通道是完整的灰度图，所以能表达发丝那种半透明质感。
+</div>
+<h3>
+    常用通道命令
+</h3>
+<ul>
+    <li><span class="special">选择 → 转子为通道</span>（Shift+Ctrl+C）：把当前选区存进通道</li>
+    <li><span class="pip-block">Shift+拖拽</span>通道：快速建立多选区（PS 的同款技巧）</li>
+    <li><span class="special">选择 → 从通道建立选区</span>（Shift+Ctrl+V）：反向使用</li>
+    <li>通道可以<span class="special">取反、羽化、阈值化</span>，做精细控制</li>
+</ul>
+<h2>
+    路径与钢笔
+</h2>
+<p>
+    钢笔工具在 GIMP 里快捷键是 <span class="important">B</span>（PS 是 P），和「画笔（Brush）」撞了：
+</p>
+<ul>
+    <li><span class="special">B</span>：钢笔/路径工具</li>
+    <li><span class="special">P</span>：铅笔（Pencil）</li>
+    <li><span class="special">Shift+B</span>：油漆桶填充</li>
+</ul>
+<h3>
+    路径转选区
+</h3>
+<p>
+    GIMP 3.2 之前，路径和选区的转换比较绕；3.2 有了<span class="important">矢量图层</span>之后顺畅很多：
+</p>
+<p>
+    <span class="pip-block">用钢笔画好路径，闭合</span>
+    →
+    <span class="pip-block">路径面板 → 右键 → 转换为矢量图层</span>
+    →
+    <span class="pip-block">对该图层右键 → 栅格化（如需）</span>
+    →
+    <span class="pip-block">再用图层蒙版控制显隐</span>
+</p>
+<div class="tips">
+    直接从路径建立选区：路径面板菜单 → <span class="special">路径转选区</span>。未闭合的路径也可以转，GIMP 会自动用直线连接起终点。矢量图层还支持<span
+        class="important">拖拽颜色/图案到图层上</span>改填充，和 PS 的形状图层操作一致。
+</div>
+<h3>
+    路径与文字
+</h3>
+<p>
+    路径面板里的路径可以指定给文字图层，让文字沿路径排列。和 PS 不同的是，<span class="important">GIMP 的文字沿路径不做自动变形</span>（PS 的「变形」那样），路径只控制基线方向。
+</p>
+<h2>
+    抠边缘
+</h2>
+<p>
+    GIMP 没有 PS 的「选择并蒙版」智能半径那一套，但有几个对应的工具：
+</p>
+<h3>
+    羽化扩展
+</h3>
+<p>
+    <span class="special">选择 → 羽化</span>（Shift+F6）的对话框有两个参数，比 PS 单一半径更灵活：
+</p>
+<ul>
+    <li><span class="special">羽化半径</span>：边缘过渡的宽度（像素）</li>
+    <li><span class="special">扩展量</span>：整体向外或向内偏移，用来吃掉背景残留</li>
+</ul>
+<div class="tips">
+    「扩展量」是 GIMP 的独门参数：羽化同时向外扩、边缘更干净但会吃掉主体细节；负值则向内收，保护主体但留背景色。配合使用比单纯调半径精细得多。
+</div>
+<h3>
+    生长 / 收缩
+</h3>
+<ul>
+    <li><span class="special">选择 → 生长</span>：选区向外扩 1-4 像素，用于<span class="important">防止边缘残留背景色</span></li>
+    <li><span class="special">选择 → 收缩</span>：向内收，用于消除多余的半透明羽化</li>
+    <li><span class="special">选择 → 边界锐化</span>：把过渡区收紧成硬边，避免蒙版上的灰边</li>
+</ul>
+<h3>
+    去除杂边
+</h3>
+<p>
+    抠完在白底上能看到一圈灰边或彩边，就是杂边。处理办法：
+</p>
+<p>
+    <span class="pip-block">选区完成后，菜单栏右侧的「选择 → 去除杂边」类命令</span>
+    或
+    <span class="pip-block">Windows → Dockable Dialogs → 颜色拾取器，把前景色设为背景色</span>
+    →
+    <span class="pip-block">在选区内用油漆桶（Shift+B）填充</span>
+</p>
+<div class="tips">
+    半透明边缘（头发、纱、玻璃）不要指望一步抠干净。正确做法是<span class="important">保留灰度信息</span>：在通道里画出过渡，再转成蒙版。硬去黑边只会让边缘看起来假。
+</div>
+<h3>
+    合成时的边缘发灰
+</h3>
+<p>
+    这是从 PS 迁移过来最常见的遗留问题。修法和新背景有关：
+</p>
+<ul>
+    <li>在新背景上新建一层，混合模式设为 <span class="special">Multiply（正片叠底）</span></li>
+    <li>把抠好的主体层<span class="important">复制一份</span>放上去</li>
+    <li>边缘的半透明像素会重新与背景色融合，灰边消失</li>
+</ul>
+<p>
+    这就是 PS 里的「色彩加深」技巧，只是 GIMP 的模式叫 Multiply。
+</p>
+<h2>
+    实战流程
+</h2>
+<h3>
+    一键抠主体换背景
+</h3>
+<p>
+    <span class="pip-block">选择 → 前景选择，先沿主体画一圈闭合轮廓</span>
+    →
+    <span class="pip-block">Enter 进入笔刷状态，涂几笔标记主体</span>
+    →
+    <span class="pip-block">Shift+F6 羽化 + 扩展量微调</span>
+    →
+    <span class="pip-block">图层 → 蒙版 → 添加图层蒙版，选「选区」</span>
+    →
+    <span class="pip-block">在蒙版上用黑白画笔修边缘</span>
+    →
+    <span class="pip-block">添加新背景图层</span>
+</p>
+<h3>
+    抠半透明主体（头发/纱）
+</h3>
+<p>
+    <span class="pip-block">粗选出主体</span>
+    →
+    <span class="pip-block">转子为通道</span>
+    →
+    <span class="pip-block">柔边画笔刷出发丝灰度</span>
+    →
+    <span class="pip-block">转回选区生成蒙版</span>
+    →
+    <span class="pip-block">换背景后用 Multiply 修灰边</span>
+</p>
+<h3>
+    抠硬边（产品/logo）
+</h3>
+<p>
+    <span class="pip-block">钢笔（B）画路径，闭合</span>
+    →
+    <span class="pip-block">路径转选区</span>
+    →
+    <span class="pip-block">羽化 0.5-1px</span>
+    →
+    <span class="pip-block">生成蒙版</span>
+</p>
+<h3>
+    保留阴影抠商品
+</h3>
+<p>
+    <span class="pip-block">前景选择只涂商品不涂阴影（闭合轮廓时也把阴影排除）</span>
+    →
+    <span class="pip-block">生成蒙版</span>
+    →
+    <span class="pip-block">在蒙版上用软笔刷把阴影刷回来（灰色即半透明）</span>
+</p>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    操作没反应 / 大部分命令点不动
+</h3>
+<p>
+    检查是否有<span class="important">浮动选区（Floating Selection）</span>。这是 GIMP 官方的「卡住」排查手册里的第一条。处理：<span
+        class="special">Ctrl+H 锚定</span>或 <span class="special">Ctrl+Shift+N 转为新图层</span>。
+</p>
+<h3>
+    操作只作用在一小块
+</h3>
+<p>
+    选区还残留。按 <span class="special">Shift+Ctrl+A</span> 清空，或按 <span class="special">Shift+Q</span> 打开快速蒙版确认选区范围。
+</p>
+<h3>
+    边缘出现「锯齿」
+</h3>
+<p>
+    硬选区直接删除的结果。修法是在删除前 <span class="special">Shift+F6 羽化 1-2px</span>，或用 <span class="special">选择 → 边界锐化</span> 先收一下再去黑边。
+</p>
+<h3>
+    抠完边缘有彩边
+</h3>
+<p>
+    没有处理杂边。用 <span class="special">选择 → 生长</span> 往外扩一点把背景像素包进去，或者在通道里手动画灰度过渡。彩边通常在纯色背景上最明显，换个复杂背景验证一下就知道是否真的干净。
+</p>
+<h3>
+    魔棒选不中
+</h3>
+<p>
+    背景不连续或有渐变时容差要求太大。用前景选择（机器学习）替代，或者在通道里按亮度手动画选区，通常更可靠。
+</p>
+<h3>
+    羽化后蒙版边缘发灰
+</h3>
+<p>
+    这是正常现象——羽化本就是要有过渡。问题在于合并到新背景时灰边显脏，用 Multiply 那招修正即可。
+</p>

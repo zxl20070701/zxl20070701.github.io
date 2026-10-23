@@ -1,0 +1,327 @@
+<header>
+    界面与快捷键
+</header>
+<p>
+    GIMP 的默认快捷键和 Photoshop 几乎一致（都是单键选工具），但有几个关键差异会让人不适应。这篇只讲「哪里不一样」，重复的按键不再赘述。
+</p>
+<h2>
+    与 Photoshop 的主要差异
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>Photoshop</th>
+            <th>GIMP</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>取消选择</td>
+            <td>Shift+Ctrl+A</td>
+            <td><span class="special">Shift+Ctrl+A</span>（相同）</td>
+        </tr>
+        <tr>
+            <td>取消选择（图层无选区时）</td>
+            <td>Ctrl+D</td>
+            <td><span class="important">Ctrl+Shift+A</span>，因为 Ctrl+D 在 GIMP 里是「取消选择边界」</td>
+        </tr>
+        <tr>
+            <td>全选</td>
+            <td>Ctrl+A</td>
+            <td><span class="special">Ctrl+A</span>（相同）</td>
+        </tr>
+        <tr>
+            <td>自由选区（套索）</td>
+            <td>L</td>
+            <td><span class="important">F</span></td>
+        </tr>
+        <tr>
+            <td>魔棒</td>
+            <td>W</td>
+            <td><span class="important">U</span></td>
+        </tr>
+        <tr>
+            <td>裁剪</td>
+            <td>C</td>
+            <td><span class="important">Shift+C</span>（Shift+C 是剪裁，C 被分给柔化/锐化）</td>
+        </tr>
+        <tr>
+            <td>缩放</td>
+            <td>Ctrl+ +/-</td>
+            <td><span class="special">Z</span> 切换缩放工具，再点击；或 Ctrl+ +/- 直接缩放</td>
+        </tr>
+        <tr>
+            <td>测量</td>
+            <td>Shift+R</td>
+            <td><span class="important">Shift+M</span></td>
+        </tr>
+        <tr>
+            <td>剪贴/复制为新图</td>
+            <td>Ctrl+Shift+V</td>
+            <td><span class="special">Ctrl+Shift+V</span> 在 GIMP 里是「作为新图像粘贴」</td>
+        </tr>
+        <tr>
+            <td>显示/隐藏面板</td>
+            <td>Tab</td>
+            <td><span class="special">Tab</span>（相同）</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    最容易踩的两个：<span class="important">Ctrl+Shift+A 才是取消选择</span>，<span class="important">F 是自由套索不是 L</span>。记错了会以为 GIMP 坏了。
+</div>
+<h2>
+    工具快捷键
+</h2>
+<p>
+    GIMP 的工具箱设计是<span class="important">单键直达</span>，比 PS 需要配合工具组再按字母高效得多：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>类别</th>
+            <th>按键与工具</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>选择类</td>
+            <td><span class="special">R</span> 矩形选择、<span class="special">E</span> 椭圆选择、<span class="special">F</span> 自由选择、<span class="special">U</span> 魔棒、<span
+                class="special">Shift+O</span> 按颜色选择、<span class="special">I</span> 剪刀</td>
+        </tr>
+        <tr>
+            <td>绘画类</td>
+            <td><span class="special">P</span> 画笔、<span class="special">N</span> 铅笔、<span class="special">Shift+B</span> 填充桶、<span class="special">G</span>
+                渐变、<span class="special">E</span>/<span class="special">Shift+E</span> 橡皮擦、<span class="special">A</span> 喷枪、<span class="special">K</span>
+                墨水、<span class="special">Y</span> MyPaint 笔刷</td>
+        </tr>
+        <tr>
+            <td>修复类</td>
+            <td><span class="special">C</span> 仿制图章、<span class="special">H</span> 修复画笔、<span class="special">S</span> 涂抹、<span class="special">Shift+U</span>
+                模糊/锐化、<span class="special">Shift+D</span> 减淡/加深</td>
+        </tr>
+        <tr>
+            <td>变换类</td>
+            <td><span class="special">M</span> 移动、<span class="special">Shift+C</span> 裁剪、<span class="special">Shift+R</span> 旋转、<span class="special">Shift+S</span>
+                缩放、<span class="special">Shift+H</span> 切变、<span class="special">Shift+P</span> 透视、<span class="special">Shift+F</span>
+                翻转、<span class="special">Shift+L</span> 变形（Handles）、<span class="special">Shift+G</span> 笼形、<span class="special">W</span> 扭曲变形</td>
+        </tr>
+        <tr>
+            <td>其它</td>
+            <td><span class="special">B</span> 路径（钢笔）、<span class="special">T</span> 文字、<span class="special">O</span> 取色器、<span class="special">Z</span> 缩放、<span
+                class="special">Q</span> 对齐与分布</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    几乎每个工具都有<span class="important"> Shift + 快捷键</span>的备用绑定（GIMP 设计成单键冲突时用），比如 Shift+M 测量、Shift+F 翻转。记不住就按 <span
+        class="special">/</span> 搜索。
+</div>
+<h3>
+    两个特别实用的快捷键
+</h3>
+<ul>
+    <li><span class="special">Shift+X</span>：<span class="important">在最近使用的两个工具间来回切换</span>。比如画笔和涂抹之间反复横跳，一键搞定</li>
+    <li><span class="special">/</span>：<span class="important">搜索所有动作</span>，包括滤镜。3.0 起 GEGL 滤镜也能直接搜到，还能显示它在菜单里的位置</li>
+</ul>
+<h2>
+    界面操作
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>按键</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>临时隐藏面板</td>
+            <td>Tab</td>
+            <td>全屏专注看图，再按恢复</td>
+        </tr>
+        <tr>
+            <td>呼出工具箱</td>
+            <td>Ctrl+B</td>
+            <td>Tab 隐藏状态下临时唤出</td>
+        </tr>
+        <tr>
+            <td>放大</td>
+            <td>Ctrl + <span class="pip-block">+</span></td>
+            <td>以鼠标位置为中心缩放</td>
+        </tr>
+        <tr>
+            <td>缩小</td>
+            <td>Ctrl + <span class="pip-block">-</span></td>
+            <td>同上</td>
+        </tr>
+        <tr>
+            <td>适合窗口</td>
+            <td>Ctrl+Shift+J</td>
+            <td>显示完整图像</td>
+        </tr>
+        <tr>
+            <td>临时快速蒙版</td>
+            <td>Shift+Q</td>
+            <td><span class="important">选区可视化</span>，再按返回</td>
+        </tr>
+        <tr>
+            <td>打开面板</td>
+            <td>Ctrl+L / Ctrl+G / Shift+Ctrl+B</td>
+            <td>分别对应图层、渐变、笔刷面板</td>
+        </tr>
+        <tr>
+            <td>单窗口切换多窗口</td>
+            <td>Windows 菜单</td>
+            <td>或首选项里改</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">Shift+Q（快速蒙版）</span>是排查选区问题最有效的工具。按下后被选中区域会显示红色蒙版，一眼看清选区到底覆盖了什么。Photoshop 里对应的是 Q。
+</div>
+<h2>
+    工具选项面板
+</h2>
+<p>
+    GIMP 把所有工具参数集中在<span class="important">工具选项</span>面板，这是它和 PS 最大的交互差异——PS 每个工具有自己的浮动面板，GIMP 全部集中在一处。
+</p>
+<ul>
+    <li>点击工具箱图标<strong>本身</strong>（不是选工具，是打开选项）</li>
+    <li>Windows → Dockable Dialogs → Tool Options</li>
+    <li>快捷键 <span class="special">Shift+Alt+T</span></li>
+</ul>
+<p>
+    常用参数集中在顶部：
+</p>
+<ul>
+    <li><span class="important">画笔大小/硬度</span>：用 <span class="special">[</span> 和 <span class="special">]</span> 快速调节，<span
+        class="special">Shift+[</span> / <span class="special">Shift+]</span> 调硬度</li>
+    <li><span class="special">D</span>：恢复默认前景色/背景色（黑白）</li>
+    <li><span class="special">X</span>：交换前景色与背景色</li>
+    <li><span class="special">Alt+点击颜色块</span>：打开颜色选择器</li>
+    <li><span class="special">Shift+拖拽前景色块</span>：直接进入色轮调整</li>
+</ul>
+<div class="tips">
+    <span class="special">[</span> / <span class="special">]</span> 调笔刷大小在任何画笔类工具下都可用，不用去工具选项里拖滑块。这是从 PS 迁移过来最先要改的习惯。
+</div>
+<h2>
+    画笔动态（笔刷手感）
+</h2>
+<p>
+    GIMP 的画笔可以挂<span class="important">Dynamics（动态）</span>，让笔刷对手压、速度、方向产生响应，是手绘质感的关键：
+</p>
+<p>
+    <span class="pip-block">Windows → Dockable Dialogs → 笔刷动态</span>
+    →
+    <span class="pip-block">新建编辑</span>
+    →
+    <span class="pip-block">把「Opacity」「Size」「Pressure」拖到编辑器里连线</span>
+    →
+    <span class="pip-block">在画笔工具选项里启用</span>
+</p>
+<div class="tips">
+    工具选项里有一个 <span class="important">Enable Dynamics（启用动态）</span> 勾选框（3.0 起直接放在工具选项里，不用再去动态列表里找「Dynamics Off」）。如果笔刷行为奇怪，第一件事就是检查它有没有被意外关掉。
+</div>
+<h2>
+    自定义快捷键
+</h2>
+<p>
+    <span class="special">编辑 → 键盘快捷键</span> 打开配置界面，或在首选项的「键盘快捷键」里点「配置快捷键…」。操作方式：
+</p>
+<p>
+    <span class="pip-block">在搜索框输入命令名</span>
+    →
+    <span class="pip-block">选中命令行，点击「快捷键」列</span>
+    →
+    <span class="pip-block">直接按想要的组合键</span>
+</p>
+<div class="tips">
+    默认勾选「退出时保存快捷键」，改动会在关闭 GIMP 时自动写入。如果不想自动保存，取消勾选后需要手动点「Save」。按键冲突时 GIMP 会提示该组合已被哪个命令占用，可以覆盖或取消。
+</div>
+<h2>
+    右键与中键行为
+</h2>
+<p>
+    GIMP 允许<span class="important">自定义右键和中键的行为</span>（PS 做不到），在首选项的 <span class="special">画布交互 → 修饰键</span> 里设置：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>可设行为</th>
+            <th>用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>右键 = 画笔</td>
+            <td>左手控制画笔、右手操作快捷键</td>
+        </tr>
+        <tr>
+            <td>右键 = 缩放画布旋转</td>
+            <td>快速摆正画布角度（绘画时很实用）</td>
+        </tr>
+        <tr>
+            <td>右键 = 菜单</td>
+            <td>恢复默认右键弹出菜单</td>
+        </tr>
+        <tr>
+            <td>中键 = 缩放/平移</td>
+            <td>传统三键鼠标用户</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    画布旋转是 GIMP 独有的优势。<span class="special">Windows → 图像 → 旋转画布</span>可以把画布转到任意角度，配合「右键 = 旋转」几乎能替代 PS 的转动画布，非常适合画斜线、画对称构图。
+</div>
+<h2>
+    界面显示相关
+</h2>
+<ul>
+    <li><span class="special">Windows → Hide Docks</span>（Tab）：隐藏所有面板</li>
+    <li><span class="special">Windows → Single-Window Mode</span>：单窗口 / 多窗口切换</li>
+    <li><span class="special">Windows → Reset Window Layout</span>：<span class="important">面板乱了就用这个恢复默认</span></li>
+    <li><span class="special">Windows → Recently Closed Docks</span>：找回误关的面板</li>
+    <li>颜色面板（<span class="special">Windows → Dockable Dialogs → 颜色</span>）：可在 3.2 的 <span class="special">System</span> 主题下自动跟随系统深浅色</li>
+</ul>
+<div class="tips">
+    深色模式下笔刷和字体预览会有强光刺眼问题。3.2 的笔刷和字体面板加了 <span class="important">「Use theme colors for preview」</span> 开关，开启后预览色会跟着主题变，强烈建议打开。
+</div>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    工具选项面板不见了
+</h3>
+<p>
+    它可能被拖成了独立窗口，或者被折叠了。先按 <span class="special">Shift+Alt+T</span> 找回；如果面板布局全乱，<span
+        class="special">Windows → Reset Window Layout</span> 一键恢复。
+</p>
+<h3>
+    画笔突然「不听话」
+</h3>
+<p>
+    检查三件事：工具选项里的 <span class="special">Enable Dynamics</span> 是否被关闭、画笔是否选错（笔刷面板当前高亮的那个）、不透明度是否是 0（按 <span
+        class="special">Ctrl+Shift+Z</span> 恢复历史或直接重设）。
+</p>
+<h3>
+    按快捷键没反应
+</h3>
+<p>
+    多数情况是焦点不在画布上——焦点在某个输入框或面板时按键会被拦截。点击一下画布再试。另外检查 <span class="special">Tab</span> 是否处于「隐藏面板」状态，或者当前工具的快捷键和你以为的不一样（用 <span
+        class="special">/</span> 搜索确认）。
+</p>
+<h3>
+    颜色拾取不准
+</h3>
+<p>
+    取色器（O）在 3.0 之后可以选择取样不同色彩空间。另外注意：如果开启了几何变换（旋转/缩放画布），取色器取的是变换后的坐标。要在原始像素上取色，先复位画布变换。
+</p>
+<h3>
+    画布能无限放大吗
+</h3>
+<p>
+    可以。首选项 <span class="special">系统资源</span> 里控制最大内存占比，画布边长上限也能调。默认限制是 8192 像素，改大之前先确认内存足够。
+</p>

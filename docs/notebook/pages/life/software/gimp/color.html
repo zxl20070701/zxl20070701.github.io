@@ -1,0 +1,304 @@
+<header>
+    滤镜与调色
+</header>
+<p>
+    GIMP 的滤镜体系在 3.0 发生了根本变化：底层统一到 <span class="important">GEGL</span>，并且默认<span
+        class="important">非破坏性</span>。调色思路和 Photoshop 基本一致，但工具位置和实现方式差别不小。
+</p>
+<h2>
+    GEGL 是什么
+</h2>
+<p>
+    GEGL（Generic Graphical Library）是 GIMP 的图像处理底层引擎。理解这一点能解释很多现象：
+</p>
+<ul>
+    <li>菜单里的绝大多数滤镜，本质都是 GEGL 操作的<span class="special">封装入口</span></li>
+    <li>有些 GEGL 操作<span class="important">没有菜单入口</span>（实验性或不重要），需要通过 GEGL 工具访问</li>
+    <li>第三方开发者写的新滤镜也会出现在同一个列表里</li>
+</ul>
+<p>
+    访问全部 GEGL 操作：<span class="special">工具 → GEGL 操作</span>。这个对话框支持<span
+        class="important">画布实时预览</span>，可以并排比较不同参数的效果，比菜单滤镜更适合探索。
+</p>
+<div class="tips">
+    找滤镜最快的路径是按 <span class="special">/</span> 打开动作搜索。3.0 起可以直接搜到 GEGL 操作（包括第三方滤镜），而且结果会<span
+        class="important">显示它在菜单里的位置</span>，还能点帮助按钮看说明。
+</div>
+<h2>
+    非破坏性滤镜
+</h2>
+<p>
+    这是 GIMP 3.0 最重要的行为变化。应用滤镜后，效果会出现在<span class="important">图层面板下方的滤镜堆栈</span>里，而不是烙进像素：
+</p>
+<h3>
+    堆栈能做什么
+</h3>
+<ul>
+    <li><span class="important">双击效果</span> → 重新打开参数对话框，随时改数值</li>
+    <li><span class="special">眼睛图标</span> → 单独开关某个效果</li>
+    <li>右键 → <span class="special">删除</span> → 只删这一个，不影响其它</li>
+    <li>右键 → <span class="special">重新排序</span> → 调整滤镜执行顺序</li>
+    <li>右键 → <span class="special">合并滤镜</span> → 一次性烘焙成像素</li>
+</ul>
+<h3>
+    保留到 XCF
+</h3>
+<p>
+    非破坏性滤镜的设置会<span class="important">随 XCF 一起保存</span>，下次打开还能继续编辑。这意味着可以把 XCF 发给同事，对方打开后还能调整你的调色参数——这是 PS 做不到的（PS 的智能滤镜只在智能对象上部分支持）。
+</p>
+<div class="tips">
+    用「合并滤镜」烘焙时会提示第三方滤镜可能被丢弃——因为那些滤镜在对方机器上不一定装了。纯 GEGL 内置滤镜则完全没问题。
+</div>
+<h2>
+    调色顺序
+</h2>
+<p>
+    和 Photoshop 一样的逻辑（详见 Photoshop 的《调色与滤镜》一篇），GIMP 下的对应关系是：
+</p>
+<pre>
+① 色彩空间 / 白平衡    → 图像 → 色彩管理
+② 色阶 / 曲线          → 颜色 → 亮度-对比度、色阶、曲线
+③ 色相饱和度 / 色彩平衡 → 颜色菜单
+④ 锐化                → 滤镜 → 增强 → 锐化
+⑤ 输出                → 文件 → 导出为
+</pre>
+<div class="tips">
+    <span class="important">锐化永远放最后</span>，它会放大前面所有的噪点和压缩瑕疵。这条在哪个软件里都一样。
+</div>
+<h2>
+    常用调色工具
+</h2>
+<h3>
+    亮度-对比度
+</h3>
+<p>
+    <span class="special">颜色 → 亮度-对比度</span>。GIMP 的实现与 PS 有一处重要差别：它的对比度滑块<span class="important">以中灰为轴对称调整</span>，会同时影响亮部和暗部。想只压暗部或只提亮部，用曲线更可控。
+</p>
+<h3>
+    色阶 / 曲线
+</h3>
+<p>
+    <span class="special">颜色 → 色阶</span> 和 <span class="special">颜色 → 曲线</span>。逻辑与 PS 一致：
+</p>
+<ul>
+    <li>色阶：拖黑白场修反差，拖灰场改整体明暗</li>
+    <li>曲线：S 形加对比，暗部左下上提做「胶片感」，可分 RGB 通道调</li>
+</ul>
+<p>
+    GIMP 的曲线工具支持在对话框里<span class="important">直接显示直方图</span>，边调边看分布，比 PS 更直观。
+</p>
+<h3>
+    色相/饱和度/明度
+</h3>
+<p>
+    <span class="special">颜色 → 色相-饱和度</span>。默认是全图调整，<span class="important">但可以勾选「分范围调整」</span>（GIMP 里叫 Master/Red/Yellow/Green/Cyan/Blue/Magenta 分档）分别调某个颜色区间。
+</p>
+<div class="tips">
+    调整人像肤色时：切到 <span class="special">Red</span> 档，色相往橙推一点、明度略提。黄色档降饱和去黄。这套逻辑和 PS 的 HSL 一致，只是入口不同。
+</div>
+<h3>
+    色彩平衡
+</h3>
+<p>
+    <span class="special">颜色 → 色彩平衡</span>，按阴影/中间调/高光三段加冷暖，用途与 PS 相同：阴影加蓝让风光通透，高光加黄模拟暖阳。
+</p>
+<h3>
+    黑白转换
+</h3>
+<p>
+    <span class="special">颜色 → 灰度</span> 直接去色；更好的做法是 <span class="special">颜色 → 色度饱和度</span> 把饱和度拉到 0，同时保留明度细节。
+</p>
+<p>
+    GIMP 在这一点上弱于 PS——它<span class="important">没有 PS 那种能分别控制六个颜色范围明暗的「黑白」调整图层</span>。需要精细控制黑白时，得用通道混合器逐个调 RGB 通道，或者在通道里按亮度手动画曲线。
+</p>
+<h3>
+    色调映射
+</h3>
+<p>
+    <span class="special">颜色 → 色调映射</span> 是 GIMP 的独门工具，用来把 HDR/高动态范围图像压缩到普通范围，保留高光和暗部细节。做风景和 HDR 照片时很有用，PS 里没有直接对应的功能。
+</p>
+<h2>
+    修复类工具
+</h2>
+<p>
+    GIMP 的修图工具比 PS 更底层，也更直白。它们都是<span class="important">直接改像素</span>的（不参与非破坏性堆栈）：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>工具</th>
+            <th>快捷键</th>
+            <th>用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>修复画笔</td>
+            <td>H</td>
+            <td>像 PS 的污点修复画笔，自动采样周边像素</td>
+        </tr>
+        <tr>
+            <td>仿制图章</td>
+            <td>C</td>
+            <td>手动指定源位置复制，PS 里也是 C</td>
+        </tr>
+        <tr>
+            <td> Heal/接缝</td>
+            <td>—</td>
+            <td>纹理合成算法，效果比仿制图章自然</td>
+        </tr>
+        <tr>
+            <td>涂抹</td>
+            <td>S</td>
+            <td>取样周围颜色推抹，用于柔化</td>
+        </tr>
+        <tr>
+            <td>减淡/加深</td>
+            <td>Shift+D</td>
+            <td>压暗/提亮局部</td>
+        </tr>
+        <tr>
+            <td>模糊/锐化</td>
+            <td>Shift+U</td>
+            <td>局部处理，PS 里是同一个键</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    仿制图章用 <span class="special">Ctrl+点击</span> 设置源点，然后 <span class="special">Alt+点击</span> 切换成 <span
+        class="important">Clone（对齐）</span> 模式——源点会跟着你涂抹的位置一起移动。这是 PS 用户最容易忽略的开关，开了之后连续涂抹才不会「拉丝」。
+</div>
+<h3>
+    修复工具的坑
+</h3>
+<p>
+    官方文档里提到一个已知问题：<span class="important">修复画笔在涂抹超出图层边界时可能产生深色污渍</span>。规避方法是先把图层扩大到和画布一样大（<span
+        class="special">图层 → 图层边界大小</span> → 图层边界），再执行修复。
+</p>
+<h2>
+    常用滤镜
+</h2>
+<h3>
+    高斯模糊
+</h3>
+<p>
+    <span class="special">滤镜 → 模糊 → 高斯模糊</span>。GIMP 3.0 起它是 NDE 滤镜，会进入堆栈可以反复调。它还是 3.2 新增的<span
+        class="special">可编辑渐变工具</span>的依赖项。
+</p>
+<p>
+    用法和 PS 一样：<span class="important">高斯模糊 + 渐变蒙版 = 景深/投影</span>。或者放在图层下方，用纯色层盖住原图做柔和投影。
+</p>
+<h3>
+    锐化
+</h3>
+<p>
+    <span class="special">滤镜 → 增强 → 锐化（Unsharp Mask）</span>。三个参数：
+</p>
+<ul>
+    <li><span class="special">半径</span>：边缘检测范围，一般 1-3 像素</li>
+    <li><span class="special">数量</span>：锐化强度，<span class="important">从 30%~50% 起步</span></li>
+    <li><span class="special">阈值</span>：多大的差异才算边缘，<span class="important">防噪关键</span>，调到 3-5 避免锐化噪点</li>
+</ul>
+<div class="tips">
+    GIMP 的默认值偏激进，容易把 JPEG 压缩瑕疵一起放大。<span class="important">阈值一定要调</span>，这是 GIMP 锐化和 PS 锐化最大的实践差异。
+</div>
+<h3>
+    其它值得知道的滤镜
+</h3>
+<ul>
+    <li><span class="special">滤镜 → 扭曲 → 波浪</span>：GIMP 独有的强效扭曲，比 PS 的同款更彻底</li>
+    <li><span class="special">滤镜 → 渲染 → 云朵</span> / <span class="special">分形棕榈</span>：程序化生成纹理，比 PS 的同类更强大</li>
+    <li><span class="special">滤镜 → 风格化</span>：描边、浮雕、油画等，逻辑与 PS 相同</li>
+    <li><span class="special">滤镜 → 开发</span>：随机噪点、差值等，调试利器</li>
+</ul>
+<h3>
+    重复与重显上次滤镜
+</h3>
+<ul>
+    <li><span class="special">Ctrl+F</span>：用相同参数<span class="important">重复</span>上一次的滤镜</li>
+    <li><span class="special">Ctrl+Shift+F</span>：<span class="important">重新打开</span>上一次的滤镜对话框（改参数用这个）</li>
+</ul>
+<p>
+    这两个快捷键和 Photoshop 一致，是批量处理同类图片时最省时间的组合。
+</p>
+<h2>
+    色彩管理
+</h2>
+<p>
+    GIMP 3.0 起重做了色彩管理，支持<span class="important">广色域 RGB 空间</span>（不止 sRGB）：
+</p>
+<p>
+    <span class="pip-block">图像 → 色彩管理 → 配置显示器</span>
+    →
+    <span class="pip-block">选择或获取显示器 ICC 配置文件</span>
+</p>
+<div class="tips">
+    显示器校色是所有调色的前提。<span class="important">未校色的显示器上看到的颜色是不可信的</span>，此时无论怎么调参数都是白调。这个优先级高于本文所有技巧。
+</div>
+<p>
+    软打样（Soft-Proofing）的开关在<span class="special">状态栏右下角</span>，可以切换到目标印刷色彩空间预览。打开带 AdobeRGB 配置的图，GIMP 会保留色彩空间信息不丢失——这在 PS 里也支持，但 GIMP 的实现同样彻底。
+</p>
+<h2>
+    非破坏性工作流的构建
+</h2>
+<p>
+    把前面的工具组合起来，就是一条完整的 GIMP 调色链路：
+</p>
+<p>
+    <span class="pip-block">新建图层组，混合模式设为 Pass Through</span>
+    →
+    <span class="pip-block">组内加色阶/曲线（用 / 搜索 GEGL 操作）</span>
+    →
+    <span class="pip-block">再加一个色相-饱和度</span>
+    →
+    <span class="pip-block">组下方是需要调色的图层</span>
+</p>
+<p>
+    效果会作用到组下所有内容，且<span class="important">每一步都能双击回去改</span>。这是 GIMP 3.0 之后最值得掌握的调色方式，比 PS 的调整图层更灵活（因为穿透组能移动、能叠加）。
+</p>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    滤镜列表里找不到想要的
+</h3>
+<p>
+    按 <span class="special">/</span> 搜索。如果确实没有，去 <span class="special">工具 → GEGL 操作</span> 里找——有些操作没有菜单入口但在这里能访问到。
+</p>
+<h3>
+    应用滤镜后无法修改参数
+</h3>
+<p>
+    检查是否用了「合并滤镜」把效果烘焙成了像素。用过之后只能撤销。如果是想得到确定的结果而烘焙，注意第三方滤镜在别人机器上可能无法重现。
+</p>
+<h3>
+    滤镜太慢或崩溃
+</h3>
+<p>
+    大图上 GEGL 运算很吃内存和显存。处理办法：先用 GIMP 裁剪工具把处理区域缩小（<span class="important">图像大小</span>而不是裁剪，这样像素还在），处理完再放回去。滤镜库里的高斯模糊半径很大时会明显变慢。
+</p>
+<h3>
+    锐化后噪点变多
+</h3>
+<p>
+    阈值参数没调。GIMP 默认值会把噪点当成边缘来锐化。<span class="important">把阈值调到 3-5</span>，只锐化真正的轮廓。
+</p>
+<h3>
+    颜色在不同设备上不一致
+</h3>
+<p>
+    显示器未校色，或者文档色彩空间与导出色彩空间不一致。GIMP 里有独立的<span class="special">「图像精度」设置</span>（8-bit / 16-bit / 32-bit 浮点），高精度能减少色阶断层，但也更吃内存。做大幅印刷或重度调色时，<span
+        class="important">建议一开始就用 32-bit 浮点</span>避免后期损失。
+</p>
+<h3>
+    修复画笔留下黑斑
+</h3>
+<p>
+    已知问题：涂抹超出图层边界时会出现。把图层边界扩到和画布一致（<span class="special">图层 → 图层边界大小 → 图层边界</span>）后再修。
+</p>
+<h3>
+    高斯模糊边缘出现暗角
+</h3>
+<p>
+    模糊采样到了图层边界外的透明区域（透明像素带黑色分量）。修法：先给图层补 <span class="special">alpha</span> 或把图层边界扩大，让模糊采样到有效像素。这是 GIMP 的经典问题，PS 因为默认保留 RGB 分量所以不明显。
+</p>
