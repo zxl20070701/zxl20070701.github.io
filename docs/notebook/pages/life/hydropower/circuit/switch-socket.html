@@ -1,0 +1,382 @@
+<header>
+    开关插座与照明
+</header>
+<p>
+    开关和插座是用电器接入电路的“终端”，也是装修里最容易出错的环节：轻则跳闸、重则触电。这一篇按
+    <span class="special">接线规则 → 常见器件 → 安装规范</span>
+    的顺序整理，并接上
+    <span class="special">多开关控制灯泡</span>
+    那篇的进阶内容。
+</p>
+<h2>
+    最基础的三条接线规则
+</h2>
+<div class="tips">
+    开关接
+    <span class="special">火线</span>
+    ，灯位接
+    <span class="special">零线</span>
+    ，金属外壳接
+    <span class="special">地线</span>
+    ——这三条是家庭电路最核心的安全原则。
+</div>
+<pre tag="text">
+错误：火线 ── 开关 ── 灯泡 ── 零线
+      （换灯泡时手会碰到火线）
+
+正确：火线 ── 开关 ── 灯泡
+零线 ──────────── 灯泡
+地线 ──────────── 金属外壳
+</pre>
+<p>
+    灯位的零线要
+    <span class="special">就近直取</span>
+    ，不要绕远去开关盒里借零线，否则零线断开时灯体会带电。
+</p>
+<h2>
+    插座接线
+</h2>
+<h3>
+    两孔与三孔
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>接线方式</th>
+            <th>适用</th>
+            <th>要求</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>两孔（无接地）</td>
+            <td>左零右火</td>
+            <td>两极电器、绝缘良好的台灯</td>
+            <td>必须保证
+                <strong>左零右火</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>三孔（带接地）</td>
+            <td>左零右火上接地</td>
+            <td>三极电器、金属外壳电器</td>
+            <td>地线
+                <strong>必须接实</strong>
+                ，不能悬空</td>
+        </tr>
+        <tr>
+            <td>五孔（三孔+两孔）</td>
+            <td>同上，地线共用</td>
+            <td>最常用的组合</td>
+            <td>两孔部分也要左零右火</td>
+        </tr>
+        <tr>
+            <td>带开关插座</td>
+            <td>开关串在火线上</td>
+            <td>床头、沙发旁、厨台</td>
+            <td>仍需单独具备可断开的
+                <strong>接地</strong>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    很多两孔插座出厂时是
+    <span class="warn">反接的</span>
+    （左火右零）。装之前一定要用
+    <span class="special">插座测试器</span>
+    校验，别默认“插上去能用就是对的”。
+</div>
+<h3>
+    三相插座（16A 大功率）
+</h3>
+<ul>
+    <li>
+        外形是
+        <span class="special">斜三孔</span>
+        或品字形，三相四线制下为
+        <span class="warn">三相 + 零线 + 地线</span>
+        。
+    </li>
+    <li>
+        必须
+        <span class="important">单独走 4mm² 及以上专线</span>
+        ，与其它插座共用回路容易发热。
+    </li>
+    <li>
+        三相电的相序接错会导致
+        <span class="warn">电动机反转</span>
+        ，但一般不影响照明。
+    </li>
+    <li>
+        空调、热水器、微波炉、烤箱、洗碗机建议各自
+        <span class="special">独立回路 + 独立空开</span>
+        。
+    </li>
+</ul>
+<h2>
+    常见开关类型
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>控制方式</th>
+            <th>接线要点</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>单控</td>
+            <td>一个开关控一盏灯</td>
+            <td>火线进开关，出线接灯</td>
+            <td>最基础</td>
+        </tr>
+        <tr>
+            <td>双控（两地控制）</td>
+            <td>两个开关控一盏灯</td>
+            <td>两个开关各接
+                <strong>4 根线</strong>
+                （同色 2 根 + 交叉 2 根）
+            </td>
+            <td>床头双控、走廊两端</td>
+        </tr>
+        <tr>
+            <td>三控 / 多控</td>
+            <td>三个及以上开关</td>
+            <td>两端仍用双控，中间用
+                <strong>双路切换开关</strong>
+            </td>
+            <td>楼梯、复式、别墅</td>
+        </tr>
+        <tr>
+            <td>五孔带开关</td>
+            <td>开关独立控插座</td>
+            <td>开关接火线，不用切零线</td>
+            <td>床头、书桌</td>
+        </tr>
+        <tr>
+            <td>人体感应 / 声光</td>
+            <td>自动感应</td>
+            <td>需预留
+                <strong>零线</strong>
+                与安装高度，误装率很高
+            </td>
+            <td>走廊、玄关、卫生间</td>
+        </tr>
+        <tr>
+            <td>智能面板</td>
+            <td>零火 / 单火无线</td>
+            <td>需确认是否
+                <strong>需要零线</strong>
+            </td>
+            <td>全屋智能</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    双控与多控的具体接线方法，详见
+    <span class="special">多开关控制灯泡</span>
+    那篇，本篇只补充选型与施工要点。
+</p>
+<h2>
+    开关安装要点
+</h2>
+<ul>
+    <li>
+        开关盒底离地
+        <span class="special">1.3m～1.4m</span>
+        ，玄关处
+        <span class="warn">不要超过 1.4m</span>
+        ，进门抬手即可。
+    </li>
+    <li>
+        开关面板周围
+        <span class="special">不要紧贴潮湿墙面</span>
+        ，否则底盒内容易进水引起漏电跳闸。
+    </li>
+    <li>
+        面板螺丝要拧紧，底盒内导线
+        <span class="warn">不得顶住面板</span>
+        ，否则装不平。
+    </li>
+    <li>
+        开关盒内
+        <span class="important">不得有接头</span>
+        ，需要分线时另设底盒或走上方接线。
+    </li>
+</ul>
+<h2>
+    插座安装规范
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>位置</th>
+            <th>建议高度</th>
+            <th>要点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>开关</td>
+            <td>1.3m～1.4m</td>
+            <td>进门、床上顺手可及</td>
+        </tr>
+        <tr>
+            <td>床头插座</td>
+            <td>0.6m～0.8m</td>
+            <td>双侧各一组，带 USB 更实用</td>
+        </tr>
+        <tr>
+            <td>沙发 / 电视墙</td>
+            <td>0.3m～0.5m</td>
+            <td>记得留网口、HDMI</td>
+        </tr>
+        <tr>
+            <td>厨房台面</td>
+            <td>1.1m～1.3m</td>
+            <td>远离水槽，且不
+                <strong>直接</strong>
+                放在灶台正后方
+            </td>
+        </tr>
+        <tr>
+            <td>卫生间</td>
+            <td>1.3m～1.6m</td>
+            <td>
+                <strong>必须带防溅盒 + 接地</strong>
+                ，与浴缸淋浴保持距离
+            </td>
+        </tr>
+        <tr>
+            <td>洗衣机 / 烘干机</td>
+            <td>1.0m～1.2m</td>
+            <td>独立回路，旁边预留防溅</td>
+        </tr>
+        <tr>
+            <td>空调</td>
+            <td>1.8m～2.2m</td>
+            <td>高度按机型厂家要求</td>
+        </tr>
+        <tr>
+            <td>冰箱</td>
+            <td>0.4m～0.6m</td>
+            <td>独立回路，避免其它电器跳闸时被断电</td>
+        </tr>
+        <tr>
+            <td>地面插座</td>
+            <td>与地砖齐平</td>
+            <td>阳台、餐桌旁，需
+                <strong>防水盖板</strong>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    照明布置
+</h2>
+<h3>
+    常见灯具类型
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>特点</th>
+            <th>注意</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>LED 灯板 / 灯带</td>
+            <td>低功耗、寿命长</td>
+            <td>需预留驱动盒位置，注意散热</td>
+        </tr>
+        <tr>
+            <td>筒灯 / 射灯</td>
+            <td>重点照明、层次感</td>
+            <td>开孔尺寸要与灯具匹配，<strong>先定灯具再开孔</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>主灯 / 吸顶灯</td>
+            <td>基础照明</td>
+            <td>客厅层高低时慎用，易压空间</td>
+        </tr>
+        <tr>
+            <td>无主灯设计</td>
+            <td>只做局部照明，靠灯带+射灯</td>
+            <td>回路更多，预算和施工要求更高</td>
+        </tr>
+        <tr>
+            <td>磁吸轨道灯</td>
+            <td>可后期调整布局</td>
+            <td>需要预埋轨道与电源位</td>
+        </tr>
+        <tr>
+            <td>落地灯 / 台灯</td>
+            <td>补充照明，不占回路</td>
+            <td>预留插座位置</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    色温与显色指数
+</h3>
+<ul>
+    <li>
+        <strong>色温</strong>：<span class="special">3000K</span>
+        暖黄（卧室、客厅）、<span class="special">4000K</span>
+        自然白（书房）、<span class="special">6000K</span>
+        冷白（厨房、卫生间）。全屋尽量统一，不要混搭过多。
+    </li>
+    <li>
+        <strong>显色指数 CRI</strong>：大于
+        <span class="special">80</span>
+        基本够用，食品、化妆、绘画场景建议
+        <span class="warn">Ra90 以上</span>
+        。
+    </li>
+    <li>
+        <strong>调光</strong>：需要提前确认是
+        <span class="special">调光型驱动器</span>
+        还是仅调亮度，普通灯带调光容易闪烁。
+    </li>
+</ul>
+<div class="tips">
+    装修阶段最容易返工的一点：<span class="important">先确定灯具，再定开孔位置和底盒</span>
+    。底盒尺寸有 86 型、118 型，开孔偏小就只能改面板，位置偏一个灯位都很麻烦。
+</div>
+<h2>
+    施工与验收清单
+</h2>
+<ul>
+    <li>
+        逐个插座用
+        <span class="special">测试器</span>
+        验：
+        <strong>左零右火、接地通、无反接</strong>
+        。
+    </li>
+    <li>
+        逐个开关确认：
+        <span class="special">控制的是灯不是零线</span>
+        ，且断开时灯体不带电。
+    </li>
+    <li>
+        卫生间接地线、局部等电位联结是否到位。
+    </li>
+    <li>
+        插座与水管的
+        <span class="warn">水平距离不小于 30cm</span>
+        ，且插孔不在水管正下方。
+    </li>
+    <li>
+        大功率电器
+        <span class="special">各有独立回路与空开</span>
+        ，插座不被普通回路过载牵连。
+    </li>
+</ul>

@@ -1,0 +1,304 @@
+<header>
+    弱电与网络布线
+</header>
+<p>
+    强电把电送到用电器，弱电把
+    <span class="special">信号</span>
+    送到设备：网络、电视、电话、监控、门禁、音响。弱电一旦封在墙里，后期几乎无法补救，所以装修阶段就要一次布好。
+</p>
+<div class="tips">
+    弱电布线的核心原则只有一条：
+    <span class="special">星型拓扑，从弱电箱向每个房间单独拉线</span>
+    。不要串联、不要分叉、不要中途接头。
+</div>
+<h2>
+    弱电箱
+</h2>
+<p>
+    弱电箱是所有弱电线路的汇聚点，相当于弱电系统的“总配电箱”：
+</p>
+<ul>
+    <li>
+        位置选在<span class="special">入户处、干燥、通风、可打开检修</span>的墙面，避免卫生间背墙和厨房灶台附近。
+    </li>
+    <li>
+        尺寸至少
+        <span class="warn">400×300mm</span>
+        ，能放下光猫、路由器、交换机、电源插座。
+    </li>
+    <li>
+        箱内必须有
+        <span class="important">独立电源插座</span>
+        ，不要从照明回路取电，否则关灯就断网。
+    </li>
+    <li>
+        箱内预留
+        <span class="special">风扇或散热孔</span>
+        ，光猫和路由器长期运行会积热。
+    </li>
+    <li>
+        弱电箱
+        <span class="warn">不要与强电箱共用</span>
+        ，信号线靠近强电会引入干扰。
+    </li>
+</ul>
+<h2>
+    网线选型
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>理论带宽</th>
+            <th>适用场景</th>
+            <th>建议</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>超五类（Cat5e）</td>
+            <td>1Gbps / 100m</td>
+            <td>百兆宽带、普通家用</td>
+            <td>已属最低配置</td>
+        </tr>
+        <tr>
+            <td>六类（Cat6）</td>
+            <td>1Gbps / 100m，10Gbps 短距离</td>
+            <td>千兆宽带、AP、NAS</td>
+            <td>
+                <strong>家用首选</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>超六类（Cat6a）</td>
+            <td>10Gbps / 100m</td>
+            <td>万兆内网、长期不换线</td>
+            <td>预算充足可上</td>
+        </tr>
+        <tr>
+            <td>七类及以上</td>
+            <td>10Gbps 以上</td>
+            <td>机房、专业场景</td>
+            <td>家用性价比低，接口难匹配</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    网线是
+    <span class="special">一次埋、用十年</span>
+    的东西，别在线上省钱。同一套房子里尽量统一规格，避免超五类和六类混用导致链路降速。
+</div>
+<h3>
+    买线时怎么辨别
+</h3>
+<ul>
+    <li>
+        外皮印有
+        <span class="special">Cat6、UTP、4P</span>
+        等标识，正规产品还会印米数刻度。
+    </li>
+    <li>
+        剥开看线芯：
+        <span class="special">无氧铜呈紫红色</span>
+        ，铝线或铜包铝偏白、偏脆。
+    </li>
+    <li>
+        线芯直径：六类线单芯约
+        <span class="special">0.57mm（23AWG）</span>
+        ，明显偏细的便宜线多为铜包铝。
+    </li>
+    <li>
+        家用选
+        <span class="warn">非屏蔽（UTP）</span>
+        即可；屏蔽线（FTP）需要全程良好接地，否则屏蔽层反而变成天线。
+    </li>
+</ul>
+<h2>
+    布线方式
+</h2>
+<pre tag="text">
+弱电箱（光猫 / 主路由）
+   ├── 客厅（主路由 / AP / 电视）
+   ├── 主卧（AP / 电视）
+   ├── 次卧（AP / 电视）
+   ├── 书房（电脑 / NAS）
+   ├── 厨房（预留）
+   └── 卫生间（预留，弱电箱内不接入）
+</pre>
+<ul>
+    <li>
+        每个房间至少
+        <span class="special">1 条网线到弱电箱</span>
+        ，电视墙建议 2 条（一条上网、一条备用/IPTV）。
+    </li>
+    <li>
+        网线
+        <span class="important">不能串联</span>
+        ：不能从客厅的网口再跳到卧室，必须各自单独回到弱电箱。
+    </li>
+    <li>
+        网线
+        <span class="warn">禁止中途接头</span>
+        ，也禁止打结、用钉子固定压扁；弯折半径不小于线径的 4 倍。
+    </li>
+    <li>
+        弱电与强电平行距离保持
+        <span class="special">30cm 以上</span>
+        ；必须交叉时
+        <span class="warn">直角交叉</span>
+        ，并尽量缩短交叉段。
+    </li>
+    <li>
+        穿线管用
+        <span class="special">PVC 弱电管</span>
+        ，管径按线数预留，保证以后能抽换。
+    </li>
+</ul>
+<h2>
+    无线覆盖：AP 还是 Mesh
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>方案</th>
+            <th>原理</th>
+            <th>优点</th>
+            <th>限制</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>单台无线路由</td>
+            <td>一台设备覆盖全屋</td>
+            <td>便宜、简单</td>
+            <td>大户型远端信号弱</td>
+        </tr>
+        <tr>
+            <td>Mesh 组网</td>
+            <td>多台节点无线/有线互联</td>
+            <td>可后期加节点</td>
+            <td>
+                <strong>无线回程会掉速</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>AC + AP 面板</td>
+            <td>每个房间一个面板 AP</td>
+            <td>信号均匀、无缝漫游</td>
+            <td>需
+                <strong>提前布网线</strong>
+                ，成本高</td>
+        </tr>
+        <tr>
+            <td>吸顶 AP</td>
+            <td>吊顶内安装</td>
+            <td>覆盖广、更美观</td>
+            <td>需预留
+                <strong>吊顶位置与网线</strong>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    想装面板 AP 或吸顶 AP，装修时就必须把网线布到对应位置，并预留
+    <span class="important">86 底盒或吊顶开孔</span>
+    。事后想装，只能走明线。
+</div>
+<h3>
+    POE 供电
+</h3>
+<ul>
+    <li>
+        <span class="special">POE（以太网供电）</span>
+        让网线同时传数据和供电，面板 AP、摄像头、门禁都不需要单独拉电源。
+    </li>
+    <li>
+        需要一台
+        <span class="special">POE 交换机</span>
+        ，标准为 802.3af（15.4W）/ 802.3at（30W）。
+    </li>
+    <li>
+        POE 设备必须
+        <span class="warn">确认供电标准一致</span>
+        ，握手不成功时设备不亮，容易误判为线路故障。
+    </li>
+</ul>
+<h2>
+    其它弱电线路
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>线路</th>
+            <th>是否还必要</th>
+            <th>布线要点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>电视同轴</td>
+            <td>逐渐被 IPTV / 网络电视取代</td>
+            <td>如仍使用有线电视，电视墙预留 1 条至弱电箱</td>
+        </tr>
+        <tr>
+            <td>电话线</td>
+            <td>
+                <strong>基本不需要</strong>
+            </td>
+            <td>可用网线替代，不必单独布放</td>
+        </tr>
+        <tr>
+            <td>HDMI / 光纤 HDMI</td>
+            <td>需要（预埋投影/电视到机柜）</td>
+            <td>
+                <strong>必须预埋穿线管</strong>
+                ，且管径要够接头通过
+            </td>
+        </tr>
+        <tr>
+            <td>监控摄像头</td>
+            <td>需要</td>
+            <td>优先 POE + 网线；户外需防水盒</td>
+        </tr>
+        <tr>
+            <td>门禁 / 可视对讲</td>
+            <td>需要</td>
+            <td>按厂家要求预留电源与信号线</td>
+        </tr>
+        <tr>
+            <td>背景音乐 / 音响</td>
+            <td>可选</td>
+            <td>吸顶喇叭需预留
+                <strong>音频线与电源</strong>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    HDMI 线接头体积大，
+    <span class="special">穿线管要选 25mm 以上</span>
+    ，或改用可拆卸接头的光纤 HDMI。很多人预埋了 20mm 管，最后线头根本穿不过去。
+</div>
+<h2>
+    验收方法
+</h2>
+<ul>
+    <li>
+        用
+        <span class="special">网线测线仪</span>
+        逐个端口测：8 芯全通、线序正确（T568B）、无短路。
+    </li>
+    <li>
+        有条件用
+        <span class="special">网线认证测试仪</span>
+        测长度、衰减、串扰，长距离链路尤其重要。
+    </li>
+    <li>
+        网线两端
+        <span class="warn">打标签</span>
+        ，标注“房间 + 用途”，否则后期在弱电箱里只能靠猜。
+    </li>
+    <li>
+        确认弱电箱内插座通电、光猫可放置、箱门可正常开合。
+    </li>
+</ul>
