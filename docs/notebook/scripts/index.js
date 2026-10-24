@@ -244,6 +244,14 @@ var initToggle = function (idName) {
             else {
                 spans[i].addEventListener('click', function () {
 
+                    // 先清除所有 li 上的高亮
+                    var rootEl = document.getElementById(idName + "-id");
+                    var allLis = rootEl.getElementsByTagName('li'), k;
+                    for (k = 0; k < allLis.length; k++) {
+                        allLis[k].removeAttribute('is-on-path');
+                    }
+
+                    // 展开祖先菜单
                     var isOpenEl = spans[i];
                     while (isOpenEl) {
                         if (isOpenEl.getAttribute('is-open')) {
@@ -251,6 +259,9 @@ var initToggle = function (idName) {
                         }
                         isOpenEl = isOpenEl.parentElement;
                     }
+
+                    // 只高亮当前叶子节点
+                    spans[i].parentElement.setAttribute('is-on-path', 'yes');
 
                     // 更新菜单
                     if (idName == 'book') {

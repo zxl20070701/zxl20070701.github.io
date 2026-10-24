@@ -311,6 +311,18 @@ body>header>.github:hover {
     text-decoration: underline;
 }
 
+/* 高亮当前打开的叶子菜单节点 */
+.main-view>div:not(:last-child) li[is-on-path='yes']>span {
+    outline: 2px dashed #E91E63;
+    width: fit-content;
+    padding: 0 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    max-width: 100%;
+    cursor: auto;
+    height: auto;
+}
+
 .kind-title {
     margin-left: -10px;
     width: calc(100% + 10px);
