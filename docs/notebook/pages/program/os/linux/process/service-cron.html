@@ -1,0 +1,32 @@
+<header>服务和计划任务</header>
+<h2>systemctl</h2>
+<pre>
+systemctl list-units --type=service
+sudo systemctl start service_name
+sudo systemctl stop service_name
+sudo systemctl restart service_name
+systemctl status service_name
+journalctl -u service_name -n 100
+journalctl -u service_name -f
+sudo systemctl enable service_name
+sudo systemctl disable service_name
+</pre>
+<h2>service</h2>
+<pre>
+sudo service service_name start
+sudo service service_name stop
+sudo service service_name restart
+sudo service service_name status
+</pre>
+<h2>crontab</h2>
+<pre>
+crontab -e
+crontab -l
+crontab -r
+sudo crontab -e
+
+* * * * * command
+分 时 日 月 周 命令
+
+0 2 * * * /home/app/backup.sh
+</pre>

@@ -1,0 +1,13 @@
+<header ui-dragdrop:desktop>
+    <h2>
+        <a ui-bind:href="srcUrl" target="_blank"> 动态生成的拼接球体</a>
+    </h2>
+    <div class="win-btns">
+        <button class="close" ui-on:click.stop="$closeDialog">关闭</button>
+    </div>
+</header>
+<div class="content sphere-rotate" ref="mycontent">
+    <div class="globe-wrapper">
+        <div class="globe-stage"></div>
+    </div>
+</div>

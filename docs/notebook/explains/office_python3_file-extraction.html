@@ -58,7 +58,7 @@ def doit(folderInfo):
             # 合同需要的是前2页和最后一页
             needPages = [1, 2, len(files_contract)]
 
-            # 登录是否确定存在
+            # 记录是否确定存在
             needPagesResult = [False, False, False]
 
             # 遍历合同文件
@@ -68,7 +68,7 @@ def doit(folderInfo):
                 for index in range(len(needPages)):
 
                     # 如果当前是我们需要的
-                    if item["onlyname"] == str(needPages[index]):
+                    if item_contract["onlyname"] == str(needPages[index]):
 
                         # 保存起来
                         handler.copy(

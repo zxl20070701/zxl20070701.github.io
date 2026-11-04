@@ -1,0 +1,257 @@
+<header>
+    ALU（算术逻辑单元）结构
+</header>
+<h2>
+    ALU概述
+</h2>
+<p>
+    <span class="important">算术逻辑单元</span>（Arithmetic Logic Unit，ALU）是中央处理器（CPU）的核心组成部分，负责执行所有的算术运算和逻辑运算。ALU的性能直接影响整个处理器的运算能力。
+</p>
+
+<h2>
+    ALU的基本功能
+</h2>
+<h3>
+    1. 算术运算
+</h3>
+<ul>
+    <li>加法：ADD</li>
+    <li>减法：SUB</li>
+    <li>乘法：MUL</li>
+    <li>除法：DIV</li>
+    <li>增量：INC</li>
+    <li>减量：DEC</li>
+</ul>
+
+<h3>
+    2. 逻辑运算
+</h3>
+<ul>
+    <li>与运算：AND</li>
+    <li>或运算：OR</li>
+    <li>异或运算：XOR</li>
+    <li>非运算：NOT</li>
+</ul>
+
+<h3>
+    3. 移位运算
+</h3>
+<ul>
+    <li>逻辑左移：SHL</li>
+    <li>逻辑右移：SHR</li>
+    <li>算术右移：SAR</li>
+    <li>循环移位：ROL/ROR</li>
+</ul>
+
+<h3>
+    4. 比较运算
+</h3>
+<ul>
+    <li>相等比较：CMP</li>
+    <li>大小比较：GT、LT、GE、LE</li>
+</ul>
+
+<h2>
+    ALU的基本结构
+</h2>
+<h3>
+    1. 输入端口
+</h3>
+<ul>
+    <li><span class="special">A输入</span>：第一个操作数</li>
+    <li><span class="special">B输入</span>：第二个操作数</li>
+    <li><span class="special">控制信号</span>：选择运算类型</li>
+    <li><span class="special">进位输入</span>：Cin，用于多精度运算</li>
+</ul>
+
+<h3>
+    2. 输出端口
+</h3>
+<ul>
+    <li><span class="special">结果输出</span>：运算结果</li>
+    <li><span class="special">进位输出</span>：Cout，用于多精度运算</li>
+    <li><span class="special">状态标志</span>：零标志、符号标志、溢出标志等</li>
+</ul>
+
+<h3>
+    3. 功能选择
+</h3>
+<ul>
+    <li><span class="special">操作码译码</span>：将指令译码为控制信号</li>
+    <li><span class="special">功能选择器</span>：多路选择器选择运算功能</li>
+</ul>
+
+<h2>
+    ALU的核心部件
+</h2>
+<h3>
+    1. 加法器
+</h3>
+<h4>
+    半加器（Half Adder）
+</h4>
+<ul>
+    <li>功能：处理两个1位二进制数相加</li>
+    <li>输出：和（Sum）、进位（Carry）</li>
+    <li>逻辑：Sum = A ⊕ B，Carry = A ∧ B</li>
+</ul>
+
+<h4>
+    全加器（Full Adder）
+</h4>
+<ul>
+    <li>功能：处理三个1位二进制数相加（含进位）</li>
+    <li>输出：和（Sum）、进位（Carry）</li>
+    <li>逻辑：Sum = A ⊕ B ⊕ Cin，Cout = (A ∧ B) ∨ (Cin ∧ (A ⊕ B))</li>
+</ul>
+
+<h4>
+    多位加法器
+</h4>
+<ul>
+    <li><span class="special">行波进位加法器</span>：级联全加器，简单但速度慢</li>
+    <li><span class="special">超前进位加法器</span>：提前计算进位，速度快但复杂</li>
+    <li><span class="special">进位选择加法器</span>：并行计算两种可能的进位</li>
+    <li><span class="special">进位跳跃加法器</span>：跳过某些进位传播</li>
+</ul>
+
+<h3>
+    2. 逻辑运算单元
+</h3>
+<ul>
+    <li><span class="special">与门阵列</span>：实现AND运算</li>
+    <li><span class="special">或门阵列</span>：实现OR运算</li>
+    <li><span class="special">异或门阵列</span>：实现XOR运算</li>
+    <li><span class="special">非门阵列</span>：实现NOT运算</li>
+</ul>
+
+<h3>
+    3. 移位器
+</h3>
+<ul>
+    <li><span class="special">桶形移位器</span>：任意位移，速度快</li>
+    <li><span class="special">对数移位器</span>：多级选择，硬件效率高</li>
+    <li><span class="special">循环移位器</span>：支持循环移位操作</li>
+</ul>
+
+<h2>
+    ALU的设计考虑
+</h2>
+<h3>
+    1. 性能优化
+</h3>
+<ul>
+    <li><span class="special">并行处理</span>：同时执行多个运算</li>
+    <li><span class="special">流水线技术</span>：将运算分为多个阶段</li>
+    <li><span class="special">超前进位</span>：减少进位传播延迟</li>
+</ul>
+
+<h3>
+    2. 功耗优化
+</h3>
+<ul>
+    <li><span class="special">门控时钟</span>：不活动的部分关闭时钟</li>
+    <li><span class="special">低功耗设计</span>：使用低功耗逻辑门</li>
+    <li><span class="special">动态电压调节</span>：根据负载调整电压</li>
+</ul>
+
+<h3>
+    3. 面积优化
+</h3>
+<ul>
+    <li><span class="special">资源共享</span>：多个运算共享硬件资源</li>
+    <li><span class="special">紧凑布局</span>：优化电路布局减少面积</li>
+    <li><span class="special">标准单元</span>：使用标准单元库</li>
+</ul>
+
+<h2>
+    ALU的扩展功能
+</h2>
+<h3>
+    1. 浮点运算支持
+</h3>
+<ul>
+    <li><span class="special">浮点加法器</span>：支持IEEE 754标准</li>
+    <li><span class="special">浮点乘法器</span>：支持单精度和双精度</li>
+    <li><span class="special">浮点除法器</span>：支持倒数和除法运算</li>
+</ul>
+
+<h3>
+    2. SIMD支持
+</h3>
+<ul>
+    <li><span class="special">向量运算</span>：并行处理多个数据</li>
+    <li><span class="special">多媒体指令</span>：支持MMX、SSE、AVX等</li>
+</ul>
+
+<h3>
+    3. 加密运算支持
+</h3>
+<ul>
+    <li><span class="special">AES指令</span>：硬件加速AES加密</li>
+    <li><span class="special">SHA指令</span>：硬件加速哈希运算</li>
+</ul>
+
+<h2>
+    ALU的时序设计
+</h2>
+<h3>
+    1. 时钟周期
+</h3>
+<ul>
+    <li><span class="special">关键路径</span>：决定最小时钟周期</li>
+    <li><span class="special">建立时间</span>：输入信号稳定所需时间</li>
+    <li><span class="special">保持时间</span>：输入信号保持所需时间</li>
+</ul>
+
+<h3>
+    2. 流水线ALU
+</h3>
+<ul>
+    <li><span class="special">取指阶段</span>：获取操作数和指令</li>
+    <li><span class="special">译码阶段</span>：译码控制信号</li>
+    <li><span class="special">执行阶段</span>：执行运算</li>
+    <li><span class="special">写回阶段</span>：写回结果</li>
+</ul>
+
+<h2>
+    ALU的验证与测试
+</h2>
+<h3>
+    1. 功能验证
+</h3>
+<ul>
+    <li><span class="special">测试向量</span>：设计全面的测试用例</li>
+    <li><span class="special">边界测试</span>：测试边界条件和异常情况</li>
+    <li><span class="special">随机测试</span>：使用随机数据进行测试</li>
+</ul>
+
+<h3>
+    2. 时序验证
+</h3>
+<ul>
+    <li><span class="special">静态时序分析</span>：分析关键路径时序</li>
+    <li><span class="special">动态仿真</span>：模拟实际工作条件</li>
+    <li><span class="special">时序约束</span>：设置合理的时序约束</li>
+</ul>
+
+<h2>
+    经典ALU案例
+</h2>
+<h3>
+    1. 74181 ALU
+</h3>
+<ul>
+    <li><span class="special">功能</span>：4位ALU，支持16种算术和逻辑运算</li>
+    <li><span class="special">特点</span>：TTL集成电路，可级联扩展</li>
+    <li><span class="special">应用</span>：早期计算机系统、教学实验</li>
+</ul>
+
+<h3>
+    2. 现代处理器ALU
+</h3>
+<ul>
+    <li><span class="special">Intel x86</span>：支持复杂指令集和多媒体扩展</li>
+    <li><span class="special">ARM</span>：支持RISC指令集和低功耗设计</li>
+    <li><span class="special">GPU</span>：大规模并行ALU阵列</li>
+</ul>

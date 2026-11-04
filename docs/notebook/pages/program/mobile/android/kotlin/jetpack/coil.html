@@ -1,0 +1,123 @@
+<header>
+    Coil 图片加载
+</header>
+<p>
+    Coil 是 Kotlin 协程优先的图片加载库，
+    <span class="important">AsyncImage</span> 是 Compose 官方推荐搭档，
+    自动处理缓存、生命周期、占位图、错误图。
+</p>
+<h2>
+    添加依赖
+</h2>
+<pre tag="kotlin">
+implementation("io.coil-kt:coil-compose:2.7.0")
+</pre>
+<h2>
+    最简用法
+</h2>
+<pre tag="kotlin">
+AsyncImage(
+    model = "https://example.com/pic.jpg",
+    contentDescription = "头像"
+)
+</pre>
+<h2>
+    完整版：占位 / 错误 / 裁剪
+</h2>
+<pre tag="kotlin">
+AsyncImage(
+    model = ImageRequest.Builder(LocalContext.current)
+        .data(url)
+        .crossfade(true)              // 淡入动画
+        .memoryCacheKey(url)          // 自定义缓存 key
+        .diskCacheKey(url)
+        .build(),
+    contentDescription = null,
+    modifier = Modifier
+        .size(80.dp)
+        .clip(CircleShape),           // 圆形
+    contentScale = ContentScale.Crop, // 等比裁剪，类似 centerCrop
+    placeholder = painterResource(R.drawable.ic_placeholder),
+    error = painterResource(R.drawable.ic_error),
+    fallback = painterResource(R.drawable.ic_default_avatar)
+)
+</pre>
+<h2>
+    SubcomposeAsyncImage（可控加载态）
+</h2>
+<pre tag="kotlin">
+SubcomposeAsyncImage(
+    model = url,
+    contentDescription = null,
+    modifier = Modifier.fillMaxWidth()
+) {
+    when (painter.state) {
+        is AsyncImagePainter.State.Loading -&gt; {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+        is AsyncImagePainter.State.Error -&gt; {
+            Icon(Icons.Default.BrokenImage, null, tint = Color.Gray)
+        }
+        else -&gt; SubcomposeAsyncImageContent()
+    }
+}
+</pre>
+<h2>
+    在非 Compose 环境加载
+</h2>
+<pre tag="kotlin">
+// 拿到 Bitmap（如生成通知图）
+lifecycleScope.launch {
+    val request = ImageRequest.Builder(context)
+        .data(url)
+        .allowHardware(false) // 通知用必须禁硬件位图
+        .build()
+    val result = context.imageLoader.execute(request)
+    val bitmap = (result.drawable as? BitmapDrawable)?.bitmap
+}
+</pre>
+<h2>
+    常用辅助
+</h2>
+<h3>
+    全局配置
+</h3>
+<pre tag="kotlin">
+class MyApp : Application(), ImageLoaderFactory {
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader.Builder(this)
+            .memoryCache {
+                MemoryCache.Builder(this)
+                    .maxSizePercent(0.25) // 内存缓存占 App 内存 25%
+                    .build()
+            }
+            .diskCache {
+                DiskCache.Builder()
+                    .directory(cacheDir.resolve("image_cache"))
+                    .maxSizeBytes(100L * 1024 * 1024) // 100MB
+                    .build()
+            }
+            .respectCacheHeaders(false) // 忽略 HTTP 缓存头，强制本地缓存
+            .build()
+    }
+}
+</pre>
+<h3>
+    常用变换
+</h3>
+<pre tag="kotlin">
+ImageRequest.Builder(context)
+    .data(url)
+    .transformations(
+        CircleCropTransformation(),           // 圆形
+        RoundedCornersTransformation(16f)     // 圆角
+    )
+    .build()
+</pre>
+<div class="tips">
+    列表场景下 AsyncImage 自动复用请求并跟随 LazyColumn 回收，
+    无需手写取消逻辑；但超大图建议传
+    <span class="warn">size(Size.ORIGINAL)</span> 之外的精确尺寸，减少内存占用。
+</div>

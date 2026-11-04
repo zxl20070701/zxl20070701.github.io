@@ -1,0 +1,146 @@
+<header>
+    字符串表示方法
+</header>
+<h2>
+    __str__ vs __repr__
+</h2>
+<p>
+    <span class="important">__str__()</span>和<span class="important">__repr__()</span>是Python中用于字符串表示的特殊方法。__str__用于用户友好的显示，__repr__用于开发者调试。
+</p>
+<pre tag="python">
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __str__(self):
+        """用户友好的字符串表示"""
+        return f"{self.name} ({self.age} years old)"
+    
+    def __repr__(self):
+        """官方字符串表示，应该能够重建对象"""
+        return f"Person('{self.name}', {self.age})"
+
+# 使用字符串表示方法
+person = Person("Alice", 30)
+
+print(str(person))   # Alice (30 years old)
+print(repr(person))  # Person('Alice', 30)
+
+# 在列表中显示
+people = [Person("Alice", 30), Person("Bob", 25)]
+print(people)  # [Person('Alice', 30), Person('Bob', 25)]
+</pre>
+
+<h2>
+    __format__方法
+</h2>
+<pre tag="python">
+class Product:
+    def __init__(self, name, price, category):
+        self.name = name
+        self.price = price
+        self.category = category
+    
+    def __str__(self):
+        return f"{self.name}: ¥{self.price}"
+    
+    def __repr__(self):
+        return f"Product('{self.name}', {self.price}, '{self.category}')"
+    
+    def __format__(self, format_spec):
+        """自定义格式化"""
+        if format_spec == 'short':
+            return f"{self.name}"
+        elif format_spec == 'long':
+            return f"{self.name} ({self.category}) - ¥{self.price:.2f}"
+        elif format_spec == 'price':
+            return f"¥{self.price:.2f}"
+        else:
+            return str(self)
+
+# 使用格式化
+product = Product("Laptop", 5999.99, "Electronics")
+
+print(f"{product}")              # Laptop: ¥5999.99
+print(f"{product:short}")        # Laptop
+print(f"{product:long}")         # Laptop (Electronics) - ¥5999.99
+print(f"{product:price}")        # ¥5999.99
+</pre>
+
+<h2>
+    自定义字符串转换
+</h2>
+<pre tag="python">
+class Temperature:
+    def __init__(self, celsius):
+        self.celsius = celsius
+    
+    def __str__(self):
+        return f"{self.celsius}°C"
+    
+    def __repr__(self):
+        return f"Temperature({self.celsius})"
+    
+    def to_fahrenheit(self):
+        return self.celsius * 9/5 + 32
+    
+    def to_kelvin(self):
+        return self.celsius + 273.15
+    
+    def __format__(self, format_spec):
+        """支持多种温度单位格式化"""
+        if format_spec == 'f':
+            return f"{self.to_fahrenheit():.1f}°F"
+        elif format_spec == 'k':
+            return f"{self.to_kelvin():.1f}K"
+        elif format_spec == 'all':
+            return f"{self.celsius}°C / {self.to_fahrenheit():.1f}°F / {self.to_kelvin():.1f}K"
+        else:
+            return str(self)
+
+# 使用温度格式化
+temp = Temperature(25)
+
+print(str(temp))        # 25°C
+print(repr(temp))       # Temperature(25)
+print(f"{temp:f}")      # 77.0°F
+print(f"{temp:k}")      # 298.1K
+print(f"{temp:all}")    # 25°C / 77.0°F / 298.1K
+</pre>
+
+<h2>
+    集合的字符串表示
+</h2>
+<pre tag="python">
+class BookCollection:
+    def __init__(self, name):
+        self.name = name
+        self.books = []
+    
+    def add_book(self, title, author):
+        self.books.append({'title': title, 'author': author})
+    
+    def __str__(self):
+        if not self.books:
+            return f"Empty collection: {self.name}"
+        
+        book_list = "\n".join([f"  - {book['title']} by {book['author']}" 
+                              for book in self.books])
+        return f"{self.name}:\n{book_list}"
+    
+    def __repr__(self):
+        return f"BookCollection('{self.name}', {len(self.books)} books)"
+    
+    def __len__(self):
+        return len(self.books)
+
+# 使用集合的字符串表示
+library = BookCollection("My Library")
+library.add_book("Python Programming", "John Smith")
+library.add_book("Data Structures", "Jane Doe")
+
+print(str(library))
+print(repr(library))
+print(f"Total books: {len(library)}")
+</pre>

@@ -29,10 +29,10 @@
 
         // 计算vw和vh具体应该是什么
         window.getVwVh = function () {
-            var _vw = "vw", _vh = "vh";
+            var _vw = "svw", _vh = "svh";
             if (window.isPhone && window.innerWidth < window.innerHeight) {
-                _vw = "vh";
-                _vh = "vw";
+                _vw = "svh";
+                _vh = "svw";
             }
             return {
                 vw: _vw,
@@ -89,7 +89,7 @@
                         if (window.isPhone) {
                             if (window.innerWidth < window.innerHeight) {
                                 window.scale = window.innerWidth / 700;
-                                _transform = "rotate(90deg) translateY(-" + 100 / window.scale + "vw)";
+                                _transform = "rotate(90deg) translateY(-" + 100 / window.scale + "svw)";
                             } else {
                                 window.scale = window.innerWidth / 1500;
                             }
@@ -236,17 +236,17 @@
                         </li>
                         <li>
                             <span tag="life-hydropower">
-                                水电路
+                                水电燃气等
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="life-software">
+                                办公软件
                             </span>
                         </li>
                         <li>
                             <span tag="life-office">
                                 自动化办公
-                            </span>
-                        </li>
-                        <li>
-                            <span tag="life-software">
-                                软件
                             </span>
                         </li>
                     </ul>
@@ -300,6 +300,11 @@
                             </span>
                         </li>
                         <li>
+                            <span tag="program-agent">
+                                AI智能体
+                            </span>
+                        </li>
+                        <li>
                             <span tag="program-safe">
                                 安全
                             </span>
@@ -312,11 +317,6 @@
                         <li>
                             <span tag="program-pkg">
                                 打包&规范化
-                            </span>
-                        </li>
-                        <li>
-                            <span tag="program-test">
-                                测试
                             </span>
                         </li>
                         <li>
@@ -350,13 +350,118 @@
                     <span>数学</span>
                     <ul>
                         <li>
-                            <span tag="math-basic">
-                                基础&通识
+                            <span tag="math-permutation_combination">
+                                排列&组合
                             </span>
                         </li>
                         <li>
-                            <span tag="math-high">
-                                高等数学
+                            <span tag="math-polynomial">
+                                多项式
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-determinant">
+                                行列式
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-vector">
+                                n维向量空间
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-matrix">
+                                矩阵
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-linear_equations">
+                                线性方程组
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-set_of_real_numbers">
+                                实数集
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-series">
+                                数列
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-function">
+                                函数
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-derivatives">
+                                导数
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-differential">
+                                微分
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-integral">
+                                积分
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-probability_theory">
+                                概率论
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-mathematical_statistics">
+                                数理统计
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="math-progression">
+                                级数
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>计算机科学</span>
+                    <ul>
+                        <li>
+                            <span tag="computer-compose">
+                                计算机组成原理
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="computer-os">
+                                操作系统
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="computer-data">
+                                数据结构与算法
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="computer-network">
+                                计算机网络
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>经济学</span>
+                    <ul>
+                        <li>
+                            <span tag="economics-micro">
+                                微观经济学
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="economics-macro">
+                                宏观经济学
                             </span>
                         </li>
                     </ul>
@@ -365,18 +470,13 @@
                     <span>物理</span>
                     <ul>
                         <li>
-                            <span tag="physics-basic">
-                                基础&通识
+                            <span tag="physics-mechanics">
+                                力学
                             </span>
                         </li>
-                    </ul>
-                </li>
-                <li>
-                    <span>计算机</span>
-                    <ul>
                         <li>
-                            <span tag="computer-basic">
-                                基础&通识
+                            <span tag="physics-unit">
+                                常用计量单位
                             </span>
                         </li>
                     </ul>
@@ -385,18 +485,23 @@
                     <span>化学</span>
                     <ul>
                         <li>
-                            <span tag="chemistry-basic">
-                                基础&通识
+                            <span tag="chemistry-element">
+                                元素与有机化合物
+                            </span>
+                        </li>
+                        <li>
+                            <span tag="chemistry-appendix">
+                                附录（快速查询）
                             </span>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <span>生物</span>
+                    <span>生物学</span>
                     <ul>
                         <li>
-                            <span tag="biology-basic">
-                                基础&通识
+                            <span tag="biology-cellular">
+                                细胞
                             </span>
                         </li>
                     </ul>
@@ -407,6 +512,16 @@
                         <li>
                             <span tag="history-china">
                                 华夏文明
+                            </span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>哲学</span>
+                    <ul>
+                        <li>
+                            <span tag="philosophy-types">
+                                分类与概述
                             </span>
                         </li>
                     </ul>

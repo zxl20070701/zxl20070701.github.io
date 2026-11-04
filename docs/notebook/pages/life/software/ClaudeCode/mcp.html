@@ -1,0 +1,212 @@
+<header>
+    MCP 模型上下文协议
+</header>
+<p>
+    MCP（Model Context Protocol）是 Anthropic 推出的开源标准，用来把 Claude Code 连接到外部工具和数据源。你可以把它理解成 AI 应用界的"USB 接口"——只要工具实现了 MCP 协议，Claude Code 就能直接调用它，不用自己写集成代码。
+</p>
+<p>
+    最直观的例子：你不再需要把 Jira issue 文本复制粘贴进对话，而是让 Claude Code 直接连接 Jira 的 MCP Server，说一句"看一下 ENG-4521 这个 issue"，它自己就能拉到内容并帮你实现。
+</p>
+<h2>
+    三种作用域
+</h2>
+<p>
+    每个 MCP Server 都可以注册到三个作用域之一，作用域决定了"在什么地方生效"和"配置文件存在哪里"：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>作用域</th>
+            <th>生效范围</th>
+            <th>存储位置</th>
+            <th>是否跟随项目</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">local</span>（默认）</td>
+            <td>仅当前项目，且只对你本人可见</td>
+            <td>~/.claude.json（挂在该项目路径下）</td>
+            <td>否，不进版本库</td>
+        </tr>
+        <tr>
+            <td><span class="special">project</span></td>
+            <td>仅当前项目，团队共享</td>
+            <td>项目根目录 .mcp.json</td>
+            <td>是，可提交 git 与团队共享</td>
+        </tr>
+        <tr>
+            <td><span class="special">user</span></td>
+            <td>你本机的所有项目</td>
+            <td>~/.claude.json</td>
+            <td>否，只在这台机器生效</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    第一次注册不加 --scope 时默认是 <span class="important">local</span>，配置写进 <span class="special">~/.claude.json</span>，只在本机、本项目生效，不会进版本库。想让团队共用，加 <span class="special">--scope
+        project</span>，配置才会落到项目根的 <span class="special">.mcp.json</span>（别人 clone 下来首次使用时要手动批准一次）。
+</div>
+<h2>
+    四种传输方式
+</h2>
+<p>
+    MCP Server 可以跑在本地，也可以是远程服务。Claude Code 支持四种传输方式：
+</p>
+<h3>
+    stdio（本地进程）
+</h3>
+<p>
+    最常见的本地运行方式。Claude Code 会拉起一个子进程，通过标准输入输出和它通信。适合需要访问本地文件、调用本机程序的场景。
+</p>
+<pre>
+claude mcp add --transport stdio airtable -- npx -y airtable-mcp-server
+</pre>
+<p>
+    注意 <span class="special">--</span> 这个双横线——它左边是 Claude 自己的参数（--transport、--env、--scope 等），右边才是要执行的命令。如果不加 --，服务启动命令里的 -y、--port 之类的 flag 会被 Claude 当成自己的参数来解析，直接报错。
+</p>
+<p>
+    传环境变量用 <span class="special">--env KEY=VALUE</span>：
+</p>
+<pre>
+claude mcp add --env AIRTABLE_API_KEY=xxx --transport stdio airtable -- npx -y airtable-mcp-server
+</pre>
+<h3>
+    HTTP（远程服务，推荐）
+</h3>
+<p>
+    远程 MCP Server 的首选传输方式，官方叫 Streamable HTTP。绝大多数云端 MCP Server 都走这个。
+</p>
+<pre>
+# 基础语法
+claude mcp add --transport http &lt;名字&gt; &lt;URL&gt;
+
+# 例子：连接 Notion
+claude mcp add --transport http notion https://mcp.notion.com/mcp
+
+# 带认证头
+claude mcp add --transport http secure-api https://api.example.com/mcp \
+    --header "Authorization: Bearer your-token"
+</pre>
+<h3>
+    SSE（已废弃）
+</h3>
+<p>
+    老协议，现在官方推荐 HTTP。如果某个远程 Server 只提供 SSE 端点，新版 Claude Code 会自动降级尝试，老版本可以用 <span class="special">--transport sse</span> 显式指定：
+</p>
+<pre>
+claude mcp add --transport sse asana https://mcp.asana.com/sse
+</pre>
+<h3>
+    WebSocket
+</h3>
+<p>
+    适合需要 Server 主动推送事件的双向通信场景。它只支持静态 Header 鉴权、不支持 OAuth，<span class="special">--transport</span> 参数也不接受 <span class="special">ws</span>，只能在 JSON 配置里用 <span class="special">"type": "ws"</span> 直接写：
+</p>
+<pre>
+claude mcp add-json events-server \
+    '{"type":"ws","url":"wss://mcp.example.com/socket"}'
+</pre>
+<h2>
+    管理命令速查
+</h2>
+<pre>
+# 列出所有已注册的 Server 及其状态
+claude mcp list
+
+# 删除某个 Server
+claude mcp remove &lt;名字&gt;
+
+# 直接写 JSON 配置块
+claude mcp add-json &lt;名字&gt; '&lt;JSON&gt;'
+</pre>
+<h2>
+    直接编辑 .mcp.json
+</h2>
+<p>
+    不喜欢命令行的话，直接在项目根目录创建或修改 <span class="special">.mcp.json</span>，重启 Claude Code 就会自动加载：
+</p>
+<pre tag="json">
+{
+  "mcpServers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/me/projects"]
+    }
+  }
+}
+</pre>
+<div class="tips">
+    一个容易踩的坑：如果 JSON 里写了 <span class="special">"url"</span> 但忘了写 <span class="special">"type"</span>，Claude Code 会把它当成 stdio Server 来解析，然后报 <span class="important">"has a url but no type"</span>。远程 Server 务必显式加 <span class="special">"type": "http"</span>。
+</div>
+<h2>
+    环境变量展开
+</h2>
+<p>
+    .mcp.json 和 ~/.claude.json 里可以用 shell 风格的变量展开，这样就不用把密钥硬编码进文件：
+</p>
+<pre tag="json">
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://mcp.github.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_TOKEN}"
+      }
+    }
+  }
+}
+</pre>
+<p>
+    支持的写法：
+</p>
+<ul>
+    <li><span class="special">${VAR}</span> —— 变量存在就替换，不存在则原样保留并给出警告</li>
+    <li><span class="special">${VAR:-默认值}</span> —— 变量不存在或为空时使用默认值</li>
+</ul>
+<div class="tips">
+    只支持 <span class="special">${...}</span> 这种带花括号的写法，裸写 <span class="special">$VAR</span> 不会被展开。另外，在远程 Server 的 <span class="special">url</span>
+    和 <span class="special">headers</span> 里，<span class="special">ANTHROPIC_API_KEY</span>、<span class="special">ANTHROPIC_AUTH_TOKEN</span>、<span
+        class="special">HTTPS_PROXY</span>、<span class="special">NPM_TOKEN</span> 这类凭证变量会被当成空值，避免把本机密钥误发给第三方 Server。
+</div>
+<h2>
+    如何判断生效了
+</h2>
+<p>
+    启动 Claude Code 后，输入 <span class="special">/mcp</span> 就能看到当前会话加载了哪些 Server、每个 Server 暴露了哪些工具。工具的完整名字是 <span class="special">mcp__&lt;server-name&gt;__&lt;tool-name&gt;</span>，比如 Notion Server 的查询数据库工具会显示成 <span class="special">mcp__notion__query_database</span>。这个名字在权限规则、Skill 的 allowed-tools、Subagent 的 tools 字段和 Hook 的 matcher 里都要照抄全名。
+</p>
+<p>
+    也可以直接看命令行输出的 <span class="special">claude mcp list</span>，能看到每个 Server 的状态：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>状态</th>
+            <th>含义</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>✔ Connected</td>
+            <td>已连接，随时可用</td>
+        </tr>
+        <tr>
+            <td>⏸ Pending approval</td>
+            <td>来自 .mcp.json 的项目级 Server，需要你先在 claude 里批准一次</td>
+        </tr>
+        <tr>
+            <td>! Connecting…</td>
+            <td>首次连接中，远程 Server 可能需要 OAuth 授权</td>
+        </tr>
+        <tr>
+            <td>✗ Failed</td>
+            <td>连接失败，通常是 URL 错、网络不通、认证头缺失</td>
+        </tr>
+    </tbody>
+</table>

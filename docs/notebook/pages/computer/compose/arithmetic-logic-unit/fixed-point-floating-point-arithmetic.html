@@ -1,0 +1,316 @@
+<header>
+    定点与浮点运算器设计
+</header>
+<h2>
+    定点与浮点运算器概述
+</h2>
+<p>
+    定点运算器和浮点运算器是计算机中处理数值运算的两种主要架构。定点运算器处理小数点位置固定的数值，而浮点运算器处理小数点位置可浮动的数值。两者在设计原理、性能特点和适用场景上存在显著差异。
+</p>
+
+<h2>
+    定点运算器设计
+</h2>
+<h3>
+    1. 定点数表示
+</h3>
+<h4>
+    定点数格式
+</h4>
+<ul>
+    <li><span class="special">纯整数格式</span>：小数点固定在最低位之后</li>
+    <li><span class="special">纯小数格式</span>：小数点固定在符号位之后</li>
+    <li><span class="special">混合格式</span>：小数点在中间某位置</li>
+</ul>
+
+<h4>
+    定点数范围
+</h4>
+<p>
+    对于n位定点数（含符号位）：
+</p>
+<ul>
+    <li>纯整数范围：-2^(n-1) 到 2^(n-1)-1</li>
+    <li>纯小数范围：-1 到 1-2^(-(n-1))</li>
+</ul>
+
+<h3>
+    2. 定点加法器设计
+</h3>
+<h4>
+    基本结构
+</h4>
+<ul>
+    <li><span class="special">输入端口</span>：两个n位操作数</li>
+    <li><span class="special">加法器阵列</span>：n个全加器级联</li>
+    <li><span class="special">溢出检测</span>：符号位检测</li>
+    <li><span class="special">饱和运算</span>：溢出时限制在最大/最小值</li>
+</ul>
+
+<h4>
+    设计考虑
+</h4>
+<ul>
+    <li><span class="special">进位传播</span>：使用超前进位减少延迟</li>
+    <li><span class="special">符号扩展</span>：处理不同长度操作数</li>
+    <li><span class="special">舍入模式</span>：截断、四舍五入等</li>
+</ul>
+
+<h3>
+    3. 定点乘法器设计
+</h3>
+<h4>
+    基本乘法器
+</h4>
+<ul>
+    <li><span class="special">阵列乘法器</span>：与门阵列+加法器阵列</li>
+    <li><span class="special">移位相加乘法器</span>：串行处理，硬件简单</li>
+    <li><span class="special">布斯乘法器</span>：减少部分积数量</li>
+</ul>
+
+<h4>
+    定点乘法特点
+</h4>
+<ul>
+    <li>结果位数：两个n位数相乘结果为2n位</li>
+    <li>小数点位置：需要重新确定</li>
+    <li>溢出处理：截断或舍入</li>
+</ul>
+
+<h3>
+    4. 定点除法器设计
+</h3>
+<h4>
+    基本实现
+</h4>
+<ul>
+    <li><span class="special">恢复余数除法</span>：传统算法，易于理解</li>
+    <li><span class="special">不恢复余数除法</span>：提高效率，避免恢复操作</li>
+    <li><span class="special">SRT除法</span>：通过查表加速</li>
+</ul>
+
+<h4>
+    定点除法特点
+</h4>
+<ul>
+    <li>精度控制：确定商的小数位数</li>
+    <li>舍入模式：截断、四舍五入、向零舍入等</li>
+    <li>异常处理：除零错误检测</li>
+</ul>
+
+<h2>
+    浮点运算器设计
+</h2>
+<h3>
+    1. IEEE 754标准
+</h3>
+<h4>
+    浮点数格式
+</h4>
+<ul>
+    <li><span class="special">单精度</span>：32位（1位符号+8位指数+23位尾数）</li>
+    <li><span class="special">双精度</span>：64位（1位符号+11位指数+52位尾数）</li>
+</ul>
+
+<h4>
+    特殊值处理
+</h4>
+<ul>
+    <li><span class="special">零</span>：指数和尾数全为0</li>
+    <li><span class="special">无穷大</span>：指数全为1，尾数全为0</li>
+    <li><span class="special">NaN</span>：指数全为1，尾数非0</li>
+</ul>
+
+<h3>
+    2. 浮点加法器设计
+</h3>
+<h4>
+    基本步骤
+</h4>
+<ol>
+    <li><span class="special">对阶</span>：将较小数的指数对齐到较大数</li>
+    <li><span class="special">尾数运算</span>：执行尾数加法或减法</li>
+    <li><span class="special">规格化</span>：调整结果使其符合规格化形式</li>
+    <li><span class="special">舍入</span>：根据舍入模式处理多余位</li>
+</ol>
+
+<h4>
+    关键部件
+</h4>
+<ul>
+    <li><span class="special">指数比较器</span>：比较两个数的指数</li>
+    <li><span class="special">移位器</span>：对阶时右移尾数</li>
+    <li><span class="special">尾数加法器</span>：执行尾数运算</li>
+    <li><span class="special">前导零检测器</span>：规格化时确定左移位数</li>
+</ul>
+
+<h3>
+    3. 浮点乘法器设计
+</h3>
+<h4>
+    基本步骤
+</h4>
+<ol>
+    <li><span class="special">指数运算</span>：指数相加并减去偏移量</li>
+    <li><span class="special">尾数运算</span>：尾数相乘</li>
+    <li><span class="special">符号运算</span>：符号位异或</li>
+    <li><span class="special">规格化</span>：调整结果格式</li>
+    <li><span class="special">舍入</span>：处理精度损失</li>
+</ol>
+
+<h4>
+    关键部件
+</h4>
+<ul>
+    <li><span class="special">指数加法器</span>：指数相加</li>
+    <li><span class="special">尾数乘法器</span>：执行尾数乘法</li>
+    <li><span class="special">规格化器</span>：规格化结果</li>
+    <li><span class="special">舍入器</span>：执行舍入操作</li>
+</ul>
+
+<h3>
+    4. 浮点除法器设计
+</h3>
+<h4>
+    基本步骤
+</h4>
+<ol>
+    <li><span class="special">指数运算</span>：指数相减并加上偏移量</li>
+    <li><span class="special">尾数运算</span>：尾数相除</li>
+    <li><span class="special">符号运算</span>：符号位异或</li>
+    <li><span class="special">规格化</span>：调整结果格式</li>
+    <li><span class="special">舍入</span>：处理精度损失</li>
+</ol>
+
+<h4>
+    实现方法
+</h4>
+<ul>
+    <li><span class="special">倒数乘法</span>：计算除数的倒数后相乘</li>
+    <li><span class="special">SRT除法</span>：通过查表加速</li>
+    <li><span class="special">牛顿-拉夫森迭代</span>：迭代逼近结果</li>
+</ul>
+
+<h2>
+    定点与浮点运算器比较
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>特性</th>
+            <th>定点运算器</th>
+            <th>浮点运算器</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>数值范围</td>
+        <td>有限</td>
+        <td>很大</td>
+    </tr>
+    <tr>
+        <td>精度</td>
+        <td>固定</td>
+        <td>可变</td>
+    </tr>
+    <tr>
+        <td>运算速度</td>
+        <td>快</td>
+        <td>相对慢</td>
+    </tr>
+    <tr>
+        <td>硬件复杂度</td>
+        <td>简单</td>
+        <td>复杂</td>
+    </tr>
+    <tr>
+        <td>功耗</td>
+        <td>低</td>
+        <td>高</td>
+    </tr>
+    <tr>
+        <td>面积</td>
+        <td>小</td>
+        <td>大</td>
+    </tr>
+</table>
+
+<h2>
+    混合运算器设计
+</h2>
+<h3>
+    1. 统一运算单元
+</h3>
+<ul>
+    <li><span class="special">共享资源</span>：定点和浮点共享部分硬件</li>
+    <li><span class="special">动态配置</span>：根据运算类型动态配置</li>
+    <li><span class="special">灵活控制</span>：支持多种数据格式</li>
+</ul>
+
+<h3>
+    2. 专用协处理器
+</h3>
+<ul>
+    <li><span class="special">浮点协处理器</span>：专门处理浮点运算</li>
+    <li><span class="special">向量处理单元</span>：处理向量运算</li>
+    <li><span class="special">数字信号处理器</span>：优化定点运算</li>
+</ul>
+
+<h2>
+    运算器优化技术
+</h2>
+<h3>
+    1. 流水线技术
+</h3>
+<ul>
+    <li><span class="special">指令流水线</span>：提高指令吞吐量</li>
+    <li><span class="special">运算流水线</span>：提高运算单元效率</li>
+    <li><span class="special">数据流水线</span>：减少数据相关延迟</li>
+</ul>
+
+<h3>
+    2. 并行处理
+</h3>
+<ul>
+    <li><span class="special">SIMD</span>：单指令多数据</li>
+    <li><span class="special">MIMD</span>：多指令多数据</li>
+    <li><span class="special">VLIW</span>：超长指令字</li>
+</ul>
+
+<h3>
+    3. 预测和推测
+</h3>
+<ul>
+    <li><span class="special">分支预测</span>：减少分支延迟</li>
+    <li><span class="special">数据预测</span>：提前准备数据</li>
+    <li><span class="special">异常预测</span>：提前处理异常情况</li>
+</ul>
+
+<h2>
+    现代处理器中的运算器
+</h2>
+<h3>
+    1. Intel处理器
+</h3>
+<ul>
+    <li><span class="special">SSE指令集</span>：多媒体扩展</li>
+    <li><span class="special">AVX指令集</span>：高级向量扩展</li>
+    <li><span class="special">FMA指令</span>：融合乘加运算</li>
+</ul>
+
+<h3>
+    2. ARM处理器
+</h3>
+<ul>
+    <li><span class="special">NEON技术</span>：高级SIMD</li>
+    <li><span class="special">浮点单元</span>：支持IEEE 754</li>
+    <li><span class="special">DSP扩展</span>：数字信号处理</li>
+</ul>
+
+<h3>
+    3. GPU架构
+</h3>
+<ul>
+    <li><span class="special">CUDA核心</span>：大规模并行运算</li>
+    <li><span class="special">张量核心</span>：矩阵运算加速</li>
+    <li><span class="special">RT核心</span>：光线追踪加速</li>
+</ul>

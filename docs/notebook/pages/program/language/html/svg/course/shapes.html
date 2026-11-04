@@ -1,0 +1,121 @@
+<header>
+    基本形状
+</header>
+<h2>
+    矩形 &lt;rect&gt;
+</h2>
+<p>
+    矩形是最基本的SVG形状之一，使用&lt;rect&gt;标签创建。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <rect x="10" y="10" width="100" height="80" fill="red" />
+</svg>
+</pre>
+<p>
+    主要属性：
+</p>
+<ul>
+    <li><span class="important">x</span>: 矩形左上角的x坐标</li>
+    <li><span class="important">y</span>: 矩形左上角的y坐标</li>
+    <li><span class="important">width</span>: 矩形宽度</li>
+    <li><span class="important">height</span>: 矩形高度</li>
+    <li><span class="important">rx</span>: 圆角矩形x方向的圆角半径</li>
+    <li><span class="important">ry</span>: 圆角矩形y方向的圆角半径</li>
+</ul>
+<h2>
+    圆形 &lt;circle&gt;
+</h2>
+<p>
+    使用&lt;circle&gt;标签创建圆形。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <circle cx="100" cy="100" r="50" fill="blue" />
+</svg>
+</pre>
+<p>
+    主要属性：
+</p>
+<ul>
+    <li><span class="important">cx</span>: 圆心的x坐标</li>
+    <li><span class="important">cy</span>: 圆心的y坐标</li>
+    <li><span class="important">r</span>: 圆的半径</li>
+</ul>
+<h2>
+    椭圆 &lt;ellipse&gt;
+</h2>
+<p>
+    使用&lt;ellipse&gt;标签创建椭圆。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <ellipse cx="100" cy="100" rx="80" ry="50" fill="green" />
+</svg>
+</pre>
+<p>
+    主要属性：
+</p>
+<ul>
+    <li><span class="important">cx</span>: 椭圆中心的x坐标</li>
+    <li><span class="important">cy</span>: 椭圆中心的y坐标</li>
+    <li><span class="important">rx</span>: 椭圆的x半径</li>
+    <li><span class="important">ry</span>: 椭圆的y半径</li>
+</ul>
+<h2>
+    直线 &lt;line&gt;
+</h2>
+<p>
+    使用&lt;line&gt;标签创建直线。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <line x1="10" y1="10" x2="190" y2="190" stroke="black" stroke-width="2" />
+</svg>
+</pre>
+<p>
+    主要属性：
+</p>
+<ul>
+    <li><span class="important">x1</span>: 起点的x坐标</li>
+    <li><span class="important">y1</span>: 起点的y坐标</li>
+    <li><span class="important">x2</span>: 终点的x坐标</li>
+    <li><span class="important">y2</span>: 终点的y坐标</li>
+</ul>
+<h2>
+    折线 &lt;polyline&gt;
+</h2>
+<p>
+    使用&lt;polyline&gt;标签创建折线，由多个点连接而成。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <polyline points="10,10 50,50 90,30 130,70 170,10" stroke="purple" stroke-width="2" fill="none" />
+</svg>
+</pre>
+<p>
+    主要属性：
+</p>
+<ul>
+    <li><span class="important">points</span>: 一系列用逗号或空格分隔的坐标点</li>
+</ul>
+<h2>
+    多边形 &lt;polygon&gt;
+</h2>
+<p>
+    使用&lt;polygon&gt;标签创建多边形，与折线类似，但会自动闭合。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <polygon points="100,10 40,198 190,78 10,78 160,198" fill="orange" />
+</svg>
+</pre>
+<p>
+    主要属性：
+</p>
+<ul>
+    <li><span class="important">points</span>: 一系列用逗号或空格分隔的坐标点</li>
+</ul>
+<div class="tips">
+    所有基本形状都可以使用通用的属性如fill（填充色）、stroke（描边色）、stroke-width（描边宽度）等来设置样式。
+</div>

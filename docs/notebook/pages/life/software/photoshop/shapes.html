@@ -1,0 +1,370 @@
+<header>
+    形状与路径
+</header>
+<p>
+    PS 的矢量能力远不如 Illustrator，但它有两个独占优势：<span class="important">形状图层可以承载图层样式和剪贴蒙版</span>，路径可以任意转换为选区。加上「布尔运算」，PS 里的形状工具其实相当强。
+</p>
+<h2>
+    三种绘制模式
+</h2>
+<p>
+    直线、形状工具组里的所有工具，选项栏左上角都有一个<span class="important">模式切换按钮</span>，这是最需要先理解的概念：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>产出</th>
+            <th>特点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="important">形状（Shape）</span></td>
+            <td>形状图层</td>
+            <td><span class="special">矢量 + 填充 + 描边</span>，可缩放、可加样式、可编辑路径节点</td>
+        </tr>
+        <tr>
+            <td><span class="important">路径（Path）</span></td>
+            <td>路径（不填充）</td>
+            <td>纯矢量轮廓，可转选区或填充，<span class="special">没有颜色</span></td>
+        </tr>
+        <tr>
+            <td><span class="important">像素（Pixels）</span></td>
+            <td>直接画到当前图层</td>
+            <td><span class="special">普通像素绘制</span>，可设混合模式和不透明度，不抗锯齿参数可控</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="important">默认是「形状」模式</span>，这也是最常用的。要画在已有图层上（而不是新建形状图层），就切到「像素」模式。这两个模式的操作习惯完全不同，是新手最常混淆的点。
+</div>
+<h2>
+    形状图层
+</h2>
+<h3>
+    形状图层的优势
+</h3>
+<p>
+    相比直接画像素，形状图层有四个实质好处：
+</p>
+<ul>
+    <li><span class="important">无损缩放</span>：任意放大缩小不糊，随时能改回原始尺寸</li>
+    <li><span class="important">可承载图层样式</span>：投影、描边、渐变叠加全部可用（详见《图层与蒙版》）</li>
+    <li><span class="important">可作为剪贴蒙版</span>：形状层压在上层，下层内容被裁剪成它的形状</li>
+    <li><span class="important">可编辑路径</span>：右键 → 建立选图层，或用路径选择工具调节点</li>
+</ul>
+<h3>
+    Live Shapes（实时形状）
+</h3>
+<p>
+    3.0 起形状工具新增了 <span class="important">Live Shapes</span>：在画布上直接显示可拖动的控制手柄，能调整圆角半径、圆环比例等参数，不用进属性面板。
+</p>
+<p>
+    启用方式：<span class="special">选项栏 → 齿轮图标 → 勾选 Live Shapes Controls</span>。
+</p>
+<h3>
+    自定义形状
+</h3>
+<p>
+    自定义形状工具（<span class="special">U</span>，与矩形工具同组，Shift+U）内置了<span class="important">上百种预设形状</span>：
+</p>
+<p>
+    <span class="pip-block">U 切换到自定义形状工具</span>
+    →
+    <span class="pip-block">点击选项栏「形状」下拉框</span>
+    →
+    <span class="pip-block">点击面板上的齿轮图标加载形状集（如 Arrows、Flowers）</span>
+    →
+    <span class="pip-block">选中形状后在画布上拖拽绘制</span>
+</p>
+<div class="tips">
+    <span class="special">形状集需要手动加载</span>，默认只显示最近使用的一小批。第一次用要点击形状面板右上角的齿轮（或路径形状右上角的小菜单）加载更多形状集，否则会以为「形状很少」。
+</div>
+<h3>
+    形状的绘制约束
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>按键</th>
+            <th>效果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Shift</td>
+            <td>限制为<span class="important">正方形 / 正圆</span>（画多边形时限制为正多边形）</td>
+        </tr>
+        <tr>
+            <td>Alt</td>
+            <td>从中心向对称方向绘制</td>
+        </tr>
+        <tr>
+            <td>Shift+Alt</td>
+            <td>正方形且从中心绘制</td>
+        </tr>
+        <tr>
+            <td>方向键</td>
+            <td>旋转形状（45° 一档）</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    描边与填充
+</h2>
+<h3>
+    形状模式的选项
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>选项</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>填充颜色</td>
+            <td>形状内部的颜色</td>
+        </tr>
+        <tr>
+            <td>描边颜色 / 宽度</td>
+            <td>轮廓线的颜色和像素厚度</td>
+        </tr>
+        <tr>
+            <td><span class="special">描边类型</span></td>
+            <td>实线 / 虚线 / 点线</td>
+        </tr>
+        <tr>
+            <td>对齐</td>
+            <td><span class="important">内侧 / 居中 / 外侧</span>——宽度算在形状内还是外</td>
+        </tr>
+        <tr>
+            <td>端点</td>
+            <td>平头 / 圆头 / 方头（直线工具有效）</td>
+        </tr>
+        <tr>
+            <td>拐角</td>
+            <td>拐角形状（直线工具不适用）</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    也可以用<span class="important">图层样式实现描边</span>：双击形状图层打开样式面板 → 描边。区别是样式描边<span
+        class="special">完全非破坏性且可随时改</span>，而形状自带的描边是矢量属性，改起来要进选项栏。做 UI 设计时图层样式更灵活。
+</p>
+<div class="tips">
+    对齐方式选择很关键：<span class="special">内侧</span>描边会让形状的实际尺寸变小，<span
+        class="special">外侧</span>会让它变大。做精确对齐的 UI 元素时，优先用「居中」或用图层样式描边（默认也是居中）。
+</div>
+<h3>
+    渐变填充形状
+</h3>
+<p>
+    形状图层的填充可以是<span class="special">渐变</span>（点击填充颜色块，选渐变图标）。渐变填充同样非破坏性，双击图层进属性面板可以改渐变类型和颜色。
+</p>
+<h2>
+    路径
+</h2>
+<h3>
+    路径与选区互转
+</h3>
+<p>
+    路径最大的价值是<span class="important">可存储、可复用、可精确</span>。四种转换方向：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>方向</th>
+            <th>操作</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>路径 → 选区</td>
+            <td>路径面板 → 路径转选区</td>
+            <td>未闭合路径会<span class="important">自动用直线连接</span>起终点</td>
+        </tr>
+        <tr>
+            <td>路径 → 形状图层</td>
+            <td>路径面板 → 填充路径 / 描边路径</td>
+            <td>生成形状图层，<span class="special">矢量可编辑</span></td>
+        </tr>
+        <tr>
+            <td>路径 → 填充像素</td>
+            <td>编辑 → 填充（路径被激活时）</td>
+            <td>直接填像素</td>
+        </tr>
+        <tr>
+            <td>选区 → 路径</td>
+            <td>路径面板 → 从选区生成工作路径</td>
+            <td><span class="important">关键技巧</span>：把栅格化的复杂选区变成可编辑矢量</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">「从选区生成工作路径」</span>是 PS 里最被低估的功能之一。它能把任何复杂选区转成矢量路径，然后进 Illustrator 编辑，或在 PS 里调整节点。抠图边缘不满意时，这是精修的最佳途径。
+</div>
+<h3>
+    路径操作
+</h3>
+<p>
+    钢笔或形状工具在<span class="important">路径模式</span>下绘制时，选项栏顶部是路径运算按钮：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>运算</th>
+            <th>效果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>添加（+）</td>
+            <td>与现有路径<span class="important">合并</span>，重叠部分不挖空</td>
+        </tr>
+        <tr>
+            <td>减去（−）</td>
+            <td>从现有路径中<span class="important">挖掉</span></td>
+        </tr>
+        <tr>
+            <td>交叉（×）</td>
+            <td>只保留<span class="important">重叠区域</span></td>
+        </tr>
+        <tr>
+            <td>排除</td>
+            <td><span class="important">挖空重叠部分</span>（合并但不重叠）</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">形状的布尔运算有快捷键</span>：绘制完成后选中形状图层，按 <span class="special">+</span> 合并形状、<span class="special">−</span> 减去上层、<span
+        class="special">*</span> 交叉、<span class="special">\</span> 排除。但前提是这些形状<span class="important">在同一图层上</span>。
+</div>
+<h3>
+    路径的对齐与分布
+</h3>
+<p>
+    在路径模式下，选项栏有<span class="special">路径对齐</span>和<span class="special">路径排列</span>两个下拉菜单：
+</p>
+<ul>
+    <li><span class="important">对齐</span>：选中的多个路径组件按左/中/右等对齐</li>
+    <li><span class="important">分布</span>：<span class="important">至少需要三个组件</span>，才能等间距排列</li>
+</ul>
+<div class="tips">
+    形状在<span class="special">不同图层</span>上时，对齐要改用<span class="important">移动工具</span>（配合<span
+        class="special">Alt 对齐参考线</span>），路径对齐工具只对同一路径内的组件生效。
+</div>
+<h3>
+    钢笔工具
+</h3>
+<p>
+    钢笔（<span class="special">P</span>）是 PS 的路径主力工具，核心操作是<span class="important">单击打直线锚点，拖动打曲线锚点</span>：
+</p>
+<ul>
+    <li><span class="special">单击</span>：直线锚点</li>
+    <li><span class="special">按住拖动</span>：曲线锚点，带两个手柄</li>
+    <li><span class="special">Alt+拖动锚点</span>：只调整单侧手柄，得到平滑过渡</li>
+    <li><span class="special">Shift</span>：吸附到水平/垂直/45°</li>
+    <li><span class="special">Ctrl+Z</span>：删除上一个锚点</li>
+    <li>鼠标移到起点呈<span class="special">圆形磁铁</span>：点击闭合路径</li>
+</ul>
+<p>
+    钢笔的经典用法是<span class="special">先粗略画一圈，再精修</span>：画完转选区看效果，不满意就 <span
+        class="special">Ctrl+Z</span> 退回继续调。比一次画二十个锚点高效得多。
+</p>
+<h2>
+    形状与路径的实战
+</h2>
+<h3>
+    剪贴蒙版
+</h3>
+<p>
+    形状图层最大的实战价值。流程：
+</p>
+<p>
+    <span class="pip-block">把图片或内容放在图层下方</span>
+    →
+    <span class="pip-block">在上方用形状工具画一个形状图层</span>
+    →
+    <span class="pip-block">Alt+点击两层之间的编组图标建立剪贴蒙版</span>
+    →
+    <span class="pip-block">内容被裁剪进形状</span>
+</p>
+<div class="tips">
+    快捷键是 <span class="special">Ctrl+Alt+G</span>。最经典的用法是<span
+        class="important">圆形裁剪头像</span>：照片放下面，画正圆形状层，剪贴。再把形状层用蒙版做羽化，就是柔和的圆形边缘。
+</div>
+<h3>
+    描边路径做手绘感线条
+</h3>
+<p>
+    用钢笔画一条路径 → <span class="pip-block">路径面板 → 用画笔描边路径</span>。线条沿路径自动绘制，不会手抖，适合做装饰线、签名、手写效果。
+</p>
+<h3>
+    圆角矩形
+</h3>
+<p>
+    矩形工具画形状 → <span class="pip-block">直接拖动圆角半径滑块</span>（Live Shapes 开启时），或进属性面板输入具体数值。做 UI 卡片、按钮的标准做法。
+</p>
+<h3>
+    精确形状进 AI 继续编辑
+</h3>
+<p>
+    <span class="pip-block">路径面板 → 右键 → 导出为 Illustrator 路径</span>，得到 .ai 文件。复杂形状建议直接用 AI 做，PS 只做简单图形。
+</p>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    形状工具画不出来 / 画成了像素
+</h3>
+<p>
+    检查选项栏左上角的模式是不是切到了「像素」。切回「形状」会新建形状图层，「像素」则画在当前图层上。
+</p>
+<h3>
+    形状图层上没有图层样式选项
+</h3>
+<p>
+    形状图层<span class="important">本来就应该有</span>。如果没有，检查是否误点了「栅格化图层」。样式只能加在矢量图层上，栅格化后就失去了这个能力。
+</p>
+<h3>
+    布尔运算没反应
+</h3>
+<p>
+    两个前提：形状必须<span class="important">在同一图层</span>上，且绘制时用的是<span class="special">路径模式</span>。如果形状分散在多个图层上，先合并图层。
+</p>
+<h3>
+    自定义形状太少了
+</h3>
+<p>
+    形状集需要手动加载。点形状下拉面板右上角的<strong>齿轮图标</strong>，选择要加载的形状集（如 Arrows、Bubbles、Dice 等），加载后才会出现在列表里。
+</p>
+<h3>
+    描边宽度改变了形状大小
+</h3>
+<p>
+    检查描边的对齐方式。<span class="special">内侧</span>会让形状实际变小，<span class="special">外侧</span>会变大。需要精确尺寸时用「居中」对齐。
+</p>
+<h3>
+    路径转选区后没有闭合区域
+</h3>
+<p>
+    路径没闭合。PS 转选区时会自动用直线连接起终点，但如果你已经闭合了却仍然异常，检查是否有多余的子路径（<span
+        class="special">路径选择工具 A</span> 配合 <span class="special">Alt+点击</span> 可以看到每个子路径）。
+</p>
+<h3>
+    「从选区生成工作路径」很慢
+</h3>
+<p>
+    正常现象，它在逐像素分析边缘。<span class="important">大图上要有耐心</span>，或者先用「简化边缘」把选区收干净再转，路径会干净得多。
+</p>
+<h3>
+    形状图层太大导致卡顿
+</h3>
+<p>
+    高分辨率下大量矢量形状会占用较多内存。必要时把形状图层栅格化（<span
+        class="special">Ctrl+Shift+Alt+E</span> 或图层右键 → 栅格化），但这会失去可编辑性和样式能力。
+</p>

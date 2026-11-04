@@ -1,0 +1,105 @@
+<header>
+    nn.Module 构建模型
+</header>
+
+<p>
+    PyTorch 中的神经网络通常继承 <span class="warn">torch.nn.Module</span>。在 <span class="warn">__init__</span> 中定义层，在 <span class="warn">forward</span> 中定义数据如何流过这些层。
+</p>
+
+<h2>
+    一个最小模型
+</h2>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+import torch
+from torch import nn
+
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(784, 128),
+            nn.ReLU(),
+            nn.Linear(128, 10),
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+model = SimpleNet()
+print(model)
+</pre>
+
+<h2>
+    forward 做什么？
+</h2>
+
+<p>
+    forward 描述前向传播逻辑。调用 <span class="warn">model(x)</span> 时，PyTorch 实际会执行 forward。一般不要直接调用 <span class="warn">model.forward(x)</span>。
+</p>
+
+<h2>
+    查看参数
+</h2>
+
+<pre tag="python">
+for name, param in model.named_parameters():
+    print(name, param.shape, param.requires_grad)
+</pre>
+
+<h2>
+    常用层
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>层</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>nn.Linear</td>
+            <td>全连接层，常用于分类头或普通表格数据</td>
+        </tr>
+        <tr>
+            <td>nn.Conv2d</td>
+            <td>二维卷积层，常用于图像特征提取</td>
+        </tr>
+        <tr>
+            <td>nn.ReLU</td>
+            <td>非线性激活函数</td>
+        </tr>
+        <tr>
+            <td>nn.Dropout</td>
+            <td>训练时随机丢弃部分神经元，缓解过拟合</td>
+        </tr>
+        <tr>
+            <td>nn.BatchNorm2d</td>
+            <td>批归一化，常用于 CNN</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    train 与 eval
+</h2>
+
+<p>
+    <span class="warn">model.train()</span> 表示训练模式，Dropout、BatchNorm 等层会按训练方式工作；<span class="warn">model.eval()</span> 表示评估模式，这些层会切到推理行为。
+</p>
+
+<pre tag="python">
+model.train()
+# 训练
+
+model.eval()
+# 验证或推理
+</pre>
+
+<div class="tips">
+    eval() 不会自动关闭梯度计算，推理时通常还要配合 torch.no_grad()。
+</div>

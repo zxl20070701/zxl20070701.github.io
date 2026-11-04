@@ -1,0 +1,87 @@
+<header>
+    静态方法
+</header>
+<h2>
+    静态方法基础
+</h2>
+<p>
+    <span class="important">静态方法</span>使用<span class="warn">@staticmethod</span>装饰器定义，不需要<span class="warn">self</span>或<span class="warn">cls</span>参数。静态方法不能访问类属性或实例属性，它们只是组织在类中的普通函数。
+</p>
+<pre tag="python">
+class MathUtils:
+    @staticmethod
+    def add(x, y):
+        """静态方法：加法运算"""
+        return x + y
+    
+    @staticmethod
+    def multiply(x, y):
+        """静态方法：乘法运算"""
+        return x * y
+    
+    @staticmethod
+    def is_even(number):
+        """静态方法：判断是否为偶数"""
+        return number % 2 == 0
+
+# 调用静态方法
+print(MathUtils.add(5, 3))        # 输出: 8
+print(MathUtils.multiply(4, 7))   # 输出: 28
+print(MathUtils.is_even(10))      # 输出: True
+
+# 也可以通过实例调用静态方法
+utils = MathUtils()
+print(utils.add(2, 3))  # 输出: 5
+</pre>
+
+<h2>
+    静态方法的特点
+</h2>
+<ul>
+    <li>使用@staticmethod装饰器定义</li>
+    <li>不需要self或cls参数</li>
+    <li>不能访问类属性或实例属性</li>
+    <li>只是逻辑上属于类的工具函数</li>
+    <li>可以通过类名或实例调用</li>
+</ul>
+
+<h2>
+    使用场景
+</h2>
+<pre tag="python">
+class StringUtils:
+    @staticmethod
+    def is_palindrome(text):
+        """判断字符串是否为回文"""
+        text = text.lower().replace(" ", "")
+        return text == text[::-1]
+    
+    @staticmethod
+    def count_words(text):
+        """计算单词数量"""
+        return len(text.split())
+    
+    @staticmethod
+    def reverse_words(text):
+        """反转单词顺序"""
+        return " ".join(text.split()[::-1])
+
+# 使用静态方法
+text = "A man a plan a canal Panama"
+print(StringUtils.is_palindrome(text))   # True
+print(StringUtils.count_words(text))     # 6
+print(StringUtils.reverse_words(text))   # "Panama canal a plan a man A"
+
+# 静态方法与类相关但不依赖类状态
+class TemperatureConverter:
+    @staticmethod
+    def celsius_to_fahrenheit(celsius):
+        return celsius * 9/5 + 32
+    
+    @staticmethod
+    def fahrenheit_to_celsius(fahrenheit):
+        return (fahrenheit - 32) * 5/9
+
+print(TemperatureConverter.celsius_to_fahrenheit(0))    # 32.0
+print(TemperatureConverter.fahrenheit_to_celsius(32))   # 0.0
+</pre>

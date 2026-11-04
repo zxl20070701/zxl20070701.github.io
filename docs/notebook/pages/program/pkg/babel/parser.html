@@ -1,0 +1,106 @@
+<header>
+    @babel/parser - 代码解析器
+</header>
+<h2>
+    什么是@babel/parser
+</h2>
+<p>
+    @babel/parser（原名babylon）是Babel的JavaScript解析器，用于将JavaScript源代码转换为抽象语法树（AST）。
+</p>
+<h2>
+    安装与使用
+</h2>
+<pre tag="bash">
+npm install --save-dev @babel/parser
+</pre>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+
+const code = 'const x = 1 + 2;';
+const ast = parser.parse(code);
+
+console.log(ast);
+</pre>
+<h2>
+    解析选项
+</h2>
+<p>
+    @babel/parser提供了多种选项来控制解析行为：
+</p>
+<pre tag="javascript">
+const ast = parser.parse(code, {
+  // 启用JSX语法
+  plugins: ['jsx'],
+  
+  // 启用严格模式
+  strictMode: true,
+  
+  // 启用装饰器语法
+  plugins: ['decorators-legacy'],
+  
+  // 启用TypeScript
+  plugins: ['typescript']
+});
+</pre>
+<h2>
+    常用插件
+</h2>
+<ul>
+    <li><span class="important">jsx</span>：支持JSX语法</li>
+    <li><span class="important">typescript</span>：支持TypeScript语法</li>
+    <li><span class="important">decorators-legacy</span>：支持装饰器语法</li>
+    <li><span class="important">classProperties</span>：支持类属性</li>
+    <li><span class="important">asyncGenerators</span>：支持异步生成器</li>
+</ul>
+<h2>
+    parseExpression方法
+</h2>
+<p>
+    如果只需要解析单个表达式，可以使用<span class="important">parseExpression</span>方法：
+</p>
+<pre tag="javascript">
+const expression = parser.parseExpression('1 + 2');
+console.log(expression);
+</pre>
+<h2>
+    错误处理
+</h2>
+<p>
+    当代码包含语法错误时，@babel/parser会抛出错误：
+</p>
+<pre tag="javascript">
+try {
+  const ast = parser.parse('const x = ;'); // 语法错误
+} catch (error) {
+  console.error('解析错误:', error.message);
+}
+</pre>
+<h2>
+    实际应用示例
+</h2>
+<p>
+    下面是一个完整的示例，展示如何使用@babel/parser解析代码并检查变量声明：
+</p>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+
+const code = `
+  const x = 1;
+  let y = 2;
+  var z = 3;
+  const sum = x + y + z;
+`;
+
+const ast = parser.parse(code);
+
+let variableCount = 0;
+traverse(ast, {
+  VariableDeclarator(path) {
+    variableCount++;
+    console.log(`找到变量: ${path.node.id.name}`);
+  }
+});
+
+console.log(`总共找到 ${variableCount} 个变量声明`);
+</pre>

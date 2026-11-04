@@ -1,0 +1,255 @@
+<header>
+    对话记忆
+</header>
+
+<p>
+    默认情况下，每次调用 <span class="warn">generate</span> 都是一次全新的对话，模型并不知道之前聊过什么。给 Agent 配置 <span class="warn">Memory</span> 之后，框架会自动把历史消息持久化到存储中，下次对话时按配置带回上下文，实现"记住上文"。
+</p>
+
+<p>
+    先安装记忆模块和存储适配器：
+</p>
+
+<pre>
+    npm install @mastra/memory @mastra/libsql
+</pre>
+
+<h2>
+    两个关键概念
+</h2>
+
+<ul>
+    <li>
+        <strong>resource</strong>：用户或实体的稳定标识符，用来区分"是谁在对话"。
+    </li>
+    <li>
+        <strong>thread</strong>：隔离特定对话或会话的 ID，用来区分"哪一段对话"。同一个 resource 可以同时拥有多个 thread。
+    </li>
+</ul>
+
+<p>
+    调用 <span class="warn">generate</span> 时，通过 <span class="warn">memory</span> 参数同时传入这两个标识，框架就会自动跟踪并保存这段对话的消息历史。
+</p>
+
+<h2>
+    给 Agent 配置记忆
+</h2>
+
+<p>
+    在创建 Agent 时传入 <span class="warn">memory</span> 配置，并把存储适配器（这里用 LibSQL 本地文件数据库）直接挂在 Memory 上。下面是一个可以持续对话的命令行例子：
+</p>
+
+<pre tag="javascript">
+import { Agent } from "@mastra/core/agent";
+import { Memory } from "@mastra/memory";
+import { LibSQLStore } from "@mastra/libsql";
+import * as readline from "readline";
+
+const myAgent = new Agent({
+    id: 'memory-agent',
+    name: 'Memory Agent',
+    instructions: ``,
+    model: {
+        providerId: "ollama",
+        modelId: "qwen3.5",
+        apiKey: "ollama",
+        url: "http://127.0.0.1:11434/v1",
+    },
+    memory: new Memory({
+        options: {
+            lastMessages: 20, // 每次对话最多带回最近 20 条历史消息
+        },
+        storage: new LibSQLStore({
+            id: 'memory-agent-storage',
+            url: "file:./memory-agent.db",
+        })
+    }),
+});
+
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+const doit = () => {
+    rl.question("请输入：", (input) => {
+        myAgent.generate(input, {
+
+            // resource：用户或实体的稳定标识符
+            // thread：隔离特定对话或会话的 ID
+            memory: {
+                resource: "user-memory-agent",
+                thread: "conversation-memory-agent",
+            },
+        }).then(function (res) {
+            console.log(res.text);
+            doit();
+        });
+    });
+};
+
+doit();
+</pre>
+
+<p>
+    运行后先说"记住我喜欢喝咖啡"，再问"我喜欢喝什么？"，模型就能正确回答——因为两次请求使用了同一个 <span class="warn">thread</span>，历史消息被自动带回给了模型。
+</p>
+
+<h2>
+    存储挂在 Mastra 上统一管理
+</h2>
+
+<p>
+    除了挂在 Memory 上，存储也可以配置在 Mastra 实例上，供所有 Agent 共用。此时 Memory 只需要声明策略，不需要自己持有存储：
+</p>
+
+<pre tag="javascript">
+const myAgent = new Agent({
+    id: 'memory-agent',
+    name: 'Memory Agent',
+    instructions: ``,
+    model: {
+        providerId: "ollama",
+        modelId: "qwen3.5",
+        apiKey: "ollama",
+        url: "http://127.0.0.1:11434/v1",
+    },
+    memory: new Memory({
+        options: {
+            lastMessages: 20,
+        }
+    }),
+});
+
+const mastra = new Mastra({
+    agents: { myAgent },
+    storage: new LibSQLStore({
+        id: 'memory-mastra-storage',
+        url: "file:./memory-mastra.db",
+    })
+});
+
+mastra.getAgent("myAgent").generate("你好", {
+    memory: {
+        resource: "user-memory-mastra",
+        thread: "conversation-memory-mastra",
+    },
+}).then(function (res) {
+    console.log(res.text);
+});
+</pre>
+
+<h2>
+    手动创建会话
+</h2>
+
+<p>
+    如果需要在对话开始前显式创建会话（比如设置标题、附加元数据），可以通过 <span class="warn">agent.getMemory()</span> 拿到 Memory 实例后调用 <span class="warn">createThread</span>：
+</p>
+
+<pre tag="javascript">
+const agent = mastra.getAgent('myAgent');
+agent.getMemory().then(memory => {
+
+    memory?.createThread({
+
+        // threadId 可自定义，不传则自动生成
+        // 后续用同一个 threadId 就能拉取完整历史上下文，对话无缝接续
+        resourceId: 'createThread-001',
+        title: 'createThread Test Thread',
+        metadata: { // 会话附加标签，可选
+            source: 'test-createThread',
+            purpose: 'createThread-testing',
+        },
+    }).then(thread => {
+
+        agent.generate("你是谁？", {
+            memory: {
+                thread: thread!.id,
+                resource: thread!.resourceId,
+            },
+        }).then(function (res) {
+            console.log(res.text);
+            console.log(thread);
+        });
+
+    });
+
+});
+</pre>
+
+<p>
+    创建成功后会返回类似这样的会话对象thread：
+</p>
+
+<pre>
+{
+    id: 'f49dfd96-7da3-432a-bfc0-9f5f7e86d670',
+    title: 'createThread Test Thread',
+    resourceId: 'createThread-001',
+    createdAt: 2026-06-12T09:35:04.253Z,
+    updatedAt: 2026-06-12T09:35:04.253Z,
+    metadata: { source: 'test-createThread', purpose: 'createThread-testing' }
+}
+</pre>
+
+<h2>
+    查询历史消息
+</h2>
+
+<p>
+    保存在存储里的消息也可以直接查询出来，比如做一个"查看聊天记录"的功能。通过 Mastra 拿到存储实例后调用 <span class="warn">listMessages</span>：
+</p>
+
+<pre tag="javascript">
+const storage = mastra.getStorage();
+storage?.getStore("memory").then(memoryStore => {
+
+    memoryStore?.listMessages({
+
+        // threadId 也接受数组，可同时从多个线程查询消息
+        threadId: "conversation-memory-listMessages",
+        page: 0,
+        perPage: 100
+    }).then(result => {
+        console.log(JSON.stringify(result, null, 2));
+    });
+
+});
+</pre>
+
+<h2>
+    更换存储适配器
+</h2>
+
+<p>
+    存储是可插拔的，把 LibSQL 换成 MySQL 只需要换一个适配器（<span class="warn">npm install @mastra/mysql</span>），其他代码完全不用动：
+</p>
+
+<pre tag="javascript">
+import { MySQLStore } from "@mastra/mysql";
+
+const mastra = new Mastra({
+    agents: { myAgent },
+    storage: new MySQLStore({
+        host: "localhost",
+        port: 3306,
+        user: "root",
+        password: "123456",
+        database: "simple_mysql_db",
+    })
+});
+
+mastra.getAgent("myAgent").generate("你是谁？", {
+    memory: {
+        thread: "thread-1",  // 会话线程ID，标识同一段对话，用于保存对话记录
+        resource: "user-1"  // 资源ID，标识资源所有者，用于区分不同用户
+    }
+}).then(res => {
+    console.log(res.text);
+}).catch(error => {
+    console.error("执行出错:", error);
+}).finally(() => {
+    mastra.shutdown();
+});
+</pre>
+
+<div class="tips">
+    Memory 的 <span class="warn">options</span> 里还可以配置 <span class="warn">generateTitle: false</span> 来关闭"自动用模型给会话生成标题"的行为，省掉一次额外的模型调用。脚本结束前调用 <span class="warn">mastra.shutdown()</span> 可以确保存储连接被正确释放。
+</div>

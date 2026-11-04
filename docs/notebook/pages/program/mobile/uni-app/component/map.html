@@ -1,0 +1,274 @@
+<header>
+    map
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>longitude</td>
+            <td>Number</td>
+            <td></td>
+            <td>中心经度</td>
+        </tr>
+        <tr>
+            <td>latitude</td>
+            <td>Number</td>
+            <td></td>
+            <td>中心纬度</td>
+        </tr>
+        <tr>
+            <td>scale</td>
+            <td>Number</td>
+            <td>16</td>
+            <td>缩放级别，取值范围为3-20</td>
+        </tr>
+        <tr>
+            <td>markers</td>
+            <td>Array&lt;Object&gt;</td>
+            <td></td>
+            <td>标记点</td>
+        </tr>
+        <tr>
+            <td>polyline</td>
+            <td>Array&lt;Object&gt;</td>
+            <td></td>
+            <td>路线</td>
+        </tr>
+        <tr>
+            <td>circles</td>
+            <td>Array&lt;Object&gt;</td>
+            <td></td>
+            <td>圆</td>
+        </tr>
+        <tr>
+            <td>controls</td>
+            <td>Array&lt;Object&gt;</td>
+            <td></td>
+            <td>控件</td>
+        </tr>
+        <tr>
+            <td>include-points</td>
+            <td>Array&lt;Object&gt;</td>
+            <td></td>
+            <td>缩放视野以包含所有给定的坐标点</td>
+        </tr>
+        <tr>
+            <td>show-location</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>显示带有方向的当前定位点</td>
+        </tr>
+        <tr>
+            <td>polygons</td>
+            <td>Array&lt;Object&gt;</td>
+            <td></td>
+            <td>多边形</td>
+        </tr>
+        <tr>
+            <td>enable-3D</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否显示3D楼块</td>
+        </tr>
+        <tr>
+            <td>show-compass</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否显示指南针</td>
+        </tr>
+        <tr>
+            <td>enable-overlooking</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否开启俯视</td>
+        </tr>
+        <tr>
+            <td>enable-zoom</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否支持缩放</td>
+        </tr>
+        <tr>
+            <td>enable-scroll</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否支持拖动</td>
+        </tr>
+        <tr>
+            <td>enable-rotate</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否支持旋转</td>
+        </tr>
+        <tr>
+            <td>enable-satellite</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否开启卫星图</td>
+        </tr>
+        <tr>
+            <td>enable-traffic</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否开启实时路况</td>
+        </tr>
+        <tr>
+            <td>@markertap</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>点击标记点时触发，e.detail = {markerId}</td>
+        </tr>
+        <tr>
+            <td>@callouttap</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>点击标记点对应的气泡时触发，e.detail = {markerId}</td>
+        </tr>
+        <tr>
+            <td>@controltap</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>点击控件时触发，e.detail = {controlId}</td>
+        </tr>
+        <tr>
+            <td>@regionchange</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>视野发生变化时触发</td>
+        </tr>
+        <tr>
+            <td>@tap</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>点击地图时触发</td>
+        </tr>
+        <tr>
+            <td>@updated</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>在地图渲染更新完成时触发</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <map 
+      id="myMap"
+      :longitude="longitude" 
+      :latitude="latitude" 
+      :scale="scale"
+      :markers="markers"
+      :show-location="true"
+      @markertap="markerTap"
+      @regionchange="regionChange"
+      class="map"
+    ></map>
+    <view class="controls">
+      <button @click="addMarker">添加标记</button>
+      <button @click="removeMarker">移除标记</button>
+      <button @click="moveToLocation">定位到当前位置</button>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      longitude: 116.397470,
+      latitude: 39.908823,
+      scale: 16,
+      markers: [
+        {
+          id: 1,
+          longitude: 116.397470,
+          latitude: 39.908823,
+          title: '天安门广场',
+          iconPath: '/static/marker.png',
+          width: 30,
+          height: 30
+        }
+      ]
+    }
+  },
+  mounted() {
+    this.mapContext = uni.createMapContext('myMap');
+  },
+  methods: {
+    markerTap(e) {
+      console.log('点击了标记点', e.markerId);
+    },
+    regionChange(e) {
+      console.log('地图区域变化', e);
+    },
+    addMarker() {
+      const newMarker = {
+        id: this.markers.length + 1,
+        longitude: this.longitude + 0.001,
+        latitude: this.latitude + 0.001,
+        title: '新标记点',
+        iconPath: '/static/marker.png',
+        width: 30,
+        height: 30
+      };
+      this.markers.push(newMarker);
+    },
+    removeMarker() {
+      if (this.markers.length > 1) {
+        this.markers.pop();
+      }
+    },
+    moveToLocation() {
+      uni.getLocation({
+        type: 'gcj02',
+        success: (res) => {
+          this.longitude = res.longitude;
+          this.latitude = res.latitude;
+          
+          this.mapContext.moveToLocation({
+            longitude: res.longitude,
+            latitude: res.latitude
+          });
+        }
+      });
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.map {
+  width: 100%;
+  height: 300px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  padding: 10px 20px;
+}
+</style>
+</pre>

@@ -1,0 +1,98 @@
+<header>
+    Proxy 与 Reflect
+</header>
+<h2>
+    Proxy 概述
+</h2>
+<p>
+    Proxy 用于创建对象的代理，可以拦截并自定义对象的基本操作（如属性访问、赋值、删除等）。
+</p>
+<pre tag="javascript">
+let target = {};
+let handler = {
+    get(target, prop, receiver) {
+        console.log(`访问属性: ${prop}`);
+        return target[prop];
+    },
+    set(target, prop, value, receiver) {
+        console.log(`设置属性: ${prop} = ${value}`);
+        target[prop] = value;
+        return true;
+    }
+};
+let proxy = new Proxy(target, handler);
+proxy.name = 'Alice'; // "设置属性: name = Alice"
+console.log(proxy.name); // "访问属性: name" -> "Alice"
+</pre>
+<h2>
+    常用拦截操作
+</h2>
+<pre tag="javascript">
+let handler = {
+    // 拦截属性读取
+    get(target, prop) { ... },
+    // 拦截属性设置
+    set(target, prop, value) { ... },
+    // 拦截属性存在性检查 (prop in obj)
+    has(target, prop) { ... },
+    // 拦截属性删除
+    deleteProperty(target, prop) { ... },
+    // 拦截属性枚举
+    ownKeys(target) { ... },
+    // 拦截属性描述符获取
+    getOwnPropertyDescriptor(target, prop) { ... },
+    // 拦截原型获取
+    getPrototypeOf(target) { ... },
+    // 拦截原型设置
+    setPrototypeOf(target, prototype) { ... }
+};
+</pre>
+<h2>
+    Reflect 概述
+</h2>
+<p>
+    Reflect 提供了与对象默认行为对应的方法，与 Proxy 配合使用，可以在拦截中安全地执行默认操作。
+</p>
+<pre tag="javascript">
+let target = { name: 'Alice' };
+let proxy = new Proxy(target, {
+    get(target, prop, receiver) {
+        // 执行默认行为
+        return Reflect.get(target, prop, receiver);
+    },
+    set(target, prop, value, receiver) {
+        // 先做自定义逻辑
+        if (prop === 'age' && value < 0) {
+            throw new Error('年龄不能为负数');
+        }
+        // 再执行默认行为
+        return Reflect.set(target, prop, value, receiver);
+    }
+});
+proxy.age = -1; // Error: 年龄不能为负数
+</pre>
+<h2>
+    实际应用场景
+</h2>
+<p>
+    Proxy 可用于实现数据校验、属性监听、虚拟属性、日志记录、权限控制等功能。
+</p>
+<pre tag="javascript">
+// 数据校验示例
+function createValidator(target, validator) {
+    return new Proxy(target, {
+        set(target, prop, value) {
+            if (validator[prop] && !validator[prop](value)) {
+                throw new Error(`Invalid value for ${prop}`);
+            }
+            target[prop] = value;
+            return true;
+        }
+    });
+}
+let user = createValidator({}, {
+    age: v => typeof v === 'number' && v > 0
+});
+user.age = 25; // OK
+// user.age = -1; // Error
+</pre>

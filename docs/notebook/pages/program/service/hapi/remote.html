@@ -1,0 +1,183 @@
+<header>
+    Hapi路由和请求处理
+</header>
+<h2>
+    基础路由
+</h2>
+<h3>
+    GET请求
+</h3>
+<pre tag="javascript">
+const Hapi = require('@hapi/hapi');
+
+const init = async () => {
+    const server = Hapi.server({
+        port: 3000,
+        host: 'localhost'
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/users',
+        handler: (request, h) => {
+            return { users: [] };
+        }
+    });
+};
+</pre>
+<p>
+    其中request.query包含GET请求的查询参数。
+</p>
+<h3>
+    POST请求
+</h3>
+<pre tag="javascript">
+server.route({
+    method: 'POST',
+    path: '/users',
+    handler: (request, h) => {
+        const body = request.payload;
+        return { success: true };
+    }
+});
+</pre>
+<p>
+    其中request.payload包含POST请求的请求体数据。
+</p>
+<h2>
+    插件系统
+</h2>
+<h3>
+    解析JSON
+</h3>
+<pre tag="javascript">
+await server.register({
+    plugin: require('@hapi/inert')
+});
+</pre>
+<h3>
+    设置响应头
+</h3>
+<pre tag="javascript">
+server.route({
+    method: 'GET',
+    path: '/users',
+    handler: (request, h) => {
+        return h.response({ users: [] }).header('Content-Type', 'application/json; charset=utf-8');
+    }
+});
+</pre>
+<h2>
+    路由参数
+</h2>
+<pre tag="javascript">
+server.route({
+    method: 'GET',
+    path: '/users/{id}',
+    handler: (request, h) => {
+        const userId = request.params.id;
+        return { id: userId };
+    }
+});
+</pre>
+<h2>
+    常用插件
+</h2>
+<h3>
+    CORS跨域支持
+</h3>
+<pre tag="javascript">
+await server.register({
+    plugin: require('@hapi/hapi-cors')
+});
+</pre>
+<h3>
+    日志记录
+</h3>
+<pre tag="javascript">
+await server.register({
+    plugin: require('@hapi/good'),
+    options: {
+        reporters: {
+            console: [{
+                module: '@hapi/good-squeeze',
+                name: 'Squeeze',
+                args: [{ log: '*', response: '*' }]
+            }, {
+                module: '@hapi/good-console'
+            }, 'stdout']
+        }
+    }
+});
+</pre>
+<h3>
+    静态文件服务
+</h3>
+<pre tag="javascript">
+await server.register(require('@hapi/inert'));
+
+server.route({
+    method: 'GET',
+    path: '/{param*}',
+    handler: {
+        directory: {
+            path: 'public'
+        }
+    }
+});
+</pre>
+<h2>
+    错误处理
+</h2>
+<pre tag="javascript">
+server.ext('onPreResponse', (request, h) => {
+    const response = request.response;
+    if (response.isBoom) {
+        return h.response({ error: 'Something went wrong!' }).code(500);
+    }
+    return h.continue;
+});
+</pre>
+<h2>
+    环境变量配置
+</h2>
+<pre tag="javascript">
+require('dotenv').config();
+const port = process.env.PORT || 3000;
+
+const server = Hapi.server({
+    port: port,
+    host: process.env.HOST || 'localhost'
+});
+</pre>
+<h2>
+    路由分组
+</h2>
+<pre tag="javascript">
+const userRoutes = {
+    name: 'user-routes',
+    register: async function (server, options) {
+        server.route([
+            {
+                method: 'GET',
+                path: '/users',
+                handler: (request, h) => {
+                    return { users: [] };
+                }
+            },
+            {
+                method: 'GET',
+                path: '/users/{id}',
+                handler: (request, h) => {
+                    return { id: request.params.id };
+                }
+            }
+        ]);
+    }
+};
+
+await server.register({
+    plugin: userRoutes,
+    routes: { prefix: '/api' }
+});
+</pre>

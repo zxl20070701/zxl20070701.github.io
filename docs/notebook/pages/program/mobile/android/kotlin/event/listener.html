@@ -1,0 +1,194 @@
+<header>
+    Compose 事件处理
+</header>
+<p>
+    Compose 中的事件处理基于 <span class="important">Modifier</span> 和
+    <span class="important">Lambda 回调</span>，
+    替代 View 时代的 setOnClickListener / OnTouchListener 等。
+</p>
+<h2>
+    点击事件
+</h2>
+<pre tag="kotlin">
+// 最常用：Button 等组件自带 onClick 参数
+Button(onClick = { /* 处理点击 */ }) {
+    Text("点我")
+}
+
+// 任意组件可点击
+Box(
+    modifier = Modifier
+        .size(100.dp)
+        .clickable { /* 处理点击 */ }
+        .background(Color.LightGray)
+)
+
+// 长按
+Box(
+    modifier = Modifier
+        .size(100.dp)
+        .combinedClickable(
+            onClick = { /* 单击 */ },
+            onLongClick = { /* 长按 */ },
+            onDoubleClick = { /* 双击 */ }
+        )
+)
+</pre>
+<h2>
+    常用 Modifier 事件对照
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>Compose Modifier</td>
+            <td>原 View 事件</td>
+            <td>说明</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Modifier.clickable</td>
+            <td>setOnClickListener</td>
+            <td>点击</td>
+        </tr>
+        <tr>
+            <td>Modifier.combinedClickable</td>
+            <td>setOnLongClickListener</td>
+            <td>单击 + 长按 + 双击</td>
+        </tr>
+        <tr>
+            <td>Modifier.pointerInput</td>
+            <td>setOnTouchListener</td>
+            <td>自定义触摸手势</td>
+        </tr>
+        <tr>
+            <td>Modifier.onFocusChanged</td>
+            <td>setOnFocusChangeListener</td>
+            <td>焦点变化</td>
+        </tr>
+        <tr>
+            <td>Modifier.pointerHoverIcon</td>
+            <td>OnHoverListener</td>
+            <td>鼠标悬停（桌面端）</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    文本输入变化
+</h2>
+<pre tag="kotlin">
+var text by remember { mutableStateOf("") }
+
+// 方式一：onValueChange 回调（推荐）
+OutlinedTextField(
+    value = text,
+    onValueChange = { newText -&gt;
+        text = newText
+        // 实时响应输入，如搜索建议
+        viewModel.search(newText)
+    }
+)
+
+// 方式二：防抖搜索
+val searchQuery by remember { derivedStateOf { text } }
+LaunchedEffect(searchQuery) {
+    if (searchQuery.length &gt; 2) {
+        delay(300) // 防抖
+        viewModel.search(searchQuery)
+    }
+}
+</pre>
+<h2>
+    手势处理
+</h2>
+<h3>
+    拖拽
+</h3>
+<pre tag="kotlin">
+var offsetX by remember { mutableStateOf(0f) }
+var offsetY by remember { mutableStateOf(0f) }
+
+Box(
+    modifier = Modifier
+        .offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
+        .size(100.dp)
+        .background(Color.Blue)
+        .pointerInput(Unit) {
+            detectDragGestures { change, dragAmount -&gt;
+                change.consume()
+                offsetX += dragAmount.x
+                offsetY += dragAmount.y
+            }
+        }
+)
+</pre>
+<h3>
+    缩放
+</h3>
+<pre tag="kotlin">
+var scale by remember { mutableStateOf(1f) }
+
+Box(
+    modifier = Modifier
+        .fillMaxSize()
+        .pointerInput(Unit) {
+            detectTransformGestures { _, _, zoom, _ -&gt;
+                scale *= zoom
+            }
+        }
+) {
+    Image(
+        painter = painterResource(R.drawable.photo),
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxSize()
+            .graphicsLayer(
+                scaleX = scale,
+                scaleY = scale
+            )
+    )
+}
+</pre>
+<h2>
+    事件消费与拦截
+</h2>
+<p>
+    Compose 中事件通过 <span class="important">PointerEventPass</span> 分层传递：
+</p>
+<ul>
+    <li>
+        <span class="important">Initial</span>
+        ：事件先经过父组件，适合拦截。
+    </li>
+    <li>
+        <span class="important">Main</span>
+        ：事件到达目标组件，默认处理。
+    </li>
+    <li>
+        <span class="important">Final</span>
+        ：事件处理完成后回调，适合清理。
+    </li>
+</ul>
+<pre tag="kotlin">
+Box(
+    modifier = Modifier
+        .fillMaxSize()
+        .pointerInput(Unit) {
+            awaitEachGesture {
+                val down = awaitFirstDown(pass = PointerEventPass.Initial)
+                // 父组件拦截
+                if (shouldIntercept(down.position)) {
+                    down.consume()
+                }
+            }
+        }
+) {
+    // 子组件
+    Button(onClick = { /* ... */ }) { Text("按钮") }
+}
+</pre>
+<div class="tips">
+    Compose 中事件处理天然支持<span class="warn">协程</span>，
+    可以在手势回调中直接调用 <span class="warn">suspend</span> 函数，
+    无需像 View 时代那样手动切换线程。
+</div>

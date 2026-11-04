@@ -1,0 +1,561 @@
+<header>
+    界面与快捷键
+</header>
+<p>
+    PS 的快捷键体系分两层：<span class="important">工具快捷键默认不带快捷键</span>（因为字母被占用太多），需要按住 <span
+        class="special">Shift</span> 连按两次工具才能临时切换。这点和 GIMP 差别很大，是新手最不习惯的地方。
+</p>
+<h2>
+    工具切换
+</h2>
+<p>
+    PS 工具箱里的工具带分组（一个位置下藏着多个同类工具）。切换方式：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>效果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>单击工具图标</td>
+            <td>选中<span class="important">当前显示的那个</span>工具</td>
+        </tr>
+        <tr>
+            <td><span class="special">Shift+单击</span>工具图标</td>
+            <td>在<span class="important">组内循环</span>切换到下一个工具</td>
+        </tr>
+        <tr>
+            <td><span class="special">双击</span>工具图标</td>
+            <td>展开该工具的设置弹窗（如画笔的选笔预设面板）</td>
+        </tr>
+        <tr>
+            <td><span class="special">长按右键</span>画布</td>
+            <td>弹出上下文菜单，<span class="important">可临时换工具不改当前设置</span></td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">长按右键（空格键）</span>是最被低估的功能：比如正在用画笔时，按住右键不放可以临时切到吸管、抓手、缩放，松手自动切回画笔。不用去工具箱翻找。
+</div>
+<h3>
+    为常用工具设置快捷键
+</h3>
+<p>
+    <span class="special">编辑 → 键盘快捷键</span>（<span class="special">Alt+Shift+Ctrl+K</span>），<span
+        class="important">下拉选择「工具」分类</span>，点「添加快捷键」列直接按组合键。
+</p>
+<div class="tips">
+    推荐给这几个工具单独设快捷键：<span class="important">抓手（H）、缩放（Z）、吸管（I）、画笔（B）、修补工具（J）</span>。这五个是频率最高但默认无快捷键的，分配后效率提升立竿见影。
+</div>
+<h2>
+    视图操作
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>Windows</th>
+            <th>macOS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>放大</td>
+            <td>Ctrl + <span class="pip-block">+</span></td>
+            <td>Cmd + <span class="pip-block">+</span></td>
+        </tr>
+        <tr>
+            <td>缩小</td>
+            <td>Ctrl + <span class="pip-block">-</span></td>
+            <td>Cmd + <span class="pip-block">-</span></td>
+        </tr>
+        <tr>
+            <td>适合窗口</td>
+            <td>Ctrl + <span class="pip-block">0</span></td>
+            <td>Cmd + <span class="pip-block">0</span></td>
+        </tr>
+        <tr>
+            <td>100% 视图</td>
+            <td>Ctrl + <span class="pip-block">1</span></td>
+            <td>Cmd + <span class="pip-block">1</span></td>
+        </tr>
+        <tr>
+            <td>切换屏幕模式</td>
+            <td><span class="special">F</span></td>
+            <td><span class="special">F</span></td>
+        </tr>
+        <tr>
+            <td>缩放工具拖拽出区域</td>
+            <td>Alt + 拖拽</td>
+            <td>Option + 拖拽</td>
+        </tr>
+        <tr>
+            <td>临时抓手</td>
+            <td>按住 <span class="special">空格</span> 拖拽</td>
+            <td>同（Mac 上是双指点按）</td>
+        </tr>
+        <tr>
+            <td>旋转画布</td>
+            <td>Ctrl + 拖拽空白处</td>
+            <td>Cmd + 拖拽空白处</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    屏幕模式切换（<span class="special">F</span>）有三种：带菜单栏的标准模式、<span
+        class="important">仅图像模式</span>（Tab 切换）、全屏模式。修图时用「仅图像模式」，鼠标移到顶部会浮出工具栏。
+</div>
+<h3>
+    隐藏/显示面板
+</h3>
+<ul>
+    <li><span class="special">Tab</span>：隐藏/显示所有面板（和 GIMP 相同）</li>
+    <li><span class="special">Shift+Tab</span>：隐藏/显示除工具栏外的所有面板</li>
+    <li><span class="special">Ctrl+H</span>：<span class="important">隐藏/显示选区边界</span>（不是面板，是「边界」选项）</li>
+</ul>
+<h2>
+    文件操作
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>Windows</th>
+            <th>macOS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>新建</td>
+            <td>Ctrl+N</td>
+            <td>Cmd+N</td>
+        </tr>
+        <tr>
+            <td>打开</td>
+            <td>Ctrl+O</td>
+            <td>Cmd+O</td>
+        </tr>
+        <tr>
+            <td>保存</td>
+            <td>Ctrl+S</td>
+            <td>Cmd+S</td>
+        </tr>
+        <tr>
+            <td>另存为</td>
+            <td>Ctrl+Shift+S</td>
+            <td>Cmd+Shift+S</td>
+        </tr>
+        <tr>
+            <td>导出为</td>
+            <td>Ctrl+Alt+Shift+S</td>
+            <td>Cmd+Option+Shift+S</td>
+        </tr>
+        <tr>
+            <td>关闭</td>
+            <td>Ctrl+W</td>
+            <td>Cmd+W</td>
+        </tr>
+        <tr>
+            <td>置入为智能对象</td>
+            <td>Ctrl+Alt+Shift+O</td>
+            <td>Cmd+Option+Shift+O</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    导出为的快捷键是<span class="important">四键组合</span>，记不住就用<span class="special">文件 → 导出 → 导出为</span>。另外 PS 里 Ctrl+S 存 PSD、导出是独立动作，别混。
+</div>
+<h2>
+    编辑与撤销
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>Windows</th>
+            <th>macOS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>撤销</td>
+            <td>Ctrl+Z</td>
+            <td>Cmd+Z</td>
+        </tr>
+        <tr>
+            <td>重做</td>
+            <td>Ctrl+Shift+Z</td>
+            <td>Cmd+Shift+Z</td>
+        </tr>
+        <tr>
+            <td>复制</td>
+            <td>Ctrl+C</td>
+            <td>Cmd+C</td>
+        </tr>
+        <tr>
+            <td>粘贴</td>
+            <td>Ctrl+V</td>
+            <td>Cmd+V</td>
+        </tr>
+        <tr>
+            <td>变换（再次编辑）</td>
+            <td>Ctrl+Shift+T</td>
+            <td>Cmd+Shift+T</td>
+        </tr>
+        <tr>
+            <td>剪切到剪贴板</td>
+            <td>Ctrl+X</td>
+            <td>Cmd+X</td>
+        </tr>
+        <tr>
+            <td>清除（Delete）</td>
+            <td>Delete</td>
+            <td>Delete</td>
+        </tr>
+        <tr>
+            <td>用前景色填充</td>
+            <td>Alt+Delete</td>
+            <td>Option+Delete</td>
+        </tr>
+        <tr>
+            <td>用背景色填充</td>
+            <td>Ctrl+Delete</td>
+            <td>Cmd+Delete</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">Ctrl+Shift+T（再次变换）</span>是 PS 独有的强大功能：对已变换的对象再次按下，可以<span
+        class="important">在不重新变换的情况下继续编辑</span>——比如缩放错了想改，或者想叠加旋转。
+</div>
+<h2>
+    选择与选区
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>Windows</th>
+            <th>macOS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>全选</td>
+            <td>Ctrl+A</td>
+            <td>Cmd+A</td>
+        </tr>
+        <tr>
+            <td>取消选择</td>
+            <td>Ctrl+Shift+A</td>
+            <td>Cmd+Shift+A</td>
+        </tr>
+        <tr>
+            <td>反选</td>
+            <td>Ctrl+Shift+I</td>
+            <td>Cmd+Shift+I</td>
+        </tr>
+        <tr>
+            <td>取消选择边界</td>
+            <td>Ctrl+D</td>
+            <td>Cmd+D</td>
+        </tr>
+        <tr>
+            <td>羽化</td>
+            <td>Shift+F6</td>
+            <td>Shift+F6</td>
+        </tr>
+        <tr>
+            <td>扩大选取</td>
+            <td>Shift+Alt+拖拽</td>
+            <td>Shift+Option+拖拽</td>
+        </tr>
+        <tr>
+            <td>变换选区</td>
+            <td>Ctrl+T（确认后变成选区）</td>
+            <td>同</td>
+        </tr>
+        <tr>
+            <td>选区转图层</td>
+            <td>Ctrl+Shift+J</td>
+            <td>Cmd+Shift+J</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    PS 里 <span class="special">Ctrl+D 是「取消选择边界」</span>（清掉虚线但选区还在），<span
+        class="special">Ctrl+Shift+A 才是真的取消选区</span>。反选是 <span class="special">Ctrl+Shift+I</span>（多了 Shift），和 GIMP 的 Ctrl+I 不同。
+</div>
+<h2>
+    图层操作
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>Windows</th>
+            <th>macOS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>新建图层</td>
+            <td>Ctrl+Shift+N</td>
+            <td>Cmd+Shift+N</td>
+        </tr>
+        <tr>
+            <td>复制图层</td>
+            <td>Ctrl+J</td>
+            <td>Cmd+J</td>
+        </tr>
+        <tr>
+            <td>剪切到新图层</td>
+            <td>Ctrl+Shift+X</td>
+            <td>Cmd+Shift+X</td>
+        </tr>
+        <tr>
+            <td>编组</td>
+            <td>Ctrl+G</td>
+            <td>Cmd+G</td>
+        </tr>
+        <tr>
+            <td>取消编组</td>
+            <td>Ctrl+Shift+G</td>
+            <td>Cmd+Shift+G</td>
+        </tr>
+        <tr>
+            <td>创建剪贴蒙版</td>
+            <td>Ctrl+Alt+G</td>
+            <td>Cmd+Option+G</td>
+        </tr>
+        <tr>
+            <td>上移/下移一层</td>
+            <td>Ctrl+[ / ]</td>
+            <td>Cmd+[ / ]</td>
+        </tr>
+        <tr>
+            <td>移到顶层/底层</td>
+            <td>Ctrl+Shift+[ / ]</td>
+            <td>Cmd+Shift+[ / ]</td>
+        </tr>
+        <tr>
+            <td>盖印可见图层</td>
+            <td>Ctrl+Shift+E</td>
+            <td>Cmd+Shift+E</td>
+        </tr>
+        <tr>
+            <td>合并可见图层</td>
+            <td>Ctrl+E</td>
+            <td>Cmd+E</td>
+        </tr>
+        <tr>
+            <td>在下面合并</td>
+            <td>Ctrl+J（重复按）</td>
+            <td>同</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">Ctrl+Shift+E（盖印可见图层）</span>是最常用的「交付瘦身」操作，它会保留所有调整效果的同时把图层数降到 1。见《图层与蒙版》一篇。
+</div>
+<h2>
+    工具选项栏速查
+</h2>
+<p>
+    每个工具的参数都在紧贴工具栏下方的<span class="important">选项栏</span>里。这几个是通用操作：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>快捷键</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>显示/隐藏选区</td>
+            <td>Ctrl+H</td>
+            <td>所有选择工具</td>
+        </tr>
+        <tr>
+            <td>重新排列选区</td>
+            <td>Alt+拖拽</td>
+            <td>矩形/椭圆选择</td>
+        </tr>
+        <tr>
+            <td>从中心绘制</td>
+            <td>Alt</td>
+            <td>矩形/椭圆选择</td>
+        </tr>
+        <tr>
+            <td>添加到选区</td>
+            <td>Shift</td>
+            <td>所有选择工具</td>
+        </tr>
+        <tr>
+            <td>笔刷大小</td>
+            <td><span class="special">[</span> / <span class="special">]</span></td>
+            <td>所有绘画类工具</td>
+        </tr>
+        <tr>
+            <td>笔刷硬度</td>
+            <td>Shift+<span class="special">[</span> / <span class="special">]</span></td>
+            <td>同上</td>
+        </tr>
+        <tr>
+            <td>不透明度</td>
+            <td><span class="special">数字键</span></td>
+            <td>输入 0-100</td>
+        </tr>
+        <tr>
+            <td>交换前景/背景色</td>
+            <td>X</td>
+            <td>全局</td>
+        </tr>
+        <tr>
+            <td>重置为黑白</td>
+            <td>D</td>
+            <td>全局</td>
+        </tr>
+        <tr>
+            <td>打开颜色选择器</td>
+            <td>点击颜色块</td>
+            <td>全局</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    隐藏辅助线提升性能
+</h3>
+<p>
+    Adobe 官方给的性能建议：绘画或修图时隐藏标尺和参考线类辅助元素，能提升响应速度。
+</p>
+<ul>
+    <li><span class="special">Ctrl+R</span>：标尺</li>
+    <li><span class="special">Ctrl+H</span>：显示额外内容（<span class="important">包括网格、参考线、选区边界</span>）</li>
+</ul>
+<div class="tips">
+    <span class="special">Ctrl+H 有双重身份</span>：在面板外按是切换额外内容显示，在图层/蒙版缩略图上按是停用该蒙版。位置不同功能不同，很容易记混。
+</div>
+<h2>
+    颜色面板
+</h2>
+<p>
+    前景色和背景色的几个操作：
+</p>
+<ul>
+    <li><span class="special">D</span>：重置为黑白</li>
+    <li><span class="special">X</span>：交换</li>
+    <li><span class="special">Alt+点击前景色块</span>：打开拾色器（旧版）</li>
+    <li><span class="special">点击颜色块</span>：打开颜色面板取色器</li>
+    <li><span class="special">Shift+拖拽颜色块</span>：直接在颜色面板上调色</li>
+    <li>颜色面板里的<span class="important">HSB / RGB / Lab 切换</span>：<span class="special">Lab</span> 在做色彩匹配时最准</li>
+</ul>
+<div class="tips">
+    PS 拾色器的 <span class="special">HSB 模式</span>有一个「仅 Web 颜色」勾选项，勾上后只能选 Web 安全色（216 色）。<span
+        class="important">除非明确在做兼容性极老的网页，否则永远不要勾</span>，它会大幅限制可选范围。
+</div>
+<h2>
+    自定义快捷键
+</h2>
+<p>
+    <span class="special">编辑 → 键盘快捷键</span>，打开「键盘快捷键和菜单」对话框。这里能改的不只是工具：
+</p>
+<ul>
+    <li>下拉选择<span class="special">应用程序菜单 / 面板菜单 / 工具</span>分别配置</li>
+    <li>搜索框定位命令，点「快捷键」列改成 <span class="special">New accelerator</span>，直接按键</li>
+    <li>按 <span class="special">Backspace</span> 清除某个快捷键</li>
+    <li>冲突时 PS 会提示该组合已分配给谁，可以覆盖或取消</li>
+</ul>
+<h3>
+    值得改的快捷键
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>命令</th>
+            <th>建议键</th>
+            <th>理由</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>抓手工具</td>
+            <td>H</td>
+            <td>最高频却无快捷键</td>
+        </tr>
+        <tr>
+            <td>缩放工具</td>
+            <td>Z</td>
+            <td>同上</td>
+        </tr>
+        <tr>
+            <td>吸管工具</td>
+            <td>I</td>
+            <td>同上（注意不与其它冲突时）</td>
+        </tr>
+        <tr>
+            <td>修补工具</td>
+            <td>J</td>
+            <td>修图高频</td>
+        </tr>
+        <tr>
+            <td>涂抹工具</td>
+            <td>W</td>
+            <td>磨皮常用</td>
+        </tr>
+        <tr>
+            <td>减淡/加深</td>
+            <td>O</td>
+            <td>同上</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    分配前先在搜索框查一下这个键是否已被占用（PS 会直接提示冲突并给出已分配的命令），比事后发现按了没反应再排查快。
+</div>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    数字键不生效
+</h3>
+<p>
+    输入数字只改变不透明度（如果当前工具支持），它不会切换工具。如果想切换工具得用 Shift+单击或自定义快捷键。
+</p>
+<h3>
+    「为什么我的操作没有效果」
+</h3>
+<p>
+    第一个要查的是<span class="important">是否处于选区状态</span>。Ctrl+Shift+A 取消选区再试。其次检查图层不透明度是否为 0、图层是否隐藏、是否在错误的图层上。
+</p>
+<h3>
+    按住右键不弹出菜单
+</h3>
+<p>
+    右键弹出的内容取决于<span class="important">当前工具</span>。想看到完整的上下文菜单，可以先按 <span class="special">Ctrl+Shift+F5</span> 切换右键行为（在首选项 → 鼠标按键和控制里改）。另外如果正在用抓手/缩放这类工具，右键行为会不同。
+</p>
+<h3>
+    历史记录步数不够用
+</h3>
+<p>
+    改首选项里的撤销步数。但更根本的做法是<span class="special">定期保存 PSD 版本</span>——历史记录在关闭文档后就消失，无法恢复。
+</p>
+<h3>
+    找不到某个工具
+</h3>
+<p>
+    PS 的工具箱有滚动条和折叠，有些工具藏在分组里。搜索功能：<span class="special">编辑 → 首选项 → 界面 → 工具</span>里可以确认显示方式。另外<span
+        class="important">快速蒙版、退场工具在「…」溢出菜单里</span>。
+</p>
+<h3>
+    数字/大小写切换导致快捷键失效
+</h3>
+<p>
+    检查输入法状态。中文输入法下某些 PS 快捷键会被输入法拦截，尤其是 <span class="special">Ctrl+空格</span> 这类切换输入法的组合。可在首选项里改输入法快捷键，或改用单键无组合的方案（如把撤销改成 <span
+        class="special">Caps Lock + Z</span>）。
+</p>

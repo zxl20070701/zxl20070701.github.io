@@ -1,0 +1,440 @@
+<header>
+    安装与入门
+</header>
+<p>
+    Photoshop 是目前图像编辑的事实标准，功能强大但代价是<span class="important">订阅制、体积大、启动慢</span>。这篇先讲怎么装、怎么配置首选项、以及第一个文档该怎么做。
+</p>
+<h2>
+    购买与安装
+</h2>
+<p>
+    Photoshop 是 Adobe Creative Cloud 的核心应用，订阅方式主要有三类（具体价格随地区和促销频繁变化，以官网为准）：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>方式</th>
+            <th>包含内容</th>
+            <th>适合</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>单应用订阅</td>
+            <td>只含 Photoshop + 云存储</td>
+            <td><span class="important">只用 PS 的人首选</span>，比全家桶便宜不少</td>
+        </tr>
+        <tr>
+            <td>Photography 计划</td>
+            <td>PS + Lightroom</td>
+            <td>照片后期为主</td>
+        </tr>
+        <tr>
+            <td>Creative Cloud Pro 全家桶</td>
+            <td>20+ 款应用</td>
+            <td>需要 AE / PR / AI 等其他工具</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    另外还有面向学生和教师的教育版（凭资质审核，通常五折左右），以及<span class="special">单月/单年一次性买断</span>的选项（部分地区提供）。所有付费订阅都包含<span
+        class="important">7 天免费试用</span>。
+</p>
+<div class="tips">
+    价格和套餐结构 Adobe 调整得很频繁，<span class="important">不要按文章里的数字做决策</span>，直接看官网 plans 页面。另外注意区分「国区版」和海外版，功能基本一致，但账号体系要对应。
+</div>
+<h3>
+    安装注意事项
+</h3>
+<ul>
+    <li>Windows 系统盘建议留<span class="important">30GB 以上</span>空间，PS 本身加缓存会占不少</li>
+    <li>安装时如果选了「安装 Photoshop 试用版」，试用到期后需登录订阅账号</li>
+    <li><span class="important">不要把 PS 装在 OneDrive 同步目录里</span>，同步会拖垮性能甚至造成文件损坏</li>
+    <li>Apple Silicon Mac 建议用 Creative Cloud 桌面版安装原生 arm64 版本</li>
+</ul>
+<h2>
+    首次配置首选项
+</h2>
+<p>
+    PS 出厂默认值不一定适合你的机器和工作流。<span class="important">装完第一件事是改首选项</span>：<span class="special">编辑 → 首选项</span>。
+</p>
+<h3>
+    性能：内存与缓存盘
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>设置项</th>
+            <th>建议</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>内存使用</td>
+            <td><span class="important">70%~80%</span></td>
+            <td>留一部分给系统。太高会卡死，太低会频繁用硬盘当虚拟内存</td>
+        </tr>
+        <tr>
+            <td>暂存磁盘</td>
+            <td><span class="special">SSD 且剩余空间大</span></td>
+            <td>不要用 C 盘（系统盘），大图操作时缓存读写非常频繁</td>
+        </tr>
+        <tr>
+            <td>GPU 设置</td>
+            <td>「图形处理器」勾选 + 显存调到最大</td>
+            <td>界面缩放、视图渲染都靠它，见下文说明</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    暂存盘和内存是最值得优先调的两项。<span class="special">内存不足的典型症状是「存储暂存磁盘已满」</span>，出现这个提示说明该清理暂存盘了。
+</div>
+<h3>
+    性能：GPU 加速
+</h3>
+<p>
+    PS 的界面渲染（缩放、平移、旋转视图）依赖显卡。设置路径：<span class="special">编辑 → 首选项 → 性能 → 图形处理器</span>。
+</p>
+<ul>
+    <li>勾选「使用图形处理器」</li>
+    <li>显存设置为最大（通常是 <span class="special">2GB~4GB</span>，依显存而定）</li>
+    <li>点击「检测」确认可用</li>
+</ul>
+<div class="tips">
+    GPU 加速确实能提升体验，但<span class="important">存在兼容性 bug</span>：某些老显卡驱动在开启后会出现界面闪烁、缩放卡顿、色彩异常。如果遇到这类问题，第一反应是关掉 GPU 加速试试。
+</div>
+<h3>
+    其它值得改的
+</h3>
+<ul>
+    <li><span class="special">界面 → 启动时</span>：取消勾选不需要的面板，打开速度明显变快</li>
+    <li><span class="special">界面 → 工具</span>：勾选「在停靠工具栏中显示图标的标签」，工具箱显示全称更直观</li>
+    <li><span class="special">增效工具 → 首选项</span>：关掉用不到的旧版插件，能加快启动</li>
+    <li><span class="special">文件 → 首选项 → 自动保存</span>：把自动保存间隔调到 5 分钟（默认 10 分钟）</li>
+    <li><span class="special">增效工具 → 预设 → 迁移预设</span>：从旧版本 PS 迁移画笔、样式等预设</li>
+</ul>
+<h2>
+    HDR 与色彩空间默认值
+</h2>
+<p>
+    新建文档时的色彩空间设置很关键，详见《色彩管理》一篇。这里只记住一句：
+</p>
+<div class="tips">
+    新文档默认用 <span class="important">sRGB / 8 位</span>，这是最通用的选择。印刷或需要后期大幅调色时，才考虑 <span
+        class="special">Adobe RGB</span> 或 <span class="special">ProPhoto RGB</span> + <span class="special">16 位</span>。
+</div>
+<h2>
+    配置文件位置
+</h2>
+<p>
+    PS 的配置、预设、插件、暂存文件都在固定位置，<span class="important">迁移和备份只需要复制这几个目录</span>：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>系统</th>
+            <th>路径</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Windows</td>
+            <td><span class="special">C:\Users\用户名\AppData\Roaming\Adobe\Adobe Photoshop 版本号\</span></td>
+        </tr>
+        <tr>
+            <td>macOS</td>
+            <td><span class="special">~/Library/Preferences/Adobe Photoshop 版本号/</span></td>
+        </tr>
+    </tbody>
+</table>
+<pre>
+AppData/Roaming/Adobe/Adobe Photoshop 2026/
+├── Presets/          # 画笔、样式、色板等预设
+│   ├── Brushes/
+│   ├── Brush Presets/
+│   ├── Styles/
+│   ├── Swatches/
+│   ├── Patterns/
+│   ├── Shapes/
+│   ├── Gradients/
+│   ├── Color Swatches/
+│   ├── Contours/
+│   ├── Filters/
+│   └── Actions/
+├── Brushes/          # 自定义笔刷文件 (.abr)
+├── Plugins/          # 插件
+├── Scripts/          # 脚本
+├── Adobe Extend Scripts/  # 扩展脚本
+└── Photoshop.ini     # 主配置文件
+</pre>
+<div class="tips">
+    <span class="important">重装系统前务必备份 Presets 目录</span>，里面是你积累的画笔和样式，比软件本身难恢复。迁移到新机器也是复制这个目录 + Plugins 目录。
+</div>
+<h2>
+    文件格式
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>格式</th>
+            <th>用途</th>
+            <th>关键说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">PSD</span></td>
+            <td>原生工程文件</td>
+            <td><span class="important">唯一能保存全部图层、蒙版、智能对象、调整图层的格式</span>。可能很大</td>
+        </tr>
+        <tr>
+            <td>PSB</td>
+            <td>大画布 PSD</td>
+            <td>支持最高 30 万像素边长，用于巨幅印刷品</td>
+        </tr>
+        <tr>
+            <td>TIFF</td>
+            <td>印刷 / 归档</td>
+            <td>无损，可嵌入色彩配置文件和 IPTC 信息</td>
+        </tr>
+        <tr>
+            <td>JPEG</td>
+            <td>网络图片</td>
+            <td>有损，<span class="important">不支持透明</span>，质量建议 70-85</td>
+        </tr>
+        <tr>
+            <td>PNG</td>
+            <td>需透明 / 无损</td>
+            <td>体积大；WebP 是更好的替代</td>
+        </tr>
+        <tr>
+            <td>WebP</td>
+            <td>现代网页</td>
+            <td>比 JPEG 小、比 PNG 支持透明，现在应当作为首选</td>
+        </tr>
+        <tr>
+            <td>AVIF</td>
+            <td>下一代网页</td>
+            <td>压缩率更高，但兼容性还不如 WebP</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <span class="special">保存（Ctrl+S）</span>存 PSD，<span class="special">导出（Ctrl+Alt+Shift+S）</span>出图片。这两个动作是独立的，参见 GIMP 那篇的详细说明——PS 在这一点上逻辑相同但更不容易混淆，因为它有明确的「导出为」菜单项。
+</p>
+<h2>
+    打开 RAW
+</h2>
+<p>
+    PS 自带 <span class="important">Camera Raw</span>（不是 Lightroom 的 ACR，是 PS 内的独立模块），双击 RAW 文件即进入。
+</p>
+<h3>
+    工作流程选择
+</h3>
+<p>
+    Camera Raw 打开时会问「合并到新图层」还是「在 Camera Raw 中打开」：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>选项</th>
+            <th>效果</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Camera Raw 默认</td>
+            <td>修改直接烙进像素</td>
+            <td>普通修图</td>
+        </tr>
+        <tr>
+            <td>合并到新图层</td>
+            <td><span class="important">修改作为智能滤镜挂在图层下方</span></td>
+            <td><span class="special">推荐</span>，可反复回调 Camera Raw 调参数</td>
+        </tr>
+        <tr>
+            <td>转换为智能对象</td>
+            <td>同上是智能滤镜</td>
+            <td>同上，措辞不同</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    养成习惯：<span class="important">打开 RAW 时总是选「合并到新图层」</span>。这样 Camera Raw 参数变成可回溯的智能滤镜，随时能双击回去改——这是 PS 里最容易被忽略的便利功能。
+</div>
+<h3>
+    工作流程预设
+</h3>
+<p>
+    在 <span class="special">编辑 → 首选项 → 文件处理 → Camera Raw 首选项</span> 里可以设默认工作流程。默认是「默认设置」（通常是 ACR 10.x）。如果习惯 Lightroom 的流程，可以改成「Adobe Camera Settings」并指定版本。<span
+        class="important">工作流程决定了解码算法，RAW 处理是有损的</span>，所以同一个 RAW 用不同流程打开会有画质差异。
+</p>
+<h3>
+    关键设置
+</h3>
+<ul>
+    <li><span class="special">空间（Space）</span>：设为 <span class="important">ProPhoto RGB</span> 时，RAW 导入后再转 sRGB 会有额外余量</li>
+    <li><span class="special">深度（Depth）</span>：<span class="important">16 位</span>，避免大幅调色时出现色阶断层</li>
+    <li><span class="special">相机配置文件</span>：<span class="special">Adobe Color</span> 是通用预设，<span class="special">Camera Matching</span> 贴近原相机色彩</li>
+</ul>
+<h2>
+    界面初见
+</h2>
+<p>
+    PS 默认的工作区布局：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>区域</th>
+            <th>快捷键打开</th>
+            <th>用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>工具栏</td>
+            <td>—</td>
+            <td>左侧长条，双击工具名可切换到该工具的设置弹窗</td>
+        </tr>
+        <tr>
+            <td>选项栏</td>
+            <td>—</td>
+            <td><span class="important">紧贴工具栏下方，显示当前工具的所有参数</span></td>
+        </tr>
+        <tr>
+            <td>工具预设</td>
+            <td>—</td>
+            <td>选项栏右侧的小面板，保存常用工具参数组合</td>
+        </tr>
+        <tr>
+            <td>颜色 / 样式</td>
+            <td>—</td>
+            <td>前景色背景色、色板、样式和历史记录</td>
+        </tr>
+        <tr>
+            <td>调整图层 / 图层样式</td>
+            <td>—</td>
+            <td>调整图层图标、样式和蒙版快捷入口</td>
+        </tr>
+        <tr>
+            <td>图层</td>
+            <td>Ctrl+Shift+Alt+G</td>
+            <td>核心面板</td>
+        </tr>
+        <tr>
+            <td>历史记录</td>
+            <td>Ctrl+Shift+Y</td>
+            <td>PS 的历史记录板<span class="important">有步数上限</span>，详见下文</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="important">历史记录面板默认只有 20 步</span>，这是 PS 最反直觉的限制。改成 <span
+        class="special">编辑 → 首选项 → 性能 → 撤消步数</span>（建议 50-100）。不过真正可靠的做法是<span
+        class="special">多存 PSD 版本</span>，因为历史记录在关闭文档后就彻底没了。
+</div>
+<h2>
+    工作区布局
+</h2>
+<ul>
+    <li><span class="special">窗口 → 工作区</span>：切换预设布局（摄影、绘画、排版规则等）</li>
+    <li><span class="special">窗口 → 排列 → 存储工作区</span>：把当前布局存成自己的预设</li>
+    <li>面板右上角三横菜单 → 「面板列表」：<span class="important">所有面板都能从这里找回来</span></li>
+    <li>拖动面板时按住 <span class="special">Alt</span> 可直接复制到浮动窗口</li>
+</ul>
+<div class="tips">
+    PS 没有「重置界面」的官方命令。布局乱了最快的办法是关掉 PS、删除<span
+        class="special">工作区配置目录</span>下的 <span class="special">Adobe Photoshop 版本号/KnownFoldersSettings.xml</span>（改名备份即可），重开会恢复默认布局。
+</div>
+<h2>
+    新建文档
+</h2>
+<p>
+    <span class="special">Ctrl+N</span> 打开新建对话框，几个必填项：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>选项</th>
+            <th>建议</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>名称</td>
+            <td>写清楚用途</td>
+            <td>如「首页-主视觉-v3」，后期找文件救命</td>
+        </tr>
+        <tr>
+            <td>宽度/高度</td>
+            <td>按输出定</td>
+            <td>网页 1920×1080；印刷按 300dpi 反推</td>
+        </tr>
+        <tr>
+            <td>分辨率</td>
+            <td><span class="important">72 / 96（屏幕）</span>，印刷 <span class="special">300</span></td>
+            <td>只影响打印输出尺寸，不影响屏幕显示</td>
+        </tr>
+        <tr>
+            <td>背景内容</td>
+            <td>看用途</td>
+            <td>做设计一般选「透明」，改起来更灵活</td>
+        </tr>
+        <tr>
+            <td>色彩模式</td>
+            <td><span class="special">RGB 颜色 / 8 位</span></td>
+            <td>见《色彩管理》</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    试用期到期后打不开
+</h3>
+<p>
+    PS 会要求登录 Adobe 账号并确认订阅。没有订阅时只能购买或换用其它工具。此时文件格式是个问题：<span
+        class="important">PSD 需要兼容软件才能打开</span>，可迁移到 GIMP（详见 GIMP 那篇的 XCF 说明），或用 Affinity Photo、Photopea（网页版）应急。
+</p>
+<h3>
+    打开很慢 / 卡顿
+</h3>
+<p>
+    按优先级排查：<span class="important">关掉 GPU 加速试试</span> → 清空暂存盘 → 调高内存占比 → 关掉不需要的增效工具 → 检查是否装在机械硬盘上。
+</p>
+<h3>
+    界面显示错乱 / 文字重叠
+</h3>
+<p>
+    显卡驱动与 GPU 加速的兼容问题。优先更新显卡驱动，仍然异常就关闭 GPU 加速。
+</p>
+<h3>
+    「存储暂存磁盘已满」
+</h3>
+<p>
+    内存不够 PS 把数据写到硬盘了。处理：编辑 → 首选项 → 性能，确认暂存盘指向 SSD 且空间充足，把内存使用调到 70% 左右。临时救急可以用<span
+        class="special">编辑 → 首选项 → 性能 → 清除剪切板</span>释放内存。
+</p>
+<h3>
+    画布变成灰色剪贴板状
+</h3>
+<p>
+    内存耗尽的表现。关闭部分文档、<span class="special">盖印可见图层</span>把图层数降到 1、必要时转 8 位模式。养成每阶段存档并关闭文档的习惯。
+</p>
+<h3>
+    找不到某个面板
+</h3>
+<p>
+    <span class="special">窗口菜单</span>里找，或面板右上角三横 → 面板列表。PS 所有面板都集中在这里，重启 PS 会恢复默认可见性。
+</p>
+<h3>
+    PS 占用过高导致其它软件卡
+</h3>
+<p>
+    PS 会尽量吃满内存。内存较小的机器上，把 PS 的内存使用限制调到 60%~70%，给系统留出余量。
+</p>

@@ -1,0 +1,68 @@
+<header>
+    默认参数
+</header>
+<h2>
+    基本用法
+</h2>
+<p>
+    函数参数可以设置默认值，当调用时未传入对应参数（或传入 undefined）时，会使用默认值。
+</p>
+<pre tag="javascript">
+function greet(name = 'World') {
+    return `Hello, ${name}!`;
+}
+greet(); // "Hello, World!"
+greet('Alice'); // "Hello, Alice!"
+</pre>
+<h2>
+    多个默认参数
+</h2>
+<p>
+    可以为多个参数设置默认值，有默认值的参数可以放在无默认值参数之后。
+</p>
+<pre tag="javascript">
+function createUser(name, role = 'user', active = true) {
+    return { name, role, active };
+}
+createUser('Bob'); // { name: 'Bob', role: 'user', active: true }
+createUser('Carol', 'admin'); // { name: 'Carol', role: 'admin', active: true }
+</pre>
+<h2>
+    使用表达式作为默认值
+</h2>
+<p>
+    默认值可以是任意表达式，甚至是函数调用。表达式只在参数未传入时才会被求值。
+</p>
+<pre tag="javascript">
+function getDefault() {
+    return Math.random();
+}
+function init(value = getDefault()) {
+    return value;
+}
+</pre>
+<h2>
+    使用前一个参数作为后一个参数的默认值
+</h2>
+<p>
+    默认值表达式中可以引用前面已定义的参数。
+</p>
+<pre tag="javascript">
+function calculate(a, b = a * 2) {
+    return a + b;
+}
+calculate(5); // 15 (5 + 5*2)
+</pre>
+<h2>
+    与解构结合使用
+</h2>
+<p>
+    默认值可以与解构赋值结合，为解构的属性设置默认值。
+</p>
+<pre tag="javascript">
+function setup({ host = 'localhost', port = 8080 } = {}) {
+    console.log(`${host}:${port}`);
+}
+setup(); // "localhost:8080"
+setup({ host: 'example.com' }); // "example.com:8080"
+</pre>

@@ -1,0 +1,336 @@
+<header>
+    图层与蒙版
+</header>
+<p>
+    图层是 Photoshop 的核心心智模型：一张图由若干个透明胶片叠在一起构成，每张胶片可以单独调整透明度、混合模式和蒙版。绝大多数「怎么做出来的」问题，最后都能归结为图层怎么组织。
+</p>
+<h2>
+    图层基础操作
+</h2>
+<p>
+    <span class="pip-block">新建图层</span>
+    <span class="pip-block">Ctrl+Shift+N</span>
+    →
+    <span class="pip-block">设置名称、颜色标记、模式、不透明度</span>
+</p>
+<p>
+    <span class="pip-block">复制图层</span>
+    <span class="pip-block">Ctrl+J</span>
+    是最常用的操作，它在原图层<span class="important">上方</span>直接生成副本。副本命名后缀是 <span class="special">copy</span>，反复按 Ctrl+J 会得到 <span
+        class="special">copy 2</span>、<span class="special">copy 3</span>，图层一多就很难找，所以<span class="important">复制后立刻重命名</span>是个好习惯。
+</p>
+<p>
+    图层面板里几个容易忽略但很实用的操作：
+</p>
+<ul>
+    <li><span class="special">Alt+点击图层眼睛</span>：临时只看这一层，再点一次恢复，方便对比修改前后效果</li>
+    <li><span class="special">Alt+点击图层缩略图</span>：加载该图层的智能对象内容，改动会同步回智能对象</li>
+    <li><span class="special">拖拽到其他文档标签</span>：跨文档复制图层</li>
+    <li><span class="special">Ctrl+点击图层</span>：多选图层，一次调整不透明度或对齐</li>
+</ul>
+<div class="tips">
+    图层重排有两条捷径：拖拽调整顺序，或者 <span class="special">Ctrl+[</span> / <span class="special">Ctrl+]</span> 下移上移一层，再用 <span
+        class="special">Shift+Ctrl+[</span> 移到最底层。层数很多时用快捷键比拖拽更精确。
+</div>
+<h2>
+    图层组
+</h2>
+<p>
+    图层组（Group）本质是一个<span class="important">装着其它图层的文件夹</span>，可以整体移动、隐藏、改不透明度，也能嵌套。它的价值不只是整洁——组还能承载图层样式，效果会作用到组内所有图层。
+</p>
+<pre>
+组 A
+├── 组 A1
+│   ├── 背景
+│   └── 装饰线
+└── 文字
+</pre>
+<p>
+    组的混合模式有个特殊选项 <span class="special">穿透（Pass Through）</span>，这是它和「文件夹」的本质区别：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>作用范围</th>
+            <th>典型用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">穿透</span></td>
+            <td>组内图层与组<strong>下方</strong>的图层一起参与混合</td>
+            <td>整体调色组（见《调色与滤镜》一篇的调整图层）</td>
+        </tr>
+        <tr>
+            <td><span class="special">正常</span>等其它模式</td>
+            <td>组先合成成一个整体，再和下方图层混合</td>
+            <td>给某组元素统一加投影、外发光</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    「穿透」是实现<span class="important">调整图层效果延伸到组外</span>的关键：新建一个组，把调整图层放进组里并设为穿透，组下方所有像素都会跟着受影响。这比逐层套调整图层干净得多。
+</div>
+<h2>
+    蒙版基础
+</h2>
+<p>
+    蒙版（Mask）是<span class="important">附着在图层上的灰度图</span>：白色=完全显示，黑色=完全隐藏，灰色=半透明。它只控制图层的可见性，不影响像素本身，所以不会破坏原图，随时可以改回来。
+</p>
+<p>
+    灰度记法：<span class="special">0</span>（黑，完全隐藏）→ <span class="special">128</span>（灰，50% 半透明）→ <span class="special">255</span>（白，完全显示）。这也是理解所有蒙版参数的换算基础。
+</p>
+<h3>
+    三种创建方式
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>方式</th>
+            <th>初始状态</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>图层下方白底按钮</td>
+            <td>全白，<span class="special">全部显示</span></td>
+            <td>需要从零开始擦除的场景</td>
+        </tr>
+        <tr>
+            <td>添加图层蒙版（Alt+点击）</td>
+            <td><span class="special">按当前选区</span>生成</td>
+            <td><span class="important">最常用</span>，先选好区域再创建</td>
+        </tr>
+        <tr>
+            <td>添加图层蒙版（Ctrl+点击）</td>
+            <td>全黑，<span class="special">全部隐藏</span></td>
+            <td>从零开始画显示区域</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    记忆规律：<span class="special">Alt+点击</span> = 当前选区<span class="important">露出来</span>；<span class="special">Ctrl+点击</span> = 当前选区<span class="important">藏起来</span>，其余全露。
+</div>
+<h3>
+    停靠面板与快捷键
+</h3>
+<p>
+    图层面板里，<span class="special">Alt+点击蒙版缩略图</span>直接进入蒙版视图，<span class="special">Alt+点击图层缩略图</span>回到图层视图——这个来回切换比在面板里找图标快得多。
+</p>
+<ul>
+    <li><span class="special">\</span>（反斜杠）：在图层与蒙版之间切换选中目标</li>
+    <li><span class="special">Ctrl+I</span>：反相当前蒙版或调整图层，方便临时对比</li>
+    <li><span class="special">Ctrl+点击蒙版缩略图</span>：停用/启用蒙版（不删除）</li>
+    <li><span class="special">Shift+点击蒙版缩略图</span>：关闭蒙版显示与链接，继续画像素</li>
+    <li><span class="special">Ctrl+Delete</span> / <span class="special">Alt+Backspace</span>：在蒙版上填充黑/白，直接得到硬边显隐</li>
+</ul>
+<div class="tips">
+    想快速得到「只保留人物」的图层：选中人物 → <span class="special">Alt+点击</span>图层下方白底按钮。之后边缘会有明显硬边，别急着抠，交给《选区与抠图》里的方法处理。
+</div>
+<h2>
+    智能对象
+</h2>
+<p>
+    智能对象（Smart Object）把图层内容变成一个<span class="important">独立的文档实例</span>，嵌入在 PSD 里。它带来三个能力：
+</p>
+<ul>
+    <li><span class="important">无损缩放</span>：随时改变大小和角度，底层始终保留原始分辨率，缩到 400% 也不会糊</li>
+    <li><span class="important">可反复编辑</span>：双击进入编辑，改完保存自动更新，无需重新导入</li>
+    <li><span class="important">滤镜可回溯</span>：智能对象上的智能滤镜在源文件修改后会重新计算</li>
+</ul>
+<p>
+    把一个普通图层转成智能对象：选中后 <span class="special">图层面板菜单 → 转换为智能对象</span>，或直接拖进另一个文档里（自动创建并链接）。
+</p>
+<div class="tips">
+    智能对象用多了会让 PSD 体积暴涨（每张原图都嵌一份），存盘和渲染都会变慢。几百 MB 的工程在设计稿里很常见，交付前记得整理。
+</div>
+<h2>
+    图层样式
+</h2>
+<p>
+    图层样式（Layer Style）是一组非破坏性效果，双击图层缩略图（或 <span class="special">Fx 按钮</span>）打开样式面板。它最关键的一点是：
+</p>
+<div class="tips">
+    勾选<span class="important">「图层缩览图」</span>后，面板顶部会显示实时预览；取消勾选则完全停用样式但保留设置。这是在两个样式方案之间对比的唯一方法。
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>样式</th>
+            <th>典型用途</th>
+            <th>关键参数</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>投影</td>
+            <td>让元素浮在背景上</td>
+            <td>角度、大小、距离；<span class="special">Use Global Light</span> 让全图层阴影方向一致</td>
+        </tr>
+        <tr>
+            <td>描边</td>
+            <td>文字可读性、图标分离背景</td>
+            <td>位置（内/中/外）、填充类型、像素大小</td>
+        </tr>
+        <tr>
+            <td>内阴影 / 外发光</td>
+            <td>内凹质感、霓虹发光</td>
+            <td>颜色、渐变、混合模式</td>
+        </tr>
+        <tr>
+            <td>颜色/渐变/图案叠加</td>
+            <td>快速给纯色层加质感</td>
+            <td>叠加混合模式叠加，避免直接替换原色</td>
+        </tr>
+        <tr>
+            <td>图层蒙版</td>
+            <td>样式自带柔化边缘</td>
+            <td>不透明度、扩展，<span class="special">按住 Alt 点击</span> 只临时启用</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    样式的复制与清理
+</h3>
+<p>
+    把一个图层的样式套到另一个上：长按 <span class="special">Alt</span> 拖动图层即可复制全部样式，比逐项勾选快得多。反向操作（清样式）用 <span class="special">Shift+右键 → 清除图层样式</span>。
+</p>
+<p>
+    样式多起来后，<span class="special">图层 → 图层样式 → 复制图层样式</span> 会弹出一个样式清单，可以批量管理命名过的样式。
+</p>
+<h2>
+    调整图层与填充图层
+</h2>
+<p>
+    这两类图层<span class="important">不直接改像素</span>，只通过其作用范围影响下方的图层，是非破坏性调色的基础（详见《调色与滤镜》一篇）：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>代表</th>
+            <th>作用方式</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>调整图层</td>
+            <td>曲线、色阶、可选色彩、色彩平衡</td>
+            <td>只影响下方，不含像素</td>
+        </tr>
+        <tr>
+            <td>填充图层</td>
+            <td>纯色、渐变、图案</td>
+            <td>自带蒙版，本质是一张被蒙版限制的色图</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    调整图层默认「只影响下方」，双击图层缩略图打开属性面板可勾选 <span class="special">剪贴到图层</span>，把作用范围限制在下方的同组内图层。
+</p>
+<div class="tips">
+    调整图层<span class="special">只能影响它下面的图层</span>，所以插错位置是最常见的问题。插好之后按 <span class="special">Ctrl+Alt+G</span> 创建剪贴组，把调整图层和目标图层锁在一起。
+</div>
+<h2>
+    剪贴与编组
+</h2>
+<ul>
+    <li><span class="special">Ctrl+G</span>：编组（Group），建立普通组</li>
+    <li><span class="special">Ctrl+Alt+G</span>：创建剪贴组（Clipping Mask），下层图层被裁剪进上层</li>
+    <li><span class="special">Ctrl+Alt+Shift+G</span>：释放剪贴</li>
+</ul>
+<p>
+    剪贴的典型用法：用一个纯色/渐变填充层压在图层上方，按 <span class="special">Alt+点击两者之间</span> 建立剪贴，蒙版画在哪里，颜色就作用在哪里——相当于 Photoshop 版的剪贴蒙版。
+</p>
+<h2>
+    混合模式速查
+</h2>
+<p>
+    混合模式分五大类，日常够用的是前四类：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>类别</th>
+            <th>代表模式</th>
+            <th>视觉效果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>正常/溶解</td>
+            <td>正常、溶解</td>
+            <td>不混合；溶解带随机像素颗粒</td>
+        </tr>
+        <tr>
+            <td>变暗</td>
+            <td>变暗、正片叠底、颜色加深</td>
+            <td>压暗，对比增强，<span class="special">正片叠底</span>是经典加深方式</td>
+        </tr>
+        <tr>
+            <td>变亮</td>
+            <td>变亮、滤色、颜色减淡、线性减淡</td>
+            <td>提亮；<span class="special">滤色</span>等价于传统<span class="important">正片叠底</span>，GIMP 里叫 Linear Dodge</td>
+        </tr>
+        <tr>
+            <td>对比</td>
+            <td>叠加、柔光、亮光、点光、实色</td>
+            <td><span class="special">叠加</span>与柔光最常用，柔光适合快速提亮/压暗</td>
+        </tr>
+        <tr>
+            <td>差异</td>
+            <td>差值、排除</td>
+            <td>差值可用于<span class="important">对比两图差异</span>（移动图层时）</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    什么时候该合并图层
+</h2>
+<p>
+    图层多了会拖慢一切（PS 内存吃满后界面卡顿几乎都因为图层和智能对象太多）。合并前请确认：
+</p>
+<ul>
+    <li>蒙版是否已应用到像素（<span class="special">图层 → 应用图层蒙版</span>），否则合并即永久丢失蒙版</li>
+    <li>智能对象是否仍需改内容，需要就先栅格化或保留副本</li>
+    <li>调整图层是否已合并（<span class="special">Ctrl+Shift+E</span> 盖印可见图层为一个带调整的普通图层）</li>
+</ul>
+<div class="tips">
+    交付前做一次<span class="important">盖印可见图层</span>（Ctrl+Shift+E），它会保留所有调整效果的同时把图层数降到 1，是最常用的「交付瘦身」手段。
+</div>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    蒙版画了没反应
+</h3>
+<p>
+    依次检查：画笔颜色是不是黑/白（画错了等于没改）、蒙版缩略图是否被停用（Ctrl+点击）、图层不透明度是否为 0、蒙版是否链接到了别的图层。用 <span
+        class="special">Alt+点击图层缩略图</span>进入蒙版视图，再 <span class="special">Ctrl+I</span> 反相，能立刻看出蒙版内容是否正确。
+</p>
+<h3>
+    图层样式边缘有锯齿
+</h3>
+<p>
+    投影、描边这类效果在低分辨率下会出现明显锯齿。在样式面板里把对应效果的「图层蒙版」分块半径调小，或用 <span class="special">效果 → 显示完整图层</span> 检查是否是预览精度问题。真要根治，把源图层做成智能对象或先放大处理。
+</p>
+<h3>
+    调整图层影响范围不对
+</h3>
+<p>
+    调整图层只看它下面的内容。常见情况是目标图层被移到了调整图层上方，解决办法是 <span class="special">Ctrl+Alt+G</span> 建立剪贴组，而不是反复插层。另一个坑：剪贴组会受下方不透明像素影响，效果不如裸调整图层可控。
+</p>
+<h3>
+    智能对象里的滤镜没更新
+</h3>
+<p>
+    源文件内容改变后，智能滤镜不会自动重算。点开智能对象查看，或在智能滤镜上 <span class="special">Alt+点击</span> 暂时停用再启用，强制刷新。
+</p>
+<h3>
+    PSD 突然变得很卡
+</h3>
+<p>
+    先看内存占用（编辑 → 首选项 → 内存），再检查智能对象数量和图层总数。日常编辑阶段保持 8–16G 占用是正常水位，超过就该考虑整理：盖印可见图层、把隐藏的智能对象图层删掉而不是留着。
+</p>

@@ -1,0 +1,82 @@
+<header>
+    AST 基础概念
+</header>
+<h2>
+    什么是AST
+</h2>
+<p>
+    AST（Abstract Syntax Tree，抽象语法树）是源代码的树形表示，它以树状结构表示编程语言的语法结构。每个节点代表源代码中的一个构造，如表达式、语句、声明等。
+</p>
+<h3>
+    AST的作用
+</h3>
+<ul>
+    <li>代码转换：如Babel将ES6+代码转换为ES5</li>
+    <li>代码分析：静态分析、linting、格式化</li>
+    <li>代码优化：压缩、混淆</li>
+    <li>代码生成：从AST生成目标代码</li>
+</ul>
+<h2>
+    AST节点类型
+</h2>
+<p>
+    AST中的节点有多种类型，常见的包括：
+</p>
+<ul>
+    <li><span class="important">Program</span>：整个程序的根节点</li>
+    <li><span class="important">VariableDeclaration</span>：变量声明</li>
+    <li><span class="important">FunctionDeclaration</span>：函数声明</li>
+    <li><span class="important">ExpressionStatement</span>：表达式语句</li>
+    <li><span class="important">CallExpression</span>：函数调用表达式</li>
+    <li><span class="important">BinaryExpression</span>：二元表达式</li>
+</ul>
+<h2>
+    AST结构示例
+</h2>
+<p>
+    以简单的JavaScript代码为例：
+</p>
+<pre tag="javascript">
+const x = 1 + 2;
+</pre>
+<p>
+    对应的AST结构大致如下：
+</p>
+<pre tag="json">
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "VariableDeclaration",
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "id": {
+            "type": "Identifier",
+            "name": "x"
+          },
+          "init": {
+            "type": "BinaryExpression",
+            "operator": "+",
+            "left": {
+              "type": "Literal",
+              "value": 1
+            },
+            "right": {
+              "type": "Literal",
+              "value": 2
+            }
+          }
+        }
+      ],
+      "kind": "const"
+    }
+  ]
+}
+</pre>
+<h2>
+    在线AST查看工具
+</h2>
+<p>
+    推荐使用 <a href="https://astexplorer.net/" target="_blank" class="link">AST Explorer</a> 来实时查看代码对应的AST结构。
+</p>

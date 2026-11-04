@@ -1,0 +1,359 @@
+<header>
+    抽象类实际应用
+</header>
+<h2>
+    插件系统
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+import os
+
+class Plugin(ABC):
+    """插件抽象基类"""
+    
+    @property
+    @abstractmethod
+    def name(self):
+        """插件名称"""
+        pass
+    
+    @property
+    @abstractmethod
+    def version(self):
+        """插件版本"""
+        pass
+    
+    @abstractmethod
+    def initialize(self):
+        """初始化插件"""
+        pass
+    
+    @abstractmethod
+    def execute(self, data):
+        """执行插件功能"""
+        pass
+    
+    @abstractmethod
+    def cleanup(self):
+        """清理资源"""
+        pass
+
+class DataProcessorPlugin(Plugin):
+    """数据处理插件"""
+    
+    name = "DataProcessor"
+    version = "1.0.0"
+    
+    def initialize(self):
+        print(f"Initializing {self.name} v{self.version}")
+    
+    def execute(self, data):
+        if isinstance(data, list):
+            return [item * 2 for item in data]
+        return data
+    
+    def cleanup(self):
+        print(f"Cleaning up {self.name}")
+
+class LoggerPlugin(Plugin):
+    """日志插件"""
+    
+    name = "Logger"
+    version = "2.1.0"
+    
+    def __init__(self):
+        self.log_file = None
+    
+    def initialize(self):
+        self.log_file = open("plugin.log", "a")
+        print(f"Initializing {self.name} v{self.version}")
+    
+    def execute(self, data):
+        if self.log_file:
+            self.log_file.write(f"Processing data: {data}\n")
+        return data
+    
+    def cleanup(self):
+        if self.log_file:
+            self.log_file.close()
+        print(f"Cleaning up {self.name}")
+
+class PluginManager:
+    """插件管理器"""
+    
+    def __init__(self):
+        self.plugins = []
+    
+    def register_plugin(self, plugin_class):
+        if issubclass(plugin_class, Plugin):
+            plugin = plugin_class()
+            self.plugins.append(plugin)
+            print(f"Registered plugin: {plugin.name}")
+        else:
+            print(f"Invalid plugin class: {plugin_class.__name__}")
+    
+    def execute_all(self, data):
+        result = data
+        for plugin in self.plugins:
+            print(f"Executing {plugin.name}...")
+            plugin.initialize()
+            result = plugin.execute(result)
+            plugin.cleanup()
+        return result
+
+# 使用插件系统
+manager = PluginManager()
+manager.register_plugin(DataProcessorPlugin)
+manager.register_plugin(LoggerPlugin)
+
+data = [1, 2, 3, 4, 5]
+result = manager.execute_all(data)
+print(f"Final result: {result}")
+</pre>
+
+<h2>
+    文件处理框架
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+import os
+from pathlib import Path
+
+class FileHandler(ABC):
+    """文件处理器抽象基类"""
+    
+    @property
+    @abstractmethod
+    def supported_extensions(self):
+        """支持的文件扩展名"""
+        pass
+    
+    @abstractmethod
+    def can_handle(self, filepath):
+        """判断是否可处理该文件"""
+        pass
+    
+    @abstractmethod
+    def read(self, filepath):
+        """读取文件"""
+        pass
+    
+    @abstractmethod
+    def write(self, filepath, data):
+        """写入文件"""
+        pass
+    
+    @abstractmethod
+    def process(self, data):
+        """处理文件数据"""
+        pass
+
+class TextFileHandler(FileHandler):
+    """文本文件处理器"""
+    
+    supported_extensions = ['.txt', '.md', '.log']
+    
+    def can_handle(self, filepath):
+        return Path(filepath).suffix.lower() in self.supported_extensions
+    
+    def read(self, filepath):
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return f.read()
+    
+    def write(self, filepath, data):
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(data)
+    
+    def process(self, data):
+        # 简单的文本处理：统计行数和字符数
+        lines = data.split('\n')
+        char_count = len(data)
+        line_count = len(lines)
+        return f"Text file processed: {line_count} lines, {char_count} characters"
+
+class ImageFileHandler(FileHandler):
+    """图像文件处理器"""
+    
+    supported_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp']
+    
+    def can_handle(self, filepath):
+        return Path(filepath).suffix.lower() in self.supported_extensions
+    
+    def read(self, filepath):
+        # 模拟读取图像文件
+        from PIL import Image
+        return Image.open(filepath)
+    
+    def write(self, filepath, data):
+        # 模拟写入图像文件
+        data.save(filepath)
+    
+    def process(self, data):
+        # 简单的图像处理：获取图像信息
+        width, height = data.size
+        mode = data.mode
+        return f"Image processed: {width}x{height}, {mode} mode"
+
+class FileProcessor:
+    """文件处理器管理器"""
+    
+    def __init__(self):
+        self.handlers = []
+    
+    def register_handler(self, handler_class):
+        if issubclass(handler_class, FileHandler):
+            handler = handler_class()
+            self.handlers.append(handler)
+            print(f"Registered handler: {handler.__class__.__name__}")
+    
+    def process_file(self, filepath):
+        for handler in self.handlers:
+            if handler.can_handle(filepath):
+                print(f"Processing {filepath} with {handler.__class__.__name__}")
+                try:
+                    data = handler.read(filepath)
+                    result = handler.process(data)
+                    print(result)
+                    return result
+                except Exception as e:
+                    print(f"Error processing file: {e}")
+                    return None
+        print(f"No handler found for {filepath}")
+        return None
+    
+    def process_directory(self, directory):
+        results = []
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                filepath = os.path.join(root, file)
+                result = self.process_file(filepath)
+                if result:
+                    results.append((filepath, result))
+        return results
+
+# 使用文件处理框架
+# 注意：需要安装PIL库才能运行图像处理部分
+# pip install Pillow
+
+processor = FileProcessor()
+processor.register_handler(TextFileHandler)
+processor.register_handler(ImageFileHandler)
+
+# 创建测试文件
+with open("test.txt", "w") as f:
+    f.write("Hello, World!\nThis is a test file.\nLine 3.")
+
+# 处理文件
+processor.process_file("test.txt")
+</pre>
+
+<h2>
+    策略模式实现
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+import random
+
+class SortingStrategy(ABC):
+    """排序策略抽象基类"""
+    
+    @property
+    @abstractmethod
+    def name(self):
+        """策略名称"""
+        pass
+    
+    @abstractmethod
+    def sort(self, data):
+        """排序方法"""
+        pass
+
+class BubbleSort(SortingStrategy):
+    name = "Bubble Sort"
+    
+    def sort(self, data):
+        arr = data.copy()
+        n = len(arr)
+        for i in range(n):
+            for j in range(0, n - i - 1):
+                if arr[j] > arr[j + 1]:
+                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
+        return arr
+
+class QuickSort(SortingStrategy):
+    name = "Quick Sort"
+    
+    def sort(self, data):
+        if len(data) <= 1:
+            return data.copy()
+        
+        pivot = data[len(data) // 2]
+        left = [x for x in data if x < pivot]
+        middle = [x for x in data if x == pivot]
+        right = [x for x in data if x > pivot]
+        
+        return self.sort(left) + middle + self.sort(right)
+
+class MergeSort(SortingStrategy):
+    name = "Merge Sort"
+    
+    def sort(self, data):
+        if len(data) <= 1:
+            return data.copy()
+        
+        mid = len(data) // 2
+        left = self.sort(data[:mid])
+        right = self.sort(data[mid:])
+        
+        return self._merge(left, right)
+    
+    def _merge(self, left, right):
+        result = []
+        i = j = 0
+        
+        while i < len(left) and j < len(right):
+            if left[i] <= right[j]:
+                result.append(left[i])
+                i += 1
+            else:
+                result.append(right[j])
+                j += 1
+        
+        result.extend(left[i:])
+        result.extend(right[j:])
+        return result
+
+class SortingContext:
+    """排序上下文"""
+    
+    def __init__(self, strategy=None):
+        self.strategy = strategy
+    
+    def set_strategy(self, strategy):
+        if isinstance(strategy, SortingStrategy):
+            self.strategy = strategy
+        else:
+            raise ValueError("Invalid strategy")
+    
+    def sort_data(self, data):
+        if not self.strategy:
+            raise ValueError("No sorting strategy set")
+        
+        print(f"Using {self.strategy.name}")
+        return self.strategy.sort(data)
+
+# 使用策略模式
+context = SortingContext()
+
+# 测试数据
+test_data = [64, 34, 25, 12, 22, 11, 90, 88, 76, 50, 42]
+
+strategies = [BubbleSort(), QuickSort(), MergeSort()]
+
+for strategy in strategies:
+    context.set_strategy(strategy)
+    sorted_data = context.sort_data(test_data)
+    print(f"Original: {test_data}")
+    print(f"Sorted: {sorted_data}")
+    print("-" * 40)
+</pre>

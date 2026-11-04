@@ -1,0 +1,605 @@
+<header>
+    流水线技术
+</header>
+<h2>
+    流水线技术概述
+</h2>
+<p>
+    <span class="important">流水线技术</span>（Pipeline Technology）是现代处理器设计中提高指令执行效率的核心技术。它通过将指令执行过程分解为多个阶段，并使不同指令的不同阶段并行执行，从而显著提高处理器的吞吐率。
+</p>
+
+<h2>
+    流水线的基本原理
+</h2>
+<h3>
+    1. 指令级并行性
+</h3>
+<h4>
+    概念
+</h4>
+<p>
+    指令级并行性（ILP）是指同时执行多条指令的能力。流水线技术是实现ILP的主要手段之一。
+</p>
+
+<h4>
+    实现方式
+</h4>
+<ul>
+    <li><span class="special">时间重叠</span>：不同指令的不同阶段在时间上重叠执行</li>
+    <li><span class="special">资源共享</span>：多个功能单元分时共享硬件资源</li>
+    <li><span class="special">数据通路分离</span>：为不同阶段提供独立的数据通路</li>
+</ul>
+
+<h3>
+    2. 流水线的时空图
+</h3>
+<h4>
+    基本时空图
+</h4>
+<p>
+    时空图展示了流水线中各指令在不同时间点的执行状态，直观显示了流水线的并行效果。
+</p>
+
+<h4>
+    时空图示例
+</h4>
+<pre>
+时间周期: 1  2  3  4  5  6  7
+指令1:    IF ID EX MEM WB
+指令2:       IF ID EX MEM WB
+指令3:          IF ID EX MEM WB
+指令4:             IF ID EX MEM WB
+指令5:                IF ID EX MEM WB
+</pre>
+
+<h4>
+    时空图分析
+</h4>
+<ul>
+    <li><span class="special">流水建立</span>：前几个周期流水线逐步建立</li>
+    <li><span class="special">稳定状态</span>：每个周期完成一条指令</li>
+    <li><span class="special">流水排空</span>：最后几个周期流水线逐步排空</li>
+</ul>
+
+<h2>
+    流水线的基本结构
+</h2>
+<h3>
+    1. 五段流水线
+</h3>
+<h4>
+    IF（Instruction Fetch）取指段
+</h4>
+<ul>
+    <li><span class="special">功能</span>：从内存取出指令</li>
+    <li><span class="special">操作</span>：PC → MAR，读内存，MDR → IR</li>
+    <li><span class="special">硬件</span>：PC、MAR、MDR、IR、内存</li>
+</ul>
+
+<h4>
+    ID（Instruction Decode）译码段
+</h4>
+<ul>
+    <li><span class="special">功能</span>：分析指令，产生控制信号</li>
+    <li><span class="special">操作</span>：操作码译码，操作数地址计算</li>
+    <li><span class="special">硬件</span>：指令译码器、控制逻辑</li>
+</ul>
+
+<h4>
+    EX（Execute）执行段
+</h4>
+<ul>
+    <li><span class="special">功能</span>：执行算术逻辑运算</li>
+    <li><span class="special">操作</span>：ALU运算，地址计算</li>
+    <li><span class="special">硬件</span>：ALU、寄存器堆</li>
+</ul>
+
+<h4>
+    MEM（Memory Access）访存段
+</h4>
+<ul>
+    <li><span class="special">功能</span>：访问内存读写数据</li>
+    <li><span class="special">操作</span>：内存读写，堆栈操作</li>
+    <li><span class="special">硬件</span>：MAR、MDR、内存</li>
+</ul>
+
+<h4>
+    WB（Write Back）写回段
+</h4>
+<ul>
+    <li><span class="special">功能</span>：将结果写回寄存器</li>
+    <li><span class="special">操作</span>：ALU结果或内存数据写回寄存器</li>
+    <li><span class="special">硬件</span>：寄存器写端口</li>
+</ul>
+
+<h3>
+    2. 流水线寄存器
+</h3>
+<h4>
+    作用
+</h4>
+<ul>
+    <li><span class="special">数据隔离</span>：隔离相邻段的数据</li>
+    <li><span class="special">状态保存</span>：保存各段的执行状态</li>
+    <li><span class="special">时序协调</span>：协调各段的时序关系</li>
+</ul>
+
+<h4>
+    典型流水线寄存器
+</h4>
+<table>
+    <thead>
+        <tr>
+            <th>寄存器</th>
+            <th>位置</th>
+            <th>保存内容</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>IF/ID</td>
+            <td>IF与ID之间</td>
+            <td>指令、PC值</td>
+        </tr>
+        <tr>
+            <td>ID/EX</td>
+            <td>ID与EX之间</td>
+            <td>控制信号、操作数、立即数</td>
+        </tr>
+        <tr>
+            <td>EX/MEM</td>
+            <td>EX与MEM之间</td>
+            <td>ALU结果、内存地址、控制信号</td>
+        </tr>
+        <tr>
+            <td>MEM/WB</td>
+            <td>MEM与WB之间</td>
+            <td>内存数据、ALU结果、目标寄存器</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    流水线的性能分析
+</h2>
+<h3>
+    1. 性能指标
+</h3>
+<h4>
+    吞吐率（Throughput）
+</h4>
+<p>
+    单位时间内完成的指令数。
+</p>
+
+<h4>
+    加速比（Speedup）
+</h4>
+<p>
+    流水线执行与非流水线执行的时间比。
+</p>
+
+<h4>
+    效率（Efficiency）
+</h4>
+<p>
+    流水线实际性能与理想性能的比值。
+</p>
+
+<h3>
+    2. 性能计算公式
+</h3>
+<h4>
+    非流水线执行时间
+</h4>
+<p>
+    T_non_pipeline = n × t
+</p>
+<p>
+    其中：n为指令数，t为单条指令执行时间
+</p>
+
+<h4>
+    流水线执行时间
+</h4>
+<p>
+    T_pipeline = (k + n - 1) × t'
+</p>
+<p>
+    其中：k为流水段数，n为指令数，t'为流水段时间
+</p>
+
+<h4>
+    加速比计算
+</h4>
+<p>
+    S = T_non_pipeline / T_pipeline = (n × t) / ((k + n - 1) × t')
+</p>
+
+<h4>
+    理想加速比
+</h4>
+<p>
+    当n→∞且t' = t/k时，S_max = k
+</p>
+
+<h3>
+    3. 流水线效率
+</h3>
+<h4>
+    效率计算
+</h4>
+<p>
+    E = (n × t) / (k × T_pipeline) = n / (k + n - 1)
+</p>
+
+<h4>
+    理想效率
+</h4>
+<p>
+    当n→∞时，E_max = 1
+</p>
+
+<h2>
+    流水线的相关性问题
+</h2>
+<h3>
+    1. 数据相关（Data Hazard）
+</h3>
+<h4>
+    类型分类
+</h4>
+<ul>
+    <li><span class="special">RAW（Read After Write）</span>：真数据相关</li>
+    <li><span class="special">WAR（Write After Read）</span>：反相关</li>
+    <li><span class="special">WAW（Write After Write）</span>：输出相关</li>
+</ul>
+
+<h4>
+    RAW相关示例
+</h4>
+<pre>
+ADD R1, R2, R3    // R1 = R2 + R3
+SUB R4, R1, R5    // R4 = R1 - R5（依赖前一条指令结果）
+</pre>
+
+<h4>
+    解决方法
+</h4>
+<ul>
+    <li><span class="special">数据前推</span>：将结果直接传递给下一条指令</li>
+    <li><span class="special">流水线停顿</span>：插入气泡等待数据就绪</li>
+    <li><span class="special">编译器调度</span>：重新安排指令顺序</li>
+</ul>
+
+<h3>
+    2. 控制相关（Control Hazard）
+</h3>
+<h4>
+    分支指令影响
+</h4>
+<p>
+    分支指令会改变程序执行流程，导致流水线中已取出的后续指令可能无效。
+</p>
+
+<h4>
+    分支延迟
+</h4>
+<p>
+    从分支指令执行到目标地址确定之间的时间延迟。
+</p>
+
+<h4>
+    解决方法
+</h4>
+<ul>
+    <li><span class="special">分支预测</span>：预测分支方向</li>
+    <li><span class="special">延迟分支</span>：在分支延迟槽中安排有用指令</li>
+    <li><span class="special">流水线冲刷</span>：清除错误路径的指令</li>
+</ul>
+
+<h3>
+    3. 结构相关（Structural Hazard）
+</h3>
+<h4>
+    资源冲突
+</h4>
+<p>
+    多个指令同时竞争同一硬件资源。
+</p>
+
+<h4>
+    常见冲突
+</h4>
+<ul>
+    <li><span class="special">内存端口冲突</span>：取指和访存同时访问内存</li>
+    <li><span class="special">寄存器端口冲突</span>：多个指令同时访问寄存器</li>
+    <li><span class="special">功能单元冲突</span>：多个指令同时需要同一功能单元</li>
+</ul>
+
+<h4>
+    解决方法
+</h4>
+<ul>
+    <li><span class="special">资源复制</span>：增加硬件资源</li>
+    <li><span class="special">分时共享</span>：合理安排资源使用时间</li>
+    <li><span class="special">流水线停顿</span>：暂停流水线等待资源</li>
+</ul>
+
+<h2>
+    流水线优化技术
+</h2>
+<h3>
+    1. 数据前推技术
+</h3>
+<h4>
+    前推机制
+</h4>
+<ul>
+    <li><span class="special">EX/MEM前推</span>：将EX段结果直接传递给后续指令</li>
+    <li><span class="special">MEM/WB前推</span>：将MEM段结果直接传递给后续指令</li>
+</ul>
+
+<h4>
+    前推控制逻辑
+</h4>
+<ul>
+    <li><span class="special">源寄存器检测</span>：检测指令是否使用未就绪数据</li>
+    <li><span class="special">目标寄存器比较</span>：比较源寄存器与前面指令的目标寄存器</li>
+    <li><span class="special">前推路径选择</span>：选择合适的前推数据源</li>
+</ul>
+
+<h3>
+    2. 分支预测技术
+</h3>
+<h4>
+    静态预测
+</h4>
+<ul>
+    <li><span class="special">总是预测</span>：总是预测分支发生或不发生</li>
+    <li><span class="special">反向预测</span>：向后分支预测发生，向前分支预测不发生</li>
+</ul>
+
+<h4>
+    动态预测
+</h4>
+<ul>
+    <li><span class="special">1位预测器</span>：基于上次分支结果预测</li>
+    <li><span class="special">2位预测器</span>：四状态预测机制</li>
+    <li><span class="special">全局历史预测</span>：基于全局分支历史预测</li>
+    <li><span class="special">局部分支预测</span>：基于单个分支历史预测</li>
+</ul>
+
+<h4>
+    预测器实现
+</h4>
+<ul>
+    <li><span class="special">分支目标缓冲（BTB）</span>：存储分支目标地址</li>
+    <li><span class="special">分支历史表（BHT）</span>：存储分支历史信息</li>
+    <li><span class="special">返回地址栈（RAS）</span>：存储函数返回地址</li>
+</ul>
+
+<h3>
+    3. 乱序执行技术
+</h3>
+<h4>
+    动态调度
+</h4>
+<ul>
+    <li><span class="special">保留站</span>：暂存等待执行的指令</li>
+    <li><span class="special">重排序缓冲</span>：维护指令执行顺序</li>
+    <li><span class="special">寄存器重命名</span>：消除假数据相关</li>
+</ul>
+
+<h4>
+    执行流程
+</h4>
+<ol>
+    <li><span class="special">指令发射</span>：将指令发射到保留站</li>
+    <li><span class="special">操作数等待</span>：等待操作数就绪</li>
+    <li><span class="special">指令执行</span>：操作数就绪后执行</li>
+    <li><span class="special">结果写回</span>：将结果写回寄存器或内存</li>
+    <li><span class="special">顺序提交</span>：按程序顺序提交结果</li>
+</ol>
+
+<h2>
+    高级流水线技术
+</h2>
+<h3>
+    1. 超标量流水线
+</h3>
+<h4>
+    多指令发射
+</h4>
+<ul>
+    <li><span class="special">静态多发射</span>：编译时确定发射指令</li>
+    <li><span class="special">动态多发射</span>：运行时动态确定发射指令</li>
+</ul>
+
+<h4>
+    发射策略
+</h4>
+<ul>
+    <li><span class="special">按序发射</span>：按程序顺序发射指令</li>
+    <li><span class="special">乱序发射</span>：不按程序顺序发射指令</li>
+</ul>
+
+<h4>
+    性能提升
+</h4>
+<p>
+    理论上n路超标量流水线的性能是单流水线的n倍。
+</p>
+
+<h3>
+    2. 超流水线技术
+</h3>
+<h4>
+    深度流水线
+</h4>
+<ul>
+    <li><span class="special">更多流水段</span>：将每个大段细分为多个小段</li>
+    <li><span class="special">更高时钟频率</span>：每个小段延迟减少</li>
+</ul>
+
+<h4>
+    优缺点
+</h4>
+<table>
+    <thead>
+        <tr>
+            <th>优点</th>
+            <th>缺点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>提高时钟频率</td>
+            <td>增加分支开销</td>
+        </tr>
+        <tr>
+            <td>提高理论性能</td>
+            <td>增加数据相关</td>
+        </tr>
+        <tr>
+            <td>减少每段逻辑</td>
+            <td>增加硬件复杂度</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>
+    3. 超长指令字（VLIW）
+</h3>
+<h4>
+    编译器调度
+</h4>
+<ul>
+    <li><span class="special">静态调度</span>：编译时确定并行指令</li>
+    <li><span class="special">显式并行</span>：指令中明确指定并行操作</li>
+</ul>
+
+<h4>
+    VLIW特点
+</h4>
+<ul>
+    <li><span class="special">简化硬件</span>：硬件不需要复杂的调度逻辑</li>
+    <li><span class="special">依赖编译器</span>：编译器需要强大的优化能力</li>
+    <li><span class="special">代码密度</span>：可能存在指令槽浪费</li>
+</ul>
+
+<h2>
+    流水线性能分析实例
+</h2>
+<h3>
+    1. 基本流水线性能
+</h3>
+<h4>
+    假设条件
+</h4>
+<ul>
+    <li>流水段数：5段</li>
+    <li>每段时间：1个时钟周期</li>
+    <li>指令数：100条</li>
+    <li>无相关性问题</li>
+</ul>
+
+<h4>
+    性能计算
+</h4>
+<ul>
+    <li><span class="special">非流水线时间</span>：100 × 5 = 500周期</li>
+    <li><span class="special">流水线时间</span>：(5 + 100 - 1) = 104周期</li>
+    <li><span class="special">加速比</span>：500 / 104 ≈ 4.81</li>
+    <li><span class="special">效率</span>：100 / (5 + 100 - 1) ≈ 96.2%</li>
+</ul>
+
+<h3>
+    2. 考虑相关性的性能
+</h3>
+<h4>
+    假设条件
+</h4>
+<ul>
+    <li>数据相关概率：30%</li>
+    <li>控制相关概率：20%</li>
+    <li>结构相关概率：10%</li>
+    <li>每个相关造成1个周期停顿</li>
+</ul>
+
+<h4>
+    性能计算
+</h4>
+<ul>
+    <li><span class="special">总停顿周期</span>：100 × (0.3 + 0.2 + 0.1) = 60周期</li>
+    <li><span class="special">实际执行时间</span>：104 + 60 = 164周期</li>
+    <li><span class="special">实际加速比</span>：500 / 164 ≈ 3.05</li>
+    <li><span class="special">实际效率</span>：100 / (5 + 100 - 1 + 60) ≈ 61.0%</li>
+</ul>
+
+<h2>
+    现代流水线技术
+</h2>
+<h3>
+    1. 多核处理器的流水线
+</h3>
+<h4>
+    核内流水线
+</h4>
+<ul>
+    <li><span class="special">深度流水线</span>：现代处理器通常有10-20段流水线</li>
+    <li><span class="special">多发射</span>：每周期发射2-8条指令</li>
+    <li><span class="special">乱序执行</span>：支持复杂的数据相关性处理</li>
+</ul>
+
+<h4>
+    核间协调
+</h4>
+<ul>
+    <li><span class="special">Cache一致性</span>：维护多核间的数据一致性</li>
+    <li><span class="special">内存排序</span>：保证内存访问的正确顺序</li>
+    <li><span class="special">同步机制</span>：提供核间同步原语</li>
+</ul>
+
+<h3>
+    2. 向量处理器的流水线
+</h3>
+<h4>
+    向量流水线
+</h4>
+<ul>
+    <li><span class="special">向量寄存器</span>：存储向量数据</li>
+    <li><span class="special">向量功能单元</span>：专门的向量运算单元</li>
+    <li><span class="special">深度流水线</span>：向量操作可以深度流水化</li>
+</ul>
+
+<h4>
+    性能特点
+</h4>
+<ul>
+    <li><span class="special">高吞吐率</span>：适合数据并行应用</li>
+    <li><span class="special">低延迟</span>：向量操作延迟相对较低</li>
+    <li><span class="special">高带宽</span>：提供高内存带宽</li>
+</ul>
+
+<h3>
+    3. GPU的流水线
+</h3>
+<h4>
+    图形流水线
+</h4>
+<ul>
+    <li><span class="special">顶点处理</span>：顶点变换和光照计算</li>
+    <li><span class="special">图元装配</span>：将顶点组装成图元</li>
+    <li><span class="special">光栅化</span>：将图元转换为像素</li>
+    <li><span class="special">片段处理</span>：像素着色和纹理映射</li>
+</ul>
+
+<h4>
+    计算流水线
+</h4>
+<ul>
+    <li><span class="special">SIMD执行</span>：单指令多数据执行</li>
+    <li><span class="special">线程级并行</span>：大量线程并行执行</li>
+    <li><span class="special">存储器层次</span>：复杂的存储器层次结构</li>
+</ul>

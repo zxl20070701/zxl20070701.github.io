@@ -1,0 +1,25 @@
+<header>基础和硬件信息</header>
+<h2>系统版本</h2>
+<p>
+    查看 macOS 版本、主机名和硬件概览。定位兼容性问题时很常用。
+</p>
+<pre>
+system_profiler
+system_profiler SPHardwareDataType
+sw_vers
+hostname
+scutil --get ComputerName
+scutil --get LocalHostName
+</pre>
+<h2>硬件信息</h2>
+<p>
+    <span class="special">sysctl</span> 可以读取内核暴露的硬件信息，比如 CPU 型号、内存大小和核心数。
+</p>
+<pre>
+sysctl -n machdep.cpu.brand_string
+sysctl -n hw.memsize
+sysctl -n hw.ncpu
+sysctl -n hw.physicalcpu
+sysctl -n hw.logicalcpu
+system_profiler SPHardwareDataType | grep "Memory"
+</pre>

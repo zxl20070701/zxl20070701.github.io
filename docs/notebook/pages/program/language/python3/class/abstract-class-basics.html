@@ -1,0 +1,127 @@
+<header>
+    抽象类基础
+</header>
+<h2>
+    抽象类概念
+</h2>
+<p>
+    <span class="important">抽象类（Abstract Class）</span>是不能被实例化的类，它通常包含抽象方法，用于定义子类必须实现的接口。抽象类提供了一种契约机制，确保子类实现特定的方法。
+</p>
+
+<h2>
+    ABC模块基础
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    """抽象基类：形状"""
+    
+    def __init__(self, name):
+        self.name = name
+    
+    @abstractmethod
+    def area(self):
+        """抽象方法：计算面积"""
+        pass
+    
+    @abstractmethod
+    def perimeter(self):
+        """抽象方法：计算周长"""
+        pass
+    
+    def describe(self):
+        """具体方法：描述形状"""
+        return f"This is a {self.name}"
+
+class Circle(Shape):
+    def __init__(self, radius):
+        super().__init__("Circle")
+        self.radius = radius
+    
+    def area(self):
+        import math
+        return math.pi * self.radius ** 2
+    
+    def perimeter(self):
+        import math
+        return 2 * math.pi * self.radius
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        super().__init__("Rectangle")
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+    
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+# 使用抽象类
+# shape = Shape("Generic")  # 会报错：不能实例化抽象类
+circle = Circle(5)
+rectangle = Rectangle(4, 6)
+
+print(circle.describe())
+print(f"Circle area: {circle.area():.2f}")
+print(f"Rectangle area: {rectangle.area()}")
+</pre>
+
+<h2>
+    抽象类的特点
+</h2>
+<ul>
+    <li>不能直接实例化</li>
+    <li>可以包含抽象方法和具体方法</li>
+    <li>子类必须实现所有抽象方法</li>
+    <li>提供接口定义和代码重用的平衡</li>
+</ul>
+
+<h2>
+    抽象类的继承
+</h2>
+<pre tag="python">
+class Animal(ABC):
+    def __init__(self, name):
+        self.name = name
+    
+    @abstractmethod
+    def make_sound(self):
+        pass
+    
+    @abstractmethod
+    def move(self):
+        pass
+    
+    def sleep(self):
+        """具体方法：所有动物都会睡觉"""
+        return f"{self.name} is sleeping"
+
+class Dog(Animal):
+    def make_sound(self):
+        return "Woof!"
+    
+    def move(self):
+        return f"{self.name} is running"
+
+class Bird(Animal):
+    def make_sound(self):
+        return "Tweet!"
+    
+    def move(self):
+        return f"{self.name} is flying"
+
+# 使用抽象类继承
+dog = Dog("Buddy")
+bird = Bird("Tweety")
+
+print(dog.make_sound())
+print(dog.move())
+print(dog.sleep())
+
+print(bird.make_sound())
+print(bird.move())
+print(bird.sleep())
+</pre>

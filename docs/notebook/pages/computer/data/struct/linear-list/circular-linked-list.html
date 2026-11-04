@@ -1,0 +1,253 @@
+<header>
+    循环链表
+</header>
+
+<h2>
+    循环链表的定义
+</h2>
+
+<p>
+    循环链表是另一种形式的链式存储结构。其特点是表中最后一个结点的指针域指向头结点，整个链表形成一个环。由此，从表中任一结点出发均可找到表中其他结点。循环链表又分为<span
+        class="important">循环单链表</span>和<span class="important">循环双向链表</span>。
+</p>
+
+<h3>
+    循环单链表
+</h3>
+
+<p>
+    循环单链表是单链表的另一种形式，其结构特点是将表中最后一个结点的指针域指向头结点，整个链表形成一个环。循环单链表的判空条件不是头结点的指针域为空，而是是否等于头指针。
+</p>
+
+<h3>
+    循环双向链表
+</h3>
+
+<p>
+    循环双向链表是双向链表的另一种形式，其结构特点是将表中最后一个结点的next指针指向头结点，头结点的prior指针指向最后一个结点，整个链表形成一个环。
+</p>
+
+<h2>
+    循环单链表的实现
+</h2>
+
+<h3>
+    初始化
+</h3>
+
+<p>
+    创建一个空的循环单链表，头结点的next指针指向自己。
+</p>
+
+<pre tag="c">
+Status InitList(LinkList *L) {
+    *L = (LinkList)malloc(sizeof(LNode));
+    if (!(*L)) return ERROR;
+    (*L)->next = *L; // 指向自己，形成环
+    return OK;
+}
+</pre>
+
+<h3>
+    判断链表是否为空
+</h3>
+
+<p>
+    循环单链表为空的条件不是头结点的next为空，而是头结点的next指向头结点本身。
+</p>
+
+<pre tag="c">
+bool IsEmpty(LinkList L) {
+    return L->next == L;
+}
+</pre>
+
+<h3>
+    判断结点是否为尾结点
+</h3>
+
+<p>
+    在循环单链表中，尾结点的next指针指向头结点。
+</p>
+
+<pre tag="c">
+bool IsTail(LinkList L, LNode *p) {
+    return p->next == L;
+}
+</pre>
+
+<h2>
+    循环单链表的基本操作
+</h2>
+
+<h3>
+    插入操作
+</h3>
+
+<p>
+    在循环单链表的第i个位置插入新元素e。插入位置i的合法范围是1 ≤ i ≤ 表长+1。
+</p>
+
+<pre tag="c">
+Status ListInsert(LinkList L, int i, int e) {
+    // 找到第i-1个结点
+    LNode *p = GetElem(L, i-1);
+    if (!p) return ERROR;
+
+    // 创建新结点
+    LNode *s = (LNode*)malloc(sizeof(LNode));
+    if (!s) return ERROR;
+
+    s->data = e;
+    s->next = p->next;
+    p->next = s;
+
+    return OK;
+}
+</pre>
+
+<h3>
+    删除操作
+</h3>
+
+<p>
+    删除循环单链表的第i个结点，并用e返回其值。删除位置i的合法范围是1 ≤ i ≤ 表长。
+</p>
+
+<pre tag="c">
+Status ListDelete(LinkList L, int i, int *e) {
+    // 找到第i-1个结点
+    LNode *p = GetElem(L, i-1);
+    if (!p || p->next == L) return ERROR; // 第i个结点不存在
+
+    // 保存被删除的结点
+    LNode *q = p->next;
+    *e = q->data;
+
+    // 修改指针
+    p->next = q->next;
+
+    // 释放被删除结点的空间
+    free(q);
+
+    return OK;
+}
+</pre>
+
+<h3>
+    遍历操作
+</h3>
+
+<p>
+    遍历循环单链表，从头结点的下一个结点开始，直到再次回到头结点。
+</p>
+
+<pre tag="c">
+void TraverseList(LinkList L) {
+    LNode *p = L->next;
+
+    while (p != L) {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+</pre>
+
+<h2>
+    循环双向链表的实现
+</h2>
+
+<h3>
+    初始化
+</h3>
+
+<p>
+    创建一个空的循环双向链表，头结点的prior和next指针都指向自己。
+</p>
+
+<pre tag="c">
+Status InitList(DLinkList *L) {
+    *L = (DLinkList)malloc(sizeof(DNode));
+    if (!(*L)) return ERROR;
+    (*L)->prior = *L;
+    (*L)->next = *L;
+    return OK;
+}
+</pre>
+
+<h3>
+    判断链表是否为空
+</h3>
+
+<p>
+    循环双向链表为空的条件是头结点的prior和next都指向头结点本身。
+</p>
+
+<pre tag="c">
+bool IsEmpty(DLinkList L) {
+    return L->prior == L && L->next == L;
+}
+</pre>
+
+<h2>
+    循环双向链表的基本操作
+</h2>
+
+<h3>
+    插入操作
+</h3>
+
+<p>
+    在循环双向链表中，在p结点之后插入s结点。
+</p>
+
+<pre tag="c">
+Status ListInsert(DLinkList L, int i, int e) {
+    // 找到第i-1个结点
+    DNode *p = GetElem(L, i-1);
+    if (!p) return ERROR;
+
+    // 创建新结点
+    DNode *s = (DNode*)malloc(sizeof(DNode));
+    if (!s) return ERROR;
+
+    s->data = e;
+
+    // 修改四个指针
+    s->next = p->next;
+    s->prior = p;
+    p->next->prior = s;
+    p->next = s;
+
+    return OK;
+}
+</pre>
+
+<h3>
+    删除操作
+</h3>
+
+<p>
+    删除循环双向链表中第i个结点。
+</p>
+
+<pre tag="c">
+Status ListDelete(DLinkList L, int i, int *e) {
+    // 找到第i个结点
+    DNode *p = GetElem(L, i);
+    if (!p || p == L) return ERROR; // 第i个结点不存在或是头结点
+
+    // 保存被删除的元素
+    *e = p->data;
+
+    // 修改两个指针
+    p->prior->next = p->next;
+    p->next->prior = p->prior;
+
+    // 释放被删除结点的空间
+    free(p);
+
+    return OK;
+}
+</pre>

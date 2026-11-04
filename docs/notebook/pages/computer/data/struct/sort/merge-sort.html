@@ -1,0 +1,251 @@
+<header>
+    归并排序
+</header>
+
+<h2>
+    归并排序的定义
+</h2>
+
+<p>
+    归并排序（Merge Sort）是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。归并排序的思想就是先递归分解数组，再合并数组。将数组分解最小之后，然后合并两个有序数组，基本思路是比较两个数组的最前面的数，谁小就先取谁，取了后相应的指针就往后移一位。然后再比较，直至一个数组为空，最后把另一个数组的剩余部分复制过来即可。
+</p>
+
+<h3>
+    归并排序的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">分治思想</span>：采用分治法，将问题分解为小问题，然后合并解决
+    </li>
+    <li>
+        <span class="special">稳定排序</span>：相等元素的相对位置不会改变
+    </li>
+    <li>
+        <span class="special">时间复杂度稳定</span>：无论数据如何，时间复杂度都是O(n log n)
+    </li>
+    <li>
+        <span class="special">需要额外空间</span>：需要额外的存储空间来合并数组
+    </li>
+</ul>
+
+<h2>
+    归并排序的实现
+</h2>
+
+<h3>
+    递归实现
+</h3>
+
+<pre tag="c">
+void MergeSort(int arr[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        // 递归排序左半部分
+        MergeSort(arr, left, mid);
+
+        // 递归排序右半部分
+        MergeSort(arr, mid + 1, right);
+
+        // 合并两个有序数组
+        Merge(arr, left, mid, right);
+    }
+}
+
+void Merge(int arr[], int left, int mid, int right) {
+    int i, j, k;
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    // 创建临时数组
+    int *L = (int *)malloc(n1 * sizeof(int));
+    int *R = (int *)malloc(n2 * sizeof(int));
+
+    // 复制数据到临时数组
+    for (i = 0; i < n1; i++) {
+        L[i] = arr[left + i];
+    }
+    for (j = 0; j < n2; j++) {
+        R[j] = arr[mid + 1 + j];
+    }
+
+    // 合并临时数组回原数组
+    i = 0;
+    j = 0;
+    k = left;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    // 复制L[]的剩余元素
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    // 复制R[]的剩余元素
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+
+    // 释放内存
+    free(L);
+    free(R);
+}
+</pre>
+
+<h3>
+    迭代实现
+</h3>
+
+<pre tag="c">
+void MergeSortIterative(int arr[], int n) {
+    int curr_size;
+    int left_start;
+
+    // 从子数组大小为1开始，逐步增大
+    for (curr_size = 1; curr_size <= n - 1; curr_size = 2 * curr_size) {
+        // 选择子数组的起始点
+        for (left_start = 0; left_start < n - 1; left_start += 2 * curr_size) {
+            // 计算中点和右端点
+            int mid = min(left_start + curr_size - 1, n - 1);
+            int right_end = min(left_start + 2 * curr_size - 1, n - 1);
+
+            // 合并子数组
+            Merge(arr, left_start, mid, right_end);
+        }
+    }
+}
+</pre>
+
+<h2>
+    归并排序的优化
+</h2>
+
+<h3>
+    自底向上的归并排序
+</h3>
+
+<p>
+    自底向上的归并排序避免了递归调用，从单个元素开始逐步合并，适合处理大规模数据。
+</p>
+
+<h3>
+    多路归并排序
+</h3>
+
+<p>
+    多路归并排序将数组分成多个部分进行归并，可以减少归并的趟数，提高效率。
+</p>
+
+<h3>
+    原地归并排序
+</h3>
+
+<p>
+    原地归并排序尝试减少额外的存储空间需求，但实现较为复杂。
+</p>
+
+<h2>
+    归并排序的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：O(n log n)
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：O(n log n)
+    </li>
+    <li>
+        <span class="special">平均情况</span>：O(n log n)
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<p>
+    O(n)，需要额外的存储空间来合并数组。
+</p>
+
+<h2>
+    归并排序的应用场景
+</h2>
+
+<h3>
+    大规模数据排序
+</h3>
+
+<p>
+    归并排序的时间复杂度稳定，适合处理大规模数据。
+</p>
+
+<h3>
+    需要稳定排序的场景
+</h3>
+
+<p>
+    当需要保持相等元素的相对顺序时，归并排序是理想的选择。
+</p>
+
+<h3>
+    链表排序
+</h3>
+
+<p>
+    归并排序适合链表的排序，因为链表可以方便地分割和合并。
+</p>
+
+<h3>
+    外部排序
+</h3>
+
+<p>
+    归并排序是外部排序的基础，适合处理无法全部装入内存的大数据。
+</p>
+
+<h2>
+    归并排序的变种
+</h2>
+
+<h3>
+    自然归并排序
+</h3>
+
+<p>
+    自然归并排序利用数据中的自然有序段，减少归并的趟数。
+</p>
+
+<h3>
+    TimSort
+</h3>
+
+<p>
+    TimSort是Python和Java中使用的排序算法，结合了归并排序和插入排序的优点。
+</p>
+
+<h3>
+    多相归并排序
+</h3>
+
+<p>
+    多相归并排序使用多个输入文件和一个输出文件，减少归并的趟数。
+</p>

@@ -1,0 +1,267 @@
+<header>
+    video
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>src</td>
+            <td>String</td>
+            <td></td>
+            <td>要播放视频的资源地址</td>
+        </tr>
+        <tr>
+            <td>poster</td>
+            <td>String</td>
+            <td></td>
+            <td>视频封面的图片网络资源地址</td>
+        </tr>
+        <tr>
+            <td>autoplay</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否自动播放</td>
+        </tr>
+        <tr>
+            <td>loop</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否循环播放</td>
+        </tr>
+        <tr>
+            <td>muted</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否静音播放</td>
+        </tr>
+        <tr>
+            <td>initial-time</td>
+            <td>Number</td>
+            <td></td>
+            <td>指定视频初始播放位置</td>
+        </tr>
+        <tr>
+            <td>duration</td>
+            <td>Number</td>
+            <td></td>
+            <td>指定视频时长</td>
+        </tr>
+        <tr>
+            <td>controls</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否显示默认播放控件（播放/暂停按钮、播放进度、时间）</td>
+        </tr>
+        <tr>
+            <td>danmu-list</td>
+            <td>Array&lt;Object&gt;</td>
+            <td></td>
+            <td>弹幕列表</td>
+        </tr>
+        <tr>
+            <td>danmu-btn</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否显示弹幕按钮，只在初始化时有效，不能动态变更</td>
+        </tr>
+        <tr>
+            <td>enable-danmu</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否展示弹幕，只在初始化时有效，不能动态变更</td>
+        </tr>
+        <tr>
+            <td>page-gesture</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>在非全屏模式下，是否开启亮度与音量调节手势</td>
+        </tr>
+        <tr>
+            <td>direction</td>
+            <td>Number</td>
+            <td></td>
+            <td>设置全屏时视频的方向，不指定则根据宽高比自动判断。有效值为 0（正常竖向）, 90（屏幕逆时针90度）, -90（屏幕顺时针90度）</td>
+        </tr>
+        <tr>
+            <td>show-progress</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>若不设置，宽度大于240时才会显示</td>
+        </tr>
+        <tr>
+            <td>show-fullscreen-btn</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否显示全屏按钮</td>
+        </tr>
+        <tr>
+            <td>show-play-btn</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否显示视频底部控制栏的播放按钮</td>
+        </tr>
+        <tr>
+            <td>show-center-play-btn</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否显示视频中间的播放按钮</td>
+        </tr>
+        <tr>
+            <td>enable-progress-gesture</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否开启控制进度的手势</td>
+        </tr>
+        <tr>
+            <td>objectFit</td>
+            <td>String</td>
+            <td>contain</td>
+            <td>当视频大小与 video 容器大小不一致时，视频的表现形式。contain：包含，fill：填充，cover：覆盖</td>
+        </tr>
+        <tr>
+            <td>picture-in-picture-mode</td>
+            <td>String/Array&lt;String&gt;</td>
+            <td></td>
+            <td>设置小窗模式： push, pop，空字符串或通过数组形式设置多种模式（如： ["push", "pop"]）</td>
+        </tr>
+        <tr>
+            <td>@play</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>当开始/继续播放时触发play事件</td>
+        </tr>
+        <tr>
+            <td>@pause</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>当暂停播放时触发pause事件</td>
+        </tr>
+        <tr>
+            <td>@ended</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>当播放到末尾时触发ended事件</td>
+        </tr>
+        <tr>
+            <td>@timeupdate</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>播放进度变化时触发，event.detail = {currentTime, duration} 。触发频率 250ms 一次</td>
+        </tr>
+        <tr>
+            <td>@fullscreenchange</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>视频进入和退出全屏时触发，event.detail = {fullScreen, direction}，direction取为 vertical 或 horizontal</td>
+        </tr>
+        <tr>
+            <td>@waiting</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>视频出现缓冲时触发</td>
+        </tr>
+        <tr>
+            <td>@error</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>视频播放出错时触发</td>
+        </tr>
+        <tr>
+            <td>@progress</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>加载进度变化时触发，只支持一段加载。event.detail = {buffered}，百分比</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <video 
+      id="myVideo"
+      src="https://example.com/video.mp4"
+      poster="https://example.com/poster.jpg"
+      controls
+      autoplay
+      loop
+      muted
+      @play="onPlay"
+      @pause="onPause"
+      @ended="onEnded"
+      class="video"
+    ></video>
+    <view class="controls">
+      <button @click="playVideo">播放</button>
+      <button @click="pauseVideo">暂停</button>
+      <button @click="stopVideo">停止</button>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      videoContext: null
+    }
+  },
+  mounted() {
+    this.videoContext = uni.createVideoContext('myVideo');
+  },
+  methods: {
+    onPlay() {
+      console.log('视频开始播放');
+    },
+    onPause() {
+      console.log('视频暂停');
+    },
+    onEnded() {
+      console.log('视频播放结束');
+    },
+    playVideo() {
+      this.videoContext.play();
+    },
+    pauseVideo() {
+      this.videoContext.pause();
+    },
+    stopVideo() {
+      this.videoContext.stop();
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.video {
+  width: 100%;
+  height: 200px;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  padding: 10px 20px;
+}
+</style>
+</pre>

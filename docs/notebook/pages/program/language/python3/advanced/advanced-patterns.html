@@ -1,0 +1,156 @@
+<header>
+    高级迭代器模式
+</header>
+<pre tag="python">
+import itertools
+import collections
+
+# 自定义可迭代对象
+class DataCollection:
+    """自定义数据集合"""
+
+    def __init__(self, data):
+        self.data = data
+
+    def __iter__(self):
+        """返回迭代器"""
+        return DataIterator(self.data)
+
+class DataIterator:
+    """自定义迭代器"""
+
+    def __init__(self, data):
+        self.data = data
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= len(self.data):
+            raise StopIteration
+
+        value = self.data[self.index]
+        self.index += 1
+        return value
+
+# 迭代器适配器
+class IteratorAdapter:
+    """迭代器适配器"""
+
+    def __init__(self, iterable):
+        self.iterable = iterable
+
+    def __iter__(self):
+        return iter(self.iterable)
+
+    def map(self, func):
+        """映射操作"""
+        return map(func, self.iterable)
+
+    def filter(self, predicate):
+        """过滤操作"""
+        return filter(predicate, self.iterable)
+
+    def take(self, n):
+        """取前n个元素"""
+        return itertools.islice(self.iterable, n)
+
+    def skip(self, n):
+        """跳过前n个元素"""
+        return itertools.islice(self.iterable, n, None)
+
+# 流式处理
+class StreamProcessor:
+    """流式处理器"""
+
+    def __init__(self, data_source):
+        self.data_source = data_source
+
+    def process(self, *operations):
+        """应用一系列操作"""
+        result = iter(self.data_source)
+
+        for operation in operations:
+            if callable(operation):
+                result = operation(result)
+            else:
+                raise ValueError("操作必须是可调用的")
+
+        return result
+
+    def to_list(self):
+        """转换为列表"""
+        return list(self.data_source)
+
+# 使用高级迭代器模式
+def use_advanced_patterns():
+    """使用高级迭代器模式"""
+
+    print("=== 自定义可迭代对象 ===")
+    data = DataCollection([1, 2, 3, 4, 5])
+    print("自定义集合内容:")
+    for item in data:
+        print(item, end=' ')
+    print()
+
+    print("\n=== 迭代器适配器 ===")
+    adapter = IteratorAdapter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+    print("原数据:", list(adapter))
+    print("平方数:", list(adapter.map(lambda x: x**2)))
+    print("偶数:", list(adapter.filter(lambda x: x % 2 == 0)))
+    print("前3个:", list(adapter.take(3)))
+    print("跳过前3个:", list(adapter.skip(3)))
+
+    print("\n=== 流式处理 ===")
+    processor = StreamProcessor(range(1, 11))
+
+    # 定义操作
+    operations = [
+        lambda x: map(lambda y: y * 2, x),      # 乘以2
+        lambda x: filter(lambda y: y > 10, x),   # 过滤大于10的
+        lambda x: map(lambda y: f"值: {y}", x)    # 格式化
+    ]
+
+    result = processor.process(*operations)
+    print("流式处理结果:")
+    for item in result:
+        print(item)
+
+# 迭代器性能优化
+def iterator_performance():
+    """迭代器性能优化"""
+
+    import time
+    import sys
+
+    # 大数据集测试
+    large_data = range(1000000)
+
+    # 方法1: 列表推导式（内存消耗大）
+    start_time = time.time()
+    list_result = [x**2 for x in large_data if x % 2 == 0]
+    list_time = time.time() - start_time
+    print(f"列表推导式耗时: {list_time:.4f}秒")
+    print(f"列表结果大小: {sys.getsizeof(list_result)} 字节")
+
+    # 方法2: 生成器表达式（内存效率高）
+    start_time = time.time()
+    gen_result = (x**2 for x in large_data if x % 2 == 0)
+    gen_time = time.time() - start_time
+    print(f"生成器表达式创建耗时: {gen_time:.4f}秒")
+    print(f"生成器对象大小: {sys.getsizeof(gen_result)} 字节")
+
+    # 计算实际结果（触发生成器）
+    start_time = time.time()
+    actual_result = sum(gen_result)
+    actual_time = time.time() - start_time
+    print(f"生成器表达式计算耗时: {actual_time:.4f}秒")
+    print(f"计算结果: {actual_result}")
+
+# 运行高级迭代器模式示例
+use_advanced_patterns()
+print("\n=== 性能优化对比 ===")
+iterator_performance()
+</pre>

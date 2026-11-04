@@ -14,3 +14,66 @@
     温馨提示：如果是Linux系统，推荐直接：<span class="important">nohup npm run dev &</span>，对于ssh连接的命令行，记得使用
     <span class="important">exit</span>命令退出登录。
 </div>
+<h2>
+    nohup
+</h2>
+<p>
+    让命令在退出终端后继续运行，并把输出写入日志：
+</p>
+<pre>
+    nohup npm run dev > app.log 2>&1 &
+</pre>
+<p>
+    查看后台任务是否还在：
+</p>
+<pre>
+    ps aux | grep "npm run dev"
+</pre>
+<h2>
+    重定向
+</h2>
+<p>
+    把标准输出写入文件：
+</p>
+<pre>
+    command > output.log
+</pre>
+<p>
+    追加写入文件：
+</p>
+<pre>
+    command >> output.log
+</pre>
+<p>
+    同时保存标准输出和错误输出：
+</p>
+<pre>
+    command > output.log 2>&1
+</pre>
+<h2>
+    管道
+</h2>
+<p>
+    管道可以把前一个命令的输出交给后一个命令处理：
+</p>
+<pre>
+    cat app.log | grep "ERROR"
+</pre>
+<p>
+    统计日志里错误出现的次数：
+</p>
+<pre>
+    grep "ERROR" app.log | wc -l
+</pre>
+<h2>
+    alias
+</h2>
+<p>
+    给常用命令起别名：
+</p>
+<pre>
+    alias ll='ls -lah'
+</pre>
+<p>
+    想永久生效，可以写入 <span class="special">~/.bashrc</span> 或 <span class="special">~/.zshrc</span>。
+</p>

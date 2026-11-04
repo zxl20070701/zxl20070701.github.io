@@ -1,0 +1,235 @@
+<header>
+    viewport-fit 与安全区域
+</header>
+<p>
+    在上一行常见的 viewport 配置中：
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"&gt;
+</pre>
+<p>
+    最后的 <span class="important">viewport-fit=cover</span> 就是用来处理刘海屏、挖孔屏、圆角屏等异形屏幕的。它允许页面延伸到屏幕的非安全区域，同时配合 CSS 的安全区域变量，把真正需要显示的内容放回安全位置。
+</p>
+<h2>
+    为什么需要 viewport-fit
+</h2>
+<p>
+    以带刘海的手机为例，屏幕顶部中间有摄像头区域，底部有 Home Indicator（手势横条），横屏时左右两侧也可能被遮挡。如果页面直接铺满整个屏幕，顶部标题、底部按钮就可能被这些区域挡住，甚至无法点击。
+</p>
+<p>
+    浏览器为了让内容不被遮挡，默认会把页面限制在安全区域内，典型表现是横屏时页面两侧出现留白（黑边）。而全屏背景、视频、地图等场景又希望背景铺满整个屏幕，只在内容层避让安全区域，这就需要 viewport-fit 来参与控制。
+</p>
+<h2>
+    三个取值
+</h2>
+<h3>
+    auto
+</h3>
+<p>
+    默认值。行为上接近 contain，页面不会主动延伸到安全区域之外，异形区域通常由浏览器留白处理。
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=auto"&gt;
+</pre>
+<h3>
+    contain
+</h3>
+<p>
+    页面被限制在屏幕内最大的安全矩形区域内。横屏刘海机型上，两侧可能会出现空白带，页面不会盖住刘海。
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=contain"&gt;
+</pre>
+<h3>
+    cover
+</h3>
+<p>
+    页面铺满整个屏幕，包括刘海、圆角、Home Indicator 所在区域。此时页面内容可能被遮挡，必须结合 CSS 的 env(safe-area-inset-*) 主动避让。
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"&gt;
+</pre>
+<div class="tips">
+    只有设置了 viewport-fit=cover，safe-area-inset-* 这类安全区域变量在 iOS 上才通常会有非零值。没有覆盖需求时，不需要强行设置 cover。
+</div>
+<h2>
+    env() 安全区域变量
+</h2>
+<p>
+    CSS 提供了四个环境变量，用来表示安全区域相对于视口四条边的距离：
+</p>
+<ul>
+    <li>
+        <span class="special">env(safe-area-inset-top)</span>：顶部安全距离；
+    </li>
+    <li>
+        <span class="special">env(safe-area-inset-right)</span>：右侧安全距离；
+    </li>
+    <li>
+        <span class="special">env(safe-area-inset-bottom)</span>：底部安全距离；
+    </li>
+    <li>
+        <span class="special">env(safe-area-inset-left)</span>：左侧安全距离。
+    </li>
+</ul>
+<p>
+    它们的单位是像素，但不能写死。不同机型、横竖屏、是否显示浏览器工具栏都会让数值发生变化。在不需要避让的场景下，值通常为 0。
+</p>
+<h3>
+    基本用法
+</h3>
+<pre tag="css">
+.footer {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+</pre>
+<p>
+    env() 还支持第二个参数，作为变量不可用时的回退值：
+</p>
+<pre tag="css">
+.footer {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+</pre>
+<h2>
+    实战：背景铺满，内容避让
+</h2>
+<p>
+    最常见的需求是：背景色或背景图铺满整个屏幕，而文字、按钮不进入危险区域。推荐把安全边距加在最外层内容容器上，而不是给页面里所有元素都加。
+</p>
+<pre tag="html">
+&lt;body&gt;
+    &lt;div class="page"&gt;
+        &lt;header class="page-header"&gt;标题&lt;/header&gt;
+        &lt;main class="page-main"&gt;内容&lt;/main&gt;
+        &lt;footer class="page-footer"&gt;底部操作&lt;/footer&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+</pre>
+<pre tag="css">
+html {
+    background-color: #0a1a2f;
+}
+
+.page {
+    box-sizing: border-box;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding:
+        calc(12px + env(safe-area-inset-top))
+        calc(12px + env(safe-area-inset-right))
+        calc(12px + env(safe-area-inset-bottom))
+        calc(12px + env(safe-area-inset-left));
+}
+</pre>
+<p>
+    这样既保留了背景铺满的效果，又能保证内容与刘海、手势条之间始终有间距。
+</p>
+<h3>
+    固定定位的顶栏和底栏
+</h3>
+<p>
+    顶栏和底栏通常使用 position: fixed，需要分别处理顶部和底部的安全距离：
+</p>
+<pre tag="css">
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-top: env(safe-area-inset-top);
+}
+
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+</pre>
+<p>
+    底栏里的按钮如果希望始终与 Home Indicator 保持一定间距，可以把原始内边距和安全距离相加：
+</p>
+<pre tag="css">
+.bottom-bar {
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}
+</pre>
+<h2>
+    兼容旧版 iOS
+</h2>
+<p>
+    iOS 11.0 到 11.2 的 Safari 使用的是 constant() 语法，之后才改为 env()。如果需要兼容这些老系统，可以先写 constant() 再写 env()，后者会覆盖前者：
+</p>
+<pre tag="css">
+.footer {
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+</pre>
+<p>
+    对于完全不支持安全区域变量的浏览器，更稳妥的方式是用 @supports 做能力检测，避免在旧浏览器里写出无效的整个 padding 声明：
+</p>
+<pre tag="css">
+.footer {
+    padding-bottom: 12px;
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+    .footer {
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    }
+}
+</pre>
+<h2>
+    横屏时的左右安全区
+</h2>
+<p>
+    横屏下，刘海可能位于左侧或右侧，需要同时处理左右变量。对于侧边栏、贴边按钮尤其重要：
+</p>
+<pre tag="css">
+.side-panel {
+    padding-left: calc(16px + env(safe-area-inset-left));
+    padding-right: calc(16px + env(safe-area-inset-right));
+}
+</pre>
+<p>
+    可以用 CSS 的 max() 保证最小间距，同时又不小于安全距离：
+</p>
+<pre tag="css">
+.side-panel {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+}
+</pre>
+<h2>
+    注意事项
+</h2>
+<ul>
+    <li>
+        安全区域数值不是固定值，不要写成 44px、34px 之类的常量，它们会随机型、横竖屏变化；
+    </li>
+    <li>
+        不要把 env() 加在所有元素上，通常只加在最外层容器、固定顶栏、固定底栏、侧边栏等真正贴边的元素上；
+    </li>
+    <li>
+        全屏 canvas、视频、地图等需要铺满屏幕时使用 viewport-fit=cover，再把操作按钮放进安全区域；
+    </li>
+    <li>
+        Android 上不同内核、不同厂商对异形屏的支持程度存在差异，view 层与原生层的处理也可能不同，关键页面需要真机验证；
+    </li>
+    <li>
+        如果页面被原生 WebView 设置了额外的内边距或缩放，CSS 安全区域的计算结果可能和浏览器里不一致，需要结合实际容器排查。
+    </li>
+</ul>
+<h2>
+    能力检测
+</h2>
+<p>
+    如果需要在 JavaScript 中判断环境是否支持安全区域变量，可以使用 CSS.supports：
+</p>
+<pre tag="javascript">
+var supportsSafeArea = window.CSS &amp;&amp; CSS.supports('padding-top: env(safe-area-inset-top)');
+console.log(supportsSafeArea);
+</pre>

@@ -1,0 +1,278 @@
+<header>
+    二分查找
+</header>
+
+<h2>
+    二分查找的定义
+</h2>
+
+<p>
+    二分查找（Binary
+    Search），又称折半查找，是一种高效的查找算法。它的基本思想是：在有序表中，取中间位置的元素与目标元素进行比较，如果相等则查找成功；如果目标元素小于中间元素，则在左半部分继续查找；如果目标元素大于中间元素，则在右半部分继续查找。重复这个过程，直到找到目标元素或确定目标元素不存在。
+</p>
+
+<h3>
+    二分查找的前提条件
+</h3>
+
+<ul>
+    <li>
+        <span class="special">有序性</span>：数据必须是有序的
+    </li>
+    <li>
+        <span class="special">随机访问</span>：必须支持随机访问（如数组）
+    </li>
+    <li>
+        <span class="special">稳定性</span>：在查找过程中数据不会发生变化
+    </li>
+</ul>
+
+<h2>
+    二分查找的实现
+</h2>
+
+<h3>
+    递归实现
+</h3>
+
+<pre tag="c">
+int BinarySearch_Recursive(int arr[], int left, int right, int key) {
+    if (left > right) {
+        return -1;  // 查找失败
+    }
+
+    int mid = left + (right - left) / 2;  // 防止溢出
+
+    if (arr[mid] == key) {
+        return mid;  // 查找成功
+    } else if (arr[mid] > key) {
+        return BinarySearch_Recursive(arr, left, mid - 1, key);  // 在左半部分查找
+    } else {
+        return BinarySearch_Recursive(arr, mid + 1, right, key);  // 在右半部分查找
+    }
+}
+</pre>
+
+<h3>
+    非递归实现
+</h3>
+
+<pre tag="c">
+int BinarySearch_Iterative(int arr[], int n, int key) {
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;  // 防止溢出
+
+        if (arr[mid] == key) {
+            return mid;  // 查找成功
+        } else if (arr[mid] > key) {
+            right = mid - 1;  // 在左半部分查找
+        } else {
+            left = mid + 1;  // 在右半部分查找
+        }
+    }
+
+    return -1;  // 查找失败
+}
+</pre>
+
+<h3>
+    查找第一个等于目标值的元素
+</h3>
+
+<pre tag="c">
+int BinarySearch_FirstEqual(int arr[], int n, int key) {
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] >= key) {
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    if (left < n && arr[left] == key) {
+        return left;
+    }
+    return -1;
+}
+</pre>
+
+<h3>
+    查找最后一个等于目标值的元素
+</h3>
+
+<pre tag="c">
+int BinarySearch_LastEqual(int arr[], int n, int key) {
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] <= key) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    if (right >= 0 && arr[right] == key) {
+        return right;
+    }
+    return -1;
+}
+</pre>
+
+<h2>
+    二分查找的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：O(1)，目标元素正好是中间元素
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：O(log n)，需要查找到最后一个元素
+    </li>
+    <li>
+        <span class="special">平均情况</span>：O(log n)
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">递归实现</span>：O(log n)，递归调用栈的深度
+    </li>
+    <li>
+        <span class="special">非递归实现</span>：O(1)，只需要常数级别的额外空间
+    </li>
+</ul>
+
+<h2>
+    二分查找的优化
+</h2>
+
+<h3>
+    插值查找
+</h3>
+
+<p>
+    插值查找是二分查找的改进，它根据目标值在范围中的位置来估计中间位置，而不是简单地取中间位置。
+</p>
+
+<h3>
+    斐波那契查找
+</h3>
+
+<p>
+    斐波那契查找利用斐波那契数列的性质来确定分割点，在某些情况下比二分查找更高效。
+</p>
+
+<h3>
+    三分查找
+</h3>
+
+<p>
+    三分查找将查找区间分成三部分，适用于某些特殊的函数优化问题。
+</p>
+
+<h2>
+    二分查找的应用场景
+</h2>
+
+<h3>
+    有序数组查找
+</h3>
+
+<p>
+    当数据存储在有序数组中且需要频繁查找时，二分查找是最佳选择。
+</p>
+
+<h3>
+    查找边界
+</h3>
+
+<p>
+    二分查找的变种可以用于查找有序数组中满足特定条件的边界。
+</p>
+
+<h3>
+    数值计算
+</h3>
+
+<p>
+    在数值计算中，二分查找可以用于求解方程的根。
+</p>
+
+<h3>
+    优化问题
+</h3>
+
+<p>
+    在某些优化问题中，二分查找可以用于寻找最优解。
+</p>
+
+<h2>
+    二分查找的变种
+</h2>
+
+<h3>
+    查找第一个大于等于目标值的元素
+</h3>
+
+<pre tag="c">
+int BinarySearch_FirstGreaterEqual(int arr[], int n, int key) {
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] >= key) {
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    return left;  // 返回第一个大于等于key的元素位置
+}
+</pre>
+
+<h3>
+    查找最后一个小于等于目标值的元素
+</h3>
+
+<pre tag="c">
+int BinarySearch_LastLessEqual(int arr[], int n, int key) {
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] <= key) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return right;  // 返回最后一个小于等于key的元素位置
+}
+</pre>

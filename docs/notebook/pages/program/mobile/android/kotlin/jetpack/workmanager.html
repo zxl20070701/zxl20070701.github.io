@@ -1,0 +1,137 @@
+<header>
+    WorkManager 后台任务
+</header>
+<p>
+    WorkManager 是官方推荐的后台任务调度方案，
+    用于<span class="important">延迟、周期性、需保证执行</span>的任务
+    （如日志上报、数据同步、文件上传）。
+    支持 API 14+，内部自动选择 JobScheduler / AlarmManager。
+</p>
+<h2>
+    添加依赖
+</h2>
+<pre tag="kotlin">
+implementation("androidx.work:work-runtime-ktx:2.10.0")
+</pre>
+<h2>
+    定义 Worker
+</h2>
+<pre tag="kotlin">
+class UploadWorker(
+    context: Context,
+    params: WorkerParameters
+) : CoroutineWorker(context, params) {
+
+    override suspend fun doWork(): Result {
+        val path = inputData.getString(KEY_FILE_PATH) ?: return Result.failure()
+
+        return try {
+            uploadFile(path) // 挂起函数，自动跑在 Dispatchers.Default
+            Result.success(workDataOf(KEY_URL to "https://..."))
+        } catch (e: IOException) {
+            if (runAttemptCount &lt; 3) Result.retry() // 失败重试
+            else Result.failure()
+        }
+    }
+
+    companion object {
+        const val KEY_FILE_PATH = "file_path"
+        const val KEY_URL = "url"
+    }
+}
+</pre>
+<h2>
+    一次性任务
+</h2>
+<pre tag="kotlin">
+val request = OneTimeWorkRequestBuilder&lt;UploadWorker&gt;()
+    .setInputData(workDataOf(UploadWorker.KEY_FILE_PATH to path))
+    .setInitialDelay(10, TimeUnit.SECONDS) // 延迟 10 秒
+    .setConstraints(
+        Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED) // 需联网
+            .setRequiresBatteryNotLow(true)                // 电量不能太低
+            .build()
+    )
+    .setBackoffCriteria(
+        BackoffPolicy.EXPONENTIAL, // 指数退避重试
+        30, TimeUnit.SECONDS
+    )
+    .addTag("upload") // 打标签，便于批量取消
+    .build()
+
+WorkManager.getInstance(context).enqueue(request)
+</pre>
+<h2>
+    周期性任务
+</h2>
+<pre tag="kotlin">
+// 周期最小 15 分钟，具体执行时机由系统决定
+val periodic = PeriodicWorkRequestBuilder&lt;SyncWorker&gt;(15, TimeUnit.MINUTES)
+    .setConstraints(
+        Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.UNMETERED) // 仅 Wi-Fi
+            .setRequiresCharging(true)                     // 充电中
+            .build()
+    )
+    .build()
+
+WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+    "daily_sync",                          // 唯一名
+    ExistingPeriodicWorkPolicy.KEEP,       // 已存在则保留
+    periodic
+)
+</pre>
+<h2>
+    链式任务
+</h2>
+<pre tag="kotlin">
+WorkManager.getInstance(context)
+    .beginWith(downloadWork)
+    .then(unzipWork)
+    .then(installWork)
+    .enqueue()
+</pre>
+<h2>
+    观察任务状态
+</h2>
+<pre tag="kotlin">
+WorkManager.getInstance(context)
+    .getWorkInfoByIdFlow(request.id)
+    .collect { info -&gt;
+        when (info?.state) {
+            WorkInfo.State.SUCCEEDED -&gt; {
+                val url = info.outputData.getString(UploadWorker.KEY_URL)
+                showSuccess(url)
+            }
+            WorkInfo.State.FAILED -&gt; showError()
+            WorkInfo.State.RUNNING -&gt; showProgress()
+            else -&gt; Unit
+        }
+    }
+</pre>
+<h2>
+    取消任务
+</h2>
+<pre tag="kotlin">
+val wm = WorkManager.getInstance(context)
+wm.cancelWorkById(request.id)
+wm.cancelAllWorkByTag("upload")
+wm.cancelUniqueWork("daily_sync")
+</pre>
+<h2>
+    快速任务（Expedited Work）
+</h2>
+<p>
+    需要立即执行、不能被延迟的任务（如发送消息）：
+</p>
+<pre tag="kotlin">
+OneTimeWorkRequestBuilder&lt;SendMsgWorker&gt;()
+    .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+    .build()
+</pre>
+<div class="tips">
+    WorkManager 适合<span class="warn">重要但不紧急</span>的任务；
+    需要精确定时用 AlarmManager，需要前台实时执行用
+    <span class="warn">ForegroundService</span>。
+</div>

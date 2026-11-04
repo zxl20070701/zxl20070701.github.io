@@ -1,0 +1,44 @@
+<header>
+    页面和自定义组件
+</header>
+<h2>
+    语法
+</h2>
+<img src="./images/harmonyos/ui-design.png" />
+<div class="tips">
+    自定义变量不能与基础通用属性/事件名重复。
+</div>
+<h2>
+    简单用例
+</h2>
+<h3>
+    定义
+</h3>
+<pre tag="javascript">
+@Component
+struct UiDemo{
+    info:string
+    build(){
+        Text(this.info)
+    }
+}
+</pre>
+<div class="tips">
+    struct关键字声明的UI描述必须被
+    <span class="warn">@Component</span>
+    或者
+    <span class="warn">CustomDialog</span>
+    修饰（必须是组件或自定义弹框）。
+    entry修饰符表示该组件是页面级组件（一个文件中只能修改一个struct组件）。
+</div>
+<h3>
+    使用
+</h3>
+<pre tag="javascript">
+UiDemo({
+    info: "我是自定义的组件"
+})
+</pre>
+<p>
+    此时，你就可以在页面看见一段文本<span class="warn">"我是自定义的组件"</span>。
+</p>

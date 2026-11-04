@@ -1,0 +1,92 @@
+<header>
+    参数类型详解
+</header>
+<h2>
+    必需参数
+</h2>
+<p>
+    就是你定义函数的时候，定义了几个参数，调用的时候就要传递几个，当然是普通定义方法，不包括下面的不定长参数，这点ES就很随意了。
+</p>
+<pre tag="python">
+def power(base, exponent):
+    return base ** exponent
+
+# 必须提供所有必需参数
+result = power(2, 3)  # 正确
+# result = power(2)   # 错误！缺少参数
+print(result)  # 输出: 8
+</pre>
+
+<h2>
+    关键字参数
+</h2>
+<p>
+    举个例子，比如你定义了一个函数有两个参数age和name，函数名称是getInfo，正常调用是依次传递参数：getInfo(7,'zxl20070701')，当然你可以不这样，你还可以这样：
+</p>
+<pre tag="python">
+    getInfo(name='zxl20070701',age=7)；
+</pre>
+<p>
+    混合使用时，位置参数必须在关键字参数之前：
+</p>
+<pre tag="python">
+def introduce(name, age, city):
+    return f"我是{name}，{age}岁，来自{city}"
+
+print(introduce("Alice", city="北京", age=25))
+</pre>
+
+<h2>
+    默认参数
+</h2>
+<pre tag="python">
+def create_profile(name, age, city="未知", country="中国"):
+    return f"{name}, {age}岁, {city}, {country}"
+
+print(create_profile("张三", 30))  # 使用默认参数
+print(create_profile("李四", 25, "上海"))  # 覆盖一个默认参数
+print(create_profile("王五", 35, "广州", "中国"))  # 覆盖所有参数
+
+# 注意：默认参数应该是不可变对象
+def add_item(item, items=None):
+    if items is None:
+        items = []
+    items.append(item)
+    return items
+
+print(add_item("苹果"))  # 输出: ['苹果']
+print(add_item("香蕉"))  # 输出: ['香蕉']，而不是['苹果', '香蕉']
+</pre>
+
+<h2>
+    不定长参数
+</h2>
+<p>
+    定义方法：getInfo(age,name,*vartuple)，这样多传递的数据就全部在vartuple中，调用前它是一个空元组。
+</p>
+<pre tag="python">
+# *args接收任意数量的位置参数（元组形式）
+def sum_all(*args):
+    return sum(args)
+
+print(sum_all(1, 2, 3, 4, 5))  # 输出: 15
+print(sum_all(10, 20))         # 输出: 30
+
+# **kwargs接收任意数量的关键字参数（字典形式）
+def print_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+print_info(name="Alice", age=25, city="北京")
+# 输出:
+# name: Alice
+# age: 25
+# city: 北京
+
+# 同时使用*args和**kwargs
+def flexible_function(*args, **kwargs):
+    print("位置参数:", args)
+    print("关键字参数:", kwargs)
+
+flexible_function(1, 2, 3, name="Bob", age=30)
+</pre>

@@ -1,0 +1,285 @@
+<header>
+    充电桩布线
+</header>
+<p>
+    家用充电桩是
+    <span class="special">持续大功率负载</span>
+    ：7kW 的桩连续工作几小时，相当于全天开着三台空调。布线和保护做错，轻则频繁跳闸，重则线缆过热。
+</p>
+<div class="tips">
+    充电桩必须
+    <span class="important">独立专线、独立空开、独立漏保</span>
+    ，不得与家中任何其它回路共用，也不得从普通插座引出。
+</div>
+<h2>
+    先确认三件事
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>确认项</th>
+            <th>怎么确认</th>
+            <th>不满足时</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>车位是否固定产权 / 长租</td>
+            <td>产权证或租赁合同</td>
+            <td>无法申请报装</td>
+        </tr>
+        <tr>
+            <td>物业是否同意施工</td>
+            <td>提交施工方案，取得书面同意</td>
+            <td>先沟通再开工，避免返工</td>
+        </tr>
+        <tr>
+            <td>电表容量是否够</td>
+            <td>看进户线径、总空开、已有负载</td>
+            <td>向供电公司申请
+                <strong>增容或新装电表</strong>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    正规流程是：
+    <span class="special">物业同意 → 供电公司报装 → 电表安装 → 施工布线 → 验收通电</span>
+    。跳过报装私接，可能被要求拆除，也存在安全隐患。
+</div>
+<h2>
+    功率与线径
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>桩功率</th>
+            <th>供电方式</th>
+            <th>电流</th>
+            <th>导线</th>
+            <th>空开</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>3.5kW</td>
+            <td>单相 220V</td>
+            <td>16A</td>
+            <td>4mm²</td>
+            <td>20A</td>
+        </tr>
+        <tr>
+            <td>7kW</td>
+            <td>单相 220V</td>
+            <td>32A</td>
+            <td>
+                <strong>6mm²</strong>
+            </td>
+            <td>40A</td>
+        </tr>
+        <tr>
+            <td>11kW</td>
+            <td>三相 380V</td>
+            <td>16A</td>
+            <td>
+                <strong>5×6mm²</strong>
+            </td>
+            <td>三相 20A</td>
+        </tr>
+        <tr>
+            <td>21kW</td>
+            <td>三相 380V</td>
+            <td>32A</td>
+            <td>
+                <strong>5×10mm²</strong>
+            </td>
+            <td>三相 40A</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    线径要按
+    <span class="special">实际敷设长度</span>
+    校核：超过 30m 时建议放大一档，超过 50m 建议按厂家要求计算压降。长距离用细线，末端电压会明显下降，桩会报欠压。
+</div>
+<h2>
+    保护配置
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>保护</th>
+            <th>作用</th>
+            <th>要求</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>专用空开</td>
+            <td>过载、短路</td>
+            <td>按上表选取，独立安装</td>
+        </tr>
+        <tr>
+            <td>漏电保护</td>
+            <td>防触电</td>
+            <td>
+                <strong>Type A 或 Type B</strong>
+                ，含直流分量检测
+            </td>
+        </tr>
+        <tr>
+            <td>过压 / 欠压保护</td>
+            <td>电压异常时断电</td>
+            <td>多数桩内置，确认已开启</td>
+        </tr>
+        <tr>
+            <td>防雷 / 浪涌保护</td>
+            <td>雷击、电网浪涌</td>
+            <td>室外或独立电表建议加装 SPD</td>
+        </tr>
+        <tr>
+            <td>接地保护</td>
+            <td>外壳漏电导流</td>
+            <td>
+                <strong>必须可靠接地</strong>
+                ，阻值一般不大于 4Ω
+            </td>
+        </tr>
+        <tr>
+            <td>急停 / 漏保测试</td>
+            <td>紧急断电</td>
+            <td>安装位置便于操作</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    电动汽车充电时可能产生
+    <span class="special">直流剩余电流</span>
+    ，普通 AC 型漏保可能被“蒙住”而不动作。应选
+    <span class="important">Type B</span>
+    或带 DC 6mA 检测的 Type A 漏保。
+</div>
+<h2>
+    电缆敷设
+</h2>
+<ul>
+    <li>
+        线缆必须
+        <span class="special">穿管或走桥架</span>
+        ，明敷段用金属管或阻燃 PVC 管，不得裸露。
+    </li>
+    <li>
+        室外段要
+        <span class="special">防水、防晒、防碾压</span>
+        ，穿越车道时需加钢套管或过路盒。
+    </li>
+    <li>
+        电缆
+        <span class="warn">不得与燃气管同沟</span>
+        ，与水管同沟时保持间距并做隔离。
+    </li>
+    <li>
+        地下敷设要有足够埋深并铺砂盖砖，或直接走地下管廊。
+    </li>
+    <li>
+        线缆两端
+        <span class="special">打标签</span>
+        ，标注回路编号与用途。
+    </li>
+</ul>
+<h2>
+    充电桩安装
+</h2>
+<ul>
+    <li>
+        安装高度一般
+        <span class="special">距地 1.2～1.4m</span>
+        ，便于插拔和查看指示灯。
+    </li>
+    <li>
+        防护等级至少
+        <span class="special">IP54</span>
+        ，室外建议 IP65。
+    </li>
+    <li>
+        桩体前方
+        <span class="warn">加装防撞柱或挡车器</span>
+        ，避免车辆撞坏。
+    </li>
+    <li>
+        充电枪线缆要
+        <span class="special">悬挂收纳</span>
+        ，不要拖地，防止碾压破损。
+    </li>
+    <li>
+        桩体附近
+        <span class="special">不得堆放易燃物</span>
+        ，保持通风。
+    </li>
+</ul>
+<h2>
+    常见问题
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>现象</th>
+            <th>可能原因</th>
+            <th>处理</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>充电中途跳闸</td>
+            <td>线径不足、空开偏小、接头过热</td>
+            <td>核对线径与空开，检查端子压接</td>
+        </tr>
+        <tr>
+            <td>桩报“接地故障”</td>
+            <td>接地不良或未接</td>
+            <td>测接地电阻，补做接地极</td>
+        </tr>
+        <tr>
+            <td>充电功率达不到标称</td>
+            <td>车辆限制、电压偏低、桩限流设置</td>
+            <td>查车载充电机功率与桩设置</td>
+        </tr>
+        <tr>
+            <td>漏保频繁误跳</td>
+            <td>选型为 AC 型、线路受潮</td>
+            <td>更换 Type B/A+DC6mA，检查接线盒密封</td>
+        </tr>
+        <tr>
+            <td>无法启动充电</td>
+            <td>未刷卡/未授权、通讯故障</td>
+            <td>按桩说明书重置，联系售后</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    安全使用
+</h2>
+<ul>
+    <li>
+        <span class="important">严禁“飞线”充电</span>
+        ：从楼上窗口拉排插给车充电，线径和防护都不达标。
+    </li>
+    <li>
+        雷雨、积水时
+        <span class="special">暂停充电</span>
+        ，尤其室外桩。
+    </li>
+    <li>
+        插拔枪头前先
+        <span class="special">停止充电</span>
+        ，不要带电硬拔。
+    </li>
+    <li>
+        定期检查枪头
+        <span class="warn">有无烧蚀、变形、进水</span>
+        ，异常立即停用。
+    </li>
+    <li>
+        长期不用时断开桩前空开。
+    </li>
+</ul>

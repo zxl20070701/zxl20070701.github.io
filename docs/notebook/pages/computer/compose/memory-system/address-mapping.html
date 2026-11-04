@@ -1,0 +1,414 @@
+<header>
+    地址映射
+</header>
+<h2>
+    地址映射概述
+</h2>
+<p>
+    <span class="important">地址映射</span>（Address Mapping）是计算机系统中将逻辑地址转换为物理地址的过程。它是存储管理的核心机制，使得程序可以使用连续的虚拟地址空间，而无需关心物理内存的实际布局。
+</p>
+
+<h2>
+    地址映射的基本概念
+</h2>
+<h3>
+    1. 地址类型
+</h3>
+<ul>
+    <li><span class="special">逻辑地址</span>：程序使用的地址，也称为虚拟地址</li>
+    <li><span class="special">物理地址</span>：实际内存中的地址</li>
+    <li><span class="special">线性地址</span>：分段机制中的中间地址</li>
+</ul>
+
+<h3>
+    2. 地址空间
+</h3>
+<ul>
+    <li><span class="special">虚拟地址空间</span>：程序可见的地址范围</li>
+    <li><span class="special">物理地址空间</span>：实际内存的地址范围</li>
+    <li><span class="special">地址空间大小</span>：由处理器架构决定</li>
+</ul>
+
+<h3>
+    3. 映射机制
+</h3>
+<ul>
+    <li><span class="special">硬件支持</span>：MMU（内存管理单元）完成地址转换</li>
+    <li><span class="special">软件支持</span>：操作系统维护映射表</li>
+    <li><span class="special">透明性</span>：对应用程序透明</li>
+</ul>
+
+<h2>
+    分页地址映射
+</h2>
+<h3>
+    1. 分页基本概念
+</h3>
+<ul>
+    <li><span class="special">页面（Page）</span>：虚拟地址空间的基本单位</li>
+    <li><span class="special">页框（Page Frame）</span>：物理内存中的页面容器</li>
+    <li><span class="special">页大小</span>：通常为4KB，也有2MB、1GB等大页</li>
+</ul>
+
+<h3>
+    2. 地址结构
+</h3>
+<h4>
+    虚拟地址结构
+</h4>
+<ul>
+    <li><span class="special">页号</span>：标识虚拟页面</li>
+    <li><span class="special">页内偏移</span>：页面内的字节偏移</li>
+</ul>
+
+<h4>
+    物理地址结构
+</h4>
+<ul>
+    <li><span class="special">页框号</span>：标识物理页框</li>
+    <li><span class="special">页内偏移</span>：与虚拟地址的页内偏移相同</li>
+</ul>
+
+<h3>
+    3. 页表机制
+</h3>
+<h4>
+    页表项（PTE）
+</h4>
+<ul>
+    <li><span class="special">页框号</span>：存储物理页框号</li>
+    <li><span class="special">有效位</span>：指示该页是否在内存中</li>
+    <li><span class="special">权限位</span>：读/写/执行权限</li>
+    <li><span class="special">脏位</span>：指示页面是否被修改</li>
+    <li><span class="special">访问位</span>：指示页面是否被访问</li>
+</ul>
+
+<h4>
+    地址转换过程
+</h4>
+<ol>
+    <li>提取虚拟地址的页号和页内偏移</li>
+    <li>查询页表获取页框号</li>
+    <li>组合页框号和页内偏移得到物理地址</li>
+</ol>
+
+<h3>
+    4. 多级页表
+</h3>
+<h4>
+    二级页表
+</h4>
+<ul>
+    <li><span class="special">页目录</span>：存储页表的物理地址</li>
+    <li><span class="special">页表</span>：存储页框号和相关控制位</li>
+    <li><span class="special">优势</span>：节省内存空间，支持稀疏地址空间</li>
+</ul>
+
+<h4>
+    三级页表
+</h4>
+<ul>
+    <li><span class="special">页目录指针表</span>：指向页目录</li>
+    <li><span class="special">页目录</span>：指向页表</li>
+    <li><span class="special">页表</span>：存储页框信息</li>
+    <li><span class="special">应用</span>：64位系统，如x86-64</li>
+</ul>
+
+<h2>
+    分段地址映射
+</h2>
+<h3>
+    1. 分段基本概念
+</h3>
+<ul>
+    <li><span class="special">段（Segment）</span>：逻辑上的程序和数据单元</li>
+    <li><span class="special">段表</span>：记录段的起始地址和长度</li>
+    <li><span class="special">段大小</span>：可变，通常从1字节到4GB</li>
+</ul>
+
+<h3>
+    2. 地址结构
+</h3>
+<h4>
+    虚拟地址结构
+</h4>
+<ul>
+    <li><span class="special">段选择子</span>：标识段描述符</li>
+    <li><span class="special">段内偏移</span>：段内的字节偏移</li>
+</ul>
+
+<h3>
+    3. 段表机制
+</h3>
+<h4>
+    段描述符
+</h4>
+<ul>
+    <li><span class="special">基地址</span>：段在物理内存中的起始地址</li>
+    <li><span class="special">段界限</span>：段的最大长度</li>
+    <li><span class="special">访问权限</span>：读/写/执行权限</li>
+    <li><span class="special">段类型</span>：代码段、数据段、系统段等</li>
+</ul>
+
+<h4>
+    地址转换过程
+</h4>
+<ol>
+    <li>使用段选择子定位段描述符</li>
+    <li>检查段内偏移是否越界</li>
+    <li>段基地址加段内偏移得到线性地址</li>
+</ol>
+
+<h2>
+    段页式地址映射
+</h2>
+<h3>
+    1. 基本概念
+</h3>
+<p>
+    结合分段和分页的优点，先分段再分页。
+</p>
+<ul>
+    <li><span class="special">逻辑结构</span>：程序分为逻辑段</li>
+    <li><span class="special">物理实现</span>：每个段内采用分页管理</li>
+    <li><span class="special">优势</span>：兼具灵活性和效率</li>
+</ul>
+
+<h3>
+    2. 地址转换过程
+</h3>
+<ol>
+    <li>虚拟地址分为段选择子和段内偏移</li>
+    <li>通过段表获取段基址</li>
+    <li>段基址加段内偏移得到线性地址</li>
+    <li>线性地址通过页表转换为物理地址</li>
+</ol>
+
+<h3>
+    3. 实际应用
+</h3>
+<ul>
+    <li><span class="special">x86架构</span>：支持段页式管理</li>
+    <li><span class="special">现代操作系统</span>：主要使用分页，分段用于特殊用途</li>
+</ul>
+
+<h2>
+    TLB（转换后备缓冲器）
+</h2>
+<h3>
+    1. TLB基本概念
+</h3>
+<ul>
+    <li><span class="special">功能</span>：缓存最近使用的页表项</li>
+    <li><span class="special">位置</span>：MMU内部</li>
+    <li><span class="special">作用</span>：加速地址转换过程</li>
+</ul>
+
+<h3>
+    2. TLB结构
+</h3>
+<h4>
+    TLB项
+</h4>
+<ul>
+    <li><span class="special">虚拟页号</span>：作为查找键</li>
+    <li><span class="special">物理页框号</span>：转换结果</li>
+    <li><span class="special">控制位</span>：有效位、脏位、权限位等</li>
+</ul>
+
+<h4>
+    映射方式
+</h4>
+<ul>
+    <li><span class="special">全相联</span>：任何虚拟页号可映射到任何TLB项</li>
+    <li><span class="special">组相联</span>：虚拟页号映射到特定组的项</li>
+</ul>
+
+<h3>
+    3. TLB操作
+</h3>
+<h4>
+    TLB命中
+</h4>
+<ul>
+    <li>直接获取物理页框号</li>
+    <li>组合页框号和页内偏移得到物理地址</li>
+    <li>无需访问页表，速度极快</li>
+</ul>
+
+<h4>
+    TLB缺失
+</h4>
+<ul>
+    <li>查询页表获取映射信息</li>
+    <li>更新TLB项</li>
+    <li>如果页表项无效，触发页缺失异常</li>
+</ul>
+
+<h3>
+    4. TLB性能
+</h3>
+<ul>
+    <li><span class="special">命中率</span>：通常高于99%</li>
+    <li><span class="special">缺失惩罚</span>：几十到几百个时钟周期</li>
+    <li><span class="special">优化</span>：多级TLB、大页支持</li>
+</ul>
+
+<h2>
+    大页映射
+</h2>
+<h3>
+    1. 大页基本概念
+</h3>
+<ul>
+    <li><span class="special">标准页</span>：通常为4KB</li>
+    <li><span class="special">大页</span>：2MB、1GB甚至更大</li>
+    <li><span class="special">优势</span>：减少页表大小，提高TLB效率</li>
+</ul>
+
+<h3>
+    2. 大页应用
+</h3>
+<ul>
+    <li><span class="special">数据库系统</span>：大内存工作集</li>
+    <li><span class="special">科学计算</span>：大数组和矩阵</li>
+    <li><span class="special">虚拟化</span>：减少嵌套页表开销</li>
+</ul>
+
+<h3>
+    3. 大页管理
+</h3>
+<ul>
+    <li><span class="special">分配策略</span>：连续物理内存分配</li>
+    <li><span class="special">碎片问题</span>：可能产生内存碎片</li>
+    <li><span class="special">透明大页</span>：操作系统自动管理大页</li>
+</ul>
+
+<h2>
+    反向映射
+</h2>
+<h3>
+    1. 基本概念
+</h3>
+<ul>
+    <li><span class="special">功能</span>：从物理页框查找映射的虚拟页</li>
+    <li><span class="special">应用</span>：页面回收、页面共享、内存压缩</li>
+    <li><span class="special">挑战</span>：需要维护额外的数据结构</li>
+</ul>
+
+<h3>
+    2. 实现机制
+</h3>
+<h4>
+    基于对象的反向映射
+</h4>
+<ul>
+    <li><span class="special">结构</span>：每个物理页维护映射关系列表</li>
+    <li><span class="special">优势</span>：查找速度快</li>
+    <li><span class="special">劣势</span>：内存开销大</li>
+</ul>
+
+<h4>
+    基于搜索的反向映射
+</h4>
+<ul>
+    <li><span class="special">方法</span>：遍历所有进程的页表</li>
+    <li><span class="special">优势</span>：内存开销小</li>
+    <li><span class="special">劣势</span>：查找速度慢</li>
+</ul>
+
+<h2>
+    多级地址映射
+</h2>
+<h3>
+    1. 虚拟化环境
+</h3>
+<ul>
+    <li><span class="special">客户虚拟地址</span>：虚拟机内的虚拟地址</li>
+    <li><span class="special">客户物理地址</span>：虚拟机看到的物理地址</li>
+    <li><span class="special">主机物理地址</span>：实际的物理内存地址</li>
+</ul>
+
+<h3>
+    2. 嵌套页表
+</h3>
+<h4>
+    Intel EPT（扩展页表）
+</h4>
+<ul>
+    <li><span class="special">功能</span>：客户物理地址到主机物理地址的映射</li>
+    <li><span class="special">加速</span>：硬件支持，减少VMM干预</li>
+    <li><span class="special">TLB</span>：支持嵌套TLB，提高转换效率</li>
+</ul>
+
+<h4>
+    AMD NPT（嵌套页表）
+</h4>
+<ul>
+    <li><span class="special">功能</span>：与EPT类似</li>
+    <li><span class="special">实现</span>：硬件支持地址转换</li>
+    <li><span class="special">性能</span>：接近原生性能</li>
+</ul>
+
+<h2>
+    地址映射优化
+</h2>
+<h3>
+    1. 性能优化
+</h3>
+<ul>
+    <li><span class="special">TLB优化</span>：多级TLB、大页支持</li>
+    <li><span class="special">页表优化</span>：多级页表、哈希页表</li>
+    <li><span class="special">预取技术</span>：预取页表项</li>
+</ul>
+
+<h3>
+    2. 安全优化
+</h3>
+<ul>
+    <li><span class="special">ASLR</span>：地址空间布局随机化</li>
+    <li><span class="special">NX位</span>：禁止执行保护</li>
+    <li><span class="special">SMEP/SMAP</span>：管理模式访问保护</li>
+</ul>
+
+<h3>
+    3. 功耗优化
+</h3>
+<ul>
+    <li><span class="special">动态TLB管理</span>：根据负载调整TLB大小</li>
+    <li><span class="special">页表压缩</span>：减少内存访问</li>
+    <li><span class="special">低功耗模式</span>：智能电源管理</li>
+</ul>
+
+<h2>
+    现代处理器地址映射实例
+</h2>
+<h3>
+    1. x86-64架构
+</h3>
+<ul>
+    <li><span class="special">虚拟地址</span>：48位（256TB地址空间）</li>
+    <li><span class="special">物理地址</span>：52位（4PB物理内存）</li>
+    <li><span class="special">页表</span>：四级页表（PML4、PDPT、PD、PT）</li>
+    <li><span class="special">大页支持</span>：2MB、1GB大页</li>
+</ul>
+
+<h3>
+    2. ARMv8架构
+</h3>
+<ul>
+    <li><span class="special">虚拟地址</span>：48位</li>
+    <li><span class="special">物理地址</span>：48位（可扩展至52位）</li>
+    <li><span class="special">页表</span>：四级页表</li>
+    <li><span class="special">大页支持</span>：64KB、2MB、32MB、512MB、1GB</li>
+</ul>
+
+<h3>
+    3. RISC-V架构
+</h3>
+<ul>
+    <li><span class="special">虚拟地址</span>：39位或48位</li>
+    <li><span class="special">物理地址</span>：32位到56位</li>
+    <li><span class="special">页表</span>：三级或四级页表</li>
+    <li><span class="special">特点</span>：模块化设计，可配置</li>
+</ul>

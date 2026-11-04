@@ -1,0 +1,107 @@
+<header>
+    Intent
+</header>
+<p>
+    Intent 是组件之间传递消息的"信使"，可以启动 Activity、Service 和发送广播。
+</p>
+<h2>
+    分类
+</h2>
+<ul>
+    <li>
+        <span class="important">显式 Intent</span>
+        ：明确指定目标组件的类名。
+    </li>
+    <li>
+        <span class="important">隐式 Intent</span>
+        ：只声明动作和数据，由系统匹配符合条件的组件。
+    </li>
+</ul>
+<h2>
+    显式 Intent
+</h2>
+<pre tag="kotlin">
+val intent = Intent(this, SecondActivity::class.java)
+startActivity(intent)
+</pre>
+<h2>
+    隐式 Intent
+</h2>
+<pre tag="kotlin">
+val intent = Intent(Intent.ACTION_VIEW).apply {
+    data = Uri.parse("https://zxl20070701.github.io/notebook/index.html")
+}
+startActivity(intent)
+</pre>
+<h2>
+    传递数据
+</h2>
+<h3>
+    写入
+</h3>
+<pre tag="kotlin">
+intent.putExtra("name", "zxl")
+intent.putExtra("age", 18)
+</pre>
+<h3>
+    读取
+</h3>
+<pre tag="kotlin">
+// 在目标 Activity 的 onCreate 中读取
+val name = intent.getStringExtra("name")
+val age = intent.getIntExtra("age", 0)
+</pre>
+<h2>
+    IntentFilter
+</h2>
+<p>
+    在清单文件中声明组件能够响应的动作：
+</p>
+<pre tag="xml">
+&lt;activity android:name=".SecondActivity"&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name="com.example.MY_ACTION" /&gt;
+        &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;
+</pre>
+<h2>
+    Compose 中通过 Intent 跳转
+</h2>
+<pre tag="kotlin">
+@Composable
+fun ShareScreen() {
+    val context = LocalContext.current
+
+    Button(onClick = {
+        // 显式 Intent：跳转到另一个 Activity
+        val intent = Intent(context, DetailActivity::class.java).apply {
+            putExtra("id", 123)
+        }
+        context.startActivity(intent)
+    }) {
+        Text("跳转详情页")
+    }
+
+    Button(onClick = {
+        // 隐式 Intent：打开浏览器
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("https://example.com")
+        }
+        context.startActivity(intent)
+    }) {
+        Text("打开网页")
+    }
+
+    Button(onClick = {
+        // 分享文本
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, "分享内容")
+        }
+        context.startActivity(Intent.createChooser(intent, "分享到"))
+    }) {
+        Text("分享")
+    }
+}
+</pre>

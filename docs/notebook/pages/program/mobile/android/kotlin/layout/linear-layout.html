@@ -1,0 +1,171 @@
+<header>
+    Column / Row 线性布局
+</header>
+<p>
+    Compose 中的 <span class="important">Column</span>（纵向）和
+    <span class="important">Row</span>（横向）用于线性排列子组件，
+    替代 View 时代的 LinearLayout。
+</p>
+<h2>
+    Column 纵向排列
+</h2>
+<pre tag="kotlin">
+Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp), // 子项间距
+    horizontalAlignment = Alignment.CenterHorizontally  // 水平对齐
+) {
+    Text("第一行")
+    Text("第二行")
+    Text("第三行")
+}
+</pre>
+<h2>
+    Row 横向排列
+</h2>
+<pre tag="kotlin">
+Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceBetween, // 两端对齐
+    verticalAlignment = Alignment.CenterVertically     // 垂直居中
+) {
+    Text("左侧")
+    Text("右侧")
+}
+</pre>
+<h2>
+    Arrangement 排列方式对照
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>Compose Arrangement</td>
+            <td>原 LinearLayout</td>
+            <td>说明</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Arrangement.Top / Start</td>
+            <td>gravity="top/start"</td>
+            <td>顶部/起始对齐</td>
+        </tr>
+        <tr>
+            <td>Arrangement.Center</td>
+            <td>gravity="center"</td>
+            <td>居中</td>
+        </tr>
+        <tr>
+            <td>Arrangement.Bottom / End</td>
+            <td>gravity="bottom/end"</td>
+            <td>底部/末尾对齐</td>
+        </tr>
+        <tr>
+            <td>Arrangement.SpaceBetween</td>
+            <td>需要嵌套 View 实现</td>
+            <td>两端对齐，中间等距</td>
+        </tr>
+        <tr>
+            <td>Arrangement.SpaceAround</td>
+            <td>需要嵌套 View 实现</td>
+            <td>子项周围等距</td>
+        </tr>
+        <tr>
+            <td>Arrangement.SpaceEvenly</td>
+            <td>需要嵌套 View 实现</td>
+            <td>完全等距分布</td>
+        </tr>
+        <tr>
+            <td>Arrangement.spacedBy(8.dp)</td>
+            <td>android:divider + dividerPadding</td>
+            <td>固定间距</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    Weight 权重分配
+</h2>
+<pre tag="kotlin">
+Row(modifier = Modifier.fillMaxWidth()) {
+    // 占 1/3
+    Box(
+        modifier = Modifier
+            .weight(1f)
+            .height(50.dp)
+            .background(Color.Red)
+    )
+    // 占 2/3
+    Box(
+        modifier = Modifier
+            .weight(2f)
+            .height(50.dp)
+            .background(Color.Blue)
+    )
+}
+
+Column(modifier = Modifier.fillMaxSize()) {
+    // 顶部固定高度
+    Box(modifier = Modifier.height(100.dp).fillMaxWidth().background(Color.Green))
+    // 剩余空间填满
+    Box(modifier = Modifier.weight(1f).fillMaxWidth().background(Color.Yellow))
+}
+</pre>
+<h2>
+    滚动支持
+</h2>
+<pre tag="kotlin">
+// Column 超出屏幕时滚动
+Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState()) // 纵向滚动
+) {
+    repeat(100) {
+        Text("第 $it 行", modifier = Modifier.padding(16.dp))
+    }
+}
+
+// Row 横向滚动
+Row(
+    modifier = Modifier
+        .fillMaxWidth()
+        .horizontalScroll(rememberScrollState()) // 横向滚动
+) {
+    repeat(20) {
+        Card(modifier = Modifier.padding(8.dp).size(100.dp)) {
+            Text("卡片 $it")
+        }
+    }
+}
+</pre>
+<h2>
+    嵌套布局
+</h2>
+<pre tag="kotlin">
+Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    // 顶部标题
+    Text("标题", style = MaterialTheme.typography.titleLarge)
+
+    // 中间内容（Row 嵌套）
+    Row(
+        modifier = Modifier.fillMaxWidth().weight(1f),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Box(modifier = Modifier.weight(1f).fillMaxHeight().background(Color.LightGray))
+        Box(modifier = Modifier.weight(2f).fillMaxHeight().background(Color.Gray))
+    }
+
+    // 底部按钮
+    Button(onClick = { }, modifier = Modifier.fillMaxWidth()) {
+        Text("确定")
+    }
+}
+</pre>
+<div class="tips">
+    Compose 的 <span class="warn">weight</span> 必须在
+    <span class="warn">RowScope / ColumnScope</span> 中使用，
+    直接写在普通 Modifier 上会编译报错。
+    同时 <span class="warn">spacedBy</span> 比 View 时代的 divider 更简洁。
+</div>

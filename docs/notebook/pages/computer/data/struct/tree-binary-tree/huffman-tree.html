@@ -1,0 +1,322 @@
+<header>
+    哈夫曼树
+</header>
+
+<h2>
+    哈夫曼树的定义
+</h2>
+
+<p>
+    哈夫曼树（Huffman Tree），又称最优二叉树，是一类带权路径长度最短的树。给定n个权值作为n个叶子结点，构造一棵二叉树，若该树的带权路径长度达到最小，则称这样的二叉树为最优二叉树，也称为哈夫曼树。
+</p>
+
+<h3>
+    相关概念
+</h3>
+
+<ul>
+    <li>
+        <span class="special">路径</span>：从树中一个结点到另一个结点之间的分支构成这两个结点间的路径
+    </li>
+    <li>
+        <span class="special">路径长度</span>：路径上的分支数目称为路径长度
+    </li>
+    <li>
+        <span class="special">树的路径长度</span>：从树根到每一结点的路径长度之和
+    </li>
+    <li>
+        <span class="special">结点的带权路径长度</span>：从该结点到树根之间的路径长度与结点上权的乘积
+    </li>
+    <li>
+        <span class="special">树的带权路径长度</span>：树中所有叶子结点的带权路径长度之和
+    </li>
+</ul>
+
+<h2>
+    哈夫曼树的构造算法
+</h2>
+
+<h3>
+    哈夫曼算法
+</h3>
+
+<ol>
+    <li>根据给定的n个权值{w₁, w₂, ..., wₙ}构成n棵二叉树的集合F={T₁, T₂, ..., Tₙ}，其中每棵二叉树Tᵢ中只有一个带权为wᵢ的根结点，其左右子树均为空</li>
+    <li>在F中选取两棵根结点的权值最小的树作为左右子树构造一棵新的二叉树，且置新的二叉树的根结点的权值为其左、右子树上根结点的权值之和</li>
+    <li>在F中删除这两棵树，同时将新得到的二叉树加入F中</li>
+    <li>重复步骤2和3，直到F只含有一棵树为止。这棵树便是哈夫曼树</li>
+</ol>
+
+<h3>
+    哈夫曼树的存储结构
+</h3>
+
+<pre tag="c">
+#define MAXLEAF 100  // 最大叶子数
+#define MAXNODE MAXLEAF*2-1  // 最大结点数
+
+typedef struct {
+    int weight;     // 权值
+    int parent;     // 双亲结点下标
+    int lchild;     // 左孩子结点下标
+    int rchild;     // 右孩子结点下标
+} HTNode, *HuffmanTree;
+
+typedef char **HuffmanCode;  // 哈夫曼编码表
+</pre>
+
+<h3>
+    哈夫曼树的构造实现
+</h3>
+
+<pre tag="c">
+void CreateHuffmanTree(HuffmanTree *HT, int *w, int n) {
+    if (n &lt;= 1) return;
+
+    int m = 2 * n - 1;  // 哈夫曼树结点总数
+    *HT = (HuffmanTree)malloc((m + 1) * sizeof(HTNode));  // 0号单元未用
+
+    // 初始化
+    for (int i = 1; i &lt;= n; i++) {
+        (*HT)[i].weight = w[i-1];
+        (*HT)[i].parent = 0;
+        (*HT)[i].lchild = 0;
+        (*HT)[i].rchild = 0;
+    }
+    for (int i = n + 1; i &lt;= m; i++) {
+        (*HT)[i].weight = 0;
+        (*HT)[i].parent = 0;
+        (*HT)[i].lchild = 0;
+        (*HT)[i].rchild = 0;
+    }
+
+    // 构造哈夫曼树
+    for (int i = n + 1; i &lt;= m; i++) {
+        int s1, s2;
+        Select(*HT, i - 1, &s1, &s2);  // 选择parent为0且weight最小的两个结点
+
+        (*HT)[s1].parent = i;
+        (*HT)[s2].parent = i;
+        (*HT)[i].lchild = s1;
+        (*HT)[i].rchild = s2;
+        (*HT)[i].weight = (*HT)[s1].weight + (*HT)[s2].weight;
+    }
+}
+</pre>
+
+<h2>
+    哈夫曼编码
+</h2>
+
+<h3>
+    哈夫曼编码的定义
+</h3>
+
+<p>
+    哈夫曼编码（Huffman
+    Coding）是一种编码方式，也是一种可变字长编码（VLC）。哈夫曼编码使用变长编码表对源符号进行编码，其中变长编码表是通过一种评估源符号出现概率的方法得到的。出现概率高的字母使用较短的编码，反之出现概率低的则使用较长的编码，这便使编码之后的字符串的平均长度、期望值降低，从而达到无损压缩数据的目的。
+</p>
+
+<h3>
+    哈夫曼编码的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">前缀编码</span>：任何一个字符的编码都不是另一个字符编码的前缀
+    </li>
+    <li>
+        <span class="special">最优编码</span>：对于给定的字符集和概率分布，哈夫曼编码是最优的前缀编码
+    </li>
+    <li>
+        <span class="special">变长编码</span>：不同字符的编码长度不同
+    </li>
+</ul>
+
+<h3>
+    哈夫曼编码的生成
+</h3>
+
+<pre tag="c">
+void CreateHuffmanCode(HuffmanTree HT, HuffmanCode *HC, int n) {
+    *HC = (HuffmanCode)malloc((n + 1) * sizeof(char*));  // 分配n个字符编码的头指针向量
+    char *cd = (char*)malloc(n * sizeof(char));          // 分配求编码的工作空间
+    cd[n - 1] = '\0';                                    // 编码结束符
+
+    for (int i = 1; i &lt;= n; i++) {  // 逐个求哈夫曼编码
+        int start = n - 1;          // 编码结束符位置
+        int c = i;
+        int f = HT[i].parent;
+
+        while (f != 0) {  // 从叶子到根逆向求编码
+            --start;
+            if (HT[f].lchild == c) {
+                cd[start] = '0';
+            } else {
+                cd[start] = '1';
+            }
+            c = f;
+            f = HT[f].parent;
+        }
+
+        (*HC)[i] = (char*)malloc((n - start) * sizeof(char));
+        strcpy((*HC)[i], &cd[start]);
+    }
+
+    free(cd);
+}
+</pre>
+
+<h2>
+    哈夫曼树的性质
+</h2>
+
+<h3>
+    最优性
+</h3>
+
+<p>
+    哈夫曼树是所有可能的二叉树中带权路径长度最小的二叉树。
+</p>
+
+<h3>
+    唯一性
+</h3>
+
+<p>
+    当所有字符的出现频率都不相同时，哈夫曼编码是唯一的。如果有多个字符具有相同的频率，则哈夫曼编码可能不唯一。
+</p>
+
+<h3>
+    前缀性质
+</h3>
+
+<p>
+    哈夫曼编码是前缀编码，即任何一个字符的编码都不是另一个字符编码的前缀。
+</p>
+
+<h2>
+    哈夫曼编码的解码
+</h2>
+
+<pre tag="c">
+void HuffmanDecode(HuffmanTree HT, int n, char *code) {
+    int p = 2 * n - 1;  // 根结点位置
+    int i = 0;
+
+    while (code[i] != '\0') {
+        if (code[i] == '0') {
+            p = HT[p].lchild;
+        } else {
+            p = HT[p].rchild;
+        }
+
+        if (HT[p].lchild == 0 && HT[p].rchild == 0) {  // 到达叶子结点
+            printf("%c", p + 'A' - 1);  // 假设叶子结点对应字符A, B, C...
+            p = 2 * n - 1;              // 回到根结点
+        }
+        i++;
+    }
+}
+</pre>
+
+<h2>
+    哈夫曼树的应用
+</h2>
+
+<h3>
+    数据压缩
+</h3>
+
+<p>
+    哈夫曼编码广泛应用于数据压缩领域，如ZIP、GZIP等压缩算法。
+</p>
+
+<h3>
+    文件存储
+</h3>
+
+<p>
+    在文件系统中，哈夫曼编码用于减少存储空间。
+</p>
+
+<h3>
+    通信系统
+</h3>
+
+<p>
+    在数字通信中，哈夫曼编码用于提高传输效率。
+</p>
+
+<h3>
+    图像处理
+</h3>
+
+<p>
+    在JPEG等图像压缩标准中，哈夫曼编码被用于熵编码阶段。
+</p>
+
+<h2>
+    哈夫曼算法的复杂度分析
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>时间复杂度</th>
+            <th>空间复杂度</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>构建哈夫曼树</td>
+            <td>O(n log n)</td>
+            <td>O(n)</td>
+        </tr>
+        <tr>
+            <td>生成哈夫曼编码</td>
+            <td>O(n²)</td>
+            <td>O(n²)</td>
+        </tr>
+        <tr>
+            <td>编码</td>
+            <td>O(m)</td>
+            <td>O(m)</td>
+        </tr>
+        <tr>
+            <td>解码</td>
+            <td>O(m)</td>
+            <td>O(1)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    其中，n是字符集大小，m是待编码字符串长度。
+</p>
+
+<h2>
+    哈夫曼树的优缺点
+</h2>
+
+<h3>
+    优点
+</h3>
+
+<ul>
+    <li>压缩效率高</li>
+    <li>编码和解码算法简单</li>
+    <li>无损压缩</li>
+    <li>自适应性强</li>
+</ul>
+
+<h3>
+    缺点
+</h3>
+
+<ul>
+    <li>需要预先知道字符频率</li>
+    <li>编码表需要额外存储</li>
+    <li>对于小文件，压缩效果不明显</li>
+</ul>

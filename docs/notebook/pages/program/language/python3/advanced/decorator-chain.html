@@ -1,0 +1,365 @@
+<header>
+    装饰器链
+</header>
+<p>
+    将多个装饰器应用于同一个函数或类，装饰器的执行顺序是从下到上（从内到外）。
+</p>
+
+<h2>
+    基本装饰器链
+</h2>
+<pre tag="python">
+import functools
+import time
+
+def timing_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} took {end - start:.4f} seconds")
+        return result
+    return wrapper
+
+def logging_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__} with args={args}, kwargs={kwargs}")
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} returned {result}")
+        return result
+    return wrapper
+
+def validation_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        # 验证输入参数
+        for arg in args:
+            if arg < 0:
+                raise ValueError("Arguments must be non-negative")
+        return func(*args, **kwargs)
+    return wrapper
+
+# 装饰器链：从下到上应用
+@timing_decorator
+@logging_decorator
+@validation_decorator
+def calculate_square(x):
+    time.sleep(0.1)  # 模拟计算时间
+    return x * x
+
+# 执行顺序：validation_decorator -> logging_decorator -> timing_decorator
+result = calculate_square(5)
+print(f"Result: {result}")
+
+try:
+    calculate_square(-3)  # 这会触发验证错误
+except ValueError as e:
+    print(f"Error: {e}")
+</pre>
+
+<h2>
+    带参数的装饰器链
+</h2>
+<pre tag="python">
+import functools
+import time
+
+def repeat(n):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            results = []
+            for i in range(n):
+                print(f"Execution {i+1}/{n}")
+                result = func(*args, **kwargs)
+                results.append(result)
+            return results
+        return wrapper
+    return decorator
+
+def cache_results(cache_size=10):
+    def decorator(func):
+        cache = {}
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            key = str(args) + str(sorted(kwargs.items()))
+
+            if key in cache:
+                print(f"Cache hit for {key}")
+                return cache[key]
+
+            result = func(*args, **kwargs)
+            cache[key] = result
+
+            # 限制缓存大小
+            if len(cache) > cache_size:
+                oldest_key = next(iter(cache))
+                del cache[oldest_key]
+
+            return result
+        return wrapper
+    return decorator
+
+def measure_time(threshold=0.1):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = func(*args, **kwargs)
+            elapsed = time.time() - start
+            if elapsed > threshold:
+                print(f"WARNING: {func.__name__} took {elapsed:.4f} seconds")
+            return result
+        return wrapper
+    return decorator
+
+# 带参数的装饰器链
+@measure_time(threshold=0.05)
+@cache_results(cache_size=5)
+@repeat(2)
+def expensive_calculation(x, y):
+    time.sleep(0.1)  # 模拟耗时计算
+    return x ** 2 + y ** 2
+
+# 执行顺序：repeat -> cache_results -> measure_time
+result1 = expensive_calculation(3, 4)
+print(f"First call result: {result1}")
+
+result2 = expensive_calculation(3, 4)  # 应该命中缓存
+print(f"Second call result: {result2}")
+</pre>
+
+<h2>
+    类装饰器链
+</h2>
+<pre tag="python">
+def singleton(cls):
+    """单例模式装饰器"""
+    instances = {}
+
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+
+    # 保存原始类的一些属性
+    get_instance.__name__ = cls.__name__
+    get_instance.__doc__ = cls.__doc__
+    return get_instance
+
+def add_methods(*methods):
+    """添加方法装饰器"""
+    def decorator(cls):
+        for method_name, method_func in methods:
+            setattr(cls, method_name, method_func)
+        return cls
+    return decorator
+
+def validate_attributes(**validators):
+    """属性验证装饰器"""
+    def decorator(cls):
+        original_init = cls.__init__
+
+        def new_init(self, *args, **kwargs):
+            original_init(self, *args, **kwargs)
+
+            for attr, validator in validators.items():
+                if hasattr(self, attr):
+                    value = getattr(self, attr)
+                    if not validator(value):
+                        raise ValueError(f"Invalid value for {attr}: {value}")
+
+        cls.__init__ = new_init
+        return cls
+    return decorator
+
+# 类装饰器链
+@singleton
+@validate_attributes(
+    age=lambda x: isinstance(x, int) and x > 0,
+    name=lambda x: isinstance(x, str) and x.strip()
+)
+@add_methods(
+    ("greet", lambda self: f"Hello, I'm {self.name}!"),
+    ("get_info", lambda self: f"{self.name} is {self.age} years old")
+)
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+# 测试类装饰器链
+person1 = Person("Alice", 25)
+person2 = Person("Bob", 30)  # 由于是单例，这不会创建新实例
+
+print(f"person1: {person1.greet()}")
+print(f"person2: {person2.greet()}")
+print(f"Same instance: {person1 is person2}")
+print(f"person1 info: {person1.get_info()}")
+
+try:
+    invalid_person = Person("", -5)  # 这会触发验证错误
+except ValueError as e:
+    print(f"Validation error: {e}")
+</pre>
+
+<h2>
+    装饰器顺序的重要性
+</h2>
+<pre tag="python">
+import functools
+import time
+
+def timing_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"[TIMING] {func.__name__} took {end - start:.4f} seconds")
+        return result
+    return wrapper
+
+def logging_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"[LOGGING] Entering {func.__name__}")
+        result = func(*args, **kwargs)
+        print(f"[LOGGING] Exiting {func.__name__}")
+        return result
+    return wrapper
+
+def repeat(n):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            results = []
+            for i in range(n):
+                print(f"[REPEAT] Execution {i+1}/{n}")
+                result = func(*args, **kwargs)
+                results.append(result)
+            return results
+        return wrapper
+    return decorator
+
+def simple_function(x):
+    time.sleep(0.05)
+    return x * 2
+
+print("=== 顺序1: timing -> logging -> repeat ===")
+@timing_decorator
+@logging_decorator
+@repeat(2)
+def function1(x):
+    return simple_function(x)
+
+result1 = function1(5)
+print(f"Result1: {result1}")
+
+print("\n=== 顺序2: repeat -> logging -> timing ===")
+@repeat(2)
+@logging_decorator
+@timing_decorator
+def function2(x):
+    return simple_function(x)
+
+result2 = function2(5)
+print(f"Result2: {result2}")
+
+print("\n=== 顺序3: logging -> timing -> repeat ===")
+@logging_decorator
+@timing_decorator
+@repeat(2)
+def function3(x):
+    return simple_function(x)
+
+result3 = function3(5)
+print(f"Result3: {result3}")
+</pre>
+
+<h2>
+    实用装饰器工具
+</h2>
+<pre tag="python">
+import functools
+import time
+import logging
+
+class DecoratorChain:
+    """装饰器链工具类"""
+
+    @staticmethod
+    def compose(*decorators):
+        """组合多个装饰器"""
+        def composed_decorator(func):
+            for decorator in reversed(decorators):
+                func = decorator(func)
+            return func
+        return composed_decorator
+
+    @staticmethod
+    def conditional(condition_func):
+        """条件装饰器"""
+        def decorator(decorator_func):
+            def wrapper(func):
+                if condition_func():
+                    return decorator_func(func)
+                return func
+            return wrapper
+        return decorator
+
+# 使用装饰器链工具
+def debug_mode():
+    return True  # 可以基于配置或环境变量
+
+def timing_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"Timing: {func.__name__} took {end - start:.4f} seconds")
+        return result
+    return wrapper
+
+def logging_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Logging: Calling {func.__name__}")
+        result = func(*args, **kwargs)
+        print(f"Logging: {func.__name__} returned {result}")
+        return result
+    return wrapper
+
+# 使用条件装饰器
+conditional_timing = DecoratorChain.conditional(debug_mode)(timing_decorator)
+conditional_logging = DecoratorChain.conditional(debug_mode)(logging_decorator)
+
+@conditional_timing
+@conditional_logging
+def test_function(x, y):
+    time.sleep(0.1)
+    return x + y
+
+# 使用装饰器组合
+composed_decorator = DecoratorChain.compose(
+    logging_decorator,
+    timing_decorator
+)
+
+@composed_decorator
+def another_function(x):
+    time.sleep(0.05)
+    return x ** 2
+
+print("=== 测试条件装饰器 ===")
+result1 = test_function(3, 4)
+print(f"Result: {result1}")
+
+print("\n=== 测试装饰器组合 ===")
+result2 = another_function(5)
+print(f"Result: {result2}")
+</pre>

@@ -1,0 +1,301 @@
+<header>
+    典型芯片
+</header>
+<h2>
+    典型运算芯片概述
+</h2>
+<p>
+    运算芯片是计算机系统中执行算术和逻辑运算的核心部件。从早期的简单ALU到现代复杂的多功能运算单元，运算芯片的发展反映了计算机技术的进步。了解典型芯片的结构和功能对于理解计算机组成原理具有重要意义。
+</p>
+
+<h2>
+    74181 ALU芯片
+</h2>
+<h3>
+    芯片概述
+</h3>
+<p>
+    <span class="important">74181</span>是由Texas Instruments在1970年推出的4位算术逻辑单元（ALU）芯片，是TTL集成电路的经典代表。
+</p>
+
+<h3>
+    主要特性
+</h3>
+<ul>
+    <li><span class="special">数据宽度</span>：4位并行处理</li>
+    <li><span class="special">运算功能</span>：16种算术运算和16种逻辑运算</li>
+    <li><span class="special">控制方式</span>：4位功能选择输入</li>
+    <li><span class="special">输出特性</span>：提供进位输出和进位传播输出</li>
+</ul>
+
+<h3>
+    功能表
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>选择输入</th>
+            <th>M=H (逻辑)</th>
+            <th>M=L (算术)</th>
+        </tr>
+        <tr>
+            <td>S3 S2 S1 S0</td>
+            <td>逻辑功能</td>
+            <td>算术功能(Cn=L)</td>
+        </tr>
+    </thead>
+    <tr>
+        <td>0 0 0 0</td>
+        <td>F = NOT A</td>
+        <td>F = A</td>
+    </tr>
+    <tr>
+        <td>0 0 0 1</td>
+        <td>F = NOT (A OR B)</td>
+        <td>F = A + B</td>
+    </tr>
+    <tr>
+        <td>0 0 1 0</td>
+        <td>F = (NOT A) AND B</td>
+        <td>F = A + B̄</td>
+    </tr>
+    <tr>
+        <td>0 0 1 1</td>
+        <td>F = 0</td>
+        <td>F = -1 (2的补码)</td>
+    </tr>
+    <tr>
+        <td>1 1 1 1</td>
+        <td>F = A</td>
+        <td>F = A - 1</td>
+    </tr>
+</table>
+
+<h3>
+    引脚配置
+</h3>
+<ul>
+    <li><span class="special">数据输入</span>：A0-A3，B0-B3</li>
+    <li><span class="special">功能选择</span>：S0-S3</li>
+    <li><span class="special">模式选择</span>：M（逻辑/算术）</li>
+    <li><span class="special">进位输入</span>：Cn</li>
+    <li><span class="special">数据输出</span>：F0-F3</li>
+    <li><span class="special">进位输出</span>：Cn+4</li>
+    <li><span class="special">进位传播</span>：P</li>
+    <li><span class="special">进位生成</span>：G</li>
+</ul>
+
+<h3>
+    应用与扩展
+</h3>
+<ul>
+    <li><span class="special">级联使用</span>：多个74181可级联成8位、16位或32位ALU</li>
+    <li><span class="special">教学应用</span>：广泛用于数字逻辑和计算机组成原理教学</li>
+    <li><span class="special">历史意义</span>：标志着ALU标准化和模块化的开始</li>
+</ul>
+
+<h2>
+    74182超前进位发生器
+</h2>
+<h3>
+    芯片概述
+</h3>
+<p>
+    <span class="important">74182</span>是与74181配套使用的超前进位发生器，用于提高多位ALU的运算速度。
+</p>
+
+<h3>
+    主要功能
+</h3>
+<ul>
+    <li><span class="special">超前进位</span>：提前计算进位信号</li>
+    <li><span class="special">级联支持</span>：支持多个74181的级联</li>
+    <li><span class="special">性能提升</span>：显著减少进位传播延迟</li>
+</ul>
+
+<h3>
+    引脚功能
+</h3>
+<ul>
+    <li><span class="special">输入</span>：P、G信号（来自74181）</li>
+    <li><span class="special">输出</span>：Cn+x、Cn+y、Cn+z（各级进位）</li>
+    <li><span class="special">控制</span>：Cn（初始进位输入）</li>
+</ul>
+
+<h2>
+    8087浮点协处理器
+</h2>
+<h3>
+    芯片概述
+</h3>
+<p>
+    <span class="important">8087</span>是Intel在1980年推出的浮点协处理器，配合8086/8088处理器使用，提供浮点运算能力。
+</p>
+
+<h3>
+    主要特性
+</h3>
+<ul>
+    <li><span class="special">数据类型</span>：支持32位、64位、80位浮点数</li>
+    <li><span class="special">运算功能</span>：加减乘除、三角函数、对数等</li>
+    <li><span class="special">精度支持</span>：单精度、双精度、扩展精度</li>
+    <li><span class="special">指令集</span>：80条浮点指令</li>
+</ul>
+
+<h3>
+    内部结构
+</h3>
+<ul>
+    <li><span class="special">寄存器堆</span>：8个80位浮点寄存器</li>
+    <li><span class="special">控制单元</span>：指令译码和执行控制</li>
+    <li><span class="special">运算单元</span>：浮点加法器、乘法器、除法器</li>
+    <li><span class="special">总线接口</span>：与主处理器通信</li>
+</ul>
+
+<h3>
+    技术特点
+</h3>
+<ul>
+    <li><span class="special">堆栈架构</span>：采用寄存器堆栈结构</li>
+    <li><span class="special">异常处理</span>：支持IEEE 754异常处理</li>
+    <li><span class="special">舍入模式</span>：支持四种舍入模式</li>
+</ul>
+
+<h2>
+    AMD Am2901
+</h2>
+<h3>
+    芯片概述
+</h3>
+<p>
+    <span class="important">Am2901</span>是AMD在1975年推出的4位位片式处理器，是早期位片处理器的代表。
+</p>
+
+<h3>
+    主要特性
+</h3>
+<ul>
+    <li><span class="special">位片架构</span>：4位位片，可级联扩展</li>
+    <li><span class="special">寄存器堆</span>：16个4位寄存器</li>
+    <li><span class="special">ALU功能</span>：支持多种算术逻辑运算</li>
+    <li><span class="special">移位功能</span>：支持移位和循环移位</li>
+</ul>
+
+<h3>
+    应用领域
+</h3>
+<ul>
+    <li><span class="special">定制处理器</span>：用于设计专用处理器</li>
+    <li><span class="special">教学实验</span>：计算机组成原理教学</li>
+    <li><span class="special">工业控制</span>：实时控制系统</li>
+</ul>
+
+<h2>
+    现代运算芯片
+</h2>
+<h3>
+    Intel Core系列
+</h3>
+<ul>
+    <li><span class="special">集成ALU</span>：多个整数ALU和浮点ALU</li>
+    <li><span class="special">SIMD单元</span>：SSE、AVX向量运算单元</li>
+    <li><span class="special">专用单元</span>：AES、SHA等加密运算单元</li>
+</ul>
+
+<h3>
+    ARM Cortex系列
+</h3>
+<ul>
+    <li><span class="special">整数ALU</span>：高性能整数运算</li>
+    <li><span class="special">浮点单元</span>：VFP和NEON技术</li>
+    <li><span class="special">DSP扩展</span>：数字信号处理优化</li>
+</ul>
+
+<h3>
+    GPU运算核心
+</h3>
+<ul>
+    <li><span class="special">CUDA核心</span>：NVIDIA的通用运算核心</li>
+    <li><span class="special">流处理器</span>：AMD的并行运算单元</li>
+    <li><span class="special">张量核心</span>：专门用于矩阵运算</li>
+</ul>
+
+<h2>
+    运算芯片发展趋势
+</h2>
+<h3>
+    1. 集成度提升
+</h3>
+<ul>
+    <li><span class="special">SoC集成</span>：将运算单元与存储、IO集成</li>
+    <li><span class="special">多核架构</span>：多个运算核心并行工作</li>
+    <li><span class="special">异构计算</span>：CPU、GPU、DSP协同工作</li>
+</ul>
+
+<h3>
+    2. 专业化发展
+</h3>
+<ul>
+    <li><span class="special">AI加速器</span>：专门用于神经网络运算</li>
+    <li><span class="special">加密加速器</span>：硬件加速加密算法</li>
+    <li><span class="special">图形加速器</span>：专门用于图形渲染</li>
+</ul>
+
+<h3>
+    3. 能效优化
+</h3>
+<ul>
+    <li><span class="special">低功耗设计</span>：动态电压频率调节</li>
+    <li><span class="special">近似计算</span>：在保证精度的前提下降低功耗</li>
+    <li><span class="special">存内计算</span>：减少数据移动，提高能效</li>
+</ul>
+
+<h2>
+    典型芯片对比分析
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>芯片型号</th>
+            <th>数据宽度</th>
+            <th>主要功能</th>
+            <th>技术特点</th>
+            <th>应用领域</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>74181</td>
+        <td>4位</td>
+        <td>ALU</td>
+        <td>TTL技术，可级联</td>
+        <td>早期计算机，教学</td>
+    </tr>
+    <tr>
+        <td>74182</td>
+        <td>-</td>
+        <td>超前进位</td>
+        <td>与74181配套</td>
+        <td>高速ALU系统</td>
+    </tr>
+    <tr>
+        <td>8087</td>
+        <td>80位</td>
+        <td>浮点协处理器</td>
+        <td>IEEE 754支持</td>
+        <td>科学计算</td>
+    </tr>
+    <tr>
+        <td>Am2901</td>
+        <td>4位位片</td>
+        <td>位片处理器</td>
+        <td>可级联扩展</td>
+        <td>定制处理器</td>
+    </tr>
+    <tr>
+        <td>现代CPU</td>
+        <td>64位</td>
+        <td>多功能运算</td>
+        <td>多核，SIMD</td>
+        <td>通用计算</td>
+    </tr>
+</table>

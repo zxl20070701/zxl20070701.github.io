@@ -1,0 +1,22 @@
+<header>进程查看和控制</header>
+<p>
+    查看进程、按资源排序，或结束卡住的进程。macOS 中重启 Finder 也常用 <span class="special">killall Finder</span>。
+</p>
+<pre>
+ps
+ps aux
+ps aux | grep process_name
+top
+top -o cpu
+top -o mem
+pgrep -fl process_name
+kill PID
+kill -9 PID
+pkill process_name
+pkill -9 process_name
+killall process_name
+killall Finder
+</pre>
+<p class="warn">
+    温馨提示：优先使用默认终止信号，只有进程卡死无法退出时再考虑 <span class="special">-9</span>。
+</p>

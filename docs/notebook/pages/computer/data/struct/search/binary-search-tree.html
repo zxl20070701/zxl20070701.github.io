@@ -1,0 +1,300 @@
+<header>
+    二叉排序树
+</header>
+
+<h2>
+    二叉排序树的定义
+</h2>
+
+<p>
+    二叉排序树（Binary Search Tree，BST），又称二叉查找树或二叉搜索树，是一棵空树，或者是具有下列性质的二叉树：
+</p>
+
+<ul>
+    <li>若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值</li>
+    <li>若它的右子树不空，则右子树上所有结点的值均大于它的根结点的值</li>
+    <li>它的左、右子树也分别为二叉排序树</li>
+</ul>
+
+<h3>
+    二叉排序树的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">有序性</span>：中序遍历二叉排序树可以得到一个有序序列
+    </li>
+    <li>
+        <span class="special">动态性</span>：支持动态的插入和删除操作
+    </li>
+    <li>
+        <span class="special">查找效率</span>：查找效率与树的高度有关
+    </li>
+</ul>
+
+<h2>
+    二叉排序树的存储结构
+</h2>
+
+<pre tag="c">
+typedef struct BSTNode {
+    int data;                    // 数据域
+    struct BSTNode *lchild, *rchild; // 左右孩子指针
+} BSTNode, *BSTree;
+</pre>
+
+<h2>
+    二叉排序树的基本操作
+</h2>
+
+<h3>
+    查找操作
+</h3>
+
+<pre tag="c">
+BSTree SearchBST(BSTree T, int key) {
+    if (!T || T->data == key) {
+        return T;  // 查找成功或查找失败
+    } else if (key < T->data) {
+        return SearchBST(T->lchild, key);  // 在左子树中查找
+    } else {
+        return SearchBST(T->rchild, key);  // 在右子树中查找
+    }
+}
+
+BSTree SearchBST_Iterative(BSTree T, int key) {
+    while (T && T->data != key) {
+        if (key < T->data) {
+            T = T->lchild;
+        } else {
+            T = T->rchild;
+        }
+    }
+    return T;
+}
+</pre>
+
+<h3>
+    插入操作
+</h3>
+
+<pre tag="c">
+Status InsertBST(BSTree *T, int key) {
+    if (*T == NULL) {
+        // 找到插入位置，创建新结点
+        *T = (BSTree)malloc(sizeof(BSTNode));
+        (*T)->data = key;
+        (*T)->lchild = (*T)->rchild = NULL;
+        return TRUE;
+    } else if (key == (*T)->data) {
+        return FALSE;  // 关键字已存在
+    } else if (key < (*T)->data) {
+        return InsertBST(&(*T)->lchild, key);  // 在左子树中插入
+    } else {
+        return InsertBST(&(*T)->rchild, key);  // 在右子树中插入
+    }
+}
+</pre>
+
+<h3>
+    删除操作
+</h3>
+
+<pre tag="c">
+Status DeleteBST(BSTree *T, int key) {
+    if (!*T) {
+        return FALSE;  // 树为空或关键字不存在
+    } else {
+        if (key == (*T)->data) {
+            return Delete(T);  // 删除结点
+        } else if (key < (*T)->data) {
+            return DeleteBST(&(*T)->lchild, key);  // 在左子树中删除
+        } else {
+            return DeleteBST(&(*T)->rchild, key);  // 在右子树中删除
+        }
+    }
+}
+
+Status Delete(BSTree *p) {
+    BSTree q, s;
+
+    if ((*p)->rchild == NULL) {
+        // 右子树为空，只需重接它的左子树
+        q = *p;
+        *p = (*p)->lchild;
+        free(q);
+    } else if ((*p)->lchild == NULL) {
+        // 左子树为空，只需重接它的右子树
+        q = *p;
+        *p = (*p)->rchild;
+        free(q);
+    } else {
+        // 左右子树均不空
+        q = *p;
+        s = (*p)->lchild;
+
+        // 找到左子树中的最右下结点
+        while (s->rchild != NULL) {
+            q = s;
+            s = s->rchild;
+        }
+
+        // 用s的值替换p的值
+        (*p)->data = s->data;
+
+        // 删除s结点
+        if (q != *p) {
+            q->rchild = s->lchild;
+        } else {
+            q->lchild = s->lchild;
+        }
+
+        free(s);
+    }
+
+    return TRUE;
+}
+</pre>
+
+<h2>
+    二叉排序树的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：O(log n)，树是平衡的
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：O(n)，树退化为线性结构
+    </li>
+    <li>
+        <span class="special">平均情况</span>：O(log n)，随机插入的情况下
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<p>
+    O(n)，需要存储n个结点。
+</p>
+
+<h2>
+    二叉排序树的遍历
+</h2>
+
+<h3>
+    中序遍历
+</h3>
+
+<p>
+    中序遍历二叉排序树可以得到一个有序序列。
+</p>
+
+<pre tag="c">
+void InOrderTraverse(BSTree T) {
+    if (T) {
+        InOrderTraverse(T->lchild);
+        printf("%d ", T->data);
+        InOrderTraverse(T->rchild);
+    }
+}
+</pre>
+
+<h2>
+    二叉排序树的应用场景
+</h2>
+
+<h3>
+    动态查找表
+</h3>
+
+<p>
+    当需要频繁进行插入、删除和查找操作时，二叉排序树是一个很好的选择。
+</p>
+
+<h3>
+    排序
+</h3>
+
+<p>
+    通过中序遍历二叉排序树可以得到有序序列，因此可以用于排序。
+</p>
+
+<h3>
+    范围查询
+</h3>
+
+<p>
+    二叉排序树支持范围查询，可以方便地查找某个范围内的所有元素。
+</p>
+
+<h2>
+    二叉排序树的优化
+</h2>
+
+<h3>
+    平衡二叉树
+</h3>
+
+<p>
+    通过旋转操作保持树的平衡，避免退化为线性结构。
+</p>
+
+<h3>
+    红黑树
+</h3>
+
+<p>
+    一种自平衡的二叉排序树，通过颜色标记和旋转操作保持平衡。
+</p>
+
+<h3>
+    AVL树
+</h3>
+
+<p>
+    一种严格的平衡二叉排序树，任何结点的左右子树高度差不超过1。
+</p>
+
+<h2>
+    二叉排序树的构建
+</h2>
+
+<pre tag="c">
+BSTree CreateBST(int arr[], int n) {
+    BSTree T = NULL;
+    int i;
+
+    for (i = 0; i < n; i++) {
+        InsertBST(&T, arr[i]);
+    }
+
+    return T;
+}
+</pre>
+
+<h2>
+    二叉排序树的查找效率
+</h2>
+
+<h3>
+    影响因素
+</h3>
+
+<ul>
+    <li>
+        <span class="special">树的形状</span>：平衡树的查找效率高，退化的树查找效率低
+    </li>
+    <li>
+        <span class="special">插入顺序</span>：不同的插入顺序会产生不同形状的二叉排序树
+    </li>
+    <li>
+        <span class="special">数据分布</span>：数据的分布情况会影响树的平衡性
+    </li>
+</ul>

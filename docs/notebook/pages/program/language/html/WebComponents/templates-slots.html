@@ -1,0 +1,423 @@
+<header>
+    模板和插槽
+</header>
+<h2>
+    HTML模板
+</h2>
+<p>
+    HTML模板是Web Components的重要组成部分，它允许你定义可重用的HTML结构。<span class="special">&lt;template&gt;</span>元素中的内容不会被渲染，但可以被JavaScript克隆和使用。
+</p>
+<pre tag="html">
+<template id="my-template">
+    <style>
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .card-content {
+            color: #666;
+            line-height: 1.5;
+        }
+    </style>
+    
+    <div class="card">
+        <div class="card-title"></div>
+        <div class="card-content"></div>
+    </div>
+</template>
+</pre>
+<h2>
+    在Web Components中使用模板
+</h2>
+<p>
+    在自定义元素中使用模板：
+</p>
+<pre tag="javascript">
+class CardComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        // 获取模板
+        const template = document.getElementById('my-template');
+        const templateContent = template.content.cloneNode(true);
+        
+        // 设置内容
+        const title = templateContent.querySelector('.card-title');
+        const content = templateContent.querySelector('.card-content');
+        
+        title.textContent = this.getAttribute('title') || '默认标题';
+        content.textContent = this.getAttribute('content') || '默认内容';
+        
+        shadow.appendChild(templateContent);
+    }
+}
+
+customElements.define('card-component', CardComponent);
+</pre>
+
+<h2>
+    插槽（Slots）
+</h2>
+<p>
+    插槽是Web Components中的一个强大特性，它允许你在组件中定义可插入内容的位置。<span class="special"><slot></span>元素作为占位符，可以在使用组件时填充内容。
+</p>
+
+<h3>
+    基本插槽
+</h3>
+<pre tag="javascript">
+class SlotComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                .container {
+                    border: 2px solid #007acc;
+                    border-radius: 8px;
+                    padding: 20px;
+                    margin: 10px 0;
+                }
+                
+                .header {
+                    font-size: 20px;
+                    font-weight: bold;
+                    color: #007acc;
+                    margin-bottom: 15px;
+                    border-bottom: 1px solid #eee;
+                    padding-bottom: 10px;
+                }
+            </style>
+            
+            <div class="container">
+                <div class="header">
+                    <slot>默认标题</slot>
+                </div>
+                <div class="content">
+                    <slot name="content">默认内容</slot>
+                </div>
+            </div>
+        `;
+    }
+}
+
+customElements.define('slot-component', SlotComponent);
+</pre>
+<h2>
+    命名插槽
+</h2>
+<p>
+    命名插槽允许你定义多个不同的插槽位置，每个插槽可以接收特定的内容：
+</p>
+<pre tag="html">
+<!-- 使用命名插槽的组件 -->
+<slot-component>
+    <span slot="content">这是插槽内容</span>
+    <h3 slot="header">自定义标题</h3>
+</slot-component>
+</pre>
+
+<pre tag="javascript">
+class NamedSlotsComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                .layout {
+                    display: grid;
+                    grid-template-areas: 
+                        "header header"
+                        "sidebar main"
+                        "footer footer";
+                    grid-template-columns: 200px 1fr;
+                    gap: 16px;
+                    padding: 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                }
+                
+                .header { grid-area: header; }
+                .sidebar { grid-area: sidebar; }
+                .main { grid-area: main; }
+                .footer { grid-area: footer; }
+                
+                .panel {
+                    padding: 16px;
+                    border-radius: 4px;
+                }
+                
+                .header-panel {
+                    background: #007acc;
+                    color: white;
+                }
+                
+                .sidebar-panel {
+                    background: #f5f5f5;
+                }
+                
+                .main-panel {
+                    background: white;
+                    border: 1px solid #eee;
+                }
+                
+                .footer-panel {
+                    background: #333;
+                    color: white;
+                    text-align: center;
+                }
+            </style>
+            
+            <div class="layout">
+                <div class="header">
+                    <div class="panel header-panel">
+                        <slot name="header">默认头部</slot>
+                    </div>
+                </div>
+                
+                <div class="sidebar">
+                    <div class="panel sidebar-panel">
+                        <slot name="sidebar">默认侧边栏</slot>
+                    </div>
+                </div>
+                
+                <div class="main">
+                    <div class="panel main-panel">
+                        <slot name="main">默认主要内容</slot>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <div class="panel footer-panel">
+                        <slot name="footer">默认底部</slot>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+customElements.define('named-slots-component', NamedSlotsComponent);
+</pre>
+<h2>
+    插槽的默认内容
+</h2>
+<p>
+    插槽可以包含默认内容，当没有提供相应内容时显示：
+</p>
+<pre tag="javascript">
+class DefaultSlotComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                .card {
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 16px;
+                    margin: 16px 0;
+                }
+            </style>
+            
+            <div class="card">
+                <h3><slot name="title">默认标题</slot></h3>
+                <p><slot name="description">这是默认的描述内容，当没有提供描述时会显示这段文字。</slot></p>
+                <div><slot name="actions">
+                    <button>默认按钮</button>
+                </slot></div>
+            </div>
+        `;
+    }
+}
+
+customElements.define('default-slot-component', DefaultSlotComponent);
+</pre>
+
+<h2>
+    插槽事件
+</h2>
+<p>
+    当插槽内容发生变化时，会触发<span class="special">slotchange</span>事件：
+</p>
+<pre tag="javascript">
+class SlotChangeComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                .container {
+                    border: 2px solid #28a745;
+                    border-radius: 8px;
+                    padding: 20px;
+                    margin: 10px 0;
+                }
+                
+                .info {
+                    background: #d4edda;
+                    color: #155724;
+                    padding: 10px;
+                    border-radius: 4px;
+                    margin-top: 10px;
+                }
+            </style>
+            
+            <div class="container">
+                <h3>插槽变化检测示例</h3>
+                <slot name="content">默认内容</slot>
+                <div class="info">插槽变化次数: <span id="change-count">0</span></div>
+            </div>
+        `;
+        
+        // 监听插槽变化
+        const slot = shadow.querySelector('slot[name="content"]');
+        let changeCount = 0;
+        
+        slot.addEventListener('slotchange', () => {
+            changeCount++;
+            shadow.getElementById('change-count').textContent = changeCount;
+            console.log('插槽内容已更改');
+        });
+    }
+}
+
+customElements.define('slot-change-component', SlotChangeComponent);
+</pre>
+<h2>
+    模板与插槽结合使用
+</h2>
+<p>
+    模板和插槽可以结合使用，创建更灵活的可复用组件：
+</p>
+<pre tag="javascript">
+class TemplateSlotComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        // 创建模板
+        const template = document.createElement('template');
+        template.innerHTML = `
+            <style>
+                .article-card {
+                    border: 1px solid #e1e4e8;
+                    border-radius: 6px;
+                    padding: 16px;
+                    margin: 16px 0;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+                }
+                
+                .article-header {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 12px;
+                }
+                
+                .article-avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    margin-right: 12px;
+                    background: #0366d6;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-weight: bold;
+                }
+                
+                .article-meta {
+                    flex: 1;
+                }
+                
+                .article-author {
+                    font-weight: 600;
+                    color: #24292e;
+                }
+                
+                .article-date {
+                    font-size: 12px;
+                    color: #586069;
+                }
+                
+                .article-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 0 0 8px 0;
+                    color: #0366d6;
+                }
+                
+                .article-content {
+                    color: #24292e;
+                    line-height: 1.5;
+                }
+                
+                .article-tags {
+                    margin-top: 12px;
+                }
+                
+                .tag {
+                    display: inline-block;
+                    padding: 2px 8px;
+                    margin-right: 8px;
+                    background: #f1f8ff;
+                    color: #0366d6;
+                    border-radius: 3px;
+                    font-size: 12px;
+                }
+            </style>
+            
+            <div class="article-card">
+                <div class="article-header">
+                    <div class="article-avatar">
+                        <slot name="avatar">A</slot>
+                    </div>
+                    <div class="article-meta">
+                        <div class="article-author">
+                            <slot name="author">作者名</slot>
+                        </div>
+                        <div class="article-date">
+                            <slot name="date">发布日期</slot>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="article-title">
+                    <slot name="title">文章标题</slot>
+                </h3>
+                
+                <div class="article-content">
+                    <slot name="content">文章内容</slot>
+                </div>
+                
+                <div class="article-tags">
+                    <slot name="tags">
+                        <span class="tag">默认标签</span>
+                    </slot>
+                </div>
+            </div>
+        `;
+        
+        shadow.appendChild(template.content.cloneNode(true));
+    }
+}
+
+customElements.define('article-card', ArticleCardComponent);
+</pre>

@@ -1,0 +1,79 @@
+<header>
+    Activity Result
+</header>
+<p>
+    页面间返回结果（如选择图片、申请权限、打开系统页面）使用
+    <span class="important">Activity Result API</span>。
+    官方已废弃 <span class="warn">startActivityForResult</span>，
+    改用 <span class="warn">ActivityResultLauncher</span>。
+</p>
+<h2>
+    Activity 中注册
+</h2>
+<pre tag="kotlin">
+class MainActivity : ComponentActivity() {
+
+    // 1. 声明 launcher（在 onCreate 之前调用）
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? -&gt;
+            uri?.let { /* 处理选中的图片 */ }
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            // 2. 在 Compose 中触发
+            Button(onClick = { pickImageLauncher.launch("image/*") }) {
+                Text("选择图片")
+            }
+        }
+    }
+}
+</pre>
+<h2>
+    Compose 中注册（推荐）
+</h2>
+<pre tag="kotlin">
+@Composable
+fun PickImageScreen() {
+    val pickImageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? -&gt;
+        uri?.let { /* 处理图片 */ }
+    }
+
+    Button(onClick = { pickImageLauncher.launch("image/*") }) {
+        Text("选择图片")
+    }
+}
+</pre>
+<h2>
+    常用 Contract
+</h2>
+<ul>
+    <li>
+        <span class="important">GetContent</span>
+        ：选择内容（图片、视频、文件）。
+    </li>
+    <li>
+        <span class="important">OpenDocument</span>
+        ：选择并长期访问某个文档。
+    </li>
+    <li>
+        <span class="important">TakePicturePreview</span>
+        ：拍照并返回缩略图。
+    </li>
+    <li>
+        <span class="important">RequestPermission</span>
+        ：申请单个运行时权限。
+    </li>
+    <li>
+        <span class="important">RequestMultiplePermissions</span>
+        ：一次申请多个权限。
+    </li>
+</ul>
+<div class="tips">
+    launcher 必须在 <span class="warn">onCreate</span> 之前或
+    <span class="warn">rememberLauncherForActivityResult</span> 中注册，
+    否则会在配置变化重建时抛出异常。
+</div>

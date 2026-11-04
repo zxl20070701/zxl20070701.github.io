@@ -1,0 +1,392 @@
+<header>
+    路由技术
+</header>
+<p>
+    路由是网络层的核心功能，负责在复杂的网络拓扑中选择数据包的最佳传输路径。路由器通过路由协议学习网络拓扑信息，构建路由表，并根据路由策略转发数据包。现代网络中，路由技术不仅关系到网络的连通性，还直接影响网络的性能、可靠性和可扩展性。
+</p>
+<h2>
+    路由基础概念
+</h2>
+<h3>
+    1. 路由定义
+</h3>
+<p>
+    路由是指将数据包从源主机传输到目的主机的过程中，选择最佳路径并转发数据包的过程。路由决策基于路由表中的信息，包括目的网络、下一跳地址、出接口等。
+</p>
+<h3>
+    2. 路由组成要素
+</h3>
+<ul>
+    <li><span class="special">路由表</span>：存储路由信息的表格，包含目的网络、下一跳、出接口等</li>
+    <li><span class="special">路由协议</span>：路由器之间交换路由信息的协议</li>
+    <li><span class="special">路由算法</span>：计算最佳路径的算法</li>
+    <li><span class="special">路由度量</span>：评估路径优劣的标准</li>
+</ul>
+<h3>
+    3. 路由类型
+</h3>
+<h4>
+    3.1 按路由来源分类
+</h4>
+<ul>
+    <li><span class="special">直连路由</span>：直接连接到路由器接口的网络</li>
+    <li><span class="special">静态路由</span>：管理员手动配置的路由</li>
+    <li><span class="special">动态路由</span>：通过路由协议自动学习和更新的路由</li>
+    <li><span class="special">默认路由</span>：匹配所有未知目的网络的路由</li>
+</ul>
+<h4>
+    3.2 按路由范围分类
+</h4>
+<ul>
+    <li><span class="special">内部路由</span>：在自治系统内部的路由</li>
+    <li><span class="special">外部路由</span>：在自治系统之间的路由</li>
+</ul>
+<h4>
+    3.3 按路由协议分类
+</h4>
+<ul>
+    <li><span class="special">距离矢量路由</span>：基于跳数或距离的路由协议</li>
+    <li><span class="special">链路状态路由</span>：基于网络拓扑的路由协议</li>
+    <li><span class="special">路径矢量路由</span>：基于AS路径的路由协议</li>
+</ul>
+<h2>
+    路由表与路由选择
+</h2>
+<h3>
+    1. 路由表结构
+</h3>
+<p>
+    典型的路由表包含以下字段：
+</p>
+<ul>
+    <li><span class="special">目的网络</span>：目标网络的IP地址和子网掩码</li>
+    <li><span class="special">下一跳</span>：到达目的网络的下一跳IP地址</li>
+    <li><span class="special">出接口</span>：数据包应该从哪个接口发送</li>
+    <li><span class="special">路由度量</span>：路径的成本或距离</li>
+    <li><span class="special">管理距离</span>：路由来源的可信度</li>
+    <li><span class="special">路由状态</span>：路由的有效性状态</li>
+</ul>
+<h3>
+    2. 路由选择算法
+</h3>
+<h4>
+    2.1 最长前缀匹配
+</h4>
+<ul>
+    <li><span class="special">原理</span>：选择网络前缀最长的路由条目</li>
+    <li><span class="special">示例</span>：对于目的地址192.168.1.100，同时匹配192.168.1.0/24和192.168.1.64/26，选择后者</li>
+    <li><span class="special">优点</span>：提供更精确的路由匹配</li>
+</ul>
+<h4>
+    2.2 管理距离
+</h4>
+<ul>
+    <li><span class="special">定义</span>：不同路由协议的可信度，数值越小越可信</li>
+    <li><span class="special">常见值</span>：
+        <ul>
+            <li>直连路由：0</li>
+            <li>静态路由：1</li>
+            <li>EIGRP汇总路由：5</li>
+            <li>EBGP：20</li>
+            <li>EIGRP内部路由：90</li>
+            <li>IGRP：100</li>
+            <li>OSPF：110</li>
+            <li>IS-IS：115</li>
+            <li>RIP：120</li>
+            <li>EIGRP外部路由：170</li>
+            <li>iBGP：200</li>
+            <li>未知：255</li>
+        </ul>
+    </li>
+</ul>
+<h4>
+    2.3 路由度量值
+</h4>
+<ul>
+    <li><span class="special">定义</span>：同一协议内路由的优先级</li>
+    <li><span class="special">计算因素</span>：跳数、带宽、延迟、可靠性、负载等</li>
+    <li><span class="special">不同协议的度量</span>：
+        <ul>
+            <li>RIP：跳数（最大15）</li>
+            <li>OSPF：成本（基于带宽）</li>
+            <li>EIGRP：复合度量（带宽、延迟、可靠性、负载）</li>
+            <li>BGP：路径属性（AS路径长度、本地优先级等）</li>
+        </ul>
+    </li>
+</ul>
+<h2>
+    静态路由
+</h2>
+<h3>
+    1. 静态路由特点
+</h3>
+<ul>
+    <li><span class="special">手动配置</span>：管理员手动添加、删除路由条目</li>
+    <li><span class="special">固定不变</span>：不会自动适应网络拓扑变化</li>
+    <li><span class="special">精确控制</span>：可精确控制数据包传输路径</li>
+    <li><span class="special">资源消耗少</span>：不占用CPU和带宽进行路由更新</li>
+</ul>
+<h3>
+    2. 静态路由配置
+</h3>
+<h4>
+    2.1 基本语法
+</h4>
+<ul>
+    <li><span class="special">Cisco IOS</span>：ip route destination-network mask next-hop-address</li>
+    <li><span class="special">Linux/Unix</span>：route add -net destination-network netmask gateway</li>
+    <li><span class="special">Windows</span>：route add destination-network mask gateway</li>
+</ul>
+<h4>
+    2.2 静态路由类型
+</h4>
+<ul>
+    <li><span class="special">标准静态路由</span>：指定目的网络和下一跳</li>
+    <li><span class="special">默认静态路由</span>：0.0.0.0/0，匹配所有未知目的网络</li>
+    <li><span class="special">汇总静态路由</span>：汇总多个连续网络的路由</li>
+    <li><span class="special">浮动静态路由</span>：设置较高的管理距离，作为备份路由</li>
+</ul>
+<h3>
+    3. 静态路由优缺点
+</h3>
+<ul>
+    <li><span class="special">优点</span>：配置简单，资源消耗少，安全性高，精确控制</li>
+    <li><span class="special">缺点</span>：维护困难，不适应拓扑变化，扩展性差</li>
+</ul>
+<h2>
+    动态路由协议
+</h2>
+<h3>
+    1. 距离矢量路由协议
+</h3>
+<h4>
+    1.1 RIP (Routing Information Protocol)
+</h4>
+<ul>
+    <li><span class="special">版本</span>：RIPv1（有类）、RIPv2（无类）</li>
+    <li><span class="special">度量</span>：跳数，最大15跳</li>
+    <li><span class="special">更新周期</span>：30秒</li>
+    <li><span class="special">算法</span>：Bellman-Ford算法</li>
+    <li><span class="special">特点</span>：简单但效率低，收敛慢，只适用于小型网络</li>
+</ul>
+<h4>
+    1.2 IGRP (Interior Gateway Routing Protocol)
+</h4>
+<ul>
+    <li><span class="special">开发者</span>：Cisco私有协议</li>
+    <li><span class="special">度量</span>：复合度量（带宽、延迟、可靠性、负载）</li>
+    <li><span class="special">特点</span>：比RIP更复杂，已被EIGRP取代</li>
+</ul>
+<h4>
+    1.3 EIGRP (Enhanced Interior Gateway Routing Protocol)
+</h4>
+<ul>
+    <li><span class="special">开发者</span>：Cisco私有协议</li>
+    <li><span class="special">算法</span>：DUAL（Diffusing Update Algorithm）</li>
+    <li><span class="special">度量</span>：复合度量，支持VLSM和CIDR</li>
+    <li><span class="special">特点</span>：快速收敛，低带宽消耗，支持多种网络层协议</li>
+</ul>
+<h3>
+    2. 链路状态路由协议
+</h3>
+<h4>
+    2.1 OSPF (Open Shortest Path First)
+</h4>
+<ul>
+    <li><span class="special">标准</span>：IETF标准协议（RFC 2328）</li>
+    <li><span class="special">算法</span>：Dijkstra最短路径算法</li>
+    <li><span class="special">度量</span>：成本（Cost），基于接口带宽</li>
+    <li><span class="special">特点</span>：快速收敛，支持VLSM和CIDR，分层设计</li>
+    <li><span class="special">区域</span>：骨干区域（Area 0）和非骨干区域</li>
+</ul>
+<h4>
+    2.2 IS-IS (Intermediate System to Intermediate System)
+</h4>
+<ul>
+    <li><span class="special">标准</span>：ISO标准协议</li>
+    <li><span class="special">算法</span>：Dijkstra最短路径算法</li>
+    <li><span class="special">特点</span>：主要用于ISP网络，支持CLNP和IP</li>
+    <li><span class="special">层次</span>：Level 1（区域内）和Level 2（区域间）</li>
+</ul>
+<h3>
+    3. 路径矢量路由协议
+</h3>
+<h4>
+    3.1 BGP (Border Gateway Protocol)
+</h4>
+<ul>
+    <li><span class="special">版本</span>：BGP-4（当前版本）</li>
+    <li><span class="special">应用</span>：互联网骨干网络，自治系统间路由</li>
+    <li><span class="special">特点</span>：基于策略的路由，支持CIDR，路径矢量算法</li>
+    <li><span class="special">属性</span>：丰富的路径属性（AS路径、本地优先级、MED等）</li>
+</ul>
+<h2>
+    路由协议比较
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>协议</th>
+            <th>类型</th>
+            <th>算法</th>
+            <th>度量</th>
+            <th>收敛速度</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>RIP</td>
+            <td>距离矢量</td>
+            <td>Bellman-Ford</td>
+            <td>跳数</td>
+            <td>慢</td>
+            <td>小型网络</td>
+        </tr>
+        <tr>
+            <td>EIGRP</td>
+            <td>高级距离矢量</td>
+            <td>DUAL</td>
+            <td>复合度量</td>
+            <td>快</td>
+            <td>中大型网络</td>
+        </tr>
+        <tr>
+            <td>OSPF</td>
+            <td>链路状态</td>
+            <td>Dijkstra</td>
+            <td>成本</td>
+            <td>快</td>
+            <td>中大型网络</td>
+        </tr>
+        <tr>
+            <td>IS-IS</td>
+            <td>链路状态</td>
+            <td>Dijkstra</td>
+            <td>成本</td>
+            <td>快</td>
+            <td>ISP骨干网</td>
+        </tr>
+        <tr>
+            <td>BGP</td>
+            <td>路径矢量</td>
+            <td>路径矢量</td>
+            <td>策略</td>
+            <td>慢</td>
+            <td>互联网骨干</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    路由优化技术
+</h2>
+<h3>
+    1. 路由汇总 (Route Summarization)
+</h3>
+<ul>
+    <li><span class="special">定义</span>：将多个连续的网络地址聚合成一个路由条目</li>
+    <li><span class="special">优点</span>：减少路由表大小，降低路由更新流量，提高稳定性</li>
+    <li><span class="special">实现</span>：在适当的位置进行地址规划和路由聚合</li>
+</ul>
+<h3>
+    2. 路由过滤
+</h3>
+<ul>
+    <li><span class="special">目的</span>：控制路由信息的传播，提高网络安全性</li>
+    <li><span class="special">方法</span>：使用访问控制列表（ACL）、路由映射（route-map）等</li>
+    <li><span class="special">应用</span>：防止路由环路，控制路由信息泄露</li>
+</ul>
+<h3>
+    3. 路由重分发
+</h3>
+<ul>
+    <li><span class="special">定义</span>：在不同路由协议之间交换路由信息</li>
+    <li><span class="special">场景</span>：网络迁移、多协议环境互联</li>
+    <li><span class="special">注意事项</span>：避免路由环路，处理度量值转换</li>
+</ul>
+<h3>
+    4. 策略路由
+</h3>
+<ul>
+    <li><span class="special">定义</span>：基于策略而非目的地址进行路由决策</li>
+    <li><span class="special">条件</span>：源地址、协议类型、应用类型、接口等</li>
+    <li><span class="special">应用</span>：负载均衡、服务质量、安全控制</li>
+</ul>
+<h2>
+    高级路由技术
+</h2>
+<h3>
+    1. MPLS (Multiprotocol Label Switching)
+</h3>
+<ul>
+    <li><span class="special">原理</span>：基于标签而非IP地址进行转发</li>
+    <li><span class="special">优势</span>：高速转发，支持流量工程，QoS保证</li>
+    <li><span class="special">应用</span>：ISP骨干网，VPN服务</li>
+</ul>
+<h3>
+    2. VRF (Virtual Routing and Forwarding)
+</h3>
+<ul>
+    <li><span class="special">原理</span>：在同一物理设备上创建多个独立的路由实例</li>
+    <li><span class="special">应用</span>：MPLS VPN，多租户环境</li>
+    <li><span class="special">优势</span>：路由隔离，安全性高</li>
+</ul>
+<h3>
+    3. 路由冗余协议
+</h3>
+<h4>
+    3.1 HSRP (Hot Standby Router Protocol)
+</h4>
+<ul>
+    <li><span class="special">开发者</span>：Cisco私有协议</li>
+    <li><span class="special">功能</span>：提供网关冗余，虚拟IP地址</li>
+    <li><span class="special">状态</span>：Active、Standby、Listen</li>
+</ul>
+<h4>
+    3.2 VRRP (Virtual Router Redundancy Protocol)
+</h4>
+<ul>
+    <li><span class="special">标准</span>：IETF标准协议（RFC 3768）</li>
+    <li><span class="special">功能</span>：与HSRP类似，提供网关冗余</li>
+    <li><span class="special">优势</span>：厂商无关，标准化</li>
+</ul>
+<h4>
+    3.3 GLBP (Gateway Load Balancing Protocol)
+</h4>
+<ul>
+    <li><span class="special">开发者</span>：Cisco私有协议</li>
+    <li><span class="special">功能</span>：提供网关冗余和负载均衡</li>
+    <li><span class="special">特点</span>：多个路由器同时转发流量</li>
+</ul>
+<h2>
+    路由故障排除
+</h2>
+<h3>
+    1. 常见路由问题
+</h3>
+<ul>
+    <li><span class="special">路由环路</span>：数据包在路由器间无限循环</li>
+    <li><span class="special">黑洞路由</span>：数据包被丢弃但无ICMP错误返回</li>
+    <li><span class="special">不对称路由</span>：往返路径不一致</li>
+    <li><span class="special">路由震荡</span>：路由频繁变化</li>
+</ul>
+<h3>
+    2. 故障排除工具
+</h3>
+<ul>
+    <li><span class="special">show ip route</span>：查看路由表</li>
+    <li><span class="special">ping</span>：测试连通性</li>
+    <li><span class="special">traceroute</span>：跟踪路径</li>
+    <li><span class="special">debug</span>：查看路由协议调试信息</li>
+</ul>
+<h3>
+    3. 故障排除步骤
+</h3>
+<ol>
+    <li><span class="special">检查物理连接</span>：确认接口状态和链路</li>
+    <li><span class="special">验证IP配置</span>：检查IP地址、子网掩码、网关</li>
+    <li><span class="special">查看路由表</span>：确认路由条目是否存在</li>
+    <li><span class="special">测试连通性</span>：使用ping测试基本连通性</li>
+    <li><span class="special">跟踪路径</span>：使用traceroute定位问题位置</li>
+    <li><span class="special">检查路由协议</span>：验证路由协议配置和状态</li>
+</ol>

@@ -1,0 +1,63 @@
+<header>
+    HttpURLConnection
+</header>
+<p>
+    HttpURLConnection 是 Java 自带的网络请求类，适合简单的 HTTP 请求场景。
+</p>
+<h2>
+    注意
+</h2>
+<ul>
+    <li>网络操作必须在子线程中执行。</li>
+    <li>需要在 AndroidManifest.xml 中声明权限：
+        <pre tag="xml">&lt;uses-permission android:name="android.permission.INTERNET" /&gt;</pre>
+    </li>
+</ul>
+<h2>
+    GET 请求示例
+</h2>
+<pre tag="java">
+new Thread(() -&gt; {
+    try {
+        URL url = new URL("https://zxl20070701.github.io/notebook/index.html");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setConnectTimeout(5000);
+        conn.setReadTimeout(5000);
+
+        int code = conn.getResponseCode();
+        if (code == 200) {
+            InputStream is = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(is, "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            // 回到主线程更新 UI
+            runOnUiThread(() -&gt; {
+                tvResult.setText(sb.toString());
+            });
+        }
+        conn.disconnect();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}).start();
+</pre>
+<h2>
+    POST 请求示例
+</h2>
+<pre tag="java">
+HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+conn.setRequestMethod("POST");
+conn.setDoOutput(true);
+conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+String params = "name=zxl&age=18";
+OutputStream os = conn.getOutputStream();
+os.write(params.getBytes("UTF-8"));
+os.flush();
+os.close();
+</pre>

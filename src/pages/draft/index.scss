@@ -27,7 +27,126 @@
     }
   }
 
+  &>.toolbar {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    .tool-group {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      label {
+        font-size: 14px;
+        color: #333;
+        margin-right: 5px;
+      }
+
+      .color-palette {
+        display: flex;
+        gap: 5px;
+
+        .color-item {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          cursor: pointer;
+          border: 2px solid transparent;
+          transition: all 0.2s;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+
+          &.active {
+            border-color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+
+      .pen-sizes {
+        display: flex;
+        gap: 5px;
+
+        .pen-size {
+          padding: 5px 10px;
+          background-color: #fff;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+          transition: all 0.2s;
+
+          &:hover {
+            background-color: #e9e9e9;
+          }
+
+          &.active {
+            background-color: #224858;
+            color: white;
+            border-color: #224858;
+          }
+        }
+      }
+
+      .eraser-btn,
+      .clear-btn,
+      .save-btn {
+        padding: 6px 12px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+
+        &:hover {
+          background-color: #e9e9e9;
+        }
+
+        &.active {
+          background-color: #224858;
+          color: white;
+          border-color: #224858;
+        }
+      }
+
+      .clear-btn {
+        background-color: #ff4444;
+        color: white;
+        border-color: #ff4444;
+
+        &:hover {
+          background-color: #cc3333;
+        }
+      }
+
+      .save-btn {
+        background-color: #44aa44;
+        color: white;
+        border-color: #44aa44;
+
+        &:hover {
+          background-color: #339933;
+        }
+      }
+    }
+  }
+
   &>.content {
-    height: calc(100vh - 150px);
+    height: calc(100vh - 200px);
+
+    canvas {
+      display: block;
+      cursor: crosshair;
+      background-color: white;
+    }
   }
 }

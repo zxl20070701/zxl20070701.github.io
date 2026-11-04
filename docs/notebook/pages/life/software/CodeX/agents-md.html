@@ -1,0 +1,198 @@
+<header>
+    AGENTS.md 持久化指令
+</header>
+<p>
+    AGENTS.md 是 CodeX 的"长期记忆"文件——每次启动 CodeX，它都会被自动读进上下文。这和 Claude Code 的 CLAUDE.md 是同一个定位：存放项目的事实，让 CodeX 不用每次都重新摸索你的技术栈和约定。
+</p>
+<h2>
+    分层加载机制
+</h2>
+<p>
+    CodeX 会<span class="important">从全局到局部、自上而下逐层合并</span>这些文件，越靠近工作目录的优先级越高：
+</p>
+<pre>
+~/.codex/AGENTS.md                    # 全局默认，所有仓库都继承
+~/.codex/AGENTS.override.md           # 全局临时覆盖（和上面二选一）
+
+    ↓ 进入某个项目，从仓库根往工作目录逐层找
+<repo>/AGENTS.md                      # 项目根，从这里往下所有目录都生效
+<repo>/src/AGENTS.md                  # 只在 src 及更下层工作时生效
+<repo>/src/components/AGENTS.md       # 更深层的目录可以有更具体的规则
+
+# 同一层级目录里：
+AGENTS.override.md  优先于  AGENTS.md（同时存在时只读前者）
+</pre>
+<p>
+    关键点：<span class="important">每个目录下只会用到一个文件</span>，如果同时存在 AGENTS.override.md 和 AGENTS.md，前者胜出，后者被忽略。这让你可以临时实验一套规则而不影响提交到 git 的版本。
+</p>
+<p>
+    还有一个容易被忽略的细节：CodeX 是从<span class="important">仓库根一路走到你启动时的当前目录</span>，所以深层目录的规则只有在你（或子 Agent）确实工作在那个目录下时才会进上下文，不会一上来就把整个 monorepo 的规则全读进来。
+</p>
+<h2>
+    内容建议
+</h2>
+<p>
+    AGENTS.md 应该写"事实"，而不是"操作步骤"：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>该写（事实）</th>
+            <th>不该写（过程）</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>技术栈和版本（Node 18、pnpm、React 18）</td>
+            <td>某个 bug 的排查过程</td>
+        </tr>
+        <tr>
+            <td>构建/测试/启动命令</td>
+            <td>可以从代码直接推断的目录说明</td>
+        </tr>
+        <tr>
+            <td>代码风格约定</td>
+            <td>大段代码示例</td>
+        </tr>
+        <tr>
+            <td>绝对不能碰的目录或文件</td>
+            <td>某个函数的逐行解释</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    全局模板示例
+</h2>
+<p>
+    在 <span class="special">~/.codex/AGENTS.md</span> 里放个人通用偏好，所有项目都继承：
+</p>
+<pre tag="markdown">
+## 工作约定
+
+- 修改 JavaScript 文件后必须运行 `npm test`
+- 优先使用 pnpm 而非 npm
+- 不要修改 `dist/` 和 `build/` 目录下的任何文件
+- 提交信息使用 Conventional Commits 格式
+- 新增依赖前先确认是否已有现成的库可以复用
+</pre>
+<h2>
+    项目级模板示例
+</h2>
+<p>
+    在 <span class="special">&lt;repo&gt;/AGENTS.md</span> 里放项目特定信息（空仓库里也可以用 <span class="special">/init</span> 让 CodeX 先生成一版初稿，再手工改）：
+</p>
+<pre tag="markdown">
+# 项目概览
+
+一个用于管理短视频的 Web 应用。
+
+## 技术栈
+
+- 前端：Vue 3 + Vite + TypeScript
+- 后端：Node.js + Express
+- 数据库：PostgreSQL 15
+- 包管理：pnpm
+
+## 常用命令
+
+- `pnpm dev` — 启动开发服务器（端口 5173）
+- `pnpm build` — 构建生产版本
+- `pnpm test` — 运行测试
+- `pnpm lint` — 代码检查
+
+## 目录结构
+
+- `src/views/` — 页面组件
+- `src/composables/` — 组合式函数
+- `server/routes/` — 后端路由
+
+## 重要约定
+
+- 所有 API 请求必须走 `src/api/` 下的封装，不要直接用 axios
+- 数据库迁移文件放在 `server/migrations/`，按时间戳命名
+- 不要修改 `src/types/api.d.ts`，它是自动生成的
+</pre>
+<h2>
+    分目录的精细化规则
+</h2>
+<p>
+    这是 AGENTS.md 相比全局配置最实用的一点——可以给不同目录配不同规则：
+</p>
+<pre tag="markdown">
+# src/composables/AGENTS.md
+
+本目录下的组合式函数必须遵循：
+- 每个 composable 导出至少一个 ref 或 computed
+- 命名必须是 useXxx 格式
+- 不要在这里直接调用 API，调用应该由组件层触发
+</pre>
+<div class="tips">
+    分层规则的价值在于<span class="important">减少无关上下文的干扰</span>。在 monorepo 里，与其在一个巨大的 AGENTS.md 里写几十条分模块规则，不如把规则拆到各自的子目录——CodeX 进入对应目录时才加载相关的那部分。
+</div>
+<h2>
+    用 override 文件做临时实验
+</h2>
+<p>
+    想临时改一套规则但不想影响 git 版本，就创建 override 文件（记得加进 <span class="special">.gitignore</span>）：
+</p>
+<pre tag="markdown">
+# AGENTS.override.md
+
+## 临时规则
+
+- 调试期间禁止执行 npm run build，太慢
+- 所有日志输出到 /tmp/debug.log
+</pre>
+<p>
+    删掉这个文件就恢复成正常规则，零污染。
+</p>
+<h2>
+    相关配置项
+</h2>
+<pre tag="toml">
+# ~/.codex/config.toml
+
+# 所有层级合并后的总大小上限（默认 32 KiB）
+project_doc_max_bytes = 32768
+
+# 当某层目录没有 AGENTS.md 时，尝试这些备用文件名
+project_doc_fallback_filenames = ["CLAUDE.md", "CONTRIBUTING.md"]
+</pre>
+<div class="tips">
+    <span class="special">project_doc_fallback_filenames</span> 这项很实用——如果你有一个已经写了 CLAUDE.md 的老项目，配置上这个就能让 CodeX 直接复用，不用立刻改成 AGENTS.md，可以边迁移边用。
+</div>
+<h2>
+    和 Skill 的分工
+</h2>
+<p>
+    最容易搞混的一点，记住这个判断标准：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>AGENTS.md</th>
+            <th>Skill</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>加载时机</strong></td>
+            <td>每次启动必读</td>
+            <td>被触发时才加载</td>
+        </tr>
+        <tr>
+            <td><strong>适合内容</strong></td>
+            <td>构建命令、技术栈、目录约定</td>
+            <td>操作步骤、检查清单、模板</td>
+        </tr>
+        <tr>
+            <td><strong>上下文成本</strong></td>
+            <td>常驻占用</td>
+            <td>几乎为零</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    简单说：<span class="important">AGENTS.md 回答"这是个什么项目"，Skill 回答"要做某件事该怎么做"</span>。当 AGENTS.md 里某一段开始变成操作步骤时，就把它挪进 Skill。
+</p>

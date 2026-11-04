@@ -1,0 +1,108 @@
+<header>
+    基本使用
+</header>
+<p>
+    llama.cpp 提供了多种可执行文件用于不同的任务，最基本的用法是使用 <span class="warn">main</span> 程序运行模型。
+</p>
+<h2>
+    下载模型
+</h2>
+<p>
+    首先，你需要下载一个兼容的模型文件（通常是 GGUF 格式）。可以从
+    <a href="https://huggingface.co/" target="_blank">Hugging Face</a>
+    （Huggingface 国内镜像站 <a href="https://hf-mirror.com/" target="_blank">hf-mirror.com</a> ）
+     或其他来源获取：
+</p>
+<div class="tips">
+    访问 hf-mirror.com，搜索目标模型（如 “Qwen3.5-9B GGUF”），下载 ‌GGUF 格式‌ 的模型文件，这是 llama.cpp 支持的唯一模型格式。
+</div>
+<pre>
+# 例如下载 Llama 2 7B 模型
+wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf
+</pre>
+<h2>
+    基本推理
+</h2>
+<p>
+    使用 main 程序运行模型：
+</p>
+<pre>
+./build/bin/llama-cli -m models/llama-2-7b-chat.Q4_K_M.gguf -p "Hello, how are you?"
+</pre>
+<p>
+    参数说明：
+</p>
+<ul>
+    <li>
+        <span class="warn">-m</span>：指定模型文件路径
+    </li>
+    <li>
+        <span class="warn">-p</span>：指定提示词
+    </li>
+</ul>
+<h2>
+    交互式聊天
+</h2>
+<p>
+    启用交互模式进行多轮对话：
+</p>
+<pre>
+./build/bin/llama-cli -m models/llama-2-7b-chat.Q4_K_M.gguf -i
+</pre>
+<p>
+    在交互模式下，你可以连续输入问题，模型会记住对话历史。
+</p>
+<h2>
+    常用参数
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th style="text-align:left">参数</th>
+            <th style="text-align:left">说明</th>
+            <th style="text-align:left">示例</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align:left"><span class="warn">-m</span></td>
+            <td style="text-align:left">模型文件路径</td>
+            <td style="text-align:left"><span class="warn">-m models/model.gguf</span></td>
+        </tr>
+        <tr>
+            <td style="text-align:left"><span class="warn">-p</span></td>
+            <td style="text-align:left">提示词</td>
+            <td style="text-align:left"><span class="warn">-p "Hello, how are you?"</span></td>
+        </tr>
+        <tr>
+            <td style="text-align:left"><span class="warn">-i</span></td>
+            <td style="text-align:left">交互模式</td>
+            <td style="text-align:left"><span class="warn">-i</span></td>
+        </tr>
+        <tr>
+            <td style="text-align:left"><span class="warn">-n</span></td>
+            <td style="text-align:left">生成token数量</td>
+            <td style="text-align:left"><span class="warn">-n 256</span></td>
+        </tr>
+        <tr>
+            <td style="text-align:left"><span class="warn">-t</span></td>
+            <td style="text-align:left">使用的线程数</td>
+            <td style="text-align:left"><span class="warn">-t 8</span></td>
+        </tr>
+        <tr>
+            <td style="text-align:left"><span class="warn">-c</span></td>
+            <td style="text-align:left">上下文长度</td>
+            <td style="text-align:left"><span class="warn">-c 2048</span></td>
+        </tr>
+        <tr>
+            <td style="text-align:left"><span class="warn">-temp</span></td>
+            <td style="text-align:left">温度参数（0-1）</td>
+            <td style="text-align:left"><span class="warn">-temp 0.7</span></td>
+        </tr>
+        <tr>
+            <td style="text-align:left"><span class="warn">-b</span></td>
+            <td style="text-align:left">批处理大小</td>
+            <td style="text-align:left"><span class="warn">-b 512</span></td>
+        </tr>
+    </tbody>
+</table>

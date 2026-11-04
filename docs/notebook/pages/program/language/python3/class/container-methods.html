@@ -1,0 +1,201 @@
+<header>
+    容器和序列方法
+</header>
+<h2>
+    容器基础方法
+</h2>
+<p>
+    通过实现容器特殊方法，可以让自定义类表现得像内置容器（如列表、字典）一样。
+</p>
+<pre tag="python">
+class SimpleList:
+    def __init__(self, items=None):
+        self._items = items or []
+    
+    def __len__(self):
+        """返回容器长度"""
+        return len(self._items)
+    
+    def __getitem__(self, index):
+        """获取指定索引的元素"""
+        return self._items[index]
+    
+    def __setitem__(self, index, value):
+        """设置指定索引的元素"""
+        self._items[index] = value
+    
+    def __delitem__(self, index):
+        """删除指定索引的元素"""
+        del self._items[index]
+    
+    def __iter__(self):
+        """返回迭代器"""
+        return iter(self._items)
+    
+    def __contains__(self, item):
+        """检查是否包含某个元素"""
+        return item in self._items
+    
+    def append(self, item):
+        """添加元素"""
+        self._items.append(item)
+    
+    def __str__(self):
+        return str(self._items)
+
+# 使用自定义容器
+my_list = SimpleList([1, 2, 3, 4, 5])
+print(len(my_list))        # 5
+print(my_list[2])          # 3
+my_list[2] = 10
+print(my_list)             # [1, 2, 10, 4, 5]
+print(10 in my_list)       # True
+del my_list[0]
+print(my_list)             # [2, 10, 4, 5]
+
+# 迭代
+for item in my_list:
+    print(item, end=' ')   # 2 10 4 5
+</pre>
+
+<h2>
+    切片支持
+</h2>
+<pre tag="python">
+class RangeList:
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+        self._data = list(range(start, end))
+    
+    def __len__(self):
+        return len(self._data)
+    
+    def __getitem__(self, key):
+        """支持切片"""
+        return self._data[key]
+    
+    def __setitem__(self, key, value):
+        """支持切片赋值"""
+        self._data[key] = value
+    
+    def __delitem__(self, key):
+        """支持切片删除"""
+        del self._data[key]
+    
+    def __str__(self):
+        return str(self._data)
+
+# 使用切片
+rlist = RangeList(1, 10)
+print(rlist)           # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(rlist[2:5])      # [3, 4, 5]
+rlist[2:5] = [30, 40, 50]
+print(rlist)           # [1, 2, 30, 40, 50, 6, 7, 8, 9]
+del rlist[2:4]
+print(rlist)           # [1, 2, 50, 6, 7, 8, 9]
+</pre>
+
+<h2>
+    字典类容器
+</h2>
+<pre tag="python">
+class SimpleDict:
+    def __init__(self):
+        self._data = {}
+    
+    def __getitem__(self, key):
+        """获取值"""
+        return self._data[key]
+    
+    def __setitem__(self, key, value):
+        """设置值"""
+        self._data[key] = value
+    
+    def __delitem__(self, key):
+        """删除键值对"""
+        del self._data[key]
+    
+    def __len__(self):
+        """返回键值对数量"""
+        return len(self._data)
+    
+    def __iter__(self):
+        """迭代键"""
+        return iter(self._data)
+    
+    def __contains__(self, key):
+        """检查键是否存在"""
+        return key in self._data
+    
+    def keys(self):
+        return self._data.keys()
+    
+    def values(self):
+        return self._data.values()
+    
+    def items(self):
+        return self._data.items()
+    
+    def __str__(self):
+        return str(self._data)
+
+# 使用自定义字典
+my_dict = SimpleDict()
+my_dict['name'] = 'Alice'
+my_dict['age'] = 30
+print(my_dict['name'])      # Alice
+print(len(my_dict))         # 2
+print('age' in my_dict)     # True
+
+for key in my_dict:
+    print(f"{key}: {my_dict[key]}")
+# name: Alice
+# age: 30
+</pre>
+
+<h2>
+    集合类容器
+</h2>
+<pre tag="python">
+class UniqueList:
+    def __init__(self):
+        self._items = []
+        self._seen = set()
+    
+    def add(self, item):
+        """添加不重复的元素"""
+        if item not in self._seen:
+            self._items.append(item)
+            self._seen.add(item)
+    
+    def __len__(self):
+        return len(self._items)
+    
+    def __getitem__(self, index):
+        return self._items[index]
+    
+    def __iter__(self):
+        return iter(self._items)
+    
+    def __contains__(self, item):
+        return item in self._seen
+    
+    def __str__(self):
+        return str(self._items)
+
+# 使用唯一列表
+unique_list = UniqueList()
+unique_list.add(1)
+unique_list.add(2)
+unique_list.add(1)  # 重复，不会添加
+unique_list.add(3)
+
+print(unique_list)      # [1, 2, 3]
+print(len(unique_list)) # 3
+print(2 in unique_list) # True
+print(5 in unique_list) # False
+
+for item in unique_list:
+    print(item, end=' ')  # 1 2 3
+</pre>

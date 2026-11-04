@@ -1,0 +1,136 @@
+<header>
+    Agent 工程架构设计
+</header>
+
+<p>
+    做 Agent 应用时，不要把它理解成“一个 prompt 调一个模型”。真正稳定的 Agent 更像一个小型后端系统：有任务入口、状态管理、工具层、模型层、权限层、观测层和结果验收。
+</p>
+
+<h2>
+    核心分层
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>层级</th>
+            <th>职责</th>
+            <th>常见实现</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>入口层</td>
+            <td>接收用户请求、解析任务类型、做权限校验</td>
+            <td>HTTP API、消息队列、WebSocket、CLI</td>
+        </tr>
+        <tr>
+            <td>编排层</td>
+            <td>管理计划、步骤、重试、分支、终止条件</td>
+            <td>Workflow、State Machine、Graph</td>
+        </tr>
+        <tr>
+            <td>模型层</td>
+            <td>封装模型调用、路由、参数、降级策略</td>
+            <td>LLM Client、Model Router</td>
+        </tr>
+        <tr>
+            <td>工具层</td>
+            <td>连接外部系统并执行动作</td>
+            <td>Function Calling、MCP Server、内部服务 API</td>
+        </tr>
+        <tr>
+            <td>状态层</td>
+            <td>保存任务进度、上下文、记忆和中间结果</td>
+            <td>Redis、PostgreSQL、文件、向量库</td>
+        </tr>
+        <tr>
+            <td>观测层</td>
+            <td>记录 trace、日志、指标、成本和错误</td>
+            <td>OpenTelemetry、LangSmith、Phoenix、自建日志</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    最小可用架构
+</h2>
+
+<p>
+    一个最小可用 Agent 可以先从下面几个模块开始，不必一上来就做复杂多 Agent 系统。
+</p>
+
+<pre tag="javascript">
+const task = await createTask(userInput);
+
+while (!task.done) {
+    const context = await loadContext(task.id);
+    const decision = await llm.decide({
+        goal: task.goal,
+        state: task.state,
+        tools: toolSchemas,
+        context
+    });
+
+    if (decision.type === "final") {
+        task.done = true;
+        task.result = decision.answer;
+        break;
+    }
+
+    const result = await runTool(decision.tool, decision.args);
+    await appendObservation(task.id, decision, result);
+}
+</pre>
+
+<h2>
+    关键设计问题
+</h2>
+
+<h3>
+    状态放在哪里？
+</h3>
+
+<p>
+    不要只依赖模型上下文。长任务、异步任务、需要恢复的任务，都应该把状态保存到外部存储。状态至少包括目标、当前步骤、已完成步骤、工具结果、错误、最终输出。
+</p>
+
+<h3>
+    谁决定下一步？
+</h3>
+
+<p>
+    简单任务可以让模型直接决定下一步；复杂业务最好让编排层约束流程。例如报销审批、代码发布、数据同步这类任务，应该用工作流限制可走路径。
+</p>
+
+<h3>
+    工具如何隔离？
+</h3>
+
+<p>
+    工具层要把危险动作和普通查询分开。查询类工具可以自动执行，写入类工具要做参数校验，高风险工具要人工确认。
+</p>
+
+<h2>
+    设计原则
+</h2>
+
+<ul>
+    <li>先做单 Agent，再考虑多 Agent。</li>
+    <li>先让工具稳定，再追求模型“聪明”。</li>
+    <li>所有关键动作都要可追踪、可复现、可回滚。</li>
+    <li>把模型输出当成不可信输入，需要校验后再执行。</li>
+    <li>任务失败时要能知道失败在哪一步，而不是只看到一句“失败了”。</li>
+</ul>
+
+<h2>
+    常见架构坑
+</h2>
+
+<ul>
+    <li>所有逻辑都写在 prompt 里，后期难测试、难维护。</li>
+    <li>工具返回过多无关字段，挤占上下文。</li>
+    <li>没有任务状态表，任务中断后无法恢复。</li>
+    <li>没有成本统计，线上调用费用不可控。</li>
+    <li>没有人工确认边界，模型可能执行危险操作。</li>
+</ul>

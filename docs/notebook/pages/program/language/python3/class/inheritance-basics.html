@@ -1,0 +1,95 @@
+<header>
+    继承基础
+</header>
+<h2>
+    继承概念
+</h2>
+<p>
+    <span class="important">继承（Inheritance）</span>是面向对象编程的重要特性，允许一个类（子类）继承另一个类（父类）的属性和方法。子类可以重用父类的代码，并可以添加新的功能或重写父类的方法。
+</p>
+<pre tag="python">
+class Animal:
+    """父类：动物"""
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+    
+    def make_sound(self):
+        return "Some generic animal sound"
+    
+    def eat(self):
+        return f"{self.name} is eating"
+    
+    def sleep(self):
+        return f"{self.name} is sleeping"
+
+class Dog(Animal):
+    """子类：狗，继承自动物"""
+    def __init__(self, name, breed):
+        # 调用父类的构造函数
+        super().__init__(name, "Dog")
+        self.breed = breed
+    
+    # 重写父类的方法
+    def make_sound(self):
+        return "Woof! Woof!"
+    
+    # 添加新的方法
+    def fetch(self):
+        return f"{self.name} is fetching the ball"
+
+class Cat(Animal):
+    """子类：猫，继承自动物"""
+    def __init__(self, name, color):
+        super().__init__(name, "Cat")
+        self.color = color
+    
+    def make_sound(self):
+        return "Meow! Meow!"
+    
+    def climb(self):
+        return f"{self.name} is climbing a tree"
+
+# 使用继承的类
+dog = Dog("Buddy", "Golden Retriever")
+cat = Cat("Whiskers", "Orange")
+
+print(f"{dog.name} is a {dog.breed} {dog.species}")
+print(f"{cat.name} is a {cat.color} {cat.species}")
+
+print(dog.make_sound())  # Woof! Woof!
+print(cat.make_sound())  # Meow! Meow!
+
+print(dog.eat())    # 继承自父类
+print(cat.sleep())  # 继承自父类
+
+print(dog.fetch())  # Dog类特有的方法
+print(cat.climb())  # Cat类特有的方法
+</pre>
+
+<h2>
+    继承的优势
+</h2>
+<ul>
+    <li>代码重用：子类自动获得父类的所有属性和方法</li>
+    <li>扩展性：可以在子类中添加新功能</li>
+    <li>多态性：不同子类可以有不同的实现</li>
+    <li>层次结构：建立清晰的类层次关系</li>
+</ul>
+
+<h2>
+    继承语法
+</h2>
+<pre tag="python">
+# 单继承
+class ChildClass(ParentClass):
+    pass
+
+# 多重继承
+class ChildClass(Parent1, Parent2, Parent3):
+    pass
+
+# 调用父类方法
+super().__init__()  # 调用父类的构造函数
+super().parent_method()  # 调用父类的方法
+</pre>

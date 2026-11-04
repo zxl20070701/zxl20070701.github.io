@@ -1,0 +1,44 @@
+<header>
+    文本搜索和处理
+</header>
+<h2>
+    grep
+</h2>
+<p>
+    <span class="special">grep</span> 用于搜索文本，常见于查日志、查代码、过滤命令输出。
+</p>
+<pre>
+grep "error" app.log
+grep -Rni "TODO" ./src
+ps aux | grep nginx
+</pre>
+<h2>
+    awk
+</h2>
+<p>
+    <span class="special">awk</span> 适合按列处理文本，比如只取表格输出中的某一列。
+</p>
+<pre>
+    df -h | awk '{print $1}'
+</pre>
+<h2>
+    sed
+</h2>
+<p>
+    <span class="special">sed</span> 适合做文本替换。加 <span class="special">-i</span> 会直接修改文件。
+</p>
+<pre>
+sed 's/old/new/g' file.txt
+sed -i 's/old/new/g' file.txt
+</pre>
+<h2>
+    sort / uniq / xargs
+</h2>
+<p>
+    <span class="special">sort</span> 排序，<span class="special">uniq</span> 去重或统计，
+    <span class="special">xargs</span> 把前一个命令的输出转成后一个命令的参数。
+</p>
+<pre>
+sort access.log | uniq -c
+find . -name "*.tmp" | xargs rm
+</pre>

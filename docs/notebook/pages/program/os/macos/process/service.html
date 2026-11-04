@@ -1,0 +1,26 @@
+<header>服务管理</header>
+<h2>launchctl</h2>
+<p>
+    <span class="special">launchctl</span> 是 macOS 管理 LaunchAgent 和 LaunchDaemon 的工具。
+    用户级服务通常在 <span class="special">~/Library/LaunchAgents</span>，系统级服务通常在 <span class="special">/Library/LaunchDaemons</span>。
+</p>
+<pre>
+launchctl list
+launchctl print gui/$(id -u)
+launchctl print system
+launchctl load /Library/LaunchDaemons/com.example.service.plist
+launchctl unload /Library/LaunchDaemons/com.example.service.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.example.service.plist
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.example.service.plist
+launchctl kickstart -k gui/$(id -u)/com.example.service
+</pre>
+<h2>brew services</h2>
+<p>
+    如果服务由 Homebrew 安装，用 <span class="special">brew services</span> 管理更方便。
+</p>
+<pre>
+brew services list
+brew services start nginx
+brew services stop nginx
+brew services restart nginx
+</pre>

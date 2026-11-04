@@ -1,0 +1,76 @@
+<header>
+    多表连接查询
+</header>
+<h2>
+    内连接 INNER JOIN
+</h2>
+<p>
+    只返回两表中匹配的记录。如果右表中没有匹配的记录，则不会出现在结果中。
+</p>
+<pre tag="sql">
+SELECT u.name, o.order_no
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id;
+</pre>
+<h2>
+    左连接 LEFT JOIN
+</h2>
+<p>
+    返回左表（users）中的所有记录，即使右表（orders）中没有匹配。右表中无匹配的字段显示为 NULL。
+</p>
+<pre tag="sql">
+SELECT u.name, o.order_no
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id;
+</pre>
+<h2>
+    右连接 RIGHT JOIN
+</h2>
+<p>
+    返回右表（orders）中的所有记录，即使左表（users）中没有匹配。左表中无匹配的字段显示为 NULL。
+</p>
+<pre tag="sql">
+SELECT u.name, o.order_no
+FROM users u
+RIGHT JOIN orders o ON u.id = o.user_id;
+</pre>
+<h2>
+    全连接 FULL JOIN
+</h2>
+<p>
+    返回左右两表中的所有记录。MySQL 不直接支持 FULL JOIN，可以通过 LEFT JOIN + UNION + RIGHT JOIN 实现。
+</p>
+<pre tag="sql">
+SELECT u.name, o.order_no FROM users u LEFT JOIN orders o ON u.id = o.user_id
+UNION
+SELECT u.name, o.order_no FROM users u RIGHT JOIN orders o ON u.id = o.user_id;
+</pre>
+<h2>
+    多表连接
+</h2>
+<pre tag="sql">
+SELECT u.name, p.product_name, o.quantity
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id
+INNER JOIN products p ON o.product_id = p.id;
+</pre>
+<h2>
+    自连接
+</h2>
+<p>
+    表与其自身连接，常用于层级结构（如组织架构、评论回复）。
+</p>
+<pre tag="sql">
+SELECT e.name AS employee, m.name AS manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.id;
+</pre>
+<h2>
+    交叉连接 CROSS JOIN
+</h2>
+<p>
+    返回两表的笛卡尔积，即左表的每一行与右表的每一行组合。
+</p>
+<pre tag="sql">
+SELECT * FROM users CROSS JOIN products;
+</pre>

@@ -1,0 +1,343 @@
+<header>
+    指令格式
+</header>
+<h2>
+    指令格式概述
+</h2>
+<p>
+    <span class="important">指令格式</span>（Instruction Format）定义了计算机指令的二进制表示方式，包括操作码、操作数和寻址方式等信息。合理的指令格式设计对处理器性能、编译器效率和程序大小都有重要影响。
+</p>
+
+<h2>
+    指令格式的基本组成
+</h2>
+<h3>
+    1. 操作码（Opcode）
+</h3>
+<ul>
+    <li><span class="special">功能</span>：指定要执行的操作类型</li>
+    <li><span class="special">长度</span>：固定长度或可变长度</li>
+    <li><span class="special">编码</span>：唯一标识每条指令</li>
+</ul>
+
+<h3>
+    2. 操作数（Operands）
+</h3>
+<ul>
+    <li><span class="special">源操作数</span>：提供操作所需的数据</li>
+    <li><span class="special">目的操作数</span>：存储操作结果</li>
+    <li><span class="special">数量</span>：零地址、一地址、二地址、三地址</li>
+</ul>
+
+<h3>
+    3. 寻址方式（Addressing Modes）
+</h3>
+<ul>
+    <li><span class="special">隐含寻址</span>：操作数位置隐含在操作码中</li>
+    <li><span class="special">立即寻址</span>：操作数直接包含在指令中</li>
+    <li><span class="special">直接寻址</span>：指令包含操作数的内存地址</li>
+    <li><span class="special">间接寻址</span>：指令包含指向操作数地址的指针</li>
+    <li><span class="special">寄存器寻址</span>：操作数在寄存器中</li>
+    <li><span class="special">寄存器间接寻址</span>：寄存器包含操作数的地址</li>
+</ul>
+
+<h2>
+    指令格式分类
+</h2>
+<h3>
+    1. 按地址数量分类
+</h3>
+<h4>
+    零地址指令
+</h4>
+<ul>
+    <li><span class="special">特点</span>：无显式操作数</li>
+    <li><span class="special">应用</span>：栈操作指令、控制指令</li>
+    <li><span class="special">示例</span>：NOP、RET、PUSH、POP</li>
+</ul>
+
+<h4>
+    一地址指令
+</h4>
+<ul>
+    <li><span class="special">特点</span>：一个显式操作数，另一个隐含</li>
+    <li><span class="special">应用</span>：累加器型计算机</li>
+    <li><span class="special">示例</span>：INC A、DEC B、NEG C</li>
+</ul>
+
+<h4>
+    二地址指令
+</h4>
+<ul>
+    <li><span class="special">特点</span>：两个操作数，其中一个既是源又是目的</li>
+    <li><span class="special">应用</span>：大多数现代处理器</li>
+    <li><span class="special">示例</span>：ADD R1, R2、MOV A, B</li>
+</ul>
+
+<h4>
+    三地址指令
+</h4>
+<ul>
+    <li><span class="special">特点</span>：两个源操作数和一个目的操作数</li>
+    <li><span class="special">应用</span>：高性能计算、向量处理</li>
+    <li><span class="special">示例</span>：ADD R1, R2, R3</li>
+</ul>
+
+<h3>
+    2. 按长度分类
+</h3>
+<h4>
+    固定长度指令
+</h4>
+<ul>
+    <li><span class="special">特点</span>：所有指令长度相同</li>
+    <li><span class="special">优点</span>：取指简单，译码快速</li>
+    <li><span class="special">缺点</span>：可能浪费存储空间</li>
+    <li><span class="special">应用</span>：RISC处理器</li>
+</ul>
+
+<h4>
+    可变长度指令
+</h4>
+<ul>
+    <li><span class="special">特点</span>：指令长度根据操作需求变化</li>
+    <li><span class="special">优点</span>：编码紧凑，存储效率高</li>
+    <li><span class="special">缺点</span>：取指复杂，译码困难</li>
+    <li><span class="special">应用</span>：CISC处理器</li>
+</ul>
+
+<h2>
+    典型指令格式
+</h2>
+<h3>
+    1. MIPS指令格式
+</h3>
+<h4>
+    R型指令（寄存器型）
+</h4>
+<ul>
+    <li><span class="special">格式</span>：opcode(6) + rs(5) + rt(5) + rd(5) + shamt(5) + funct(6)</li>
+    <li><span class="special">用途</span>：寄存器-寄存器操作</li>
+    <li><span class="special">示例</span>：ADD、SUB、AND、OR</li>
+</ul>
+
+<h4>
+    I型指令（立即数型）
+</h4>
+<ul>
+    <li><span class="special">格式</span>：opcode(6) + rs(5) + rt(5) + immediate(16)</li>
+    <li><span class="special">用途</span>：加载/存储、分支、立即数操作</li>
+    <li><span class="special">示例</span>：LW、SW、BEQ、ADDI</li>
+</ul>
+
+<h4>
+    J型指令（跳转型）
+</h4>
+<ul>
+    <li><span class="special">格式</span>：opcode(6) + address(26)</li>
+    <li><span class="special">用途</span>：跳转和链接</li>
+    <li><span class="special">示例</span>：J、JAL</li>
+</ul>
+
+<h3>
+    2. x86指令格式
+</h3>
+<h4>
+    指令前缀
+</h4>
+<ul>
+    <li><span class="special">段前缀</span>：指定段寄存器</li>
+    <li><span class="special">操作数大小前缀</span>：改变默认操作数大小</li>
+    <li><span class="special">地址大小前缀</span>：改变默认地址大小</li>
+</ul>
+
+<h4>
+    操作码
+</h4>
+<ul>
+    <li><span class="special">主操作码</span>：1-2字节</li>
+    <li><span class="special">扩展操作码</span>：在ModR/M字节中</li>
+</ul>
+
+<h4>
+    操作数说明符
+</h4>
+<ul>
+    <li><span class="special">ModR/M字节</span>：指定操作数和寻址方式</li>
+    <li><span class="special">SIB字节</span>：指定比例-索引-基址寻址</li>
+    <li><span class="special">位移量</span>：地址偏移</li>
+    <li><span class="special">立即数</span>：立即操作数</li>
+</ul>
+
+<h3>
+    3. ARM指令格式
+</h3>
+<h4>
+    ARM状态（32位指令）
+</h4>
+<ul>
+    <li><span class="special">格式</span>：固定32位长度</li>
+    <li><span class="special">分类</span>：数据处理、加载/存储、分支、协处理器</li>
+    <li><span class="special">特点</span>：条件执行，灵活的第二操作数</li>
+</ul>
+
+<h4>
+    Thumb状态（16位指令）
+</h4>
+<ul>
+    <li><span class="special">格式</span>：固定16位长度</li>
+    <li><span class="special">优点</span>：代码密度高</li>
+    <li><span class="special">缺点</span>：功能受限</li>
+</ul>
+
+<h2>
+    指令编码设计
+</h2>
+<h3>
+    1. 操作码编码
+</h3>
+<h4>
+    定长操作码
+</h4>
+<ul>
+    <li><span class="special">特点</span>：固定长度的操作码字段</li>
+    <li><span class="special">优点</span>：译码简单快速</li>
+    <li><span class="special">缺点</span>：操作码数量有限</li>
+</ul>
+
+<h4>
+    变长操作码
+</h4>
+<ul>
+    <li><span class="special">特点</span>：操作码长度可变</li>
+    <li><span class="special">优点</span>：操作码空间利用率高</li>
+    <li><span class="special">缺点</span>：译码复杂</li>
+    <li><span class="special">技术</span>：前缀码、扩展操作码</li>
+</ul>
+
+<h3>
+    2. 操作数编码
+</h3>
+<h4>
+    寄存器编码
+</h4>
+<ul>
+    <li><span class="special">直接编码</span>：寄存器编号直接编码</li>
+    <li><span class="special">隐含编码</span>：某些寄存器隐含使用</li>
+</ul>
+
+<h4>
+    立即数编码
+</h4>
+<ul>
+    <li><span class="special">符号扩展</span>：处理不同长度的立即数</li>
+    <li><span class="special">零扩展</span>：无符号立即数处理</li>
+</ul>
+
+<h4>
+    内存地址编码
+</h4>
+<ul>
+    <li><span class="special">相对寻址</span>：相对于PC的偏移</li>
+    <li><span class="special">绝对寻址</span>：完整的内存地址</li>
+    <li><span class="special">基址寻址</span>：基址寄存器加偏移</li>
+</ul>
+
+<h2>
+    指令格式设计原则
+</h2>
+<h3>
+    1. 规整性
+</h3>
+<ul>
+    <li><span class="special">对称性</span>：相似操作具有相似格式</li>
+    <li><span class="special">一致性</span>：统一的编码规则</li>
+    <li><span class="special">可预测性</span>：格式易于理解和预测</li>
+</ul>
+
+<h3>
+    2. 正交性
+</h3>
+<ul>
+    <li><span class="special">操作与寻址方式分离</span>：操作码独立于寻址方式</li>
+    <li><span class="special">操作数类型独立</span>：不同数据类型使用相同操作</li>
+    <li><span class="special">减少特殊情况</span>：避免特殊格式和例外</li>
+</ul>
+
+<h3>
+    3. 可扩展性
+</h3>
+<ul>
+    <li><span class="special">保留编码空间</span>：为未来扩展预留</li>
+    <li><span class="special">模块化设计</span>：易于添加新指令</li>
+    <li><span class="special">向后兼容</span>：新版本兼容旧版本</li>
+</ul>
+
+<h3>
+    4. 效率
+</h3>
+<ul>
+    <li><span class="special">译码效率</span>：简化译码逻辑</li>
+    <li><span class="special">执行效率</span>：减少执行周期</li>
+    <li><span class="special">存储效率</span>：紧凑的指令表示</li>
+</ul>
+
+<h2>
+    指令格式优化技术
+</h2>
+<h3>
+    1. 压缩技术
+</h3>
+<ul>
+    <li><span class="special">操作码压缩</span>：使用霍夫曼编码</li>
+    <li><span class="special">操作数压缩</span>：寄存器重命名</li>
+    <li><span class="special">指令融合</span>：合并常用指令序列</li>
+</ul>
+
+<h3>
+    2. 扩展技术
+</h3>
+<ul>
+    <li><span class="special">操作码扩展</span>：使用前缀或模式位</li>
+    <li><span class="special">操作数扩展</span>：支持更多寄存器</li>
+    <li><span class="special">寻址方式扩展</span>：增加新的寻址模式</li>
+</ul>
+
+<h3>
+    3. 兼容性技术
+</h3>
+<ul>
+    <li><span class="special">模式切换</span>：不同模式支持不同格式</li>
+    <li><span class="special">指令转换</span>：硬件或软件转换</li>
+    <li><span class="special">仿真执行</span>：通过仿真器执行旧格式指令</li>
+</ul>
+
+<h2>
+    现代指令格式趋势
+</h2>
+<h3>
+    1. RISC-V格式
+</h3>
+<ul>
+    <li><span class="special">简洁性</span>：少量基本指令格式</li>
+    <li><span class="special">模块化</span>：可选扩展指令集</li>
+    <li><span class="special">可扩展性</span>：支持自定义指令</li>
+</ul>
+
+<h3>
+    2. VLIW格式
+</h3>
+<ul>
+    <li><span class="special">并行性</span>：显式并行指令</li>
+    <li><span class="special">打包</span>：多条指令打包执行</li>
+    <li><span class="special">编译器优化</span>：编译器负责并行调度</li>
+</ul>
+
+<h3>
+    3. 向量指令格式
+</h3>
+<ul>
+    <li><span class="special">SIMD格式</span>：单指令多数据</li>
+    <li><span class="special">向量长度</span>：可变长度向量支持</li>
+    <li><span class="special">掩码操作</span>：条件执行支持</li>
+</ul>

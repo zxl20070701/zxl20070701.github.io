@@ -1,0 +1,109 @@
+<header>
+    vLLM安装指南
+</header>
+<h2>
+    简介
+</h2>
+<p>
+    vLLM是一个高效的大语言模型推理和服务引擎，专为快速、易用和高效的LLM服务而设计。本指南将帮助你在不同环境中安装vLLM。
+</p>
+<h2>
+    系统要求
+</h2>
+<p>
+    vLLM需要以下系统环境：
+</p>
+<ul>
+    <li>Python 3.8 或更高版本</li>
+    <li>CUDA 11.8 或更高版本（GPU环境）</li>
+    <li>NVIDIA GPU（计算能力7.0或更高）</li>
+</ul>
+<h2>
+    安装方式
+</h2>
+<h3>
+    使用pip安装（推荐）
+</h3>
+<p>
+    最简单的安装方式是使用pip：
+</p>
+<pre tag="bash">
+pip install vllm
+</pre>
+<div class="tips">
+    如果你使用的是较新的CUDA版本，可能需要安装特定版本的vLLM：
+</div>
+<pre tag="bash">
+# 对于CUDA 12.1
+pip install vllm --extra-index-url https://download.pytorch.org/whl/cu121
+
+# 对于CUDA 11.8
+pip install vllm --extra-index-url https://download.pytorch.org/whl/cu118
+</pre>
+<h3>
+    从源码安装
+</h3>
+<p>
+    如果你需要最新的开发版本或想要贡献代码，可以从源码安装：
+</p>
+<pre tag="bash">
+git clone https://github.com/vllm-project/vllm.git
+cd vllm
+pip install -e .
+</pre>
+<h2>
+    验证安装
+</h2>
+<p>
+    安装完成后，可以通过以下方式验证vLLM是否正确安装：
+</p>
+<pre tag="python">
+import vllm
+print(vllm.__version__)
+</pre>
+<p>
+    如果成功输出版本号，说明安装成功。
+</p>
+<h2>
+    环境配置
+</h2>
+<h3>
+    设置CUDA环境
+</h3>
+<p>
+    确保CUDA环境变量正确设置：
+</p>
+<pre tag="bash">
+export CUDA_HOME=/usr/local/cuda
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+</pre>
+<h3>
+    内存优化
+</h3>
+<p>
+    对于大型模型，可能需要调整内存设置：
+</p>
+<pre tag="bash">
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
+</pre>
+<h2>
+    常见问题
+</h2>
+<h3>
+    CUDA版本不匹配
+</h3>
+<p>
+    如果遇到CUDA版本不匹配的问题，可以尝试：
+</p>
+<pre tag="bash">
+pip uninstall torch vllm
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install vllm
+</pre>
+<h3>
+    内存不足错误
+</h3>
+<p>
+    如果遇到内存不足错误，可以尝试减少批处理大小或使用更小的模型。
+</p>

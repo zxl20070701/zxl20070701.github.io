@@ -1,0 +1,285 @@
+<header>
+    调试与测试
+</header>
+<h2>
+    调试Babel插件
+</h2>
+<p>
+    调试Babel插件是开发过程中的重要环节。以下是一些调试技巧和工具：
+</p>
+<h2>
+    使用调试器
+</h2>
+<h3>
+    Node.js调试器
+</h3>
+<p>
+    使用Node.js内置调试器调试插件：
+</p>
+<pre tag="bash">
+node --inspect-brk your-test-file.js
+</pre>
+<p>
+    然后在Chrome浏览器中打开<span class="important">chrome://inspect</span>进行调试。
+</p>
+<h3>
+    VS Code调试
+</h3>
+<p>
+    在VS Code中创建调试配置：
+</p>
+<pre tag="json">
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Babel Plugin",
+      "program": "${workspaceFolder}/test-plugin.js",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
+</pre>
+<h2>
+    日志调试
+</h2>
+<h3>
+    打印AST结构
+</h3>
+<pre tag="javascript">
+module.exports = function(babel) {
+  const { types: t } = babel;
+  
+  return {
+    name: 'debug-plugin',
+    visitor: {
+      FunctionDeclaration(path) {
+        // 打印AST结构
+        console.log('FunctionDeclaration AST:');
+        console.log(JSON.stringify(path.node, null, 2));
+        
+        // 打印路径信息
+        console.log('Path info:', {
+          type: path.type,
+          parentType: path.parent && path.parent.type,
+          scope: path.scope.uid
+        });
+      }
+    }
+  };
+};
+</pre>
+<h3>
+    使用调试工具函数
+</p>
+<pre tag="javascript">
+function debugNode(node, name = 'Node') {
+  console.log(`=== ${name} ===`);
+  console.log('Type:', node.type);
+  console.log('Code:', require('@babel/generator').default(node).code);
+  console.log('AST:', JSON.stringify(node, null, 2));
+  console.log('====================');
+}
+
+// 在插件中使用
+module.exports = function(babel) {
+  return {
+    visitor: {
+      CallExpression(path) {
+        debugNode(path.node, 'CallExpression');
+      }
+    }
+  };
+};
+</pre>
+<h2>
+    AST可视化工具
+</h2>
+<h3>
+    AST Explorer
+</h3>
+<p>
+    <a href="https://astexplorer.net/" target="_blank" class="link">AST Explorer</a> 是一个强大的在线工具，可以实时查看代码的AST结构：
+</p>
+<ul>
+    <li>支持多种解析器（包括@babel/parser）</li>
+    <li>实时显示AST结构</li>
+    <li>支持自定义插件开发</li>
+    <li>可以分享和保存代码片段</li>
+</ul>
+<h3>
+    本地AST可视化
+</h3>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const fs = require('fs');
+
+function visualizeAST(code, outputFile = 'ast.json') {
+  const ast = parser.parse(code);
+  fs.writeFileSync(outputFile, JSON.stringify(ast, null, 2));
+  console.log(`AST已保存到 ${outputFile}`);
+}
+
+// 使用示例
+const code = 'const x = 1 + 2;';
+visualizeAST(code);
+</pre>
+<h2>
+    插件测试
+</h2>
+<h3>
+    单元测试
+</h3>
+<p>
+    使用Jest进行单元测试：
+</p>
+<pre tag="javascript">
+const babel = require('@babel/core');
+const plugin = require('../src/my-plugin');
+
+function transform(code, options = {}) {
+  return babel.transformSync(code, {
+    plugins: [[plugin, options]],
+    parserOpts: { plugins: ['jsx'] }
+  }).code;
+}
+
+describe('My Plugin', () => {
+  test('should transform variable declarations', () => {
+    const input = 'let x = 1;';
+    const output = 'const x = 1;';
+    expect(transform(input)).toBe(output);
+  });
+  
+  test('should handle JSX', () => {
+    const input = '<div>Hello</div>;';
+    const output = '<div>Hello</div>;';
+    expect(transform(input)).toBe(output);
+  });
+});
+</pre>
+<h3>
+    测试工具
+</h3>
+<p>
+    使用<span class="important">@babel/helper-plugin-test-runner</span>进行测试：
+</p>
+<pre tag="javascript">
+// test/index.js
+const runner = require('@babel/helper-plugin-test-runner').default;
+
+runner(__dirname);
+</pre>
+<pre tag="javascript">
+// test/fixtures/example/input.js
+let x = 1;
+
+// test/fixtures/example/output.js
+const x = 1;
+</pre>
+<pre tag="javascript">
+// test/fixtures/example/options.json
+{
+  "plugins": ["../../src/index.js"]
+}
+</pre>
+<h2>
+    性能测试
+</h2>
+<h3>
+    基准测试
+</h3>
+<pre tag="javascript">
+const Benchmark = require('benchmark');
+const babel = require('@babel/core');
+const plugin = require('./my-plugin');
+
+const suite = new Benchmark.Suite();
+
+const code = `
+  function test() {
+    let x = 1;
+    let y = 2;
+    let z = 3;
+    return x + y + z;
+  }
+`;
+
+suite
+  .add('Transform with plugin', () => {
+    babel.transformSync(code, {
+      plugins: [plugin]
+    });
+  })
+  .add('Transform without plugin', () => {
+    babel.transformSync(code);
+  })
+  .on('cycle', (event) => {
+    console.log(String(event.target));
+  })
+  .on('complete', function() {
+    console.log('最快的是 ' + this.filter('fastest').map('name'));
+  })
+  .run();
+</pre>
+<h2>
+    错误处理与调试
+</h2>
+<h3>
+    错误捕获
+</h3>
+<pre tag="javascript">
+module.exports = function(babel) {
+  return {
+    visitor: {
+      CallExpression(path) {
+        try {
+          // 可能出错的代码
+          const result = riskyOperation(path.node);
+          path.replaceWith(result);
+        } catch (error) {
+          console.error('插件错误:', error.message);
+          console.error('错误位置:', path.node.loc);
+          
+          // 可以选择跳过或抛出错误
+          // throw error;
+        }
+      }
+    }
+  };
+};
+</pre>
+<h3>
+    错误报告
+</h3>
+<pre tag="javascript">
+function createErrorMessage(path, message) {
+  const loc = path.node.loc;
+  return `${message} at ${loc.start.line}:${loc.start.column}`;
+}
+
+module.exports = function(babel) {
+  return {
+    visitor: {
+      Identifier(path) {
+        if (path.node.name === 'eval') {
+          throw new Error(createErrorMessage(path, '不允许使用eval'));
+        }
+      }
+    }
+  };
+};
+</pre>
+<h2>
+    调试技巧总结
+</h2>
+<ul>
+    <li>使用console.log打印关键信息</li>
+    <li>使用调试器逐步执行代码</li>
+    <li>利用AST Explorer查看AST结构</li>
+    <li>编写全面的单元测试</li>
+    <li>使用性能分析工具检测瓶颈</li>
+    <li>合理使用错误处理和日志记录</li>
+</ul>

@@ -1,0 +1,178 @@
+<header>
+    图像处理
+</header>
+<h2>
+    图像基础操作
+</h2>
+<p>
+    Canvas不仅可以绘制图形，还可以对图像进行各种处理操作：
+</p>
+
+<h3>
+    加载和绘制图像
+</h3>
+<pre tag="javascript">
+const img = new Image();
+img.onload = function() {
+    // 直接绘制
+    ctx.drawImage(img, x, y);
+    
+    // 缩放绘制
+    ctx.drawImage(img, x, y, width, height);
+    
+    // 裁剪绘制
+    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+};
+img.src = 'image.jpg';
+</pre>
+
+<h3>
+    获取图像数据
+</h3>
+<pre tag="javascript">
+// 获取指定区域的像素数据
+const imageData = ctx.getImageData(x, y, width, height);
+// imageData.data 是一个包含RGBA值的Uint8ClampedArray
+// 每4个值代表一个像素的红、绿、蓝、透明度
+</pre>
+
+<h3>
+    设置图像数据
+</h3>
+<pre tag="javascript">
+// 修改像素数据
+for (let i = 0; i < imageData.data.length; i += 4) {
+    // 将每个像素变为灰度
+    const r = imageData.data[i];
+    const g = imageData.data[i + 1];
+    const b = imageData.data[i + 2];
+    const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+    
+    imageData.data[i] = gray;     // 红色
+    imageData.data[i + 1] = gray; // 绿色
+    imageData.data[i + 2] = gray; // 蓝色
+    // imageData.data[i + 3] 保持不变，这是alpha值
+}
+
+// 将修改后的数据放回Canvas
+ctx.putImageData(imageData, x, y);
+</pre>
+
+<h2>
+    常见图像处理效果
+</h2>
+
+<h3>
+    灰度效果
+</h3>
+<pre tag="javascript">
+function grayscale(imageData) {
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+        data[i] = gray;
+        data[i + 1] = gray;
+        data[i + 2] = gray;
+    }
+    return imageData;
+}
+</pre>
+
+<h3>
+    反色效果
+</h3>
+<pre tag="javascript">
+function invert(imageData) {
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] = 255 - data[i];     // 红色
+        data[i + 1] = 255 - data[i + 1]; // 绿色
+        data[i + 2] = 255 - data[i + 2]; // 蓝色
+    }
+    return imageData;
+}
+</pre>
+
+<h3>
+    亮度调整
+</h3>
+<pre tag="javascript">
+function brightness(imageData, value) {
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] += value;     // 红色
+        data[i + 1] += value; // 绿色
+        data[i + 2] += value; // 蓝色
+    }
+    return imageData;
+}
+</pre>
+
+<h3>
+    模糊效果
+</h3>
+<pre tag="javascript">
+function blur(imageData) {
+    const data = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+    const result = ctx.createImageData(width, height);
+    
+    for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) {
+            let r = 0, g = 0, b = 0;
+            
+            // 3x3 平均模糊
+            for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                    const idx = ((y + dy) * width + (x + dx)) * 4;
+                    r += data[idx];
+                    g += data[idx + 1];
+                    b += data[idx + 2];
+                }
+            }
+            
+            const idx = (y * width + x) * 4;
+            result.data[idx] = r / 9;
+            result.data[idx + 1] = g / 9;
+            result.data[idx + 2] = b / 9;
+            result.data[idx + 3] = data[idx + 3];
+        }
+    }
+    
+    return result;
+}
+</pre>
+
+<h2>
+    图像合成
+</h2>
+<pre tag="javascript">
+// 绘制背景图像
+ctx.drawImage(backgroundImage, 0, 0);
+
+// 设置合成模式
+ctx.globalCompositeOperation = 'source-over'; // 默认
+
+// 绘制前景图像
+ctx.drawImage(foregroundImage, x, y);
+</pre>
+
+<div class="tips">
+    常用的合成模式包括：source-over, source-in, source-out, source-atop, destination-over, destination-in, destination-out, destination-atop, lighter, copy, xor 等。
+</div>
+
+<h2>
+    图像保存
+</h2>
+<pre tag="javascript">
+// 将Canvas内容转换为Data URL
+const dataURL = canvas.toDataURL('image/png');
+
+// 或者指定质量（仅对image/jpeg有效）
+const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+
+// 可以将其设置为img元素的src
+const img = new Image();
+img.src = dataURL;
+</pre>

@@ -1,0 +1,182 @@
+<header>
+    类的定义
+</header>
+<p>
+    Kotlin 中使用 <span class="warn">class</span> 关键字定义类。一个类默认是 <span class="special">final</span>（不可继承），如果希望被继承，需要用 <span class="warn">open</span> 修饰。Kotlin 类可以拥有主构造函数、多个次构造函数、属性、初始化块等，比传统 Java 更灵活。
+</p>
+<h2>
+    基本语法
+</h2>
+<pre tag="kotlin">
+class 类名(主构造参数) {
+    // 属性
+    // 初始化块
+    // 次构造函数
+    // 函数
+}
+</pre>
+<h3>示例</h3>
+<pre tag="kotlin">
+// 1. 最简单的类
+class Empty
+
+// 2. 带主构造函数的类
+class User(val name: String, var age: Int) {
+    // 自定义方法
+    fun introduce(): String = "我叫 $name，今年 $age 岁"
+}
+
+val u = User("Alice", 20)
+println(u.introduce())
+
+// 3. 主构造函数配合 init 块
+class Person(name: String, age: Int) {
+    val name: String
+    var age: Int
+
+    init {
+        // 在实例化时执行，常用于校验参数
+        require(name.isNotEmpty()) { "姓名不能为空" }
+        require(age >= 0) { "年龄不能为负" }
+        this.name = name
+        this.age = age
+    }
+
+    fun grow() {
+        age++
+    }
+}
+
+val p = Person("Bob", 18)
+println("${p.name} 的初始年龄是 ${p.age}")
+p.grow()
+println("一年后 ${p.name} 的年龄是 ${p.age}")
+</pre>
+<h2>
+    主构造函数
+</h2>
+<p>
+    主构造函数紧跟在类名后面，是最常用的初始化入口。
+</p>
+<pre tag="kotlin">
+// val / var 让参数同时成为类的属性
+class Book(val title: String, val author: String, val price: Double = 0.0)
+
+// 没有 val/var：仅作为构造参数，不会成为属性
+class Student(name: String, id: String) {
+    val displayName: String = name
+    val studentId: String = id
+}
+
+// 默认参数
+val b1 = Book("Kotlin 入门", "JetBrains", 49.9)
+val b2 = Book("Kotlin 进阶", "JetBrains")         // 使用默认价格
+val b3 = Book(price = 30.0, title = "Cookbook", author = "Z") // 命名参数
+</pre>
+<h2>
+    次构造函数
+</h2>
+<p>
+    一个类可以有多个次构造函数，每个都必须直接或间接地委托给主构造函数。
+</p>
+<pre tag="kotlin">
+class User(val name: String) {
+    var age: Int = 0
+    var email: String = ""
+
+    // 次构造函数：必须调用主构造函数
+    constructor(name: String, age: Int) : this(name) {
+        this.age = age
+    }
+
+    constructor(name: String, age: Int, email: String) : this(name, age) {
+        this.email = email
+    }
+}
+
+val u = User("Alice", 20, "alice@example.com")
+println("${u.name}, ${u.age}, ${u.email}")
+</pre>
+<h2>
+    属性 getter / setter
+</h2>
+<pre tag="kotlin">
+class Rectangle(val width: Int, val height: Int) {
+    // 自定义只读属性
+    val area: Int
+        get() = width * height
+
+    // 自定义可读可写属性
+    var isSquare: Boolean
+        get() = width == height
+        set(value) {
+            // 也可以在 set 中加逻辑
+            println("设置 isSquare 为 $value")
+        }
+}
+
+val r = Rectangle(3, 5)
+println(r.area)        // 15
+println(r.isSquare)    // false
+r.isSquare = true     // 触发 setter
+</pre>
+<h2>
+    可见性修饰符
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>修饰符</th>
+            <th>作用范围</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>public</td>
+            <td>默认。可见性最大。</td>
+        </tr>
+        <tr>
+            <td>private</td>
+            <td>仅当前文件可见（顶层声明），或当前类可见（成员）。</td>
+        </tr>
+        <tr>
+            <td>internal</td>
+            <td>同一模块可见。</td>
+        </tr>
+        <tr>
+            <td>protected</td>
+            <td>类内及子类可见（不能用于顶层声明）。</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+class Demo {
+    public val a = 1            // 公开
+    private val b = 2           // 仅本类可见
+    internal val c = 3          // 同模块可见
+    protected fun hello() {}    // 子类可见
+}
+</pre>
+<h2>
+    数据类（data class）
+</h2>
+<p>
+    数据类会自动生成 <span class="special">equals</span>、<span class="special">hashCode</span>、<span class="special">toString</span>、<span class="special">componentN</span>、<span class="special">copy</span> 等方法，非常适合作为数据模型。
+</p>
+<pre tag="kotlin">
+data class Point(val x: Int, val y: Int)
+
+val p1 = Point(1, 2)
+val p2 = p1.copy(y = 20)
+println(p1)        // Point(x=1, y=2)
+println(p2)        // Point(x=1, y=20)
+println(p1 == Point(1, 2)) // true
+</pre>
+<h2>
+    命名规范
+</h2>
+<ul>
+    <li>类名、对象名使用大驼峰（PascalCase），例如 <span class="special">UserService</span>。</li>
+    <li>属性、函数、参数使用小驼峰（lowerCamelCase）。</li>
+    <li>一个文件一般只放一个公开类，文件名与类名保持一致。</li>
+</ul>

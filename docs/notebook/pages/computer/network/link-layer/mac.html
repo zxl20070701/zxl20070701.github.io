@@ -1,0 +1,318 @@
+<header>
+    MAC
+</header>
+<p>
+    MAC（Media Access Control）地址是网络设备的物理地址，用于在局域网中唯一标识网络接口。MAC协议则负责控制网络设备如何访问共享传输介质，是数据链路层的重要组成部分。理解MAC地址和协议对于网络配置、故障排除和安全管理至关重要。
+</p>
+<h2>
+    MAC地址结构
+</h2>
+<h3>
+    1. MAC地址格式
+</h3>
+<p>
+    MAC地址是一个48位（6字节）的二进制数，通常以十六进制表示。
+</p>
+<ul>
+    <li><span class="special">标准格式</span>：XX-XX-XX-XX-XX-XX或XX:XX:XX:XX:XX:XX</li>
+    <li><span class="special">示例</span>：00-1A-2B-3C-4D-5E</li>
+    <li><span class="special">字节序</span>：最高有效字节在前（大端序）</li>
+</ul>
+<h3>
+    2. MAC地址组成
+</h3>
+<ul>
+    <li><span class="special">OUI (Organizationally Unique Identifier)</span>：前24位，由IEEE分配给厂商</li>
+    <li><span class="special">NIC Specific</span>：后24位，由厂商分配给具体设备</li>
+    <li><span class="special">示例</span>：00-1A-2B-3C-4D-5E中，00-1A-2B是OUI，3C-4D-5E是设备标识</li>
+</ul>
+<h3>
+    3. MAC地址类型
+</h3>
+<h4>
+    3.1 单播地址 (Unicast Address)
+</h4>
+<ul>
+    <li><span class="special">特征</span>：第一个字节的最低位为0</li>
+    <li><span class="special">用途</span>：标识单个网络接口</li>
+    <li><span class="special">示例</span>：00-1A-2B-3C-4D-5E（00的二进制为00000000，最低位为0）</li>
+</ul>
+<h4>
+    3.2 多播地址 (Multicast Address)
+</h4>
+<ul>
+    <li><span class="special">特征</span>：第一个字节的最低位为1</li>
+    <li><span class="special">用途</span>：标识一组网络接口</li>
+    <li><span class="special">示例</span>：01-00-5E-00-00-01（01的二进制为00000001，最低位为1）</li>
+    <li><span class="special">IPv4多播映射</span>：IPv4多播地址(224.0.0.0-239.255.255.255)映射到MAC地址01-00-5E-00-00-00到01-00-5E-7F-FF-FF</li>
+</ul>
+<h4>
+    3.3 广播地址 (Broadcast Address)
+</h4>
+<ul>
+    <li><span class="special">格式</span>：FF-FF-FF-FF-FF-FF</li>
+    <li><span class="special">用途</span>：发送到局域网内所有设备</li>
+    <li><span class="special">应用场景</span>：ARP请求、DHCP发现等</li>
+</ul>
+<h4>
+    3.4 特殊地址类型
+</h4>
+<ul>
+    <li><span class="special">本地管理地址</span>：第二个字节的次低位为1，用于本地管理</li>
+    <li><span class="special">全局唯一地址</span>：第二个字节的次低位为0，由IEEE分配</li>
+    <li><span class="special">示例</span>：02-00-00-00-00-01（本地管理单播地址）</li>
+</ul>
+<h2>
+    MAC地址分配与管理
+</h2>
+<h3>
+    1. IEEE注册机构
+</h3>
+<ul>
+    <li><span class="special">IEEE RA</span>：IEEE Registration Authority负责OUI分配</li>
+    <li><span class="special">申请流程</span>：厂商向IEEE申请OUI，支付费用获得24位OUI</li>
+    <li><span class="special">OUI数量</span>：理论上可分配2²⁴=16,777,216个OUI</li>
+</ul>
+<h3>
+    2. 地址分配策略
+</h3>
+<ul>
+    <li><span class="special">顺序分配</span>：按生产顺序分配连续的MAC地址</li>
+    <li><span class="special">随机分配</span>：随机生成MAC地址，避免冲突</li>
+    <li><span class="special">虚拟化环境</span>：虚拟机MAC地址通常使用本地管理地址</li>
+</ul>
+<h3>
+    3. MAC地址表
+</h3>
+<ul>
+    <li><span class="special">交换机MAC表</span>：存储MAC地址与端口的映射关系</li>
+    <li><span class="special">老化机制</span>：动态学习的MAC地址有老化时间(默认300秒)</li>
+    <li><span class="special">静态MAC</span>：管理员手动配置的永久MAC地址映射</li>
+</ul>
+<h2>
+    MAC协议原理
+</h2>
+<h3>
+    1. 介质访问控制分类
+</h3>
+<h4>
+    1.1 基于竞争的协议
+</h4>
+<ul>
+    <li><span class="special">特点</span>：多个站点竞争共享介质</li>
+    <li><span class="special">优点</span>：简单灵活，适合突发流量</li>
+    <li><span class="special">缺点</span>：存在冲突，效率随负载增加而下降</li>
+    <li><span class="special">代表协议</span>：CSMA/CD、CSMA/CA</li>
+</ul>
+<h4>
+    1.2 无竞争协议
+</h4>
+<ul>
+    <li><span class="special">特点</span>：通过调度算法避免冲突</li>
+    <li><span class="special">优点</span>：确定性访问，无冲突</li>
+    <li><span class="special">缺点</span>：复杂度高，需要中央控制</li>
+    <li><span class="special">代表协议</span>：令牌传递、轮询</li>
+</ul>
+<h4>
+    1.3 有限竞争协议
+</h4>
+<ul>
+    <li><span class="special">特点</span>：结合竞争和无竞争的优点</li>
+    <li><span class="special">工作机制</span>：低负载时使用竞争协议，高负载时转为无竞争</li>
+    <li><span class="special">代表协议</span>：自适应树协议</li>
+</ul>
+<h3>
+    2. CSMA/CD协议详解
+</h3>
+<h4>
+    2.1 工作原理
+</h4>
+<ul>
+    <li><span class="special">载波监听</span>：发送前检测信道是否空闲</li>
+    <li><span class="special">冲突检测</span>：发送过程中检测是否发生冲突</li>
+    <li><span class="special">冲突处理</span>：检测到冲突后发送干扰信号并停止发送</li>
+    <li><span class="special">随机退避</span>：等待随机时间后重试</li>
+</ul>
+<h4>
+    2.2 二进制指数退避算法
+</h4>
+<ul>
+    <li><span class="special">基本思想</span>：冲突次数越多，等待时间越长</li>
+    <li><span class="special">计算公式</span>：退避时间 = 随机数 × 时隙时间</li>
+    <li><span class="special">时隙时间</span>：512位时间(10Mbps以太网为51.2μs)</li>
+    <li><span class="special">最大重传次数</span>：通常为16次，超过后丢弃帧</li>
+</ul>
+<h4>
+    2.3 性能分析
+</h4>
+<ul>
+    <li><span class="special">吞吐量公式</span>：S = G × e^(-2G)，其中G为网络负载</li>
+    <li><span class="special">最大吞吐量</span>：当G=0.5时，S_max ≈ 0.184(18.4%)</li>
+    <li><span class="special">影响因素</span>：网络负载、电缆长度、帧长度</li>
+</ul>
+<h3>
+    3. CSMA/CA协议详解
+</h3>
+<h4>
+    3.1 无线环境特点
+</h4>
+<ul>
+    <li><span class="special">隐藏节点问题</span>：两个发送端无法听到对方，但接收端能同时收到</li>
+    <li><span class="special">暴露节点问题</span>：发送端能听到其他通信，但接收端不会受到影响</li>
+    <li><span class="special">信号衰减</span>：无线信号强度随距离增加而减弱</li>
+</ul>
+<h4>
+    3.2 CSMA/CA机制
+</h4>
+<ul>
+    <li><span class="special">帧间隔</span>：DIFS(分布式协调IFS)、SIFS(短IFS)、PIFS(点协调IFS)</li>
+    <li><span class="special">虚拟载波监听</span>：通过RTS/CTS帧预约信道</li>
+    <li><span class="special">网络分配向量</span>：NAV指示信道将被占用的时间</li>
+    <li><span class="special">退避算法</span>：二进制指数退避，但时隙时间较短</li>
+</ul>
+<h4>
+    3.3 RTS/CTS握手过程
+</h4>
+<ol>
+    <li><span class="special">发送端</span>：发送RTS(Request to Send)帧，包含预计传输时间</li>
+    <li><span class="special">接收端</span>：回复CTS(Clear to Send)帧，确认信道预约</li>
+    <li><span class="special">其他站点</span>：设置NAV，在指定时间内不发送数据</li>
+    <li><span class="special">数据传输</span>：发送端收到CTS后开始数据传输</li>
+</ol>
+<h2>
+    以太网MAC子层
+</h2>
+<h3>
+    1. 以太网帧格式
+</h3>
+<ul>
+    <li><span class="special">前导码</span>：7字节10101010模式，用于时钟同步</li>
+    <li><span class="special">帧开始定界符</span>：1字节10101011，标识帧开始</li>
+    <li><span class="special">MAC地址</span>：6字节目的MAC和6字节源MAC</li>
+    <li><span class="special">类型/长度</span>：2字节，标识上层协议或数据长度</li>
+    <li><span class="special">数据</span>：46-1500字节有效载荷</li>
+    <li><span class="special">FCS</span>：4字节CRC校验码</li>
+</ul>
+<h3>
+    2. MAC地址解析
+</h3>
+<h4>
+    2.1 ARP协议
+</h4>
+<ul>
+    <li><span class="special">功能</span>：将IP地址解析为MAC地址</li>
+    <li><span class="special">工作过程</span>：
+        <ol>
+            <li>发送ARP请求广播(目的MAC为FF-FF-FF-FF-FF-FF)</li>
+            <li>目标主机回复ARP响应单播</li>
+            <li>发送方缓存ARP映射关系</li>
+        </ol>
+    </li>
+    <li><span class="special">ARP缓存</span>：存储IP-MAC映射，有老化机制</li>
+</ul>
+<h4>
+    2.2 代理ARP
+</h4>
+<ul>
+    <li><span class="special">功能</span>：路由器代替远端主机响应ARP请求</li>
+    <li><span class="special">应用场景</span>：子网间通信、透明网关</li>
+</ul>
+<h3>
+    3. 以太网交换机工作原理
+</h3>
+<h4>
+    3.1 地址学习
+</h4>
+<ul>
+    <li><span class="special">学习过程</span>：交换机检查帧的源MAC地址，记录与端口的映射</li>
+    <li><span class="special">MAC地址表</span>：存储MAC地址、端口号、VLAN ID和时间戳</li>
+    <li><span class="special">老化机制</span>：动态学习的条目超时删除(默认300秒)</li>
+</ul>
+<h4>
+    3.2 帧转发决策
+</h4>
+<ul>
+    <li><span class="special">已知单播</span>：根据MAC地址表转发到对应端口</li>
+    <li><span class="special">未知单播</span>：泛洪到所有端口(除接收端口)</li>
+    <li><span class="special">广播/多播</span>：泛洪到所有端口(除接收端口)</li>
+</ul>
+<h4>
+    3.3 环路防止
+</h4>
+<ul>
+    <li><span class="special">STP协议</span>：生成树协议防止二层环路</li>
+    <li><span class="special">BPDU</span>：桥协议数据单元，用于STP通信</li>
+    <li><span class="special">根桥选举</span>：选择优先级最低的交换机作为根桥</li>
+</ul>
+<h2>
+    无线局域网MAC
+</h2>
+<h3>
+    1. IEEE 802.11 MAC架构
+</h3>
+<ul>
+    <li><span class="special">分布式协调功能</span>：DCF，基于CSMA/CA</li>
+    <li><span class="special">点协调功能</span>：PCF，可选的集中式协调</li>
+    <li><span class="special">混合协调功能</span>：HCF，QoS支持</li>
+</ul>
+<h3>
+    2. 帧类型
+</h3>
+<h4>
+    2.1 管理帧
+</h4>
+<ul>
+    <li><span class="special">信标帧</span>：AP定期发送，包含网络信息</li>
+    <li><span class="special">关联/解除关联</span>：站点与AP建立/断开连接</li>
+    <li><span class="special">认证帧</span>：身份认证过程</li>
+</ul>
+<h4>
+    2.2 控制帧
+</h4>
+<ul>
+    <li><span class="special">RTS/CTS</span>：信道预约</li>
+    <li><span class="special">ACK</span>：数据帧确认</li>
+    <li><span class="special">PS-Poll</span>：省电模式轮询</li>
+</ul>
+<h4>
+    2.3 数据帧
+</h4>
+<ul>
+    <li><span class="special">数据</span>：承载上层数据</li>
+    <li><span class="special">空帧</span>：用于功率管理</li>
+</ul>
+<h3>
+    3. 省电机制
+</h3>
+<ul>
+    <li><span class="special">主动模式</span>：持续监听信道</li>
+    <li><span class="special">省电模式</span>：定期唤醒监听信标帧</li>
+    <li><span class="special">TIM</span>：传输指示图，指示AP是否有缓存数据</li>
+</ul>
+<h2>
+    MAC安全技术
+</h2>
+<h3>
+    1. MAC地址过滤
+</h3>
+<ul>
+    <li><span class="special">白名单</span>：只允许指定MAC地址的设备接入</li>
+    <li><span class="special">黑名单</span>：禁止指定MAC地址的设备接入</li>
+    <li><span class="special">局限性</span>：MAC地址可伪造，安全性有限</li>
+</ul>
+<h3>
+    2. 端口安全
+</h3>
+<ul>
+    <li><span class="special">静态MAC绑定</span>：将特定MAC绑定到交换机端口</li>
+    <li><span class="special">动态MAC限制</span>：限制端口可学习的MAC地址数量</li>
+    <li><span class="special">违规处理</span>：关闭端口、限制VLAN等</li>
+</ul>
+<h3>
+    3. 802.1X认证
+</h3>
+<ul>
+    <li><span class="special">体系结构</span>：认证者(交换机)、请求者(客户端)、认证服务器(RADIUS)</li>
+    <li><span class="special">认证过程</span>：基于端口的网络访问控制</li>
+    <li><span class="special">优势</span>：用户级认证，支持多种认证方法</li>
+</ul>

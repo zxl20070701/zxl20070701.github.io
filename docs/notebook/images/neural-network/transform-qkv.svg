@@ -1,0 +1,51 @@
+<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px">
+  <defs>
+    <marker id="bArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3498db"></polygon></marker>
+    <marker id="gArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#27ae60"></polygon></marker>
+  </defs>
+  <rect width="700" height="300" fill="#fff"></rect>
+
+  <rect x="20" y="120" width="90" height="40" rx="6" fill="#f5f5f5" stroke="#3498db" stroke-opacity=".6"></rect>
+  <text x="65" y="145" text-anchor="middle" fill="#2c3e50" font-size="13" font-family="sans-serif">词向量 x</text>
+
+  <line x1="110" y1="140" x2="190" y2="80" stroke="#3498db" stroke-opacity=".5" stroke-width="1.5" marker-end="url(#bArr)"></line>
+  <line x1="110" y1="140" x2="190" y2="140" stroke="#3498db" stroke-opacity=".5" stroke-width="1.5" marker-end="url(#bArr)"></line>
+  <line x1="110" y1="140" x2="190" y2="200" stroke="#3498db" stroke-opacity=".5" stroke-width="1.5" marker-end="url(#bArr)"></line>
+
+  <text x="138" y="100" fill="#999" font-size="11" font-family="monospace">xWq</text>
+  <text x="138" y="135" fill="#999" font-size="11" font-family="monospace">xWk</text>
+  <text x="138" y="195" fill="#999" font-size="11" font-family="monospace">xWv</text>
+
+  <rect x="200" y="58" width="80" height="40" rx="6" fill="#eaf2fd" stroke="#3498db"></rect>
+  <text x="240" y="83" text-anchor="middle" fill="#3498db" font-size="14" font-weight="700" font-family="monospace">Q</text>
+
+  <rect x="200" y="118" width="80" height="40" rx="6" fill="#f3eafc" stroke="#8e44ad"></rect>
+  <text x="240" y="143" text-anchor="middle" fill="#8e44ad" font-size="14" font-weight="700" font-family="monospace">K</text>
+
+  <rect x="200" y="178" width="80" height="40" rx="6" fill="#e8f5e9" stroke="#27ae60"></rect>
+  <text x="240" y="203" text-anchor="middle" fill="#27ae60" font-size="14" font-weight="700" font-family="monospace">V</text>
+
+  <text x="200" y="50" fill="#3498db" font-size="11" font-family="sans-serif">Query（我要查什么？）</text>
+  <text x="200" y="112" fill="#8e44ad" font-size="11" font-family="sans-serif">Key（我能匹配什么？）</text>
+  <text x="200" y="172" fill="#27ae60" font-size="11" font-family="sans-serif">Value（我提供什么信息？）</text>
+
+  <line x1="280" y1="78" x2="340" y2="130" stroke="#3498db" stroke-opacity=".5" stroke-width="1.5"></line>
+  <line x1="280" y1="138" x2="340" y2="130" stroke="#8e44ad" stroke-opacity=".5" stroke-width="1.5"></line>
+  <rect x="340" y="110" width="100" height="40" rx="6" fill="#fdebd0" stroke="#e67e22" stroke-opacity=".7"></rect>
+  <text x="390" y="127" text-anchor="middle" fill="#e67e22" font-size="11" font-family="sans-serif">Q·K^T / sqrt(dk)</text>
+  <text x="390" y="143" text-anchor="middle" fill="#e67e22" font-size="11" font-family="sans-serif">（相似度得分）</text>
+
+  <line x1="440" y1="130" x2="490" y2="130" stroke="#3498db" stroke-opacity=".5" stroke-width="1.5" marker-end="url(#bArr)"></line>
+  <rect x="498" y="110" width="80" height="40" rx="6" fill="#f0f6ff" stroke="#3498db" stroke-opacity=".6"></rect>
+  <text x="538" y="133" text-anchor="middle" fill="#3498db" font-size="12" font-family="monospace">softmax</text>
+
+  <line x1="280" y1="198" x2="538" y2="158" stroke="#27ae60" stroke-opacity=".5" stroke-width="1.5"></line>
+  <text x="430" y="190" fill="#27ae60" font-size="11" font-family="sans-serif">x V</text>
+
+  <line x1="578" y1="130" x2="628" y2="130" stroke="#27ae60" stroke-opacity=".6" stroke-width="1.5" marker-end="url(#gArr)"></line>
+  <rect x="636" y="108" width="50" height="44" rx="6" fill="#e8f5e9" stroke="#27ae60"></rect>
+  <text x="661" y="128" text-anchor="middle" fill="#27ae60" font-size="12" font-family="sans-serif">输出</text>
+  <text x="661" y="145" text-anchor="middle" fill="#27ae60" font-size="11" font-family="monospace">Attn</text>
+
+  <text x="350" y="265" text-anchor="middle" fill="#999" font-size="12" font-family="sans-serif">数学公式：Attention(Q,K,V) = softmax(QK^T/sqrt(dk))·V</text>
+</svg>

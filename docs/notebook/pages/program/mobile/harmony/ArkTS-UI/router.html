@@ -1,0 +1,23 @@
+<header>
+    @ohos.router (页面路由)
+</header>
+<p>
+    通过不同的url访问不同的页面，包括跳转到应用内的指定页面、同应用内的某个页面替换当前页面、返回上一页面或指定的页面等。
+</p>
+<pre tag="javascript">
+    import { router } from '@kit.ArkUI';
+</pre>
+<h2>
+    pushUrl
+</h2>
+<p>
+    跳转到应用内的指定页面。
+</p>
+<pre tag="javascript">
+router.pushUrl({
+    url: string,
+    params:{}
+}).then(()=>{
+    // todo
+});
+</pre>

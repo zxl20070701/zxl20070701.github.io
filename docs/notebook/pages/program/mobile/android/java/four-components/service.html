@@ -1,0 +1,60 @@
+<header>
+    Service
+</header>
+<p>
+    Service 用于在后台执行长时间运行的组件，没有用户界面。
+</p>
+<h2>
+    分类
+</h2>
+<ul>
+    <li>
+        <span class="important">Started Service</span>
+        ：通过 startService() 启动，独立运行，调用 stopSelf() 或 stopService() 停止。
+    </li>
+    <li>
+        <span class="important">Bound Service</span>
+        ：通过 bindService() 绑定，提供客户端-服务端交互能力。
+    </li>
+</ul>
+<h2>
+    启动服务
+</h2>
+<pre tag="java">
+Intent intent = new Intent(this, MyService.class);
+startService(intent);
+</pre>
+<h2>
+    自定义 Service
+</h2>
+<pre tag="java">
+public class MyService extends Service {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // 处理业务逻辑
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+}
+</pre>
+<h2>
+    清单文件注册
+</h2>
+<pre tag="xml">
+&lt;service android:name=".MyService" /&gt;
+</pre>

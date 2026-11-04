@@ -1,0 +1,385 @@
+<header>
+    画笔与绘画
+</header>
+<p>
+    PS 的绘画能力集中在画笔设置上。<span class="important">一个笔刷的行为由「笔尖 + 动态（Dynamics）」两部分决定</span>：笔尖决定形状，动态决定它如何随笔画变化。理解了这两层，其余工具都是变体。
+</p>
+<h2>
+    绘画工具总览
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>工具</th>
+            <th>快捷键</th>
+            <th>特性</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="important">画笔</span></td>
+            <td>B</td>
+            <td>最通用，<span class="important">所有动态和笔尖都支持</span>，可画可涂可仿修</td>
+        </tr>
+        <tr>
+            <td>铅笔</td>
+            <td>无</td>
+            <td>硬边，<span class="special">不抗锯齿</span>，画出的每个像素都是实色，适合像素画</td>
+        </tr>
+        <tr>
+            <td>铅笔的「像素画模式」</td>
+            <td>—</td>
+            <td>像素级绘画，禁用抗锯齿和动态</td>
+        </tr>
+        <tr>
+            <td>橡皮擦</td>
+            <td>E</td>
+            <td>Shift+E 在橡皮擦和背景色橡皮擦间切换</td>
+        </tr>
+        <tr>
+            <td>背景色橡皮擦</td>
+            <td>Shift+E</td>
+            <td><span class="important">只擦到同色区域</span>，保护不同色像素，用于精细抠图</td>
+        </tr>
+        <tr>
+            <td>渐变</td>
+            <td>Shift+G</td>
+            <td>Shift+G 在渐变和油漆桶间切换</td>
+        </tr>
+        <tr>
+            <td>油漆桶</td>
+            <td>Shift+G</td>
+            <td>按颜色填充容差区域</td>
+        </tr>
+        <tr>
+            <td>混合器橡皮擦</td>
+            <td>Shift+E 循环</td>
+            <td>擦除时把底层颜色带上来</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">Shift+单击工具图标循环切换同组工具</span>是 PS 的核心交互（详见《界面与快捷键》）。Shift+E 循环出三种橡皮擦，Shift+G 循环出渐变和油漆桶。
+</div>
+<h2>
+    画笔设置面板
+</h2>
+<p>
+    打开方式：<span class="special">窗口 → 画笔设置</span>，或<span class="special">双击画笔工具图标</span>。面板分两块，核心是右侧的<span
+        class="important">「Brush」区域</span>：
+</p>
+<h3>
+    基本参数
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数</th>
+            <th>作用</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Brush（画笔）</span></td>
+            <td>选择笔尖形状</td>
+            <td>硬边圆刷、软边圆刷、自定义笔尖</td>
+        </tr>
+        <tr>
+            <td><span class="special">Mode（模式）</span></td>
+            <td>笔刷混合模式</td>
+            <td>与图层混合模式同名，笔刷自己的</td>
+        </tr>
+        <tr>
+            <td><span class="special">Opacity（不透明度）</span></td>
+            <td>笔画最大不透明度</td>
+            <td>选项栏那个是上限，这里是笔刷内部的</td>
+        </tr>
+        <tr>
+            <td><span class="special">Flow（流量）</span></td>
+            <td>单个笔尖印记的不透明度</td>
+            <td><span class="important">与不透明度的区别见下文</span></td>
+        </tr>
+        <tr>
+            <td>Airbrush（喷枪）</td>
+            <td>按住不放会持续出色</td>
+            <td>喷枪效果，不勾选就是单次笔画</td>
+        </tr>
+        <tr>
+            <td><span class="special">Smoothing（平滑）</span></td>
+            <td>笔迹平滑程度</td>
+            <td>默认 10%，<span class="important">压感笔建议调高</span></td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    Opacity 与 Flow 的区别
+</h3>
+<p>
+    这是画笔最容易混淆的一对参数。行为差异：
+</p>
+<ul>
+    <li><span class="special">Opacity 不透明度</span>：控制<span class="important">整个笔画累积后的最终不透明度</span>。低不透明度画一条线，反复涂同一处也不会变浓（因为每次都从原状态计算）</li>
+    <li><span class="special">Flow 流量</span>：控制<span class="important">单个笔尖印记的浓度</span>。低流量画多次，同一处会越来越浓</li>
+</ul>
+<div class="tips">
+    画阴影、烟雾、光效时用<span class="important">低 Flow</span>，反复叠加能得到自然的深浅过渡。画实心线条时把 Flow 拉到 100%，避免边缘出现颗粒感。这是最常用的画笔技巧之一。
+</div>
+<h3>
+    笔尖的硬度
+</h3>
+<p>
+    <span class="special">[</span> / <span class="special">]</span> 调大小，<span class="special">Shift+[</span> / <span class="special">Shift+]</span> 调硬度。
+</p>
+<div class="tips">
+    硬度滑块<span class="important">只对圆刷有效</span>。导入的笔刷（.abr）如果是用图片做的，硬度是烘焙在笔尖图里的，滑块会显示为灰色不可调——这是正常的，不是出问题。
+</div>
+<h2>
+    动态（Brush Dynamics）
+</h2>
+<p>
+    动态让笔刷<span class="important">随笔画过程变化</span>，是让绘画从「生硬」变「自然」的关键。画笔设置面板下方有三大类：
+</p>
+<h3>
+    形状动态（Shape Dynamics）
+</h3>
+<p>
+    控制笔尖的<span class="special">尺寸和形状</span>如何变化。每项都有「Jitter（随机度）」和「Control（控制方式）」两个参数：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>参数</th>
+            <th>作用</th>
+            <th>Control 的选项</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Size Jitter</span></td>
+            <td>笔尖大小的随机变化</td>
+            <td>关闭 / 渐隐 / <span class="important">笔压 / 笔倾斜 / 笔轮</span></td>
+        </tr>
+        <tr>
+            <td>Minimum Diameter</td>
+            <td>笔尖能缩到原直径的百分之几</td>
+            <td>配合 Size Jitter 使用</td>
+        </tr>
+        <tr>
+            <td><span class="special">Angle Jitter</span></td>
+            <td>笔尖角度随机变化</td>
+            <td>额外有<span class="special">初始方向 / 当前方向</span>选项（按笔画走向定向）</td>
+        </tr>
+        <tr>
+            <td>Roundness Jitter</td>
+            <td>笔尖圆度变化（做出扁笔效果）</td>
+            <td>同角度动态</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    颜色动态（Color Dynamics）
+</h3>
+<p>
+    控制<span class="special">画出来的颜色如何变化</span>，主要用于做纹理和自然笔触：
+</p>
+<ul>
+    <li><span class="special">Apply Per Tip（逐笔尖应用）</span>：<span class="important">开启后每一笔尖印记都独立随机变化</span>，关闭则整条笔画一个颜色。这是最关键的一个开关</li>
+    <li><span class="special">Foreground/Background Jitter</span>：前景色与背景色之间的随机混合，让笔画有自然色差</li>
+    <li><span class="special">Hue / Saturation / Brightness Jitter</span>：色相、饱和度、明度的随机偏移</li>
+    <li><span class="special">Purity（纯度）</span>：-100% 到 100%，控制饱和度增减</li>
+</ul>
+<div class="tips">
+    做草地、头发、毛绒质感时，<span class="important">前景/背景 Jitter + 逐笔尖应用</span>是核心组合。前景和背景设成接近的颜色，Jitter 给 30%~50%，出来的笔触会非常自然。
+</div>
+<h3>
+    传输动态（Transfer）
+</h3>
+<p>
+    控制<span class="special">不透明度和流量如何变化</span>：
+</p>
+<ul>
+    <li><span class="special">Opacity Jitter</span>：不透明度随机，但<span class="important">不会超过选项栏设定的值</span></li>
+    <li><span class="special">Flow Jitter</span>：流量随机，同样不超过选项栏的值</li>
+    <li>两者的 Control 都可以选<span class="special">笔压 / 笔倾斜 / 笔轮</span>，让效果跟随数位笔</li>
+</ul>
+<h3>
+    笔压控制需要数位笔
+</h3>
+<div class="tips">
+    动态的 Control 选项里，<span class="special">笔压（Pen Pressure）、笔倾斜（Pen Tilt）、笔轮（Stylus Wheel）、旋转（Rotation）都需要压感数位笔</span>。没有数位笔时选了这些，PS 面板会出现<span
+        class="important">警告图标</span>，且控制无效。用鼠标的话只能选「关闭」或「渐隐」。
+</div>
+<h2>
+    画笔预设
+</h2>
+<h3>
+    选笔预设面板
+</h3>
+<p>
+    <span class="special">双击画笔工具图标</span>打开，会弹出当前笔刷的选笔预设列表：</p>
+<ul>
+    <li>点击预设<span class="important">即时预览</span>效果，满意后回车确认</li>
+    <li>点击面板文件夹图标，可<span class="special">把当前设置存为预设</span></li>
+    <li>列表里 <span class="special">[默认]</span> 开头的项是内置的，末尾的 <span class="special">[当前]</span> 是正在编辑的</li>
+</ul>
+<h3>
+    工具预设
+</h3>
+<p>
+    工具预设保存的<span class="important">不只是笔刷，还包括工具本身和全部参数</span>。用法：
+</p>
+<p>
+    <span class="pip-block">配置好画笔 + 不透明度 + 混合模式</span>
+    →
+    <span class="pip-block">点击选项栏右侧「工具预设」面板的文件夹图标</span>
+    →
+    <span class="pip-block">命名保存</span>
+</p>
+<div class="tips">
+    工具预设比画笔预设更强，因为它能存「用哪个工具 + 什么参数」。比如「云朵笔刷」和「软橡皮」各存一个，一键切换整套配置。
+</div>
+<h2>
+    画笔描边路径
+</h2>
+<p>
+    让笔刷沿路径自动绘制，避免手抖。流程：
+</p>
+<p>
+    <span class="pip-block">用钢笔画一条路径</span>
+    →
+    <span class="pip-block">选好画笔和参数</span>
+    →
+    <span class="pip-block">打开路径面板，选中路径</span>
+    →
+    <span class="pip-block">点路径面板底部的「用画笔描边路径」按钮</span>
+</p>
+<p>
+    这是做<span class="important">手写签名、装饰线条、沿边缘描线</span>的利器。描边会落到新图层上，随时可以再调整。
+</p>
+<h2>
+    性能优化
+</h2>
+<p>
+    Adobe 官方给的画笔性能建议，关键三点：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>设置</th>
+            <th>建议</th>
+            <th>原理</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Smoothing</span></td>
+            <td><span class="important">设为 0%</span></td>
+            <td>默认值 10% 会降低绘画响应速度</td>
+        </tr>
+        <tr>
+            <td><span class="special">Spacing（间隔）</span></td>
+            <td><span class="important">在不破坏效果的前提下尽量调大</span></td>
+            <td>间隔越小，每笔需要计算的笔尖越多。标准圆刷默认 25%</td>
+        </tr>
+        <tr>
+            <td>笔刷复杂度</td>
+            <td><span class="important">用标准圆刷 + 只开形状动态</span></td>
+            <td>复杂笔尖形状和过多设置都会降低响应</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    另外 Adobe 建议绘画或修图时<span class="important">隐藏标尺和辅助元素</span>：
+</p>
+<ul>
+    <li><span class="special">Ctrl+R</span>：隐藏标尺</li>
+    <li><span class="special">Ctrl+H</span>：切换额外内容显示（网格、参考线、选区边界）</li>
+</ul>
+<div class="tips">
+    绘画变卡时按这个顺序排查：<span class="important">关掉多余的动态项 → Spacing 调大 → 隐藏参考线 → 检查 GPU 加速 → 检查内存</span>。动态项开太多是最常见的原因。
+</div>
+<h2>
+    绘画技巧
+</h2>
+<h3>
+    软硬过渡
+</h3>
+<p>
+    画阴影不要用纯黑或纯灰，画两个<span class="important">相近的颜色</span>，用软笔刷低 Flow 反复叠加，得到的过渡远比直接选灰色自然。这是 PS 绘画最核心的原则。
+</p>
+<h3>
+    边缘处理
+</h3>
+<ul>
+    <li>硬边元素（图标、UI）用<span class="special">硬边笔刷 + 100% Flow</span></li>
+    <li>需要柔和边缘时用<span class="special">低硬度笔刷 + 低 Flow 多层叠加</span></li>
+    <li>最后用 <span class="special">Shift+Alt+拖拽</span> 平滑突兀的笔触边缘（配合移动工具的「平滑」选项）</li>
+</ul>
+<h3>
+    像素画
+</h3>
+<p>
+    画笔工具选项栏有个<span class="important">「像素画模式」</span>的图标（也可用铅笔工具）。开启后：
+</p>
+<ul>
+    <li>自动禁用抗锯齿和动态</li>
+    <li>笔刷缓存到 100% 时才显示像素网格</li>
+    <li>适合做像素画或需要精确像素控制的效果</li>
+</ul>
+<h2>
+    橡皮擦的三种形态
+</h2>
+<ul>
+    <li><span class="special">普通橡皮擦</span>：擦成透明</li>
+    <li><span class="special">背景色橡皮擦</span>（Shift+E）：<span class="important">只擦到与背景色接近的像素</span>，保护其它颜色——这是精细抠图最有用的工具</li>
+    <li><span class="special">混合器橡皮擦</span>：擦除时把底下的颜色带上来，保留质感</li>
+</ul>
+<div class="tips">
+    背景色橡皮擦配合<span class="important">容差范围（Tolerance）</span>使用效果最好：把背景色设为要保护的区域颜色，容差调到 30 左右，能干净地只擦掉选中区域的边缘而不伤及其它部分。
+</div>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    画笔「不听话」，感觉有延迟
+</h3>
+<p>
+    三个原因：<span class="important">Smoothing 值太高</span>（调到 0）、动态项开太多、Spacing 太小。另外确认是否开着 GPU 加速（有时反而更卡）。
+</p>
+<h3>
+    笔迹有颗粒感 / 边缘不干净
+</h3>
+<p>
+    <span class="important">Flow 太小导致笔尖印记不叠加均匀</span>。画实心线条时把 Flow 拉到 100%。如果是刻意做效果，那颗粒感来自 Spacing 过大。
+</p>
+<h3>
+    硬度滑块灰的不可调
+</h3>
+<p>
+    正常现象。<span class="important">硬度只对圆刷有效</span>，导入的自定义笔刷（.abr）硬度已烘焙进笔尖图。要改的话得编辑笔尖原图，或者换成圆刷。
+</p>
+<h3>
+    选了笔压动态但没反应
+</h3>
+<p>
+    没有连接压感数位笔。PS 面板会显示警告图标。用鼠标的话 Control 只能选「关闭」或「渐隐」。
+</p>
+<h3>
+    笔尖形状很怪 / 涂抹不开
+</h3>
+<p>
+    检查是不是尺寸相对当前画布分辨率太小。有些笔刷是按特定分辨率制作的，在小画布上会显得过细。检查画布分辨率（图像 → 图像大小）是否和笔刷设计时一致。
+</p>
+<h3>
+    颜色动态前后景区分不清
+</h3>
+<p>
+    前景色和背景色太接近时看不出变化效果。刻意做出对比（比如前景绿、背景红）才能观察清楚 Jitter 的实际范围。
+</p>
+<h3>
+    笔画结束位置有个圆点
+</h3>
+<p>
+    笔尖印记的叠加结果，起笔和收笔处流量不同导致。解决：把 Flow 调高，或用<span class="important">「已存储的画笔路径」功能</span>预先设定起收笔的流量渐变（形状动态里勾「渐隐」并设定起点/终点直径）。
+</p>

@@ -1,0 +1,85 @@
+<header>
+    数据准备与 tf.data
+</header>
+
+<p>
+    tf.data 用来构建高效的数据流水线，把读取、清洗、打乱、batch、预取等步骤串起来。
+</p>
+
+<h2>
+    从 Tensor 创建 Dataset
+</h2>
+
+<pre tag="python">
+import tensorflow as tf
+
+x = tf.random.normal((1000, 10))
+y = tf.random.uniform((1000,), maxval=2, dtype=tf.int32)
+
+ds = tf.data.Dataset.from_tensor_slices((x, y))
+ds = ds.shuffle(1000).batch(32).prefetch(tf.data.AUTOTUNE)
+</pre>
+
+<h2>
+    用 Dataset 训练
+</h2>
+
+<pre tag="python">
+model.fit(ds, epochs=10)
+</pre>
+
+<h2>
+    map 数据预处理
+</h2>
+
+<pre tag="python">
+def preprocess(image, label):
+    image = tf.cast(image, tf.float32) / 255.0
+    return image, label
+
+train_ds = train_ds.map(
+    preprocess,
+    num_parallel_calls=tf.data.AUTOTUNE
+)
+</pre>
+
+<h2>
+    常用链式操作
+</h2>
+
+<pre tag="python">
+train_ds = (
+    train_ds
+    .shuffle(10000)
+    .map(preprocess, num_parallel_calls=tf.data.AUTOTUNE)
+    .batch(64)
+    .prefetch(tf.data.AUTOTUNE)
+)
+</pre>
+
+<h2>
+    训练集与验证集</h2>
+
+<p>
+    小数据可以直接使用 validation_split。大数据或 Dataset 更推荐提前拆成 train_ds 和 val_ds。
+</p>
+
+<pre tag="python">
+model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=20
+)
+</pre>
+
+<h2>
+    实践建议
+</h2>
+
+<ul>
+    <li>训练集需要 shuffle，验证集一般不需要。</li>
+    <li>batch 后输出的第一维是 batch_size。</li>
+    <li>图片输入要统一尺寸、通道和数值范围。</li>
+    <li>prefetch(tf.data.AUTOTUNE) 通常放在最后，用来提升吞吐。</li>
+    <li>预测新数据时必须使用和训练时一致的预处理流程。</li>
+</ul>

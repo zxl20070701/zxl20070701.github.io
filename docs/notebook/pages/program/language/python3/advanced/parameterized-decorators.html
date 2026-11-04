@@ -1,0 +1,194 @@
+<header>
+    带参数的装饰器
+</header>
+<h2>
+    装饰器工厂模式
+</h2>
+<p>
+    带参数的装饰器通常使用装饰器工厂模式，即返回装饰器的函数。
+</p>
+<pre tag="python">
+# 装饰器工厂：返回装饰器的函数
+def repeat(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")
+# 输出:
+# Hello, Alice!
+# Hello, Alice!
+# Hello, Alice!
+</pre>
+
+<h2>
+    计时装饰器
+</h2>
+<pre tag="python">
+import time
+
+def timer(func):
+    import functools
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} 执行时间: {end - start:.4f}秒")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    import time
+    time.sleep(1)
+    return "完成"
+
+result = slow_function()
+print(result)
+</pre>
+
+<h2>
+    带参数的计时装饰器
+</h2>
+<pre tag="python">
+import time
+import functools
+
+def timer_with_threshold(threshold=0.1):
+    """带阈值的计时装饰器"""
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            result = func(*args, **kwargs)
+            end = time.time()
+            elapsed = end - start
+            if elapsed > threshold:
+                print(f"WARNING: {func.__name__} took {elapsed:.4f} seconds")
+            else:
+                print(f"{func.__name__} completed in {elapsed:.4f} seconds")
+            return result
+        return wrapper
+    return decorator
+
+@timer_with_threshold(0.5)
+def fast_function():
+    time.sleep(0.1)
+    return "Fast result"
+
+@timer_with_threshold(0.5)
+def slow_function():
+    time.sleep(1)
+    return "Slow result"
+
+fast_function()
+slow_function()
+</pre>
+
+<h2>
+    缓存装饰器
+</h2>
+<pre tag="python">
+import functools
+
+def cache(maxsize=128):
+    """带缓存大小限制的缓存装饰器"""
+    def decorator(func):
+        cache_dict = {}
+        cache_order = []
+        
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            key = str(args) + str(sorted(kwargs.items()))
+            
+            if key in cache_dict:
+                # 移动到最近使用
+                cache_order.remove(key)
+                cache_order.append(key)
+                return cache_dict[key]
+            
+            result = func(*args, **kwargs)
+            
+            if len(cache_dict) >= maxsize:
+                # 移除最久未使用的
+                oldest_key = cache_order.pop(0)
+                del cache_dict[oldest_key]
+            
+            cache_dict[key] = result
+            cache_order.append(key)
+            return result
+        
+        def cache_info():
+            return f"Cache size: {len(cache_dict)}, max size: {maxsize}"
+        
+        def cache_clear():
+            cache_dict.clear()
+            cache_order.clear()
+        
+        wrapper.cache_info = cache_info
+        wrapper.cache_clear = cache_clear
+        
+        return wrapper
+    return decorator
+
+@cache(maxsize=3)
+def fibonacci(n):
+    if n < 2:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print(fibonacci(10))
+print(fibonacci.cache_info())
+fibonacci.cache_clear()
+</pre>
+
+<h2>
+    重试装饰器
+</h2>
+<pre tag="python">
+import time
+import random
+import functools
+
+def retry(max_attempts=3, delay=1, backoff=2, exceptions=(Exception,)):
+    """重试装饰器"""
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            current_delay = delay
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except exceptions as e:
+                    if attempt == max_attempts - 1:
+                        raise
+                    
+                    print(f"Attempt {attempt + 1} failed: {e}")
+                    print(f"Retrying in {current_delay} seconds...")
+                    time.sleep(current_delay)
+                    current_delay *= backoff
+            return None
+        return wrapper
+    return decorator
+
+@retry(max_attempts=3, delay=0.5, backoff=2)
+def unreliable_function():
+    if random.random() < 0.7:  # 70%概率失败
+        raise Exception("Random error")
+    return "Success!"
+
+try:
+    result = unreliable_function()
+    print(result)
+except Exception as e:
+    print(f"All attempts failed: {e}")
+</pre>

@@ -1,0 +1,250 @@
+<header>
+    官方规范详解
+</header>
+<h2>
+    主要组成部分
+</h2>
+<p>
+    MCP标准架构是三个核心角色：Host、Client、Server。
+</p>
+<h3>
+    MCP Host（宿主）
+</h3>
+<p>
+    跑 LLM、面向用户的应用，比如Claude Desktop、Cursor等，你可以理解为智能体对象
+</p>
+<h3>
+    MCP Client（客户端）
+</h3>
+<p>
+    在 Host 内部的通信模块，简单的说就是智能体对象中，专门和Server“沟通”的一个存在
+</p>
+<h3>
+    MCP Server（服务器）
+</h3>
+<p>
+    工具 / 数据的提供者，简单的类比成提供查询工具列表、执行一个具体工具等的服务器，也是可以的
+</p>
+<h2>
+    MCP Server（服务器）
+</h2>
+<p>
+    Host和Client应该很好理解，我们来看看Server。关于工具开头的例子应该看出来了，除工具外，他还提供资源和提示词相关服务。
+</p>
+<h3>
+    工具
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>
+                方法
+            </th>
+            <th>
+                目的
+            </th>
+            <th>
+                返回
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                tools/list
+            </td>
+            <td>
+                发现可用工具
+            </td>
+            <td>
+                带有架构的工具定义数组
+            </td>
+        </tr>
+        <tr>
+            <td>
+                tools/call
+            </td>
+            <td>
+                执行特定工具
+            </td>
+            <td>
+                工具执行结果
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    资源
+</h3>
+<p>
+    就是一个只读数据，比如若干文档、知识库等。具体有如下：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                方法
+            </th>
+            <th>
+                目的
+            </th>
+            <th>
+                返回
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                resources/list
+            </td>
+            <td>
+                列出可用的直接资源
+            </td>
+            <td>
+                资源描述符数组
+            </td>
+        </tr>
+        <tr>
+            <td>
+                resources/templates/list
+            </td>
+            <td>
+                发现资源模板
+            </td>
+            <td>
+                资源模板定义数组
+            </td>
+        </tr>
+        <tr>
+            <td>
+                resources/read
+            </td>
+            <td>
+                检索资源内容
+            </td>
+            <td>
+                带有元数据的资源数据
+            </td>
+        </tr>
+        <tr>
+            <td>
+                resources/subscribe
+            </td>
+            <td>
+                监控资源变化
+            </td>
+            <td>
+                订阅确认
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    提示词
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>
+                方法
+            </th>
+            <th>
+                目的
+            </th>
+            <th>
+                返回
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                prompts/list
+            </td>
+            <td>
+                发现可用提示词
+            </td>
+            <td>
+                提示词描述符数组
+            </td>
+        </tr>
+        <tr>
+            <td>
+                prompts/get
+            </td>
+            <td>
+                检索提示词详情
+            </td>
+            <td>
+                带有参数的完整提示词定义
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    为什么说 MCP Server 不能简单理解成服务器？
+</h2>
+<p>
+    我们知道，是MCP Client（客户端）在和Server沟通，所以，他们只要可以沟通就可以了，不一定非要用HTTP的方式（或许这里就理解了为什么Client要单独出来，这是把智能体中业务和技术分开，方便维护升级）。
+</p>
+<p>
+    MCP 官方标准里一共 3 种通信（传输）方式：
+</p>
+<h3>
+    SSE（HTTP 长连接，旧远程方案）
+</h3>
+<p>
+    基于HTTP协议的一种长连接。
+</p>
+<h3>
+    Streamable HTTP（新标准，推荐）
+</h3>
+<p>
+    客户端发起一个普通 POST，服务端根据情况决定这次请求是普通响应，还是 SSE 流。
+</p>
+<h3>
+    stdio（本地 IPC）
+</h3>
+<p>
+    简单的理解，就是主线程是client起了一个子线程server，通过线程之间的管道通信。
+</p>
+<p>
+    好吧，抛开标准来说，只要client和server之间可以沟通并达到目的其实怎么样都可以（好吧，规范会更好维护）。
+</p>
+<h2>
+    JSON-RPC 2.0又是什么？
+</h2>
+<p>
+    这个就更好理解了。就是一个规范，什么规范？
+</p>
+<p>
+    client和server不管是用哪种方式沟通起来，最终的目的都是交换信息对不对，交换信息的时候，给对方方式信息的数据格式就叫JSON-RPC 2.0。比如开头例子的请求参数：
+</p>
+<pre>
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/list",
+    "params": {}
+}
+</pre>
+<div class="warn">
+    就 jsonrpc/method/params/id 四个字段
+</div>
+<p>
+    比较严肃的话说就是：一套用 JSON 封装的、跨语言、极简的远程函数调用协议。
+</p>
+<h2>
+    生命周期管理
+</h2>
+<p>
+    此外，为了方便管理生命周期，MCP 官方标准里还定义了一个生命周期管理接口，主要包括：初始化、运行、关闭。
+</p>
+<p>
+    比如初始化，主要是client告诉server自己若干信息，比如协议版本等，然后server会返回一个其自身的功能和信息，最后客户端说，OK，开始吧。
+</p>
+<div class="tips">
+    初始化阶段（Initialization）MUST 是第一次交互，必须先 initialize → 服务端回应 → 客户端发 initialized，没走完这个流程，不能发 tools/list/tools/call
+    等任何业务请求（当然，这是规范，如果server、client都自己DIY，其实你怎么样都可以）。
+</div>

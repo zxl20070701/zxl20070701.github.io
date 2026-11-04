@@ -1,0 +1,428 @@
+<header>
+    TCP协议
+</header>
+<p>
+    TCP（Transmission Control Protocol，传输控制协议）是TCP/IP协议族的核心协议之一，提供可靠的、面向连接的字节流服务。TCP通过序列号、确认应答、重传机制、流量控制和拥塞控制等机制，确保数据能够正确、有序、完整地传输。理解TCP协议对于网络应用开发、性能优化和故障排除至关重要。
+</p>
+<h2>
+    TCP协议特点
+</h2>
+<h3>
+    1. 面向连接
+</h3>
+<ul>
+    <li><span class="special">连接建立</span>：通过三次握手建立连接</li>
+    <li><span class="special">连接释放</span>：通过四次挥手释放连接</li>
+    <li><span class="special">全双工通信</span>：支持双向同时传输</li>
+</ul>
+<h3>
+    2. 可靠性保证
+</h3>
+<ul>
+    <li><span class="special">数据确认</span>：接收方发送确认应答</li>
+    <li><span class="special">超时重传</span>：未收到确认时重传数据</li>
+    <li><span class="special">数据排序</span>：按序列号重新排序数据</li>
+    <li><span class="special">流量控制</span>：防止发送方发送过快</li>
+    <li><span class="special">拥塞控制</span>：防止网络拥塞</li>
+</ul>
+<h3>
+    3. 字节流服务
+</h3>
+<ul>
+    <li><span class="special">无边界</span>：TCP不保留应用层消息边界</li>
+    <li><span class="special">缓冲机制</span>：提供发送和接收缓冲区</li>
+    <li><span class="special">滑动窗口</span>：动态调整发送窗口大小</li>
+</ul>
+<h2>
+    TCP首部格式
+</h2>
+<h3>
+    1. TCP段结构
+</h3>
+<pre>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Source Port          |       Destination Port        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        Sequence Number                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Acknowledgment Number                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Data |       |C|E|U|A|P|R|S|F|                               |
+| Offset|  Res. |W|C|R|C|S|S|Y|I|            Window             |
+|       |       |R|E|G|K|H|T|N|N|                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Checksum            |         Urgent Pointer        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Options                    |    Padding    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                             data                              |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</pre>
+<h3>
+    2. 首部字段说明
+</h3>
+<ul>
+    <li><span class="special">源端口(Source Port)</span>：16位，发送方端口号</li>
+    <li><span class="special">目的端口(Destination Port)</span>：16位，接收方端口号</li>
+    <li><span class="special">序列号(Sequence Number)</span>：32位，数据字节流的序号</li>
+    <li><span class="special">确认号(Acknowledgment Number)</span>：32位，期望收到的下一个字节序号</li>
+    <li><span class="special">数据偏移(Data Offset)</span>：4位，TCP首部长度（以4字节为单位）</li>
+    <li><span class="special">保留(Reserved)</span>：6位，保留供将来使用</li>
+    <li><span class="special">控制标志(Flags)</span>：6位
+        <ul>
+            <li>URG：紧急指针有效</li>
+            <li>ACK：确认号有效</li>
+            <li>PSH：推送功能</li>
+            <li>RST：复位连接</li>
+            <li>SYN：同步序列号</li>
+            <li>FIN：终止连接</li>
+        </ul>
+    </li>
+    <li><span class="special">窗口(Window)</span>：16位，接收窗口大小，用于流量控制</li>
+    <li><span class="special">校验和(Checksum)</span>：16位，覆盖TCP首部和数据</li>
+    <li><span class="special">紧急指针(Urgent Pointer)</span>：16位，紧急数据结束位置</li>
+    <li><span class="special">选项(Options)</span>：可变长度，可选字段</li>
+</ul>
+<h2>
+    TCP连接管理
+</h2>
+<h3>
+    1. 三次握手建立连接
+</h3>
+<h4>
+    1.1 握手过程
+</h4>
+<ol>
+    <li><span class="special">SYN</span>：客户端发送SYN=1，seq=x</li>
+    <li><span class="special">SYN-ACK</span>：服务器发送SYN=1，ACK=1，seq=y，ack=x+1</li>
+    <li><span class="special">ACK</span>：客户端发送ACK=1，seq=x+1，ack=y+1</li>
+</ol>
+<h4>
+    1.2 状态转换
+</h4>
+<ul>
+    <li><span class="special">客户端</span>：CLOSED → SYN-SENT → ESTABLISHED</li>
+    <li><span class="special">服务器</span>：CLOSED → LISTEN → SYN-RECEIVED → ESTABLISHED</li>
+</ul>
+<h4>
+    1.3 序列号初始化
+</h4>
+<ul>
+    <li><span class="special">随机初始化</span>：防止序列号预测攻击</li>
+    <li><span class="special">时间戳相关</span>：基于时钟生成初始序列号</li>
+    <li><span class="special">ISN选择</span>：Initial Sequence Number，每4μs增加1</li>
+</ul>
+<h3>
+    2. 四次挥手释放连接
+</h3>
+<h4>
+    2.1 挥手过程
+</h4>
+<ol>
+    <li><span class="special">FIN</span>：主动关闭方发送FIN=1，seq=u</li>
+    <li><span class="special">ACK</span>：被动关闭方发送ACK=1，ack=u+1</li>
+    <li><span class="special">FIN</span>：被动关闭方发送FIN=1，seq=v</li>
+    <li><span class="special">ACK</span>：主动关闭方发送ACK=1，ack=v+1</li>
+</ol>
+<h4>
+    2.2 状态转换
+</h4>
+<ul>
+    <li><span class="special">主动关闭方</span>：ESTABLISHED → FIN-WAIT-1 → FIN-WAIT-2 → TIME-WAIT → CLOSED</li>
+    <li><span class="special">被动关闭方</span>：ESTABLISHED → CLOSE-WAIT → LAST-ACK → CLOSED</li>
+</ul>
+<h4>
+    2.3 TIME-WAIT状态
+</h4>
+<ul>
+    <li><span class="special">持续时间</span>：2倍MSL（Maximum Segment Lifetime），通常120秒</li>
+    <li><span class="special">作用</span>：
+        <ul>
+            <li>确保最后一个ACK到达</li>
+            <li>防止旧连接的数据包影响新连接</li>
+        </ul>
+    </li>
+</ul>
+<h3>
+    3. TCP状态机
+</h3>
+<p>
+    TCP连接有11种状态：CLOSED、LISTEN、SYN-SENT、SYN-RECEIVED、ESTABLISHED、FIN-WAIT-1、FIN-WAIT-2、CLOSE-WAIT、CLOSING、LAST-ACK、TIME-WAIT。
+</p>
+<h2>
+    TCP可靠传输机制
+</h2>
+<h3>
+    1. 序列号与确认机制
+</h3>
+<h4>
+    1.1 序列号空间
+</h4>
+<ul>
+    <li><span class="special">字节编号</span>：每个字节都有唯一的序列号</li>
+    <li><span class="special">初始序列号</span>：连接建立时随机选择</li>
+    <li><span class="special">循环使用</span>：序列号达到最大值后循环使用</li>
+</ul>
+<h4>
+    1.2 确认机制
+</h4>
+<ul>
+    <li><span class="special">累积确认</span>：确认号表示期望收到的下一个字节</li>
+    <li><span class="special">延迟确认</span>：延迟发送确认以减少网络负载</li>
+    <li><span class="special">选择性确认</span>：SACK选项，确认不连续的数据块</li>
+</ul>
+<h3>
+    2. 超时与重传机制
+</h3>
+<h4>
+    2.1 超时计算
+</h4>
+<ul>
+    <li><span class="special">RTT测量</span>：Round Trip Time，数据发送和确认的时间</li>
+    <li><span class="special">RTO计算</span>：Retransmission Timeout，基于RTT估计</li>
+    <li><span class="special">Karn算法</span>：重传时不更新RTT估计</li>
+</ul>
+<h4>
+    2.2 重传策略
+</h4>
+<ul>
+    <li><span class="special">超时重传</span>：超过RTO未收到确认时重传</li>
+    <li><span class="special">快速重传</span>：收到3个重复ACK时立即重传</li>
+    <li><span class="special">选择性重传</span>：只重传丢失的段</li>
+</ul>
+<h3>
+    3. 流量控制
+</h3>
+<h4>
+    3.1 滑动窗口机制
+</h4>
+<ul>
+    <li><span class="special">发送窗口</span>：发送方可以发送但尚未确认的数据量</li>
+    <li><span class="special">接收窗口</span>：接收方缓冲区可用空间</li>
+    <li><span class="special">窗口通告</span>：接收方通过TCP首部窗口字段通告</li>
+</ul>
+<h4>
+    3.2 窗口调整
+</h4>
+<ul>
+    <li><span class="special">窗口关闭</span>：接收方缓冲区满时通告窗口为0</li>
+    <li><span class="special">窗口探测</span>：发送方定期探测窗口是否打开</li>
+    <li><span class="special">窗口缩放</span>：窗口扩大选项，支持大于65535的窗口</li>
+</ul>
+<h2>
+    TCP拥塞控制
+</h2>
+<h3>
+    1. 拥塞控制算法
+</h3>
+<h4>
+    1.1 慢开始 (Slow Start)
+</h4>
+<ul>
+    <li><span class="special">初始窗口</span>：通常为2-4个MSS</li>
+    <li><span class="special">指数增长</span>：每收到一个ACK，拥塞窗口增加1个MSS</li>
+    <li><span class="special">阈值</span>：达到慢开始阈值(ssthresh)后转为拥塞避免</li>
+</ul>
+<h4>
+    1.2 拥塞避免 (Congestion Avoidance)
+</h4>
+<ul>
+    <li><span class="special">线性增长</span>：每RTT增加1个MSS</li>
+    <li><span class="special">AIMD</span>：Additive Increase Multiplicative Decrease</li>
+    <li><span class="special">丢失检测</span>：通过超时或重复ACK检测丢失</li>
+</ul>
+<h4>
+    1.3 快速重传与快速恢复
+</h4>
+<ul>
+    <li><span class="special">快速重传</span>：收到3个重复ACK时立即重传</li>
+    <li><span class="special">快速恢复</span>：重传后进入快速恢复阶段</li>
+    <li><span class="special">拥塞窗口</span>：设置为ssthresh + 3×MSS</li>
+</ul>
+<h4>
+    1.4 拥塞控制算法演进
+</h4>
+<ul>
+    <li><span class="special">Reno</span>：传统算法，丢包作为拥塞信号</li>
+    <li><span class="special">NewReno</span>：改进的快速恢复算法</li>
+    <li><span class="special">SACK</span>：选择性确认，提高重传效率</li>
+    <li><span class="special">CUBIC</span>：Linux默认算法，基于时间的拥塞窗口增长</li>
+    <li><span class="special">BBR</span>：Google提出的基于带宽和延迟的算法</li>
+</ul>
+<h2>
+    TCP性能优化
+</h2>
+<h3>
+    1. 窗口优化
+</h3>
+<h4>
+    1.1 窗口扩大选项
+</h4>
+<ul>
+    <li><span class="special">功能</span>：支持大于65535字节的接收窗口</li>
+    <li><span class="special">实现</span>：在TCP选项中协商窗口缩放因子</li>
+    <li><span class="special">应用</span>：高速长距离网络</li>
+</ul>
+<h4>
+    1.2 时间戳选项
+</h4>
+<ul>
+    <li><span class="special">功能</span>：精确测量RTT，支持PAWS算法</li>
+    <li><span class="special">PAWS</span>：Protection Against Wrapped Sequence numbers</li>
+    <li><span class="special">优势</span>：提高高速网络中的序列号安全性</li>
+</ul>
+<h3>
+    2. 连接优化
+</h3>
+<h4>
+    2.1 TCP快速打开 (TFO)
+</h4>
+<ul>
+    <li><span class="special">功能</span>：在SYN包中携带数据，减少握手延迟</li>
+    <li><span class="special">实现</span>：使用TFO cookie验证客户端身份</li>
+    <li><span class="special">应用</span>：重复连接同一服务器的场景</li>
+</ul>
+<h4>
+    2.2 连接复用
+</h4>
+<ul>
+    <li><span class="special">HTTP Keep-Alive</span>：复用TCP连接传输多个HTTP请求</li>
+    <li><span class="special">连接池</span>：维护连接池减少连接建立开销</li>
+</ul>
+<h3>
+    3. 拥塞控制优化
+</h3>
+<h4>
+    3.1 BBR算法
+</h4>
+<ul>
+    <li><span class="special">原理</span>：基于带宽和延迟估计，而非丢包</li>
+    <li><span class="special">优势</span>：在高带宽延迟积网络中表现更好</li>
+    <li><span class="special">应用</span>：Google服务、YouTube等</li>
+</ul>
+<h4>
+    3.2 多路径TCP (MPTCP)
+</h4>
+<ul>
+    <li><span class="special">功能</span>：同时使用多个路径传输数据</li>
+    <li><span class="special">优势</span>：提高带宽利用率，增强可靠性</li>
+    <li><span class="special">应用</span>：移动网络、数据中心网络</li>
+</ul>
+<h2>
+    TCP安全考虑
+</h2>
+<h3>
+    1. TCP攻击类型
+</h3>
+<h4>
+    1.1 SYN Flood攻击
+</h4>
+<ul>
+    <li><span class="special">原理</span>：发送大量SYN包但不完成握手</li>
+    <li><span class="special">影响</span>：耗尽服务器连接队列</li>
+    <li><span class="special">防护</span>：SYN Cookie、连接限制</li>
+</ul>
+<h4>
+    1.2 ACK Flood攻击
+</h4>
+<ul>
+    <li><span class="special">原理</span>：发送大量伪造的ACK包</li>
+    <li><span class="special">影响</span>：消耗服务器处理资源</li>
+    <li><span class="special">防护</span>：状态检查、速率限制</li>
+</ul>
+<h4>
+    1.3 TCP重置攻击
+</h4>
+<ul>
+    <li><span class="special">原理</span>：伪造RST包中断合法连接</li>
+    <li><span class="special">条件</span>：需要知道序列号</li>
+    <li><span class="special">防护</span>：序列号随机化、加密</li>
+</ul>
+<h3>
+    2. TCP安全机制
+</h3>
+<h4>
+    2.1 序列号随机化
+</h4>
+<ul>
+    <li><span class="special">目的</span>：防止序列号预测攻击</li>
+    <li><span class="special">实现</span>：基于密码学方法生成初始序列号</li>
+</ul>
+<h4>
+    2.2 TCP MD5签名
+</h4>
+<ul>
+    <li><span class="special">功能</span>：对TCP段进行完整性验证</li>
+    <li><span class="special">应用</span>：BGP路由协议</li>
+    <li><span class="special">替代</span>：TCP-AO（Authentication Option）</li>
+</ul>
+<h4>
+    2.3 TCP-AO
+</h4>
+<ul>
+    <li><span class="special">功能</span>：增强的TCP认证选项</li>
+    <li><span class="special">优势</span>：更强的安全性，支持密钥轮换</li>
+</ul>
+<h2>
+    TCP诊断与调试
+</h2>
+<h3>
+    1. 常用诊断工具
+</h3>
+<h4>
+    1.1 netstat
+</h4>
+<ul>
+    <li><span class="special">功能</span>：显示TCP连接状态</li>
+    <li><span class="special">常用选项</span>：-t（TCP）、-n（数字格式）、-p（进程）</li>
+</ul>
+<h4>
+    1.2 tcpdump/wireshark
+</h4>
+<ul>
+    <li><span class="special">功能</span>：抓取和分析TCP数据包</li>
+    <li><span class="special">分析内容</span>：序列号、确认号、窗口大小、标志位等</li>
+</ul>
+<h4>
+    1.3 ss
+</h4>
+<ul>
+    <li><span class="special">功能</span>：现代替代netstat的工具</li>
+    <li><span class="special">优势</span>：更快，信息更丰富</li>
+</ul>
+<h3>
+    2. 性能监控指标
+</h3>
+<ul>
+    <li><span class="special">连接数</span>：当前活跃的TCP连接数量</li>
+    <li><span class="special">重传率</span>：重传数据包占总数据包的比例</li>
+    <li><span class="special">RTT</span>：往返时间，反映网络延迟</li>
+    <li><span class="special">吞吐量</span>：单位时间内传输的数据量</li>
+    <li><span class="special">窗口利用率</span>：实际使用的窗口占可用窗口的比例</li>
+</ul>
+<h3>
+    3. 常见故障排除
+</h3>
+<h4>
+    3.1 连接建立失败
+</h4>
+<ul>
+    <li><span class="special">原因</span>：服务器未监听、防火墙阻止、网络不可达</li>
+    <li><span class="special">排查</span>：检查端口监听、防火墙规则、路由连通性</li>
+</ul>
+<h4>
+    3.2 连接中断
+</h4>
+<ul>
+    <li><span class="special">原因</span>：网络中断、RST包、超时</li>
+    <li><span class="special">排查</span>：检查网络稳定性、抓包分析RST来源</li>
+</ul>
+<h4>
+    3.3 性能问题
+</h4>
+<ul>
+    <li><span class="special">原因</span>：拥塞、窗口过小、延迟高</li>
+    <li><span class="special">排查</span>：监控RTT、窗口大小、重传率</li>
+</ul>

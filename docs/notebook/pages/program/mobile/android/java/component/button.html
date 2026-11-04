@@ -1,0 +1,70 @@
+<header>
+    Button 与 ImageButton
+</header>
+<p>
+    Button 用于触发点击事件，ImageButton 用于显示一个可点击的图标。
+</p>
+<h2>
+    Button 示例
+</h2>
+<pre tag="xml">
+&lt;Button
+    android:id="@+id/btn_click"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="点我" /&gt;
+</pre>
+<h2>
+    监听点击事件
+</h2>
+<h3>
+    方式一：匿名内部类
+</h3>
+<pre tag="java">
+Button btn = findViewById(R.id.btn_click);
+btn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        // 处理点击逻辑
+    }
+});
+</pre>
+<h3>
+    方式二：实现 View.OnClickListener 接口
+</h3>
+<pre tag="java">
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_click) {
+            // 处理点击逻辑
+        }
+    }
+}
+</pre>
+<h3>
+    方式三：xml 绑定
+</h3>
+<pre tag="xml">
+&lt;Button
+    android:onClick="onBtnClick"
+    android:text="点我" /&gt;
+</pre>
+<pre tag="java">
+public void onBtnClick(View view) {
+    // 处理点击逻辑
+}
+</pre>
+<h2>
+    ImageButton
+</h2>
+<p>
+    与 Button 类似，只是默认没有文字，通常配合 src 属性使用：
+</p>
+<pre tag="xml">
+&lt;ImageButton
+    android:id="@+id/ib_back"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_back" /&gt;
+</pre>

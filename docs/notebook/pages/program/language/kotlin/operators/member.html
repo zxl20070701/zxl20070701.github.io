@@ -1,0 +1,84 @@
+<header>
+    区间与成员运算符
+</header>
+<p>
+    Kotlin 提供了几个独有的运算符，用于判断某个值是否在范围内（<span class="special">in</span>、<span class="special">!in</span>），以及构造区间（<span class="special">..</span>、<span class="special">until</span>、<span class="special">downTo</span>、<span class="special">step</span>）。这些运算符在 Kotlin 中被称为<span class="warn">区间运算符</span>和<span class="warn">成员运算符</span>。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>运算符</th>
+            <th>描述</th>
+            <th>示例</th>
+            <th>结果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>..</td>
+            <td>闭区间 [a, b]</td>
+            <td>1..5</td>
+            <td>1, 2, 3, 4, 5</td>
+        </tr>
+        <tr>
+            <td>until</td>
+            <td>半开区间 [a, b)</td>
+            <td>1 until 5</td>
+            <td>1, 2, 3, 4</td>
+        </tr>
+        <tr>
+            <td>downTo</td>
+            <td>倒序区间</td>
+            <td>5 downTo 1</td>
+            <td>5, 4, 3, 2, 1</td>
+        </tr>
+        <tr>
+            <td>step</td>
+            <td>步长</td>
+            <td>1..10 step 2</td>
+            <td>1, 3, 5, 7, 9</td>
+        </tr>
+        <tr>
+            <td>in</td>
+            <td>属于（包含判断）</td>
+            <td>3 in 1..5</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>!in</td>
+            <td>不属于</td>
+            <td>6 !in 1..5</td>
+            <td>true</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+// 构造区间
+val range1 = 1..5           // [1, 5]
+val range2 = 1 until 5      // [1, 5)
+val range3 = 5 downTo 1     // 倒序
+val range4 = 1..10 step 2   // 步长 2
+
+// 遍历
+for (i in 1..5) {
+    print("$i ") // 1 2 3 4 5
+}
+println()
+
+for (i in 5 downTo 1 step 2) {
+    print("$i ") // 5 3 1
+}
+println()
+
+// in / !in 包含判断
+println(3 in 1..5)       // true
+println(6 !in 1..5)      // true
+
+// 同样适用于集合
+val fruits = listOf("apple", "banana", "orange")
+println("apple" in fruits)  // true
+println("pear" !in fruits)  // true
+</pre>
+<p class="warn">
+    <span class="special">..</span> 创建的是 <span class="special">IntRange</span>（或 <span class="special">LongRange</span> 等），实现了 <span class="special">Iterable</span> 接口，因此可以配合 <span class="special">for</span> 循环遍历，也可以用 <span class="special">contains</span> 方法进行判断。
+</p>

@@ -1,0 +1,185 @@
+<header>
+    AST 转换实战
+</header>
+<h2>
+    什么是AST转换
+</h2>
+<p>
+    AST转换是指通过修改抽象语法树（AST）来改变源代码的结构和行为。这是Babel插件开发的核心技术。
+</p>
+<h2>
+    基本转换流程
+</h2>
+<ol>
+    <li>解析：使用@babel/parser将源代码解析为AST</li>
+    <li>转换：遍历和修改AST节点</li>
+    <li>生成：使用@babel/generator将修改后的AST转换回代码</li>
+</ol>
+<h2>
+    常见转换模式
+</h2>
+<h3>
+    节点替换
+</h3>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+const t = require('@babel/types');
+
+const code = 'const x = 1 + 2;';
+const ast = parser.parse(code);
+
+traverse(ast, {
+  BinaryExpression(path) {
+    // 将 + 替换为 *
+    if (path.node.operator === '+') {
+      path.replaceWith(
+        t.binaryExpression('*', path.node.left, path.node.right)
+      );
+    }
+  }
+});
+</pre>
+<h3>
+    节点删除
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  VariableDeclarator(path) {
+    // 删除名为 'temp' 的变量声明
+    if (path.node.id.name === 'temp') {
+      path.remove();
+    }
+  }
+});
+</pre>
+<h3>
+    节点插入
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  Program(path) {
+    // 在程序开头插入console.log
+    const logStatement = t.expressionStatement(
+      t.callExpression(
+        t.memberExpression(t.identifier('console'), t.identifier('log')),
+        [t.stringLiteral('程序开始执行')]
+      )
+    );
+    path.unshiftContainer('body', logStatement);
+  }
+});
+</pre>
+<h2>
+    实用转换示例
+</h2>
+<h3>
+    箭头函数转普通函数
+</h3>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+const t = require('@babel/types');
+const generate = require('@babel/generator').default;
+
+const code = 'const add = (a, b) => a + b;';
+const ast = parser.parse(code);
+
+traverse(ast, {
+  ArrowFunctionExpression(path) {
+    // 将箭头函数转换为普通函数
+    const functionExpression = t.functionExpression(
+      null,
+      path.node.params,
+      t.blockStatement([
+        t.returnStatement(path.node.body)
+      ])
+    );
+    path.replaceWith(functionExpression);
+  }
+});
+
+const output = generate(ast);
+console.log(output.code);
+</pre>
+<h3>
+    模板字符串转字符串拼接
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  TemplateLiteral(path) {
+    // 将模板字符串转换为字符串拼接
+    let result = path.node.quasis[0];
+    
+    for (let i = 1; i < path.node.quasis.length; i++) {
+      const expr = path.node.expressions[i - 1];
+      const quasi = path.node.quasis[i];
+      
+      result = t.binaryExpression(
+        '+',
+        t.binaryExpression('+', result, expr),
+        quasi
+      );
+    }
+    
+    path.replaceWith(result);
+  }
+});
+</pre>
+<h3>
+    移除console语句
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  CallExpression(path) {
+    // 移除console.log、console.warn等语句
+    if (
+      path.node.callee.type === 'MemberExpression' &&
+      path.node.callee.object.name === 'console'
+    ) {
+      path.remove();
+    }
+  }
+});
+</pre>
+<h2>
+    高级转换技巧
+</h2>
+<h3>
+    作用域处理
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  FunctionDeclaration(path) {
+    // 在函数内部创建唯一变量名
+    const uniqueId = path.scope.generateUidIdentifier('temp');
+    
+    // 在函数开头插入变量声明
+    const declaration = t.variableDeclaration('const', [
+      t.variableDeclarator(uniqueId, t.numericLiteral(42))
+    ]);
+    
+    path.get('body').unshiftContainer('body', declaration);
+  }
+});
+</pre>
+<h3>
+    条件转换
+</h3>
+<pre tag="javascript">
+traverse(ast, {
+  IfStatement(path) {
+    // 简化 if (true) { ... } 语句
+    if (path.node.test.type === 'BooleanLiteral' && path.node.test.value === true) {
+      // 替换为if语句的内容
+      path.replaceWithMultiple(path.node.consequent.body);
+    }
+  }
+});
+</pre>
+<h2>
+    调试技巧
+</h2>
+<div class="tips">
+    在开发AST转换时，可以使用 <a href="https://astexplorer.net/" target="_blank" class="link">AST Explorer</a> 来实时查看AST结构和转换效果。
+</div>

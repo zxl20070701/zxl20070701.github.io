@@ -352,7 +352,7 @@ var nextTagFun = function (template) {
                 tagObj.tagName = "";
                 var j = 0;
                 for (; j < tag.length; j++) {
-                    if (tag[j] == ' ') break;
+                    if (tag[j] == ' ' || tag[j] == '\n') break;
                     tagObj.tagName += tag[j];
                 }
 

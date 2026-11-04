@@ -1,0 +1,18 @@
+<header>查看进程</header>
+<p>
+    查看当前系统中正在运行的进程。排查 CPU、内存占用，或者找某个服务的 PID 时很常用。
+</p>
+<pre>
+ps
+ps aux
+ps -ef
+ps -u username
+top
+htop
+pgrep process_name
+pgrep -af process_name
+</pre>
+<p>
+    <span class="special">ps aux</span> 信息全面，<span class="special">top</span> 适合实时观察，
+    <span class="special">pgrep -af</span> 适合按进程名快速定位。
+</p>

@@ -1,0 +1,204 @@
+<header>
+    顺序查找
+</header>
+
+<h2>
+    顺序查找的定义
+</h2>
+
+<p>
+    顺序查找（Sequential Search），又称线性查找（Linear Search），是一种最简单的查找算法。它的基本思想是：从表的一端开始，逐个检查每个元素，直到找到目标元素或检查完所有元素为止。
+</p>
+
+<h3>
+    顺序查找的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">简单直观</span>：算法实现简单，易于理解
+    </li>
+    <li>
+        <span class="special">无需排序</span>：对数据的有序性没有要求
+    </li>
+    <li>
+        <span class="special">适用范围广</span>：适用于各种存储结构
+    </li>
+    <li>
+        <span class="special">效率较低</span>：时间复杂度为O(n)，效率不高
+    </li>
+</ul>
+
+<h2>
+    顺序查找的实现
+</h2>
+
+<h3>
+    无序表的顺序查找
+</h3>
+
+<pre tag="c">
+int SequentialSearch(int arr[], int n, int key) {
+    int i;
+    for (i = 0; i < n; i++) {
+        if (arr[i] == key) {
+            return i;  // 查找成功，返回位置
+        }
+    }
+    return -1;  // 查找失败，返回-1
+}
+</pre>
+
+<h3>
+    有序表的顺序查找（带哨兵）
+</h3>
+
+<pre tag="c">
+int SequentialSearch_Sentinel(int arr[], int n, int key) {
+    int i = n - 1;
+    arr[0] = key;  // 设置哨兵
+    while (arr[i] != key) {
+        i--;
+    }
+    return i;  // 返回0表示查找失败
+}
+</pre>
+
+<h3>
+    链表的顺序查找
+</h3>
+
+<pre tag="c">
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node, *LinkList;
+
+Node* SequentialSearch_LinkedList(LinkList head, int key) {
+    Node *p = head->next;
+    while (p != NULL && p->data != key) {
+        p = p->next;
+    }
+    return p;  // 返回NULL表示查找失败
+}
+</pre>
+
+<h2>
+    顺序查找的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：O(1)，目标元素在第一个位置
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：O(n)，目标元素在最后一个位置或不存在
+    </li>
+    <li>
+        <span class="special">平均情况</span>：O(n)，平均需要检查n/2个元素
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<p>
+    O(1)，只需要常数级别的额外空间。
+</p>
+
+<h2>
+    顺序查找的优化
+</h2>
+
+<h3>
+    哨兵法
+</h3>
+
+<p>
+    在数组的头部或尾部设置哨兵，可以避免边界检查，提高查找效率。
+</p>
+
+<h3>
+    自组织表
+</h3>
+
+<p>
+    将频繁访问的元素移动到表的前端，减少后续查找的时间。
+</p>
+
+<h3>
+    分块查找
+</h3>
+
+<p>
+    将表分成若干块，先在块间查找，再在块内查找，提高查找效率。
+</p>
+
+<h2>
+    顺序查找的应用场景
+</h2>
+
+<h3>
+    小规模数据
+</h3>
+
+<p>
+    当数据量较小时，顺序查找的简单性使其成为不错的选择。
+</p>
+
+<h3>
+    无序数据
+</h3>
+
+<p>
+    当数据无序且不需要频繁查找时，顺序查找是合适的选择。
+</p>
+
+<h3>
+    链表结构
+</h3>
+
+<p>
+    对于链表等不支持随机访问的数据结构，顺序查找是自然的选择。
+</p>
+
+<h3>
+    动态数据
+</h3>
+
+<p>
+    当数据频繁插入和删除时，顺序查找比需要维护有序性的查找方法更合适。
+</p>
+
+<h2>
+    顺序查找的变种
+</h2>
+
+<h3>
+    二分查找的退化情况
+</h3>
+
+<p>
+    当数据量很小时，顺序查找可能比二分查找更高效。
+</p>
+
+<h3>
+    插值查找的退化情况
+</h3>
+
+<p>
+    当数据分布不均匀时，插值查找可能退化为顺序查找。
+</p>
+
+<h3>
+    哈希查找的冲突处理
+</h3>
+
+<p>
+    在哈希表的冲突处理中，通常使用顺序查找来解决冲突。
+</p>

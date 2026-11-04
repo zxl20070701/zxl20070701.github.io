@@ -1,0 +1,93 @@
+<header>
+    配置文件处理
+</header>
+<p>
+    配置文件处理涉及读取和写入各种格式的配置文件，如INI、JSON、YAML等。
+</p>
+<pre tag="python">
+import configparser
+import json
+import yaml  # 需要安装: pip install PyYAML
+
+# 处理INI配置文件
+config = configparser.ConfigParser()
+config['DEFAULT'] = {
+    'debug': 'False',
+    'log_level': 'INFO'
+}
+config['database'] = {
+    'host': 'localhost',
+    'port': '5432',
+    'username': 'admin',
+    'password': 'secret'
+}
+config['api'] = {
+    'base_url': 'https://api.example.com',
+    'timeout': '30'
+}
+
+# 写入配置文件
+with open('config.ini', 'w') as configfile:
+    config.write(configfile)
+
+# 读取配置文件
+config_read = configparser.ConfigParser()
+config_read.read('config.ini')
+
+print(f"数据库主机: {config_read['database']['host']}")
+print(f"调试模式: {config_read['DEFAULT'].getboolean('debug')}")
+print(f"API超时: {config_read['api'].getint('timeout')}")
+
+# 处理JSON配置文件
+json_config = {
+    "app": {
+        "name": "MyApp",
+        "version": "1.0.0"
+    },
+    "database": {
+        "host": "localhost",
+        "port": 5432,
+        "credentials": {
+            "username": "admin",
+            "password": "secret"
+        }
+    }
+}
+
+with open('config.json', 'w') as f:
+    json.dump(json_config, f, indent=2)
+
+# 读取JSON配置
+with open('config.json', 'r') as f:
+    loaded_config = json.load(f)
+    print(f"应用名称: {loaded_config['app']['name']}")
+
+# 处理YAML配置文件（如果安装了PyYAML）
+try:
+    yaml_config = {
+        'server': {
+            'host': 'localhost',
+            'port': 8080,
+            'debug': True
+        },
+        'database': {
+            'url': 'postgresql://localhost/mydb',
+            'pool_size': 10
+        }
+    }
+
+    with open('config.yaml', 'w') as f:
+        yaml.dump(yaml_config, f, default_flow_style=False)
+
+    with open('config.yaml', 'r') as f:
+        loaded_yaml = yaml.safe_load(f)
+        print(f"YAML配置: {loaded_yaml}")
+
+except ImportError:
+    print("PyYAML未安装，跳过YAML示例")
+
+# 清理配置文件
+for filename in ['config.ini', 'config.json', 'config.yaml']:
+    if os.path.exists(filename):
+        os.remove(filename)
+</pre>

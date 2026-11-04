@@ -1,0 +1,166 @@
+<header>
+    属性的Getter、Setter和Deleter
+</header>
+<h2>
+    完整的属性控制
+</h2>
+<p>
+    通过@property、@属性名.setter和@属性名.deleter装饰器，可以完整地控制属性的读取、设置和删除操作。
+</p>
+<pre tag="python">
+class Temperature:
+    def __init__(self, celsius=0):
+        self._celsius = celsius
+    
+    @property
+    def celsius(self):
+        """获取摄氏度"""
+        return self._celsius
+    
+    @celsius.setter
+    def celsius(self, value):
+        """设置摄氏度，添加验证"""
+        if value < -273.15:
+            raise ValueError("温度不能低于绝对零度")
+        self._celsius = value
+    
+    @celsius.deleter
+    def celsius(self):
+        """删除温度值"""
+        print("删除温度值")
+        self._celsius = None
+    
+    @property
+    def fahrenheit(self):
+        """获取华氏度（只读）"""
+        return self._celsius * 9/5 + 32
+    
+    @fahrenheit.setter
+    def fahrenheit(self, value):
+        """设置华氏度"""
+        celsius = (value - 32) * 5/9
+        self.celsius = celsius  # 使用已验证的setter
+
+# 使用完整的属性控制
+temp = Temperature(25)
+print(f"摄氏度: {temp.celsius}")
+print(f"华氏度: {temp.fahrenheit}")
+
+# 设置温度
+temp.celsius = 30
+print(f"新的摄氏度: {temp.celsius}")
+
+temp.fahrenheit = 86
+print(f"通过华氏度设置后的摄氏度: {temp.celsius}")
+
+# 删除属性
+del temp.celsius
+print(f"删除后的温度: {temp.celsius}")
+</pre>
+
+<h2>
+    数据验证和转换
+</h2>
+<pre tag="python">
+class Email:
+    def __init__(self, email=""):
+        self.email = email
+    
+    @property
+    def email(self):
+        """获取邮箱地址"""
+        return self._email
+    
+    @email.setter
+    def email(self, value):
+        """设置邮箱地址，进行验证"""
+        if not self._is_valid_email(value):
+            raise ValueError("无效的邮箱地址格式")
+        self._email = value.lower()  # 标准化邮箱地址
+    
+    @email.deleter
+    def email(self):
+        """删除邮箱地址"""
+        self._email = None
+    
+    def _is_valid_email(self, email):
+        """验证邮箱格式"""
+        import re
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        return bool(re.match(pattern, email))
+    
+    @property
+    def username(self):
+        """从邮箱提取用户名"""
+        if self._email:
+            return self._email.split('@')[0]
+        return None
+    
+    @property
+    def domain(self):
+        """从邮箱提取域名"""
+        if self._email:
+            return self._email.split('@')[1]
+        return None
+
+# 使用邮箱验证
+try:
+    email = Email("Alice@Example.com")
+    print(f"邮箱: {email.email}")
+    print(f"用户名: {email.username}")
+    print(f"域名: {email.domain}")
+    
+    email.email = "bob@test.org"
+    print(f"新邮箱: {email.email}")
+    
+    # 尝试设置无效邮箱
+    email.email = "invalid-email"
+except ValueError as e:
+    print(f"错误: {e}")
+</pre>
+
+<h2>
+    计算属性
+</h2>
+<pre tag="python">
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    @property
+    def area(self):
+        """面积（只读计算属性）"""
+        return self.width * self.height
+    
+    @property
+    def perimeter(self):
+        """周长（只读计算属性）"""
+        return 2 * (self.width + self.height)
+    
+    @property
+    def diagonal(self):
+        """对角线长度（只读计算属性）"""
+        import math
+        return math.sqrt(self.width**2 + self.height**2)
+    
+    @property
+    def is_square(self):
+        """是否为正方形（只读计算属性）"""
+        return self.width == self.height
+    
+    def __str__(self):
+        return f"Rectangle({self.width}x{self.height})"
+
+# 使用计算属性
+rect = Rectangle(3, 4)
+print(rect)
+print(f"面积: {rect.area}")
+print(f"周长: {rect.perimeter}")
+print(f"对角线: {rect.diagonal:.2f}")
+print(f"是否为正方形: {rect.is_square}")
+
+# 修改尺寸
+rect.width = 5
+print(f"修改后的面积: {rect.area}")
+</pre>

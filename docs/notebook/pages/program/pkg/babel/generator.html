@@ -1,0 +1,172 @@
+<header>
+    @babel/generator - 代码生成
+</header>
+<h2>
+    什么是@babel/generator
+</h2>
+<p>
+    @babel/generator是Babel的代码生成器，它接收一个AST（抽象语法树）并将其转换回JavaScript源代码。
+</p>
+<h2>
+    安装与使用
+</h2>
+<pre tag="bash">
+npm install --save-dev @babel/generator
+</pre>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const generate = require('@babel/generator').default;
+
+const code = 'const x = 1 + 2;';
+const ast = parser.parse(code);
+
+// 将AST转换回代码
+const output = generate(ast);
+console.log(output.code); // const x = 1 + 2;
+</pre>
+<h2>
+    配置选项
+</h2>
+<p>
+    @babel/generator提供了多种选项来控制代码生成：
+</p>
+<pre tag="javascript">
+const output = generate(ast, {
+  // 保留注释
+  comments: true,
+  
+  // 保留括号
+  retainLines: true,
+  
+  // 使用紧凑模式（减少空格）
+  compact: false,
+  
+  // 缩进
+  indent: {
+    style: '  ', // 使用两个空格
+    base: 0
+  },
+  
+  // 生成source map
+  sourceMaps: true,
+  
+  // 文件名
+  filename: 'input.js'
+});
+</pre>
+<h2>
+    Source Map生成
+</h2>
+<p>
+    @babel/generator可以生成source map，用于调试转换后的代码：
+</p>
+<pre tag="javascript">
+const output = generate(ast, {
+  sourceMaps: true,
+  filename: 'input.js'
+});
+
+console.log(output.code); // 生成的代码
+console.log(output.map); // source map
+</pre>
+<h2>
+    自定义格式化
+</h2>
+<p>
+    可以通过选项自定义代码格式化：
+</p>
+<pre tag="javascript">
+const output = generate(ast, {
+  // 保留行号
+  retainLines: true,
+  
+  // 使用单引号
+  jsescOption: {
+    quotes: 'single'
+  },
+  
+  // 格式化数字
+  jsonCompatibleStrings: true
+});
+</pre>
+<h2>
+    处理注释
+</h2>
+<p>
+    @babel/generator可以保留或删除注释：
+</p>
+<pre tag="javascript">
+const output = generate(ast, {
+  // 保留注释
+  comments: true
+});
+</pre>
+<h2>
+    实际应用示例
+</h2>
+<p>
+    下面是一个完整的示例，展示如何使用@babel/generator将修改后的AST转换为代码：
+</p>
+<pre tag="javascript">
+const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+const generate = require('@babel/generator').default;
+const t = require('@babel/types');
+
+const code = `
+  function add(a, b) {
+    return a + b;
+  }
+  
+  const result = add(1, 2);
+`;
+
+const ast = parser.parse(code);
+
+// 修改AST：将函数名改为sum
+traverse(ast, {
+  FunctionDeclaration(path) {
+    if (path.node.id.name === 'add') {
+      path.node.id.name = 'sum';
+    }
+  },
+  CallExpression(path) {
+    if (path.node.callee.name === 'add') {
+      path.node.callee.name = 'sum';
+    }
+  }
+});
+
+// 生成代码
+const output = generate(ast, {
+  comments: true,
+  compact: false
+});
+
+console.log('生成的代码:');
+console.log(output.code);
+</pre>
+<h2>
+    高级用法
+</h2>
+<h3>
+    自定义生成器
+</h3>
+<p>
+    可以通过扩展@babel/generator来自定义代码生成：
+</p>
+<pre tag="javascript">
+const Generator = require('@babel/generator').default;
+
+class CustomGenerator extends Generator {
+  // 自定义处理特定节点类型
+  FunctionDeclaration(node, parent) {
+    this.word('custom_function');
+    this.space();
+    this.print(node.id, node);
+    // ... 其他处理
+  }
+}
+
+const output = new CustomGenerator(ast).generate();
+</pre>

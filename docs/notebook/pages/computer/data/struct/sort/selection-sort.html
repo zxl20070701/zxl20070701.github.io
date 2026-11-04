@@ -1,0 +1,283 @@
+<header>
+    选择排序
+</header>
+
+<h2>
+    选择排序的定义
+</h2>
+
+<p>
+    选择排序（Selection Sort）是一种简单直观的排序算法。它的基本思想是：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。
+</p>
+
+<h3>
+    选择排序的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">简单直观</span>：算法实现简单，易于理解
+    </li>
+    <li>
+        <span class="special">原地排序</span>：只需要常数级别的额外空间
+    </li>
+    <li>
+        <span class="special">不稳定排序</span>：可能改变相等元素的相对位置
+    </li>
+    <li>
+        <span class="special">比较次数固定</span>：无论数据如何，比较次数都是固定的
+    </li>
+</ul>
+
+<h2>
+    选择排序的实现
+</h2>
+
+<h3>
+    简单选择排序
+</h3>
+
+<pre tag="c">
+void SelectionSort(int arr[], int n) {
+    int i, j, minIndex, temp;
+
+    for (i = 0; i < n - 1; i++) {
+        minIndex = i;  // 假设当前位置是最小值
+
+        // 在未排序部分查找最小值
+        for (j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        // 将最小值与当前位置交换
+        if (minIndex != i) {
+            temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
+        }
+    }
+}
+</pre>
+
+<h3>
+    双向选择排序
+</h3>
+
+<p>
+    双向选择排序（又称锦标赛排序）每次同时选择最小值和最大值，减少排序趟数。
+</p>
+
+<pre tag="c">
+void BidirectionalSelectionSort(int arr[], int n) {
+    int i, j, minIndex, maxIndex, temp;
+    int left = 0, right = n - 1;
+
+    while (left < right) {
+        minIndex = left;
+        maxIndex = right;
+
+        // 在剩余未排序部分查找最小值和最大值
+        for (j = left; j <= right; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+            if (arr[j] > arr[maxIndex]) {
+                maxIndex = j;
+            }
+        }
+
+        // 交换最小值到左边
+        if (minIndex != left) {
+            temp = arr[left];
+            arr[left] = arr[minIndex];
+            arr[minIndex] = temp;
+
+            // 如果最大值正好是left，需要更新maxIndex
+            if (maxIndex == left) {
+                maxIndex = minIndex;
+            }
+        }
+
+        // 交换最大值到右边
+        if (maxIndex != right) {
+            temp = arr[right];
+            arr[right] = arr[maxIndex];
+            arr[maxIndex] = temp;
+        }
+
+        left++;
+        right--;
+    }
+}
+</pre>
+
+<h2>
+    选择排序的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：O(n²)，无论数据如何，比较次数都是固定的
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：O(n²)
+    </li>
+    <li>
+        <span class="special">平均情况</span>：O(n²)
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<p>
+    O(1)，只需要常数级别的额外空间。
+</p>
+
+<h2>
+    堆排序
+</h2>
+
+<h3>
+    堆排序的定义
+</h3>
+
+<p>
+    堆排序（Heap Sort）是利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。
+</p>
+
+<h3>
+    堆排序的实现
+</h3>
+
+<pre tag="c">
+void HeapSort(int arr[], int n) {
+    int i, temp;
+
+    // 构建大顶堆
+    for (i = n / 2 - 1; i >= 0; i--) {
+        Heapify(arr, n, i);
+    }
+
+    // 逐个提取元素
+    for (i = n - 1; i > 0; i--) {
+        // 将当前最大值移到数组末尾
+        temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
+
+        // 重新调整堆
+        Heapify(arr, i, 0);
+    }
+}
+
+void Heapify(int arr[], int n, int i) {
+    int largest = i;  // 初始化最大值为根
+    int left = 2 * i + 1;  // 左子结点
+    int right = 2 * i + 2;  // 右子结点
+    int temp;
+
+    // 如果左子结点大于根
+    if (left < n && arr[left] > arr[largest]) {
+        largest = left;
+    }
+
+    // 如果右子结点大于当前最大值
+    if (right < n && arr[right] > arr[largest]) {
+        largest = right;
+    }
+
+    // 如果最大值不是根
+    if (largest != i) {
+        temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
+
+        // 递归调整受影响的子树
+        Heapify(arr, n, largest);
+    }
+}
+</pre>
+
+<h2>
+    堆排序的性能分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>
+        <span class="special">最好情况</span>：O(n log n)
+    </li>
+    <li>
+        <span class="special">最坏情况</span>：O(n log n)
+    </li>
+    <li>
+        <span class="special">平均情况</span>：O(n log n)
+    </li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<p>
+    O(1)，只需要常数级别的额外空间。
+</p>
+
+<h2>
+    选择排序的应用场景
+</h2>
+
+<h3>
+    小规模数据
+</h3>
+
+<p>
+    当数据量较小时，选择排序的简单性使其成为不错的选择。
+</p>
+
+<h3>
+    交换成本高的场景
+</h3>
+
+<p>
+    当元素交换的成本很高时，选择排序的移动次数较少。
+</p>
+
+<h3>
+    内存受限的场景
+</h3>
+
+<p>
+    当内存空间非常有限时，选择排序的原地排序特性很有用。
+</p>
+
+<h2>
+    选择排序的优化
+</h2>
+
+<h3>
+    锦标赛排序
+</h3>
+
+<p>
+    使用锦标赛树（胜者树）来选择最小值，减少比较次数。
+</p>
+
+<h3>
+    树形选择排序
+</h3>
+
+<p>
+    使用完全二叉树结构来选择最小值，提高效率。
+</p>

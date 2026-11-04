@@ -1,0 +1,194 @@
+<header>
+    比较和运算方法
+</header>
+<h2>
+    比较操作符
+</h2>
+<p>
+    通过实现比较特殊方法，可以让自定义对象支持比较操作符（==, !=, <, <=, >, >=）。
+</p>
+<pre tag="python">
+class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+    
+    def __eq__(self, other):
+        """等于"""
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.score == other.score
+    
+    def __ne__(self, other):
+        """不等于"""
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.score != other.score
+    
+    def __lt__(self, other):
+        """小于"""
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.score < other.score
+    
+    def __le__(self, other):
+        """小于等于"""
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.score <= other.score
+    
+    def __gt__(self, other):
+        """大于"""
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.score > other.score
+    
+    def __ge__(self, other):
+        """大于等于"""
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.score >= other.score
+    
+    def __str__(self):
+        return f"{self.name}: {self.score}"
+
+# 使用比较操作
+s1 = Student("Alice", 85)
+s2 = Student("Bob", 90)
+s3 = Student("Charlie", 85)
+
+print(s1 == s3)  # True
+print(s1 < s2)   # True
+print(s1 <= s3)  # True
+print(s2 > s1)   # True
+
+# 排序
+students = [s1, s2, s3]
+sorted_students = sorted(students)
+for student in sorted_students:
+    print(student)
+</pre>
+
+<h2>
+    数值运算
+</h2>
+<pre tag="python">
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __add__(self, other):
+        """加法"""
+        if isinstance(other, Vector):
+            return Vector(self.x + other.x, self.y + other.y)
+        return NotImplemented
+    
+    def __sub__(self, other):
+        """减法"""
+        if isinstance(other, Vector):
+            return Vector(self.x - other.x, self.y - other.y)
+        return NotImplemented
+    
+    def __mul__(self, scalar):
+        """标量乘法"""
+        if isinstance(scalar, (int, float)):
+            return Vector(self.x * scalar, self.y * scalar)
+        return NotImplemented
+    
+    def __rmul__(self, scalar):
+        """右乘法（处理 scalar * vector）"""
+        return self.__mul__(scalar)
+    
+    def __truediv__(self, scalar):
+        """除法"""
+        if isinstance(scalar, (int, float)) and scalar != 0:
+            return Vector(self.x / scalar, self.y / scalar)
+        return NotImplemented
+    
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+    
+    def __abs__(self):
+        """绝对值（向量的模）"""
+        import math
+        return math.sqrt(self.x**2 + self.y**2)
+
+# 使用数值运算
+v1 = Vector(3, 4)
+v2 = Vector(1, 2)
+
+print(v1 + v2)      # Vector(4, 6)
+print(v1 - v2)      # Vector(2, 2)
+print(v1 * 2)       # Vector(6, 8)
+print(3 * v1)       # Vector(9, 12)
+print(v1 / 2)       # Vector(1.5, 2.0)
+print(abs(v1))      # 5.0
+</pre>
+
+<h2>
+    反向运算方法
+</h2>
+<pre tag="python">
+class Fraction:
+    def __init__(self, numerator, denominator=1):
+        if denominator == 0:
+            raise ValueError("分母不能为0")
+        self.numerator = numerator
+        self.denominator = denominator
+        self.__simplify()
+    
+    def __simplify(self):
+        """约分"""
+        import math
+        gcd = math.gcd(self.numerator, self.denominator)
+        self.numerator //= gcd
+        self.denominator //= gcd
+        if self.denominator < 0:
+            self.numerator = -self.numerator
+            self.denominator = -self.denominator
+    
+    def __add__(self, other):
+        """分数加法"""
+        if isinstance(other, Fraction):
+            num = self.numerator * other.denominator + other.numerator * self.denominator
+            den = self.denominator * other.denominator
+            return Fraction(num, den)
+        elif isinstance(other, int):
+            return self + Fraction(other)
+        return NotImplemented
+    
+    def __radd__(self, other):
+        """右加法（处理 int + Fraction）"""
+        return self.__add__(other)
+    
+    def __mul__(self, other):
+        """乘法"""
+        if isinstance(other, Fraction):
+            return Fraction(self.numerator * other.numerator, 
+                          self.denominator * other.denominator)
+        elif isinstance(other, int):
+            return Fraction(self.numerator * other, self.denominator)
+        return NotImplemented
+    
+    def __rmul__(self, other):
+        """右乘法"""
+        return self.__mul__(other)
+    
+    def __str__(self):
+        if self.denominator == 1:
+            return str(self.numerator)
+        return f"{self.numerator}/{self.denominator}"
+    
+    def __repr__(self):
+        return f"Fraction({self.numerator}, {self.denominator})"
+
+# 使用分数运算
+f1 = Fraction(1, 2)
+f2 = Fraction(1, 3)
+
+print(f1 + f2)      # 5/6
+print(f1 * f2)      # 1/6
+print(2 + f1)       # 5/2
+print(3 * f1)       # 3/2
+</pre>

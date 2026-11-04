@@ -1,0 +1,195 @@
+<header>
+    Object 对象
+</header>
+<h2>
+    keys()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.keys(obj)
+</pre>
+<p>
+    返回一个由给定对象的所有可枚举属性名组成的数组。属性名的顺序与通过 for...in 循环相同。
+</p>
+<h2>
+    values()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.values(obj)
+</pre>
+<p>
+    返回一个由给定对象的所有可枚举属性值组成的数组。
+</p>
+<h2>
+    entries()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.entries(obj)
+</pre>
+<p>
+    返回一个由给定对象的自身可枚举属性的键值对数组。每个键值对是一个数组 [key, value]。
+</p>
+<h2>
+    fromEntries()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.fromEntries(iterable)
+</pre>
+<p>
+    将键值对数组转换为对象。与 Object.entries() 相反。
+</p>
+<h2>
+    assign()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.assign(target, source1, source2, ...)
+</pre>
+<p>
+    将一个或多个源对象的可枚举属性复制到目标对象，返回目标对象。会修改原对象。
+</p>
+<h2>
+    create()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.create(proto, propertiesObject)
+</pre>
+<p>
+    创建一个新对象，使用现有的对象作为新对象的原型。proto 为新对象的原型对象。
+</p>
+<h2>
+    defineProperty()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.defineProperty(obj, prop, descriptor)
+</pre>
+<p>
+    在一个对象上定义新属性或修改现有属性。descriptor 为属性描述符（包含 value、writable、enumerable、configurable 等）。
+</p>
+<h2>
+    getOwnPropertyDescriptor()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.getOwnPropertyDescriptor(obj, prop)
+</pre>
+<p>
+    返回指定对象上一个自有属性对应的属性描述符。返回值包含 value、writable、enumerable、configurable、get、set 等。
+</p>
+<h2>
+    hasOwnProperty()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+obj.hasOwnProperty(prop)
+</pre>
+<p>
+    判断对象自身是否具有指定属性（不包含原型链上的属性）。返回 true 或 false。
+</p>
+<h2>
+    hasOwn()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.hasOwn(obj, prop)
+</pre>
+<p>
+    判断对象自身是否具有指定属性。与 hasOwnProperty() 类似但更简洁。ES2022 新增。
+</p>
+<h2>
+    freeze()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.freeze(obj)
+</pre>
+<p>
+    冻结一个对象。冻结后对象不能被修改、删除或新增属性。冻结是浅冻结。
+</p>
+<h2>
+    isFrozen()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.isFrozen(obj)
+</pre>
+<p>
+    判断一个对象是否被冻结。返回 true 或 false。
+</p>
+<h2>
+    seal()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.seal(obj)
+</pre>
+<p>
+    封闭一个对象。封闭后对象不能被删除或新增属性，但已有属性的值可以修改。
+</p>
+<h2>
+    isSealed()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.isSealed(obj)
+</pre>
+<p>
+    判断一个对象是否被封闭。返回 true 或 false。
+</p>
+<h2>
+    isExtensible()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.isExtensible(obj)
+</pre>
+<p>
+    判断一个对象是否可扩展（是否可以添加新属性）。返回 true 或 false。
+</p>
+<h2>
+    is()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Object.is(value1, value2)
+</pre>
+<p>
+    判断两个值是否为同一个值。与 === 类似，但处理 NaN 和 -0 有差异。
+</p>

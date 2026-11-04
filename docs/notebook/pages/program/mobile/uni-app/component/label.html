@@ -1,0 +1,86 @@
+<header>
+    label
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>for</td>
+            <td>String</td>
+            <td></td>
+            <td>绑定控件的 id</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <view class="form-item">
+      <label for="username">用户名：</label>
+      <input id="username" placeholder="请输入用户名" />
+    </view>
+    <view class="form-item">
+      <label>
+        <checkbox value="agree" />
+        <text>我同意用户协议</text>
+      </label>
+    </view>
+    <view class="form-item">
+      <label>
+        <radio value="male" />
+        <text>男</text>
+      </label>
+      <label>
+        <radio value="female" />
+        <text>女</text>
+      </label>
+    </view>
+    <view class="form-item">
+      <label>
+        <switch />
+        <text>接收推送通知</text>
+      </label>
+    </view>
+  </view>
+</template>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.form-item {
+  margin-bottom: 15px;
+}
+
+.form-item label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-item label text {
+  margin-left: 10px;
+}
+
+input {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+</style>
+</pre>

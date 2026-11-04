@@ -1,0 +1,93 @@
+<header>
+    生成器迭代器
+</header>
+<pre tag="python">
+# 生成器函数
+def fibonacci_generator(n):
+    """生成斐波那契数列"""
+    a, b = 0, 1
+    count = 0
+    while count < n:
+        yield a
+        a, b = b, a + b
+        count += 1
+
+def square_generator(numbers):
+    """生成平方数"""
+    for num in numbers:
+        yield num ** 2
+
+# 生成器表达式
+def generator_expressions():
+    """生成器表达式"""
+
+    # 列表推导式（立即计算）
+    squares_list = [x**2 for x in range(5)]
+    print(f"列表推导式结果: {squares_list}")
+
+    # 生成器表达式（延迟计算）
+    squares_gen = (x**2 for x in range(5))
+    print(f"生成器表达式类型: {type(squares_gen)}")
+
+    # 逐个获取值
+    print("生成器表达式结果:")
+    for square in squares_gen:
+        print(square, end=' ')
+    print()
+
+# 无限迭代器
+def infinite_iterators():
+    """无限迭代器"""
+
+    import itertools
+
+    # 无限计数器
+    counter = itertools.count(start=1, step=2)
+    print("无限计数器 (前10个):")
+    for i in range(10):
+        print(next(counter), end=' ')
+    print()
+
+    # 无限循环
+    cycle_iter = itertools.cycle(['A', 'B', 'C'])
+    print("无限循环 (前12个):")
+    for i in range(12):
+        print(next(cycle_iter), end=' ')
+    print()
+
+    # 无限重复
+    repeat_iter = itertools.repeat('Hello', 5)
+    print("有限重复:")
+    for item in repeat_iter:
+        print(item, end=' ')
+    print()
+
+# 使用生成器迭代器
+def use_generator_iterators():
+    """使用生成器迭代器"""
+
+    print("=== 斐波那契生成器 ===")
+    fib = fibonacci_generator(10)
+    print("斐波那契数列 (前10个):")
+    for num in fib:
+        print(num, end=' ')
+    print()
+
+    print("\n=== 平方数生成器 ===")
+    numbers = [1, 2, 3, 4, 5]
+    squares = square_generator(numbers)
+    print("原始数字:", numbers)
+    print("平方数:")
+    for square in squares:
+        print(square, end=' ')
+    print()
+
+    print("\n=== 生成器表达式 ===")
+    generator_expressions()
+
+    print("\n=== 无限迭代器 ===")
+    infinite_iterators()
+
+# 运行生成器迭代器示例
+use_generator_iterators()
+</pre>

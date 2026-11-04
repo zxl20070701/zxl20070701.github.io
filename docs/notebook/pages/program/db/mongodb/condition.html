@@ -1,0 +1,85 @@
+<header>
+    条件查询与运算符
+</header>
+<h2>
+    比较运算符
+</h2>
+<pre tag="javascript">
+// 等于
+db.users.find({name: "张三"})
+// 不等于 $ne
+db.users.find({city: {$ne: "北京"}})
+// 大于 $gt
+db.users.find({age: {$gt: 20}})
+// 大于等于 $gte
+db.users.find({age: {$gte: 20}})
+// 小于 $lt
+db.users.find({age: {$lt: 30}})
+// 小于等于 $lte
+db.users.find({age: {$lte: 30}})
+// 范围查询
+db.users.find({age: {$gte: 20, $lte: 30}})
+</pre>
+<h2>
+    逻辑运算符
+</h2>
+<pre tag="javascript">
+// 与 $and（默认）
+db.users.find({age: 20, city: "北京"})
+db.users.find({$and: [{age: 20}, {city: "北京"}]})
+// 或 $or
+db.users.find({$or: [{age: 20}, {city: "上海"}]})
+// 非 $not
+db.users.find({age: {$not: {$gte: 30}}})
+// 全部不匹配 $nor
+db.users.find({$nor: [{age: 20}, {city: "上海"}]})
+</pre>
+<h2>
+    匹配运算符
+</h2>
+<pre tag="javascript">
+// IN 匹配多个值
+db.users.find({city: {$in: ["北京", "上海", "广州"]}})
+// 不在列表中 $nin
+db.users.find({city: {$nin: ["深圳", "杭州"]}})
+// 存在字段 $exists
+db.users.find({email: {$exists: true}})
+db.users.find({phone: {$exists: false}})
+// 类型匹配 $type
+db.users.find({age: {$type: "int"}})
+</pre>
+<h2>
+    正则表达式匹配
+</h2>
+<pre tag="javascript">
+// 前缀匹配
+db.users.find({name: /张/})
+// 后缀匹配
+db.users.find({name: /三$/})
+// 包含匹配
+db.users.find({name: /小/})
+// 不区分大小写
+db.users.find({name: /zhang/i})
+</pre>
+<h2>
+    数组运算符
+</h2>
+<pre tag="javascript">
+// 数组包含指定元素
+db.users.find({tags: "编程"})
+db.users.find({tags: {$in: ["编程", "音乐"]}})
+// 数组长度匹配 $size
+db.users.find({tags: {$size: 3}})
+// 数组全部包含 $all
+db.users.find({tags: {$all: ["编程", "音乐"]}})
+// 数组元素匹配 $elemMatch
+db.users.find({scores: {$elemMatch: {$gte: 80, $lt: 90}}})
+</pre>
+<h2>
+    嵌套文档查询
+</h2>
+<pre tag="javascript">
+// 查询嵌套字段
+db.users.find({"address.city": "北京"})
+db.users.find({"address.city": "北京", "address.zip": "100000"})
+</pre>

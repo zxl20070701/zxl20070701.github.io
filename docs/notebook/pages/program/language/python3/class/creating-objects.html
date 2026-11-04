@@ -1,0 +1,72 @@
+<header>
+    创建对象
+</header>
+<h2>
+    对象实例化
+</h2>
+<p>
+    通过调用类名并传递必要的参数来创建对象：
+</p>
+<pre tag="python">
+# 创建对象
+obj1 = MyClass("Alice")
+obj2 = MyClass("Bob")
+
+# 访问属性
+print(obj1.name)  # 输出: Alice
+print(obj2.name)  # 输出: Bob
+
+# 调用方法
+print(obj1.greet())  # 输出: Hello, Alice!
+print(obj2.greet())  # 输出: Hello, Bob!
+</pre>
+
+<h2>
+    对象创建过程
+</h2>
+<ol>
+    <li>Python为新对象分配内存</li>
+    <li>调用类的__new__方法创建实例</li>
+    <li>调用__init__方法初始化对象</li>
+    <li>返回对象引用</li>
+</ol>
+
+<h2>
+    对象访问方式
+</h2>
+<pre tag="python">
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def introduce(self):
+        return f"我是{self.name}，今年{self.age}岁"
+
+# 创建多个对象
+p1 = Person("小明", 20)
+p2 = Person("小红", 18)
+
+# 访问属性
+print(p1.name)  # 小明
+print(p2.age)   # 18
+
+# 调用方法
+print(p1.introduce())  # 我是小明，今年20岁
+print(p2.introduce())  # 我是小红，今年18岁
+</pre>
+
+<h2>
+    对象比较
+</h2>
+<pre tag="python">
+# 同一类的不同对象
+person1 = Person("Alice", 25)
+person2 = Person("Alice", 25)
+person3 = person1
+
+print(person1 == person2)  # False，不同对象
+print(person1 is person3)  # True，同一对象
+print(id(person1))         # 对象内存地址
+print(id(person2))         # 不同内存地址
+</pre>

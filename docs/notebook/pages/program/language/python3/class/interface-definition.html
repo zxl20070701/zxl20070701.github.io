@@ -1,0 +1,224 @@
+<header>
+    接口定义
+</header>
+<h2>
+    接口概念
+</h2>
+<p>
+    <span class="important">接口（Interface）</span>是一种特殊的抽象类，它只包含抽象方法，不包含具体实现。接口定义了一组行为规范，实现接口的类必须遵循这些规范。
+</p>
+
+<h2>
+    纯接口定义
+</h2>
+<pre tag="python">
+from abc import ABC, abstractmethod
+
+class Drawable(ABC):
+    """可绘制接口"""
+    
+    @abstractmethod
+    def draw(self):
+        """绘制方法"""
+        pass
+    
+    @abstractmethod
+    def get_area(self):
+        """获取面积"""
+        pass
+
+class Movable(ABC):
+    """可移动接口"""
+    
+    @abstractmethod
+    def move(self, x, y):
+        """移动到指定位置"""
+        pass
+    
+    @abstractmethod
+    def get_position(self):
+        """获取当前位置"""
+        pass
+
+class Resizable(ABC):
+    """可调整大小接口"""
+    
+    @abstractmethod
+    def resize(self, width, height):
+        """调整大小"""
+        pass
+    
+    @abstractmethod
+    def get_size(self):
+        """获取当前大小"""
+        pass
+
+class Shape(Drawable, Movable, Resizable):
+    """实现多个接口的形状类"""
+    
+    def __init__(self, x=0, y=0, width=0, height=0):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+    
+    def move(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def get_position(self):
+        return (self.x, self.y)
+    
+    def resize(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def get_size(self):
+        return (self.width, self.height)
+
+class Rectangle(Shape):
+    def draw(self):
+        return f"Drawing rectangle at ({self.x}, {self.y}) with size {self.width}x{self.height}"
+    
+    def get_area(self):
+        return self.width * self.height
+
+class Circle(Shape):
+    def __init__(self, x=0, y=0, radius=1):
+        super().__init__(x, y, radius*2, radius*2)
+        self.radius = radius
+    
+    def draw(self):
+        return f"Drawing circle at ({self.x}, {self.y}) with radius {self.radius}"
+    
+    def get_area(self):
+        import math
+        return math.pi * self.radius ** 2
+    
+    def resize(self, width, height):
+        # 对于圆形，只使用宽度作为直径
+        self.radius = width / 2
+        self.width = width
+        self.height = width
+
+# 使用接口
+shapes = [
+    Rectangle(10, 20, 100, 50),
+    Circle(30, 40, 25)
+]
+
+for shape in shapes:
+    print(shape.draw())
+    print(f"Area: {shape.get_area():.2f}")
+    shape.move(50, 60)
+    print(f"New position: {shape.get_position()}")
+    shape.resize(80, 80)
+    print(f"New size: {shape.get_size()}")
+    print("-" * 30)
+</pre>
+
+<h2>
+    使用register实现接口
+</h2>
+<pre tag="python">
+from abc import ABC
+
+class Serializable(ABC):
+    """可序列化接口"""
+    pass
+
+class JsonSerializable:
+    def to_json(self):
+        import json
+        return json.dumps(self.__dict__)
+
+class XmlSerializable:
+    def to_xml(self):
+        # 简化的XML序列化
+        items = [f"<{k}>{v}</{k}>" for k, v in self.__dict__.items()]
+        return f"<root>{''.join(items)}</root>"
+
+# 注册为接口实现
+Serializable.register(JsonSerializable)
+Serializable.register(XmlSerializable)
+
+class Person(JsonSerializable):
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+class Product(XmlSerializable):
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+# 使用注册的接口
+person = Person("Alice", 30)
+product = Product("Laptop", 999.99)
+
+print("Person JSON:", person.to_json())
+print("Product XML:", product.to_xml())
+
+# 检查是否是接口实现
+print(f"Person is Serializable: {isinstance(person, Serializable)}")
+print(f"Product is Serializable: {isinstance(product, Serializable)}")
+</pre>
+
+<h2>
+    虚拟子类
+</h2>
+<pre tag="python">
+from abc import ABC
+
+class Cacheable(ABC):
+    """可缓存接口"""
+    
+    @classmethod
+    def __subclasshook__(cls, subclass):
+        """虚拟子类钩子"""
+        return (hasattr(subclass, 'cache_key') and 
+                callable(subclass.cache_key) and
+                hasattr(subclass, 'get_cache_data') and
+                callable(subclass.get_cache_data))
+
+class User:
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+    
+    def cache_key(self):
+        return f"user:{self.id}"
+    
+    def get_cache_data(self):
+        return {'id': self.id, 'name': self.name}
+
+class Product:
+    def __init__(self, sku, name):
+        self.sku = sku
+        self.name = name
+    
+    def cache_key(self):
+        return f"product:{self.sku}"
+    
+    def get_cache_data(self):
+        return {'sku': self.sku, 'name': self.name}
+
+# 使用虚拟子类
+user = User(1, "Alice")
+product = Product("ABC123", "Laptop")
+
+print(f"User is Cacheable: {isinstance(user, Cacheable)}")
+print(f"Product is Cacheable: {isinstance(product, Cacheable)}")
+
+# 使用缓存接口
+def cache_item(item):
+    if isinstance(item, Cacheable):
+        key = item.cache_key()
+        data = item.get_cache_data()
+        print(f"Caching {key}: {data}")
+    else:
+        print(f"Item {type(item).__name__} is not cacheable")
+
+cache_item(user)
+cache_item(product)
+</pre>

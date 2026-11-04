@@ -1,0 +1,31 @@
+<header>
+    SharedPreferences
+</header>
+<p>
+    SharedPreferences 用于以键值对形式存储少量数据（用户偏好、设置项等）。
+</p>
+<h2>
+    写入数据
+</h2>
+<pre tag="java">
+SharedPreferences sp = getSharedPreferences("config", MODE_PRIVATE);
+SharedPreferences.Editor editor = sp.edit();
+editor.putString("username", "zxl");
+editor.putInt("age", 18);
+editor.apply(); // 推荐使用 apply()，异步写入磁盘
+</pre>
+<h2>
+    读取数据
+</h2>
+<pre tag="java">
+SharedPreferences sp = getSharedPreferences("config", MODE_PRIVATE);
+String username = sp.getString("username", "默认值");
+int age = sp.getInt("age", 0);
+</pre>
+<h2>
+    清除数据
+</h2>
+<pre tag="java">
+SharedPreferences sp = getSharedPreferences("config", MODE_PRIVATE);
+sp.edit().clear().apply();
+</pre>

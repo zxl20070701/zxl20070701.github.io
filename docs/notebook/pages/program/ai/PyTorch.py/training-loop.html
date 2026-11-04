@@ -1,0 +1,108 @@
+<header>
+    训练循环
+</header>
+
+<p>
+    PyTorch 的训练循环通常由五步组成：前向传播、计算损失、梯度清零、反向传播、参数更新。理解这个循环，比背具体 API 更重要。
+</p>
+
+<h2>
+    核心流程
+</h2>
+
+<pre>
+for 每个 epoch:
+    for 每个 batch:
+        1. pred = model(x)
+        2. loss = loss_fn(pred, y)
+        3. optimizer.zero_grad()
+        4. loss.backward()
+        5. optimizer.step()
+</pre>
+
+<h2>
+    完整示例
+</h2>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+import torch
+from torch import nn
+
+def train_one_epoch(model, loader, loss_fn, optimizer, device):
+    model.train()
+    total_loss = 0
+
+    for x, y in loader:
+        x = x.to(device)
+        y = y.to(device)
+
+        pred = model(x)
+        loss = loss_fn(pred, y)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        total_loss += loss.item()
+
+    return total_loss / len(loader)
+</pre>
+
+<h2>
+    验证循环
+</h2>
+
+<p>
+    验证阶段不更新参数，所以不需要 backward 和 optimizer.step，并且应该使用 eval 模式和 no_grad。
+</p>
+
+<pre tag="python">
+def evaluate(model, loader, loss_fn, device):
+    model.eval()
+    total_loss = 0
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for x, y in loader:
+            x = x.to(device)
+            y = y.to(device)
+
+            pred = model(x)
+            loss = loss_fn(pred, y)
+            total_loss += loss.item()
+
+            labels = pred.argmax(dim=1)
+            correct += (labels == y).sum().item()
+            total += y.size(0)
+
+    return total_loss / len(loader), correct / total
+</pre>
+
+<h2>
+    损失函数与优化器
+</h2>
+
+<pre tag="python">
+model = SimpleNet().to(device)
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+</pre>
+
+<p>
+    分类任务常用 CrossEntropyLoss，回归任务常用 MSELoss 或 L1Loss。优化器可以先从 Adam 开始，再根据任务尝试 SGD、AdamW 等。
+</p>
+
+<h2>
+    常见训练问题
+</h2>
+
+<ul>
+    <li>loss 不下降：检查学习率、标签格式、模型输出维度。</li>
+    <li>训练准确率高、验证准确率低：可能过拟合，需要数据增强、正则化或更多数据。</li>
+    <li>报 shape mismatch：打印输入、输出、标签的 shape。</li>
+    <li>显存不足：减小 batch_size 或模型尺寸。</li>
+    <li>结果每次差别很大：设置随机种子，并检查数据划分。</li>
+</ul>

@@ -1,0 +1,62 @@
+<header>
+    文件存储
+</header>
+<p>
+    Android 中常见的文件存储方式有两种：内部存储和外部存储。
+</p>
+<h2>
+    内部存储
+</h2>
+<p>
+    位于 /data/data/&lt;packageName&gt;/files 下，应用卸载时会一并删除。
+</p>
+<pre tag="java">
+// 写入
+FileOutputStream fos;
+try {
+    fos = openFileOutput("data.txt", MODE_PRIVATE);
+    fos.write("hello".getBytes("UTF-8"));
+    fos.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+// 读取
+FileInputStream fis;
+try {
+    fis = openFileInput("data.txt");
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    byte[] buffer = new byte[1024];
+    int len;
+    while ((len = fis.read(buffer)) != -1) {
+        baos.write(buffer, 0, len);
+    }
+    String content = new String(baos.toByteArray(), "UTF-8");
+    fis.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+</pre>
+<h2>
+    外部存储
+</h2>
+<p>
+    一般指手机内置的共享存储或外置 SD 卡。应用专属目录（getExternalFilesDir()）无需申请权限；写入共享存储在高版本受分区存储限制，相关权限已废弃。
+</p>
+<pre tag="xml">
+&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    android:maxSdkVersion="28" /&gt;
+&lt;uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    android:maxSdkVersion="32" /&gt;
+</pre>
+<pre tag="java">
+File dir = getExternalFilesDir(null);
+File file = new File(dir, "test.txt");
+try {
+    FileWriter fw = new FileWriter(file);
+    fw.write("hello");
+    fw.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+</pre>

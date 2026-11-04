@@ -1,0 +1,194 @@
+<header>
+    分类
+</header>
+<p>
+    计算机网络根据其覆盖范围、拓扑结构、传输技术、使用性质等多个维度可以进行不同的分类。每种分类方式都有其特定的应用场景和技术特点。
+</p>
+<h2>
+    按地理范围分类
+</h2>
+<p>
+    根据网络覆盖的地理范围，可以将网络分为以下几类：
+</p>
+<h3>
+    1. 个人区域网 (PAN - Personal Area Network)
+</h3>
+<p>
+    覆盖范围通常在10米以内，用于个人设备之间的通信。
+</p>
+<ul>
+    <li><span class="special">技术特点</span>：低功耗、短距离、点对点或星型拓扑</li>
+    <li><span class="special">典型技术</span>：蓝牙(Bluetooth)、ZigBee、红外(IrDA)、USB</li>
+    <li><span class="special">应用场景</span>：手机与耳机连接、无线鼠标键盘、智能手环</li>
+    <li><span class="special">传输速率</span>：1 Mbps - 24 Mbps（蓝牙5.0可达2 Mbps）</li>
+</ul>
+<h3>
+    2. 局域网 (LAN - Local Area Network)
+</h3>
+<p>
+    覆盖范围通常在几百米到几公里，用于建筑物或校园内的设备互联。
+</p>
+<ul>
+    <li><span class="special">技术特点</span>：高速传输、低延迟、私有网络</li>
+    <li><span class="special">典型技术</span>：以太网(Ethernet)、Wi-Fi、令牌环(Token Ring)</li>
+    <li><span class="special">应用场景</span>：办公室网络、家庭网络、校园网</li>
+    <li><span class="special">传输速率</span>：10 Mbps - 100 Gbps</li>
+</ul>
+<h3>
+    3. 城域网 (MAN - Metropolitan Area Network)
+</h3>
+<p>
+    覆盖一个城市范围，连接多个局域网。
+</p>
+<ul>
+    <li><span class="special">技术特点</span>：中等覆盖范围、中等传输速率、公共服务</li>
+    <li><span class="special">典型技术</span>：分布式队列双总线(DQDB)、同步数字体系(SDH)</li>
+    <li><span class="special">应用场景</span>：城市范围内的企业互联、政府机构网络</li>
+    <li><span class="special">传输速率</span>：100 Mbps - 10 Gbps</li>
+</ul>
+<h3>
+    4. 广域网 (WAN - Wide Area Network)
+</h3>
+<p>
+    覆盖范围可达数千公里，连接不同城市或国家的网络。
+</p>
+<ul>
+    <li><span class="special">技术特点</span>：大范围覆盖、多种传输介质、复杂路由</li>
+    <li><span class="special">典型技术</span>：帧中继(Frame Relay)、ATM、MPLS、SD-WAN</li>
+    <li><span class="special">应用场景</span>：互联网、跨国公司网络、电信运营商网络</li>
+    <li><span class="special">传输速率</span>：64 Kbps - 100 Gbps</li>
+</ul>
+<h3>
+    5. 互联网 (Internet)
+</h3>
+<p>
+    全球最大的计算机网络，连接世界各地的无数网络。
+</p>
+<ul>
+    <li><span class="special">技术特点</span>：全球覆盖、开放性、标准化协议</li>
+    <li><span class="special">核心技术</span>：TCP/IP协议族、DNS、BGP路由协议</li>
+    <li><span class="special">应用场景</span>：万维网、电子邮件、文件传输、即时通信</li>
+    <li><span class="special">规模特征</span>：数十亿台设备互联</li>
+</ul>
+<h2>
+    按拓扑结构分类
+</h2>
+<h3>
+    1. 总线型拓扑 (Bus Topology)
+</h3>
+<ul>
+    <li><span class="special">结构特点</span>：所有设备通过分支线连接到一条主干电缆</li>
+    <li><span class="special">优点</span>：结构简单、成本低、易于扩展</li>
+    <li><span class="special">缺点</span>：单点故障（主干电缆）、故障诊断困难、性能随负载增加而下降</li>
+    <li><span class="special">典型应用</span>：早期以太网(10BASE2、10BASE5)</li>
+</ul>
+<h3>
+    2. 星型拓扑 (Star Topology)
+</h3>
+<ul>
+    <li><span class="special">结构特点</span>：所有设备通过点对点连接到一个中心节点</li>
+    <li><span class="special">优点</span>：易于安装和维护、单点故障不影响整个网络、故障诊断容易</li>
+    <li><span class="special">缺点</span>：中心节点成为瓶颈、布线成本高</li>
+    <li><span class="special">典型应用</span>：现代以太网(使用交换机作为中心节点)</li>
+</ul>
+<h3>
+    3. 环型拓扑 (Ring Topology)
+</h3>
+<ul>
+    <li><span class="special">结构特点</span>：设备通过点到点连接形成闭合环路</li>
+    <li><span class="special">优点</span>：传输延迟确定、适合实时应用</li>
+    <li><span class="special">缺点</span>：单点故障可能导致整个网络瘫痪、扩展困难</li>
+    <li><span class="special">典型应用</span>：令牌环网(Token Ring)、FDDI光纤分布式数据接口</li>
+</ul>
+<h3>
+    4. 网状拓扑 (Mesh Topology)
+</h3>
+<ul>
+    <li><span class="special">结构特点</span>：每个节点都与多个其他节点直接相连</li>
+    <li><span class="special">优点</span>：高可靠性、冗余路径、故障容错能力强</li>
+    <li><span class="special">缺点</span>：布线复杂、成本高、管理困难</li>
+    <li><span class="special">典型应用</span>：互联网骨干网、军事通信网络</li>
+</ul>
+<h3>
+    5. 树型拓扑 (Tree Topology)
+</h3>
+<ul>
+    <li><span class="special">结构特点</span>：分层结构，根节点连接多个分支节点</li>
+    <li><span class="special">优点</span>：易于扩展、故障隔离、层次化管理</li>
+    <li><span class="special">缺点</span>：根节点故障影响大、依赖上层节点</li>
+    <li><span class="special">典型应用</span>：大型组织网络、有线电视网络</li>
+</ul>
+<h2>
+    按传输技术分类
+</h2>
+<h3>
+    1. 广播式网络 (Broadcast Network)
+</h3>
+<p>
+    所有节点共享同一通信信道，任一节点发送的信息可被所有其他节点接收。
+</p>
+<ul>
+    <li><span class="special">技术特点</span>：单点发送、多点接收、信道共享</li>
+    <li><span class="special">典型应用</span>：以太网、无线局域网</li>
+    <li><span class="special">介质访问控制</span>：CSMA/CD、CSMA/CA</li>
+</ul>
+<h3>
+    2. 点对点网络 (Point-to-Point Network)
+</h3>
+<p>
+    每对节点之间都有专用的通信链路，信息只在特定节点间传输。
+</p>
+<ul>
+    <li><span class="special">技术特点</span>：专用链路、一对一通信、信道独享</li>
+    <li><span class="special">典型应用</span>：电话网络、专线网络、PPP连接</li>
+    <li><span class="special">路由机制</span>：需要路由算法确定传输路径</li>
+</ul>
+<h2>
+    按使用性质分类
+</h2>
+<h3>
+    1. 公用网 (Public Network)
+</h3>
+<ul>
+    <li><span class="special">特点</span>：由电信运营商建设和运营，向公众提供服务</li>
+    <li><span class="special">典型代表</span>：中国电信、中国移动、中国联通的网络</li>
+    <li><span class="special">服务范围</span>：电话通信、互联网接入、专线服务</li>
+</ul>
+<h3>
+    2. 专用网 (Private Network)
+</h3>
+<ul>
+    <li><span class="special">特点</span>：特定组织或机构自建自用，不向公众开放</li>
+    <li><span class="special">典型代表</span>：企业内部网(Intranet)、校园网、政府专网</li>
+    <li><span class="special">安全特性</span>：访问控制严格、数据保密性高</li>
+</ul>
+<h2>
+    按交换方式分类
+</h2>
+<h3>
+    1. 电路交换网络 (Circuit Switching)
+</h3>
+<ul>
+    <li><span class="special">特点</span>：建立专用的物理通路，通信期间通路一直被占用</li>
+    <li><span class="special">优点</span>：实时性好、传输质量稳定</li>
+    <li><span class="special">缺点</span>：资源利用率低、建立连接时间长</li>
+    <li><span class="special">典型应用</span>：传统电话网络(PSTN)</li>
+</ul>
+<h3>
+    2. 报文交换网络 (Message Switching)
+</h3>
+<ul>
+    <li><span class="special">特点</span>：存储转发整个报文，无需建立专用通路</li>
+    <li><span class="special">优点</span>：线路利用率高、支持不同速率设备</li>
+    <li><span class="special">缺点</span>：传输延迟大、需要大容量存储</li>
+    <li><span class="special">典型应用</span>：早期的电报系统</li>
+</ul>
+<h3>
+    3. 分组交换网络 (Packet Switching)
+</h3>
+<ul>
+    <li><span class="special">特点</span>：将数据分割成小的分组独立传输，存储转发</li>
+    <li><span class="special">优点</span>：线路利用率高、传输延迟小、可靠性高</li>
+    <li><span class="special">缺点</span>：分组可能乱序到达、需要排序重组</li>
+    <li><span class="special">典型应用</span>：现代互联网、X.25、帧中继、ATM</li>
+</ul>

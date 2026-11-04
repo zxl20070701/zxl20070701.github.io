@@ -1,0 +1,132 @@
+<header>
+    checkbox
+</header>
+<h2>
+    checkbox-group 属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@change</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>checkbox-group中选中项发生改变时触发 change 事件，detail = {value:[选中的checkbox的value的数组]}</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    checkbox 属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>value</td>
+            <td>String</td>
+            <td></td>
+            <td>checkbox标识，选中时触发checkbox-group的 change 事件，并携带 checkbox 的 value</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁用</td>
+        </tr>
+        <tr>
+            <td>checked</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>当前是否选中，可用来设置默认选中</td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>String</td>
+            <td>#09BB07</td>
+            <td>checkbox的颜色，同css的color</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <checkbox-group @change="checkboxChange">
+      <label class="checkbox-item" v-for="item in items" :key="item.name">
+        <checkbox :value="item.name" :checked="item.checked" />
+        <text>{{item.value}}</text>
+      </label>
+    </checkbox-group>
+    <view class="result">
+      <text>选中的项：{{checkedItems.join(', ')}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      items: [
+        {name: 'USA', value: '美国'},
+        {name: 'CHN', value: '中国', checked: true},
+        {name: 'BRA', value: '巴西'},
+        {name: 'JPN', value: '日本', checked: true},
+        {name: 'ENG', value: '英国'},
+        {name: 'TUR', value: '法国'}
+      ],
+      checkedItems: []
+    }
+  },
+  mounted() {
+    // 初始化选中的项
+    this.checkedItems = this.items.filter(item => item.checked).map(item => item.value);
+  },
+  methods: {
+    checkboxChange(e) {
+      const values = e.detail.value;
+      this.checkedItems = this.items.filter(item => values.includes(item.name)).map(item => item.value);
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.checkbox-item text {
+  margin-left: 10px;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+</style>
+</pre>

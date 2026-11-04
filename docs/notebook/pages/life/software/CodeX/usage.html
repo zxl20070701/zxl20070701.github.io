@@ -1,0 +1,212 @@
+<header>
+    使用技巧与权限模式
+</header>
+<p>
+    前面几篇讲的是安装和扩展，这篇整理 CodeX 日常使用里最实用的部分：权限模式怎么选、常用命令、提示词怎么写、以及和本地模型搭配时的避坑点。
+</p>
+<h2>
+    三种沙箱模式
+</h2>
+<p>
+    CodeX 的沙箱机制决定了它能碰哪些文件。模式选得合适，既安全又不打断你。要注意它其实是两个维度：<span class="special">sandbox_mode</span>（能碰什么）和 <span
+        class="special">approval_policy</span>（什么时候停下来问你，取值 <span class="special">untrusted</span> / <span class="special">on-request</span> / <span
+        class="special">never</span>）。<span class="special">/permissions</span> 里的 Read Only / Auto / Full Access 是这两者的预设组合。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>模式（sandbox_mode）</th>
+            <th>权限范围</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">read-only</span></td>
+            <td>只读文件，只能给建议</td>
+            <td>审查代码、学习理解项目</td>
+        </tr>
+        <tr>
+            <td><span class="special">workspace-write</span></td>
+            <td>可写当前工作目录（默认）</td>
+            <td><span class="important">日常开发推荐</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">danger-full-access</span></td>
+            <td>无沙箱，完整系统访问</td>
+            <td>容器/VM 环境中的高级用法</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">danger-full-access</span> 在本机主力开发环境下不要随便开——它意味着 CodeX 的任何 shell 命令都不受限，跑错一条命令的代价是真实的文件系统。真的需要全权限，就把 CodeX 放进容器或 VM 里跑。
+</div>
+<h2>
+    常用命令速查
+</h2>
+<pre>
+/new          在当前 CLI 里开一个新会话
+/resume       打开历史会话列表，挑一个继续
+/fork         把当前会话复制成一条新线程，方便分支探索
+/model        切换模型（顺带可调推理强度）
+/permissions  切换权限策略（Read Only / Auto / Full Access）
+/mcp          查看已配置的 MCP Server 及其工具
+/skills       浏览并使用 Skill
+/init         在当前目录生成 AGENTS.md 初稿
+/diff         查看工作区改动
+/compact      压缩上下文，腾出 token
+</pre>
+<h2>
+    线程与工作目录的关系
+</h2>
+<p>
+    CodeX 有个容易误解的设计：<span class="important">会话和项目目录是绑定的</span>。你在哪个目录启动 CodeX，这个目录就成了这次会话的工作目录，后续所有文件操作、沙箱可写范围都以它为准。
+</p>
+<p>
+    实际含义：想同时处理两个项目，就在两个目录里各开一个 CodeX 会话，它们互不干扰。想回到之前的对话，用 <span class="special">/resume</span> 打开会话列表挑一个；命令行里 <span class="special">codex resume --last</span> 只找当前目录下的最近会话，要跨目录找就加 <span class="special">--all</span>。
+</p>
+<h2>
+    提示词写作
+</h2>
+<h3>
+    三段式结构
+</h3>
+<p>
+    一个通用的模板，适用范围比想象中广：
+</p>
+<pre>
+[需求目标] + [技术栈指定] + [约束条件]
+
+✓ 好：创建一个用户登录系统，包含：1. MySQL 用户表设计 2. Node.js Express 登录接口
+       3. JWT Token 认证。框架用 Express，ORM 用 Sequelize，密码用 bcrypt 加密。
+
+✗ 差：写个登录接口
+</pre>
+<p>
+    后者的输出完全不可控——技术栈、表结构、错误处理方式全靠猜。
+</p>
+<h3>
+    几个立刻见效的习惯
+</h3>
+<ul>
+    <li><span class="important">贴具体内容</span>：报错栈、代码片段直接粘进来，比描述"有个 bug"有效得多</li>
+    <li><span class="important">一次一个目标</span>：任务太杂时 CodeX 会在几个方向上同时发散，反而什么都不深入</li>
+    <li><span class="important">贴文件而不是描述文件</span>：直接说"看下 src/api/request.ts 的错误处理"比说"请求那块逻辑好像有问题"更精准</li>
+    <li><span class="important">发现方向偏了立刻打断</span>：纠正一次的成本远低于让它做完再返工</li>
+</ul>
+<h2>
+    配置提速：自定义 model provider
+</h2>
+<p>
+    如果你想接本地模型或其他兼容服务（上一篇 env.html 里的 ollama 配置就是这一套），有两个关键参数值得注意：
+</p>
+<pre tag="toml">
+# ~/.codex/config.toml
+model = "qwen3.5:latest"
+model_provider = "ollama-local"
+model_reasoning_effort = "high"   # 推理强度：low / medium / high
+
+[model_providers.ollama-local]
+name = "Ollama"
+base_url = "http://localhost:11434/v1"
+wire_api = "responses"           # 关键：告诉 CodeX 用哪种 API
+</pre>
+<table>
+    <thead>
+        <tr>
+            <th>字段</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">wire_api</span></td>
+            <td><span class="important">最容易出错的一项</span>。当前版本只支持 <span class="special">responses</span>，也是默认值；上游只提供 chat completions 时会直接 400，需要中间加一层协议转换</td>
+        </tr>
+        <tr>
+            <td><span class="special">model_reasoning_effort</span></td>
+            <td>推理强度。本地小模型建议 <span class="special">low</span> 或 <span class="special">medium</span>，设 high 会大幅拖慢速度但不一定更好</td>
+        </tr>
+        <tr>
+            <td><span class="special">model_context_window</span></td>
+            <td>必须和后端实际支持的上下文长度一致，写大了会导致请求被截断</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    <span class="special">model</span> 字段要写完整模型名（比如 <span class="special">qwen3.5:latest</span> 而不是 <span class="special">qwen3.5</span>）。用 <span class="special">ollama list</span> 确认可用模型，缩写形式容易报错。
+</div>
+<h2>
+    本地模型对接的常见坑
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>现象</th>
+            <th>原因</th>
+            <th>解决</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>400 校验错误</td>
+            <td>上游只实现了 chat completions，没有 /v1/responses</td>
+            <td>换成支持 responses 的上游，或在中间加一层协议网关（参考 Claude Code 那篇的 llm-api-io）</td>
+        </tr>
+        <tr>
+            <td>响应特别慢</td>
+            <td><span class="special">model_reasoning_effort</span> 设太高，或上下文窗口给太大</td>
+            <td>降到 low，把 context window 调到实际值</td>
+        </tr>
+        <tr>
+            <td>长对话突然报错</td>
+            <td>超出模型实际支持的上下文长度</td>
+            <td>调小 <span class="special">model_context_window</span> 或开新线程</td>
+        </tr>
+        <tr>
+            <td>工具调用不生效</td>
+            <td>本地模型对工具调用的支持不完整</td>
+            <td>把复杂的多工具编排写成 Skill，减少依赖模型的自主决策</td>
+        </tr>
+        <tr>
+            <td>改配置不生效</td>
+            <td>没有彻底重启</td>
+            <td>完全退出 CodeX 再打开，不是关窗口</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    本地小模型在<span class="important">复杂工具编排和长链路推理</span>上和官方模型差距明显。用本地模型时，把复杂流程固化成 Skill 或 AGENTS.md 里的明确规则，比让模型自由发挥更可靠。
+</div>
+<h2>
+    数据目录结构
+</h2>
+<p>
+    CodeX 的数据都放在 <span class="special">~/.codex/</span> 下：
+</p>
+<pre>
+~/.codex/
+├── config.toml          # 全局配置
+├── AGENTS.md            # 全局指令
+├── auth.json            # 登录凭证（用系统钥匙串时不落地）
+├── history.jsonl        # 输入历史
+├── sessions/            # 会话记录，按 YYYY/MM/DD 分目录存 jsonl
+├── archived_sessions/   # 被 /archive 归档的会话
+└── log/                 # 日志（log_dir 未设置时在这里）
+</pre>
+<div class="tips">
+    整个目录的位置由环境变量 <span class="special">CODEX_HOME</span> 决定，默认 <span class="special">~/.codex</span>。想换盘存放，把它指到别处即可（目录要先存在）。
+</div>
+<div class="tips">
+    尽量不要手动移动这些文件——要清理旧会话就用 <span class="special">/archive</span> 和 <span class="special">/delete</span>，避免数据结构错乱导致 CodeX 起不来。
+</div>
+<h2>
+    上手检查清单
+</h2>
+<ul>
+    <li><span class="special">config.toml</span> 里的 model 名和 <span class="special">wire_api</span> 都确认无误</li>
+    <li>本地模型的话，确认启动时设置了对应的上下文长度环境变量</li>
+    <li>项目根目录建好 <span class="special">AGENTS.md</span>，至少写清技术栈和构建命令</li>
+    <li>权限模式确认是 <span class="special">workspace-write</span> 而不是全权限</li>
+    <li>常用的 MCP Server 配到项目级配置里，让团队成员 clone 就能用</li>
+</ul>

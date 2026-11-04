@@ -3,14 +3,12 @@
         padding-top: 10px;
 
         &>.topview {
-            height: 90px;
 
             &[active='no'] {
                 display: none;
             }
 
             margin: 20px 100px;
-            border-bottom: 1px solid #b2b4b5;
 
             &.endinfo {
                 padding-top: 20px;
@@ -29,33 +27,63 @@
 
             &.willlist {
                 .key-item {
-                    margin: 20px 10px;
+                    margin: 10px;
                 }
             }
         }
 
         .key-item {
             display: inline-block;
-            background-image: url("./type-practice/keybg.png");
-            background-repeat: no-repeat;
-            background-size: 103% 105%;
-            background-position: center center;
-            border-radius: 5px;
-            box-shadow: 0 0 3px 0px rgb(0 0 0 / 70%);
+            background: linear-gradient(180deg, #fff 0%, #f0f0f0 100%);
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 2px 0 #ccc, inset 0 1px 0 rgba(255, 255, 255, 0.5);
             vertical-align: top;
             font-size: 14px;
-            font-weight: 800;
-            font-family: monospace;
+            font-weight: 600;
+            font-family: 'Microsoft YaHei', sans-serif;
+            color: #333;
+            user-select: none;
+            transition: all 0.1s;
+
+            &:active,
+            &.active {
+                transform: translateY(2px);
+                box-shadow: 0 0 0 #ccc, inset 0 2px 4px rgba(0, 0, 0, 0.1);
+                background: linear-gradient(180deg, #e8e8e8 0%, #d8d8d8 100%);
+            }
+        }
+
+        .mykeyboard {
+            margin: 0 auto;
+            padding: 10px;
+            background: linear-gradient(180deg, #e8e8e8 0%, #d4d4d4 100%);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+
+            .line {
+                display: flex;
+                justify-content: center;
+            }
+
+            .key-item {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 4px;
+            }
         }
 
         .info {
-            background-color: #d9d9d9;
-            border-radius: 15px;
+            background-color: #e5e5e5;
+            border-radius: 5px;
             line-height: 35px;
             margin: auto;
-            box-shadow: 1px 4px 7px 0px #00000073;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
             width: 700px;
-            margin-top: 30px;
+            margin-top: 20px;
 
             &>span {
                 display: inline-block;
@@ -64,7 +92,7 @@
                 white-space: nowrap;
 
                 &>i {
-                    color: #c87b08;
+                    color: #FF5722;
                     font-size: 12px;
                     font-style: normal;
                     padding: 0 5px;

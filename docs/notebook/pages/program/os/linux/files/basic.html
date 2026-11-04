@@ -1,0 +1,127 @@
+<header>
+    文件基础操作
+</header>
+<h2>
+    ls
+</h2>
+<p>
+    列出当前目录下的文件：
+</p>
+<pre>
+    ls
+</pre>
+<p>
+    查看更详细的信息，包括权限、所有者、大小和修改时间：
+</p>
+<pre>
+    ls -lah
+</pre>
+<p>
+    按修改时间倒序排列，排查最近改动很常用：
+</p>
+<pre>
+    ls -lt
+</pre>
+<h2>
+    cd / pwd
+</h2>
+<p>
+    切换目录和查看当前路径：
+</p>
+<pre>
+cd /var/log
+pwd
+</pre>
+<p>
+    回到上一次所在目录：
+</p>
+<pre>
+    cd -
+</pre>
+<h2>
+    cp
+</h2>
+<p>
+    复制文件：
+</p>
+<pre>
+    cp source.txt target.txt
+</pre>
+<p>
+    复制文件夹需要递归参数：
+</p>
+<pre>
+    cp -r source_dir target_dir
+</pre>
+<p class="warn">
+    温馨提示：覆盖文件前想确认一下，可以使用 <span class="special">cp -i</span>。
+</p>
+<h2>
+    rm
+</h2>
+<pre>
+    rm [选项] 文件或目录
+</pre>
+<p>
+    比如删除文件的时候：
+</p>
+<pre>
+    rm 文件
+</pre>
+<p>
+    如果是文件夹，可以加个递归：
+</p>
+<pre>
+    rm -r 文件夹
+</pre>
+<p>
+    删除前逐个确认：
+</p>
+<pre>
+    rm -i 文件
+</pre>
+<p class="warn">
+    温馨提示：<span class="special">rm -rf</span> 很危险，执行前最好先用 <span class="special">ls</span> 确认路径。
+</p>
+<h2>
+    mkdir
+</h2>
+<p>
+    创建文件夹：
+</p>
+<pre>
+    mkdir 文件夹
+</pre>
+<p>
+    一次性创建多级目录：
+</p>
+<pre>
+    mkdir -p logs/nginx/access
+</pre>
+<h2>
+    touch
+</h2>
+<p>
+    创建文件：
+</p>
+<pre>
+    touch 文件
+</pre>
+<p>
+    如果文件已经存在，<span class="special">touch</span> 会更新它的修改时间。
+</p>
+<h2>
+    mv
+</h2>
+<p>
+    移动文件或文件夹：
+</p>
+<pre>
+    mv 文件或文件夹 目标文件夹
+</pre>
+<p>
+    重命名文件也是使用 <span class="special">mv</span>：
+</p>
+<pre>
+    mv old.txt new.txt
+</pre>

@@ -2,48 +2,280 @@
     String（字符串）
 </header>
 <p>
-    创建字符串可以使用单引号、双引号、三单引号和三双引号，其中三引号可以多行定义字符串，有点类似ES6中的反引号。
-</p>
-<h2>
-    运算符
-</h2>
-<h3>
-    方括号 []
-</h3>
-<p>
-    可以使用方括号 [] 来截取字符串，字符串的截取的语法格式如下：
-</p>
-<pre tag>
-    变量[头下标:尾下标]
-</pre>
-<p>
-    索引值以 0 为开始值，-1 为从末尾的开始位置：
+    字符串是Python中最常用的数据类型之一，用于表示文本数据。Python中的字符串是不可变对象，支持多种操作和方法。
 </p>
 <img src="./images/python/index.jpeg" width="400px">
+
+<h2>
+    字符串创建
+</h2>
 <p>
-    下面是一些有用的例子：
+    Python支持多种方式创建字符串：
 </p>
-<pre tag>
-val_str='zxl20070701'
+<pre tag="python">
+# 单引号和双引号
+single_quote = 'Hello, World!'
+double_quote = "Hello, World!"
 
-print(val_str[:]) #zzxl20070701
-print(val_str[0]) #z
-print(val_str[1:]) #xl20070701
-print(val_str[1:3]) #xl
-print(val_str[:3]) #zxl
-</pre>
-<h3>
-    in 和 not in
-</h3>
-<pre tag>
-val_str='zxl20070701'
+# 三引号（用于多行字符串）
+multi_line = """这是
+一个
+多行字符串"""
 
-print("zxl" in val_str) # True
-print("zxl" not in val_str) # False
+# 原始字符串（不转义特殊字符）
+raw_string = r"C:\Users\name\Documents"
+
+# 字符串拼接
+greeting = "Hello"
+name = "Alice"
+message = greeting + ", " + name + "!"
+print(message)  # 输出: Hello, Alice!
+
+# 使用f-string（推荐方式）
+message = f"{greeting}, {name}!"
+print(message)  # 输出: Hello, Alice!
 </pre>
+
+<h2>
+    字符串索引和切片
+</h2>
+<p>
+    字符串支持索引和切片操作，索引从0开始，负索引从-1开始表示最后一个字符：
+</p>
+<pre tag="python">
+text = "Python Programming"
+
+# 基本索引
+print(text[0])    # 输出: P
+print(text[-1])   # 输出: g
+print(text[6])    # 输出: 空格
+
+# 切片操作
+print(text[0:6])    # 输出: Python
+print(text[:6])     # 输出: Python
+print(text[7:])     # 输出: Programming
+print(text[-11:])   # 输出: Programming
+print(text[::2])    # 输出: Pto rgamn (每隔一个字符)
+print(text[::-1])   # 输出: gnimmargorP nohtyP (反转字符串)
+
+# 步长切片
+print(text[0:10:2])  # 输出: Pto r
+</pre>
+
+<h2>
+    字符串运算符
+</h2>
 <h3>
-    重复字符串
+    方括号 [] - 索引和切片
 </h3>
-<pre tag>
-print("2007" * 3) # 200720072007
+<pre tag="python">
+val_str = 'zxl20070701'
+
+print(val_str[:])      # 输出: zxl20070701
+print(val_str[0])      # 输出: z
+print(val_str[1:])     # 输出: xl20070701
+print(val_str[1:3])    # 输出: xl
+print(val_str[:3])     # 输出: zxl
+print(val_str[-3:])    # 输出: 701
+</pre>
+
+<h3>
+    in 和 not in 运算符
+</h3>
+<pre tag="python">
+val_str = 'zxl20070701'
+
+print("zxl" in val_str)      # 输出: True
+print("xyz" in val_str)      # 输出: False
+print("zxl" not in val_str)  # 输出: False
+print("xyz" not in val_str)  # 输出: True
+
+# 实际应用示例
+sentence = "Python是一种强大的编程语言"
+if "Python" in sentence:
+    print("这句话提到了Python")
+
+# 检查多个子串
+keywords = ["Python", "编程", "强大"]
+if all(keyword in sentence for keyword in keywords):
+    print("句子包含所有关键词")
+</pre>
+
+<h3>
+    字符串连接和重复
+</h3>
+<pre tag="python">
+# 字符串连接
+str1 = "Hello"
+str2 = "World"
+result = str1 + " " + str2
+print(result)  # 输出: Hello World
+
+# 重复字符串
+print("2007" * 3)  # 输出: 200720072007
+print("=" * 20)    # 输出: ====================
+
+# 使用join连接字符串列表
+words = ["Python", "is", "awesome"]
+sentence = " ".join(words)
+print(sentence)  # 输出: Python is awesome
+
+# 连接大量字符串时，join比+更高效
+parts = ["第", "一", "部", "分"] * 1000
+result = "".join(parts)
+</pre>
+
+<h3>
+    字符串比较运算符
+</h3>
+<pre tag="python">
+# 字典序比较
+print("apple" < "banana")    # 输出: True
+print("Apple" < "apple")     # 输出: True (大写字母ASCII值较小)
+print("python" == "python")  # 输出: True
+print("Python" != "python")    # 输出: True
+
+# 忽略大小写比较
+print("Python".lower() == "python".lower())  # 输出: True
+
+# 使用locale进行本地化比较
+import locale
+locale.setlocale(locale.LC_ALL, '')
+print(locale.strcoll("ä", "z"))  # 根据本地化规则比较
+</pre>
+
+<h2>
+    字符串格式化
+</h2>
+<pre tag="python">
+name = "Alice"
+age = 25
+score = 95.5
+
+# 百分号格式化（旧式）
+old_style = "姓名: %s, 年龄: %d, 成绩: %.1f" % (name, age, score)
+print(old_style)
+
+# str.format()方法
+new_style = "姓名: {}, 年龄: {}, 成绩: {:.1f}".format(name, age, score)
+print(new_style)
+
+# 带名称的格式化
+named_style = "姓名: {name}, 年龄: {age}, 成绩: {score:.1f}".format(
+    name=name, age=age, score=score)
+print(named_style)
+
+# f-string（推荐方式，Python 3.6+）
+f_string = f"姓名: {name}, 年龄: {age}, 成绩: {score:.1f}"
+print(f_string)
+
+# 格式化选项
+number = 1234567.891
+print(f"{number:,.2f}")    # 输出: 1,234,567.89
+print(f"{number:.2e}")     # 输出: 1.23e+06
+print(f"{number:>15.2f}")  # 右对齐，总宽度15
+print(f"{number:<15.2f}")  # 左对齐
+print(f"{number:^15.2f}")  # 居中对齐
+
+# 填充字符
+print(f"{number:*^20.2f}")  # 用*填充
+</pre>
+
+<h2>
+    字符串常用方法示例
+</h2>
+<pre tag="python">
+text = "  Python Programming  "
+
+# 大小写转换
+print(text.upper())           # PYTHON PROGRAMMING
+print(text.lower())           # python programming
+print(text.title())           # Python Programming
+print(text.capitalize())      # Python programming
+
+# 去除空白
+print(text.strip())           # Python Programming
+print(text.lstrip())          # Python Programming
+print(text.rstrip())          #   Python Programming
+
+# 查找和替换
+text = "Hello World Hello"
+print(text.find("Hello"))     # 0
+print(text.rfind("Hello"))    # 12
+print(text.replace("Hello", "Hi"))  # Hi World Hi
+
+# 分割和连接
+sentence = "apple,banana,orange"
+fruits = sentence.split(",")
+print(fruits)                 # ['apple', 'banana', 'orange']
+print("-".join(fruits))       # apple-banana-orange
+
+# 判断字符串类型
+print("123".isdigit())        # True
+print("abc".isalpha())        # True
+print("abc123".isalnum())     # True
+print("   ".isspace())        # True
+print("Hello World".istitle()) # False
+print("Hello World".title().istitle()) # True
+</pre>
+
+<h2>
+    字符串编码
+</h2>
+<pre tag="python">
+# 字符串编码转换
+text = "你好，世界"
+
+# 编码为字节
+utf8_bytes = text.encode('utf-8')
+print(utf8_bytes)  # b'\xe4\xbd\xa0\xe5\xa5\xbd\xef\xbc\x8c\xe4\xb8\x96\xe7\x95\x8c'
+
+# 从字节解码
+decoded_text = utf8_bytes.decode('utf-8')
+print(decoded_text)  # 你好，世界
+
+# 处理编码错误
+try:
+    text.encode('ascii')
+except UnicodeEncodeError as e:
+    print(f"编码错误: {e}")
+
+# 使用errors参数处理编码问题
+ascii_text = text.encode('ascii', errors='ignore')
+print(ascii_text)  # b''
+
+ascii_text = text.encode('ascii', errors='replace')
+print(ascii_text)  # b'????????'
+</pre>
+
+<h2>
+    高级字符串操作
+</h2>
+<pre tag="python">
+import re
+
+# 使用正则表达式
+text = "我的电话是138-1234-5678，邮箱是test@example.com"
+
+# 查找电话号码
+phone_pattern = r'\d{3}-\d{4}-\d{4}'
+phones = re.findall(phone_pattern, text)
+print(phones)  # ['138-1234-5678']
+
+# 查找邮箱
+email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+emails = re.findall(email_pattern, text)
+print(emails)  # ['test@example.com']
+
+# 字符串模板
+from string import Template
+template = Template("你好，$name！今天是$day")
+message = template.substitute(name="张三", day="星期一")
+print(message)  # 你好，张三！今天是星期一
+
+# 使用format_map
+data = {"name": "李四", "age": 25}
+template = "姓名: {name}, 年龄: {age}"
+print(template.format_map(data))  # 姓名: 李四, 年龄: 25
+</pre>
 </pre>

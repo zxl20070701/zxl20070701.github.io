@@ -7,9 +7,9 @@
 <h2>
     创建一个GUI程序
 </h2>
-<pre tag="javascript">
+<pre tag="python">
 #!/usr/bin/python3
- 
+
 import tkinter
 root = tkinter.Tk()  # 实例化主窗口
 root.title('窗口标题')
@@ -25,7 +25,7 @@ root.mainloop()  # 启动事件循环
 <p>
     比如我们在页面中添加一个按钮，点击打印信息：
 </p>
-<pre tag="javascript">
+<pre tag="python">
 import tkinter
 root = tkinter.Tk()
 root.geometry('400x300')
@@ -36,7 +36,7 @@ def doit():
 btn = tkinter.Button(root, text = "点我", command = doit) # 创建一个按钮
 btn.pack() # 添加到窗口中
 
-root.mainloop() 
+root.mainloop()
 </pre>
 <p>
     上面的

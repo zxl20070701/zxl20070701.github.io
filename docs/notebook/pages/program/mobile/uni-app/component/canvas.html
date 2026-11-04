@@ -1,0 +1,138 @@
+<header>
+    canvas
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>canvas-id</td>
+            <td>String</td>
+            <td></td>
+            <td>canvas 组件的唯一标识符</td>
+        </tr>
+        <tr>
+            <td>disable-scroll</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁止屏幕滚动以及下拉刷新</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String</td>
+            <td></td>
+            <td>指定 canvas 类型，支持 2d 和 webgl</td>
+        </tr>
+        <tr>
+            <td>hidpi</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否启用高分辨率支持</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <canvas 
+      canvas-id="myCanvas" 
+      id="myCanvas"
+      class="canvas"
+      @touchstart="touchStart"
+      @touchmove="touchMove"
+      @touchend="touchEnd"
+    ></canvas>
+    <view class="controls">
+      <button @click="drawRect">绘制矩形</button>
+      <button @click="drawCircle">绘制圆形</button>
+      <button @click="clearCanvas">清空画布</button>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      canvasContext: null,
+      isDrawing: false
+    }
+  },
+  mounted() {
+    this.canvasContext = uni.createCanvasContext('myCanvas');
+  },
+  methods: {
+    drawRect() {
+      this.canvasContext.setFillStyle('#ff5500');
+      this.canvasContext.fillRect(10, 10, 150, 75);
+      this.canvasContext.draw();
+    },
+    drawCircle() {
+      this.canvasContext.beginPath();
+      this.canvasContext.arc(100, 100, 50, 0, 2 * Math.PI);
+      this.canvasContext.setFillStyle('#007aff');
+      this.canvasContext.fill();
+      this.canvasContext.draw();
+    },
+    clearCanvas() {
+      this.canvasContext.clearRect(0, 0, 300, 300);
+      this.canvasContext.draw();
+    },
+    touchStart(e) {
+      this.isDrawing = true;
+      const x = e.touches[0].x;
+      const y = e.touches[0].y;
+      this.canvasContext.moveTo(x, y);
+    },
+    touchMove(e) {
+      if (!this.isDrawing) return;
+      const x = e.touches[0].x;
+      const y = e.touches[0].y;
+      this.canvasContext.lineTo(x, y);
+      this.canvasContext.setStrokeStyle('#000000');
+      this.canvasContext.setLineWidth(2);
+      this.canvasContext.stroke();
+      this.canvasContext.draw(true);
+    },
+    touchEnd() {
+      this.isDrawing = false;
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.canvas {
+  width: 100%;
+  height: 300px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+  padding: 10px 20px;
+}
+</style>
+</pre>

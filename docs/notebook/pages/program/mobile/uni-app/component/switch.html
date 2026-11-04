@@ -1,0 +1,125 @@
+<header>
+    switch
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>checked</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否选中</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁用</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>String</td>
+            <td>switch</td>
+            <td>样式，有效值：switch, checkbox</td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>String</td>
+            <td>#04BE02</td>
+            <td>switch的颜色，同css的color</td>
+        </tr>
+        <tr>
+            <td>@change</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>checked 改变时触发 change 事件，event.detail={ value:checked}</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <view class="switch-item">
+      <text>是否开启通知</text>
+      <switch :checked="notificationEnabled" @change="notificationChange" />
+    </view>
+    <view class="switch-item">
+      <text>是否开启定位</text>
+      <switch :checked="locationEnabled" @change="locationChange" color="#ff5500" />
+    </view>
+    <view class="switch-item">
+      <text>是否开启夜间模式</text>
+      <switch :checked="darkModeEnabled" @change="darkModeChange" type="checkbox" />
+    </view>
+    <view class="result">
+      <text>通知：{{notificationEnabled ? '开启' : '关闭'}}</text>
+      <text>定位：{{locationEnabled ? '开启' : '关闭'}}</text>
+      <text>夜间模式：{{darkModeEnabled ? '开启' : '关闭'}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      notificationEnabled: true,
+      locationEnabled: false,
+      darkModeEnabled: false
+    }
+  },
+  methods: {
+    notificationChange(e) {
+      this.notificationEnabled = e.detail.value;
+    },
+    locationChange(e) {
+      this.locationEnabled = e.detail.value;
+    },
+    darkModeChange(e) {
+      this.darkModeEnabled = e.detail.value;
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.switch-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.result text {
+  display: block;
+  margin-bottom: 5px;
+}
+</style>
+</pre>

@@ -1,0 +1,59 @@
+<header>
+    生产化实践
+</header>
+
+<p>
+    Mastra 不只是一个创建 Agent 的库，它还提供 Workflow、Memory、Tool、Storage、Observability 等应用层能力。做生产系统时，重点不在“能不能跑”，而在能否稳定、可追踪、可恢复。
+</p>
+
+<h2>
+    生产化关注点
+</h2>
+
+<ul>
+    <li>Agent 注册：统一在 Mastra 实例中注册，方便复用和管理。</li>
+    <li>工具治理：工具要有 Schema、权限、错误处理和日志。</li>
+    <li>记忆存储：根据业务选择内存、数据库或向量存储。</li>
+    <li>工作流：固定流程用 Workflow，开放任务用 Agent。</li>
+    <li>观测：记录每一步模型和工具调用。</li>
+</ul>
+
+<h2>
+    Agent 与 Workflow 的边界
+</h2>
+
+<p>
+    如果步骤不确定，让 Agent 自主决定；如果步骤确定，用 Workflow 控制流程。一个常见组合是：Workflow 负责业务主流程，Agent 负责某个节点里的理解、生成或决策。
+</p>
+
+<pre>
+Workflow:
+  读取输入
+  ↓
+  Agent 分析意图
+  ↓
+  规则判断风险
+  ↓
+  Tool 执行业务动作
+  ↓
+  Agent 生成回复
+</pre>
+
+<h2>
+    长任务建议
+</h2>
+
+<ul>
+    <li>每个 workflow run 都要有 runId，方便恢复和排查。</li>
+    <li>可能暂停的节点要明确 resumeData 的结构。</li>
+    <li>外部副作用动作要幂等，避免恢复后重复执行。</li>
+    <li>关键输入输出保存到 storage，不只依赖内存。</li>
+</ul>
+
+<h2>
+    调试方式
+</h2>
+
+<p>
+    开发阶段可以用 Mastra 的调试能力观察 Agent 消息、工具调用和 workflow 步骤。线上则要把 trace、日志和业务 id 关联起来，否则用户反馈问题时很难复现。
+</p>

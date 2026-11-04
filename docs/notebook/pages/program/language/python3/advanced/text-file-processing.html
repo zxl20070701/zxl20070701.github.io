@@ -1,0 +1,36 @@
+<header>
+    文本文件处理
+</header>
+<p>
+    文本文件处理是文件操作中最常见的任务之一，Python提供了丰富的功能来处理各种文本文件格式。
+</p>
+<pre tag="python">
+# 写入文本文件
+with open('story.txt', 'w', encoding='utf-8') as file:
+    file.write("这是一个故事\n")
+    file.write("从前有座山\n")
+    file.write("山里有座庙\n")
+
+# 追加文本
+with open('story.txt', 'a', encoding='utf-8') as file:
+    file.write("庙里有个老和尚\n")
+
+# 读取文本文件
+with open('story.txt', 'r', encoding='utf-8') as file:
+    content = file.read()
+    print("文件内容:")
+    print(content)
+
+# 逐行处理
+with open('story.txt', 'r', encoding='utf-8') as file:
+    for i, line in enumerate(file, 1):
+        print(f"第{i}行: {line.strip()}")
+
+# 使用seek和tell
+with open('story.txt', 'r', encoding='utf-8') as file:
+    print(f"当前位置: {file.tell()}")
+    line = file.readline()
+    print(f"读取一行后位置: {file.tell()}")
+    file.seek(0)  # 回到文件开头
+    print(f"回到开头后位置: {file.tell()}")
+</pre>

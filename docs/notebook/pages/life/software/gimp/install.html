@@ -1,0 +1,265 @@
+<header>
+    安装与入门
+</header>
+<p>
+    GIMP 是自由软件里最成熟的图像编辑器，功能上足以替代 Photoshop 的绝大多数日常场景。它最大的优势是<span
+        class="important">免费、无需账号、跨平台</span>，以及脚本能力非常强（Python-Fu / Script-Fu），做批量处理比 PS 更省心。
+</p>
+<h2>
+    下载与安装
+</h2>
+<p>
+    官网 <span class="special">gimp.org</span> 提供官方安装包。注意辨别：GIMP 基金会<span class="important">从 2021 年起不再使用 "GIMP" 作为产品名</span>，部分下载页显示为 "GNU Image Manipulation Program"，是同一个软件。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>平台</th>
+            <th>推荐方式</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Windows</td>
+            <td>官网下载 <span class="special">.exe</span> 安装包</td>
+            <td>安装时可选是否关联图片格式；<span class="important">建议勾选</span>，双击图能直接打开</td>
+        </tr>
+        <tr>
+            <td>macOS</td>
+            <td>官网下载 <span class="special">.dmg</span></td>
+            <td>注意区分 Intel 与 Apple Silicon 版本；右键打开可绕过 Gatekeeper 提示</td>
+        </tr>
+        <tr>
+            <td>Linux</td>
+            <td>发行版软件源 / Flatpak</td>
+            <td>Flatpak 版启动命令是 <span class="special">flatpak run org.gimp.GIMP</span></td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    macOS 从 3.2.6 版本开始改用官方直接构建的 .dmg，同时可以通过 <span class="special">Homebrew</span> 和 <span
+        class="special">MacPorts</span> 安装（<span class="special">brew install --cask gimp</span>），不再需要从第三方仓库折腾。
+</div>
+<h2>
+    首次启动
+</h2>
+<p>
+    3.0 之后 GIMP 启动会弹出一个<span class="important">欢迎对话框</span>，可以在「创建 / Personalize」区域快速设置：
+</p>
+<ul>
+    <li><span class="special">图标主题</span>：符号 / 彩色 / 传统</li>
+    <li><span class="special">主题</span>：浅色 / 灰色 / 深色，以及跟随系统的 <span class="special">System</span> 选项</li>
+    <li><span class="special">工具分组</span>：把工具箱图标折叠成组，减少占用空间</li>
+    <li><span class="special">合并工具栏与菜单栏</span>：释放顶部空间</li>
+</ul>
+<div class="tips">
+    偏好里还有一个<span class="important">Playground（实验特性）</span>区域，默认隐藏。需要用 <span
+        class="special">gimp --show-playground</span> 启动才能看到，比如「Paint Select 画笔选区」这类新工具。稳定生产环境不建议开。
+</div>
+<h2>
+    配置文件在哪
+</h2>
+<p>
+    GIMP 首次运行会创建一个配置目录，<span class="important">所有偏好、笔刷、脚本、预设都在里面</span>。备份和迁移只需要复制这个目录：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>系统</th>
+            <th>路径</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Linux</td>
+            <td><span class="special">~/.config/GIMP/3.2/</span></td>
+        </tr>
+        <tr>
+            <td>Windows</td>
+            <td><span class="special">%APPDATA%\GIMP\3.2\</span>（即 <span class="special">C:\Users\用户名\AppData\Roaming\GIMP\3.2\</span>）</td>
+        </tr>
+        <tr>
+            <td>macOS</td>
+            <td><span class="special">~/Library/Application Support/GIMP/3.2/</span></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    目录结构大致如下，值得认识一下，因为改配置和装插件都要用到：
+</p>
+<pre>
+~/.config/GIMP/3.2/
+├── gimprc              # 主配置文件
+├── toolrc              # 工具选项（笔刷大小等）
+├── unitrc              # 颜色单位
+├── parasites-filterrc  # 特殊格式插件（文件浏览器扩展）
+├── plug-ins/           # 插件文件放这里
+├── scripts/            # 脚本文件放这里
+├── brushes/            # 自定义笔刷
+├── gradients/          # 自定义渐变
+├── palettes/           # 自定义调色板
+├── patterns/           # 自定义图案
+└── fonts/              # 私有字体
+</pre>
+<div class="tips">
+    <span class="important">删掉这个目录 = 重置所有设置</span>，GIMP 会重新初始化。如果遇到无法解决的界面错乱或插件导致崩溃，这是最干净的重置方式（前提是先备份）。
+</div>
+<h2>
+    核心概念
+</h2>
+<p>
+    GIMP 的概念模型和 Photoshop 基本一致，但有几个用词差异，初学时不适应的话容易卡住：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>Photoshop</th>
+            <th>GIMP</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>画板 / 文档</td>
+            <td><span class="important">图像（Image）</span></td>
+            <td>GIMP 一个 image 可以有很多 layer</td>
+        </tr>
+        <tr>
+            <td>图层（Layer）</td>
+            <td>图层（Layer）</td>
+            <td>相同；3.2 起支持<span class="special">图层组</span>和嵌套</td>
+        </tr>
+        <tr>
+            <td>形状蒙版 / 图层蒙版</td>
+            <td>图层蒙版（Layer Mask）</td>
+            <td>都靠<span class="special">黑色隐藏、白色显示</span></td>
+        </tr>
+        <tr>
+            <td>通道（Channel）</td>
+            <td>通道（Channel）</td>
+            <td>3.0 起<span class="special">通道也能挂非破坏性滤镜</span></td>
+        </tr>
+        <tr>
+            <td>剪贴蒙版</td>
+            <td><span class="important">图层组 + Pass Through</span></td>
+            <td>GIMP 没有直接对应功能，用「穿透」组模拟调整图层</td>
+        </tr>
+        <tr>
+            <td>智能对象</td>
+            <td><span class="important">链接图层（Link Layer）</span></td>
+            <td>3.2 新增，类似 PS 的链接智能对象，外部文件改动会同步</td>
+        </tr>
+        <tr>
+            <td>形状图层</td>
+            <td><span class="important">矢量图层（Vector Layer）</span></td>
+            <td>3.2 新增，路径自带描边和填充</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    文件格式
+</h2>
+<p>
+    GIMP 的原生格式是 <span class="special">XCF</span>，它和 PSD 一样能保存图层、蒙版、路径。<span
+        class="important">保存工作成果一定要用 XCF</span>，导出成 PNG/JPG 会丢失所有图层信息。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>快捷键</th>
+            <th>结果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>保存</td>
+            <td>Ctrl+S</td>
+            <td>存成 <span class="special">.xcf</span>，可重复覆盖</td>
+        </tr>
+        <tr>
+            <td>另存为</td>
+            <td>Ctrl+Shift+S</td>
+            <td>换个文件名或位置存 XCF</td>
+        </tr>
+        <tr>
+            <td>导出</td>
+            <td>Ctrl+E</td>
+            <td><span class="important">按原文件名导出</span>（第一次会问格式）</td>
+        </tr>
+        <tr>
+            <td>导出为</td>
+            <td>Ctrl+Shift+E</td>
+            <td>换名字或格式导出，可转 JPG/PNG/WebP 等</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    「保存」和「导出」是<span class="important">两件独立的事</span>。Ctrl+S 永远存 XCF，Ctrl+E 才是导出图片。新手最常见的困惑就是「保存完发给别人却只有一张图」，因为该用导出。
+</div>
+<h2>
+    首次界面速览
+</h2>
+<p>
+    GIMP 默认是<span class="important">单窗口模式</span>（3.0 起的默认），所有面板集中在主窗口内：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>区域</th>
+            <th>快捷键打开</th>
+            <th>用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>工具箱</td>
+            <td>Ctrl+B</td>
+            <td>左侧工具栏，<span class="special">Tab</span> 可临时隐藏所有面板</td>
+        </tr>
+        <tr>
+            <td>图层对话框</td>
+            <td>Ctrl+L</td>
+            <td>核心面板，几乎全程都要用</td>
+        </tr>
+        <tr>
+            <td>工具选项</td>
+            <td>点击工具图标</td>
+            <td>画笔大小、硬度、不透明度等，<span class="important">所有工具参数都在这里</span></td>
+        </tr>
+        <tr>
+            <td>历史记录</td>
+            <td>Windows → Dockable Dialogs</td>
+            <td><span class="important">GIMP 的撤销史是线性且可无限回溯的</span>，比 PS 的历史记录板更好用</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    界面被弄乱了可以 <span class="special">Windows → 隐藏 docks</span>（Tab）临时清空再恢复，或者 <span
+        class="special">Windows → Reset window layout</span> 恢复默认布局。<span class="important">单窗口 / 多窗口模式</span>也可以在首选项里切换，老用户更习惯多窗口。
+</div>
+<h2>
+    退出前确认
+</h2>
+<p>
+    GIMP 的未保存提示不如 PS 醒目，关之前留意几点：
+</p>
+<ul>
+    <li>标题栏带 <span class="special">*</span> 或 <span class="special">!</span> 表示有未保存改动</li>
+    <li><span class="important">记住 XCF 才是保存</span>，导出成 JPG 不会保留可编辑状态</li>
+    <li>「单窗口模式下关闭标签页」会提示是否保存，别一路点忽略</li>
+</ul>
+<h2>
+    快速上手路径
+</h2>
+<p>
+    如果只是想把 PS 的操作迁移过来，建议按这个顺序读后续几篇：
+</p>
+<ol>
+    <li>《界面与快捷键》——先把肌肉记忆改过来</li>
+    <li>《图层与蒙版》——GIMP 3.0 之后的非破坏性工作流</li>
+    <li>《选区与抠图》——工具名和 PS 不同但逻辑一致</li>
+    <li>《滤镜与调色》——GEGL 滤镜体系是 3.0 的重点</li>
+    <li>《脚本与批处理》——GIMP 相对 PS 的最大优势</li>
+</ol>

@@ -1,0 +1,93 @@
+<header>
+    事务与锁
+</header>
+<h2>
+    事务概述
+</h2>
+<p>
+    MongoDB 4.0+ 支持多文档事务，4.2+ 支持分布式事务。事务需要在副本集或分片集群上运行。
+</p>
+<h2>
+    开启事务
+</h2>
+<pre tag="javascript">
+// 开始会话
+const session = db.getMongo().startSession();
+// 开始事务
+session.startTransaction();
+// 提交事务
+session.commitTransaction();
+// 回滚事务
+session.abortTransaction();
+// 结束会话
+session.endSession();
+</pre>
+<h2>
+    事务示例
+</h2>
+<pre tag="javascript">
+const session = db.getMongo().startSession();
+try {
+    session.startTransaction();
+
+    // 扣减库存
+    db.products.updateOne(
+        {_id: productId, stock: {$gte: 1}},
+        {$inc: {stock: -1}},
+        {session}
+    );
+
+    // 创建订单
+    db.orders.insertOne({
+        userId: userId,
+        productId: productId,
+        status: "paid"
+    }, {session});
+
+    session.commitTransaction();
+} catch (error) {
+    session.abortTransaction();
+} finally {
+    session.endSession();
+}
+</pre>
+<h2>
+    分布式事务
+</h2>
+<pre tag="javascript">
+// 分布式事务支持跨分片操作
+const session = db.getMongo().startSession();
+session.startTransaction({
+    readPreference: 'primary',
+    readConcern: {level: 'local'},
+    writeConcern: {w: 'majority'}
+});
+// ... 跨分片操作
+session.commitTransaction();
+</pre>
+<h2>
+    隔离级别
+</h2>
+<pre tag="javascript">
+// 支持的隔离级别：
+// - readCommitted（默认）
+// - snapshot
+session.startTransaction({
+    readConcern: {level: 'snapshot'}
+});
+</pre>
+<h2>
+    常用事务命令
+</h2>
+<pre tag="javascript">
+// 查看当前事务状态
+db.runCommand({
+    transactionStatus: 1,
+    sessionId: ...
+})
+// 事务超时设置
+db.adminCommand({
+    setTransactionTimeout: 1,
+    timeoutMs: 5000
+})
+</pre>

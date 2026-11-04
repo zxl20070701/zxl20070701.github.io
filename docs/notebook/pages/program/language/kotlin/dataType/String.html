@@ -1,0 +1,210 @@
+<header>
+    String（字符串）
+</header>
+<p>
+    Kotlin 中的字符串是不可变对象（和 Java 一致），用 <span class="warn">String</span> 表示。Kotlin 在 Java 字符串的基础上提供了更友好的模板语法、原生字符串和大量扩展函数。
+</p>
+<h2>
+    字符串字面量
+</h2>
+<pre tag="kotlin">
+// 常规字符串：支持转义
+val greeting = "Hello, Kotlin!"
+
+// 原生字符串：用 """ 包裹，不会处理转义
+val json = """
+    {
+        "name": "Kotlin",
+        "version": "1.9"
+    }
+""".trimIndent()
+println(json)
+
+// 模板字符串
+val name = "Alice"
+val age = 18
+val msg = "姓名: $name, 年龄: $age"
+val next = "明年 ${age + 1} 岁"
+println(msg)
+println(next)
+</pre>
+<h2>
+    字符串常用属性
+</h2>
+<pre tag="kotlin">
+val s = "Hello, World"
+
+println(s.length)      // 12
+println(s.isEmpty())   // false
+println(s.isBlank())   // false
+println(s.uppercase()) // HELLO, WORLD
+println(s.lowercase()) // hello, world
+
+// 首字母大写、单词首字母大写
+println("hello world".capitalize()) // Hello world
+println("hello world".title()        // Hello World (1.5+ 改为 titlecase())
+</pre>
+<h2>
+    字符串索引与切片
+</h2>
+<pre tag="kotlin">
+val s = "Kotlin Programming"
+
+println(s[0])        // 'K'，s[index] 取单个字符
+println(s.first())   // 'K'
+println(s.last())    // 'g'
+
+// 切片用 subSequence，不会越界抛异常，可以指定范围
+println(s.subSequence(0, 6)) // "Kotlin"
+println(s.substring(7))      // "Programming"
+
+// take / drop
+println(s.take(6))    // "Kotlin"，前 6 个
+println(s.drop(7))    // "Programming"，跳过前 7 个
+</pre>
+<h2>
+    字符串拼接与重复
+</h2>
+<pre tag="kotlin">
+val a = "Hello"
+val b = "World"
+
+// + 运算符
+println(a + ", " + b) // Hello, World
+
+// joinToString
+println(listOf("Kotlin", "Java", "JS").joinToString(" | "))
+// Kotlin | Java | JS
+
+// repeat：重复 n 次
+println("ha".repeat(3)) // "hahaha"
+
+// 字符串模板可以拼接多行
+val s = """
+    名字: $a
+    计数: ${b.length}
+""".trimIndent()
+</pre>
+<h2>
+    查找与替换
+</h2>
+<pre tag="kotlin">
+val s = "Hello World Hello"
+
+println(s.contains("World"))          // true
+println(s.startsWith("Hello"))        // true
+println(s.endsWith("Hello"))          // true
+println(s.indexOf("Hello"))           // 0
+println(s.lastIndexOf("Hello"))       // 12
+println(s.replace("Hello", "Hi"))     // Hi World Hi
+println(s.replaceFirst("Hello", "Hi")) // Hi World Hello
+
+// 大小写不敏感判断
+println(s.contains("world", ignoreCase = true)) // true
+</pre>
+<h2>
+    分割与去除空白
+</h2>
+<pre tag="kotlin">
+val csv = "apple,banana,orange"
+
+// split 返回 List&lt;String&gt;
+val parts = csv.split(",")
+println(parts) // [apple, banana, orange]
+
+// 指定多种分隔符
+val mixed = "a,b;c|d"
+println(mixed.split(",", ";", "|")) // [a, b, c, d]
+
+// 去除空白
+val raw = "  Kotlin  "
+println(raw.trim())    // "Kotlin"
+println(raw.trimStart())
+println(raw.trimEnd())
+</pre>
+<h2>
+    字符串比较
+</h2>
+<pre tag="kotlin">
+// == 比较内容，=== 比较对象引用
+val a = "Kotlin"
+val b = String(charArrayOf('K', 'o', 't', 'l', 'i', 'n'))
+
+println(a == b)   // true
+println(a === b)  // false，引用不同
+
+// compareTo 按字典序比较
+println("apple".compareTo("banana")) // 负数
+println("apple".compareTo("apple"))  // 0
+</pre>
+<h2>
+    字符串与数字转换
+</h2>
+<pre tag="kotlin">
+val n = 123
+val s = n.toString()        // "123"
+val pad = n.toString().padStart(5, '0') // "00123"
+
+// 字符串转数字
+println("42".toInt())          // 42
+println("3.14".toDouble())     // 3.14
+println("abc".toIntOrNull())   // null
+println("1010".toInt(2))       // 10，第二个参数为进制
+</pre>
+<h2>
+    常用内置函数
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>方法</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>length / count()</td>
+            <td>字符数</td>
+        </tr>
+        <tr>
+            <td>isEmpty() / isNotEmpty()</td>
+            <td>是否为空串</td>
+        </tr>
+        <tr>
+            <td>isBlank() / isNotBlank()</td>
+            <td>是否仅含空白字符</td>
+        </tr>
+        <tr>
+            <td>uppercase() / lowercase()</td>
+            <td>大小写转换</td>
+        </tr>
+        <tr>
+            <td>trim() / trimStart() / trimEnd()</td>
+            <td>去除首尾空白</td>
+        </tr>
+        <tr>
+            <td>startsWith() / endsWith()</td>
+            <td>判断首尾子串</td>
+        </tr>
+        <tr>
+            <td>contains(other, ignoreCase = false)</td>
+            <td>是否包含</td>
+        </tr>
+        <tr>
+            <td>split() / joinToString()</td>
+            <td>分割与连接</td>
+        </tr>
+        <tr>
+            <td>replace() / replaceFirst()</td>
+            <td>替换</td>
+        </tr>
+        <tr>
+            <td>substring() / take() / drop()</td>
+            <td>截取子串</td>
+        </tr>
+        <tr>
+            <td>toInt() / toIntOrNull() / toDouble()</td>
+            <td>与数字互转</td>
+        </tr>
+    </tbody>
+</table>

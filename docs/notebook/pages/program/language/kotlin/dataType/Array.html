@@ -1,0 +1,163 @@
+<header>
+    Array（数组）
+</header>
+<p>
+    Kotlin 区分 <span class="warn">Array</span>（对象数组）和基本类型数组（<span class="special">IntArray</span>、<span class="special">DoubleArray</span> 等）。前者每个元素都是对象，后者没有装箱开销，性能更好。
+</p>
+<h2>
+    创建数组
+</h2>
+<pre tag="kotlin">
+// arrayOf：创建任意类型的对象数组
+val names = arrayOf("Kotlin", "Java", "JS")
+val nums = arrayOf(1, 2, 3, 4)
+val mixed: Array&lt;Any&gt; = arrayOf(1, "two", 3.0)
+
+// arrayOfNulls：创建元素全为 null 的数组
+val empty = arrayOfNulls&lt;String&gt;(5)
+
+// Array(size) { index -> 元素 }：按规则构造
+val squares = Array(5) { i -> i * i } // [0, 1, 4, 9, 16]
+
+// 基本类型数组：避免装箱
+val intArr = intArrayOf(1, 2, 3)
+val doubleArr = doubleArrayOf(1.0, 2.0, 3.0)
+val boolArr = booleanArrayOf(true, false, true)
+
+// 通过 size + 初始化函数构造
+val zero = IntArray(3) { 0 }
+val idx = IntArray(3) { it + 1 } // [1, 2, 3]
+</pre>
+<h2>
+    访问与修改
+</h2>
+<pre tag="kotlin">
+val arr = arrayOf(10, 20, 30, 40, 50)
+
+// 通过 [index] 访问
+println(arr[0])      // 10
+println(arr.first()) // 10
+println(arr.last())  // 50
+
+// 修改元素
+arr[1] = 200
+println(arr[1]) // 200
+
+// 取子集
+println(arr.slice(1..3)) // [200, 30, 40]
+
+// 长度
+println(arr.size) // 5
+</pre>
+<h2>
+    遍历
+</h2>
+<pre tag="kotlin">
+val arr = arrayOf("a", "b", "c")
+
+// 遍历元素
+for (item in arr) {
+    println(item)
+}
+
+// 遍历下标
+for (i in arr.indices) {
+    println("$i -> ${arr[i]}")
+}
+
+// 同时拿到下标与元素
+for ((index, value) in arr.withIndex()) {
+    println("$index -> $value")
+}
+
+// 简单版本 forEach
+arr.forEach { println(it) }
+arr.forEachIndexed { i, v -> println("$i -> $v") }
+</pre>
+<h2>
+    常用方法
+</h2>
+<pre tag="kotlin">
+val nums = intArrayOf(3, 1, 4, 1, 5, 9, 2, 6)
+
+// 判断
+println(nums.contains(5))         // true
+println(nums.isEmpty())            // false
+println(nums.sum())                // 31
+println(nums.average())            // 3.875
+println(nums.min())                // 1
+println(nums.max())                // 9
+println(nums.indexOf(1))           // 1
+println(nums.lastIndexOf(1))       // 3
+
+// 排序
+val sorted = nums.sorted()        // [1, 1, 2, 3, 4, 5, 6, 9]，返回新数组
+nums.sort()                       // 直接原地排序
+nums.sortDescending()
+
+// 反转
+val reversed = nums.reversed()    // 返回新数组
+nums.reverse()                    // 原地反转
+
+// 过滤 / 映射
+val big = nums.filter { it > 3 }         // [5, 9, 6]
+val doubled = nums.map { it * 2 }        // 每个元素翻倍
+val sum = nums.reduce { acc, n -> acc + n }
+
+// 拼接成字符串
+println(nums.joinToString(", ")) // 1, 2, 3, 4, 5, 6, 9
+</pre>
+<h2>
+    二维数组
+</h2>
+<pre tag="kotlin">
+// 用 Array of Array
+val matrix = arrayOf(
+    intArrayOf(1, 2, 3),
+    intArrayOf(4, 5, 6),
+    intArrayOf(7, 8, 9)
+)
+
+println(matrix[1][1]) // 5
+
+for (row in matrix) {
+    for (v in row) {
+        print("$v ")
+    }
+    println()
+}
+
+// 工具函数 flatten
+println(matrix.flatten().sum()) // 45
+</pre>
+<h2>
+    数组与集合转换
+</h2>
+<pre tag="kotlin">
+val arr = arrayOf(1, 2, 3)
+
+// toList / toSet
+val list = arr.toList()
+val set = arr.toSet()
+
+// toMutableList / toMutableSet
+val mlist = arr.toMutableList()
+
+// 集合转数组
+val back = list.toIntArray()
+</pre>
+<h2>
+    空数组与原始数组
+</h2>
+<pre tag="kotlin">
+// 空数组
+val empty = emptyArray&lt;String&gt;()
+val emptyInt = IntArray(0)
+
+// 数组可以为 null，因此引用类型数组本身可空
+val nullable: Array&lt;Int&gt;? = null
+println(nullable?.size) // 安全调用
+</pre>
+<p class="warn">
+    如果数据量比较大且确定元素类型，尽量使用 <span class="special">IntArray</span>、<span class="special">DoubleArray</span> 等基本类型数组，避免不必要的装箱拆箱。
+</p>

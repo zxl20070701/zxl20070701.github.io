@@ -1,0 +1,413 @@
+<header>
+    IPv6协议
+</header>
+<p>
+    IPv6（Internet Protocol version
+    6，互联网协议第6版）是下一代互联网协议，设计用于替代IPv4。IPv6解决了IPv4地址枯竭问题，并提供了更好的安全性、移动性和自动配置能力。随着物联网、5G等技术的发展，IPv6的部署和应用正在加速。
+</p>
+<h2>
+    IPv6发展背景
+</h2>
+<h3>
+    1. IPv4局限性
+</h3>
+<ul>
+    <li><span class="special">地址空间不足</span>：32位地址空间理论上支持43亿地址，实际可用更少</li>
+    <li><span class="special">地址分配效率低</span>：传统A/B/C类地址分配方式浪费严重</li>
+    <li><span class="special">路由表膨胀</span>：CIDR虽然缓解但无法根本解决</li>
+    <li><span class="special">安全性不足</span>：IPsec是可选功能，实际部署有限</li>
+    <li><span class="special">配置复杂</span>：手动配置或依赖DHCP，缺乏即插即用能力</li>
+    <li><span class="special">QoS支持有限</span>：ToS字段功能有限，难以满足现代应用需求</li>
+</ul>
+<h3>
+    2. IPv6优势
+</h3>
+<ul>
+    <li><span class="special">巨大地址空间</span>：128位地址，约3.4×10³⁸个地址</li>
+    <li><span class="special">层次化地址结构</span>：便于路由聚合，减少路由表大小</li>
+    <li><span class="special">内置安全性</span>：IPsec作为必需组件</li>
+    <li><span class="special">即插即用</span>：支持无状态地址自动配置</li>
+    <li><span class="special">移动性支持</span>：内置移动IP支持</li>
+    <li><span class="special">更好的QoS</span>：流量标签字段支持服务质量</li>
+    <li><span class="special">简化首部</span>：固定长度40字节，提高处理效率</li>
+</ul>
+<h2>
+    IPv6地址格式
+</h2>
+<h3>
+    1. IPv6地址表示
+</h3>
+<ul>
+    <li><span class="special">基本格式</span>：8组4位十六进制数，用冒号分隔，如2001:0db8:85a3:0000:0000:8a2e:0370:7334</li>
+    <li><span class="special">压缩格式</span>：
+        <ul>
+            <li>前导零可以省略：2001:db8:85a3:0:0:8a2e:370:7334</li>
+            <li>连续的零组可以用::表示：2001:db8:85a3::8a2e:370:7334</li>
+            <li>::只能使用一次，避免歧义</li>
+        </ul>
+    </li>
+    <li><span class="special">混合格式</span>：IPv4映射地址，如::ffff:192.0.2.1</li>
+</ul>
+<h3>
+    2. IPv6地址类型
+</h3>
+<h4>
+    2.1 单播地址 (Unicast Address)
+</h4>
+<ul>
+    <li><span class="special">全球单播地址</span>：2000::/3，用于互联网通信</li>
+    <li><span class="special">链路本地地址</span>：fe80::/10，用于同一链路上的通信</li>
+    <li><span class="special">唯一本地地址</span>：fc00::/7，用于私有网络内部通信</li>
+    <li><span class="special">环回地址</span>：::1/128，相当于IPv4的127.0.0.1</li>
+    <li><span class="special">未指定地址</span>：::/128，表示没有地址</li>
+</ul>
+<h4>
+    2.2 多播地址 (Multicast Address)
+</h4>
+<ul>
+    <li><span class="special">格式</span>：ff00::/8开头</li>
+    <li><span class="special">结构</span>：11111111 + 4位标志 + 4位范围 + 112位组ID</li>
+    <li><span class="special">常见多播地址</span>：
+        <ul>
+            <li>ff02::1：所有节点地址</li>
+            <li>ff02::2：所有路由器地址</li>
+            <li>ff02::1:ff00:0000/104：被请求节点多播地址</li>
+        </ul>
+    </li>
+</ul>
+<h4>
+    2.3 任播地址 (Anycast Address)
+</h4>
+<ul>
+    <li><span class="special">特点</span>：一组接口共享同一地址，路由到最近的一个</li>
+    <li><span class="special">应用</span>：负载均衡、内容分发网络(CDN)</li>
+    <li><span class="special">分配</span>：从单播地址空间中分配，无法语法区分</li>
+</ul>
+<h3>
+    3. IPv6地址结构
+</h3>
+<h4>
+    3.1 全球单播地址格式
+</h4>
+<pre>
+| 3位 |   45位  | 16位 |        64位        |
+| 001 | 全球路由前缀 | 子网ID | 接口标识符 |
+</pre>
+<ul>
+    <li><span class="special">全球路由前缀</span>：由ISP分配，用于互联网路由</li>
+    <li><span class="special">子网ID</span>：组织内部分配，用于子网划分</li>
+    <li><span class="special">接口标识符</span>：64位，通常基于MAC地址生成</li>
+</ul>
+<h4>
+    3.2 接口标识符生成
+</h4>
+<ul>
+    <li><span class="special">EUI-64格式</span>：基于48位MAC地址生成64位接口ID</li>
+    <li><span class="special">隐私扩展</span>：随机生成接口ID，保护用户隐私</li>
+    <li><span class="special">手动配置</span>：管理员手动指定接口ID</li>
+</ul>
+<h2>
+    IPv6数据报格式
+</h2>
+<h3>
+    1. 基本首部格式
+</h3>
+<pre>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Version| Traffic Class |           Flow Label                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Payload Length        |  Next Header  |   Hop Limit   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
++                                                               +
+|                                                               |
++                         Source Address                        +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
++                                                               +
+|                                                               |
++                      Destination Address                      +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</pre>
+<ul>
+    <li><span class="special">版本(Version)</span>：4位，值为6</li>
+    <li><span class="special">流量类别(Traffic Class)</span>：8位，类似IPv4的ToS字段</li>
+    <li><span class="special">流标签(Flow Label)</span>：20位，标识特定数据流</li>
+    <li><span class="special">有效载荷长度(Payload Length)</span>：16位，扩展首部+上层数据长度</li>
+    <li><span class="special">下一个首部(Next Header)</span>：8位，标识下一个首部的类型</li>
+    <li><span class="special">跳数限制(Hop Limit)</span>：8位，类似IPv4的TTL</li>
+    <li><span class="special">源地址(Source Address)</span>：128位</li>
+    <li><span class="special">目的地址(Destination Address)</span>：128位</li>
+</ul>
+<h3>
+    2. IPv6扩展首部
+</h3>
+<ul>
+    <li><span class="special">逐跳选项首部</span>：Hop-by-Hop Options Header</li>
+    <li><span class="special">路由首部</span>：Routing Header</li>
+    <li><span class="special">分片首部</span>：Fragment Header</li>
+    <li><span class="special">目的选项首部</span>：Destination Options Header</li>
+    <li><span class="special">认证首部</span>：Authentication Header (AH)</li>
+    <li><span class="special">封装安全载荷首部</span>：Encapsulating Security Payload Header (ESP)</li>
+</ul>
+<h3>
+    3. IPv6与IPv4对比
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>特性</th>
+            <th>IPv4</th>
+            <th>IPv6</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>地址长度</td>
+            <td>32位</td>
+            <td>128位</td>
+        </tr>
+        <tr>
+            <td>地址数量</td>
+            <td>约43亿</td>
+            <td>约3.4×10³⁸</td>
+        </tr>
+        <tr>
+            <td>首部长度</td>
+            <td>可变（20-60字节）</td>
+            <td>固定40字节</td>
+        </tr>
+        <tr>
+            <td>分片</td>
+            <td>中间路由器可执行</td>
+            <td>仅源主机可执行</td>
+        </tr>
+        <tr>
+            <td>校验和</td>
+            <td>有</td>
+            <td>无（由上层协议处理）</td>
+        </tr>
+        <tr>
+            <td>自动配置</td>
+            <td>DHCP（可选）</td>
+            <td>无状态自动配置（必需）</td>
+        </tr>
+        <tr>
+            <td>IPsec</td>
+            <td>可选</td>
+            <td>必需</td>
+        </tr>
+        <tr>
+            <td>广播</td>
+            <td>支持</td>
+            <td>不支持（使用多播）</td>
+        </tr>
+        <tr>
+            <td>QoS支持</td>
+            <td>ToS字段</td>
+            <td>流量类别+流标签</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    IPv6地址配置
+</h2>
+<h3>
+    1. 无状态地址自动配置 (SLAAC)
+</h3>
+<h4>
+    1.1 工作原理
+</h4>
+<ol>
+    <li><span class="special">前缀获取</span>：主机从路由器通告中获取网络前缀</li>
+    <li><span class="special">接口ID生成</span>：基于EUI-64或随机生成接口标识符</li>
+    <li><span class="special">地址组合</span>：将前缀和接口ID组合成完整IPv6地址</li>
+    <li><span class="special">重复地址检测</span>：检查地址是否已被其他节点使用</li>
+</ol>
+<h4>
+    1.2 路由器通告 (RA)
+</h4>
+<ul>
+    <li><span class="special">M标志</span>：Managed Address Configuration，是否使用DHCPv6</li>
+    <li><span class="special">O标志</span>：Other Configuration，是否使用DHCPv6获取其他配置</li>
+    <li><span class="special">A标志</span>：Autonomous Address Configuration，是否使用SLAAC</li>
+</ul>
+<h3>
+    2. DHCPv6
+</h3>
+<h4>
+    2.1 工作模式
+</h4>
+<ul>
+    <li><span class="special">有状态模式</span>：DHCPv6服务器分配完整IPv6地址</li>
+    <li><span class="special">无状态模式</span>：DHCPv6仅提供DNS等其他配置信息</li>
+</ul>
+<h4>
+    2.2 消息类型
+</h4>
+<ul>
+    <li><span class="special">Solicit</span>：客户端寻找DHCPv6服务器</li>
+    <li><span class="special">Advertise</span>：服务器响应客户端请求</li>
+    <li><span class="special">Request</span>：客户端请求配置参数</li>
+    <li><span class="special">Reply</span>：服务器回复配置信息</li>
+</ul>
+<h3>
+    3. 手动配置
+</h3>
+<ul>
+    <li><span class="special">静态配置</span>：管理员手动指定IPv6地址和参数</li>
+    <li><span class="special">适用场景</span>：服务器、网络设备等需要固定地址的场景</li>
+</ul>
+<h2>
+    IPv6邻居发现协议 (NDP)
+</h2>
+<h3>
+    1. NDP功能
+</h3>
+<ul>
+    <li><span class="special">地址解析</span>：将IPv6地址解析为链路层地址</li>
+    <li><span class="special">路由器发现</span>：发现本地路由器并获取前缀信息</li>
+    <li><span class="special">参数发现</span>：获取链路MTU、跳数限制等参数</li>
+    <li><span class="special">地址自动配置</span>：支持SLAAC</li>
+    <li><span class="special">重复地址检测</span>：确保地址唯一性</li>
+    <li><span class="special">重定向</span>：通知主机更好的下一跳</li>
+</ul>
+<h3>
+    2. NDP消息类型
+</h3>
+<ul>
+    <li><span class="special">路由器请求 (RS)</span>：主机请求路由器发送RA</li>
+    <li><span class="special">路由器通告 (RA)</span>：路由器通告前缀和参数</li>
+    <li><span class="special">邻居请求 (NS)</span>：请求邻居的链路层地址</li>
+    <li><span class="special">邻居通告 (NA)</span>：响应NS或主动通告地址变化</li>
+    <li><span class="special">重定向</span>：路由器通知主机更好的下一跳</li>
+</ul>
+<h3>
+    3. 地址解析过程
+</h3>
+<ol>
+    <li><span class="special">主机发送NS</span>：发送邻居请求到被请求节点多播地址</li>
+    <li><span class="special">目标主机响应NA</span>：回复邻居通告包含链路层地址</li>
+    <li><span class="special">缓存结果</span>：将映射关系存储在邻居缓存中</li>
+</ol>
+<h2>
+    IPv6过渡技术
+</h2>
+<h3>
+    1. 双栈技术 (Dual Stack)
+</h3>
+<ul>
+    <li><span class="special">原理</span>：主机同时支持IPv4和IPv6协议栈</li>
+    <li><span class="special">优点</span>：实现简单，完全兼容</li>
+    <li><span class="special">缺点</span>：需要维护两套协议栈，资源消耗大</li>
+    <li><span class="special">应用</span>：过渡期最常用的技术</li>
+</ul>
+<h3>
+    2. 隧道技术 (Tunneling)
+</h3>
+<h4>
+    2.1 手动隧道
+</h4>
+<ul>
+    <li><span class="special">配置方法</span>：管理员手动配置隧道端点</li>
+    <li><span class="special">适用场景</span>：固定连接的IPv6网络</li>
+</ul>
+<h4>
+    2.2 自动隧道
+</h4>
+<ul>
+    <li><span class="special">6to4</span>：使用2002::/16前缀，自动建立隧道</li>
+    <li><span class="special">Teredo</span>：穿透NAT的IPv6隧道技术</li>
+    <li><span class="special">ISATAP</span>：站点内自动隧道寻址协议</li>
+</ul>
+<h3>
+    3. 翻译技术 (Translation)
+</h3>
+<h4>
+    3.1 NAT64
+</h4>
+<ul>
+    <li><span class="special">功能</span>：IPv6-only网络访问IPv4-only服务器</li>
+    <li><span class="special">工作原理</span>：将IPv6地址转换为IPv4地址</li>
+    <li><span class="special">配合DNS64</span>：合成AAAA记录指向NAT64网关</li>
+</ul>
+<h4>
+    3.2 DS-Lite
+</h4>
+<ul>
+    <li><span class="special">功能</span>：IPv4 over IPv6隧道，结合NAT</li>
+    <li><span class="special">适用场景</span>：ISP提供IPv6-only骨干网</li>
+</ul>
+<h2>
+    IPv6安全考虑
+</h2>
+<h3>
+    1. IPv6安全威胁
+</h3>
+<ul>
+    <li><span class="special">扩展首部攻击</span>：恶意扩展首部消耗处理资源</li>
+    <li><span class="special">邻居发现攻击</span>：伪造ND消息进行中间人攻击</li>
+    <li><span class="special">地址扫描攻击</span>：IPv6地址空间大，扫描困难但仍可能</li>
+    <li><span class="special">隧道安全</span>：过渡技术可能绕过安全控制</li>
+</ul>
+<h3>
+    2. IPv6安全机制
+</h3>
+<h4>
+    2.1 内置安全
+</h4>
+<ul>
+    <li><span class="special">IPsec集成</span>：IPv6要求支持IPsec</li>
+    <li><span class="special">AH和ESP</span>：认证首部和封装安全载荷</li>
+</ul>
+<h4>
+    2.2 邻居发现安全
+</h4>
+<ul>
+    <li><span class="special">安全邻居发现 (SEND)</span>：使用密码学保护ND消息</li>
+    <li><span class="special">RA Guard</span>：过滤伪造的路由器通告</li>
+    <li><span class="special">DHCPv6 Shield</span>：防止恶意DHCPv6服务器</li>
+</ul>
+<h4>
+    2.3 过渡技术安全
+</h4>
+<ul>
+    <li><span class="special">隧道安全</span>：对隧道流量进行加密和认证</li>
+    <li><span class="special">翻译安全</span>：确保地址翻译过程的安全性</li>
+</ul>
+<h2>
+    IPv6部署现状与趋势
+</h2>
+<h3>
+    1. 全球部署情况
+</h3>
+<ul>
+    <li><span class="special">运营商部署</span>：主要ISP已支持IPv6</li>
+    <li><span class="special">内容提供商</span>：Google、Facebook等已全面支持</li>
+    <li><span class="special">政府推动</span>：各国政府制定IPv6部署计划</li>
+</ul>
+<h3>
+    2. 应用场景
+</h3>
+<ul>
+    <li><span class="special">物联网</span>：海量设备连接需求</li>
+    <li><span class="special">5G网络</span>：移动网络IPv6-only趋势</li>
+    <li><span class="special">云计算</span>：虚拟化和容器化环境</li>
+    <li><span class="special">工业4.0</span>：工业互联网应用</li>
+</ul>
+<h3>
+    3. 未来展望
+</h3>
+<ul>
+    <li><span class="special">IPv6-only网络</span>：逐步淘汰IPv4依赖</li>
+    <li><span class="special">新应用开发</span>：基于IPv6的新服务和应用</li>
+    <li><span class="special">标准化完善</span>：IPv6相关标准持续演进</li>
+</ul>

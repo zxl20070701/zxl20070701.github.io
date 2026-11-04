@@ -1,0 +1,110 @@
+<header>
+    生成器状态管理
+</header>
+<p>
+    生成器在执行过程中会保持状态，可以通过send()、throw()和close()方法与生成器进行交互。
+</p>
+
+<h2>
+    带状态的生成器
+</h2>
+<pre tag="python">
+# 带状态的生成器
+def counter(start=0, step=1):
+    count = start
+    while True:
+        received = yield count
+        if received is not None:
+            count = received
+        else:
+            count += step
+
+# 使用带状态的生成器
+c = counter(5)
+print(next(c))      # 5
+print(next(c))      # 6
+print(c.send(10))   # 10 (重置计数器)
+print(next(c))      # 11
+</pre>
+
+<h2>
+    生成器的throw方法
+</h2>
+<pre tag="python">
+def error_handling_generator():
+    try:
+        yield "开始"
+        yield "处理中"
+        yield "完成"
+    except ValueError as e:
+        yield f"捕获到值错误: {e}"
+    except Exception as e:
+        yield f"捕获到其他错误: {e}"
+
+gen = error_handling_generator()
+print(next(gen))  # 开始
+print(next(gen))  # 处理中
+print(gen.throw(ValueError, "测试错误"))  # 捕获到值错误: 测试错误
+</pre>
+
+<h2>
+    生成器的close方法
+</h2>
+<pre tag="python">
+def resource_generator():
+    try:
+        print("资源已分配")
+        yield "资源使用中"
+        yield "继续使用中"
+    finally:
+        print("资源已释放")
+
+gen = resource_generator()
+print(next(gen))  # 资源已分配，资源使用中
+gen.close()       # 资源已释放
+</pre>
+
+<h2>
+    生成器的状态属性
+</h2>
+<pre tag="python">
+def stateful_generator():
+    yield 1
+    yield 2
+    yield 3
+
+gen = stateful_generator()
+print(f"初始状态: {gen.gi_frame.f_locals if gen.gi_frame else 'None'}")
+print(f"生成器状态: {gen.gi_running}")  # False
+
+next(gen)
+print(f"第一次yield后: {gen.gi_frame.f_locals if gen.gi_frame else 'None'}")
+
+# 检查生成器是否完成
+try:
+    next(gen)
+    next(gen)
+    next(gen)
+    print("生成器已完成")
+except StopIteration:
+    print("生成器已耗尽")
+</pre>
+
+<h2>
+    双向通信生成器
+</h2>
+<pre tag="python">
+def echo_generator():
+    """回显生成器"""
+    while True:
+        message = yield
+        if message is None:
+            break
+        yield f"Echo: {message}"
+
+echo = echo_generator()
+next(echo)  # 启动生成器
+print(echo.send("Hello"))  # Echo: Hello
+print(echo.send("World"))  # Echo: World
+echo.close()
+</pre>

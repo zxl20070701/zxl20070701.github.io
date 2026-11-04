@@ -1,0 +1,45 @@
+<header>
+    点击事件
+</header>
+<p>
+    组件被点击时触发的事件。
+</p>
+<h2>
+    事件
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>
+                名称
+            </td>
+            <td>
+                支持冒泡
+            </td>
+            <td>
+                功能描述
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                onClick(event: (event?: ClickEvent) => void)
+            </td>
+            <td>
+                否
+            </td>
+            <td>
+                点击动作触发该回调。
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    用例
+</h2>
+<pre tag="javascript">
+Button("点击我").onClick(event=>{
+    console.log(`相对按钮的点击位置：(${event.x},${event.y})`)
+})
+</pre>

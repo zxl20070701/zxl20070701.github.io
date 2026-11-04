@@ -1,0 +1,86 @@
+<header>
+    模型保存与加载
+</header>
+
+<p>
+    训练完成后，需要把模型参数保存下来，后续用于推理、继续训练或部署。PyTorch 推荐保存 <span class="warn">state_dict</span>，也就是模型参数字典，而不是直接保存整个模型对象。
+</p>
+
+<h2>
+    保存模型参数
+</h2>
+
+<pre tag="python">
+torch.save(model.state_dict(), "model.pth")
+</pre>
+
+<h2>
+    加载模型参数
+</h2>
+
+<pre tag="python">
+model = SimpleNet()
+state_dict = torch.load("model.pth", weights_only=True)
+model.load_state_dict(state_dict)
+model.eval()
+</pre>
+
+<div class="tips">
+    推理前记得调用 model.eval()，否则 Dropout、BatchNorm 等层可能仍按训练模式工作，导致结果不稳定。
+</div>
+
+<h2>
+    保存训练检查点
+</h2>
+
+<p>
+    如果希望中断后继续训练，需要同时保存模型参数、优化器状态、epoch、loss 等信息。
+</p>
+
+<pre tag="python">
+checkpoint = {
+    "epoch": epoch,
+    "model_state_dict": model.state_dict(),
+    "optimizer_state_dict": optimizer.state_dict(),
+    "loss": loss.item(),
+}
+
+torch.save(checkpoint, "checkpoint.pth")
+</pre>
+
+<h2>
+    恢复训练
+</h2>
+
+<pre tag="python">
+checkpoint = torch.load("checkpoint.pth", weights_only=True)
+
+model.load_state_dict(checkpoint["model_state_dict"])
+optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+start_epoch = checkpoint["epoch"] + 1
+</pre>
+
+<h2>
+    跨设备加载
+</h2>
+
+<p>
+    如果模型在 GPU 上训练，但要在 CPU 上加载，可以使用 <span class="warn">map_location</span>。
+</p>
+
+<pre tag="python">
+device = torch.device("cpu")
+state_dict = torch.load("model.pth", map_location=device, weights_only=True)
+model.load_state_dict(state_dict)
+</pre>
+
+<h2>
+    实践建议
+</h2>
+
+<ul>
+    <li>推理模型保存为 .pth 或 .pt 文件即可。</li>
+    <li>继续训练要保存 checkpoint，而不是只保存模型参数。</li>
+    <li>加载后先跑一个小 batch，确认输出 shape 正确。</li>
+    <li>保存文件名最好包含模型名、数据集、时间或指标。</li>
+</ul>

@@ -1,0 +1,54 @@
+<header>
+    类的定义
+</header>
+<h2>
+    使用class关键字定义类
+</h2>
+<p>
+    使用<span class="warn">class</span>关键字来定义一个类：
+</p>
+<pre tag="python">
+class MyClass:
+    """这是一个简单的类"""
+    
+    # 类属性
+    class_variable = "这是一个类属性"
+    
+    # 初始化方法
+    def __init__(self, name):
+        # 实例属性
+        self.name = name
+    
+    # 实例方法
+    def greet(self):
+        return f"Hello, {self.name}!"
+</pre>
+
+<h2>
+    类定义的基本结构
+</h2>
+<ul>
+    <li><strong>类名</strong>：遵循大驼峰命名法（PascalCase）</li>
+    <li><strong>文档字符串</strong>：描述类的用途和功能</li>
+    <li><strong>属性</strong>：类变量和实例变量</li>
+    <li><strong>方法</strong>：类中定义的函数</li>
+</ul>
+
+<h2>
+    命名规范
+</h2>
+<pre tag="python">
+# 正确的类命名
+class StudentInfo:
+    pass
+
+class BankAccount:
+    pass
+
+# 不推荐的下划线命名
+class student_info:
+    pass
+
+class bank_account:
+    pass
+</pre>

@@ -1,0 +1,66 @@
+<header>
+    常用内置函数
+</header>
+<h2>
+    字符串函数
+</h2>
+<pre tag="sql">
+SELECT printf('%s %s', 'Hello', 'World');
+SELECT upper('hello');
+SELECT lower('HELLO');
+SELECT trim('  hello  ');
+SELECT length('hello');
+SELECT substr('Hello World', 1, 5);
+SELECT replace('Hello World', 'World', 'SQLite');
+SELECT instr('Hello World', 'World');
+SELECT 'a' || 'b'; -- 连接字符串
+</pre>
+<h2>
+    数字函数
+</h2>
+<pre tag="sql">
+SELECT abs(-5);
+SELECT round(3.14159, 2);
+SELECT round(3.6);
+SELECT ceiling(3.1);
+SELECT floor(3.9);
+SELECT random();
+SELECT max(1, 2, 3);
+SELECT min(1, 2, 3);
+</pre>
+<h2>
+    日期时间函数
+</h2>
+<pre tag="sql">
+SELECT date('now');
+SELECT time('now');
+SELECT datetime('now');
+SELECT strftime('%Y-%m-%d %H:%M:%S', 'now');
+SELECT strftime('%Y', 'now');
+SELECT strftime('%m', 'now');
+SELECT strftime('%d', 'now');
+SELECT date('now', '+7 days');
+SELECT date('now', '+1 month');
+SELECT julianday('now') - julianday('2024-01-01');
+</pre>
+<h2>
+    聚合函数
+</h2>
+<pre tag="sql">
+SELECT COUNT(*) FROM users;
+SELECT COUNT(email) FROM users;
+SELECT COUNT(DISTINCT city) FROM users;
+SELECT AVG(age) FROM users;
+SELECT SUM(age) FROM users;
+SELECT MAX(age) FROM users;
+SELECT MIN(age) FROM users;
+SELECT GROUP_CONCAT(name, ', ') FROM users;
+</pre>
+<h2>
+    条件函数
+</h2>
+<pre tag="sql">
+SELECT CASE WHEN age >= 18 THEN '成年' ELSE '未成年' END AS status FROM users;
+SELECT COALESCE(NULL, NULL, '默认值');
+SELECT IFNULL(NULL, '默认值');
+</pre>

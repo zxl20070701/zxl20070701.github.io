@@ -1,0 +1,431 @@
+<header>
+    CPU功能
+</header>
+<h2>
+    CPU功能概述
+</h2>
+<p>
+    <span class="important">中央处理器</span>（Central Processing Unit，CPU）是计算机系统的核心部件，负责执行程序指令和处理数据。CPU的功能设计直接影响整个计算机系统的性能、功耗和可靠性。
+</p>
+
+<h2>
+    CPU的基本功能
+</h2>
+<h3>
+    1. 指令控制功能
+</h3>
+<h4>
+    指令获取
+</h4>
+<ul>
+    <li><span class="special">程序计数器管理</span>：维护下一条指令的地址</li>
+    <li><span class="special">指令预取</span>：提前获取后续指令</li>
+    <li><span class="special">分支预测</span>：预测程序执行流程</li>
+</ul>
+
+<h4>
+    指令译码
+</h4>
+<ul>
+    <li><span class="special">操作码解析</span>：识别指令类型和操作</li>
+    <li><span class="special">操作数提取</span>：获取指令所需的操作数</li>
+    <li><span class="special">寻址方式处理</span>：计算操作数的有效地址</li>
+</ul>
+
+<h4>
+    指令执行控制
+</h4>
+<ul>
+    <li><span class="special">时序控制</span>：产生各阶段的控制信号</li>
+    <li><span class="special">微操作调度</span>：协调各功能单元的工作</li>
+    <li><span class="special">异常处理</span>：处理指令执行中的异常情况</li>
+</ul>
+
+<h3>
+    2. 操作控制功能
+</h3>
+<h4>
+    算术逻辑运算
+</h4>
+<ul>
+    <li><span class="special">整数运算</span>：加减乘除、逻辑运算</li>
+    <li><span class="special">浮点运算</span>：科学计算、工程应用</li>
+    <li><span class="special">位操作</span>：移位、循环移位、位测试</li>
+</ul>
+
+<h4>
+    数据移动
+</h4>
+<ul>
+    <li><span class="special">寄存器间传输</span>：内部数据移动</li>
+    <li><span class="special">内存访问</span>：加载/存储操作</li>
+    <li><span class="special">I/O操作</span>：与外部设备交换数据</li>
+</ul>
+
+<h4>
+    程序控制
+</h4>
+<ul>
+    <li><span class="special">条件分支</span>：根据条件改变执行流程</li>
+    <li><span class="special">无条件跳转</span>：程序流程转移</li>
+    <li><span class="special">子程序调用</span>：支持过程化编程</li>
+</ul>
+
+<h3>
+    3. 时间控制功能
+</h3>
+<h4>
+    时钟同步
+</h4>
+<ul>
+    <li><span class="special">时钟信号生成</span>：提供系统时序基准</li>
+    <li><span class="special">时钟分配</span>：将时钟信号分配到各部件</li>
+    <li><span class="special">时钟域管理</span>：处理不同时钟域间的同步</li>
+</ul>
+
+<h4>
+    指令周期控制
+</h4>
+<ul>
+    <li><span class="special">节拍控制</span>：将指令周期划分为多个节拍</li>
+    <li><span class="special">状态机控制</span>：根据指令类型调整周期长度</li>
+    <li><span class="special">流水线控制</span>：协调流水线各阶段的工作</li>
+</ul>
+
+<h4>
+    总线时序控制
+</h4>
+<ul>
+    <li><span class="special">总线仲裁</span>：协调多个设备对总线的访问</li>
+    <li><span class="special">时序协议</span>：遵守总线通信协议</li>
+    <li><span class="special">等待状态</span>：处理慢速设备的等待请求</li>
+</ul>
+
+<h3>
+    4. 数据处理功能
+</h3>
+<h4>
+    数据格式转换
+</h4>
+<ul>
+    <li><span class="special">类型转换</span>：整数与浮点数转换</li>
+    <li><span class="special">大小端转换</span>：处理不同字节序</li>
+    <li><span class="special">精度转换</span>：不同精度间的转换</li>
+</ul>
+
+<h4>
+    数据校验
+</h4>
+<ul>
+    <li><span class="special">奇偶校验</span>：检测数据传输错误</li>
+    <li><span class="special">CRC校验</span>：循环冗余校验</li>
+    <li><span class="special">ECC校验</span>：错误检测和纠正</li>
+</ul>
+
+<h2>
+    CPU的高级功能
+</h2>
+<h3>
+    1. 并行处理功能
+</h3>
+<h4>
+    指令级并行
+</h4>
+<ul>
+    <li><span class="special">流水线技术</span>：重叠执行多条指令</li>
+    <li><span class="special">超标量架构</span>：同时发射多条指令</li>
+    <li><span class="special">乱序执行</span>：动态调整指令执行顺序</li>
+</ul>
+
+<h4>
+    数据级并行
+</h4>
+<ul>
+    <li><span class="special">SIMD指令</span>：单指令多数据操作</li>
+    <li><span class="special">向量处理</span>：处理向量数据</li>
+    <li><span class="special">GPU协处理</span>：图形处理单元加速</li>
+</ul>
+
+<h4>
+    线程级并行
+</h4>
+<ul>
+    <li><span class="special">多核处理</span>：集成多个处理核心</li>
+    <li><span class="special">超线程技术</span>：单个核心模拟多个逻辑处理器</li>
+    <li><span class="special">任务调度</span>：在多个线程间分配资源</li>
+</ul>
+
+<h3>
+    2. 存储管理功能
+</h3>
+<h4>
+    Cache管理
+</h4>
+<ul>
+    <li><span class="special">Cache一致性</span>：维护多级Cache间的一致性</li>
+    <li><span class="special">预取机制</span>：预测性数据加载</li>
+    <li><span class="special">替换策略</span>：管理Cache空间分配</li>
+</ul>
+
+<h4>
+    虚拟存储器
+</h4>
+<ul>
+    <li><span class="special">地址转换</span>：虚拟地址到物理地址映射</li>
+    <li><span class="special">页表管理</span>：维护页表结构</li>
+    <li><span class="special">TLB管理</span>：转换后备缓冲器维护</li>
+</ul>
+
+<h4>
+    内存保护
+</h4>
+<ul>
+    <li><span class="special">访问权限控制</span>：读/写/执行权限管理</li>
+    <li><span class="special">段页式保护</span>：基于段和页的保护机制</li>
+    <li><span class="special">越界检测</span>：检测非法内存访问</li>
+</ul>
+
+<h3>
+    3. 系统管理功能
+</h3>
+<h4>
+    中断处理
+</h4>
+<ul>
+    <li><span class="special">中断识别</span>：识别中断源和类型</li>
+    <li><span class="special">中断响应</span>：保存现场并转入中断服务</li>
+    <li><span class="special">中断返回</span>：恢复现场并返回原程序</li>
+</ul>
+
+<h4>
+    异常处理
+</h4>
+<ul>
+    <li><span class="special">异常检测</span>：检测各种异常情况</li>
+    <li><span class="special">异常分类</span>：区分不同类型异常</li>
+    <li><span class="special">异常处理</span>：执行相应的异常处理程序</li>
+</ul>
+
+<h4>
+    特权级管理
+</h4>
+<ul>
+    <li><span class="special">模式切换</span>：用户态和内核态转换</li>
+    <li><span class="special">特权指令</span>：管理特权指令的执行</li>
+    <li><span class="special">系统调用</span>：支持用户程序请求系统服务</li>
+</ul>
+
+<h2>
+    CPU的性能优化功能
+</h2>
+<h3>
+    1. 分支预测功能
+</h3>
+<h4>
+    静态预测
+</h4>
+<ul>
+    <li><span class="special">向后分支预测</span>：循环通常向后跳转</li>
+    <li><span class="special">向前分支预测</span>：条件分支通常不跳转</li>
+</ul>
+
+<h4>
+    动态预测
+</h4>
+<ul>
+    <li><span class="special">1位预测器</span>：简单的跳转历史记录</li>
+    <li><span class="special">2位预测器</span>：考虑状态转换</li>
+    <li><span class="special">全局历史预测</span>：利用全局分支历史</li>
+    <li><span class="special">局部历史预测</span>：针对特定分支的历史</li>
+</ul>
+
+<h3>
+    2. 预取功能
+</h3>
+<h4>
+    指令预取
+</h4>
+<ul>
+    <li><span class="special">顺序预取</span>：预取后续指令</li>
+    <li><span class="special">目标预取</span>：预取分支目标指令</li>
+    <li><span class="special">循环预取</span>：预取循环体指令</li>
+</ul>
+
+<h4>
+    数据预取
+</h4>
+<ul>
+    <li><span class="special">顺序预取</span>：预取连续数据</li>
+    <li><span class="special">跨步预取</span>：预取固定间隔数据</li>
+    <li><span class="special">自适应预取</span>：根据访问模式调整</li>
+</ul>
+
+<h3>
+    3. 推测执行功能
+</h3>
+<h4>
+    控制推测
+</h4>
+<ul>
+    <li><span class="special">分支推测</span>：基于预测执行分支</li>
+    <li><span class="special">异常推测</span>：预测异常不会发生</li>
+</ul>
+
+<h4>
+    数据推测
+</h4>
+<ul>
+    <li><span class="special">值预测</span>：预测数据的值</li>
+    <li><span class="special">地址预测</span>：预测内存访问地址</li>
+</ul>
+
+<h2>
+    CPU的安全功能
+</h2>
+<h3>
+    1. 执行保护
+</h3>
+<h4>
+    NX位（No-eXecute）
+</h4>
+<ul>
+    <li><span class="special">数据执行保护</span>：防止数据区域执行代码</li>
+    <li><span class="special">缓冲区溢出防护</span>：减少攻击面</li>
+</ul>
+
+<h4>
+    SMEP/SMAP
+</h4>
+<ul>
+    <li><span class="special">管理模式执行保护</span>：防止内核执行用户代码</li>
+    <li><span class="special">管理模式访问保护</span>：限制内核访问用户数据</li>
+</ul>
+
+<h3>
+    2. 地址空间保护
+</h3>
+<h4>
+    ASLR（地址空间布局随机化）
+</h4>
+<ul>
+    <li><span class="special">随机化布局</span>：随机安排内存布局</li>
+    <li><span class="special">攻击防护</span>：增加攻击难度</li>
+</ul>
+
+<h4>
+    内存加密
+</h4>
+<ul>
+    <li><span class="special">数据加密</span>：保护内存中的敏感数据</li>
+    <li><span class="special">代码加密</span>：保护程序代码</li>
+</ul>
+
+<h3>
+    3. 侧信道防护
+</h3>
+<h4>
+    缓存侧信道防护
+</h4>
+<ul>
+    <li><span class="special">缓存分区</span>：隔离不同安全域的缓存</li>
+    <li><span class="special">缓存刷新</span>：清除敏感数据</li>
+</ul>
+
+<h4>
+    时序侧信道防护
+</h4>
+<ul>
+    <li><span class="special">恒定时间操作</span>：消除时间差异</li>
+    <li><span class="special">随机延迟</span>：引入随机噪声</li>
+</ul>
+
+<h2>
+    CPU的能效管理功能
+</h2>
+<h3>
+    1. 动态电压频率调节（DVFS）
+</h3>
+<h4>
+    频率调节
+</h4>
+<ul>
+    <li><span class="special">性能状态</span>：根据负载调整频率</li>
+    <li><span class="special">节能状态</span>：空闲时降低频率</li>
+</ul>
+
+<h4>
+    电压调节
+</h4>
+<ul>
+    <li><span class="special">电压-频率配合</span>：调整电压配合频率变化</li>
+    <li><span class="special">功耗优化</span>：降低动态功耗</li>
+</ul>
+
+<h3>
+    2. 电源管理状态
+</h3>
+<h4>
+    C状态（处理器状态）
+</h4>
+<ul>
+    <li><span class="special">C0</span>：活跃状态</li>
+    <li><span class="special">C1-C3</span>：不同深度的睡眠状态</li>
+    <li><span class="special">C6-C10</span>：更深度的节能状态</li>
+</ul>
+
+<h4>
+    P状态（性能状态）
+</h4>
+<ul>
+    <li><span class="special">P0</span>：最高性能状态</li>
+    <li><span class="special">P1-Pn</span>：逐渐降低的性能状态</li>
+</ul>
+
+<h3>
+    3. 核心管理
+</h3>
+<h4>
+    核心关闭
+</h4>
+<ul>
+    <li><span class="special">动态关闭</span>：负载低时关闭部分核心</li>
+    <li><span class="special">唤醒机制</span>：需要时快速唤醒核心</li>
+</ul>
+
+<h4>
+    线程调度
+</h4>
+<ul>
+    <li><span class="special">负载均衡</span>：在核心间均衡分配任务</li>
+    <li><span class="special">亲和性管理</span>：优化线程与核心的绑定</li>
+</ul>
+
+<h2>
+    现代CPU功能发展趋势
+</h2>
+<h3>
+    1. 人工智能加速
+</h3>
+<ul>
+    <li><span class="special">矩阵运算指令</span>：专门用于AI计算的指令</li>
+    <li><span class="special">向量扩展</span>：增强向量处理能力</li>
+    <li><span class="special">神经网络加速</span>：专门的AI加速器</li>
+</ul>
+
+<h3>
+    2. 安全增强
+</h3>
+<ul>
+    <li><span class="special">硬件加密</span>：集成加密算法硬件</li>
+    <li><span class="special">可信执行</span>：支持可信计算环境</li>
+    <li><span class="special">内存保护</span>：增强内存安全机制</li>
+</ul>
+
+<h3>
+    3. 异构集成
+</h3>
+<ul>
+    <li><span class="special">CPU+GPU</span>：集成图形处理单元</li>
+    <li><span class="special">CPU+FPGA</span>：集成可编程逻辑</li>
+    <li><span class="special">专用加速器</span>：集成各种专用处理单元</li>
+</ul>

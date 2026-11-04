@@ -1,0 +1,30 @@
+<header>文件基础操作</header>
+<h2>文件和目录</h2>
+<pre>
+mkdir new_folder
+mkdir -p parent/child/grandchild
+cp source.txt destination.txt
+cp -r source_folder destination_folder
+mv old_name.txt new_name.txt
+rm file.txt
+rm -r folder_name
+</pre>
+<h2>查找文件</h2>
+<pre>
+find /path/to/search -name "filename.txt"
+find . -name "*.txt"
+sudo /usr/libexec/locate.updatedb
+locate filename.txt
+</pre>
+<h2>查看内容和权限</h2>
+<pre>
+cat file.txt
+less large_file.txt
+more large_file.txt
+head -n 20 file.txt
+tail -n 20 file.txt
+tail -f log_file.txt
+sudo chown username file.txt
+chmod 755 script.sh
+chmod +x script.sh
+</pre>

@@ -1,0 +1,87 @@
+<header>
+    大文件处理
+</header>
+<p>
+    大文件处理涉及高效地处理大型文件，避免内存溢出，提高处理效率。
+</p>
+<pre tag="python">
+# 创建大文件用于测试
+def create_large_file(filename, size_mb=10):
+    """创建指定大小的测试文件"""
+    chunk_size = 1024 * 1024  # 1MB
+    chunk = b'x' * chunk_size
+
+    with open(filename, 'wb') as f:
+        for _ in range(size_mb):
+            f.write(chunk)
+    print(f"创建了 {size_mb}MB 的文件: {filename}")
+
+# 逐行读取大文件
+def read_large_file_line_by_line(filename):
+    """逐行读取大文件"""
+    line_count = 0
+    with open(filename, 'r', encoding='utf-8', errors='ignore') as f:
+        for line in f:
+            line_count += 1
+            if line_count % 100000 == 0:
+                print(f"已读取 {line_count} 行")
+    return line_count
+
+# 分块读取大文件
+def read_large_file_in_chunks(filename, chunk_size=8192):
+    """分块读取大文件"""
+    total_bytes = 0
+    with open(filename, 'rb') as f:
+        while True:
+            chunk = f.read(chunk_size)
+            if not chunk:
+                break
+            total_bytes += len(chunk)
+            # 处理chunk数据
+    return total_bytes
+
+# 使用生成器处理大文件
+def process_large_file(filename):
+    """使用生成器逐行处理大文件"""
+    def line_generator(filename):
+        with open(filename, 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                yield line.strip()
+
+    # 处理每一行
+    for i, line in enumerate(line_generator(filename)):
+        if i % 10000 == 0:
+            print(f"处理第 {i} 行: {line[:50]}...")
+
+# 内存映射文件（适用于超大文件）
+import mmap
+
+def process_with_mmap(filename):
+    """使用内存映射处理大文件"""
+    with open(filename, 'r+b') as f:
+        # 内存映射整个文件
+        with mmap.mmap(f.fileno(), 0) as mm:
+            # 可以像处理字符串一样处理内存映射
+            lines = 0
+            while True:
+                line = mm.readline()
+                if not line:
+                    break
+                lines += 1
+                if lines % 100000 == 0:
+                    print(f"内存映射方式处理第 {lines} 行")
+            return lines
+
+# 创建测试文件
+test_file = 'large_test.txt'
+create_large_file(test_file, 1)  # 创建1MB文件
+
+# 测试不同的读取方式
+print("测试大文件处理:")
+size = os.path.getsize(test_file)
+print(f"文件大小: {size} 字节")
+
+# 清理测试文件
+if os.path.exists(test_file):
+    os.remove(test_file)
+</pre>

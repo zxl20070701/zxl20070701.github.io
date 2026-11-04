@@ -1,0 +1,75 @@
+<header>
+    条件边与工具循环
+</header>
+
+<p>
+    LangGraph 的核心优势是流程可控。通过条件边，可以根据当前状态决定下一步走向：继续调用工具、回到模型、进入人工审核，或者结束任务。
+</p>
+
+<h2>
+    条件边的作用
+</h2>
+
+<p>
+    普通边表示固定流程，例如 A 节点结束后一定去 B 节点。条件边则会执行一个路由函数，根据状态返回不同分支。
+</p>
+
+<pre tag="javascript">
+workflow.addConditionalEdges("model", shouldContinue, {
+    tools: "tools",
+    end: "__end__",
+});
+</pre>
+
+<h2>
+    典型工具循环
+</h2>
+
+<p>
+    Agent 最常见的执行循环是：模型判断是否需要工具，如果有工具调用就进入 tools 节点；工具执行后把结果写回 messages，再回到模型继续推理。
+</p>
+
+<pre>
+__start__ -> model
+model -> tools 或 __end__
+tools -> model
+</pre>
+
+<h2>
+    路由函数示例
+</h2>
+
+<pre tag="javascript">
+function shouldContinue(state) {
+    const messages = state.messages;
+    const lastMessage = messages[messages.length - 1];
+
+    if (lastMessage.tool_calls && lastMessage.tool_calls.length > 0) {
+        return "tools";
+    }
+
+    return "end";
+}
+</pre>
+
+<h2>
+    设计注意点
+</h2>
+
+<ul>
+    <li>路由函数应该只做判断，不要在里面执行复杂副作用。</li>
+    <li>每个循环都要有终止条件，避免无限调用工具。</li>
+    <li>工具执行结果要写入状态，否则模型无法观察结果。</li>
+    <li>复杂分支最好使用明确的枚举值，例如 need_tool、need_review、done。</li>
+</ul>
+
+<h2>
+    适合场景
+</h2>
+
+<ul>
+    <li>客服流程：根据问题类型进入不同处理分支。</li>
+    <li>代码助手：测试失败回到修改节点，测试通过结束。</li>
+    <li>审批流程：风险高进入人工审核，风险低自动执行。</li>
+    <li>RAG 问答：资料不足继续检索，资料足够进入回答节点。</li>
+</ul>

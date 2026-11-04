@@ -1,0 +1,280 @@
+<header>
+    编码
+</header>
+<p>
+    编码技术是物理层的核心技术之一，用于将数字数据转换为适合在物理介质上传输的信号形式。不同的编码方式具有不同的特性，在带宽利用、时钟恢复、抗干扰能力等方面各有优劣。选择合适的编码方案对于提高网络性能和可靠性至关重要。
+</p>
+<h2>
+    数字信号编码基础
+</h2>
+<p>
+    数字信号编码是将二进制数据转换为电信号或光信号的过程，需要考虑多个因素：
+</p>
+<ul>
+    <li><span class="special">带宽效率</span>：单位带宽能够传输的数据量</li>
+    <li><span class="special">时钟同步</span>：接收端能否从信号中提取时钟信息</li>
+    <li><span class="special">直流平衡</span>：信号中0和1的平衡性，影响传输质量</li>
+    <li><span class="special">抗干扰能力</span>：对噪声和干扰的抵抗能力</li>
+    <li><span class="special">实现复杂度</span>：编码和解码的硬件复杂度</li>
+</ul>
+<h2>
+    基本编码方式
+</h2>
+<h3>
+    1. 不归零编码 (NRZ - Non-Return to Zero)
+</h3>
+<h4>
+    1.1 NRZ-Level (NRZ-L)
+</h4>
+<ul>
+    <li><span class="special">编码规则</span>：高电平表示1，低电平表示0（或相反）</li>
+    <li><span class="special">特点</span>：实现简单，但存在直流分量问题</li>
+    <li><span class="special">问题</span>：长串0或1导致时钟同步困难，直流分量影响传输</li>
+    <li><span class="special">应用</span>：简单的数字电路、低速通信</li>
+</ul>
+<h4>
+    1.2 NRZ-Invert (NRZ-I)
+</h4>
+<ul>
+    <li><span class="special">编码规则</span>：遇到1时电平翻转，遇到0时电平保持不变</li>
+    <li><span class="special">特点</span>：解决了长串1的问题，但仍存在长串0的问题</li>
+    <li><span class="special">优势</span>：比NRZ-L有更好的时钟恢复能力</li>
+    <li><span class="special">应用</span>：早期磁记录系统</li>
+</ul>
+<h3>
+    2. 归零编码 (RZ - Return to Zero)
+</h3>
+<ul>
+    <li><span class="special">编码规则</span>：每个比特周期中间都回到零电平，1用正脉冲表示，0用负脉冲表示</li>
+    <li><span class="special">优点</span>：每个比特都有跳变，便于时钟恢复</li>
+    <li><span class="special">缺点</span>：需要两倍带宽，效率较低</li>
+    <li><span class="special">应用</span>：主要用于教学演示，实际应用较少</li>
+</ul>
+<h3>
+    3. 双相位编码 (Biphase Encoding)
+</h3>
+<h4>
+    3.1 曼彻斯特编码 (Manchester Encoding)
+</h4>
+<ul>
+    <li><span class="special">编码规则</span>：每个比特周期中间都有跳变，1用高到低跳变表示，0用低到高跳变表示</li>
+    <li><span class="special">特点</span>：自带时钟信息，无直流分量</li>
+    <li><span class="special">IEEE 802.3标准</span>：10Mbps以太网使用曼彻斯特编码</li>
+    <li><span class="special">带宽需求</span>：信号速率是数据速率的两倍</li>
+</ul>
+<h4>
+    3.2 差分曼彻斯特编码 (Differential Manchester Encoding)
+</h4>
+<ul>
+    <li><span class="special">编码规则</span>：每个比特周期中间都有跳变，比特开始处有跳变表示0，无跳变表示1</li>
+    <li><span class="special">特点</span>：比曼彻斯特编码有更好的抗干扰能力</li>
+    <li><span class="special">IEEE 802.5标准</span>：令牌环网使用差分曼彻斯特编码</li>
+    <li><span class="special">优势</span>：极性反转不影响解码</li>
+</ul>
+<h2>
+    高级编码技术
+</h2>
+<h3>
+    1. mBnB编码 (m Binary n Binary)
+</h3>
+<p>
+    mBnB编码将m位二进制数据编码为n位二进制码，其中n>m，通过增加冗余位实现更好的传输特性。
+</p>
+<h4>
+    1.1 4B/5B编码
+</h4>
+<ul>
+    <li><span class="special">编码规则</span>：将4位数据编码为5位码，确保码组中不超过3个连续0</li>
+    <li><span class="special">特点</span>：80%的编码效率，保证足够的信号跳变</li>
+    <li><span class="special">应用</span>：100BASE-FX、FDDI、ATM</li>
+    <li><span class="special">组合限制</span>：16个数据码组+8个控制码组，剩余8个未使用</li>
+</ul>
+<h4>
+    1.2 8B/10B编码
+</h4>
+<ul>
+    <li><span class="special">编码规则</span>：将8位数据编码为10位码，保持直流平衡</li>
+    <li><span class="special">特点</span>：80%的编码效率，良好的直流平衡特性</li>
+    <li><span class="special">应用</span>：千兆以太网、PCIe、SATA、USB 3.0</li>
+    <li><span class="special">运行机制</span>：使用运行不一致性(Running Disparity)维持平衡</li>
+</ul>
+<h4>
+    1.3 64B/66B编码
+</h4>
+<ul>
+    <li><span class="special">编码规则</span>：将64位数据编码为66位码，添加2位同步头</li>
+    <li><span class="special">特点</span>：97%的编码效率，接近原始数据速率</li>
+    <li><span class="special">应用</span>：10GbE、40GbE、100GbE</li>
+    <li><span class="special">同步头</span>：01表示数据块，10表示控制块</li>
+</ul>
+<h3>
+    2. 脉冲幅度调制 (PAM - Pulse Amplitude Modulation)
+</h3>
+<p>
+    PAM通过改变脉冲幅度来表示多位数据，提高带宽利用率。
+</p>
+<h4>
+    2.1 PAM-5编码
+</h4>
+<ul>
+    <li><span class="special">编码原理</span>：使用5个不同的幅度电平（-2, -1, 0, +1, +2）</li>
+    <li><span class="special">应用</span>：1000BASE-T千兆以太网</li>
+    <li><span class="special">技术特点</span>：4D-PAM5，4对线同时传输，每对线250Mbps</li>
+    <li><span class="special">纠错机制</span>：使用前向纠错(FEC)提高可靠性</li>
+</ul>
+<h4>
+    2.2 PAM-16编码
+</h4>
+<ul>
+    <li><span class="special">编码原理</span>：使用16个不同的幅度电平</li>
+    <li><span class="special">应用</span>：2.5GBASE-T、5GBASE-T、25GBASE-T</li>
+    <li><span class="special">优势</span>：更高的频谱效率，支持更高数据速率</li>
+    <li><span class="special">挑战</span>：对信噪比要求更高，需要更复杂的均衡技术</li>
+</ul>
+<h3>
+    3. 多级编码调制 (MLT-3 - Multi-Level Transmit)
+</h3>
+<ul>
+    <li><span class="special">编码规则</span>：使用三个电平(+V, 0, -V)，遇到1时电平循环变化</li>
+    <li><span class="special">特点</span>：信号能量集中在低频，适合双绞线传输</li>
+    <li><span class="special">应用</span>：100BASE-TX快速以太网</li>
+    <li><span class="special">带宽效率</span>：比NRZ编码减少3dB的带宽需求</li>
+</ul>
+<h2>
+    光通信编码技术
+</h2>
+<h3>
+    1. 光信号调制方式
+</h3>
+<h4>
+    1.1 强度调制 (IM - Intensity Modulation)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：通过改变光强来表示数据，1为有光，0为无光</li>
+    <li><span class="special">特点</span>：实现简单，是光纤通信的基本调制方式</li>
+    <li><span class="special">限制</span>：只能传输二进制数据，带宽利用率低</li>
+</ul>
+<h4>
+    1.2 外差调制 (Coherent Modulation)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：调制光的幅度、相位或频率</li>
+    <li><span class="special">调制格式</span>：QPSK、16-QAM、64-QAM等</li>
+    <li><span class="special">优势</span>：更高的频谱效率，支持100Gbps以上速率</li>
+    <li><span class="special">应用</span>：长距离DWDM系统、高速数据中心互连</li>
+</ul>
+<h3>
+    2. 光通信编码方案
+</h3>
+<h4>
+    2.1 NRZ-OOK (Non-Return to Zero On-Off Keying)
+</h4>
+<ul>
+    <li><span class="special">编码方式</span>：最简单的光强度调制，有光表示1，无光表示0</li>
+    <li><span class="special">应用范围</span>：1GbE、10GbE短距离传输</li>
+    <li><span class="special">限制</span>：高速传输时色散影响显著</li>
+</ul>
+<h4>
+    2.2 PAM-4 in Optics
+</h4>
+<ul>
+    <li><span class="special">编码方式</span>：使用4个光功率电平表示2比特数据</li>
+    <li><span class="special">优势</span>：相比NRZ-OOK，在相同符号率下翻倍数据速率</li>
+    <li><span class="special">应用</span>：50GbE、100GbE、400GbE</li>
+    <li><span class="special">挑战</span>：需要更高的光信噪比，更复杂的接收机</li>
+</ul>
+<h2>
+    编码技术性能比较
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>编码方式</th>
+            <th>效率</th>
+            <th>时钟恢复</th>
+            <th>直流平衡</th>
+            <th>复杂度</th>
+            <th>典型应用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>NRZ</td>
+            <td>100%</td>
+            <td>差</td>
+            <td>差</td>
+            <td>低</td>
+            <td>简单数字电路</td>
+        </tr>
+        <tr>
+            <td>曼彻斯特</td>
+            <td>50%</td>
+            <td>好</td>
+            <td>好</td>
+            <td>低</td>
+            <td>10Mbps以太网</td>
+        </tr>
+        <tr>
+            <td>4B/5B</td>
+            <td>80%</td>
+            <td>好</td>
+            <td>一般</td>
+            <td>中</td>
+            <td>100Mbps以太网</td>
+        </tr>
+        <tr>
+            <td>8B/10B</td>
+            <td>80%</td>
+            <td>好</td>
+            <td>好</td>
+            <td>中</td>
+            <td>千兆以太网</td>
+        </tr>
+        <tr>
+            <td>64B/66B</td>
+            <td>97%</td>
+            <td>好</td>
+            <td>好</td>
+            <td>高</td>
+            <td>10G+以太网</td>
+        </tr>
+        <tr>
+            <td>PAM-5</td>
+            <td>100%</td>
+            <td>好</td>
+            <td>好</td>
+            <td>高</td>
+            <td>1000BASE-T</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    编码技术选择原则
+</h2>
+<h3>
+    1. 应用需求分析
+</h3>
+<ul>
+    <li><span class="special">数据速率</span>：根据所需传输速率选择合适编码</li>
+    <li><span class="special">传输介质</span>：不同介质适合不同编码方式</li>
+    <li><span class="special">距离要求</span>：长距离传输需要更强的纠错能力</li>
+    <li><span class="special">成本限制</span>：复杂编码增加设备成本</li>
+</ul>
+<h3>
+    2. 技术权衡因素
+</h3>
+<ul>
+    <li><span class="special">带宽效率</span>：高阶编码提高频谱效率但降低抗噪能力</li>
+    <li><span class="special">时钟恢复</span>：确保接收端能够正确恢复时钟信号</li>
+    <li><span class="special">直流平衡</span>：保持信号直流分量为零，便于传输</li>
+    <li><span class="special">错误检测</span>：编码应支持错误检测和纠正机制</li>
+</ul>
+<h3>
+    3. 发展趋势
+</h3>
+<ul>
+    <li><span class="special">高阶调制</span>：PAM-16、PAM-32等更高阶调制</li>
+    <li><span class="special">先进编码</span>：LDPC、Polar码等信道编码技术</li>
+    <li><span class="special">自适应编码</span>：根据信道条件动态调整编码方式</li>
+    <li><span class="special">光通信发展</span>：相干光通信、空间复用技术</li>
+</ul>

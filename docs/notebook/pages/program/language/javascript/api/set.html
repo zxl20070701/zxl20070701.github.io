@@ -1,0 +1,111 @@
+<header>
+    Set 对象
+</header>
+<h2>
+    概述
+</h2>
+<pre tag="javascript">
+// Set 是一组不重复的值的集合
+let set = new Set();
+</pre>
+<p>
+    Set 对象是值的集合，值可以是任何类型。Set 中的元素只会出现一次，且按插入顺序迭代。
+</p>
+<h2>
+    add()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+mySet.add(value)
+</pre>
+<p>
+    在 Set 对象尾部添加一个元素。返回 Set 对象本身，可链式调用。
+</p>
+<h2>
+    has()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+mySet.has(value)
+</pre>
+<p>
+    判断 Set 对象中是否存在指定的值。返回 true 或 false。
+</p>
+<h2>
+    delete()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+mySet.delete(value)
+</pre>
+<p>
+    从 Set 对象中移除指定的值。删除成功返回 true，值不存在返回 false。
+</p>
+<h2>
+    clear()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+mySet.clear()
+</pre>
+<p>
+    移除 Set 对象中的所有元素。没有返回值。
+</p>
+<h2>
+    size
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+mySet.size
+</pre>
+<p>
+    返回 Set 对象的元素数量。
+</p>
+<h2>
+    forEach()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+mySet.forEach(function(value, value2, set) {
+    // value 和 value2 相同（因为 Set 没有键）
+}, thisArg)
+</pre>
+<p>
+    按插入顺序依次对 Set 对象中的每个元素执行一次回调函数。
+</p>
+<h2>
+    values()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+mySet.values()
+</pre>
+<p>
+    返回一个包含 Set 对象中所有值的迭代器。
+</p>
+<h2>
+    entries()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+mySet.entries()
+</pre>
+<p>
+    返回一个包含 Set 对象中所有值的迭代器。每个值都会出现两次，以形成键值对数组 [value, value]。
+</p>

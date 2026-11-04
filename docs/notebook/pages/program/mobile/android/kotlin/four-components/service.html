@@ -1,0 +1,122 @@
+<header>
+    Service
+</header>
+<p>
+    Service 用于在后台执行长时间运行的组件，没有用户界面。
+</p>
+<p>
+    从 Android 8.0（API 26）起系统大幅限制后台服务；Google 官方推荐：
+</p>
+<ul>
+    <li>
+        <span class="important">后台任务</span>
+        ：优先使用 <span class="warn">WorkManager</span>（可延迟、保证执行）。
+    </li>
+    <li>
+        <span class="important">对用户可见（前台服务）</span>
+        ：必须显示通知，使用 <span class="warn">startForeground</span>。
+    </li>
+    <li>
+        <span class="important">即时但短暂的工作</span>
+        ：使用 <span class="warn">CoroutineScope(Dispatchers.Default).launch { }</span> 或 <span
+            class="warn">OneTimeWorkRequest</span>。
+    </li>
+</ul>
+<h2>
+    前台服务示例
+</h2>
+<pre tag="kotlin">
+class DownloadService : Service() {
+
+    // Service 不实现 LifecycleOwner，需自建 CoroutineScope
+    private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    override fun onBind(intent: Intent?) = null
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // 必须尽快调用 startForeground，否则会被系统杀死
+        val notification = NotificationCompat.Builder(this, "download")
+            .setContentTitle("下载中")
+            .setSmallIcon(R.drawable.ic_download)
+            .build()
+        startForeground(1001, notification)
+
+        serviceScope.launch {
+            try {
+                downloadFile()
+                stopSelf()
+            } catch (e: Exception) { /* 处理错误 */ }
+        }
+        return START_NOT_STICKY
+    }
+
+    override fun onDestroy() {
+        serviceScope.cancel() // 清理协程
+        super.onDestroy()
+    }
+}
+</pre>
+<h2>
+    使用 WorkManager（推荐替代方案）
+</h2>
+<pre tag="kotlin">
+// 定义 Worker
+class DownloadWorker(
+    context: Context,
+    params: WorkerParameters
+) : CoroutineWorker(context, params) {
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+        return@withContext try {
+            downloadFile()
+            Result.success()
+        } catch (e: Exception) {
+            Result.retry()
+        }
+    }
+}
+
+// 调度执行
+val request = OneTimeWorkRequestBuilder&lt;DownloadWorker&gt;().build()
+WorkManager.getInstance(context).enqueue(request)
+</pre>
+<h2>
+    清单文件注册
+</h2>
+<pre tag="xml">
+&lt;service android:name=".DownloadService"
+         android:exported="false"
+         android:foregroundServiceType="dataSync" /&gt;
+</pre>
+<h2>
+    启动服务
+</h2>
+<pre tag="kotlin">
+val intent = Intent(this, DownloadService::class.java)
+ContextCompat.startForegroundService(this, intent)
+</pre>
+<h2>
+    Compose 中绑定服务状态
+</h2>
+<pre tag="kotlin">
+@Composable
+fun DownloadScreen() {
+    val context = LocalContext.current
+    var isDownloading by remember { mutableStateOf(false) }
+
+    // 通过 ServiceConnection 或 LocalBroadcast 与 Service 通信
+    Column(modifier = Modifier.padding(16.dp)) {
+        Button(onClick = {
+            val intent = Intent(context, DownloadService::class.java)
+            ContextCompat.startForegroundService(context, intent)
+            isDownloading = true
+        }) {
+            Text("开始下载")
+        }
+
+        if (isDownloading) {
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            Text("下载中...")
+        }
+    }
+}
+</pre>

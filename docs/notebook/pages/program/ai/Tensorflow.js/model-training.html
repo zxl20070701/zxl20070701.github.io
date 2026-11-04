@@ -1,0 +1,132 @@
+<header>
+    模型训练流程
+</header>
+
+<p>
+    TensorFlow.js 训练模型通常分为五步：准备数据、定义模型、编译模型、训练模型、评估或预测。
+</p>
+
+<h2>
+    核心流程
+</h2>
+
+<pre>
+1. 准备 xs 和 ys
+2. 用 tf.sequential 或 tf.model 定义模型
+3. model.compile 设置 optimizer、loss、metrics
+4. model.fit 执行训练
+5. model.predict 进行预测
+</pre>
+
+<h2>
+    一个最小回归示例
+</h2>
+
+<pre tag="javascript">
+const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
+const ys = tf.tensor2d([2, 4, 6, 8], [4, 1]);
+
+const model = tf.sequential();
+
+model.add(tf.layers.dense({
+    units: 1,
+    inputShape: [1]
+}));
+
+model.compile({
+    optimizer: tf.train.sgd(0.1),
+    loss: "meanSquaredError"
+});
+
+await model.fit(xs, ys, {
+    epochs: 100
+});
+
+model.predict(tf.tensor2d([5], [1, 1])).print();
+</pre>
+
+<h2>
+    compile 的作用
+</h2>
+
+<p>
+    compile 用来告诉模型“如何学习”。
+</p>
+
+<ul>
+    <li>optimizer：优化器，负责根据梯度更新参数。</li>
+    <li>loss：损失函数，衡量预测值和真实值的差距。</li>
+    <li>metrics：训练过程中额外观察的指标，例如 accuracy。</li>
+</ul>
+
+<pre tag="javascript">
+model.compile({
+    optimizer: tf.train.adam(0.001),
+    loss: "categoricalCrossentropy",
+    metrics: ["accuracy"]
+});
+</pre>
+
+<h2>
+    fit 常用参数
+</h2>
+
+<pre tag="javascript">
+await model.fit(trainXs, trainYs, {
+    epochs: 20,
+    batchSize: 32,
+    validationSplit: 0.2,
+    shuffle: true,
+    callbacks: {
+        onEpochEnd: async (epoch, logs) => {
+            console.log(epoch, logs.loss, logs.val_loss);
+        }
+    }
+});
+</pre>
+
+<h2>
+    常见任务配置
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>任务</th>
+            <th>输出层</th>
+            <th>loss</th>
+            <th>标签格式</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>回归</td>
+            <td>units: 1</td>
+            <td>meanSquaredError</td>
+            <td>连续数值</td>
+        </tr>
+        <tr>
+            <td>二分类</td>
+            <td>units: 1, activation: "sigmoid"</td>
+            <td>binaryCrossentropy</td>
+            <td>0 或 1</td>
+        </tr>
+        <tr>
+            <td>多分类</td>
+            <td>units: 类别数, activation: "softmax"</td>
+            <td>categoricalCrossentropy</td>
+            <td>one-hot 向量</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    常见问题
+</h2>
+
+<ul>
+    <li>loss 不下降：检查学习率、输入是否归一化、标签是否正确。</li>
+    <li>accuracy 一直不变：检查输出层 activation 和 loss 是否匹配。</li>
+    <li>shape 报错：重点检查 xs、ys 的第一维 batch 数是否一致。</li>
+    <li>浏览器卡顿：减小 batchSize，或在回调中使用 await tf.nextFrame()。</li>
+</ul>

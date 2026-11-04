@@ -1,0 +1,90 @@
+<header>
+    快速入门
+</header>
+
+<p>
+    LangChain 是一个开源的 Python AI 应用开发框架，提供了模型调用、消息管理、Agent 构建、工具定义等核心能力。从 1.0 版本开始，它统一了 Agent 的创建方式，用 <span class="warn">create_agent</span> 一个入口就可以搭建智能体。
+</p>
+
+<h2>
+    安装
+</h2>
+
+<p>
+    安装核心包和 OpenAI 协议的模型接入包：
+</p>
+
+<pre>
+    pip3 install langchain langchain-openai
+</pre>
+
+<div class="tips">
+    本文的所有示例都使用本地 Ollama 服务提供的模型，需要提前启动 Ollama 并拉取好模型（默认使用 <span class="warn">qwen3.5</span>）。如果你使用其他模型提供商，只需要修改 <span class="warn">ChatOpenAI</span> 的配置即可。
+</div>
+
+<h2>
+    直接调用模型
+</h2>
+
+<p>
+    在搭建 Agent 之前，先看一下最基础的模型调用。使用 <span class="warn">ChatOpenAI</span> 初始化模型（Ollama 提供了 OpenAI 兼容接口，所以可以直接用），把消息组织成列表后调用 <span class="warn">invoke</span>：
+</p>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+
+# 初始化模型
+llm = ChatOpenAI(
+    model="qwen3.5", api_key="ollama", base_url="http://localhost:11434/v1"
+)
+
+# 发送消息
+messages = [
+    SystemMessage(content=""),
+    HumanMessage(content="你是谁?"),
+]
+
+response = llm.invoke(messages)
+print(response.content)
+</pre>
+
+<p>
+    其中，<span class="warn">SystemMessage</span> 是系统消息，相当于角色设定；<span class="warn">HumanMessage</span> 是用户消息。模型的回复在 <span class="warn">response.content</span> 中。
+</p>
+
+<h2>
+    创建第一个 Agent
+</h2>
+
+<p>
+    用 <span class="warn">create_agent</span> 创建智能体，传入模型、工具列表和系统提示词，然后调用 <span class="warn">invoke</span> 进行对话：
+</p>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+from langchain_openai import ChatOpenAI
+from langchain.agents import create_agent
+
+llm = ChatOpenAI(
+    model="qwen3.5", api_key="ollama", base_url="http://localhost:11434/v1"
+)
+
+agent = create_agent(
+    model=llm,
+    tools=[],
+    system_prompt="",
+)
+
+# 运行代理
+result = agent.invoke({"messages": [{"role": "user", "content": "你是谁？"}]})
+
+print(result["messages"][-1].content_blocks)
+</pre>
+
+<p>
+    入参使用 <span class="warn">{"messages": [...]}</span> 的字典结构，返回值的 <span class="warn">result["messages"]</span> 里保存了完整的对话过程，取最后一条消息的 <span class="warn">content_blocks</span> 就是模型的最终回复。
+</p>

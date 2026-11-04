@@ -1,0 +1,85 @@
+<header>
+    异常处理最佳实践
+</header>
+<p>
+    良好的异常处理实践可以使代码更加健壮、可维护。本节介绍Python异常处理的最佳实践和常见模式。
+</p>
+<pre tag="python">
+# 1. 具体异常优先
+def safe_divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:  # 具体异常
+        print("不能除以零")
+        return None
+    except TypeError:  # 具体异常
+        print("参数类型错误")
+        return None
+    except Exception:  # 通用异常放最后
+        print("发生未知错误")
+        return None
+
+# 2. 使用finally清理资源
+def read_file_safely(filename):
+    file = None
+    try:
+        file = open(filename, 'r')
+        return file.read()
+    except FileNotFoundError:
+        print(f"文件 {filename} 未找到")
+        return None
+    except IOError:
+        print(f"读取文件 {filename} 时发生IO错误")
+        return None
+    finally:
+        if file:
+            file.close()
+            print("文件已关闭")
+
+# 3. 使用上下文管理器（推荐）
+def read_file_with_context(filename):
+    try:
+        with open(filename, 'r') as file:
+            return file.read()
+    except FileNotFoundError:
+        print(f"文件 {filename} 未找到")
+        return None
+    except IOError:
+        print(f"读取文件 {filename} 时发生IO错误")
+        return None
+
+# 4. 异常日志记录
+import logging
+
+def setup_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler('app.log'),
+            logging.StreamHandler()
+        ]
+    )
+
+def risky_operation():
+    setup_logging()
+    try:
+        # 模拟可能出错的操作
+        import random
+        if random.random() < 0.5:
+            raise ValueError("随机值错误")
+        return "操作成功"
+    except ValueError as e:
+        logging.error(f"值错误: {e}")
+        raise
+    except Exception as e:
+        logging.error(f"未预期的错误: {e}")
+        raise
+
+# 测试日志记录
+try:
+    result = risky_operation()
+    print(result)
+except Exception:
+    print("操作失败，请查看日志")
+</pre>

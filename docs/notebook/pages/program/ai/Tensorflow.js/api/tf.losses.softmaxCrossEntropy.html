@@ -1,0 +1,50 @@
+<header>
+    tf.losses.softmaxCrossEntropy
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.losses.softmaxCrossEntropy(onehotLabels, logits, weights?, labelSmoothing?, reduction?)
+</pre>
+<p>
+    计算 softmax 交叉熵损失。
+</p>
+<h3>
+    onehotLabels
+</h3>
+<p>
+    one-hot 编码的标签张量。
+</p>
+<h3>
+    logits
+</h3>
+<p>
+    网络的 logits 输出。
+</p>
+<h3>
+    weights
+</h3>
+<p>
+    可选的权重张量。
+</p>
+<h3>
+    labelSmoothing
+</h3>
+<p>
+    标签平滑参数，默认为 0。
+</p>
+<h3>
+    reduction
+</h3>
+<p>
+    减少类型，可以是 'none'、'mean' 或 'sum'，默认为 'mean'。
+</p>
+<h2>
+    示例
+</h2>
+<pre tag="javascript">
+const labels = tf.tensor2d([[1, 0], [0, 1]], [2, 2]);
+const logits = tf.tensor2d([[2, 1], [1, 2]], [2, 2]);
+tf.losses.softmaxCrossEntropy(labels, logits).print();
+</pre>

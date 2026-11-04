@@ -1,0 +1,512 @@
+<header>
+    替换策略
+</header>
+<h2>
+    替换策略概述
+</h2>
+<p>
+    <span class="important">替换策略</span>（Replacement
+    Strategies）是存储层次结构中当新数据需要存储而目标位置已满时，决定替换哪些现有数据的算法。替换策略直接影响系统性能，是存储管理的关键组成部分。
+</p>
+
+<h2>
+    替换策略的基本原理
+</h2>
+<h3>
+    1. 局部性原理应用
+</h3>
+<ul>
+    <li><span class="special">时间局部性</span>：最近访问的数据可能再次被访问</li>
+    <li><span class="special">空间局部性</span>：相邻数据可能一起被访问</li>
+    <li><span class="special">预测未来</span>：基于历史访问模式预测未来访问</li>
+</ul>
+
+<h3>
+    2. 性能评价指标
+</h3>
+<ul>
+    <li><span class="special">命中率</span>：成功找到数据的概率</li>
+    <li><span class="special">缺失率</span>：1 - 命中率</li>
+    <li><span class="special">缺失惩罚</span>：替换操作的时间开销</li>
+    <li><span class="special">公平性</span>：各进程获得合理的资源份额</li>
+</ul>
+
+<h2>
+    Cache替换策略
+</h2>
+<h3>
+    1. 先进先出（FIFO）
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    替换最早进入Cache的数据块，使用队列结构实现。
+</p>
+
+<h4>
+    实现机制
+</h4>
+<ul>
+    <li><span class="special">时间戳</span>：记录每个数据块的进入时间</li>
+    <li><span class="special">队列结构</span>：新数据入队，替换数据出队</li>
+    <li><span class="special">循环计数器</span>：使用计数器实现队列功能</li>
+</ul>
+
+<h4>
+    优缺点分析
+</h4>
+<ul>
+    <li>优点：实现简单，硬件开销小</li>
+    <li>缺点：不考虑访问频率，可能替换频繁使用的数据</li>
+    <li>改进：Second Chance算法增加引用位</li>
+</ul>
+
+<h3>
+    2. 最近最少使用（LRU）
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    替换最长时间未被访问的数据块，符合时间局部性原理。
+</p>
+
+<h4>
+    实现机制
+</h4>
+<ul>
+    <li><span class="special">计数器法</span>：为每个数据块维护访问时间戳</li>
+    <li><span class="special">栈结构</span>：访问时将数据移到栈顶</li>
+    <li><span class="special">位图法</span>：使用访问位矩阵记录访问历史</li>
+</ul>
+
+<h4>
+    近似LRU算法
+</h4>
+<ul>
+    <li><span class="special">Clock算法</span>：使用循环链表和引用位</li>
+    <li><span class="special">NFU算法</span>：非频繁使用算法，定期衰减计数器</li>
+    <li><span class="special">LRU-K</span>：考虑最近K次访问的时间</li>
+</ul>
+
+<h4>
+    优缺点分析
+</h4>
+<ul>
+    <li>优点：符合局部性原理，命中率较高</li>
+    <li>缺点：硬件实现复杂，需要维护访问历史</li>
+    <li>应用：广泛应用于现代处理器Cache</li>
+</ul>
+
+<h3>
+    3. 随机替换（Random）
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    随机选择一个数据块进行替换，无需维护历史信息。
+</p>
+
+<h4>
+    实现机制
+</h4>
+<ul>
+    <li><span class="special">随机数生成器</span>：生成随机索引</li>
+    <li><span class="special">伪随机</span>：使用线性反馈移位寄存器</li>
+    <li><span class="special">哈希函数</span>：基于当前状态生成随机选择</li>
+</ul>
+
+<h4>
+    优缺点分析
+</h4>
+<ul>
+    <li>优点：实现最简单，硬件开销最小</li>
+    <li>缺点：性能不稳定，可能表现很好也可能很差</li>
+    <li>应用：简单系统或作为基准算法</li>
+</ul>
+
+<h3>
+    4. 最不经常使用（LFU）
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    替换访问次数最少的数据块，基于频率而非时间。
+</p>
+
+<h4>
+    实现机制
+</h4>
+<ul>
+    <li><span class="special">计数器数组</span>：记录每个数据块的访问次数</li>
+    <li><span class="special">定期衰减</span>：防止历史访问影响过大</li>
+    <li><span class="special">分层计数</span>：使用多级计数器减少开销</li>
+</ul>
+
+<h4>
+    优缺点分析
+</h4>
+<ul>
+    <li>优点：考虑长期访问模式</li>
+    <li>缺点：对程序行为变化适应性差，需要维护计数器</li>
+    <li>改进：结合LRU和LFU的混合算法</li>
+</ul>
+
+<h2>
+    虚拟存储器替换策略
+</h2>
+<h3>
+    1. 最佳置换（OPT）
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    置换将来最长时间不会被访问的页面，理论最优算法。
+</p>
+
+<h4>
+    特点分析
+</h4>
+<ul>
+    <li>优点：提供性能上界，作为评价基准</li>
+    <li>缺点：需要预知未来，无法实现</li>
+    <li>应用：算法分析和性能评估</li>
+</ul>
+
+<h3>
+    2. 先进先出（FIFO）
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    替换最早进入内存的页面，使用队列结构。
+</p>
+
+<h4>
+    Belady异常
+</h4>
+<ul>
+    <li><span class="special">现象</span>：增加页面数反而降低命中率</li>
+    <li><span class="special">原因</span>：FIFO不考虑访问模式</li>
+    <li><span class="special">影响</span>：在某些访问模式下出现</li>
+</ul>
+
+<h4>
+    改进算法
+</h4>
+<ul>
+    <li><span class="special">Second Chance</span>：给页面第二次机会</li>
+    <li><span class="special">Clock算法</span>：循环链表实现</li>
+</ul>
+
+<h3>
+    3. 最近最少使用（LRU）
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    替换最长时间未被访问的页面，基于时间局部性。
+</p>
+
+<h4>
+    实现挑战
+</h4>
+<ul>
+    <li><span class="special">时间戳维护</span>：需要精确记录每次访问时间</li>
+    <li><span class="special">硬件开销</span>：需要额外的存储和逻辑</li>
+    <li><span class="special">近似实现</span>：使用访问位和老化机制</li>
+</ul>
+
+<h4>
+    近似算法
+</h4>
+<ul>
+    <li><span class="special">LRU Clock</span>：使用循环链表</li>
+    <li><span class="special">NFU</span>：非频繁使用算法</li>
+    <li><span class="special">Aging</span>：老化算法，定期右移计数器</li>
+</ul>
+
+<h3>
+    4. 时钟算法（Clock）
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    使用循环链表和引用位，近似实现LRU算法。
+</p>
+
+<h4>
+    实现机制
+</h4>
+<ul>
+    <li><span class="special">循环链表</span>：所有页面组成环形结构</li>
+    <li><span class="special">时钟指针</span>：指示当前检查位置</li>
+    <li><span class="special">引用位</span>：记录页面是否被访问</li>
+</ul>
+
+<h4>
+    算法步骤
+</h4>
+<ol>
+    <li>检查时钟指针指向的页面</li>
+    <li>如果引用位为0，选择该页面替换</li>
+    <li>如果引用位为1，清零引用位，指针前进</li>
+    <li>重复直到找到可替换页面</li>
+</ol>
+
+<h4>
+    优缺点分析
+</h4>
+<ul>
+    <li>优点：实现简单，性能接近LRU</li>
+    <li>缺点：可能需要多次扫描</li>
+    <li>应用：广泛应用于实际操作系统</li>
+</ul>
+
+<h2>
+    工作集模型
+</h2>
+<h3>
+    1. 基本概念
+</h3>
+<ul>
+    <li><span class="special">工作集</span>：进程在一段时间内活跃访问的页面集合</li>
+    <li><span class="special">工作集大小</span>：工作集中的页面数量</li>
+    <li><span class="special">时间窗口</span>：定义工作集的时间范围</li>
+</ul>
+
+<h3>
+    2. 工作集算法
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    只保留进程的工作集在内存中，其余页面可以置换。
+</p>
+
+<h4>
+    实现机制
+</h4>
+<ul>
+    <li><span class="special">时间戳维护</span>：记录每个页面的最后访问时间</li>
+    <li><span class="special">窗口大小</span>：通常设置为几十个页面访问</li>
+    <li><span class="special">动态调整</span>：根据工作集大小调整内存分配</li>
+</ul>
+
+<h4>
+    优缺点分析
+</h4>
+<ul>
+    <li>优点：理论上最优，防止抖动</li>
+    <li>缺点：实现复杂，需要维护时间信息</li>
+    <li>应用：作为理论模型和算法基准</li>
+</ul>
+
+<h2>
+    页面分配策略
+</h2>
+<h3>
+    1. 固定分配
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    每个进程分配固定数量的页框，不随执行情况变化。
+</p>
+
+<h4>
+    优缺点分析
+</h4>
+<ul>
+    <li>优点：实现简单，内存管理容易</li>
+    <li>缺点：不够灵活，可能造成资源浪费或不足</li>
+    <li>应用：简单系统或实时系统</li>
+</ul>
+
+<h3>
+    2. 可变分配
+</h3>
+<h4>
+    基本原理
+</h4>
+<p>
+    根据进程需要动态调整分配的页框数量。
+</p>
+
+<h4>
+    实现机制
+</h4>
+<ul>
+    <li><span class="special">工作集监测</span>：跟踪进程的工作集大小</li>
+    <li><span class="special">缺页率反馈</span>：根据缺页率调整分配</li>
+    <li><span class="special">全局平衡</span>：在进程间合理分配内存资源</li>
+</ul>
+
+<h4>
+    优缺点分析
+</h4>
+<ul>
+    <li>优点：更有效地利用内存资源</li>
+    <li>缺点：实现复杂，需要全局管理策略</li>
+    <li>应用：现代操作系统的主要策略</li>
+</ul>
+
+<h2>
+    全局替换策略
+</h2>
+<h3>
+    1. 局部置换 vs 全局置换
+</h3>
+<h4>
+    局部置换
+</h4>
+<ul>
+    <li>只替换本进程的页面</li>
+    <li>进程间相互独立，无干扰</li>
+    <li>可能导致内存利用不充分</li>
+</ul>
+
+<h4>
+    全局置换
+</h4>
+<ul>
+    <li>可以从所有进程中选择页面替换</li>
+    <li>更好地利用整个系统内存</li>
+    <li>可能导致进程间干扰</li>
+</ul>
+
+<h3>
+    2. 页面置换范围
+</h3>
+<ul>
+    <li><span class="special">局部范围</span>：只考虑当前进程的页面</li>
+    <li><span class="special">全局范围</span>：考虑系统中所有进程的页面</li>
+    <li><span class="special">混合策略</span>：结合局部和全局的优点</li>
+</ul>
+
+<h2>
+    现代替换策略
+</h2>
+<h3>
+    1. Linux页面替换
+</h3>
+<h4>
+    双链表算法
+</h4>
+<ul>
+    <li><span class="special">活跃链表</span>：最近访问的页面</li>
+    <li><span class="special">非活跃链表</span>：较长时间未访问的页面</li>
+    <li><span class="special">动态平衡</span>：根据系统负载调整链表大小</li>
+</ul>
+
+<h4>
+    特点
+</h4>
+<ul>
+    <li>近似LRU算法</li>
+    <li>考虑页面类型（匿名页、文件页）</li>
+    <li>支持内存回收和压缩</li>
+</ul>
+
+<h3>
+    2. Windows页面替换
+</h3>
+<h4>
+    工作集管理
+</h4>
+<ul>
+    <li><span class="special">工作集调整</span>：动态调整每个进程的工作集</li>
+    <li><span class="special">缺页率反馈</span>：根据缺页率调整内存分配</li>
+    <li><span class="special">平衡集管理</span>：在内存紧张时回收页面</li>
+</ul>
+
+<h4>
+    特点
+</h4>
+<ul>
+    <li>基于工作集模型</li>
+    <li>考虑进程优先级</li>
+    <li>支持超级页面</li>
+</ul>
+
+<h2>
+    替换策略性能分析
+</h2>
+<h3>
+    1. 评价方法
+</h3>
+<ul>
+    <li><span class="special">模拟实验</span>：使用实际程序trace进行模拟</li>
+    <li><span class="special">理论分析</span>：基于数学模型分析性能</li>
+    <li><span class="special">实际测量</span>：在真实系统中测量性能</li>
+</ul>
+
+<h3>
+    2. 影响因素
+</h3>
+<ul>
+    <li><span class="special">程序行为</span>：访问模式、工作集大小</li>
+    <li><span class="special">系统配置</span>：内存大小、页面大小</li>
+    <li><span class="special">负载特征</span>：并发进程数、内存压力</li>
+</ul>
+
+<h3>
+    3. 性能比较
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>算法</th>
+            <th>实现复杂度</th>
+            <th>硬件开销</th>
+            <th>典型命中率</th>
+            <th>适用场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>FIFO</td>
+            <td>低</td>
+            <td>低</td>
+            <td>中等</td>
+            <td>简单系统</td>
+        </tr>
+        <tr>
+            <td>LRU</td>
+            <td>高</td>
+            <td>高</td>
+            <td>高</td>
+            <td>高性能Cache</td>
+        </tr>
+        <tr>
+            <td>Random</td>
+            <td>很低</td>
+            <td>很低</td>
+            <td>变化大</td>
+            <td>简单系统</td>
+        </tr>
+        <tr>
+            <td>Clock</td>
+            <td>中等</td>
+            <td>中等</td>
+            <td>接近LRU</td>
+            <td>虚拟存储器</td>
+        </tr>
+        <tr>
+            <td>LFU</td>
+            <td>中等</td>
+            <td>中等</td>
+            <td>中等</td>
+            <td>特定应用</td>
+        </tr>
+    </tbody>
+</table>

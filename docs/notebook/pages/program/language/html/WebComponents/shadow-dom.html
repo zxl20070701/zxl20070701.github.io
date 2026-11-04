@@ -1,0 +1,209 @@
+<header>
+    Shadow DOM详解
+</header>
+<h2>
+    什么是Shadow DOM
+</h2>
+<p>
+    Shadow DOM是Web Components技术套件的一部分，它提供了一种将隐藏的、独立的DOM树附加到元素上的方法。Shadow DOM允许你将标记结构、样式和行为隐藏起来，与页面上的其他代码隔离开来。
+</p>
+<div class="tips">
+    Shadow DOM的核心思想是封装，它允许组件开发者隐藏HTML结构、CSS样式和行为，防止与主文档冲突。
+</div>
+
+<h2>
+    创建Shadow DOM
+</h2>
+<p>
+    要为一个元素创建Shadow DOM，你需要调用<span class="special">attachShadow()</span>方法：
+</p>
+<pre tag="javascript">
+class MyElement extends HTMLElement {
+    constructor() {
+        super();
+        // 创建Shadow DOM
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        // 添加内容到Shadow DOM
+        shadow.innerHTML = `
+            <style>
+                p {
+                    color: blue;
+                    font-weight: bold;
+                }
+            </style>
+            <p>这是Shadow DOM中的内容</p>
+        `;
+    }
+}
+
+customElements.define('my-element', MyElement);
+</pre>
+<h2>
+    Shadow DOM的模式
+</h2>
+<p>
+    Shadow DOM有两种模式：<span class="important">open</span>和<span class="important">closed</span>：
+</p>
+<ul>
+    <li>
+        <span class="special">open</span>
+        ：可以通过JavaScript访问Shadow DOM（通过<span class="special">element.shadowRoot</span>）
+    </li>
+    <li>
+        <span class="special">closed</span>
+        ：无法通过JavaScript从外部访问Shadow DOM
+    </li>
+</ul>
+
+<h3>
+    open模式示例
+</h3>
+<pre tag="javascript">
+class OpenElement extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({mode: 'open'});
+        this.shadowRoot.innerHTML = '<p>Open模式</p>';
+    }
+}
+
+customElements.define('open-element', OpenElement);
+
+// 可以访问Shadow DOM
+const openEl = document.querySelector('open-element');
+console.log(openEl.shadowRoot); // 返回ShadowRoot对象
+</pre>
+
+<h3>
+    closed模式示例
+</h3>
+<pre tag="javascript">
+class ClosedElement extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'closed'});
+        shadow.innerHTML = '<p>Closed模式</p>';
+    }
+}
+
+customElements.define('closed-element', ClosedElement);
+
+// 无法访问Shadow DOM
+const closedEl = document.querySelector('closed-element');
+console.log(closedEl.shadowRoot); // 返回null
+</pre>
+
+<h2>
+    Shadow DOM的样式封装
+</h2>
+<p>
+    Shadow DOM最重要的特性之一是样式封装。Shadow DOM内部的样式不会影响外部，外部的样式也不会影响内部。
+</p>
+<pre tag="javascript">
+class StyledElement extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 20px;
+                    border: 1px solid #ccc;
+                }
+                
+                .title {
+                    color: red;
+                    font-size: 24px;
+                }
+                
+                ::slotted(p) {
+                    color: green;
+                }
+            </style>
+            
+            <div class="title">组件标题</div>
+            <slot></slot>
+        `;
+    }
+}
+
+customElements.define('styled-element', StyledElement);
+</pre>
+<h2>
+    :host伪类选择器
+</h2>
+<p>
+    <span class="special">:host</span>伪类选择器允许你从Shadow DOM内部选择自定义元素本身：
+</p>
+<pre tag="javascript">
+:host {
+    display: block;
+    background: #f0f0f0;
+}
+
+:host([disabled]) {
+    opacity: 0.5;
+}
+
+:host(.active) {
+    border-color: blue;
+}
+</pre>
+
+<h2>
+    ::slotted伪元素
+</h2>
+<p>
+    <span class="special">::slotted()</span>伪元素允许你为插入到slot中的内容设置样式：
+</p>
+<pre tag="javascript">
+::slotted(*) {
+    margin: 0;
+}
+
+::slotted(p) {
+    color: blue;
+}
+
+::slotted(.highlight) {
+    background-color: yellow;
+}
+</pre>
+
+<h2>
+    事件重定向
+</h2>
+<p>
+    在Shadow DOM中触发的事件会被重定向，使得事件看起来是从自定义元素本身触发的，而不是从Shadow DOM内部触发的：
+</p>
+<pre tag="javascript">
+class EventElement extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <button id="inner-btn">点击我</button>
+        `;
+        
+        const button = shadow.getElementById('inner-btn');
+        button.addEventListener('click', (event) => {
+            console.log('按钮被点击了');
+            console.log('事件目标:', event.target); // 指向按钮
+            console.log('当前目标:', event.currentTarget); // 指向按钮
+        });
+    }
+}
+
+customElements.define('event-element', EventElement);
+
+// 监听自定义元素上的点击事件
+document.querySelector('event-element').addEventListener('click', (event) => {
+    console.log('自定义元素被点击了');
+    console.log('事件目标:', event.target); // 指向event-element
+    console.log('当前目标:', event.currentTarget); // 指向event-element
+});
+</pre>

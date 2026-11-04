@@ -1,0 +1,67 @@
+<header>
+    快速入门
+</header>
+
+<p>
+    DeepAgents 是一个建立在 LangChain / LangGraph 之上的高层 Agent 框架，把规划、虚拟文件系统、子智能体等"深度智能体"常用的能力做成了开箱即用的内置组件。它的创建方式和 LangChain 的 <span class="warn">createAgent</span> 很像，上手成本很低。
+</p>
+
+<h2>
+    安装
+</h2>
+
+<p>
+    在一个 Node.js 项目中安装 DeepAgents、langchain 核心包以及 OpenAI 协议的模型接入包：
+</p>
+
+<pre>
+    npm install deepagents langchain @langchain/openai
+</pre>
+
+<div class="tips">
+    本文的示例使用本地 Ollama 服务提供的模型，需要提前启动 Ollama 并拉取好模型（默认使用 <span class="warn">qwen3.5</span>）。如果你使用其他模型提供商，只需要修改 <span class="warn">ChatOpenAI</span> 的配置即可。
+</div>
+
+<h2>
+    创建第一个 Agent
+</h2>
+
+<p>
+    用 <span class="warn">createDeepAgent</span> 创建智能体，传入模型、工具列表和系统提示词，然后调用 <span class="warn">invoke</span> 进行对话：
+</p>
+
+<pre tag="javascript">
+import { createDeepAgent } from "deepagents";
+import { ChatOpenAI } from "@langchain/openai";
+
+// 初始化 ChatOpenAI 模型，连接到本地 Ollama 服务
+const llm = new ChatOpenAI({
+    model: "qwen3.5",
+    apiKey: "ollama",
+    configuration: {
+        baseURL: "http://localhost:11434/v1",
+    },
+});
+
+// DeepAgent 的系统提示词（可留空或自定义研究指令）
+const researchInstructions = "";
+
+// 使用 deepagents 库创建 DeepAgent 实例
+const agent = createDeepAgent({
+  model: llm, // 指定使用的 LLM 模型
+  tools: [], // 工具列表（此处为空，表示纯对话模式）
+  systemPrompt: researchInstructions, // 系统提示词，控制智能体行为
+});
+
+// 调用智能体进行对话
+agent.invoke({
+  messages: [{ role: "user", content: "你是谁?" }], // 用户消息
+}).then(result => {
+    // 打印智能体回复（取消息数组的最后一个元素）
+    console.log(result.messages[result.messages.length - 1].content);
+})
+</pre>
+
+<p>
+    和 LangChain 一样，入参使用 <span class="warn">{ messages: [...] }</span> 的对象结构，模型的最终回复在 <span class="warn">result.messages</span> 的最后一条消息里。
+</p>

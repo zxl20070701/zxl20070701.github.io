@@ -1,0 +1,130 @@
+<header>
+    PE正弦位置编码
+</header>
+<h2>
+    编码公式说明
+</h2>
+<p>
+    Transformer中的位置编码公式为：
+</p>
+<img width="300px" src="./images/neural-network/PE.png">
+<h3>
+    pos
+</h3>
+<p>
+    单词在句子里的绝对位置（0,1,2,3,…）。
+</p>
+<h3>
+    d<sub>model</sub>
+</h3>
+<p>
+    模型嵌入向量总维度（标准 Transformer 都是 512、768、1024 等这种偶数）。
+</p>
+<h3>
+    i
+</h3>
+<p>
+    i的值取0、1、2、3、...、(d<sub>model</sub>/2)-1，i 是半长索引，一共 (d<sub>model</sub>/2) 个取值。
+</p>
+<p>
+    那么2i、2i+1 怎么对应向量维度下标？
+</p>
+<ul>
+    <li>
+        i=0的时，分别计算了PE<sub>(pos,2i)</sub>和PE<sub>(pos,2i+1)</sub>，即PE<sub>(pos,0)</sub>和PE<sub>(pos,1)</sub>
+    </li>
+    <li>
+        i=1的时，分别计算了PE<sub>(pos,2i)</sub>和PE<sub>(pos,2i+1)</sub>，即PE<sub>(pos,2)</sub>和PE<sub>(pos,3)</sub>
+    </li>
+    <li>
+        i=2的时，分别计算了PE<sub>(pos,2i)</sub>和PE<sub>(pos,2i+1)</sub>，即PE<sub>(pos,4)</sub>和PE<sub>(pos,5)</sub>
+    </li>
+</ul>
+<p>
+    以此类推。
+</p>
+<h2>
+    逐部分拆解公式含义
+</h2>
+<h3>
+    不同维度对应不同频率
+</h3>
+<p>
+    对于分母项指数变形一下：
+</p>
+<img width="300px" src="./images/neural-network/PE-1.png">
+<p>
+    因为指数的底数是一点几，当i比较小的时候，分母项接近1，当i比较大的时候，分母项会越来越大，简单的理解就是，对于sin或cos的括号中的值：
+</p>
+<img width="150px" src="./images/neural-network/PE-2.png">
+<p>
+    i 越大（越靠后面的维度），分母整体越大，pos对上面这个式子影响越小，反之i越靠近0，pos对上面这个式子影响越大。
+</p>
+<p>
+    直观的理解就是：
+</p>
+<ul>
+    <li>
+        靠前维度（i 小）：分母接近1，pos影响相对大，高频，捕捉细微位置差异（pos=1 和 pos=2 这种小差距）
+    </li>
+    <li>
+        靠后维度（i 大）：分母大，pos影响相对小，低频，捕捉远距离位置差异（pos=10 和 pos=100 这种大差距）
+    </li>
+</ul>
+<h3>
+    可计算相对位置（三角函数平移）
+</h3>
+<p>
+    对任意偏移量 k（两个 token 之间相差 k 个位置），有标准三角恒等式：
+</p>
+<img width="300px" src="./images/neural-network/PE-3.png">
+<p>
+    套入我们的θ和ϕ
+</p>
+<img width="300px" src="./images/neural-network/PE-4.png">
+<p>
+    得到：
+</p>
+<img width="500px" src="./images/neural-network/PE-5.png">
+<p>
+    简单描述一下就是：位置 pos+k 的编码向量，可以完全由位置 pos 和位置 k 的编码向量线性组合算出来。
+</p>
+<h3>
+    每个 pos 生成唯一向量，区分绝对位置
+</h3>
+<p>
+    多组不同频率的 sin/cos 叠加，不存在两个不同 pos 能在全部维度取值完全一致。
+</p>
+<h2>
+    为什么这套编码能表示位置？
+</h2>
+<p>
+    综合前面的分析，正弦余弦位置编码之所以能有效表示位置，核心在于三个关键特性的协同作用：
+</p>
+<ol>
+    <li>
+        频率分层设计：高频捕捉邻近差异、低频表达远距离关系，覆盖不同尺度的位置感知需求。
+    </li>
+    <li>
+        相对位置可计算：利用三角恒等式，位置 pos+k 的编码可由 pos 和 k 的编码线性组合得到，支持模型学习相对位置关系。
+    </li>
+    <li>
+        绝对位置唯一标识：多频率 sin/cos 叠加确保每个位置都有唯一向量表示。
+    </li>
+</ol>
+<p>
+    这三者结合，使这套编码能够同时表达绝对位置、相对位置和多尺度位置信息，完美适配 Transformer 对序列顺序的感知需求。
+</p>
+<h2>
+    为什么位置信息可以直接和词向量相加而不冲突？
+</h2>
+<p>
+    比如E表示词向量，P表示位置向量，那么位置信息真正 “加进” 词向量以后的向量就是E+P，现在我们有两个向量(Ea+Pa)、(Eb+Pb) 做内积：
+</p>
+<img width="600px" src="./images/neural-network/PE-6.png">
+<p>
+    等式右边四项分别代表：纯语义相似度、语义 - 位置交叉、位置 - 语义交叉、纯位置距离相似度。
+</p>
+<p>
+    注意力权重天然同时融合语义远近 + 位置远近，完美适配自注意力机制。
+</p>

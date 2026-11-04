@@ -83,7 +83,7 @@ var initSearchObj = function () {
                     }
                 }
 
-                var firstLevelUrl = firstLevelSpan.getAttribute('tag').replace(/\-/g, '/')
+                var firstLevelUrl = firstLevelSpan.getAttribute('tag').replace(/\-/g, '/');
                 loadPage("pages/" + firstLevelUrl + "/menu", function (data) {
                     finshCount += 1;
 
@@ -108,11 +108,14 @@ var initSearchObj = function () {
                                 }
                             }
 
-                            searchObj.push({
-                                name: secordLevelSpan.innerText.trim(),
-                                path: firstRemarkArray.join("/") + "/" + secordRemarkArray.join("/") + "/" + secordLevelSpan.innerText.trim(),
-                                url: firstLevelUrl + "/" + secordLevelSpan.getAttribute("tag")
-                            });
+                            var urlTemp = firstLevelUrl + "/" + secordLevelSpan.getAttribute("tag");
+                            if (!/\.\./.test(urlTemp)) {
+                                searchObj.push({
+                                    name: secordLevelSpan.innerText.trim(),
+                                    path: firstRemarkArray.join("/") + "/" + secordRemarkArray.join("/") + "/" + secordLevelSpan.innerText.trim(),
+                                    url: urlTemp
+                                });
+                            }
 
                             if (!totalValueEl) totalValueEl = document.getElementById("total-value");
                             totalValueEl.innerText = searchObj.length;
@@ -166,7 +169,16 @@ function doSearch(event) {
             var rightCount = 0;
             for (i = 0; i < searchObj.length; i++) {
                 // 如果匹配到
-                if (searchObj[i].path.replace(/ /g, '').toLowerCase().indexOf(inputValue) > -1 || searchObj[i].url.toLowerCase().indexOf(inputValue) > -1) {
+                // 将inputValue按空格分割成多个值，每个值都必须分别被url或path包含
+                var inputValues = inputValue.split(' ');
+                var allMatch = true;
+                for (var j = 0; j < inputValues.length; j++) {
+                    if (inputValues[j] && !(searchObj[i].path.replace(/ /g, '').toLowerCase().indexOf(inputValues[j]) > -1 || searchObj[i].url.toLowerCase().indexOf(inputValues[j]) > -1)) {
+                        allMatch = false;
+                        break;
+                    }
+                }
+                if (allMatch) {
                     rightCount += 1;
                     itemEl = document.createElement("div");
                     window.searchListEl.appendChild(itemEl);
@@ -232,6 +244,14 @@ var initToggle = function (idName) {
             else {
                 spans[i].addEventListener('click', function () {
 
+                    // 先清除所有 li 上的高亮
+                    var rootEl = document.getElementById(idName + "-id");
+                    var allLis = rootEl.getElementsByTagName('li'), k;
+                    for (k = 0; k < allLis.length; k++) {
+                        allLis[k].removeAttribute('is-on-path');
+                    }
+
+                    // 展开祖先菜单
                     var isOpenEl = spans[i];
                     while (isOpenEl) {
                         if (isOpenEl.getAttribute('is-open')) {
@@ -239,6 +259,9 @@ var initToggle = function (idName) {
                         }
                         isOpenEl = isOpenEl.parentElement;
                     }
+
+                    // 只高亮当前叶子节点
+                    spans[i].parentElement.setAttribute('is-on-path', 'yes');
 
                     // 更新菜单
                     if (idName == 'book') {

@@ -1,0 +1,211 @@
+<header>
+    生成器管道和链式处理
+</header>
+<p>
+    将多个生成器链接起来，形成一个数据处理流水线。每个生成器处理一部分数据，然后将结果传递给下一个生成器。
+</p>
+
+<h2>
+    基本生成器管道
+</h2>
+<pre tag="python">
+def read_numbers(filename):
+    """读取数字的生成器"""
+    with open(filename, 'r') as f:
+        for line in f:
+            yield int(line.strip())
+
+def filter_positive(numbers):
+    """过滤正数的生成器"""
+    for num in numbers:
+        if num > 0:
+            yield num
+
+def square_numbers(numbers):
+    """平方数字的生成器"""
+    for num in numbers:
+        yield num ** 2
+
+def sum_numbers(numbers):
+    """求和的生成器"""
+    total = 0
+    for num in numbers:
+        total += num
+        yield total
+
+# 创建测试文件
+with open('numbers.txt', 'w') as f:
+    f.write("1\n-2\n3\n-4\n5\n6\n-7\n8\n9\n-10\n")
+
+# 使用生成器管道
+numbers = read_numbers('numbers.txt')
+positive_numbers = filter_positive(numbers)
+squared_numbers = square_numbers(positive_numbers)
+running_sums = sum_numbers(squared_numbers)
+
+print("生成器管道结果:")
+for i, result in enumerate(running_sums):
+    print(f"Step {i+1}: {result}")
+    if i >= 5:  # 限制输出
+        break
+</pre>
+
+<h2>
+    数据处理管道
+</h2>
+<pre tag="python">
+def read_lines(filename):
+    """按行读取文件"""
+    with open(filename, 'r') as f:
+        for line in f:
+            yield line.strip()
+
+def filter_empty_lines(lines):
+    """过滤空行"""
+    for line in lines:
+        if line:
+            yield line
+
+def convert_to_lowercase(lines):
+    """转换为小写"""
+    for line in lines:
+        yield line.lower()
+
+def extract_words(lines):
+    """提取单词"""
+    import re
+    for line in lines:
+        words = re.findall(r'\w+', line)
+        for word in words:
+            yield word
+
+def count_word_frequency(words):
+    """统计词频"""
+    from collections import defaultdict
+    frequency = defaultdict(int)
+    for word in words:
+        frequency[word] += 1
+        yield word, frequency[word]
+
+# 创建测试文件
+with open('text.txt', 'w') as f:
+    f.write("Hello World\n")
+    f.write("This is a test\n")
+    f.write("Hello again\n")
+    f.write("Test file for generator pipeline\n")
+
+# 使用数据处理管道
+lines = read_lines('text.txt')
+non_empty_lines = filter_empty_lines(lines)
+lowercase_lines = convert_to_lowercase(non_empty_lines)
+words = extract_words(lowercase_lines)
+word_counts = count_word_frequency(words)
+
+print("\n词频统计:")
+for word, count in list(word_counts)[:10]:  # 只显示前10个
+    print(f"{word}: {count}")
+</pre>
+
+<h2>
+    数学计算管道
+</h2>
+<pre tag="python">
+def number_range(start, end):
+    """生成数字范围"""
+    for i in range(start, end):
+        yield i
+
+def filter_even(numbers):
+    """过滤偶数"""
+    for num in numbers:
+        if num % 2 == 0:
+            yield num
+
+def multiply_by_factor(numbers, factor):
+    """乘以因子"""
+    for num in numbers:
+        yield num * factor
+
+def add_offset(numbers, offset):
+    """添加偏移量"""
+    for num in numbers:
+        yield num + offset
+
+def take_limit(numbers, limit):
+    """限制数量"""
+    count = 0
+    for num in numbers:
+        if count >= limit:
+            break
+        yield num
+        count += 1
+
+# 数学计算管道
+numbers = number_range(1, 20)
+even_numbers = filter_even(numbers)
+multiplied = multiply_by_factor(even_numbers, 3)
+with_offset = add_offset(multiplied, 10)
+limited = take_limit(with_offset, 5)
+
+print("\n数学计算管道结果:")
+result_list = list(limited)
+print(f"处理后的数字: {result_list}")
+</pre>
+
+<h2>
+    链式生成器函数
+</h2>
+<pre tag="python">
+class Pipeline:
+    """生成器管道类"""
+
+    def __init__(self, source):
+        self.source = source
+
+    def filter(self, predicate):
+        """添加过滤步骤"""
+        def filtered():
+            for item in self.source:
+                if predicate(item):
+                    yield item
+        return Pipeline(filtered())
+
+    def map(self, func):
+        """添加映射步骤"""
+        def mapped():
+            for item in self.source:
+                yield func(item)
+        return Pipeline(mapped())
+
+    def take(self, n):
+        """取前n个元素"""
+        def limited():
+            count = 0
+            for item in self.source:
+                if count >= n:
+                    break
+                yield item
+                count += 1
+        return Pipeline(limited())
+
+    def collect(self):
+        """收集所有结果到列表"""
+        return list(self.source)
+
+# 使用链式生成器
+def fibonacci_generator():
+    """斐波那契数列生成器"""
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+# 创建管道
+pipeline = Pipeline(fibonacci_generator()) \
+    .filter(lambda x: x % 2 == 0) \
+    .map(lambda x: x ** 2) \
+    .take(10)
+
+result = pipeline.collect()
+print(f"\n链式生成器结果: {result}")
+</pre>

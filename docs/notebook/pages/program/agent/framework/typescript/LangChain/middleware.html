@@ -1,0 +1,74 @@
+<header>
+    中间件与动态控制
+</header>
+
+<p>
+    LangChain 的 Agent 底层是一个图式运行时。中间件可以插入模型调用前后、工具调用前后，用来做动态模型选择、工具过滤、日志记录、权限控制和错误兜底。
+</p>
+
+<h2>
+    什么时候需要中间件？
+</h2>
+
+<ul>
+    <li>不同任务使用不同模型。</li>
+    <li>根据用户权限动态暴露工具。</li>
+    <li>在模型调用前压缩上下文。</li>
+    <li>在工具调用前检查参数和风险。</li>
+    <li>统一记录 trace、token 和耗时。</li>
+</ul>
+
+<h2>
+    动态模型选择
+</h2>
+
+<p>
+    简单问题可以走小模型，复杂问题再切换到大模型。这样可以降低成本，也能控制延迟。
+</p>
+
+<pre tag="javascript">
+// 思路示例：在模型调用前根据任务复杂度选择模型
+async function beforeModelCall(request, next) {
+    const messageCount = request.messages.length;
+    const model = messageCount > 8 ? strongModel : fastModel;
+
+    return next({
+        ...request,
+        model,
+    });
+}
+</pre>
+
+<h2>
+    工具调用前校验
+</h2>
+
+<p>
+    对写入类工具，最好在真正执行前做业务校验。比如检查用户是否有权限、金额是否超过阈值、是否需要人工确认。
+</p>
+
+<pre tag="javascript">
+// 思路示例：在工具执行前拦截高风险动作
+async function beforeToolCall(request, next) {
+    if (request.toolCall.name.startsWith("delete_")) {
+        return "该操作风险较高，需要人工确认后才能执行。";
+    }
+
+    return next(request);
+}
+</pre>
+
+<div class="tips">
+    具体 API 名称会随 LangChain JS 版本演进变化，学习时重点先抓住中间件思想：在模型调用或工具调用的边界处插入统一逻辑。
+</div>
+
+<h2>
+    实践建议
+</h2>
+
+<ul>
+    <li>中间件适合做横切逻辑，不要把业务主流程全部塞进去。</li>
+    <li>权限判断应依赖后端可信状态，不要只相信模型生成的参数。</li>
+    <li>模型切换要记录到 trace，方便排查成本和质量问题。</li>
+    <li>失败兜底要返回模型能理解的信息，而不是只抛异常。</li>
+</ul>

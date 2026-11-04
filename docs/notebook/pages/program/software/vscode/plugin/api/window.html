@@ -2,32 +2,187 @@
     window
 </header>
 <h2>
-    Functions
+    消息提示
 </h2>
 <h3>
-    showErrorMessage
+    错误提示
 </h3>
 <p>
-    一个错误提示：
+    显示错误消息：
 </p>
 <pre tag="javascript">
-    vscode.window.showErrorMessage("运行错误，不合理的设置");
+vscode.window.showErrorMessage("运行错误，不合理的设置");
 </pre>
 <h3>
-    showWarningMessage
+    警告提示
 </h3>
 <p>
-    一个警告提示：
+    显示警告消息：
 </p>
 <pre tag="javascript">
-    vscode.window.showWarningMessage("请选择合适的文件夹");
+vscode.window.showWarningMessage("请选择合适的文件夹");
 </pre>
 <h3>
-    showInformationMessage
+    信息提示
 </h3>
 <p>
-    一个普通提示：
+    显示信息消息：
 </p>
 <pre tag="javascript">
-    vscode.window.showInformationMessage("环境准备完毕");
+vscode.window.showInformationMessage("环境准备完毕");
+</pre>
+<h3>
+    带按钮的消息提示
+</h3>
+<pre tag="javascript">
+// 显示带按钮的消息
+const result = await vscode.window.showInformationMessage(
+    "确认执行操作？",
+    "确认",
+    "取消"
+);
+
+if (result === "确认") {
+    // 执行操作
+    console.log("用户点击了确认");
+}
+</pre>
+<h2>
+    输入框和选择框
+</h2>
+<h3>
+    显示输入框
+</h3>
+<pre tag="javascript">
+// 获取用户输入
+const input = await vscode.window.showInputBox({
+    prompt: "请输入文件名",
+    placeHolder: "文件名",
+    value: "default.txt"
+});
+
+if (input) {
+    console.log("用户输入:", input);
+}
+</pre>
+<h3>
+    显示快速选择
+</h3>
+<pre tag="javascript">
+// 显示快速选择列表
+const items = ['选项1', '选项2', '选项3'];
+const selected = await vscode.window.showQuickPick(items, {
+    placeHolder: "请选择一个选项"
+});
+
+if (selected) {
+    console.log("用户选择了:", selected);
+}
+</pre>
+<h2>
+    文件和文件夹对话框
+</h2>
+<h3>
+    打开文件选择对话框
+</h3>
+<pre tag="javascript">
+// 选择文件
+const fileUri = await vscode.window.showOpenDialog({
+    canSelectFiles: true,
+    canSelectFolders: false,
+    canSelectMany: false,
+    filters: {
+        '文本文件': ['txt', 'md'],
+        '所有文件': ['*']
+    }
+});
+
+if (fileUri && fileUri[0]) {
+    console.log("选择的文件:", fileUri[0].fsPath);
+}
+</pre>
+<h3>
+    选择文件夹
+</h3>
+<pre tag="javascript">
+// 选择文件夹
+const folderUri = await vscode.window.showOpenDialog({
+    canSelectFiles: false,
+    canSelectFolders: true,
+    canSelectMany: false
+});
+
+if (folderUri && folderUri[0]) {
+    console.log("选择的文件夹:", folderUri[0].fsPath);
+}
+</pre>
+<h2>
+    状态栏
+</h2>
+<h3>
+    创建状态栏项目
+</h3>
+<pre tag="javascript">
+// 创建状态栏项目
+const statusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+);
+statusBarItem.text = "$(rocket) 我的扩展";
+statusBarItem.tooltip = "点击执行命令";
+statusBarItem.command = "myExtension.doSomething";
+statusBarItem.show();
+
+// 记得在插件停用时清理
+context.subscriptions.push(statusBarItem);
+</pre>
+<h2>
+    进度通知
+</h2>
+<h3>
+    显示进度通知
+</h3>
+<pre tag="javascript">
+// 显示长时间运行的进度
+await vscode.window.withProgress({
+    location: vscode.ProgressLocation.Notification,
+    title: "正在处理...",
+    cancellable: true
+}, async (progress, token) => {
+    token.onCancellationRequested(() => {
+        console.log("用户取消了操作");
+    });
+
+    progress.report({ increment: 0, message: "开始处理" });
+    
+    // 模拟长时间操作
+    for (let i = 0; i < 100; i += 10) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        progress.report({ increment: 10, message: `进度: ${i}%` });
+    }
+    
+    progress.report({ increment: 0, message: "处理完成" });
+});
+</pre>
+<h2>
+    终端管理
+</h2>
+<h3>
+    创建终端
+</h3>
+<pre tag="javascript">
+// 创建新的终端
+const terminal = vscode.window.createTerminal("我的终端");
+terminal.show();
+terminal.sendText("echo 'Hello from extension'");
+</pre>
+<h3>
+    获取所有终端
+</h3>
+<pre tag="javascript">
+// 获取所有终端
+const terminals = vscode.window.terminals;
+terminals.forEach(terminal => {
+    console.log("终端名称:", terminal.name);
+});
 </pre>

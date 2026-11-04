@@ -1,0 +1,141 @@
+<header>
+    数据缓存
+</header>
+<h2>
+    uni.setStorage(OBJECT)
+</h2>
+<p>
+    将数据存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个异步接口。
+</p>
+<pre tag="javascript">
+uni.setStorage({
+    key: 'storage_key',
+    data: 'hello',
+    success: function () {
+        console.log('保存成功');
+    }
+});
+</pre>
+<h2>
+    uni.setStorageSync(KEY,DATA)
+</h2>
+<p>
+    将 data 存储在本地缓存中指定的 key 中，会覆盖掉原来该 key 对应的内容，这是一个同步接口。
+</p>
+<pre tag="javascript">
+try {
+    uni.setStorageSync('storage_key', 'hello');
+} catch (e) {
+    // error
+}
+</pre>
+<h2>
+    uni.getStorage(OBJECT)
+</h2>
+<p>
+    从本地缓存中异步获取指定 key 对应的内容。
+</p>
+<pre tag="javascript">
+uni.getStorage({
+    key: 'storage_key',
+    success: function (res) {
+        console.log(res.data);
+    }
+});
+</pre>
+<h2>
+    uni.getStorageSync(KEY)
+</h2>
+<p>
+    从本地缓存中同步获取指定 key 对应的内容。
+</p>
+<pre tag="javascript">
+try {
+    const value = uni.getStorageSync('storage_key');
+    if (value) {
+        console.log(value);
+    }
+} catch (e) {
+    // error
+}
+</pre>
+<h2>
+    uni.getStorageInfo(OBJECT)
+</h2>
+<p>
+    异步获取当前 storage 的相关信息。
+</p>
+<pre tag="javascript">
+uni.getStorageInfo({
+    success: function (res) {
+        console.log(res.keys);
+        console.log(res.currentSize);
+        console.log(res.limitSize);
+    }
+});
+</pre>
+<h2>
+    uni.getStorageInfoSync()
+</h2>
+<p>
+    同步获取当前 storage 的相关信息。
+</p>
+<pre tag="javascript">
+try {
+    const res = uni.getStorageInfoSync();
+    console.log(res.keys);
+    console.log(res.currentSize);
+    console.log(res.limitSize);
+} catch (e) {
+    // error
+}
+</pre>
+<h2>
+    uni.removeStorage(OBJECT)
+</h2>
+<p>
+    从本地缓存中异步移除指定 key。
+</p>
+<pre tag="javascript">
+uni.removeStorage({
+    key: 'storage_key',
+    success: function (res) {
+        console.log('删除成功');
+    }
+});
+</pre>
+<h2>
+    uni.removeStorageSync(KEY)
+</h2>
+<p>
+    从本地缓存中同步移除指定 key。
+</p>
+<pre tag="javascript">
+try {
+    uni.removeStorageSync('storage_key');
+} catch (e) {
+    // error
+}
+</pre>
+<h2>
+    uni.clearStorage()
+</h2>
+<p>
+    清理本地数据缓存。
+</p>
+<pre tag="javascript">
+uni.clearStorage();
+</pre>
+<h2>
+    uni.clearStorageSync()
+</h2>
+<p>
+    同步清理本地数据缓存。
+</p>
+<pre tag="javascript">
+try {
+    uni.clearStorageSync();
+} catch (e) {
+    // error
+}
+</pre>

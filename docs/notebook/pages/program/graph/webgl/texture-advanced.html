@@ -1,0 +1,204 @@
+<header>
+    纹理进阶
+</header>
+<p>
+    在基础纹理贴图之上，WebGL提供了许多高级纹理技术，包括多重纹理、立方体贴图、法线贴图等。
+</p>
+<h2>
+    多重纹理
+</h2>
+<p>
+    多重纹理允许在一个渲染过程中使用多个纹理：
+</p>
+<pre tag="javascript">
+// 激活并绑定多个纹理单元
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D, texture1);
+gl.uniform1i(gl.getUniformLocation(program, "u_texture1"), 0);
+
+gl.activeTexture(gl.TEXTURE1);
+gl.bindTexture(gl.TEXTURE_2D, texture2);
+gl.uniform1i(gl.getUniformLocation(program, "u_texture2"), 1);
+</pre>
+<p>
+    在片段着色器中使用多个纹理：
+</p>
+<pre tag="javascript">
+// 片段着色器中的多重纹理
+precision mediump float;
+uniform sampler2D u_texture1;
+uniform sampler2D u_texture2;
+varying vec2 v_texCoord;
+
+void main() {
+    vec4 color1 = texture2D(u_texture1, v_texCoord);
+    vec4 color2 = texture2D(u_texture2, v_texCoord);
+    gl_FragColor = mix(color1, color2, 0.5); // 混合两个纹理
+}
+</pre>
+<h2>
+    立方体贴图 (Cube Map)
+</h2>
+<p>
+    立方体贴图用于创建环境映射、天空盒等效果：
+</p>
+<pre tag="javascript">
+// 创建立方体贴图
+const cubeTexture = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_CUBE_MAP, cubeTexture);
+
+// 加载六个面的纹理
+const faces = [
+    gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+    gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+    gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+    gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+    gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+    gl.TEXTURE_CUBE_MAP_NEGATIVE_Z
+];
+
+for (let i = 0; i < faces.length; i++) {
+    gl.texImage2D(faces[i], 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image[i]);
+}
+
+gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+</pre>
+<p>
+    在着色器中使用立方体贴图：
+</p>
+<pre tag="javascript">
+// 顶点着色器
+attribute vec3 a_position;
+varying vec3 v_texCoord;
+uniform mat4 u_viewMatrix;
+uniform mat4 u_projectionMatrix;
+
+void main() {
+    v_texCoord = a_position;
+    gl_Position = u_projectionMatrix * u_viewMatrix * vec4(a_position, 1.0);
+}
+
+// 片段着色器
+precision mediump float;
+uniform samplerCube u_cubeTexture;
+varying vec3 v_texCoord;
+
+void main() {
+    gl_FragColor = textureCube(u_cubeTexture, normalize(v_texCoord));
+}
+</pre>
+<h2>
+    法线贴图 (Normal Mapping)
+</h2>
+<p>
+    法线贴图用于在不增加几何复杂度的情况下增加表面细节：
+</p>
+<pre tag="javascript">
+// 在片段着色器中使用法线贴图
+precision mediump float;
+uniform sampler2D u_normalMap;
+uniform sampler2D u_diffuseTexture;
+varying vec2 v_texCoord;
+varying vec3 v_tangentLightPos;
+varying vec3 v_tangentViewPos;
+varying vec3 v_tangentFragPos;
+
+void main() {
+    // 从法线贴图获取法线
+    vec3 normal = texture2D(u_normalMap, v_texCoord).rgb;
+    normal = normalize(normal * 2.0 - 1.0); // 转换为[-1,1]范围
+    
+    // 使用法线计算光照
+    vec3 color = texture2D(u_diffuseTexture, v_texCoord).rgb;
+    vec3 ambient = 0.1 * color;
+    
+    vec3 lightDir = normalize(v_tangentLightPos - v_tangentFragPos);
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 diffuse = diff * color;
+    
+    vec3 viewDir = normalize(v_tangentViewPos - v_tangentFragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+    vec3 specular = vec3(0.2) * spec;
+    
+    gl_FragColor = vec4(ambient + diffuse + specular, 1.0);
+}
+</pre>
+<h2>
+    纹理环绕模式
+</h2>
+<p>
+    纹理环绕模式决定了当纹理坐标超出[0,1]范围时的行为：
+</p>
+<pre tag="javascript">
+// 设置纹理环绕模式
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+
+// 可选的环绕模式：
+// gl.CLAMP_TO_EDGE - 边缘像素重复
+// gl.MIRRORED_REPEAT - 镜像重复
+// gl.REPEAT - 重复纹理
+</pre>
+<h2>
+    纹理过滤
+</h2>
+<p>
+    纹理过滤决定了纹理放大和缩小时的采样方式：
+</p>
+<pre tag="javascript">
+// 设置纹理过滤
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); // 缩小
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); // 放大
+
+// 生成mipmap
+gl.generateMipmap(gl.TEXTURE_2D);
+</pre>
+<h2>
+    各向异性过滤
+</h2>
+<p>
+    各向异性过滤可以改善斜视角下的纹理质量：
+</p>
+<pre tag="javascript">
+// 启用各向异性过滤（如果支持）
+const ext = gl.getExtension('EXT_texture_filter_anisotropic');
+if (ext) {
+    const max = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+    gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(16, max));
+}
+</pre>
+<h2>
+    渲染到纹理
+</h2>
+<p>
+    渲染到纹理允许将场景渲染到纹理，用于后期处理等效果：
+</p>
+<pre tag="javascript">
+// 创建帧缓冲对象
+const framebuffer = gl.createFramebuffer();
+gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+
+// 创建纹理附件
+const texture = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D, texture);
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+// 将纹理附加到帧缓冲
+gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+
+// 检查帧缓冲完整性
+if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE) {
+    // 渲染到纹理
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    // 执行渲染...
+    
+    // 切换回默认帧缓冲
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+}
+</pre>

@@ -1,0 +1,162 @@
+<header>
+    双向链表
+</header>
+
+<h2>
+    双向链表的定义
+</h2>
+
+<p>
+    双向链表（Doubly Linked List）是在单链表的每个结点中，再设置一个指向其前驱结点的指针域。这样，每个结点都有两个指针域，一个指向直接后继，一个指向直接前驱。双向链表的结点结构包含三个域：
+</p>
+
+<ul>
+    <li>
+        <span class="special">prior</span>：指向直接前驱的指针域
+    </li>
+    <li>
+        <span class="special">data</span>：存储数据元素的数据域
+    </li>
+    <li>
+        <span class="special">next</span>：指向直接后继的指针域
+    </li>
+</ul>
+
+<pre tag="c">
+typedef struct DNode {
+    int data;
+    struct DNode *prior, *next;
+} DNode, *DLinkList;
+</pre>
+
+<h3>
+    双向链表的特点
+</h3>
+
+<ul>
+    <li>
+        <span class="special">双向访问</span>：可以从两个方向遍历链表
+    </li>
+    <li>
+        <span class="special">插入删除更灵活</span>：可以方便地在已知结点的前后插入新结点
+    </li>
+    <li>
+        <span class="special">额外空间开销</span>：每个结点需要两个指针域，空间开销更大
+    </li>
+    <li>
+        <span class="special">实现复杂度增加</span>：需要维护两个方向的指针关系
+    </li>
+</ul>
+
+<h2>
+    双向循环链表
+</h2>
+
+<p>
+    双向循环链表是双向链表的另一种形式，其特点是头结点的前驱指针指向尾结点，尾结点的后继指针指向头结点，形成一个环。双向循环链表可以从任意结点出发访问链表中的所有结点。
+</p>
+
+<h3>
+    空表表示
+</h3>
+
+<p>
+    在双向循环链表中，空表表示为头结点的prior和next都指向自己。
+</p>
+
+<pre tag="c">
+// 初始化空的双向循环链表
+Status InitList(DLinkList *L) {
+    *L = (DLinkList)malloc(sizeof(DNode));
+    if (!(*L)) return ERROR;
+    (*L)->prior = *L;
+    (*L)->next = *L;
+    return OK;
+}
+</pre>
+
+<h2>
+    双向链表的基本操作
+</h2>
+
+<h3>
+    插入操作
+</h3>
+
+<p>
+    在双向链表中，在p结点之后插入s结点。插入操作需要修改四个指针：
+</p>
+
+<pre tag="c">
+Status ListInsert(DLinkList L, int i, int e) {
+    // 找到第i-1个结点
+    DNode *p = GetElem(L, i-1);
+    if (!p) return ERROR;
+
+    // 创建新结点
+    DNode *s = (DNode*)malloc(sizeof(DNode));
+    if (!s) return ERROR;
+
+    s->data = e;
+
+    // 修改四个指针
+    s->next = p->next;
+    s->prior = p;
+    p->next->prior = s;
+    p->next = s;
+
+    return OK;
+}
+</pre>
+
+<div class="tips">
+    双向链表的插入操作需要特别注意指针修改的顺序，以避免丢失结点。
+</div>
+
+<h3>
+    删除操作
+</h3>
+
+<p>
+    删除双向链表中p结点的后继结点。删除操作需要修改两个指针：
+</p>
+
+<pre tag="c">
+Status ListDelete(DLinkList L, int i, int *e) {
+    // 找到第i个结点
+    DNode *p = GetElem(L, i);
+    if (!p) return ERROR;
+
+    // 保存被删除的元素
+    *e = p->data;
+
+    // 修改两个指针
+    p->prior->next = p->next;
+    p->next->prior = p->prior;
+
+    // 释放被删除结点的空间
+    free(p);
+
+    return OK;
+}
+</pre>
+
+<h3>
+    查找操作
+</h3>
+
+<p>
+    双向链表的查找操作与单链表类似，可以从头结点开始顺序查找，也可以从尾结点开始反向查找。
+</p>
+
+<pre tag="c">
+DNode* LocateElem(DLinkList L, int e) {
+    DNode *p = L->next;
+
+    while (p != L && p->data != e) {
+        p = p->next;
+    }
+
+    return (p != L) ? p : NULL;
+}
+</pre>

@@ -1,0 +1,102 @@
+<header>
+    BroadcastReceiver
+</header>
+<p>
+    BroadcastReceiver 用于监听系统或应用发出的广播通知。
+</p>
+<h2>
+    分类
+</h2>
+<ul>
+    <li>
+        <span class="important">静态注册</span>
+        ：在清单文件中注册，应用未启动也能接收广播。
+    </li>
+    <li>
+        <span class="important">动态注册</span>
+        ：在代码中注册，组件销毁时需要取消注册。
+    </li>
+</ul>
+<h2>
+    自定义广播接收器
+</h2>
+<pre tag="kotlin">
+class MyReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        val action = intent.action
+        // 处理广播逻辑
+    }
+}
+</pre>
+<h2>
+    静态注册
+</h2>
+<pre tag="xml">
+&lt;receiver android:name=".MyReceiver"
+          android:exported="true|false"&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name="com.example.MY_BROADCAST" /&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</pre>
+<div class="tips">
+    Android 13（API 33）起静态注册必须显式声明 <span class="warn">android:exported</span>。
+</div>
+<h2>
+    动态注册
+</h2>
+<pre tag="kotlin">
+val receiver = MyReceiver()
+val filter = IntentFilter("com.example.MY_BROADCAST")
+// Android 14（API 34）起统一使用 ContextCompat.registerReceiver，
+// 需显式声明 RECEIVER_EXPORTED 或 RECEIVER_NOT_EXPORTED
+ContextCompat.registerReceiver(
+    this,
+    receiver,
+    filter,
+    ContextCompat.RECEIVER_NOT_EXPORTED
+)
+
+// 记得在 onDestroy 中取消注册
+override fun onDestroy() {
+    super.onDestroy()
+    unregisterReceiver(receiver)
+}
+</pre>
+<h2>
+    发送自定义广播
+</h2>
+<pre tag="kotlin">
+val intent = Intent("com.example.MY_BROADCAST").apply {
+    setPackage(packageName) // 限制接收方，更安全
+    putExtra("msg", "hello")
+}
+sendBroadcast(intent)
+</pre>
+<h2>
+    Compose 中监听广播
+</h2>
+<pre tag="kotlin">
+@Composable
+fun BatteryScreen() {
+    var batteryLevel by remember { mutableIntStateOf(0) }
+    val context = LocalContext.current
+
+    DisposableEffect(Unit) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                batteryLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
+            }
+        }
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        ContextCompat.registerReceiver(
+            context, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
+
+    Text("当前电量：$batteryLevel%")
+}
+</pre>

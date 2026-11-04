@@ -1,0 +1,119 @@
+<header>
+    form
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>report-submit</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否返回 formId 用于发送模板消息</td>
+        </tr>
+        <tr>
+            <td>report-submit-timeout</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>等待一段时间（毫秒数）以确认 formId 是否生效。如果未指定这个参数，formId 有很小的概率是无效的（如遇到网络失败的情况）。指定这个参数将可以检测 formId 是否有效，以这个参数的时间作为这项检测的超时时间。如果失败，将返回 requestFormId:fail 开头的 formId</td>
+        </tr>
+        <tr>
+            <td>@submit</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>携带 form 中的数据触发 submit 事件，event.detail = {value : {'name': 'value'} , formId: ''}</td>
+        </tr>
+        <tr>
+            <td>@reset</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>表单重置时会触发 reset 事件</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <form @submit="formSubmit" @reset="formReset">
+      <view class="form-item">
+        <text>姓名：</text>
+        <input class="input" name="name" placeholder="请输入姓名" />
+      </view>
+      <view class="form-item">
+        <text>性别：</text>
+        <radio-group name="gender">
+          <label><radio value="男" />男</label>
+          <label><radio value="女" />女</label>
+        </radio-group>
+      </view>
+      <view class="form-item">
+        <text>爱好：</text>
+        <checkbox-group name="hobby">
+          <label><checkbox value="读书" />读书</label>
+          <label><checkbox value="运动" />运动</label>
+          <label><checkbox value="音乐" />音乐</label>
+        </checkbox-group>
+      </view>
+      <view class="btn-group">
+        <button form-type="submit" type="primary">提交</button>
+        <button form-type="reset" style="margin-left: 20px;">重置</button>
+      </view>
+    </form>
+  </view>
+</template>
+
+<script>
+export default {
+  methods: {
+    formSubmit(e) {
+      console.log('表单提交：', e.detail.value);
+      uni.showToast({
+        title: '提交成功',
+        icon: 'success'
+      });
+    },
+    formReset(e) {
+      console.log('表单重置：', e);
+      uni.showToast({
+        title: '已重置',
+        icon: 'none'
+      });
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.form-item {
+  margin-bottom: 15px;
+}
+
+.input {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.btn-group {
+  display: flex;
+  margin-top: 20px;
+}
+</style>
+</pre>

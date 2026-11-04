@@ -1,0 +1,52 @@
+<header>
+    基本异常处理
+</header>
+<p>
+    异常处理是Python中处理程序运行时错误的重要机制。通过异常处理，我们可以优雅地处理错误情况，防止程序崩溃，并提供有意义的错误信息。
+</p>
+<pre tag="python">
+# 基本try-except结构
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("不能除以零!")
+
+# 捕获多种异常
+try:
+    number = int(input("请输入一个数字: "))
+    result = 10 / number
+except ValueError:
+    print("输入的不是有效数字!")
+except ZeroDivisionError:
+    print("不能除以零!")
+except Exception as e:
+    print(f"发生未知错误: {e}")
+
+# 获取异常信息
+try:
+    file = open('nonexistent.txt', 'r')
+except FileNotFoundError as e:
+    print(f"文件未找到: {e}")
+    print(f"异常类型: {type(e).__name__}")
+    print(f"异常参数: {e.args}")
+
+# else子句（没有异常时执行）
+try:
+    result = 10 / 2
+except ZeroDivisionError:
+    print("除以零错误")
+else:
+    print(f"计算成功，结果是: {result}")
+
+# finally子句（无论是否发生异常都会执行）
+try:
+    file = open('example.txt', 'r')
+    content = file.read()
+except FileNotFoundError:
+    print("文件未找到")
+else:
+    print("文件读取成功")
+finally:
+    print("清理资源")
+    # file.close()  # 注意：如果文件未成功打开，这里会出错
+</pre>

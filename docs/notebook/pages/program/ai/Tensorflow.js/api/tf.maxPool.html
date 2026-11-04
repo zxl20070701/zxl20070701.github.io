@@ -1,0 +1,55 @@
+<header>
+    tf.maxPool
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.maxPool(x, filterSize, strides, pad, dataFormat?, dimRoundingMode?)
+</pre>
+<p>
+    最大池化操作。
+</p>
+<h3>
+    x
+</h3>
+<p>
+    输入张量，形状为 [batch, height, width, inChannels]。
+</p>
+<h3>
+    filterSize
+</h3>
+<p>
+    池化窗口大小，可以是单个数字或长度为 2 的数组 [filterHeight, filterWidth]。
+</p>
+<h3>
+    strides
+</h3>
+<p>
+    池化步长，可以是单个数字或长度为 2 的数组 [strideHeight, strideWidth]。
+</p>
+<h3>
+    pad
+</h3>
+<p>
+    填充方式，可以是 'valid' 或 'same'。
+</p>
+<h3>
+    dataFormat
+</h3>
+<p>
+    数据格式，默认为 'NHWC'。
+</p>
+<h2>
+    示例
+</h2>
+<pre tag="javascript">
+const x = tf.tensor4d([1, 2, 3, 4], [1, 2, 2, 1]);
+tf.maxPool(x, 2, 1, 'valid').print();
+</pre>
+<p>
+    输出：
+</p>
+<pre>
+[[[[4]]]]
+</pre>

@@ -1,0 +1,350 @@
+<header>
+    Cache
+</header>
+<h2>
+    Cache存储器概述
+</h2>
+<p>
+    <span class="important">Cache</span>（高速缓冲存储器）是位于CPU和主存之间的小容量、高速度的存储器，用于解决CPU和主存之间速度不匹配的问题。Cache利用程序访问的局部性原理，通过存储最近使用的数据和指令来提高系统性能。
+</p>
+
+<h2>
+    局部性原理
+</h2>
+<h3>
+    1. 时间局部性
+</h3>
+<p>
+    最近被访问的信息很可能在不久的将来再次被访问。
+</p>
+<ul>
+    <li>循环结构中的指令重复执行</li>
+    <li>变量的重复访问</li>
+    <li>栈操作中的数据重用</li>
+</ul>
+
+<h3>
+    2. 空间局部性
+</h3>
+<p>
+    与当前被访问信息地址相近的信息很可能被访问。
+</p>
+<ul>
+    <li>数组元素的顺序访问</li>
+    <li>指令的顺序执行</li>
+    <li>数据结构的连续存储</li>
+</ul>
+
+<h2>
+    Cache的基本结构
+</h2>
+<h3>
+    1. Cache的组成
+</h3>
+<ul>
+    <li><span class="special">存储阵列</span>：存储数据和指令</li>
+    <li><span class="special">标记存储器</span>：存储地址标记信息</li>
+    <li><span class="special">有效位</span>：指示Cache行是否有效</li>
+    <li><span class="special">控制逻辑</span>：管理Cache的读写操作</li>
+</ul>
+
+<h3>
+    2. Cache的层次结构
+</h3>
+<ul>
+    <li><span class="special">L1 Cache</span>：一级缓存，速度最快，容量最小（通常16-64KB）</li>
+    <li><span class="special">L2 Cache</span>：二级缓存，速度和容量居中（通常256KB-2MB）</li>
+    <li><span class="special">L3 Cache</span>：三级缓存，速度较慢，容量最大（通常2-32MB）</li>
+</ul>
+
+<h2>
+    Cache映射方式
+</h2>
+<h3>
+    1. 直接映射（Direct Mapping）
+</h3>
+<p>
+    主存中的每个块只能映射到Cache中的一个特定位置。
+</p>
+<h4>
+    地址格式
+</h4>
+<ul>
+    <li><span class="special">标记（Tag）</span>：标识主存块</li>
+    <li><span class="special">索引（Index）</span>：选择Cache行</li>
+    <li><span class="special">偏移（Offset）</span>：选择块内字节</li>
+</ul>
+
+<h4>
+    特点
+</h4>
+<ul>
+    <li>硬件实现简单，成本低</li>
+    <li>冲突率高，容易发生抖动</li>
+    <li>适用于大容量Cache</li>
+</ul>
+
+<h3>
+    2. 全相联映射（Fully Associative Mapping）
+</h3>
+<p>
+    主存中的任何块都可以映射到Cache中的任何位置。
+</p>
+<h4>
+    地址格式
+</h4>
+<ul>
+    <li><span class="special">标记</span>：标识主存块</li>
+    <li><span class="special">偏移</span>：选择块内字节</li>
+</ul>
+
+<h4>
+    特点
+</h4>
+<ul>
+    <li>冲突率最低，空间利用率最高</li>
+    <li>硬件复杂，成本高</li>
+    <li>需要并行比较所有标记</li>
+    <li>适用于小容量Cache</li>
+</ul>
+
+<h3>
+    3. 组相联映射（Set Associative Mapping）
+</h3>
+<p>
+    将Cache分成若干组，每组包含多个行，主存块可以映射到特定组的任意行。
+</p>
+<h4>
+    地址格式
+</h4>
+<ul>
+    <li><span class="special">标记</span>：标识主存块</li>
+    <li><span class="special">组索引</span>：选择Cache组</li>
+    <li><span class="special">偏移</span>：选择块内字节</li>
+</ul>
+
+<h4>
+    特点
+</h4>
+<ul>
+    <li>折中方案，平衡了硬件复杂度和性能</li>
+    <li>2路、4路、8路组相联最常见</li>
+    <li>广泛应用于现代处理器</li>
+</ul>
+
+<h2>
+    Cache替换策略
+</h2>
+<h3>
+    1. 先进先出（FIFO）
+</h3>
+<p>
+    替换最早进入Cache的块。
+</p>
+<ul>
+    <li>实现简单，使用队列结构</li>
+    <li>不考虑访问频率，可能替换频繁使用的块</li>
+</ul>
+
+<h3>
+    2. 最近最少使用（LRU）
+</h3>
+<p>
+    替换最长时间未被访问的块。
+</p>
+<ul>
+    <li>符合局部性原理，性能较好</li>
+    <li>硬件实现复杂，需要记录访问历史</li>
+    <li>近似LRU算法在实际中更常用</li>
+</ul>
+
+<h3>
+    3. 随机替换（Random）
+</h3>
+<p>
+    随机选择一个块进行替换。
+</p>
+<ul>
+    <li>实现最简单，硬件开销最小</li>
+    <li>性能不稳定，但在某些情况下表现良好</li>
+</ul>
+
+<h3>
+    4. 最不经常使用（LFU）
+</h3>
+<p>
+    替换访问次数最少的块。
+</p>
+<ul>
+    <li>需要维护访问计数器</li>
+    <li>对程序行为变化适应性差</li>
+</ul>
+
+<h2>
+    Cache写策略
+</h2>
+<h3>
+    1. 写直达（Write Through）
+</h3>
+<p>
+    写操作时同时更新Cache和主存。
+</p>
+<ul>
+    <li>优点：数据一致性高，实现简单</li>
+    <li>缺点：写操作延迟大，占用总线带宽</li>
+</ul>
+
+<h3>
+    2. 写回（Write Back）
+</h3>
+<p>
+    写操作时只更新Cache，当Cache块被替换时才写回主存。
+</p>
+<ul>
+    <li>优点：减少主存访问，提高性能</li>
+    <li>缺点：数据一致性复杂，需要脏位标记</li>
+</ul>
+
+<h3>
+    3. 写分配（Write Allocate）
+</h3>
+<p>
+    写缺失时将数据块调入Cache。
+</p>
+<ul>
+    <li>适用于写回策略</li>
+    <li>后续写操作可以在Cache中完成</li>
+</ul>
+
+<h3>
+    4. 非写分配（No-Write Allocate）
+</h3>
+<p>
+    写缺失时直接将数据写入主存，不调入Cache。
+</p>
+<ul>
+    <li>适用于写直达策略</li>
+    <li>减少不必要的Cache填充</li>
+</ul>
+
+<h2>
+    Cache性能分析
+</h2>
+<h3>
+    1. 性能指标
+</h3>
+<ul>
+    <li><span class="special">命中率（Hit Rate）</span>：访问在Cache中找到所需数据的概率</li>
+    <li><span class="special">缺失率（Miss Rate）</span>：1 - 命中率</li>
+    <li><span class="special">命中时间（Hit Time）</span>：Cache命中时的访问时间</li>
+    <li><span class="special">缺失惩罚（Miss Penalty）</span>：Cache缺失时从主存获取数据的时间</li>
+</ul>
+
+<h3>
+    2. 平均访问时间
+</h3>
+<p>
+    平均访问时间 = 命中时间 + 缺失率 × 缺失惩罚
+</p>
+
+<h3>
+    3. 影响性能的因素
+</h3>
+<ul>
+    <li><span class="special">Cache大小</span>：容量越大，命中率越高</li>
+    <li><span class="special">块大小</span>：块越大，空间局部性越好，但缺失惩罚增加</li>
+    <li><span class="special">相联度</span>：相联度越高，冲突越少，但硬件复杂度增加</li>
+    <li><span class="special">替换策略</span>：影响Cache空间利用率</li>
+</ul>
+
+<h2>
+    多级Cache设计
+</h2>
+<h3>
+    1. 包含策略
+</h3>
+<ul>
+    <li><span class="special">严格包含</span>：L1 Cache的内容必须包含在L2 Cache中</li>
+    <li><span class="special">非包含</span>：各级Cache独立，无包含关系</li>
+    <li><span class="special">排他</span>：数据只能存在于某一级Cache中</li>
+</ul>
+
+<h3>
+    2. 一致性维护
+</h3>
+<ul>
+    <li><span class="special">监听协议</span>：通过总线监听维护一致性</li>
+    <li><span class="special">目录协议</span>：使用目录记录数据状态</li>
+    <li><span class="special">MESI协议</span>：Modified、Exclusive、Shared、Invalid状态</li>
+</ul>
+
+<h3>
+    3. 预取技术
+</h3>
+<ul>
+    <li><span class="special">顺序预取</span>：预取连续的Cache块</li>
+    <li><span class="special">跨步预取</span>：预取固定间隔的数据</li>
+    <li><span class="special">自适应预取</span>：根据程序行为动态调整</li>
+</ul>
+
+<h2>
+    Cache优化技术
+</h2>
+<h3>
+    1. 硬件优化
+</h3>
+<ul>
+    <li><span class="special">流水线Cache</span>：将Cache访问分为多个阶段</li>
+    <li><span class="special">非阻塞Cache</span>：Cache缺失时不阻塞后续访问</li>
+    <li><span class="special">多级Cache</span>：通过层次化设计平衡速度和容量</li>
+</ul>
+
+<h3>
+    2. 软件优化
+</h3>
+<ul>
+    <li><span class="special">数据布局优化</span>：改善空间局部性</li>
+    <li><span class="special">循环优化</span>：改善时间局部性</li>
+    <li><span class="special">分块技术</span>：使工作集适应Cache大小</li>
+</ul>
+
+<h3>
+    3. 编译器优化
+</h3>
+<ul>
+    <li><span class="special">循环变换</span>：改进循环的局部性</li>
+    <li><span class="special">数据预取</span>：插入预取指令</li>
+    <li><span class="special">寄存器分配</span>：减少内存访问</li>
+</ul>
+
+<h2>
+    现代Cache设计实例
+</h2>
+<h3>
+    1. Intel Core处理器
+</h3>
+<ul>
+    <li><span class="special">L1 Cache</span>：32KB指令Cache + 32KB数据Cache</li>
+    <li><span class="special">L2 Cache</span>：256KB，每个核心独享</li>
+    <li><span class="special">L3 Cache</span>：共享，容量从4MB到40MB不等</li>
+    <li><span class="special">映射方式</span>：8路组相联</li>
+</ul>
+
+<h3>
+    2. ARM Cortex处理器
+</h3>
+<ul>
+    <li><span class="special">L1 Cache</span>：16KB-64KB指令和数据Cache</li>
+    <li><span class="special">L2 Cache</span>：128KB-2MB</li>
+    <li><span class="special">L3 Cache</span>：部分型号支持，1MB-8MB</li>
+    <li><span class="special">特点</span>：低功耗设计，适合移动设备</li>
+</ul>
+
+<h3>
+    3. GPU Cache
+</h3>
+<ul>
+    <li><span class="special">L1 Cache</span>：每个流处理器拥有</li>
+    <li><span class="special">L2 Cache</span>：所有流处理器共享</li>
+    <li><span class="special">特点</span>：针对图形和并行计算优化</li>
+</ul>

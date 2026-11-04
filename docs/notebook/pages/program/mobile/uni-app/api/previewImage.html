@@ -1,0 +1,137 @@
+<header>
+    预览图片
+</header>
+<h2>
+    uni.previewImage(OBJECT)
+</h2>
+<p>
+    预览图片。
+</p>
+<pre tag="javascript">
+// 从相册选择图片后预览
+uni.chooseImage({
+    success: function (res) {
+        uni.previewImage({
+            urls: res.tempFilePaths,
+            current: res.tempFilePaths[0]
+        });
+    }
+});
+
+// 或者直接预览网络图片
+uni.previewImage({
+    urls: [
+        'https://example.com/image1.jpg',
+        'https://example.com/image2.jpg',
+        'https://example.com/image3.jpg'
+    ],
+    current: 'https://example.com/image1.jpg'
+});
+</pre>
+<h3>
+    参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>urls</td>
+            <td>Array&lt;String&gt;</td>
+            <td>是</td>
+            <td>需要预览的图片链接列表</td>
+        </tr>
+        <tr>
+            <td>current</td>
+            <td>String</td>
+            <td>否</td>
+            <td>当前显示图片的链接，默认为 urls 的第一张</td>
+        </tr>
+        <tr>
+            <td>indicator</td>
+            <td>Boolean</td>
+            <td>否</td>
+            <td>是否显示指示器（如：1/5），默认为 true</td>
+        </tr>
+        <tr>
+            <td>loop</td>
+            <td>Boolean</td>
+            <td>否</td>
+            <td>是否可循环预览，默认为 false</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <button @click="chooseImage">选择图片</button>
+    <view class="image-list">
+      <view class="image-item" v-for="(item, index) in imageList" :key="index">
+        <image class="image" :src="item" mode="aspectFill" @click="previewImage(index)"></image>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      imageList: []
+    }
+  },
+  methods: {
+    chooseImage() {
+      uni.chooseImage({
+        count: 9,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: (res) => {
+          this.imageList = res.tempFilePaths;
+        }
+      });
+    },
+    previewImage(index) {
+      uni.previewImage({
+        urls: this.imageList,
+        current: this.imageList[index]
+      });
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.image-item {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+</style>
+</pre>

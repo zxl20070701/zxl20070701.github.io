@@ -4,26 +4,26 @@
 <h2>
     查看有哪些集合
 </h2>
-<pre>
+<pre tag="javascript">
     show collections
 </pre>
 <h2>
     删除集合
 </h2>
-<pre>
+<pre tag="javascript">
     db.[集合名称].drop()
 </pre>
 <p>
     比如我们要删除当前数据库test中的cols1，那么就是：
 </p>
-<pre>
+<pre tag="javascript">
 use test
 db.cols1.drop()
 </pre>
 <h2>
     创建集合
 </h2>
-<pre>
+<pre tag="javascript">
     db.createCollection(name, options)
 </pre>
 <p>
@@ -98,7 +98,7 @@ db.cols1.drop()
 <h2>
     插入文档
 </h2>
-<pre>
+<pre tag="javascript">
 db.[集合名称].insert(document)
 </pre>
 <p>
@@ -107,7 +107,7 @@ db.[集合名称].insert(document)
 <h2>
     更新文档
 </h2>
-<pre>
+<pre tag="javascript">
 db.collection.update(
     &lt;query&gt;,
     &lt;update&gt;,
@@ -147,13 +147,13 @@ db.collection.update(
 <p>
     我们希望修改age为17并添加hobby为游泳：
 </p>
-<pre>
+<pre tag="javascript">
     db.[集合名称].update({"name":"李四"},{"age":17,"hobby":"游泳"})
 </pre>
 <h2>
     删除文档
 </h2>
-<pre>
+<pre tag="javascript">
 db.[集合名称].remove(
    &lt;query&gt;,
    {
@@ -179,13 +179,13 @@ db.[集合名称].remove(
 <p>
     比如我们移除name为李四的所有条目：
 </p>
-<pre>
+<pre tag="javascript">
     db.[集合名称].remove({"name" : "李四"})
 </pre>
 <h2>
     查询文档
 </h2>
-<pre>
+<pre tag="javascript">
     db.[集合名称].find(query, projection)
 </pre>
 <p>
@@ -202,7 +202,7 @@ db.[集合名称].remove(
 <p>
     如果你需要以易读的方式来读取数据，可以使用 pretty() 方法，语法格式如下：
 </p>
-<pre>
+<pre tag="javascript">
     db.[集合名称].find().pretty()
 </pre>
 <p>

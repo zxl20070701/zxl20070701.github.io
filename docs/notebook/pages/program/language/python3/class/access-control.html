@@ -1,0 +1,82 @@
+<header>
+    访问控制
+</header>
+<h2>
+    公有属性和方法
+</h2>
+<p>
+    默认情况下，Python中的所有属性和方法都是公有的，可以从类的外部访问：
+</p>
+<pre tag="python">
+class Example:
+    def __init__(self):
+        self.public_var = "这是公有属性"
+    
+    def public_method(self):
+        return "这是公有方法"
+
+obj = Example()
+print(obj.public_var)      # 可以访问
+print(obj.public_method()) # 可以调用
+</pre>
+
+<h2>
+    私有属性和方法
+</h2>
+<p>
+    通过在名称前添加双下划线<span class="warn">__</span>来定义私有属性和方法：
+</p>
+<pre tag="python">
+class Example:
+    def __init__(self):
+        self.public_var = "这是公有属性"
+        self.__private_var = "这是私有属性"
+    
+    def public_method(self):
+        return "这是公有方法"
+    
+    def __private_method(self):
+        return "这是私有方法"
+    
+    def access_private(self):
+        # 在类内部可以访问私有成员
+        return self.__private_var + " - " + self.__private_method()
+
+obj = Example()
+print(obj.public_var)           # 可以访问
+print(obj.public_method())      # 可以调用
+# print(obj.__private_var)      # 错误！不能直接访问
+# print(obj.__private_method()) # 错误！不能直接调用
+print(obj.access_private())     # 通过公有方法访问私有成员
+</pre>
+<div class="tips">
+    注意：Python中的私有成员实际上是通过名称改写（name mangling）实现的，技术上仍然可以从外部访问，但不推荐这样做。
+</div>
+
+<h2>
+    受保护的属性和方法
+</h2>
+<pre tag="python">
+class Base:
+    def __init__(self):
+        self.public = "公有"
+        self._protected = "受保护"
+        self.__private = "私有"
+    
+    def _protected_method(self):
+        return "受保护的方法"
+    
+    def __private_method(self):
+        return "私有的方法"
+
+class Derived(Base):
+    def test_access(self):
+        print(self.public)           # 可以访问
+        print(self._protected)       # 可以访问
+        print(self._protected_method()) # 可以调用
+        # print(self.__private)      # 不能直接访问
+
+base = Base()
+derived = Derived()
+derived.test_access()
+</pre>

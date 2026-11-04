@@ -64,7 +64,7 @@ function Demo(){
     let [count, setCount] = useState(0)
     return (&lt;div&gt;
         {count}
-        &lt;button onClick={()=&lt;{
+        &lt;button onClick={()=&gt;{
             for(let i=0;i&lt;5;i++){
                 setCount(count+1)
             }
@@ -86,7 +86,7 @@ function Demo(){
     let [count, setCount] = useState(0)
     return (&lt;div&gt;
         {count}
-        &lt;button onClick={()=&lt;{
+        &lt;button onClick={()=&gt;{
             for(let i=0;i&lt;5;i++){
                 setCount(prevCount => prevCount + 1)
             }

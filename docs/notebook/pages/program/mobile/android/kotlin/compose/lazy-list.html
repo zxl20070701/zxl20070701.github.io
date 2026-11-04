@@ -1,0 +1,142 @@
+<header>
+    LazyColumn / LazyRow 列表
+</header>
+<p>
+    Compose 中用 <span class="important">LazyColumn</span>（纵向）、
+    <span class="important">LazyRow</span>（横向）、
+    <span class="important">LazyVerticalGrid</span>（网格）渲染长列表，
+    仅绘制可见项，等效于 View 时代的 RecyclerView。
+</p>
+<h2>
+    基础用法
+</h2>
+<pre tag="kotlin">
+@Composable
+fun MessageList(messages: List&lt;String&gt;) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(messages, key = { it }) { msg -&gt;
+            MessageItem(msg)
+        }
+    }
+}
+
+@Composable
+fun MessageItem(msg: String) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Text(text = msg, modifier = Modifier.padding(16.dp))
+    }
+}
+</pre>
+<div class="tips">
+    传入 <span class="warn">key</span> 参数可以让 Compose 在数据集变化时准确定位每一项，
+    保留局部状态并触发动画，性能更好。
+</div>
+<h2>
+    多种 item 类型
+</h2>
+<pre tag="kotlin">
+LazyColumn {
+    // 单个 header
+    item {
+        Text("标题", style = MaterialTheme.typography.titleLarge)
+    }
+
+    // 普通列表
+    items(users) { user -&gt;
+        UserRow(user)
+    }
+
+    // 索引版本
+    itemsIndexed(users) { index, user -&gt;
+        Text("#$index ${user.name}")
+    }
+}
+</pre>
+<h2>
+    分组粘性头（Sticky Header）
+</h2>
+<pre tag="kotlin">
+val grouped = contacts.groupBy { it.firstLetter }
+
+LazyColumn {
+    grouped.forEach { (letter, list) -&gt;
+        stickyHeader {
+            Text(
+                text = letter.toString(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.LightGray)
+                    .padding(8.dp)
+            )
+        }
+        items(list) { contact -&gt;
+            Text(contact.name)
+        }
+    }
+}
+</pre>
+<h2>
+    滚动控制与监听
+</h2>
+<pre tag="kotlin">
+val listState = rememberLazyListState()
+
+// 1. 点击回到顶部（协程动画）
+val scope = rememberCoroutineScope()
+FloatingActionButton(onClick = {
+    scope.launch { listState.animateScrollToItem(0) }
+}) {
+    Icon(Icons.Default.ArrowUpward, null)
+}
+
+// 2. 是否显示"回到顶部"按钮
+val showButton by remember {
+    derivedStateOf { listState.firstVisibleItemIndex &gt; 5 }
+}
+
+// 3. 加载更多：滚到底部时触发
+val shouldLoadMore by remember {
+    derivedStateOf {
+        val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+        lastVisible &gt;= listState.layoutInfo.totalItemsCount - 3
+    }
+}
+LaunchedEffect(shouldLoadMore) {
+    if (shouldLoadMore) viewModel.loadMore()
+}
+
+LazyColumn(state = listState) { /* ... */ }
+</pre>
+<h2>
+    网格列表
+</h2>
+<pre tag="kotlin">
+LazyVerticalGrid(
+    columns = GridCells.Adaptive(minSize = 128.dp), // 自适应列数
+    // 或 GridCells.Fixed(2)
+    contentPadding = PaddingValues(8.dp),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp)
+) {
+    items(photos) { photo -&gt;
+        AsyncImage(model = photo.url, contentDescription = null)
+    }
+}
+</pre>
+<h2>
+    item 动画
+</h2>
+<pre tag="kotlin">
+LazyColumn {
+    items(messages, key = { it.id }) { msg -&gt;
+        MessageItem(
+            msg = msg,
+            modifier = Modifier.animateItem() // 增删/换位自动加动画
+        )
+    }
+}
+</pre>

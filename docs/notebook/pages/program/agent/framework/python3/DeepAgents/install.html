@@ -1,0 +1,95 @@
+<header>
+    快速入门
+</header>
+
+<p>
+    DeepAgents 是一个建立在 LangChain / LangGraph 之上的高层 Agent 框架，把规划、文件管理、子智能体等"深度智能体"常用的能力做成了开箱即用的内置组件。它的创建方式和 LangChain 的 <span class="warn">create_agent</span> 很像，上手成本很低。
+</p>
+
+<h2>
+    安装
+</h2>
+
+<p>
+    安装 DeepAgents 和 OpenAI 协议的模型接入包：
+</p>
+
+<pre>
+    pip3 install deepagents langchain-openai
+</pre>
+
+<div class="tips">
+    本文的示例使用本地 Ollama 服务提供的模型，需要提前启动 Ollama 并拉取好模型（默认使用 <span class="warn">qwen3.5</span>）。
+</div>
+
+<h2>
+    创建第一个 Agent
+</h2>
+
+<p>
+    用 <span class="warn">create_deep_agent</span> 创建智能体，传入模型、工具列表和系统提示词，然后调用 <span class="warn">invoke</span> 进行对话：
+</p>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+from deepagents import create_deep_agent
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(
+    model="qwen3.5", api_key="ollama", base_url="http://localhost:11434/v1"
+)
+
+agent = create_deep_agent(
+    model=llm,
+    tools=[],
+    system_prompt="",
+)
+
+result = agent.invoke({"messages": [{"role": "user", "content": "你是谁?"}]})
+
+print(result["messages"][-1].content)
+</pre>
+
+<p>
+    和 LangChain 一样，入参使用 <span class="warn">{"messages": [...]}</span> 的字典结构，模型的最终回复在 <span class="warn">result["messages"]</span> 的最后一条消息里。
+</p>
+
+<h2>
+    挂载工具
+</h2>
+
+<p>
+    给 DeepAgents 挂工具更简单——<strong>普通的 Python 函数可以直接作为工具使用</strong>，不需要额外的装饰器，函数签名和 docstring 会被自动解析为工具的入参结构和描述：
+</p>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+from deepagents import create_deep_agent
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(
+    model="qwen3.5", api_key="ollama", base_url="http://localhost:11434/v1"
+)
+
+
+def get_weather(city: str) -> str:
+    """获取指定城市的天气。"""
+    return f"{city}总是阳光明媚！"
+
+
+agent = create_deep_agent(
+    model=llm,
+    tools=[get_weather],
+    system_prompt="",
+)
+
+result = agent.invoke({"messages": [{"role": "user", "content": "南京的天气怎么样?"}]})
+
+print(result["messages"][-1].content)
+</pre>
+
+<p>
+    提问"南京的天气怎么样？"时，模型会自主决定调用 <span class="warn">get_weather</span>，拿到工具结果后再组织最终回复，整个过程和 LangChain 的工具调用机制一致。
+</p>

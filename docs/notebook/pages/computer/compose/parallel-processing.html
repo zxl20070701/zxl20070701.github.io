@@ -1,0 +1,580 @@
+<header>
+    并行处理
+</header>
+<h2>
+    并行处理概述
+</h2>
+<p>
+    <span class="important">并行处理</span>（Parallel Processing）是指同时使用多个处理单元协同工作，以提高计算速度和处理能力的计算模式。它是现代计算机系统提高性能的重要手段，通过并行性挖掘，可以显著提升系统的整体性能。
+</p>
+
+<h2>
+    并行处理的基本概念
+</h2>
+<h3>
+    1. 并行性类型
+</h3>
+<h4>
+    时间并行性
+</h4>
+<ul>
+    <li><span class="special">流水线技术</span>：将任务分解为多个阶段，各阶段并行执行</li>
+    <li><span class="special">时间重叠</span>：不同任务的不同阶段在时间上重叠执行</li>
+</ul>
+
+<h4>
+    空间并行性
+</h4>
+<ul>
+    <li><span class="special">资源复制</span>：复制硬件资源实现并行</li>
+    <li><span class="special">多处理器</span>：使用多个处理器同时工作</li>
+</ul>
+
+<h4>
+    数据并行性
+</h4>
+<ul>
+    <li><span class="special">SIMD</span>：单指令多数据，同一指令在多个数据上并行执行</li>
+    <li><span class="special">向量处理</span>：对向量数据进行并行操作</li>
+</ul>
+
+<h3>
+    2. 并行性级别
+</h3>
+<h4>
+    指令级并行性（ILP）
+</h4>
+<ul>
+    <li><span class="special">超标量</span>：每个周期发射多条指令</li>
+    <li><span class="special">超流水线</span>：增加流水线深度提高并行性</li>
+    <li><span class="special">乱序执行</span>：动态调度指令执行顺序</li>
+</ul>
+
+<h4>
+    数据级并行性（DLP）
+</h4>
+<ul>
+    <li><span class="special">SIMD处理器</span>：向量处理器和GPU</li>
+    <li><span class="special">数据并行</span>：相同操作在多个数据上并行执行</li>
+</ul>
+
+<h4>
+    线程级并行性（TLP）
+</h4>
+<ul>
+    <li><span class="special">多线程</span>：单个处理器支持多个线程</li>
+    <li><span class="special">多核处理器</span>：多个独立处理器核心</li>
+</ul>
+
+<h4>
+    进程级并行性
+</h4>
+<ul>
+    <li><span class="special">多处理器系统</span>：多个独立处理器</li>
+    <li><span class="special">分布式系统</span>：多个独立计算机协同工作</li>
+</ul>
+
+<h2>
+    并行计算机体系结构
+</h2>
+<h3>
+    1. Flynn分类法
+</h3>
+<h4>
+    SISD（单指令流单数据流）
+</h4>
+<ul>
+    <li><span class="special">特点</span>：传统串行计算机</li>
+    <li><span class="special">应用</span>：早期计算机系统</li>
+</ul>
+
+<h4>
+    SIMD（单指令流多数据流）
+</h4>
+<ul>
+    <li><span class="special">特点</span>：同一指令在多个数据上并行执行</li>
+    <li><span class="special">应用</span>：向量处理器、GPU、多媒体处理器</li>
+</ul>
+
+<h4>
+    MISD（多指令流单数据流）
+</h4>
+<ul>
+    <li><span class="special">特点</span>：多个指令在同一数据上执行</li>
+    <li><span class="special">应用</span>：理论模型，实际应用较少</li>
+</ul>
+
+<h4>
+    MIMD（多指令流多数据流）
+</h4>
+<ul>
+    <li><span class="special">特点</span>：多个指令在多个数据上并行执行</li>
+    <li><span class="special">应用</span>：多处理器系统、多核处理器</li>
+</ul>
+
+<h3>
+    2. 存储器架构
+</h3>
+<h4>
+    共享存储器多处理器
+</h4>
+<ul>
+    <li><span class="special">UMA（统一内存访问）</span>：所有处理器访问内存时间相同</li>
+    <li><span class="special">NUMA（非统一内存访问）</span>：处理器访问本地内存更快</li>
+    <li><span class="special">COMA（仅缓存内存架构）</span>：内存作为缓存使用</li>
+</ul>
+
+<h4>
+    分布式存储器多处理器
+</h4>
+<ul>
+    <li><span class="special">消息传递</span>：处理器间通过消息传递通信</li>
+    <li><span class="special">本地内存</span>：每个处理器有自己的本地内存</li>
+</ul>
+
+<h3>
+    3. 互连网络
+</h3>
+<h4>
+    静态互连网络
+</h4>
+<ul>
+    <li><span class="special">线性阵列</span>：处理器排成一条线</li>
+    <li><span class="special">环形网络</span>：处理器连接成环</li>
+    <li><span class="special">网格网络</span>：处理器排成二维网格</li>
+    <li><span class="special">超立方体</span>：高维立方体连接</li>
+</ul>
+
+<h4>
+    动态互连网络
+</h4>
+<ul>
+    <li><span class="special">总线</span>：共享通信介质</li>
+    <li><span class="special">交叉开关</span>：全连接交换网络</li>
+    <li><span class="special">多级互连网络</span>：多级交换结构</li>
+</ul>
+
+<h2>
+    并行处理技术
+</h2>
+<h3>
+    1. 指令级并行
+</h3>
+<h4>
+    超标量技术
+</h4>
+<ul>
+    <li><span class="special">多发射</span>：每个时钟周期发射多条指令</li>
+    <li><span class="special">动态调度</span>：运行时确定指令执行顺序</li>
+    <li><span class="special">寄存器重命名</span>：消除伪数据相关</li>
+</ul>
+
+<h4>
+    超流水线技术
+</h4>
+<ul>
+    <li><span class="special">深度流水线</span>：增加流水线级数</li>
+    <li><span class="special">高时钟频率</span>：提高处理器时钟频率</li>
+    <li><span class="special">分支预测</span>：减少分支指令的影响</li>
+</ul>
+
+<h4>
+    VLIW技术
+</h4>
+<ul>
+    <li><span class="special">静态多发射</span>：编译时确定并行指令</li>
+    <li><span class="special">显式并行</span>：指令中明确指定并行操作</li>
+    <li><span class="special">简化硬件</span>：硬件不需要复杂的调度逻辑</li>
+</ul>
+
+<h3>
+    2. 数据级并行
+</h3>
+<h4>
+    SIMD处理器
+</h4>
+<ul>
+    <li><span class="special">向量处理器</span>：专门处理向量数据</li>
+    <li><span class="special">GPU</span>：图形处理器支持大规模并行</li>
+    <li><span class="special">多媒体指令集</span>：SSE、AVX等指令集</li>
+</ul>
+
+<h4>
+    GPU并行计算
+</h4>
+<ul>
+    <li><span class="special">大规模并行</span>：数千个并行处理单元</li>
+    <li><span class="special">SIMT架构</span>：单指令多线程</li>
+    <li><span class="special">高内存带宽</span>：支持高带宽内存访问</li>
+</ul>
+
+<h3>
+    3. 线程级并行
+</h3>
+<h4>
+    多线程技术
+</h4>
+<ul>
+    <li><span class="special">硬件多线程</span>：单个处理器支持多个线程</li>
+    <li><span class="special">SMT（同时多线程）</span>：同时执行多个线程</li>
+    <li><span class="special">粗粒度多线程</span>：线程间切换开销大</li>
+    <li><span class="special">细粒度多线程</span>：线程间切换开销小</li>
+</ul>
+
+<h4>
+    多核处理器
+</h4>
+<ul>
+    <li><span class="special">同构多核</span>：所有核心结构相同</li>
+    <li><span class="special">异构多核</span>：不同类型核心混合</li>
+    <li><span class="special">Cache一致性</span>：维护多核间的数据一致性</li>
+</ul>
+
+<h3>
+    4. 进程级并行
+</h3>
+<h4>
+    多处理器系统
+</h4>
+<ul>
+    <li><span class="special">对称多处理</span>：所有处理器地位平等</li>
+    <li><span class="special">非对称多处理</span>：主从处理器结构</li>
+    <li><span class="special">共享内存</span>：处理器共享同一内存空间</li>
+</ul>
+
+<h4>
+    分布式系统
+</h4>
+<ul>
+    <li><span class="special">集群计算</span>：多台计算机协同工作</li>
+    <li><span class="special">网格计算</span>：广域分布式计算</li>
+    <li><span class="special">云计算</span>：基于互联网的计算服务</li>
+</ul>
+
+<h2>
+    并行编程模型
+</h2>
+<h3>
+    1. 共享内存模型
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">统一地址空间</span>：所有处理器共享同一内存空间</li>
+    <li><span class="special">显式同步</span>：需要显式同步机制</li>
+    <li><span class="special">编程简单</span>：编程模型相对简单</li>
+</ul>
+
+<h4>
+    实现方式
+</h4>
+<ul>
+    <li><span class="special">OpenMP</span>：基于编译指令的并行编程</li>
+    <li><span class="special">Pthreads</span>：POSIX线程标准</li>
+    <li><span class="special">Java线程</span>：Java语言的线程机制</li>
+</ul>
+
+<h3>
+    2. 消息传递模型
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">分布式内存</span>：每个处理器有自己的本地内存</li>
+    <li><span class="special">显式通信</span>：通过消息传递进行通信</li>
+    <li><span class="special">扩展性好</span>：适合大规模并行系统</li>
+</ul>
+
+<h4>
+    实现方式
+</h4>
+<ul>
+    <li><span class="special">MPI</span>：消息传递接口标准</li>
+    <li><span class="special">PVM</span>：并行虚拟机</li>
+    <li><span class="special">Socket编程</span>：基于网络的通信编程</li>
+</ul>
+
+<h3>
+    3. 数据并行模型
+</h3>
+<h4>
+    特点
+</h4>
+<ul>
+    <li><span class="special">数据分割</span>：将数据分割成多个部分</li>
+    <li><span class="special">并行处理</span>：各处理器并行处理数据</li>
+    <li><span class="special">结果合并</span>：合并各处理器的处理结果</li>
+</ul>
+
+<h4>
+    实现方式
+</h4>
+<ul>
+    <li><span class="special">MapReduce</span>：分布式数据处理模型</li>
+    <li><span class="special">CUDA</span>：NVIDIA的GPU并行计算平台</li>
+    <li><span class="special">OpenCL</span>：开放标准的并行编程框架</li>
+</ul>
+
+<h2>
+    并行算法设计
+</h2>
+<h3>
+    1. 并行算法的基本策略
+</h3>
+<h4>
+    分治策略
+</h4>
+<ul>
+    <li><span class="special">问题分解</span>：将大问题分解为小问题</li>
+    <li><span class="special">并行求解</span>：并行求解各个子问题</li>
+    <li><span class="special">结果合并</span>：合并子问题的解</li>
+</ul>
+
+<h4>
+    流水线策略
+</h4>
+<ul>
+    <li><span class="special">任务分段</span>：将任务分解为多个阶段</li>
+    <li><span class="special">并行执行</span>：各阶段并行执行</li>
+    <li><span class="special">数据流动</span>：数据在各阶段间流动</li>
+</ul>
+
+<h4>
+    主从策略
+</h4>
+<ul>
+    <li><span class="special">任务分配</span>：主处理器分配任务给从处理器</li>
+    <li><span class="special">并行执行</span>：从处理器并行执行任务</li>
+    <li><span class="special">结果收集</span>：主处理器收集处理结果</li>
+</ul>
+
+<h3>
+    2. 并行算法分析
+</h3>
+<h4>
+    加速比分析
+</h4>
+<ul>
+    <li><span class="special">理想加速比</span>：线性加速比S(p) = p</li>
+    <li><span class="special">实际加速比</span>：受限于并行开销</li>
+    <li><span class="special">Amdahl定律</span>：S = 1/(f + (1-f)/p)</li>
+</ul>
+
+<h4>
+    效率分析
+</h4>
+<ul>
+    <li><span class="special">并行效率</span>：E(p) = S(p)/p</li>
+    <li><span class="special">可扩展性</span>：算法在不同规模系统上的表现</li>
+</ul>
+
+<h4>
+    开销分析
+</h4>
+<ul>
+    <li><span class="special">通信开销</span>：处理器间通信的时间开销</li>
+    <li><span class="special">同步开销</span>：处理器间同步的时间开销</li>
+    <li><span class="special">负载不均衡</span>：各处理器负载不均衡造成的开销</li>
+</ul>
+
+<h3>
+    3. 典型并行算法
+</h3>
+<h4>
+    并行排序算法
+</h4>
+<ul>
+    <li><span class="special">并行快速排序</span>：基于分治策略</li>
+    <li><span class="special">并行归并排序</span>：适合数据并行</li>
+    <li><span class="special">并行基数排序</span>：适合SIMD架构</li>
+</ul>
+
+<h4>
+    并行图算法
+</h4>
+<ul>
+    <li><span class="special">并行广度优先搜索</span>：适合分布式系统</li>
+    <li><span class="special">并行最短路径</span>：基于矩阵乘法</li>
+    <li><span class="special">并行最小生成树</span>：基于Boruvka算法</li>
+</ul>
+
+<h4>
+    并行数值算法
+</h4>
+<ul>
+    <li><span class="special">并行矩阵乘法</span>：基于Cannon算法</li>
+    <li><span class="special">并行线性方程组求解</span>：基于Jacobi迭代</li>
+    <li><span class="special">并行快速傅里叶变换</span>：基于蝴蝶操作</li>
+</ul>
+
+<h2>
+    并行性能分析
+</h2>
+<h3>
+    1. 性能指标
+</h3>
+<h4>
+    加速比（Speedup）
+</h4>
+<p>
+    S(p) = T(1)/T(p)，其中T(1)是串行执行时间，T(p)是p个处理器并行执行时间。
+</p>
+
+<h4>
+    效率（Efficiency）
+</h4>
+<p>
+    E(p) = S(p)/p，表示处理器利用效率。
+</p>
+
+<h4>
+    可扩展性（Scalability）
+</h4>
+<p>
+    系统性能随处理器数量增加而提升的能力。
+</p>
+
+<h3>
+    2. 性能定律
+</h3>
+<h4>
+    Amdahl定律
+</h4>
+<p>
+    S = 1/(f + (1-f)/p)，其中f是串行部分比例，p是处理器数量。
+</p>
+<p>
+    表明并行加速比受限于串行部分。
+</p>
+
+<h4>
+    Gustafson定律
+</h4>
+<p>
+    S = p - f(p-1)，表明随着问题规模增大，并行效率可以提高。
+</p>
+
+<h4>
+    Sun-Ni定律
+</h4>
+<p>
+    考虑存储容量限制下的可扩展性。
+</p>
+
+<h3>
+    3. 性能优化技术
+</h3>
+<h4>
+    负载均衡
+</h4>
+<ul>
+    <li><span class="special">静态负载均衡</span>：编译时确定任务分配</li>
+    <li><span class="special">动态负载均衡</span>：运行时动态调整任务分配</li>
+</ul>
+
+<h4>
+    通信优化
+</h4>
+<ul>
+    <li><span class="special">减少通信量</span>：优化算法减少通信需求</li>
+    <li><span class="special">重叠通信与计算</span>：同时进行通信和计算</li>
+    <li><span class="special">聚合通信</span>：合并小消息减少通信次数</li>
+</ul>
+
+<h4>
+    缓存优化
+</h4>
+<ul>
+    <li><span class="special">数据局部性</span>：提高数据访问的局部性</li>
+    <li><span class="special">伪共享避免</span>：避免多个处理器访问同一缓存行</li>
+    <li><span class="special">预取技术</span>：提前将数据加载到缓存</li>
+</ul>
+
+<h2>
+    现代并行处理系统
+</h2>
+<h3>
+    1. 多核处理器
+</h3>
+<h4>
+    同构多核
+</h4>
+<ul>
+    <li><span class="special">Intel Core系列</span>：2-18个核心</li>
+    <li><span class="special">AMD Ryzen系列</span>：6-16个核心</li>
+    <li><span class="special">ARM Cortex-A系列</span>：移动设备多核处理器</li>
+</ul>
+
+<h4>
+    异构多核
+</h4>
+<ul>
+    <li><span class="special">big.LITTLE架构</span>：高性能核心与低功耗核心混合</li>
+    <li><span class="special">集成GPU</span>：CPU核心与GPU核心集成</li>
+    <li><span class="special">专用加速器</span>：AI加速器、图像处理器等</li>
+</ul>
+
+<h3>
+    2. GPU计算
+</h3>
+<h4>
+    GPU架构
+</h4>
+<ul>
+    <li><span class="special">流处理器</span>：大量简单的处理单元</li>
+    <li><span class="special">共享内存</span>：线程块内共享内存</li>
+    <li><span class="special">全局内存</span>：所有线程可访问的全局内存</li>
+</ul>
+
+<h4>
+    编程模型
+</h4>
+<ul>
+    <li><span class="special">CUDA</span>：NVIDIA的GPU编程平台</li>
+    <li><span class="special">OpenCL</span>：开放标准的并行编程框架</li>
+    <li><span class="special">OpenACC</span>：基于编译指令的加速器编程</li>
+</ul>
+
+<h3>
+    3. 众核处理器
+</h3>
+<h4>
+    Intel Xeon Phi
+</h4>
+<ul>
+    <li><span class="special">超多核心</span>：60-72个核心</li>
+    <li><span class="special">SIMD单元</span>：512位SIMD指令</li>
+    <li><span class="special">高带宽内存</span>：支持高带宽内存访问</li>
+</ul>
+
+<h4>
+    专用众核
+</h4>
+<ul>
+    <li><span class="special">Tilera处理器</span>：64-100个核心</li>
+    <li><span class="special">网络处理器</span>：专门处理网络数据包</li>
+    <li><span class="special">深度学习处理器</span>：专门用于神经网络计算</li>
+</ul>
+
+<h3>
+    4. 分布式系统
+</h3>
+<h4>
+    高性能计算集群
+</h4>
+<ul>
+    <li><span class="special">TOP500系统</span>：世界上最快的超级计算机</li>
+    <li><span class="special">Beowulf集群</span>：基于商用硬件的集群系统</li>
+    <li><span class="special">云计算平台</span>：Amazon EC2、Microsoft Azure等</li>
+</ul>
+
+<h4>
+    大数据处理框架
+</h4>
+<ul>
+    <li><span class="special">Hadoop</span>：分布式存储和计算框架</li>
+    <li><span class="special">Spark</span>：内存计算框架</li>
+    <li><span class="special">Flink</span>：流处理框架</li>
+</ul>

@@ -1,0 +1,83 @@
+<header>
+    基本上下文管理器
+</header>
+<p>
+    管理资源生命周期的机制，确保资源在使用后正确释放。通过with语句，上下文管理器提供了简洁而安全的资源管理方式。
+</p>
+<pre tag="python">
+# 文件操作上下文管理器
+def file_context_manager():
+    """文件操作上下文管理器示例"""
+
+    # 基本文件操作
+    filename = "test_context.txt"
+
+    # 使用with语句自动管理文件
+    try:
+        with open(filename, 'w', encoding='utf-8') as file:
+            file.write("Hello, Context Manager!\n")
+            file.write("文件会自动关闭。\n")
+            print("文件写入完成")
+
+        # 文件已自动关闭
+        print("文件已自动关闭")
+
+        # 读取文件
+        with open(filename, 'r', encoding='utf-8') as file:
+            content = file.read()
+            print("文件内容:")
+            print(content)
+
+    except IOError as e:
+        print(f"文件操作错误: {e}")
+
+    finally:
+        # 清理测试文件
+        import os
+        if os.path.exists(filename):
+            os.remove(filename)
+            print("测试文件已清理")
+
+# 多个上下文管理器
+def multiple_context_managers():
+    """多个上下文管理器"""
+
+    source_file = "source.txt"
+    target_file = "target.txt"
+
+    try:
+        # 创建源文件
+        with open(source_file, 'w', encoding='utf-8') as sf:
+            sf.write("这是源文件内容\n")
+            sf.write("复制到目标文件\n")
+
+        # 同时打开两个文件
+        with open(source_file, 'r', encoding='utf-8') as sf, \
+             open(target_file, 'w', encoding='utf-8') as tf:
+
+            # 复制内容
+            for line in sf:
+                tf.write(f"复制: {line}")
+
+        print("文件复制完成")
+
+        # 验证复制结果
+        with open(target_file, 'r', encoding='utf-8') as tf:
+            print("目标文件内容:")
+            print(tf.read())
+
+    except IOError as e:
+        print(f"文件操作错误: {e}")
+
+    finally:
+        # 清理测试文件
+        import os
+        for file in [source_file, target_file]:
+            if os.path.exists(file):
+                os.remove(file)
+                print(f"已清理文件: {file}")
+
+# 运行基本上下文管理器示例
+file_context_manager()
+multiple_context_managers()
+</pre>

@@ -1,0 +1,85 @@
+<header>
+    基础语法
+</header>
+<p>
+    Kotlin 是一门由 JetBrains 开发的静态类型编程语言，运行在 JVM 上，也可以编译成 JavaScript 或 Native 代码。它和 Java 完全互操作，语法更加简洁、安全，并且原生支持空安全，是目前 Android 官方推荐语言。
+</p>
+<h2>
+    程序入口
+</h2>
+<p>
+    Kotlin 程序的入口是 <span class="warn">main</span> 函数。和 Java 不同的是，Kotlin 不强制要求把整个程序放到一个类里。
+</p>
+<pre tag="kotlin">
+fun main() {
+    println("你好，Kotlin！")
+}
+</pre>
+<p>
+    也可以显式接收命令行参数：
+</p>
+<pre tag="kotlin">
+fun main(args: Array&lt;String&gt;) {
+    println("参数个数: ${args.size}")
+}
+</pre>
+<h2>
+    注释
+</h2>
+<p>
+    Kotlin 注释和大多数语言一样，支持单行注释、块注释和多行（嵌套）注释。
+</p>
+<pre tag="kotlin">
+// 单行注释
+
+/*
+   块注释
+   可以跨越多行
+*/
+
+/**
+ * KDoc 文档注释，
+ * 通常写在类、函数、属性上方。
+ */
+fun add(a: Int, b: Int): Int = a + b
+</pre>
+<h2>
+    语句与分号
+</h2>
+<p>
+    Kotlin 不要求每条语句以分号结尾（写了也不会报错）。一行写多条语句时，需要用分号分隔，但实际开发中不推荐这么做。
+</p>
+<pre tag="kotlin">
+val name = "Kotlin"        // 推荐：省略分号
+val version = 1.9          // 推荐：省略分号
+val n = 1; val m = 2       // 可以，但不推荐
+</pre>
+<h2>
+    代码风格
+</h2>
+<ul>
+    <li>包名使用小写字母，例如 <span class="special">com.example.demo</span>。</li>
+    <li>类名、对象名使用大驼峰（PascalCase），例如 <span class="special">UserService</span>。</li>
+    <li>函数、变量、参数使用小驼峰（lowerCamelCase），例如 <span class="special">getUserName</span>。</li>
+    <li>常量（<span class="special">const val</span>、顶级 <span class="special">val</span>）使用大写下划线，例如 <span class="special">MAX_COUNT</span>。</li>
+</ul>
+<h2>
+    与 Java 的对比
+</h2>
+<pre tag="java">
+// Java 写法
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java");
+    }
+}
+</pre>
+<pre tag="kotlin">
+// Kotlin 写法
+fun main() {
+    println("Hello, Kotlin")
+}
+</pre>
+<p>
+    可以看到 Kotlin 不需要类外壳、不需要 <span class="special">public</span>、<span class="special">static</span>、<span class="special">void</span> 这些修饰词，语法更轻量。
+</p>

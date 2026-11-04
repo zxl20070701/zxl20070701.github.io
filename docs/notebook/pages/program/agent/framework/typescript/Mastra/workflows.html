@@ -1,0 +1,235 @@
+<header>
+    工作流
+</header>
+
+<p>
+    Agent 的行为由模型决定，灵活但不完全可控；<strong>工作流（Workflow）</strong>则是把任务拆成一个个确定性的步骤（Step），按编排好的路径执行，适合"流程固定、需要类型安全"的场景。两者可以配合使用：工作流的某个步骤里也可以调用 Agent。
+</p>
+
+<h2>
+    基本用法
+</h2>
+
+<p>
+    用 <span class="warn">createStep</span> 定义步骤，用 <span class="warn">createWorkflow</span> 把步骤串起来，最后调用 <span class="warn">commit()</span> 固化编排关系：
+</p>
+
+<pre tag="javascript">
+import { createWorkflow, createStep } from "@mastra/core/workflows";
+import { z } from "zod";
+
+// 创建工作流步骤
+const step1 = createStep({
+    id: "step-1",
+    inputSchema: z.object({
+        message: z.string()
+    }),
+    outputSchema: z.object({
+        formatted: z.string()
+    }),
+    execute: async ({ inputData }) => {
+        const { message } = inputData;
+
+        return {
+            // 输入内容大写
+            formatted: message.toUpperCase()
+        };
+    }
+});
+
+// 创建工作流
+const simpleWorkflow = createWorkflow({
+    id: "simple-workflows",
+    inputSchema: z.object({
+        message: z.string()
+    }),
+    outputSchema: z.object({ // 工作流整体出口的类型
+        formatted: z.string()
+    })
+})
+    .then(step1)
+    .commit();
+
+// 运行工作流
+simpleWorkflow.createRun().then(run => {
+
+    run.start({
+        inputData: {
+            message: "zxl20070701"
+        }
+    }).then(res => {
+        if (res.status === "success") {
+            console.log(res.result);
+        }
+    });
+
+});
+</pre>
+
+<p>
+    每个步骤的入参和出参都用 zod schema 强校验，上一步的输出会自动作为下一步的输入，整条链路的类型是安全的。运行入口是 <span class="warn">createRun()</span> 创建一个运行实例，再调用 <span class="warn">run.start()</span> 启动。
+</p>
+
+<h2>
+    挂起与恢复（人工介入）
+</h2>
+
+<p>
+    有些流程需要等待外部条件——比如"大额申请需要人工审批"。Mastra 支持让某个步骤<strong>挂起（suspend）</strong>整个工作流，把现场快照持久化到存储，等外部条件满足后再<strong>恢复（resume）</strong>继续执行。
+</p>
+
+<p>
+    步骤需要额外声明两个 schema：<span class="warn">suspendSchema</span> 描述挂起时存入快照的数据，<span class="warn">resumeSchema</span> 强校验恢复时必须传入的数据：
+</p>
+
+<pre tag="javascript">
+const step1 = createStep({
+    id: "step-1",
+    inputSchema: z.object({
+        applyId: z.string()
+    }),
+    // 挂起时存入快照的数据
+    suspendSchema: z.object({
+        applyId: z.string(),
+        applyReason: z.string()
+    }),
+    // 恢复时必须传入的结构（强校验）
+    resumeSchema: z.object({
+        approved: z.boolean(),
+        comment: z.string().optional(),
+        auditorId: z.string()
+    }),
+    outputSchema: z.object({
+        pass: z.string(),
+        remark: z.string().optional()
+    }),
+
+    execute: async ({ inputData, suspend, resumeData }) => {
+
+        // 已恢复，拿到外部回填的审批结果
+        if (resumeData) {
+            return {
+                pass: resumeData.approved ? "true" : "false",
+                remark: resumeData.comment
+            };
+        }
+
+        // 首次执行，触发挂起
+        return suspend({
+            applyId: inputData.applyId,
+            applyReason: "大额申请待审核"
+        });
+
+    }
+});
+</pre>
+
+<p>
+    挂起和恢复依赖存储保存运行状态，所以工作流需要注册到带有 storage 的 Mastra 实例上：
+</p>
+
+<pre tag="javascript">
+import { Mastra } from "@mastra/core";
+import { LibSQLStore } from "@mastra/libsql";
+
+const suspendresumeWorkflowd = createWorkflow({
+    id: "suspend_resume-workflowd",
+    inputSchema: z.object({
+        applyId: z.string()
+    }),
+    outputSchema: z.object({
+        pass: z.string(),
+        remark: z.string()
+    })
+})
+    .then(step1)
+    .commit();
+
+const mastra = new Mastra({
+    workflows: { suspendresumeWorkflowd },
+    storage: new LibSQLStore({
+        id: "suspend-resume-workflow-storage",
+        url: "file:./suspend-resume-workflow.db",
+    })
+});
+</pre>
+
+<p>
+    启动后如果 <span class="warn">res.status</span> 为 <span class="warn">"suspended"</span>，说明流程在等待外部输入，此时在同一个 run 实例上调用 <span class="warn">resume</span> 回填审批结果即可：
+</p>
+
+<pre tag="javascript">
+const workflow = mastra.getWorkflow("suspendresumeWorkflowd");
+workflow.createRun().then(run => {
+
+    run.start({
+        inputData: {
+            applyId: "APL001"
+        }
+    }).then(res => {
+        if (res.status === "success") {
+            console.log(res.result);
+        } else if (res.status === "suspended") {
+
+            run.resume({
+                resumeData: {
+                    approved: true,
+                    auditorId: "admin_01",
+                    comment: "审核通过"
+                }
+            }).then(() => {
+                console.log("审批完成");
+            });
+
+        }
+    });
+
+});
+</pre>
+
+<h2>
+    跨进程恢复
+</h2>
+
+<p>
+    真实业务里，"挂起"和"恢复"往往不在同一个进程内——审批可能发生在几小时之后、另一个服务里。这时只要在创建 run 时通过 <span class="warn">runId</span> 找回原来的运行实例即可：
+</p>
+
+<pre tag="javascript">
+const workflow = mastra.getWorkflow("runWorkflowd");
+workflow.createRun({
+    // runId 可以自己指定，方便后续找回
+    // runId: "0000001"
+}).then(run => {
+
+    run.start({
+        inputData: { applyId: "APL001" }
+    }).then(res => {
+        if (res.status === "suspended") {
+
+            // 拿着之前的 runId 恢复旧的 run 实例
+            mastra.getWorkflow("runWorkflowd").createRun({
+                runId: run.runId
+            }).then(run2 => {
+
+                run2.resume({
+                    resumeData: {
+                        approved: true,
+                        auditorId: "admin_01",
+                        comment: "审核通过"
+                    }
+                }).then(() => {
+                    console.log("审批完成");
+                });
+
+            });
+
+        }
+    });
+
+});
+</pre>
+
+<div class="tips">
+    挂起时写入的 <span class="warn">suspendSchema</span> 数据、恢复时校验的 <span class="warn">resumeSchema</span> 数据，再加上存储里的运行快照，三者共同保证了工作流可以"中断多久都能原样接着跑"。这也是 Harness 工程里"人工介入（human-in-the-loop）"的典型落地方式。
+</div>

@@ -1,0 +1,63 @@
+<header>
+    对象字面量增强
+</header>
+<h2>
+    属性简写
+</h2>
+<p>
+    当属性名与变量名相同时，可以直接省略冒号和值，使用简写形式。
+</p>
+<pre tag="javascript">
+let name = 'Alice';
+let age = 25;
+let user = { name, age };
+console.log(user); // { name: 'Alice', age: 25 }
+</pre>
+<h2>
+    方法简写
+</h2>
+<p>
+    对象中的方法可以省略 function 关键字和冒号，使用简写形式。
+</p>
+<pre tag="javascript">
+let calculator = {
+    add(a, b) {
+        return a + b;
+    },
+    subtract(a, b) {
+        return a - b;
+    }
+};
+calculator.add(1, 2); // 3
+</pre>
+<h2>
+    计算属性名
+</h2>
+<p>
+    使用方括号 [] 可以在对象字面量中使用表达式作为属性名。
+</p>
+<pre tag="javascript">
+let key = 'color';
+let obj = {
+    [key]: 'red',
+    ['get' + 'Name']() {
+        return 'Alice';
+    }
+};
+console.log(obj.color); // 'red'
+console.log(obj.getName()); // 'Alice'
+</pre>
+<h2>
+    属性简写 + 方法简写结合
+</h2>
+<pre tag="javascript">let firstName = 'Bob';
+let lastName = 'Smith';
+let person = {
+    firstName,
+    lastName,
+    getFullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
+};
+person.getFullName(); // "Bob Smith"
+</pre>

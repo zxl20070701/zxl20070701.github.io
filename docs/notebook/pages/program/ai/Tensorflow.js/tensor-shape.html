@@ -1,0 +1,83 @@
+<header>
+    Tensor 与 Shape
+</header>
+
+<p>
+    TensorFlow.js 里的 Tensor 可以理解为“带形状的多维数组”。学习时先抓住三个属性：shape、dtype、rank。
+</p>
+
+<h2>
+    三个核心属性
+</h2>
+
+<ul>
+    <li>shape：每个维度的长度，例如 [2, 3] 表示 2 行 3 列。</li>
+    <li>dtype：数据类型，例如 float32、int32、bool、string。</li>
+    <li>rank：维度数量，标量 rank 为 0，向量 rank 为 1，矩阵 rank 为 2。</li>
+</ul>
+
+<pre tag="javascript">
+const x = tf.tensor([[1, 2, 3], [4, 5, 6]]);
+
+console.log(x.shape); // [2, 3]
+console.log(x.dtype); // float32
+console.log(x.rank);  // 2
+</pre>
+
+<h2>
+    常见创建方式
+</h2>
+
+<pre tag="javascript">
+tf.scalar(1);
+tf.tensor1d([1, 2, 3]);
+tf.tensor2d([1, 2, 3, 4], [2, 2]);
+tf.zeros([2, 3]);
+tf.ones([2, 3]);
+tf.randomNormal([2, 3]);
+</pre>
+
+<h2>
+    reshape 改变形状
+</h2>
+
+<p>
+    reshape 不改变数据内容，只改变读取这些数据的维度方式。新 shape 的元素总数必须和原来一致。
+</p>
+
+<pre tag="javascript">
+const x = tf.tensor1d([1, 2, 3, 4, 5, 6]);
+const y = x.reshape([2, 3]);
+
+y.print();
+</pre>
+
+<h2>
+    广播机制
+</h2>
+
+<p>
+    当两个 Tensor 形状不完全一样时，TensorFlow.js 会尝试把较小的形状自动扩展到较大的形状，这叫 broadcasting。
+</p>
+
+<pre tag="javascript">
+const x = tf.tensor2d([[1, 2, 3], [4, 5, 6]]);
+const b = tf.tensor1d([10, 20, 30]);
+
+x.add(b).print();
+</pre>
+
+<p>
+    上面 b 的 shape 是 [3]，会被当成每一行都加一次，结果相当于给矩阵每一列加偏置。
+</p>
+
+<h2>
+    学习建议
+</h2>
+
+<ul>
+    <li>每次写模型前，先写清楚输入 Tensor 的 shape。</li>
+    <li>图像常见 shape 是 [batch, height, width, channels]。</li>
+    <li>文本、序列数据常见 shape 是 [batch, sequenceLength] 或 [batch, sequenceLength, features]。</li>
+    <li>遇到报错先打印 shape，很多问题都是维度不匹配。</li>
+</ul>

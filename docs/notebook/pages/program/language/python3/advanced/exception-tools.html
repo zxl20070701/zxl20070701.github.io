@@ -1,0 +1,104 @@
+<header>
+    异常处理工具
+</header>
+<p>
+    Python提供了多种工具来帮助调试和处理异常，包括traceback模块、logging模块等。这些工具可以帮助我们更好地理解和记录异常信息。
+</p>
+<pre tag="python">
+# 1. 使用traceback模块获取详细信息
+import traceback
+
+def risky_function():
+    try:
+        # 多层嵌套调用
+        def level3():
+            raise ValueError("这是第三层的错误")
+
+        def level2():
+            level3()
+
+        def level1():
+            level2()
+
+        level1()
+    except Exception as e:
+        print("异常类型:", type(e).__name__)
+        print("异常消息:", str(e))
+        print("\n完整回溯:")
+        print(traceback.format_exc())
+
+        # 只获取最后一行
+        print("\n最后调用:")
+        print(traceback.format_exc(limit=1))
+
+# 2. 使用sys.exc_info()获取异常信息
+import sys
+
+def handle_exception():
+    try:
+        raise TypeError("类型错误示例")
+    except:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        print(f"异常类型: {exc_type.__name__}")
+        print(f"异常值: {exc_value}")
+        print(f"追踪对象: {exc_traceback}")
+
+# 3. 使用logging模块记录异常
+import logging
+
+def setup_advanced_logging():
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler('debug.log'),
+            logging.StreamHandler()
+        ]
+    )
+
+def log_exception_example():
+    setup_advanced_logging()
+    logger = logging.getLogger(__name__)
+
+    try:
+        raise RuntimeError("运行时错误")
+    except Exception as e:
+        # 记录完整异常信息
+        logger.exception("发生异常")
+
+        # 或者手动格式化
+        logger.error("发生错误", exc_info=True)
+
+# 4. 创建异常处理器装饰器
+def exception_handler(handler_func=None):
+    """异常处理器装饰器"""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                if handler_func:
+                    return handler_func(e)
+                else:
+                    print(f"函数 {func.__name__} 发生异常: {e}")
+                    return None
+        return wrapper
+    return decorator
+
+# 使用异常处理器装饰器
+@exception_handler()
+def divide_safe(a, b):
+    return a / b
+
+@exception_handler(lambda e: f"自定义错误处理: {e}")
+def process_data(data):
+    if not data:
+        raise ValueError("数据不能为空")
+    return data.upper()
+
+print(divide_safe(10, 2))  # 正常情况
+print(divide_safe(10, 0))  # 异常情况
+
+print(process_data("hello"))  # 正常情况
+print(process_data(""))      # 异常情况
+</pre>

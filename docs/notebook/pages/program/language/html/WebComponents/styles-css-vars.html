@@ -1,0 +1,539 @@
+<header>
+    样式封装与CSS变量
+</header>
+<h2>
+    Web Components中的样式封装
+</h2>
+<p>
+    Web Components的一个重要特性是样式封装。通过Shadow DOM，组件的样式被完全隔离，不会影响到外部文档，也不会被外部样式所影响。
+</p>
+<div class="tips">
+    这种封装机制确保了组件的可复用性和一致性，避免了样式冲突。
+</div>
+
+<h2>
+    组件内部样式
+</h2>
+<p>
+    在Web Components中，你可以在Shadow DOM内部定义样式：
+</p>
+<pre tag="javascript">
+class StyledComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-family: Arial, sans-serif;
+                }
+                
+                .title {
+                    color: #007acc;
+                    font-size: 24px;
+                    margin-bottom: 12px;
+                }
+                
+                .content {
+                    color: #333;
+                    line-height: 1.6;
+                }
+                
+                button {
+                    background: #007acc;
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+                
+                button:hover {
+                    background: #005a9e;
+                }
+            </style>
+            
+            <div class="title">组件标题</div>
+            <div class="content">
+                <p>这是组件的内容</p>
+                <button>点击按钮</button>
+            </div>
+        `;
+    }
+}
+
+customElements.define('styled-component', StyledComponent);
+</pre>
+<h2>
+    CSS自定义属性（CSS变量）
+</h2>
+<p>
+    CSS自定义属性（也称为CSS变量）是Web Components中实现主题化和可定制性的强大工具。它们允许用户从外部自定义组件的外观，而无需修改组件的内部样式。
+</p>
+
+<h3>
+    定义CSS变量
+</h3>
+<pre tag="javascript">
+class ThemableComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    /* 定义CSS变量的默认值 */
+                    --primary-color: #007acc;
+                    --secondary-color: #6c757d;
+                    --background-color: #ffffff;
+                    --text-color: #333333;
+                    --border-radius: 4px;
+                    --padding: 16px;
+                    
+                    display: block;
+                    background: var(--background-color);
+                    color: var(--text-color);
+                    border: 1px solid #ddd;
+                    border-radius: var(--border-radius);
+                    padding: var(--padding);
+                    font-family: Arial, sans-serif;
+                }
+                
+                .header {
+                    color: var(--primary-color);
+                    font-size: 24px;
+                    margin-bottom: 12px;
+                    border-bottom: 2px solid var(--primary-color);
+                    padding-bottom: 8px;
+                }
+                
+                .button {
+                    background: var(--primary-color);
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: var(--border-radius);
+                    cursor: pointer;
+                }
+                
+                .button:hover {
+                    background: var(--secondary-color);
+                }
+                
+                .secondary-button {
+                    background: var(--secondary-color);
+                }
+            </style>
+            
+            <div class="header">可主题化组件</div>
+            <div class="content">
+                <p>这是一个支持主题化的组件</p>
+                <button class="button">主要按钮</button>
+                <button class="button secondary-button">次要按钮</button>
+            </div>
+        `;
+    }
+}
+
+customElements.define('themable-component', ThemableComponent);
+</pre>
+<h2>
+    使用CSS变量自定义组件
+</h2>
+<p>
+    使用组件时，可以通过CSS变量来自定义外观：
+</p>
+<pre tag="html">
+<!-- 使用默认样式 -->
+<themable-component></themable-component>
+
+<!-- 自定义主题 -->
+<themable-component style="
+    --primary-color: #e91e63;
+    --secondary-color: #9c27b0;
+    --background-color: #f8f9fa;
+    --border-radius: 12px;
+    --padding: 24px;
+"></themable-component>
+</pre>
+
+<h2>
+    动态更新CSS变量
+</h2>
+<p>
+    可以通过JavaScript动态更新CSS变量：
+</p>
+<pre tag="javascript">
+class DynamicThemeComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    --primary-color: #007acc;
+                    --secondary-color: #6c757d;
+                    --background-color: #ffffff;
+                    --text-color: #333333;
+                    --border-radius: 4px;
+                    --padding: 16px;
+                    
+                    display: block;
+                    background: var(--background-color);
+                    color: var(--text-color);
+                    border: 1px solid #ddd;
+                    border-radius: var(--border-radius);
+                    padding: var(--padding);
+                    font-family: Arial, sans-serif;
+                    transition: all 0.3s ease;
+                }
+                
+                .header {
+                    color: var(--primary-color);
+                    font-size: 24px;
+                    margin-bottom: 12px;
+                }
+                
+                .controls {
+                    margin-top: 16px;
+                }
+                
+                button {
+                    background: var(--primary-color);
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: var(--border-radius);
+                    margin-right: 8px;
+                    cursor: pointer;
+                }
+                
+                button:hover {
+                    opacity: 0.9;
+                }
+                
+                .color-input {
+                    margin: 4px 0;
+                }
+                
+                label {
+                    display: inline-block;
+                    width: 120px;
+                }
+            </style>
+            
+            <div class="header">动态主题组件</div>
+            <div class="content">
+                <p>通过下面的控件可以实时调整组件样式</p>
+                
+                <div class="controls">
+                    <div class="color-input">
+                        <label>主色:</label>
+                        <input type="color" id="primary-color" value="#007acc">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label>背景色:</label>
+                        <input type="color" id="background-color" value="#ffffff">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label>文字颜色:</label>
+                        <input type="color" id="text-color" value="#333333">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label>圆角大小:</label>
+                        <input type="range" id="border-radius" min="0" max="20" value="4">
+                        <span id="radius-value">4px</span>
+                    </div>
+                    
+                    <div class="color-input">
+                        <label>内边距:</label>
+                        <input type="range" id="padding" min="8" max="32" value="16">
+                        <span id="padding-value">16px</span>
+                    </div>
+                    
+                    <button id="reset-btn">重置为默认</button>
+                </div>
+            </div>
+        `;
+        
+        // 绑定事件
+        this.bindEvents();
+    }
+    
+    bindEvents() {
+        const shadow = this.shadowRoot;
+        
+        // 颜色选择器事件
+        shadow.getElementById('primary-color').addEventListener('input', (e) => {
+            this.style.setProperty('--primary-color', e.target.value);
+        });
+        
+        shadow.getElementById('background-color').addEventListener('input', (e) => {
+            this.style.setProperty('--background-color', e.target.value);
+        });
+        
+        shadow.getElementById('text-color').addEventListener('input', (e) => {
+            this.style.setProperty('--text-color', e.target.value);
+        });
+        
+        // 滑块事件
+        shadow.getElementById('border-radius').addEventListener('input', (e) => {
+            const value = e.target.value + 'px';
+            this.style.setProperty('--border-radius', value);
+            shadow.getElementById('radius-value').textContent = value;
+        });
+        
+        shadow.getElementById('padding').addEventListener('input', (e) => {
+            const value = e.target.value + 'px';
+            this.style.setProperty('--padding', value);
+            shadow.getElementById('padding-value').textContent = value;
+        });
+        
+        // 重置按钮
+        shadow.getElementById('reset-btn').addEventListener('click', () => {
+            this.style.setProperty('--primary-color', '#007acc');
+            this.style.setProperty('--background-color', '#ffffff');
+            this.style.setProperty('--text-color', '#333333');
+            this.style.setProperty('--border-radius', '4px');
+            this.style.setProperty('--padding', '16px');
+            
+            // 重置表单值
+            shadow.getElementById('primary-color').value = '#007acc';
+            shadow.getElementById('background-color').value = '#ffffff';
+            shadow.getElementById('text-color').value = '#333333';
+            shadow.getElementById('border-radius').value = '4';
+            shadow.getElementById('padding').value = '16';
+            shadow.getElementById('radius-value').textContent = '4px';
+            shadow.getElementById('padding-value').textContent = '16px';
+        });
+    }
+}
+
+customElements.define('dynamic-theme-component', DynamicThemeComponent);
+</pre>
+<h2>
+    插槽内容的样式
+</h2>
+<p>
+    使用<span class="special">::slotted()</span>伪元素为插槽中的内容设置样式：
+</p>
+<pre tag="javascript">
+class SlottedStylesComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-family: Arial, sans-serif;
+                }
+                
+                .header {
+                    color: var(--header-color, #007acc);
+                    font-size: 24px;
+                    margin-bottom: 16px;
+                }
+                
+                /* 为插槽中的h1-h6元素设置样式 */
+                ::slotted(h1), ::slotted(h2), ::slotted(h3), 
+                ::slotted(h4), ::slotted(h5), ::slotted(h6) {
+                    color: var(--heading-color, #333);
+                    margin-top: 0;
+                }
+                
+                /* 为插槽中的段落设置样式 */
+                ::slotted(p) {
+                    color: var(--text-color, #666);
+                    line-height: 1.6;
+                    margin: 0 0 16px 0;
+                }
+                
+                /* 为插槽中的链接设置样式 */
+                ::slotted(a) {
+                    color: var(--link-color, #007acc);
+                    text-decoration: none;
+                }
+                
+                ::slotted(a:hover) {
+                    text-decoration: underline;
+                }
+                
+                /* 为特定类名的元素设置样式 */
+                ::slotted(.highlight) {
+                    background-color: var(--highlight-bg, #fff3cd);
+                    padding: 2px 4px;
+                    border-radius: 3px;
+                }
+                
+                .content-wrapper {
+                    border-top: 1px solid #eee;
+                    padding-top: 16px;
+                }
+            </style>
+            
+            <div class="header">插槽样式组件</div>
+            <div class="content-wrapper">
+                <slot></slot>
+            </div>
+        `;
+    }
+}
+
+customElements.define('slotted-styles-component', SlottedStylesComponent);
+</pre>
+<h2>
+    主题预设
+</h2>
+<p>
+    创建预定义的主题类，让用户可以轻松切换主题：
+</p>
+<pre tag="javascript">
+class ThemePresetsComponent extends HTMLElement {
+    constructor() {
+        super();
+        const shadow = this.attachShadow({mode: 'open'});
+        
+        shadow.innerHTML = `
+            <style>
+                :host {
+                    --primary-color: #007acc;
+                    --secondary-color: #6c757d;
+                    --background-color: #ffffff;
+                    --text-color: #333333;
+                    --border-color: #ddd;
+                    --success-color: #28a745;
+                    --warning-color: #ffc107;
+                    --danger-color: #dc3545;
+                    
+                    display: block;
+                    background: var(--background-color);
+                    color: var(--text-color);
+                    border: 1px solid var(--border-color);
+                    border-radius: 8px;
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                    transition: all 0.3s ease;
+                }
+                
+                /* 主题预设 */
+                :host(.theme-dark) {
+                    --primary-color: #4dabf7;
+                    --secondary-color: #adb5bd;
+                    --background-color: #1e1e1e;
+                    --text-color: #ffffff;
+                    --border-color: #444;
+                }
+                
+                :host(.theme-success) {
+                    --primary-color: #28a745;
+                    --background-color: #f8fff9;
+                    --border-color: #28a745;
+                }
+                
+                :host(.theme-warning) {
+                    --primary-color: #ffc107;
+                    --background-color: #fffbf0;
+                    --border-color: #ffc107;
+                }
+                
+                :host(.theme-danger) {
+                    --primary-color: #dc3545;
+                    --background-color: #fff5f5;
+                    --border-color: #dc3545;
+                }
+                
+                .header {
+                    color: var(--primary-color);
+                    font-size: 24px;
+                    margin-bottom: 16px;
+                }
+                
+                .content {
+                    margin-bottom: 16px;
+                }
+                
+                .theme-selector {
+                    display: flex;
+                    gap: 8px;
+                    margin-top: 16px;
+                }
+                
+                .theme-btn {
+                    padding: 8px 16px;
+                    border: 1px solid var(--border-color);
+                    background: var(--background-color);
+                    color: var(--text-color);
+                    border-radius: 4px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                
+                .theme-btn:hover {
+                    border-color: var(--primary-color);
+                }
+                
+                .theme-btn.active {
+                    background: var(--primary-color);
+                    color: white;
+                    border-color: var(--primary-color);
+                }
+            </style>
+            
+            <div class="header">主题预设组件</div>
+            <div class="content">
+                <p>这是一个支持多种预设主题的组件。点击下方按钮可以切换不同的主题。</p>
+                <p>当前主题会根据选择的主题自动调整颜色、背景等样式。</p>
+            </div>
+            
+            <div class="theme-selector">
+                <button class="theme-btn active" data-theme="default">默认</button>
+                <button class="theme-btn" data-theme="theme-dark">深色</button>
+                <button class="theme-btn" data-theme="theme-success">成功</button>
+                <button class="theme-btn" data-theme="theme-warning">警告</button>
+                <button class="theme-btn" data-theme="theme-danger">危险</button>
+            </div>
+        `;
+        
+        this.bindEvents();
+    }
+    
+    bindEvents() {
+        const shadow = this.shadowRoot;
+        const buttons = shadow.querySelectorAll('.theme-btn');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有主题类
+                this.classList.remove('theme-dark', 'theme-success', 'theme-warning', 'theme-danger');
+                
+                // 添加选中的主题类
+                const theme = button.getAttribute('data-theme');
+                if (theme !== 'default') {
+                    this.classList.add(theme);
+                }
+                
+                // 更新按钮状态
+                buttons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+    }
+}
+
+customElements.define('theme-presets-component', ThemePresetsComponent);
+</pre>

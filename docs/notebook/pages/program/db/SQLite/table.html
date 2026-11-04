@@ -1,0 +1,72 @@
+<header>
+    表操作
+</header>
+<h2>
+    创建表
+</h2>
+<pre tag="sql">
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    age INTEGER DEFAULT 0,
+    email TEXT UNIQUE,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+</pre>
+<h3>
+    带约束的建表
+</h3>
+<pre tag="sql">
+CREATE TABLE products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    price REAL NOT NULL CHECK (price >= 0),
+    category_id INTEGER,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+</pre>
+<h2>
+    查看表结构
+</h2>
+<pre tag="sql">
+.schema users
+PRAGMA table_info(users);
+</pre>
+<h2>
+    重命名表
+</h2>
+<pre tag="sql">
+ALTER TABLE old_name RENAME TO new_name;
+</pre>
+<h2>
+    添加列
+</h2>
+<pre tag="sql">
+ALTER TABLE users ADD COLUMN phone TEXT;
+ALTER TABLE users ADD COLUMN status INTEGER DEFAULT 1;
+</pre>
+<div class="tips">
+    SQLite 不支持 DROP COLUMN，如需删除列需要重建表。
+</div>
+<h2>
+    删除表
+</h2>
+<pre tag="sql">
+DROP TABLE IF EXISTS users;
+</pre>
+<h2>
+    创建索引
+</h2>
+<pre tag="sql">
+CREATE INDEX idx_name ON users(name);
+CREATE UNIQUE INDEX idx_email ON users(email);
+</pre>
+<h2>
+    视图
+</h2>
+<pre tag="sql">
+CREATE VIEW user_summary AS
+SELECT name, age, email FROM users WHERE age > 18;
+SELECT * FROM user_summary;
+DROP VIEW user_summary;
+</pre>

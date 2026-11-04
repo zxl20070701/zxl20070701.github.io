@@ -1,0 +1,74 @@
+<header>
+    基本目录操作
+</header>
+<p>
+    包括创建、删除、遍历目录以及获取目录信息等操作。
+</p>
+<h2>
+    创建目录
+</h2>
+<pre tag="python">
+import os
+from pathlib import Path
+
+# 使用os模块
+try:
+    os.makedirs("test_dir/subdir", exist_ok=True)
+    print("目录创建成功")
+except OSError as e:
+    print(f"目录创建失败: {e}")
+
+# 使用pathlib
+try:
+    Path("test_pathlib_dir/subdir").mkdir(parents=True, exist_ok=True)
+    print("Pathlib目录创建成功")
+except OSError as e:
+    print(f"Pathlib目录创建失败: {e}")
+</pre>
+<h2>
+    删除目录
+</h2>
+<pre tag="python">
+import os
+import shutil
+from pathlib import Path
+
+# 删除空目录
+try:
+    os.rmdir("test_dir/subdir")
+    os.rmdir("test_dir")
+    print("空目录删除成功")
+except OSError as e:
+    print(f"目录删除失败: {e}")
+
+# 删除非空目录
+try:
+    shutil.rmtree("test_pathlib_dir")
+    print("非空目录删除成功")
+except OSError as e:
+    print(f"非空目录删除失败: {e}")
+</pre>
+<h2>
+    目录信息获取
+</h2>
+<pre tag="python">
+import os
+
+current_dir = os.getcwd()
+print(f"当前工作目录: {current_dir}")
+
+# 获取目录内容
+try:
+    contents = os.listdir(current_dir)
+    print(f"当前目录内容: {contents[:5]}...")  # 显示前5个
+except OSError as e:
+    print(f"获取目录内容失败: {e}")
+
+# 获取目录统计信息
+try:
+    stat_info = os.stat(current_dir)
+    print(f"目录大小: {stat_info.st_size} 字节")
+    print(f"最后修改时间: {stat_info.st_mtime}")
+except OSError as e:
+    print(f"获取目录统计信息失败: {e}")
+</pre>

@@ -1,0 +1,79 @@
+<header>
+    索引管理
+</header>
+<h2>
+    索引类型
+</h2>
+<pre tag="javascript">
+// 单字段索引
+// 复合索引
+// 多键索引（数组字段）
+// 文本索引
+// 地理空间索引（2dsphere）
+// 哈希索引
+// TTL 索引（自动过期）
+</pre>
+<h2>
+    创建索引
+</h2>
+<pre tag="javascript">
+// 创建单字段升序索引
+db.users.createIndex({name: 1})
+// 创建单字段降序索引
+db.users.createIndex({age: -1})
+// 创建复合索引
+db.users.createIndex({city: 1, age: -1})
+// 创建唯一索引
+db.users.createIndex({email: 1}, {unique: true})
+// 创建后台创建索引
+db.users.createIndex({name: 1}, {background: true})
+// 创建 TTL 索引
+db.logs.createIndex({createdAt: 1}, {expireAfterSeconds: 3600})
+</pre>
+<h2>
+    查看索引
+</h2>
+<pre tag="javascript">
+// 查看集合所有索引
+db.users.getIndexes()
+// 查看索引大小
+db.users.totalIndexSize()
+// 查看索引使用情况
+db.users.aggregate([
+    {$indexStats: {}}
+])
+</pre>
+<h2>
+    删除索引
+</h2>
+<pre tag="javascript">
+// 删除指定索引
+db.users.dropIndex("name_1")
+// 删除所有非 _id 索引
+db.users.dropIndexes()
+</pre>
+<h2>
+    文本索引
+</h2>
+<pre tag="javascript">
+// 创建文本索引
+db.articles.createIndex({title: "text", content: "text"})
+// 使用全文搜索
+db.articles.find({$text: {$search: "mongodb"}})
+// 排除特定词
+db.articles.find({$text: {$search: "mongodb -sql"}})
+// 按相关性排序
+db.articles.find(
+    {$text: {$search: "mongodb"}},
+    {score: {$meta: "textScore"}}
+).sort({score: {$meta: "textScore"}})
+</pre>
+<h2>
+    索引分析
+</h2>
+<pre tag="javascript">
+// 分析查询执行计划
+db.users.find({name: "张三"}).explain()
+// 查看是否使用索引
+db.users.find({name: "张三"}).explain("executionStats")
+</pre>

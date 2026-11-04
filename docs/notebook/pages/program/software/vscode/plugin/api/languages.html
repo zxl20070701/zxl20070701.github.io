@@ -1,0 +1,197 @@
+<header>
+    languages
+</header>
+<h2>
+    代码补全
+</h2>
+<h3>
+    注册补全提供程序
+</h3>
+<pre tag="javascript">
+// 注册代码补全提供程序
+const provider = vscode.languages.registerCompletionItemProvider('javascript', {
+    provideCompletionItems(document, position) {
+        const completions = [
+            new vscode.CompletionItem('console.log', vscode.CompletionItemKind.Function),
+            new vscode.CompletionItem('function', vscode.CompletionItemKind.Keyword),
+            new vscode.CompletionItem('let', vscode.CompletionItemKind.Keyword)
+        ];
+        return completions;
+    }
+});
+
+context.subscriptions.push(provider);
+</pre>
+<h2>
+    悬停提示
+</h2>
+<h3>
+    注册悬停提供程序
+</h3>
+<pre tag="javascript">
+// 注册悬停提示提供程序
+const hoverProvider = vscode.languages.registerHoverProvider('javascript', {
+    provideHover(document, position) {
+        const wordRange = document.getWordRangeAtPosition(position);
+        const word = document.getText(wordRange);
+        
+        if (word === 'console') {
+            return new vscode.Hover('控制台对象，用于输出调试信息');
+        }
+        
+        return null;
+    }
+});
+
+context.subscriptions.push(hoverProvider);
+</pre>
+<h2>
+    诊断信息
+</h2>
+<h3>
+    创建诊断集合
+</h3>
+<pre tag="javascript">
+// 创建诊断集合
+const diagnosticCollection = vscode.languages.createDiagnosticCollection('myExtension');
+context.subscriptions.push(diagnosticCollection);
+
+// 添加诊断信息
+function addDiagnostics(document) {
+    const diagnostics = [];
+    const text = document.getText();
+    const lines = text.split('\n');
+    
+    lines.forEach((line, i) => {
+        if (line.includes('TODO')) {
+            const range = new vscode.Range(i, 0, i, line.length);
+            const diagnostic = new vscode.Diagnostic(
+                range,
+                '需要完成的任务',
+                vscode.DiagnosticSeverity.Warning
+            );
+            diagnostics.push(diagnostic);
+        }
+    });
+    
+    diagnosticCollection.set(document.uri, diagnostics);
+}
+</pre>
+<h2>
+    代码格式化
+</h2>
+<h3>
+    注册格式化提供程序
+</h3>
+<pre tag="javascript">
+// 注册文档格式化提供程序
+const formatProvider = vscode.languages.registerDocumentFormattingEditProvider('javascript', {
+    provideDocumentFormattingEdits(document) {
+        const edits = [];
+        const text = document.getText();
+        const lines = text.split('\n');
+        
+        // 简单的格式化：移除行尾空格
+        lines.forEach((line, i) => {
+            const trimmedLine = line.trimEnd();
+            if (line !== trimmedLine) {
+                const range = new vscode.Range(i, 0, i, line.length);
+                edits.push(vscode.TextEdit.replace(range, trimmedLine));
+            }
+        });
+        
+        return edits;
+    }
+});
+
+context.subscriptions.push(formatProvider);
+</pre>
+<h2>
+    代码片段
+</h2>
+<h3>
+    注册代码片段
+</h3>
+<pre tag="javascript">
+// 注册代码片段提供程序
+const snippetProvider = vscode.languages.registerCompletionItemProvider('javascript', {
+    provideCompletionItems(document, position) {
+        const snippet = new vscode.CompletionItem('for循环');
+        snippet.kind = vscode.CompletionItemKind.Snippet;
+        snippet.insertText = new vscode.SnippetString([
+            'for (let ${1:i} = 0; ${1:i} < ${2:array}.length; ${1:i}++) {',
+            '\t${3:// TODO: 添加逻辑}',
+            '}'
+        ].join('\n'));
+        snippet.documentation = new vscode.MarkdownString('创建一个for循环');
+        
+        return [snippet];
+    }
+});
+
+context.subscriptions.push(snippetProvider);
+</pre>
+<h2>
+    定义和引用
+</h2>
+<h3>
+    注册定义提供程序
+</h3>
+<pre tag="javascript">
+// 注册定义提供程序
+const definitionProvider = vscode.languages.registerDefinitionProvider('javascript', {
+    provideDefinition(document, position) {
+        const wordRange = document.getWordRangeAtPosition(position);
+        const word = document.getText(wordRange);
+        
+        if (word === 'myFunction') {
+            // 返回定义位置
+            return new vscode.Location(
+                document.uri,
+                new vscode.Position(10, 0)
+            );
+        }
+        
+        return null;
+    }
+});
+
+context.subscriptions.push(definitionProvider);
+</pre>
+<h2>
+    符号提供程序
+</h2>
+<h3>
+    注册文档符号提供程序
+</h3>
+<pre tag="javascript">
+// 注册文档符号提供程序
+const symbolProvider = vscode.languages.registerDocumentSymbolProvider('javascript', {
+    provideDocumentSymbols(document) {
+        const symbols = [];
+        
+        // 简单的符号提取示例
+        const text = document.getText();
+        const lines = text.split('\n');
+        
+        lines.forEach((line, i) => {
+            if (line.includes('function ')) {
+                const match = line.match(/function\s+(\w+)/);
+                if (match) {
+                    const symbol = new vscode.SymbolInformation(
+                        match[1],
+                        vscode.SymbolKind.Function,
+                        '',
+                        new vscode.Location(document.uri, new vscode.Position(i, 0))
+                    );
+                    symbols.push(symbol);
+                }
+            }
+        });
+        
+        return symbols;
+    }
+});
+
+context.subscriptions.push(symbolProvider);
+</pre>

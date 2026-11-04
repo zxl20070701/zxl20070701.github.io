@@ -1,0 +1,269 @@
+<header>
+    WebGPU计算着色器
+</header>
+<p>
+    WebGPU的计算着色器是其最强大的功能之一，允许在GPU上执行通用计算任务，而不仅仅是图形渲染。
+</p>
+<h2>
+    计算着色器基础
+</h2>
+<p>
+    计算着色器在GPU上并行执行，适合处理大量数据：
+</p>
+<pre tag="javascript">
+// 计算着色器示例
+const computeShaderCode = `
+    struct Particle {
+        position: vec3&lt;f32&gt;,
+        velocity: vec3&lt;f32&gt;,
+        mass: f32
+    };
+
+    @group(0) @binding(0) var&lt;storage, read_write&gt; particles: array&lt;Particle&gt;;
+    @group(0) @binding(1) var&lt;uniform&gt; params: Params;
+
+    struct Params {
+        deltaTime: f32,
+        gravity: vec3&lt;f32&gt;
+    };
+
+    @compute @workgroup_size(64)
+    fn main(@builtin(global_invocation_id) global_id: vec3&lt;u32&gt;) {
+        let index = global_id.x;
+        if (index >= arrayLength(&particles)) {
+            return;
+        }
+        
+        // 更新粒子物理
+        particles[index].velocity += params.gravity * params.deltaTime;
+        particles[index].position += particles[index].velocity * params.deltaTime;
+    }
+`;
+</pre>
+<h2>
+    创建计算管线
+</h2>
+<pre tag="javascript">
+// 创建计算着色器模块
+const computeShaderModule = device.createShaderModule({
+    code: computeShaderCode
+});
+
+// 创建计算管线
+const computePipeline = device.createComputePipeline({
+    layout: 'auto',
+    compute: {
+        module: computeShaderModule,
+        entryPoint: 'main'
+    }
+});
+</pre>
+<h2>
+    创建存储缓冲区
+</h2>
+<pre tag="javascript">
+// 创建粒子数据
+const particleCount = 1000;
+const particleData = new Float32Array(particleCount * 7); // 7个float per particle
+
+// 初始化粒子
+for (let i = 0; i < particleCount; i++) {
+    const offset = i * 7;
+    particleData[offset] = Math.random() * 2 - 1;     // x
+    particleData[offset + 1] = Math.random() * 2 - 1; // y
+    particleData[offset + 2] = Math.random() * 2 - 1; // z
+    particleData[offset + 3] = Math.random() * 0.1 - 0.05; // vx
+    particleData[offset + 4] = Math.random() * 0.1 - 0.05; // vy
+    particleData[offset + 5] = Math.random() * 0.1 - 0.05; // vz
+    particleData[offset + 6] = 1.0; // mass
+}
+
+// 创建存储缓冲区
+const particleBuffer = device.createBuffer({
+    size: particleData.byteLength,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
+    mappedAtCreation: true,
+});
+new Float32Array(particleBuffer.getMappedRange()).set(particleData);
+particleBuffer.unmap();
+</pre>
+<h2>
+    创建统一参数缓冲区
+</h2>
+<pre tag="javascript">
+// 创建参数缓冲区
+const paramsBuffer = device.createBuffer({
+    size: 16, // 4 floats: deltaTime + gravity(x,y,z)
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+});
+
+// 更新参数
+const paramsData = new Float32Array([0.016, 0.0, -9.8, 0.0]); // deltaTime = 0.016, gravity = (0, -9.8, 0)
+device.queue.writeBuffer(paramsBuffer, 0, paramsData);
+</pre>
+<h2>
+    创建绑定组
+</h2>
+<pre tag="javascript">
+const bindGroup = device.createBindGroup({
+    layout: computePipeline.getBindGroupLayout(0),
+    entries: [
+        {
+            binding: 0,
+            resource: { buffer: particleBuffer }
+        },
+        {
+            binding: 1,
+            resource: { buffer: paramsBuffer }
+        }
+    ]
+});
+</pre>
+<h2>
+    执行计算
+</h2>
+<pre tag="javascript">
+function compute() {
+    // 更新参数
+    const paramsData = new Float32Array([deltaTime, gravityX, gravityY, gravityZ]);
+    device.queue.writeBuffer(paramsBuffer, 0, paramsData);
+    
+    // 创建命令编码器
+    const commandEncoder = device.createCommandEncoder();
+    
+    // 开始计算通道
+    const computePass = commandEncoder.beginComputePass();
+    computePass.setPipeline(computePipeline);
+    computePass.setBindGroup(0, bindGroup);
+    
+    // 分派计算工作
+    const workgroupCount = Math.ceil(particleCount / 64);
+    computePass.dispatchWorkgroups(workgroupCount);
+    
+    // 结束计算通道
+    computePass.end();
+    
+    // 提交命令
+    device.queue.submit([commandEncoder.finish()]);
+}
+</pre>
+<h2>
+    图像处理示例
+</h2>
+<p>
+    使用计算着色器进行图像处理：
+</p>
+<pre tag="javascript">
+// 图像处理计算着色器
+const imageProcessingShader = `
+    @group(0) @binding(0) var inputTexture: texture_2d&lt;f32&gt;;
+    @group(0) @binding(1) var outputTexture: texture_storage_2d&lt;rgba8unorm, write&gt;;
+    @group(0) @binding(2) var textureSampler: sampler;
+
+    @compute @workgroup_size(8, 8)
+    fn main(@builtin(global_invocation_id) global_id: vec3&lt;u32&gt;) {
+        let coords = vec2&lt;i32&gt;(global_id.xy);
+        let dims = textureDimensions(inputTexture);
+        
+        if (coords.x >= i32(dims.x) || coords.y >= i32(dims.y)) {
+            return;
+        }
+        
+        // 应用模糊效果
+        var color = vec4&lt;f32&gt;(0.0);
+        let blurSize = 5;
+        
+        for (var y = -blurSize; y <= blurSize; y++) {
+            for (var x = -blurSize; x <= blurSize; x++) {
+                let sampleCoords = clamp(
+                    coords + vec2&lt;i32&gt;(x, y),
+                    vec2&lt;i32&gt;(0),
+                    vec2&lt;i32&gt;(i32(dims.x) - 1, i32(dims.y) - 1)
+                );
+                color += textureLoad(inputTexture, sampleCoords, 0);
+            }
+        }
+        
+        color /= f32((blurSize * 2 + 1) * (blurSize * 2 + 1));
+        textureStore(outputTexture, coords, color);
+    }
+`;
+</pre>
+<h2>
+    物理模拟
+</h2>
+<p>
+    使用计算着色器进行物理模拟：
+</p>
+<pre tag="javascript">
+// N体问题模拟
+const nBodyShader = `
+    struct Body {
+        position: vec4&lt;f32&gt;, // xyz = position, w = mass
+        velocity: vec4&lt;f32&gt;, // xyz = velocity, w = padding
+    };
+
+    @group(0) @binding(0) var&lt;storage, read_write&gt; bodies: array&lt;Body&gt;;
+    @group(0) @binding(1) var&lt;uniform&gt; params: Params;
+
+    struct Params {
+        deltaTime: f32,
+        softening: f32,
+        bodyCount: u32,
+    };
+
+    @compute @workgroup_size(256)
+    fn main(@builtin(global_invocation_id) global_id: vec3&lt;u32&gt;) {
+        let i = global_id.x;
+        if (i >= params.bodyCount) {
+            return;
+        }
+        
+        var force = vec3&lt;f32&gt;(0.0);
+        let pi = bodies[i].position.xyz;
+        let mi = bodies[i].position.w;
+        
+        for (var j = 0u; j < params.bodyCount; j++) {
+            if (i == j) {
+                continue;
+            }
+            
+            let pj = bodies[j].position.xyz;
+            let mj = bodies[j].position.w;
+            
+            let r = pj - pi;
+            let distSqr = dot(r, r) + params.softening;
+            let invDist = 1.0 / sqrt(distSqr);
+            let invDistCube = invDist * invDist * invDist;
+            
+            force += r * (mj * invDistCube);
+        }
+        
+        // 更新速度
+        bodies[i].velocity.xyz += force * params.deltaTime;
+        
+        // 更新位置
+        bodies[i].position.xyz += bodies[i].velocity.xyz * params.deltaTime;
+    }
+`;
+</pre>
+<h2>
+    性能考虑
+</h2>
+<ul>
+    <li>
+        合理选择工作组大小，通常是64或256的倍数
+    </li>
+    <li>
+        避免线程间的内存冲突
+    </li>
+    <li>
+        使用共享内存减少全局内存访问
+    </li>
+    <li>
+        考虑数据的内存对齐
+    </li>
+    <li>
+        合理使用屏障同步
+    </li>
+</ul>

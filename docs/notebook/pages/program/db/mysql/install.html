@@ -1,0 +1,80 @@
+<header>
+    安装和使用
+</header>
+<h2>
+    在 Mac OS 上安装 MySQL
+</h2>
+<p>
+    安装最新稳定版：
+</p>
+<pre>
+brew install mysql
+</pre>
+<p>
+    指定固定版本（如 8.0）：
+</p>
+<pre>
+brew install mysql@8.0
+</pre>
+<h3>
+    启动&停止
+</h3>
+<p>
+    安装成功后，临时启动（重启电脑不会自启）：
+</p>
+<pre>
+mysql.server start
+</pre>
+<p>
+    如果需要停止：
+</p>
+<pre>
+mysql.server stop
+</pre>
+<h3>
+    账号密码
+</h3>
+<div class="tips">
+    需要mysql先启动才可以哦。
+</div>
+<p>
+    执行下面命令无密登录：
+</p>
+<pre>
+mysql -u root
+</pre>
+<p>
+    然后设置即可：
+</p>
+<pre tag="sql">
+-- 刷新权限缓存（必须第一步）
+FLUSH PRIVILEGES;
+-- 设置localhost的root密码，替换为你自己的密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY '你的新密码';
+-- 退出
+exit;
+</pre>
+<h2>
+    在 Windows 上安装 MySQL
+</h2>
+<p>
+    下载地址：
+    <a href="https://downloads.mysql.com/archives/community/" target="_blank">
+        https://downloads.mysql.com/archives/community/
+    </a>
+</p>
+<p>
+    打开后，“Operating System”改成“Microsoft Windows”，选 Windows (x86, 64-bit), MSI Installer（离线完整版，无需全程联网）后正常安装即可。
+</p>
+<h2>
+    登录数据库
+</h2>
+<p>
+    使用下面的命令进行登录：
+</p>
+<pre tag>
+mysql -h 主机名 -u 用户名 -p
+</pre>
+<p>
+    回车后输入密码即可。
+</p>

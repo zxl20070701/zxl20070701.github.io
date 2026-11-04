@@ -1,0 +1,85 @@
+<header>
+    Keras 构建模型
+</header>
+
+<p>
+    TensorFlow 2 中最常用的建模方式是 tf.keras。常见写法有三种：Sequential、Functional API、Model Subclassing。
+</p>
+
+<h2>
+    Sequential
+</h2>
+
+<p>
+    Sequential 适合一层接一层的简单模型。
+</p>
+
+<pre tag="python">
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+model = keras.Sequential([
+    layers.Input(shape=(4,)),
+    layers.Dense(16, activation="relu"),
+    layers.Dense(3, activation="softmax")
+])
+</pre>
+
+<h2>
+    Functional API
+</h2>
+
+<p>
+    Functional API 适合多输入、多输出、跳连结构等更复杂的模型。
+</p>
+
+<pre tag="python">
+inputs = keras.Input(shape=(4,))
+x = layers.Dense(16, activation="relu")(inputs)
+x = layers.Dense(16, activation="relu")(x)
+outputs = layers.Dense(3, activation="softmax")(x)
+
+model = keras.Model(inputs=inputs, outputs=outputs)
+</pre>
+
+<h2>
+    Model Subclassing
+</h2>
+
+<p>
+    自定义模型逻辑时，可以继承 keras.Model。
+</p>
+
+<pre tag="python">
+class MyModel(keras.Model):
+    def __init__(self):
+        super().__init__()
+        self.dense1 = layers.Dense(16, activation="relu")
+        self.dense2 = layers.Dense(3, activation="softmax")
+
+    def call(self, inputs):
+        x = self.dense1(inputs)
+        return self.dense2(x)
+
+model = MyModel()
+</pre>
+
+<h2>
+    查看模型结构
+</h2>
+
+<pre tag="python">
+model.summary()
+</pre>
+
+<h2>
+    如何选择
+</h2>
+
+<ul>
+    <li>初学和简单任务：优先 Sequential。</li>
+    <li>结构稍复杂：使用 Functional API。</li>
+    <li>需要自定义前向逻辑：使用 Model Subclassing。</li>
+    <li>系统学习阶段建议先熟练掌握 Sequential 和 Functional API。</li>
+</ul>

@@ -1,0 +1,80 @@
+<header>
+    SharedPreferences 与 DataStore
+</header>
+<p>
+    SharedPreferences 用于以键值对形式存储少量数据（用户偏好、设置项等）。
+</p>
+<h2>
+    SharedPreferences 基本用法
+</h2>
+<h3>
+    写入数据
+</h3>
+<pre tag="kotlin">
+val sp = getSharedPreferences("config", MODE_PRIVATE)
+sp.edit()
+    .putString("username", "zxl")
+    .putInt("age", 18)
+    .apply() // 异步写入磁盘，推荐。commit() 同步返回 Boolean
+</pre>
+<h3>
+    读取数据
+</h3>
+<pre tag="kotlin">
+val sp = getSharedPreferences("config", MODE_PRIVATE)
+val username = sp.getString("username", "默认值") ?: ""
+val age = sp.getInt("age", 0)
+</pre>
+<h3>
+    清除数据
+</h3>
+<pre tag="kotlin">
+getSharedPreferences("config", MODE_PRIVATE).edit().clear().apply()
+</pre>
+<h2>
+    DataStore（推荐替代）
+</h2>
+<pre tag="kotlin">
+// build.gradle.kts
+// implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+// 定义 Keys
+object PreferencesKeys {
+    val USERNAME = stringPreferencesKey("username")
+}
+
+val dataStore: DataStore&lt;Preferences&gt; = preferencesDataStore(name = "settings")
+
+// 写入（suspend，可在 viewModelScope / lifecycleScope 中调用）
+suspend fun saveUsername(name: String) {
+    dataStore.edit { prefs -&gt;
+        prefs[PreferencesKeys.USERNAME] = name
+    }
+}
+
+// 读取（Flow 异步流）
+val usernameFlow: Flow&lt;String&gt; = dataStore.data.map { prefs -&gt;
+    prefs[PreferencesKeys.USERNAME] ?: ""
+}
+
+// 在 ViewModel 中 collect
+viewModelScope.launch {
+    usernameFlow.collect { name -&gt; /* 更新 UI */ }
+}
+</pre>
+<h2>
+    Compose 中订阅
+</h2>
+<pre tag="kotlin">
+@Composable
+fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
+    // 自动感知生命周期，后台停止收集
+    val username by viewModel.username.collectAsStateWithLifecycle()
+
+    OutlinedTextField(
+        value = username,
+        onValueChange = { viewModel.saveUsername(it) },
+        label = { Text("用户名") }
+    )
+}
+</pre>

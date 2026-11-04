@@ -1,0 +1,80 @@
+<header>
+    文件操作实用工具
+</header>
+<p>
+    文件操作实用工具包括临时文件处理、文件哈希计算、压缩文件处理等实用功能。
+</p>
+<pre tag="python">
+import tempfile
+import shutil
+import hashlib
+import zipfile
+import tarfile
+
+# 创建临时文件
+with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.txt') as temp:
+    temp.write('临时文件内容')
+    temp_path = temp.name
+    print(f"临时文件路径: {temp_path}")
+
+# 读取临时文件
+with open(temp_path, 'r') as f:
+    print(f"临时文件内容: {f.read()}")
+
+# 清理临时文件
+os.unlink(temp_path)
+
+# 创建临时目录
+with tempfile.TemporaryDirectory() as temp_dir:
+    print(f"临时目录: {temp_dir}")
+
+    # 在临时目录中创建文件
+    temp_file = os.path.join(temp_dir, 'temp.txt')
+    with open(temp_file, 'w') as f:
+        f.write('临时目录中的文件')
+
+    # 目录会在with块结束时自动清理
+
+# 计算文件哈希值
+def calculate_file_hash(filename, algorithm='sha256'):
+    """计算文件的哈希值"""
+    hash_obj = hashlib.new(algorithm)
+    with open(filename, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_obj.update(chunk)
+    return hash_obj.hexdigest()
+
+# 创建测试文件
+with open('test_hash.txt', 'w') as f:
+    f.write('测试哈希值的文件内容')
+
+# 计算哈希值
+file_hash = calculate_file_hash('test_hash.txt')
+print(f"文件哈希值: {file_hash}")
+
+# 创建压缩文件
+files_to_compress = ['test_hash.txt', 'config.ini']
+
+# 创建ZIP文件
+with zipfile.ZipFile('archive.zip', 'w') as zipf:
+    for file in files_to_compress:
+        if os.path.exists(file):
+            zipf.write(file)
+
+# 创建TAR文件
+with tarfile.open('archive.tar.gz', 'w:gz') as tarf:
+    for file in files_to_compress:
+        if os.path.exists(file):
+            tarf.add(file)
+
+# 解压文件
+with zipfile.ZipFile('archive.zip', 'r') as zipf:
+    zipf.extractall('extracted_zip')
+
+# 清理测试文件
+for filename in ['test_hash.txt', 'config.ini', 'archive.zip', 'archive.tar.gz']:
+    if os.path.exists(filename):
+        os.remove(filename)
+if os.path.exists('extracted_zip'):
+    shutil.rmtree('extracted_zip')
+</pre>

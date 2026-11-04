@@ -1,0 +1,195 @@
+<header>
+    Box 相对布局
+</header>
+<p>
+    Compose 中的 <span class="important">Box</span> 用于层叠和相对定位，
+    替代 View 时代的 RelativeLayout / FrameLayout。
+    配合 <span class="important">Alignment</span> 可以实现任意相对位置关系。
+</p>
+<h2>
+    基础用法
+</h2>
+<pre tag="kotlin">
+Box(
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)
+) {
+    // 背景层
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.LightGray)
+    )
+
+    // 内容层（默认堆叠在上方）
+    Text("前景文字")
+}
+</pre>
+<h2>
+    位置对齐（Alignment）
+</h2>
+<pre tag="kotlin">
+Box(modifier = Modifier.fillMaxSize()) {
+    // 顶部居中
+    Text("顶部居中", modifier = Modifier.align(Alignment.TopCenter))
+
+    // 底部右侧
+    Text("右下角", modifier = Modifier.align(Alignment.BottomEnd))
+
+    // 正中心
+    Text("中心", modifier = Modifier.align(Alignment.Center))
+
+    // 左侧垂直居中
+    Text("左侧居中", modifier = Modifier.align(Alignment.CenterStart))
+}
+</pre>
+<h2>
+    Alignment 对照表
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>Compose Alignment</td>
+            <td>原 RelativeLayout</td>
+            <td>说明</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Alignment.TopStart</td>
+            <td>alignParentStart + alignParentTop</td>
+            <td>左上角</td>
+        </tr>
+        <tr>
+            <td>Alignment.TopCenter</td>
+            <td>alignParentTop + centerHorizontal</td>
+            <td>顶部居中</td>
+        </tr>
+        <tr>
+            <td>Alignment.TopEnd</td>
+            <td>alignParentEnd + alignParentTop</td>
+            <td>右上角</td>
+        </tr>
+        <tr>
+            <td>Alignment.CenterStart</td>
+            <td>alignParentStart + centerVertical</td>
+            <td>左侧居中</td>
+        </tr>
+        <tr>
+            <td>Alignment.Center</td>
+            <td>centerInParent</td>
+            <td>正中心</td>
+        </tr>
+        <tr>
+            <td>Alignment.CenterEnd</td>
+            <td>alignParentEnd + centerVertical</td>
+            <td>右侧居中</td>
+        </tr>
+        <tr>
+            <td>Alignment.BottomStart</td>
+            <td>alignParentStart + alignParentBottom</td>
+            <td>左下角</td>
+        </tr>
+        <tr>
+            <td>Alignment.BottomCenter</td>
+            <td>alignParentBottom + centerHorizontal</td>
+            <td>底部居中</td>
+        </tr>
+        <tr>
+            <td>Alignment.BottomEnd</td>
+            <td>alignParentEnd + alignParentBottom</td>
+            <td>右下角</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    层叠示例：头像 + 红点
+</h2>
+<pre tag="kotlin">
+Box {
+    // 头像
+    Image(
+        painter = painterResource(R.drawable.avatar),
+        contentDescription = null,
+        modifier = Modifier
+            .size(64.dp)
+            .clip(CircleShape)
+    )
+
+    // 右上角红点
+    Box(
+        modifier = Modifier
+            .align(Alignment.TopEnd)
+            .size(16.dp)
+            .background(Color.Red, CircleShape)
+            .border(2.dp, Color.White, CircleShape)
+    )
+}
+</pre>
+<h2>
+    相对于兄弟组件定位
+</h2>
+<p>
+    Compose 中没有 <span class="warn">layout_below</span>，
+    使用 <span class="warn">Column + Box</span> 或
+    <span class="warn">ConstraintLayout</span> 实现：
+</p>
+<pre tag="kotlin">
+// 方式一：Column 包裹（推荐，简单场景）
+Column {
+    Text("上方标题")
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Text("内容区域")
+        Button(
+            onClick = { },
+            modifier = Modifier.align(Alignment.CenterEnd)
+        ) {
+            Text("右侧按钮")
+        }
+    }
+}
+
+// 方式二：ConstraintLayout（复杂场景）
+implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+    val (title, content, button) = createRefs()
+
+    Text("标题", modifier = Modifier.constrainAs(title) {
+        top.linkTo(parent.top, margin = 16.dp)
+        start.linkTo(parent.start, margin = 16.dp)
+    })
+
+    Box(modifier = Modifier.constrainAs(content) {
+        top.linkTo(title.bottom)
+        start.linkTo(parent.start)
+        end.linkTo(parent.end)
+    })
+
+    Button(onClick = { }, modifier = Modifier.constrainAs(button) {
+        bottom.linkTo(parent.bottom, margin = 16.dp)
+        end.linkTo(parent.end, margin = 16.dp)
+    }) {
+        Text("确定")
+    }
+}
+</pre>
+<h2>
+    matchParentSize 填满父容器
+</h2>
+<pre tag="kotlin">
+Box(modifier = Modifier.size(200.dp).background(Color.LightGray)) {
+    // 填满父 Box 的剩余空间
+    Box(
+        modifier = Modifier
+            .matchParentSize()
+            .padding(16.dp)
+            .background(Color.Blue.copy(alpha = 0.5f))
+    )
+}
+</pre>
+<div class="tips">
+    <span class="warn">Box</span> 内的子组件默认按声明顺序层叠，
+    后声明的在上层。配合 <span class="warn">zIndex</span> 可以调整层级。
+</div>

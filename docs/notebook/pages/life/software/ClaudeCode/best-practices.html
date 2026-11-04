@@ -1,0 +1,428 @@
+<header>
+    高效使用经验
+</header>
+<p>
+    前面几篇讲的是"怎么装、怎么配"，这篇讲的是"怎么用得顺手"。内容来自 Claude Code 官方最佳实践和官方团队工程师的实际用法，涵盖 CLAUDE.md 记忆管理、Hooks 自动化、Subagents 并行、验证习惯、权限与上下文管理这几个高频场景。
+</p>
+<div class="tips">
+    如果只能 adopt 一条实践，就是<span class="important">给 Claude 一个自我验证的手段</span>——让它能跑起来看看自己写的东西对不对，而不是只靠读代码判断。这一条的收益远大于其他所有技巧。
+</div>
+<h2>
+    CLAUDE.md：项目的长期记忆
+</h2>
+<p>
+    CLAUDE.md 是 Claude Code 每次启动都会自动读进上下文的文件，用来存放"项目的事实"——技术栈、目录结构、构建命令、代码规范。写好它是所有其他技巧的前提。
+</p>
+<h3>
+    该写什么、不该写什么
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>该写（事实）</th>
+            <th>不该写（过程）</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>构建和测试命令（<span class="special">npm run build</span>）</td>
+            <td>某次 bug 的排查过程</td>
+        </tr>
+        <tr>
+            <td>项目结构说明</td>
+            <td>可以从代码直接推断的内容</td>
+        </tr>
+        <tr>
+            <td>不可违反的约定（不要改这个目录）</td>
+            <td>大段代码片段</td>
+        </tr>
+        <tr>
+            <td>外部依赖的坑（这个 API 必须用 v2）</td>
+            <td>某个函数的逐行解释</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    进入一个项目时，直接让 Claude 帮你生成初版：
+</p>
+<pre>
+/init
+</pre>
+<div class="tips">
+    CLAUDE.md 是<span class="important">每次会话都要花 context 读它</span>的，所以越短越好。当某一段内容从"事实"膨胀成"操作步骤"时（比如"如何新增一个页面"的完整流程），就把它挪进 Skill——Skill 只在被用到时才加载，几乎不占成本。
+</div>
+<h2>
+    Hooks：把重复劳动自动化
+</h2>
+<p>
+    Hooks 是"确定性的"——不像 CLAUDE.md 只是建议，Hooks 是规则保证一定执行。配置在项目里的 <span class="special">.claude/settings.json</span>（只想自己用就写全局的 <span class="special">~/.claude/settings.json</span>）。
+</p>
+<h3>
+    常用 Hook 事件
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>事件</th>
+            <th>触发时机</th>
+            <th>典型用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">PreToolUse</span></td>
+            <td>工具执行前</td>
+            <td>拦截危险命令、校验路径、自动放行安全操作</td>
+        </tr>
+        <tr>
+            <td><span class="special">PermissionRequest</span></td>
+            <td>某次工具调用需要做权限决策时</td>
+            <td>自动批准测试命令、阻止访问敏感文件</td>
+        </tr>
+        <tr>
+            <td><span class="special">PostToolUse</span></td>
+            <td>工具执行成功后</td>
+            <td>跑格式化、触发 lint、记录文件变更</td>
+        </tr>
+        <tr>
+            <td><span class="special">PreCompact</span></td>
+            <td>上下文压缩前</td>
+            <td>备份对话记录、保留关键决策</td>
+        </tr>
+        <tr>
+            <td><span class="special">SessionStart</span></td>
+            <td>会话开始或恢复</td>
+            <td>注入 git status、加载待办清单</td>
+        </tr>
+        <tr>
+            <td><span class="special">Stop</span></td>
+            <td>Claude 回答结束时</td>
+            <td>验证任务是否真的完成、跑测试</td>
+        </tr>
+        <tr>
+            <td><span class="special">SubagentStop</span></td>
+            <td>子 Agent 完成时</td>
+            <td>校验子 Agent 输出</td>
+        </tr>
+        <tr>
+            <td><span class="special">UserPromptSubmit</span></td>
+            <td>你提交 prompt 时</td>
+            <td>注入当前迭代重点、校验请求</td>
+        </tr>
+        <tr>
+            <td><span class="special">Notification</span></td>
+            <td>Claude Code 需要你注意时</td>
+            <td>弹系统通知、响铃、发送到手机</td>
+        </tr>
+        <tr>
+            <td><span class="special">SessionEnd</span></td>
+            <td>会话结束时</td>
+            <td>清理临时文件、汇总本次会话记录</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    示例一：编辑后自动格式化
+</h3>
+<pre tag="json">
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write"
+          }
+        ]
+      }
+    ]
+  }
+}
+</pre>
+<p>
+    <span class="special">matcher</span> 用来过滤触发条件，<span class="special">Write|Edit</span> 表示只在写文件或改文件时触发，支持正则。写成 <span class="special">*</span> 就是所有工具都触发。
+</p>
+<div class="tips">
+    Hook 没有"当前被编辑文件"这类环境变量，工具参数是从 stdin 传进来的 JSON，所以要用 <span class="special">jq</span> 之类的工具解析出 <span class="special">tool_input.file_path</span>（记得先装 jq）。
+</div>
+<h3>
+    示例二：保护关键文件不被修改
+</h3>
+<p>
+    把校验脚本放在项目里，Hook 里用 <span class="special">$CLAUDE_PROJECT_DIR</span> 引用它，保证不管当前工作目录在哪都能正确执行：
+</p>
+<pre tag="json">
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-files.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+</pre>
+<p>
+    脚本从 stdin 读 JSON，拿到 <span class="special">tool_input.file_path</span> 判断是否在保护目录里，是就 <span class="important">exit 2</span> 阻断操作：
+</p>
+<pre tag="bash">
+#!/bin/bash
+# .claude/hooks/protect-files.sh
+FILE_PATH=$(jq -r '.tool_input.file_path')
+
+case "$FILE_PATH" in
+  */migrations/*|*/.env*)
+    echo "禁止修改：$FILE_PATH 属于受保护文件"
+    exit 2  # exit 2 = 阻断该次工具调用
+    ;;
+esac
+exit 0
+</pre>
+<div class="tips">
+    Hook 的退出码有明确语义：<span class="special">0</span> 放行、<span class="special">2</span> 阻断并把 stderr 作为理由反馈给 Claude、其他值视为非致命错误只记录日志。
+</div>
+<h3>
+    示例三：会话开始时注入 git 状态
+</h3>
+<pre tag="json">
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '## 当前分支' && git branch --show-current && echo '## 未提交改动' && git status --short"
+          }
+        ]
+      }
+    ]
+  }
+}
+</pre>
+<h2>
+    Subagents：并行与隔离
+</h2>
+<p>
+    Subagent 是一个独立的 Claude 实例，有自己干净的 context window。它做完任务后<span class="important">只把结论返回给主对话</span>，中间的探索过程不会污染主上下文——你可以把它理解成浏览器标签页。
+</p>
+<h3>
+    什么时候该用
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>场景</th>
+            <th>信号</th>
+            <th>收益</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>研究型任务</td>
+            <td>理解一件事需要读几十个文件</td>
+            <td>主对话保持干净，只带回总结而非原始内容</td>
+        </tr>
+        <tr>
+            <td>多个独立任务</td>
+            <td>子任务之间没有依赖关系</td>
+            <td>并行执行，整体更快</td>
+        </tr>
+        <tr>
+            <td>需要无偏视角</td>
+            <td>做代码审查、不希望受之前对话的影响</td>
+            <td>子 Agent 不继承主对话的假设和盲区</td>
+        </tr>
+        <tr>
+            <td>提交前验证</td>
+            <td>需要一个第二意见</td>
+            <td>避免" familiarity 导致的盲区"</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    判断信号很简单：<span class="important">任务需要读 10 个以上文件，或者包含 3 个以上互不依赖的子任务</span>，就该让子 Agent 上。
+</div>
+<h3>
+    内置的三种 Subagent
+</h3>
+<ul>
+    <li><span class="special">Explore</span>：只读的快速代码搜索，用于调查</li>
+    <li><span class="special">Plan</span>：先研究代码库再给实现方案</li>
+    <li><span class="special">general-purpose</span>：通用的复杂多步任务</li>
+</ul>
+<h3>
+    自定义 Subagent
+</h3>
+<p>
+    在 <span class="special">.claude/agents/</span> 下放 Markdown 文件即可定义一个专属角色：
+</p>
+<pre tag="markdown">
+---
+name: build-validator
+description: Runs the test suite and type checks after changes, then reports failures. Use after any code modification to verify nothing broke.
+tools: Bash, Read, Grep
+model: sonnet
+---
+
+You are a build validator. After any code change:
+
+1. Run the project's test suite
+2. Run the type checker
+3. If either fails, report the exact error output and the most likely cause
+4. Do NOT attempt to fix the errors yourself — only report them
+</pre>
+<p>
+    几个实用字段：
+</p>
+<ul>
+    <li><span class="special">tools</span>：限制这个 Agent 能用哪些工具（比如只给 Bash/Read，天然做到只读）</li>
+    <li><span class="special">model</span>：给这个 Agent 单独指定模型，比如 <span class="special">model: haiku</span>，干粗活用便宜的模型</li>
+    <li><span class="special">isolation: worktree</span>：在独立的 git worktree 里跑，适合大批量改动互不干扰</li>
+</ul>
+<h3>
+    在 Skill 里驱动子 Agent
+</h3>
+<p>
+    也可以不手动调，而是在 Skill 正文里直接要求 Claude 派发：
+</p>
+<pre tag="markdown">
+把这项迁移工作批量执行：启动 10 个并行的子 Agent，每个负责一个目录，
+每个 Agent 改完后自己跑端到端测试，最后各自提一个 PR。
+</pre>
+<h2>
+    验证：让 Claude 能检查自己的产出
+</h2>
+<p>
+    这是收益最大的一条实践。三种做法，从轻到重：
+</p>
+<h3>
+    1. 给 Claude 启动方式
+</h3>
+<p>
+    用 <span class="special">/run</span> 启动你的应用并看到效果，它会从 README、package.json、Makefile 里推断怎么跑。适合"改完想亲眼看看对不对"的场景。
+</p>
+<h3>
+    2. 录制启动配方
+</h3>
+<p>
+    如果项目需要数据库、env 文件、图形界面这类非标准启动方式，跑一次 <span class="special">/run-skill-generator</span>，它会把"安装命令 + 环境变量 + 启动脚本"记成项目级 Skill 放在 <span class="special">.claude/skills/run-&lt;name&gt;/</span>。之后 <span class="special">/run</span> 就照着这个配方走，不用每次重新摸索。
+</p>
+<h3>
+    3. 提交前强制验证
+</h3>
+<p>
+    <span class="special">/verify</span> 是内置 Skill，同样会构建你的应用、跑起来、观察实际行为。它不会自动执行，需要你显式调用；项目里可以放一个同名的 <span class="special">verify</span> Skill 把验证步骤写死，这样团队里每个人跑的流程都一致。
+</p>
+<pre tag="markdown">
+---
+name: verify
+description: Build and run the app to confirm a change works as intended, without falling back to tests alone.
+disable-model-invocation: true
+allowed-tools: Bash, Read
+---
+
+## 验证步骤
+
+1. 构建项目
+2. 启动应用
+3. 触发本次改动相关的功能路径
+4. 观察实际行为是否符合预期
+5. 如果不符合，明确指出偏差，不要修改代码
+</pre>
+<h2>
+    并行：用多个会话同时干活
+</h2>
+<p>
+    Claude Code 原生支持 git worktree 隔离，你可以同时开 3-5 个会话各干各的：
+</p>
+<pre>
+# 开一个隔离的 worktree 会话
+claude --worktree feature-a
+
+# 也可以顺便开一个独立的 tmux 窗口
+claude --worktree feature-b --tmux
+</pre>
+<p>
+    配合 shell 别名（<span class="special">za</span>、<span class="special">zb</span>、<span class="special">zc</span> 分别跳对应 worktree）+ 终端标签页配色 + 终端通知，就能在多个任务间自由切换而不会搞混。
+</p>
+<h2>
+    上下文管理
+</h2>
+<p>
+    Claude 的表现会随 context 填满而下降——所以核心心法是<span class="important">主动管理上下文</span>：
+</p>
+<ul>
+    <li><span class="special">/clear</span>：清空当前对话重新开始，比硬撑着长对话干净</li>
+    <li><span class="special">/compact</span>：手动压缩，保留关键决策丢掉冗余细节</li>
+    <li>把 CLAUDE.md 里膨胀成"操作流程"的内容挪进 Skill</li>
+    <li>研究型任务交给 Subagent，别让几十个文件的原文都进主上下文</li>
+    <li>发现方向跑偏就<span class="important">尽早打断纠正</span>，别等它把错误方向做完</li>
+</ul>
+<h2>
+    提示词写作
+</h2>
+<p>
+    一个通用的三段式结构，适用场景比想象中广：
+</p>
+<pre>
+[需求目标] + [技术栈指定] + [约束条件]
+
+例：创建一个用户登录系统，包含 1. MySQL 用户表设计 2. Node.js Express 登录接口
+3. JWT Token 认证。框架用 Express，ORM 用 Sequelize，密码用 bcrypt 加密。
+</pre>
+<p>
+    几个立刻见效的习惯：
+</p>
+<ul>
+    <li><span class="important">贴具体内容</span>：报错信息、文件片段直接粘进来，比描述"有个 bug"有效一百倍</li>
+    <li><span class="special">Shift+Tab</span> 切到 plan 模式：复杂任务先让它出方案，确认思路对了再动手</li>
+    <li>让它反问你：<span class="special">"在开始之前，先问我所有你需要知道的信息"</span>，能省掉大量来回返工</li>
+    <li>质疑它：<span class="special">/btw</span> 可以另开一个侧问，不打断当前任务、也不污染主线上下文</li>
+</ul>
+<h2>
+    权限管理
+</h2>
+<p>
+    反复被同一个权限弹窗打断会很烦，可以预授权常用的安全操作：
+</p>
+<pre tag="json">
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run test:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Read(./src/**)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Bash(rm:*)"
+    ]
+  }
+}
+</pre>
+<p>
+    用 <span class="special">deny</span> 兜住绝对不能碰的东西（密钥文件、删除命令），用 <span class="special">allow</span> 放行高频安全操作。剩下的才走弹窗确认。
+</p>
+<div class="tips">
+    别无脑开 auto 模式（自动批准所有工具调用）。在容器或 VM 里跑可以，在本机主力开发环境还是保留必要弹窗更稳。
+</div>
+<h2>
+    常见失败模式
+</h2>
+<ul>
+    <li><span class="special">一次给太多任务</span>：Claude 会在几个方向上同时发散。拆开，一次一个明确目标</li>
+    <li><span class="special">不纠偏</span>：发现方向不对时立刻打断。偏了之后继续加指令只会越走越远</li>
+    <li><span class="special">Claude 停止遵循 Skill</span>：通常是正文太长。精简到 500 行以内，把细节挪到单独文件按需读取</li>
+    <li><span class="special">Prompt 写得太笼统</span>：加上具体的技术栈、约束、示例，别让它猜</li>
+</ul>

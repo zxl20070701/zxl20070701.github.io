@@ -1,0 +1,51 @@
+<header>
+    tf.matMul
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.matMul(a, b, transposeA?, transposeB?)
+</pre>
+<p>
+    矩阵乘法操作。
+</p>
+<h3>
+    a
+</h3>
+<p>
+    第一个矩阵。
+</p>
+<h3>
+    b
+</h3>
+<p>
+    第二个矩阵。
+</p>
+<h3>
+    transposeA
+</h3>
+<p>
+    如果为 true，则在乘法之前转置 a。
+</p>
+<h3>
+    transposeB
+</h3>
+<p>
+    如果为 true，则在乘法之前转置 b。
+</p>
+<h2>
+    示例
+</h2>
+<pre tag="javascript">
+const a = tf.tensor2d([1, 2, 3, 4], [2, 2]);
+const b = tf.tensor2d([5, 6, 7, 8], [2, 2]);
+tf.matMul(a, b).print();
+</pre>
+<p>
+    输出：
+</p>
+<pre>
+[[19, 22],
+ [43, 50]]
+</pre>

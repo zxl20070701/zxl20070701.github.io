@@ -1,0 +1,173 @@
+<header>
+    Room 数据库
+</header>
+<p>
+    Room 是官方 SQLite 封装库，编译期校验 SQL、
+    原生支持协程 / Flow，是替代原生 SQLiteOpenHelper 的首选。
+</p>
+<h2>
+    添加依赖
+</h2>
+<pre tag="kotlin">
+// build.gradle.kts (app)
+plugins {
+    id("com.google.devtools.ksp")
+}
+
+dependencies {
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1") // 协程 + Flow 支持
+    ksp("androidx.room:room-compiler:2.6.1")
+}
+</pre>
+<h2>
+    三要素
+</h2>
+<h3>
+    1. Entity 实体
+</h3>
+<pre tag="kotlin">
+@Entity(
+    tableName = "users",
+    indices = [Index(value = ["email"], unique = true)]
+)
+data class User(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val name: String,
+    val email: String,
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis()
+)
+</pre>
+<h3>
+    2. DAO 数据访问对象
+</h3>
+<pre tag="kotlin">
+@Dao
+interface UserDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(user: User): Long
+
+    @Update
+    suspend fun update(user: User)
+
+    @Delete
+    suspend fun delete(user: User)
+
+    @Query("SELECT * FROM users WHERE id = :id")
+    suspend fun getById(id: Int): User?
+
+    @Query("SELECT * FROM users ORDER BY created_at DESC")
+    fun observeAll(): Flow&lt;List&lt;User&gt;&gt; // Flow 自动感知数据变化
+
+    @Query("DELETE FROM users")
+    suspend fun clearAll()
+
+    // 事务：多步操作要么全部成功要么全部回滚
+    @Transaction
+    suspend fun replaceAll(list: List&lt;User&gt;) {
+        clearAll()
+        list.forEach { insert(it) }
+    }
+}
+</pre>
+<h3>
+    3. Database 数据库
+</h3>
+<pre tag="kotlin">
+@Database(
+    entities = [User::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
+
+    abstract fun userDao(): UserDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun get(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "app.db"
+                )
+                .fallbackToDestructiveMigration() // 版本升级时清空重建（开发期可用）
+                .build()
+                .also { INSTANCE = it }
+            }
+        }
+    }
+}
+</pre>
+<h2>
+    在 Repository 中使用
+</h2>
+<pre tag="kotlin">
+class UserRepository(context: Context) {
+    private val dao = AppDatabase.get(context).userDao()
+
+    // Flow 直接透传给 ViewModel，数据库变化自动通知 UI
+    fun observeAll(): Flow&lt;List&lt;User&gt;&gt; = dao.observeAll()
+
+    suspend fun add(user: User) = dao.insert(user)
+    suspend fun remove(user: User) = dao.delete(user)
+}
+</pre>
+<h2>
+    关联查询
+</h2>
+<pre tag="kotlin">
+// 1. 定义关系
+data class UserWithPosts(
+    @Embedded val user: User,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "userId"
+    )
+    val posts: List&lt;Post&gt;
+)
+
+// 2. DAO 中加 @Transaction
+@Transaction
+@Query("SELECT * FROM users WHERE id = :id")
+suspend fun getUserWithPosts(id: Int): UserWithPosts
+</pre>
+<h2>
+    类型转换器
+</h2>
+<pre tag="kotlin">
+// Room 默认不支持 Date/List，需定义转换器
+class Converters {
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? = value?.let { Date(it) }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? = date?.time
+}
+
+@Database(entities = [User::class], version = 1)
+@TypeConverters(Converters::class)
+abstract class AppDatabase : RoomDatabase() { /* ... */ }
+</pre>
+<h2>
+    数据库升级（Migration）
+</h2>
+<pre tag="kotlin">
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE users ADD COLUMN avatar TEXT")
+    }
+}
+
+Room.databaseBuilder(context, AppDatabase::class.java, "app.db")
+    .addMigrations(MIGRATION_1_2)
+    .build()
+</pre>
+<div class="tips">
+    Room 强制禁止主线程查询，所有 suspend / Flow 方法自动切到 IO 线程，
+    无需手动 withContext(Dispatchers.IO)。
+</div>

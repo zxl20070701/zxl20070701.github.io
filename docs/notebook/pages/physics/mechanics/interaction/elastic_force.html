@@ -1,0 +1,93 @@
+<header>
+    弹力
+</header>
+<p>
+    弹力是物体因形变而产生的恢复力，遵循胡克定律。对于理想弹性体，弹力与形变量成正比：
+</p>
+<p>
+    <code>
+        ["join", "F", "=", "-", "kx"]
+    </code>
+</p>
+<p>
+    其中，F是弹力大小，k是弹性系数，x是形变量（负号表示弹力方向与形变方向相反）。
+</p>
+<h2>
+    胡克定律的适用范围
+</h2>
+<p>
+    胡克定律仅在弹性限度内成立：
+</p>
+<ul>
+    <li><strong>弹性限度</strong>：材料能够完全恢复原状的最大应力</li>
+    <li><strong>比例极限</strong>：应力与应变成严格正比关系的最大应力</li>
+    <li><strong>屈服点</strong>：材料开始发生塑性变形的应力点</li>
+</ul>
+<h2>
+    弹性势能
+</h2>
+<p>
+    弹性形变物体储存的势能为：
+</p>
+<p>
+    <code>
+        ["join", "Eₚ", "=", ["division", "kx²", "2"]]
+    </code>
+</p>
+<p>
+    该公式适用于遵循胡克定律的弹性体。
+</p>
+<h2>
+    弹性系数
+</h2>
+<p>
+    弹性系数k取决于材料的性质和几何形状：
+</p>
+<ul>
+    <li><strong>弹簧</strong>：k = Gd⁴/(8nD³)，其中G是剪切模量，d是钢丝直径，n是有效圈数，D是弹簧中径</li>
+    <li><strong>杆件拉伸</strong>：k = EA/L，其中E是弹性模量，A是截面积，L是长度</li>
+    <li><strong>梁的弯曲</strong>：k = 3EI/L³，其中I是截面惯性矩</li>
+</ul>
+<h2>
+    弹力的微观解释
+</h2>
+<p>
+    从微观角度看，弹力源于原子间相互作用势：
+</p>
+<ul>
+    <li><strong>键能曲线</strong>：原子间势能随距离变化的非对称曲线</li>
+    <li><strong>平衡位置</strong>：势能最小值对应的原子间距</li>
+    <li><strong>回复力</strong>：偏离平衡位置时产生的恢复力</li>
+</ul>
+<h2>
+    复杂弹性系统
+</h2>
+<p>
+    多个弹簧组合时的等效弹性系数：
+</p>
+<ul>
+    <li><strong>串联</strong>：1/k_eq = 1/k₁ + 1/k₂ + ... + 1/kₙ</li>
+    <li><strong>并联</strong>：k_eq = k₁ + k₂ + ... + kₙ</li>
+</ul>
+<h2>
+    非线性弹性
+</h2>
+<p>
+    当形变较大时，胡克定律不再适用：
+</p>
+<ul>
+    <li><strong>非线性弹性</strong>：应力-应变关系为非线性</li>
+    <li><strong>超弹性材料</strong>：如橡胶，可承受大变形</li>
+    <li><strong>粘弹性</strong>：同时表现出弹性和粘性特征</li>
+</ul>
+<h2>
+    动态弹性
+</h2>
+<p>
+    考虑惯性效应时的弹性振动：
+</p>
+<ul>
+    <li><strong>简谐振动</strong>：m(d²x/dt²) + kx = 0</li>
+    <li><strong>阻尼振动</strong>：m(d²x/dt²) + c(dx/dt) + kx = 0</li>
+    <li><strong>受迫振动</strong>：m(d²x/dt²) + c(dx/dt) + kx = F₀cos(ωt)</li>
+</ul>

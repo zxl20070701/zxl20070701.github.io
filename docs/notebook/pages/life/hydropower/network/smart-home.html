@@ -1,0 +1,322 @@
+<header>
+    智能家居布线
+</header>
+<p>
+    智能家居的坑几乎都埋在
+    <span class="special">装修阶段</span>
+    ：开关盒里少一根零线、窗帘盒里没有电源、弱电箱没有插座，后期再想加设备只能走明线或放弃。
+</p>
+<div class="tips">
+    智能家居布线的核心不是“现在买什么设备”，而是
+    <span class="special">把电和网提前留够</span>
+    。设备三年一换，线路二十年不动。
+</div>
+<h2>
+    先定协议，再定布线
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>协议</th>
+            <th>特点</th>
+            <th>对布线的要求</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>WiFi</td>
+            <td>无需网关，接入简单</td>
+            <td>依赖
+                <strong>无线覆盖</strong>
+                ，设备多了挤占信道</td>
+            <td>摄像头、大家电</td>
+        </tr>
+        <tr>
+            <td>Zigbee</td>
+            <td>低功耗、自组网、设备多</td>
+            <td>需要
+                <strong>网关 + 常供电节点</strong>
+            </td>
+            <td>传感器、灯具、开关</td>
+        </tr>
+        <tr>
+            <td>蓝牙 Mesh</td>
+            <td>手机直连、成本低</td>
+            <td>需要网关做远程</td>
+            <td>灯具、小设备</td>
+        </tr>
+        <tr>
+            <td>Thread / Matter</td>
+            <td>新标准、跨品牌互通</td>
+            <td>需要
+                <strong>边界路由器</strong>
+                （常为常供电设备）</td>
+            <td>新装修建议关注</td>
+        </tr>
+        <tr>
+            <td>有线总线（KNX/RS485）</td>
+            <td>极稳定、抗干扰</td>
+            <td>
+                <strong>必须预埋专用总线</strong>
+                ，成本高
+            </td>
+            <td>大宅、别墅</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    不要把全屋押在单一协议上。
+    <span class="special">照明用 Zigbee/蓝牙，摄像头用 WiFi/POE，空调窗帘用红外或总线</span>
+    ，按设备特性选，而不是按品牌选。
+</div>
+<h2>
+    开关盒：零线是底线
+</h2>
+<p>
+    传统开关盒里通常只有
+    <span class="warn">火线和灯控线</span>
+    ，没有零线。而绝大多数智能开关需要零火线供电：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>方案</th>
+            <th>是否需要零线</th>
+            <th>稳定性</th>
+            <th>建议</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>零火线智能开关</td>
+            <td>
+                <strong>需要</strong>
+            </td>
+            <td>最稳定，可带任意功率灯具</td>
+            <td>
+                <strong>装修首选</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>单火线智能开关</td>
+            <td>不需要</td>
+            <td>靠漏电流取电，易闪烁、带不动低功率灯</td>
+            <td>老房补救方案</td>
+        </tr>
+        <tr>
+            <td>智能灯泡</td>
+            <td>不需要</td>
+            <td>依赖常供电，物理开关一关就失联</td>
+            <td>局部使用</td>
+        </tr>
+    </tbody>
+</table>
+<ul>
+    <li>
+        装修时把
+        <span class="special">每个开关盒都引入零线</span>
+        ，是成本极低、收益极高的一步。
+    </li>
+    <li>
+        零线要从
+        <span class="special">同回路的照明零线</span>
+        引入，不能从插座回路借，否则漏保会误动作。
+    </li>
+    <li>
+        开关盒深度建议
+        <span class="warn">不小于 50mm</span>
+        ，智能开关模块较厚，浅盒装不进去。
+    </li>
+    <li>
+        多联开关位置要
+        <span class="special">预留中性线并联</span>
+        ，避免后期加装时互相干扰。
+    </li>
+</ul>
+<h2>
+    必须预留电源的位置
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>位置</th>
+            <th>预留内容</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>窗帘盒</td>
+            <td>
+                <strong>电源插座</strong>
+                （距顶 20～30cm）
+            </td>
+            <td>电动窗帘电机，单轨/双轨都要留</td>
+        </tr>
+        <tr>
+            <td>吊顶内</td>
+            <td>零火线 + 网线</td>
+            <td>吸顶 AP、人体存在传感器、新风</td>
+        </tr>
+        <tr>
+            <td>弱电箱</td>
+            <td>2～3 个插座 + 散热</td>
+            <td>光猫、主路由、网关、交换机</td>
+        </tr>
+        <tr>
+            <td>入户门</td>
+            <td>电源 + 网线</td>
+            <td>智能门锁备用供电、可视对讲</td>
+        </tr>
+        <tr>
+            <td>卫生间</td>
+            <td>电源 + 防溅盒</td>
+            <td>智能马桶、镜前灯、浴霸</td>
+        </tr>
+        <tr>
+            <td>厨房</td>
+            <td>台面插座 + 水槽下电源</td>
+            <td>净水器、垃圾处理器、洗碗机</td>
+        </tr>
+        <tr>
+            <td>阳台</td>
+            <td>电源 + 地漏</td>
+            <td>电动晾衣架、洗衣机</td>
+        </tr>
+        <tr>
+            <td>床头</td>
+            <td>双控 + 零线</td>
+            <td>智能开关、无线场景面板</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    电动窗帘是最容易被忽略的一项：
+    <span class="important">窗帘盒里没有电源，就只能明装插座或换手动</span>
+    。做吊顶前一定确认。
+</div>
+<h2>
+    网络是智能家居的地基
+</h2>
+<ul>
+    <li>
+        智能设备数量多，
+        <span class="special">主路由 + AP 组网</span>
+        比单台路由器稳定得多。
+    </li>
+    <li>
+        网关建议放在
+        <span class="special">房屋中心位置</span>
+        ，不要塞在金属弱电箱里——金属箱会屏蔽信号。
+    </li>
+    <li>
+        弱电箱若是金属门，建议
+        <span class="warn">换成塑料门或常开</span>
+        ，或把网关移到箱外。
+    </li>
+    <li>
+        摄像头、NAS、电视等固定设备尽量
+        <span class="special">走网线</span>
+        ，把无线带宽留给移动设备。
+    </li>
+        <li>
+        给智能设备单独划分
+        <span class="special">IoT 频段或 VLAN</span>
+        ，避免与手机电脑抢占。
+    </li>
+</ul>
+<h2>
+    传感器与联动
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>传感器</th>
+            <th>安装位置</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>人体存在传感器</td>
+            <td>吊顶或墙角，避开直射</td>
+            <td>人来灯亮、人走灯灭</td>
+        </tr>
+        <tr>
+            <td>门窗磁</td>
+            <td>门框与门扇对齐</td>
+            <td>开门提醒、安防布防</td>
+        </tr>
+        <tr>
+            <td>水浸传感器</td>
+            <td>厨房水槽下、卫生间、热水器旁</td>
+            <td>漏水报警，联动关阀</td>
+        </tr>
+        <tr>
+            <td>烟雾 / 燃气报警</td>
+            <td>厨房顶部（燃气按气种定高度）</td>
+            <td>报警并推送</td>
+        </tr>
+        <tr>
+            <td>温湿度</td>
+            <td>各房间</td>
+            <td>联动空调、地暖、新风</td>
+        </tr>
+        <tr>
+            <td>光照</td>
+            <td>靠窗位置</td>
+            <td>日照强时自动关帘</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    常见坑
+</h2>
+<ul>
+    <li>
+        <strong>单火线开关带 LED 灯闪烁</strong>：漏电流给灯充电，换零火线或加泄放电容。
+    </li>
+    <li>
+        <strong>智能开关额定功率不够</strong>：多盏灯共用一个开关时，核对总功率与灯的类型（LED 有启动冲击）。
+    </li>
+    <li>
+        <strong>断网即失控</strong>：优先选支持
+        <span class="special">本地执行</span>
+        的网关，关键照明保留物理开关。
+    </li>
+    <li>
+        <strong>网关数量不足</strong>：Zigbee 设备过多或距离过远会掉线，按面积增加网关或常供电节点。
+    </li>
+    <li>
+        <strong>插座被智能设备占满</strong>：弱电箱、窗帘盒、吊顶都要留够位数。
+    </li>
+</ul>
+<h2>
+    验收清单
+</h2>
+<ul>
+    <li>
+        所有开关盒
+        <span class="special">零线到位、盒深足够</span>
+        。
+    </li>
+    <li>
+        窗帘盒、吊顶、弱电箱、入户门
+        <span class="special">电源与网线预留完成</span>
+        。
+    </li>
+    <li>
+        无线覆盖实测：
+        <span class="special">每个房间信号强度与漫游切换正常</span>
+        。
+    </li>
+    <li>
+        网关位置无金属遮挡，弱电箱散热良好。
+    </li>
+    <li>
+        关键照明保留
+        <span class="warn">物理开关</span>
+        ，断网也能用。
+    </li>
+</ul>

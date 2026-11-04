@@ -1,0 +1,174 @@
+<header>
+    类装饰器
+</header>
+<h2>
+    类装饰器概念
+</h2>
+<p>
+    <span class="important">类装饰器（Class Decorators）</span>是应用于类的装饰器，它们接受一个类作为参数并返回一个新的类或修改后的类。
+</p>
+
+<h2>
+    函数装饰器
+</h2>
+<pre tag="python">
+# 函数装饰器
+def add_method(cls):
+    def new_method(self):
+        return f"这是新添加的方法，来自{self.__class__.__name__}"
+    
+    cls.new_method = new_method
+    return cls
+
+@add_method
+class MyClass:
+    def __init__(self, name):
+        self.name = name
+
+obj = MyClass("测试")
+print(obj.new_method())
+</pre>
+
+<h2>
+    使用functools.wraps保持元数据
+</h2>
+<pre tag="python">
+import functools
+
+def debug(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"调用 {func.__name__}")
+        print(f"参数: args={args}, kwargs={kwargs}")
+        result = func(*args, **kwargs)
+        print(f"返回值: {result}")
+        return result
+    return wrapper
+
+@debug
+def add(a, b):
+    """将两个数相加"""
+    return a + b
+
+print(add(3, 5))
+print(f"函数名: {add.__name__}")
+print(f"文档: {add.__doc__}")
+</pre>
+
+<h2>
+    单例模式类装饰器
+</h2>
+<pre tag="python">
+def singleton(cls):
+    """单例模式装饰器"""
+    instances = {}
+    
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    
+    return get_instance
+
+@singleton
+class DatabaseConnection:
+    def __init__(self):
+        print("创建数据库连接")
+        self.connection_id = id(self)
+
+# 测试单例模式
+db1 = DatabaseConnection()
+db2 = DatabaseConnection()
+
+print(f"db1 ID: {db1.connection_id}")
+print(f"db2 ID: {db2.connection_id}")
+print(f"Same instance: {db1 is db2}")
+</pre>
+
+<h2>
+    属性验证类装饰器
+</h2>
+<pre tag="python">
+def validate_attributes(**validators):
+    """属性验证装饰器"""
+    def decorator(cls):
+        original_init = cls.__init__
+        
+        def new_init(self, *args, **kwargs):
+            original_init(self, *args, **kwargs)
+            
+            for attr, validator in validators.items():
+                if hasattr(self, attr):
+                    value = getattr(self, attr)
+                    if not validator(value):
+                        raise ValueError(f"Invalid value for {attr}: {value}")
+        
+        cls.__init__ = new_init
+        return cls
+    
+    return decorator
+
+@validate_attributes(
+    age=lambda x: isinstance(x, int) and x > 0,
+    email=lambda x: isinstance(x, str) and '@' in x
+)
+class Person:
+    def __init__(self, name, age, email):
+        self.name = name
+        self.age = age
+        self.email = email
+
+# 使用属性验证
+try:
+    person = Person("Alice", 25, "alice@example.com")
+    print(f"Created: {person.name}, {person.age}, {person.email}")
+    
+    # 这会抛出异常
+    invalid_person = Person("Bob", -5, "invalid-email")
+except ValueError as e:
+    print(f"Validation error: {e}")
+</pre>
+
+<h2>
+    注册器类装饰器
+</h2>
+<pre tag="python">
+# 全局注册表
+class_registry = {}
+
+def register_class(name=None):
+    """类注册装饰器"""
+    def decorator(cls):
+        class_name = name or cls.__name__
+        class_registry[class_name] = cls
+        return cls
+    return decorator
+
+@register_class()
+class Dog:
+    def speak(self):
+        return "Woof!"
+
+@register_class("Cat")
+class Feline:
+    def speak(self):
+        return "Meow!"
+
+@register_class("Bird")
+class Bird:
+    def speak(self):
+        return "Tweet!"
+
+# 使用注册的类
+print("Registered classes:", list(class_registry.keys()))
+
+for name, cls in class_registry.items():
+    instance = cls()
+    print(f"{name}: {instance.speak()}")
+
+# 动态创建实例
+animal_type = "Dog"
+if animal_type in class_registry:
+    animal = class_registry[animal_type]()
+    print(f"Created {animal_type}: {animal.speak()}")
+</pre>

@@ -1,0 +1,211 @@
+<header>
+    封装的实际应用
+</header>
+<h2>
+    用户认证系统
+</h2>
+<pre tag="python">
+import hashlib
+import secrets
+
+class User:
+    """用户类，封装用户信息和安全相关操作"""
+    
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.__password_hash = self.__hash_password(password)
+        self.__login_attempts = 0
+        self.__max_attempts = 3
+        self.__is_locked = False
+    
+    def __hash_password(self, password):
+        """私有方法：密码哈希"""
+        salt = secrets.token_hex(16)
+        pwd_hash = hashlib.pbkdf2_hmac('sha256', 
+                                     password.encode('utf-8'), 
+                                     salt.encode('utf-8'), 
+                                     100000)
+        return f"{salt}:{pwd_hash.hex()}"
+    
+    def __verify_password(self, password):
+        """私有方法：验证密码"""
+        if self.__is_locked:
+            return False
+        
+        salt, stored_hash = self.__password_hash.split(':')
+        pwd_hash = hashlib.pbkdf2_hmac('sha256', 
+                                      password.encode('utf-8'), 
+                                      salt.encode('utf-8'), 
+                                      100000)
+        return pwd_hash.hex() == stored_hash
+    
+    def login(self, password):
+        """公有方法：登录"""
+        if self.__is_locked:
+            print("账户已被锁定")
+            return False
+        
+        if self.__verify_password(password):
+            self.__login_attempts = 0  # 重置尝试次数
+            print(f"欢迎回来, {self.username}!")
+            return True
+        else:
+            self.__login_attempts += 1
+            remaining = self.__max_attempts - self.__login_attempts
+            if remaining > 0:
+                print(f"密码错误，还剩{remaining}次机会")
+            else:
+                self.__is_locked = True
+                print("账户已被锁定")
+            return False
+    
+    def reset_password(self, old_password, new_password):
+        """公有方法：重置密码"""
+        if self.__verify_password(old_password):
+            self.__password_hash = self.__hash_password(new_password)
+            self.__login_attempts = 0
+            self.__is_locked = False
+            print("密码已重置")
+            return True
+        else:
+            print("旧密码错误")
+            return False
+    
+    def get_user_info(self):
+        """公有方法：获取用户信息（不包含敏感信息）"""
+        return {
+            'username': self.username,
+            'email': self.email,
+            'is_locked': self.__is_locked
+        }
+    
+    @property
+    def is_locked(self):
+        """只读属性：账户是否被锁定"""
+        return self.__is_locked
+
+# 使用用户认证系统
+user = User("alice", "alice@example.com", "password123")
+print(user.get_user_info())
+
+# 测试登录
+user.login("wrong_password")  # 失败
+user.login("password123")     # 成功
+
+# 测试密码重置
+user.reset_password("password123", "new_password")
+</pre>
+
+<h2>
+    配置管理系统
+</h2>
+<pre tag="python">
+class Configuration:
+    """配置管理类，封装配置读取和验证"""
+    
+    def __init__(self, config_file=None):
+        self.__config = {}
+        self.__loaded = False
+        self.__validators = {
+            'port': self.__validate_port,
+            'timeout': self.__validate_timeout,
+            'log_level': self.__validate_log_level,
+            'max_connections': self.__validate_max_connections
+        }
+        if config_file:
+            self.load_config(config_file)
+    
+    def __validate_port(self, value):
+        """私有方法：验证端口号"""
+        if not isinstance(value, int):
+            return False
+        return 1 <= value <= 65535
+    
+    def __validate_timeout(self, value):
+        """私有方法：验证超时时间"""
+        return isinstance(value, (int, float)) and value > 0
+    
+    def __validate_log_level(self, value):
+        """私有方法：验证日志级别"""
+        valid_levels = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
+        return value.upper() in valid_levels
+    
+    def __validate_max_connections(self, value):
+        """私有方法：验证最大连接数"""
+        return isinstance(value, int) and value > 0
+    
+    def load_config(self, config_file):
+        """公有方法：加载配置文件"""
+        try:
+            import json
+            with open(config_file, 'r') as f:
+                raw_config = json.load(f)
+            
+            self.__config = {}
+            for key, value in raw_config.items():
+                if key in self.__validators:
+                    if self.__validators[key](value):
+                        self.__config[key] = value
+                    else:
+                        print(f"配置项 {key} 验证失败，使用默认值")
+                else:
+                    self.__config[key] = value
+            
+            self.__loaded = True
+            print("配置加载成功")
+        except Exception as e:
+            print(f"配置加载失败: {e}")
+    
+    def get(self, key, default=None):
+        """公有方法：获取配置值"""
+        return self.__config.get(key, default)
+    
+    def set(self, key, value):
+        """公有方法：设置配置值"""
+        if key in self.__validators:
+            if self.__validators[key](value):
+                self.__config[key] = value
+                return True
+            else:
+                print(f"配置值 {value} 验证失败")
+                return False
+        else:
+            self.__config[key] = value
+            return True
+    
+    def save_config(self, config_file):
+        """公有方法：保存配置"""
+        try:
+            import json
+            with open(config_file, 'w') as f:
+                json.dump(self.__config, f, indent=2)
+            print("配置保存成功")
+        except Exception as e:
+            print(f"配置保存失败: {e}")
+    
+    def get_all_configs(self):
+        """公有方法：获取所有配置"""
+        return self.__config.copy()
+    
+    @property
+    def is_loaded(self):
+        """只读属性：配置是否已加载"""
+        return self.__loaded
+
+# 使用配置管理系统
+config = Configuration()
+
+# 直接设置配置
+config.set('port', 8080)
+config.set('timeout', 30)
+config.set('log_level', 'INFO')
+config.set('max_connections', 100)
+
+print("当前配置:")
+for key, value in config.get_all_configs().items():
+    print(f"  {key}: {value}")
+
+# 保存配置
+config.save_config('config.json')
+</pre>

@@ -1,0 +1,100 @@
+<header>
+    类方法
+</header>
+<h2>
+    类方法基础
+</h2>
+<p>
+    <span class="important">类方法</span>使用<span class="warn">@classmethod</span>装饰器定义，第一个参数必须是<span class="warn">cls</span>，表示类本身。类方法可以访问和修改类属性，但不能直接访问实例属性。
+</p>
+<pre tag="python">
+class Student:
+    # 类属性
+    total_students = 0
+    school_name = "Python University"
+    
+    def __init__(self, name, grade):
+        self.name = name
+        self.grade = grade
+        # 每创建一个学生，总数加1
+        Student.total_students += 1
+    
+    @classmethod
+    def get_total_students(cls):
+        """类方法：获取学生总数"""
+        return cls.total_students
+    
+    @classmethod
+    def set_school_name(cls, name):
+        """类方法：设置学校名称"""
+        cls.school_name = name
+    
+    @classmethod
+    def create_from_string(cls, student_string):
+        """类方法：从字符串创建学生对象"""
+        name, grade = student_string.split('-')
+        return cls(name, grade)
+
+# 使用类方法
+student1 = Student("Alice", "A")
+student2 = Student("Bob", "B")
+
+print(Student.get_total_students())  # 输出: 2
+print(Student.school_name)           # 输出: Python University
+
+# 修改类属性
+Student.set_school_name("Advanced Python University")
+print(Student.school_name)           # 输出: Advanced Python University
+
+# 使用类方法创建对象
+student3 = Student.create_from_string("Charlie-C")
+print(student3.name)  # 输出: Charlie
+print(student3.grade) # 输出: C
+</pre>
+
+<h2>
+    类方法的特点
+</h2>
+<ul>
+    <li>使用@classmethod装饰器定义</li>
+    <li>第一个参数必须是cls，表示类本身</li>
+    <li>可以访问和修改类属性</li>
+    <li>不能访问实例属性（因为没有self参数）</li>
+    <li>可以通过类名或实例调用</li>
+</ul>
+
+<h2>
+    工厂方法模式
+</h2>
+<pre tag="python">
+class Date:
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+    
+    @classmethod
+    def from_string(cls, date_string):
+        """从字符串创建日期对象"""
+        year, month, day = map(int, date_string.split('-'))
+        return cls(year, month, day)
+    
+    @classmethod
+    def today(cls):
+        """创建今天的日期对象"""
+        import datetime
+        today = datetime.date.today()
+        return cls(today.year, today.month, today.day)
+    
+    def __str__(self):
+        return f"{self.year}-{self.month:02d}-{self.day:02d}"
+
+# 使用不同的构造方式
+date1 = Date(2023, 12, 25)
+date2 = Date.from_string("2023-12-31")
+date3 = Date.today()
+
+print(date1)  # 2023-12-25
+print(date2)  # 2023-12-31
+print(date3)  # 当前日期
+</pre>

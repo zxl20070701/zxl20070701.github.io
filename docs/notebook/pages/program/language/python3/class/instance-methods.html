@@ -1,0 +1,66 @@
+<header>
+    实例方法
+</header>
+<h2>
+    实例方法基础
+</h2>
+<p>
+    <span class="important">实例方法</span>是最常见的方法类型，第一个参数必须是<span class="warn">self</span>，表示对象本身。实例方法可以访问和修改对象的属性。
+</p>
+<pre tag="python">
+class Car:
+    def __init__(self, brand, model, year):
+        self.brand = brand
+        self.model = model
+        self.year = year
+        self.mileage = 0
+    
+    def drive(self, miles):
+        """实例方法：增加里程"""
+        self.mileage += miles
+        return f"{self.brand} {self.model} 行驶了 {miles} 英里"
+    
+    def get_info(self):
+        """实例方法：获取汽车信息"""
+        return f"{self.year} {self.brand} {self.model}, 里程: {self.mileage} 英里"
+
+# 创建对象并调用实例方法
+my_car = Car("Toyota", "Camry", 2020)
+print(my_car.drive(100))      # Toyota Camry 行驶了 100 英里
+print(my_car.get_info())      # 2020 Toyota Camry, 里程: 100 英里
+</pre>
+
+<h2>
+    实例方法的特点
+</h2>
+<ul>
+    <li>第一个参数必须是self，表示对象本身</li>
+    <li>可以访问和修改对象的所有属性</li>
+    <li>可以调用其他实例方法</li>
+    <li>每个对象都有自己的实例方法副本</li>
+</ul>
+
+<h2>
+    实例方法调用方式
+</h2>
+<pre tag="python">
+class Calculator:
+    def __init__(self):
+        self.result = 0
+    
+    def add(self, value):
+        self.result += value
+        return self
+    
+    def multiply(self, value):
+        self.result *= value
+        return self
+    
+    def get_result(self):
+        return self.result
+
+# 方法链式调用
+calc = Calculator()
+result = calc.add(10).multiply(2).get_result()
+print(result)  # 20
+</pre>

@@ -1,0 +1,141 @@
+<header>
+    滤镜
+</header>
+<h2>
+    滤镜基础
+</h2>
+<p>
+    SVG滤镜使用&lt;filter&gt;元素定义，可以应用于任何图形元素。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <filter id="blurFilter">
+            <feGaussianBlur stdDeviation="3" />
+        </filter>
+    </defs>
+    <rect x="10" y="10" width="80" height="80" fill="red" />
+    <rect x="110" y="10" width="80" height="80" fill="blue" filter="url(#blurFilter)" />
+</svg>
+</pre>
+<h2>
+    模糊滤镜 &lt;feGaussianBlur&gt;
+</h2>
+<p>
+    创建模糊效果。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <filter id="gaussianBlur">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+        </filter>
+    </defs>
+    <text x="100" y="100" text-anchor="middle" font-size="30" fill="black" filter="url(#gaussianBlur)">
+        模糊文字
+    </text>
+</svg>
+</pre>
+<h2>
+    阴影滤镜 &lt;feDropShadow&gt;
+</h2>
+<p>
+    创建阴影效果。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <filter id="dropShadow">
+            <feDropShadow dx="3" dy="3" stdDeviation="2" flood-color="black" flood-opacity="0.5" />
+        </filter>
+    </defs>
+    <circle cx="100" cy="100" r="50" fill="yellow" filter="url(#dropShadow)" />
+</svg>
+</pre>
+<h2>
+    颜色矩阵滤镜 &lt;feColorMatrix&gt;
+</h2>
+<p>
+    调整颜色，如灰度、饱和度等。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <filter id="grayScale">
+            <feColorMatrix type="saturate" values="0" />
+        </filter>
+    </defs>
+    <rect x="10" y="10" width="80" height="80" fill="red" />
+    <rect x="110" y="10" width="80" height="80" fill="red" filter="url(#grayScale)" />
+</svg>
+</pre>
+<h3>
+    颜色矩阵类型
+</h3>
+<ul>
+    <li><span class="important">matrix</span>: 使用20个值的矩阵</li>
+    <li><span class="important">saturate</span>: 饱和度调整（0-1）</li>
+    <li><span class="important">hueRotate</span>: 色相旋转（角度）</li>
+    <li><span class="important">luminanceToAlpha</span>: 亮度转透明度</li>
+</ul>
+<h2>
+    位移滤镜 &lt;feOffset&gt;
+</h2>
+<p>
+    创建位移效果。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <filter id="offsetFilter">
+            <feOffset in="SourceGraphic" dx="10" dy="10" />
+        </filter>
+    </defs>
+    <circle cx="80" cy="80" r="40" fill="green" />
+    <circle cx="80" cy="80" r="40" fill="blue" filter="url(#offsetFilter)" />
+</svg>
+</pre>
+<h2>
+    复合滤镜
+</h2>
+<p>
+    多个滤镜效果可以组合使用。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <filter id="complexFilter">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+            <feOffset in="blur" dx="5" dy="5" result="offsetBlur" />
+            <feMerge>
+                <feMergeNode in="offsetBlur" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+    </defs>
+    <text x="100" y="100" text-anchor="middle" font-size="30" fill="blue" filter="url(#complexFilter)">
+        复合效果
+    </text>
+</svg>
+</pre>
+<h2>
+    光照滤镜
+</h2>
+<p>
+    创建光照效果。
+</p>
+<pre tag="html">
+<svg width="200" height="200">
+    <defs>
+        <filter id="lightFilter">
+            <feSpecularLighting in="SourceGraphic" surfaceScale="5" specularConstant="0.75" specularExponent="20" lighting-color="white">
+                <fePointLight x="100" y="100" z="100" />
+            </feSpecularLighting>
+        </filter>
+    </defs>
+    <circle cx="100" cy="100" r="50" fill="orange" filter="url(#lightFilter)" />
+</svg>
+</pre>
+<div class="tips">
+    SVG滤镜功能强大，可以创建各种视觉效果。通过组合不同的滤镜元素，可以实现复杂的图像处理效果。
+</div>

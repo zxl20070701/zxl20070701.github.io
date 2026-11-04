@@ -519,12 +519,13 @@ window.doFormula = function (el) {
                         drawFormula(x + 5 + paddingSize, y + paddingSize, data.contents[0]);
 
                         // 然后绘制根号
+                        painter.lineWidth = 2;
                         painter.beginPath();
-                        painter.lineTo(x + paddingSize, y + data.height - paddingSize);
-                        painter.lineTo(x + paddingSize + 2.5, y + data.height - paddingSize - 2.5);
-                        painter.lineTo(x + paddingSize + 5, y + data.height - paddingSize);
-                        painter.lineTo(x + paddingSize + 5, y + paddingSize * 0.5);
-                        painter.lineTo(x + data.width - paddingSize, y + paddingSize * 0.5);
+                        painter.lineTo(x + paddingSize, y + data.height * 0.95 - paddingSize);
+                        painter.lineTo(x + paddingSize + 2.5, y + data.height * 0.95 - paddingSize - 2.5);
+                        painter.lineTo(x + paddingSize + 5, y + data.height * 0.95 - paddingSize);
+                        painter.lineTo(x + paddingSize + 5, y + paddingSize * 0.5 + data.height * 0.05);
+                        painter.lineTo(x + data.width - paddingSize, y + paddingSize * 0.5 + data.height * 0.05);
                         painter.stroke();
                         break;
                     }
@@ -533,7 +534,8 @@ window.doFormula = function (el) {
                         var leftTop = y + data.contents[1].height * 0.5 - data._help.limtSize.height * 0.5;
 
                         // 先绘制极限文字和趋势
-                        painter.fillText("lim", x + paddingSize + data._help.leftWidth * 0.5, paddingSize + leftTop);
+                        painter.textAlign = "center";
+                        painter.fillText("lim", x + data._help.leftWidth * 0.5, paddingSize + leftTop + 3);
                         drawFormula(x, data._help.limtSize.height + leftTop - paddingSize, data.contents[0]);
 
                         // 然后绘制表达式
@@ -545,6 +547,9 @@ window.doFormula = function (el) {
 
                         // 先绘制左边的，从下到上
                         drawFormula(x + data._help.leftWidth * 0.5 - data._help.p1Width * 0.5 + paddingSize, y + data.height * 0.5 + 10 + paddingSize, data.contents[0]);
+
+                        painter.lineWidth = 2;
+                        painter.lineJoin = "round";
                         painter.beginPath();
                         painter.lineTo(x + data._help.leftWidth * 0.5 + 10 + paddingSize, y + data.height * 0.5 - 10 + paddingSize);
                         painter.lineTo(x + data._help.leftWidth * 0.5 - 10 + paddingSize, y + data.height * 0.5 - 10 + paddingSize);
@@ -552,6 +557,8 @@ window.doFormula = function (el) {
                         painter.lineTo(x + data._help.leftWidth * 0.5 - 10 + paddingSize, y + data.height * 0.5 + 10 + paddingSize);
                         painter.lineTo(x + data._help.leftWidth * 0.5 + 10 + paddingSize, y + data.height * 0.5 + 10 + paddingSize);
                         painter.stroke();
+                        painter.lineWidth = 1;
+
                         drawFormula(x + data._help.leftWidth * 0.5 - data._help.p2Width * 0.5 + paddingSize, y + data.height * 0.5 - 10 - data._help.p2Height + paddingSize, data.contents[1]);
 
                         // 然后绘制右边的
@@ -590,6 +597,7 @@ window.doFormula = function (el) {
                         }
 
                         // 绘制两边
+                        painter.lineWidth = 2;
                         if (data._help.isHLS) {
 
                             painter.beginPath();
@@ -629,9 +637,10 @@ window.doFormula = function (el) {
                         drawFormula(x + (data.width - data.contents[1].width) * 0.5, y + paddingSize + data.contents[0].height + 2, data.contents[1]);
 
                         // 再绘制中间的线条
+                        painter.lineWidth = 2;
                         painter.beginPath();
-                        painter.lineTo(x + paddingSize, y + data.contents[0].height + 1);
-                        painter.lineTo(x + data.width - paddingSize, y + data.contents[0].height + 1);
+                        painter.lineTo(x + paddingSize, y + data.contents[0].height + 1 + paddingSize);
+                        painter.lineTo(x + data.width - paddingSize, y + data.contents[0].height + 1 + paddingSize);
                         painter.stroke();
 
                         break;
@@ -642,6 +651,7 @@ window.doFormula = function (el) {
                         drawFormula(x + paddingSize + 10, y + paddingSize, data.contents[0]);
 
                         // 再绘制括号
+                        painter.lineWidth = 2;
                         drawBracket(painter, data._help.type, 'left', x + paddingSize, y + paddingSize, data.height - 2 * paddingSize);
                         drawBracket(painter, data._help.type, 'right', x + data.width - paddingSize - 10, y + paddingSize, data.height - 2 * paddingSize);
                         break;
@@ -660,8 +670,10 @@ window.doFormula = function (el) {
                     }
 
                     case "equationSet": {
+                        painter.lineWidth = 2;
                         drawBracket(painter, "big", 'left', x + paddingSize, y + paddingSize, data.height - 2 * paddingSize);
 
+                        painter.lineWidth = 1;
                         for (var i in data.contents) {
                             drawFormula(x + paddingSize + 10, y + data._help.pxTops[i], data.contents[i]);
                         }
@@ -671,6 +683,8 @@ window.doFormula = function (el) {
 
                     case "upLine": {
                         drawFormula(x, y + paddingSize, data.contents[0]);
+
+                        painter.lineWidth = 2;
                         painter.beginPath();
                         painter.lineTo(x, y + paddingSize);
                         painter.lineTo(x + data.width, y + paddingSize);
@@ -681,6 +695,8 @@ window.doFormula = function (el) {
 
                     case "downLine": {
                         drawFormula(x, y, data.contents[0]);
+
+                        painter.lineWidth = 2;
                         painter.beginPath();
                         painter.lineTo(x, y + data.height - paddingSize);
                         painter.lineTo(x + data.width, y + data.height - paddingSize);
@@ -691,6 +707,8 @@ window.doFormula = function (el) {
 
                     case "vector": {
                         drawFormula(x, y + paddingSize, data.contents[0]);
+
+                        painter.lineWidth = 2;
                         painter.beginPath();
                         painter.lineTo(x + paddingSize * 0.3, y + paddingSize);
                         painter.lineTo(x + data.width - paddingSize * 0.3, y + paddingSize);
@@ -707,6 +725,7 @@ window.doFormula = function (el) {
                     case "abs": {
                         drawFormula(x + paddingSize, y, data.contents[0]);
 
+                        painter.lineWidth = 2;
                         painter.beginPath();
                         painter.lineTo(x + paddingSize, y);
                         painter.lineTo(x + paddingSize, y + data.height);
@@ -723,15 +742,16 @@ window.doFormula = function (el) {
                     case "integral": {
                         drawFormula(x + paddingSize + 15, y + paddingSize, data.contents[3]);
                         drawFormula(x + paddingSize + 10, y + data.height - data.contents[2].height - paddingSize, data.contents[2]);
-                        drawFormula(x + paddingSize + 15, y + paddingSize + data.contents[3].height, data.contents[0]);
-                        drawFormula(x + paddingSize + 15 + data.contents[0].width, y + paddingSize + data.contents[3].height + 0.5 * (data.contents[0].height - data.contents[1].height), data.contents[1]);
+                        drawFormula(x + paddingSize + 10, y + paddingSize + data.contents[3].height, data.contents[0]);
+                        drawFormula(x + paddingSize + 7 + data.contents[0].width, y + paddingSize + data.contents[3].height + 0.5 * (data.contents[0].height - data.contents[1].height), data.contents[1]);
 
                         // 然后绘制积分符号
+                        painter.lineWidth = 2;
                         painter.beginPath();
-                        painter.moveTo(x + paddingSize, y + data.height - paddingSize - 2.5);
-                        painter.arc(x + paddingSize + 2.5, y + data.height - paddingSize - 2.5, 2.5, Math.PI, 0, true);
-                        painter.lineTo(x + paddingSize + 10, y + paddingSize + 2.5);
-                        painter.arc(x + paddingSize + 12.5, y + paddingSize + 2.5, 2.5, Math.PI, 2 * Math.PI, false);
+                        painter.moveTo(x + paddingSize + data.width * 0.02, y + data.height * 0.9 - paddingSize - 2.5);
+                        painter.arc(x + paddingSize + 2.5 + data.width * 0.02, y + data.height * 0.9 - paddingSize - 2.5, 2.5, Math.PI, 0, true);
+                        painter.lineTo(x + paddingSize + 10 + data.width * 0.02, y + paddingSize + data.height * 0.05 + 2.5);
+                        painter.arc(x + paddingSize + 12.5 + data.width * 0.02, y + paddingSize + data.height * 0.05 + 2.5, 2.5, Math.PI, 2 * Math.PI, false);
                         painter.stroke();
 
                         break;
@@ -741,6 +761,7 @@ window.doFormula = function (el) {
                         drawFormula(x + data.width * 0.5 - data.contents[0].width * 0.5, y + data.height - paddingSize - data.contents[0].height, data.contents[0]);
                         drawFormula(x + data.width * 0.5 - data.contents[1].width * 0.5, y + paddingSize, data.contents[1]);
 
+                        painter.lineWidth = 2;
                         painter.beginPath();
                         painter.moveTo(x + data.width * 0.5 - 15, y + paddingSize + data.contents[1].height);
                         painter.lineTo(x + data.width * 0.5 - 15, y + paddingSize + data.contents[1].height + 25);
@@ -759,6 +780,7 @@ window.doFormula = function (el) {
                         drawFormula(x + data.width * 0.5 - data.contents[0].width * 0.5, y + data.height - paddingSize - data.contents[0].height, data.contents[0]);
                         drawFormula(x + data.width * 0.5 - data.contents[1].width * 0.5, y + paddingSize, data.contents[1]);
 
+                        painter.lineWidth = 2;
                         painter.beginPath();
                         painter.moveTo(x + data.width * 0.5 - 15, y + paddingSize + data.contents[1].height + 35);
                         painter.lineTo(x + data.width * 0.5 - 15, y + paddingSize + data.contents[1].height + 10);
@@ -777,9 +799,10 @@ window.doFormula = function (el) {
                         drawFormula(x + paddingSize + 20, y + paddingSize, data.contents[1]);
                         drawFormula(x + paddingSize + 20, y + 5 + data.contents[1].height + paddingSize, data.contents[0]);
 
+                        painter.lineWidth = 2;
                         painter.beginPath();
-                        painter.moveTo(x + 20, y + paddingSize * 2);
-                        painter.bezierCurveTo(x, y + data.height * 0.7, x + 18, y + data.height - paddingSize * 2, x + 22, y + data.height - paddingSize * 2 - 10)
+                        painter.moveTo(x + 20, y + paddingSize * 2 + 10);
+                        painter.bezierCurveTo(x, y + data.height * 0.7 - 30, x + 10, y + data.height - paddingSize * 2 + 20, x + 22, y + data.height - paddingSize * 2 - 10)
                         painter.stroke();
 
                         break;
@@ -789,10 +812,12 @@ window.doFormula = function (el) {
                         drawFormula(x + paddingSize + 20, y + paddingSize, data.contents[1]);
                         drawFormula(x + paddingSize + 20, y + 5 + data.contents[1].height + paddingSize, data.contents[0]);
 
+                        painter.lineWidth = 2;
+                        painter.lineJoin = "round";
                         painter.beginPath();
-                        painter.moveTo(x + paddingSize, y + data.height - paddingSize);
-                        painter.lineTo(x + paddingSize + 10, y + paddingSize);
-                        painter.lineTo(x + paddingSize + 20, y + data.height - paddingSize);
+                        painter.moveTo(x + paddingSize, y + data.height * 0.8 - paddingSize);
+                        painter.lineTo(x + paddingSize + 10, y + paddingSize + data.height * 0.2);
+                        painter.lineTo(x + paddingSize + 20, y + data.height * 0.8 - paddingSize);
                         painter.stroke();
 
                         painter.beginPath();

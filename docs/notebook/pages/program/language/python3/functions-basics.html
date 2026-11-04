@@ -1,0 +1,47 @@
+<header>
+    函数基础概念
+</header>
+<p>
+    函数是Python中的基本构建块，用于封装可重用的代码。函数可以接受参数并返回值。
+</p>
+<h2>
+    语法
+</h2>
+<pre tag="python">
+def 函数名（参数列表）:
+    函数体
+</pre>
+<h2>
+    函数定义和调用
+</h2>
+<h3>
+    基本函数定义
+</h3>
+<pre tag="python">
+def greet(name):
+    """这是一个简单的问候函数"""
+    return f"Hello, {name}!"
+
+message = greet("Alice")
+print(message)  # 输出: Hello, Alice!
+
+</pre>
+<h3>
+    没有返回值的函数
+</h3>
+<pre tag="python">
+def print_info(name, age):
+    print(f"姓名: {name}, 年龄: {age}")
+
+print_info("Bob", 25)  # 输出: 姓名: Bob, 年龄: 25
+</pre>
+<h3>
+    返回多个值的函数
+</h3>
+<pre tag="python">
+def get_name_and_age():
+    return "Charlie", 30
+
+name, age = get_name_and_age()
+print(name, age)  # 输出: Charlie 30
+</pre>

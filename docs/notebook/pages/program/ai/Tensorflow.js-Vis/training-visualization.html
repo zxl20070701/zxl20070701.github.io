@@ -1,0 +1,78 @@
+<header>
+    训练过程可视化
+</header>
+
+<p>
+    训练时最重要的曲线通常是 loss、val_loss、accuracy、val_acc。tfjs-vis 提供了 fitCallbacks，可以直接接入 model.fit。
+</p>
+
+<h2>
+    使用 fitCallbacks
+</h2>
+
+<pre tag="javascript">
+const metrics = ["loss", "val_loss", "acc", "val_acc"];
+const container = {
+    name: "训练过程",
+    tab: "训练"
+};
+
+const callbacks = tfvis.show.fitCallbacks(container, metrics, {
+    callbacks: ["onEpochEnd"]
+});
+
+await model.fit(trainXs, trainYs, {
+    epochs: 20,
+    batchSize: 32,
+    validationSplit: 0.2,
+    callbacks
+});
+</pre>
+
+<h2>
+    手动记录训练日志
+</h2>
+
+<pre tag="javascript">
+const history = [];
+
+await model.fit(xs, ys, {
+    epochs: 10,
+    callbacks: {
+        onEpochEnd: async (epoch, logs) => {
+            history.push({
+                x: epoch + 1,
+                y: logs.loss
+            });
+
+            tfvis.render.linechart(
+                { name: "loss", tab: "训练" },
+                { values: history, series: ["loss"] },
+                { xLabel: "epoch", yLabel: "loss" }
+            );
+
+            await tf.nextFrame();
+        }
+    }
+});
+</pre>
+
+<h2>
+    如何读曲线
+</h2>
+
+<ul>
+    <li>loss 和 val_loss 都下降：训练正常。</li>
+    <li>loss 下降但 val_loss 上升：可能过拟合。</li>
+    <li>loss 几乎不变：学习率、数据、模型结构可能有问题。</li>
+    <li>曲线剧烈震荡：学习率可能过大，或 batchSize 太小。</li>
+</ul>
+
+<h2>
+    实践建议</h2>
+
+<ul>
+    <li>先用少量 epoch 看曲线趋势，再长时间训练。</li>
+    <li>同时观察训练集和验证集指标。</li>
+    <li>训练回调中使用 await tf.nextFrame()，让页面有机会刷新。</li>
+</ul>

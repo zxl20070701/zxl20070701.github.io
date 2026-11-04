@@ -1,0 +1,46 @@
+<header>
+    如何搭建环境和运行？
+</header>
+<h2>
+    安装
+</h2>
+<p>
+    本地学习最推荐 IntelliJ IDEA，它是 JetBrains 自家的 IDE，对 Kotlin 的支持最完整。下载 Community 社区版即可，个人学习完全免费，功能足够日常使用。
+</p>
+<p>
+    下载地址：
+    <a href="https://www.jetbrains.com/idea/download/" target="_blank">https://www.jetbrains.com/idea/download/</a>
+</p>
+<h2>
+    HelloWorld
+</h2>
+<p>
+    安装完成后按下面的步骤新建项目：
+</p>
+<ul>
+    <li>
+        第一步，打开 IDEA，点击 New Project，在左侧语言列表中选择 Kotlin。
+    </li>
+    <li>
+        第二步，填写项目名称，例如 kotlin-demo，并确认 Build system 选择 IntelliJ。
+    </li>
+    <li>
+        第三步，选择 JDK 版本。JDK 8 及以上都可以，建议使用 JDK 17 或 JDK 21 这类长期支持版本。
+    </li>
+    <li>
+        第四步，在 src/ 目录上右键，新建 Kotlin 文件 Hello.kt，写入代码后点击行号旁的绿色三角运行。
+    </li>
+</ul>
+<pre tag="kotlin">
+fun main(){
+    print("你好呀，这是第一个程序！")
+}
+</pre>
+<p>
+    控制台就会有如下输出：
+</p>
+<pre>
+/Users/zxl20070701/Library/Java/JavaVirtualMachines/jbr-17.0.14/Contents/Home/bin/java ......
+你好呀，这是第一个程序！
+进程已结束，退出代码为 0
+</pre>

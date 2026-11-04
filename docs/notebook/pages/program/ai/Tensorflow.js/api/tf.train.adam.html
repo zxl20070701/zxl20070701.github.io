@@ -1,0 +1,53 @@
+<header>
+    tf.train.adam
+</header>
+<h2>
+    语法
+</h2>
+<pre tag="javascript">
+    tf.train.adam(learningRate?, beta1?, beta2?, epsilon?)
+</pre>
+<p>
+    创建 Adam 优化器。
+</p>
+<h3>
+    learningRate
+</h3>
+<p>
+    学习率，默认为 0.001。
+</p>
+<h3>
+    beta1
+</h3>
+<p>
+    第一个动量参数，默认为 0.9。
+</p>
+<h3>
+    beta2
+</h3>
+<p>
+    第二个动量参数，默认为 0.999。
+</p>
+<h3>
+    epsilon
+</h3>
+<p>
+    数值稳定性参数，默认为 1e-8。
+</p>
+<h2>
+    示例
+</h2>
+<pre tag="javascript">
+const optimizer = tf.train.adam(0.001);
+const model = tf.sequential({
+  layers: [
+    tf.layers.dense({ inputShape: [1], units: 1 })
+  ]
+});
+
+// 编译模型
+model.compile({
+  optimizer: optimizer,
+  loss: 'meanSquaredError'
+});
+</pre>

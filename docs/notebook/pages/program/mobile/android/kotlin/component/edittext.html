@@ -1,0 +1,189 @@
+<header>
+    TextField 输入框
+</header>
+<p>
+    Compose 中的 <span class="important">TextField</span> /
+    <span class="important">OutlinedTextField</span> 用于接收用户输入，
+    替代 View 时代的 EditText。
+</p>
+<h2>
+    基础用法
+</h2>
+<pre tag="kotlin">
+@Composable
+fun TextFieldDemo() {
+    var text by remember { mutableStateOf("") }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text("用户名") },
+        placeholder = { Text("请输入用户名") },
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+</pre>
+<h2>
+    常用属性对照表
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>Compose 属性</td>
+            <td>原 XML 属性</td>
+            <td>说明</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>placeholder</td>
+            <td>android:hint</td>
+            <td>空内容时的提示文字</td>
+        </tr>
+        <tr>
+            <td>keyboardOptions(KeyboardType.Password)</td>
+            <td>android:inputType="textPassword"</td>
+            <td>密码输入模式</td>
+        </tr>
+        <tr>
+            <td>maxLines</td>
+            <td>android:maxLines</td>
+            <td>最大行数</td>
+        </tr>
+        <tr>
+            <td>singleLine = true</td>
+            <td>android:maxLines="1"</td>
+            <td>单行输入</td>
+        </tr>
+        <tr>
+            <td>enabled</td>
+            <td>android:enabled</td>
+            <td>是否可编辑</td>
+        </tr>
+        <tr>
+            <td>readOnly</td>
+            <td>android:focusable="false"</td>
+            <td>只读</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    密码输入框
+</h2>
+<pre tag="kotlin">
+@Composable
+fun PasswordField() {
+    var password by remember { mutableStateOf("") }
+    var visible by remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        value = password,
+        onValueChange = { password = it },
+        label = { Text("密码") },
+        visualTransformation = if (visible) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password
+        ),
+        trailingIcon = {
+            IconButton(onClick = { visible = !visible }) {
+                Icon(
+                    imageVector = if (visible) {
+                        Icons.Filled.Visibility
+                    } else {
+                        Icons.Filled.VisibilityOff
+                    },
+                    contentDescription = null
+                )
+            }
+        },
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+</pre>
+<h2>
+    数字键盘
+</h2>
+<pre tag="kotlin">
+OutlinedTextField(
+    value = phone,
+    onValueChange = { phone = it },
+    keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Phone
+    ),
+    modifier = Modifier.fillMaxWidth()
+)
+</pre>
+<h2>
+    输入校验与错误提示
+</h2>
+<pre tag="kotlin">
+var email by remember { mutableStateOf("") }
+var isError by remember { mutableStateOf(false) }
+
+OutlinedTextField(
+    value = email,
+    onValueChange = {
+        email = it
+        isError = !android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
+    },
+    label = { Text("邮箱") },
+    isError = isError,
+    supportingText = {
+        if (isError) {
+            Text("邮箱格式不正确", color = MaterialTheme.colorScheme.error)
+        }
+    },
+    modifier = Modifier.fillMaxWidth()
+)
+</pre>
+<h2>
+    输入框状态提升
+</h2>
+<pre tag="kotlin">
+@Composable
+fun LoginScreen() {
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        LoginField(
+            value = username,
+            onValueChange = { username = it },
+            label = "用户名"
+        )
+        LoginField(
+            value = password,
+            onValueChange = { password = it },
+            label = "密码"
+        )
+        Button(onClick = { /* 登录逻辑 */ }) {
+            Text("登录")
+        }
+    }
+}
+
+@Composable
+fun LoginField(
+    value: String,
+    onValueChange: (String) -&gt; Unit,
+    label: String
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+</pre>
+<div class="tips">
+    Compose 中输入框的值必须显式声明为 <span class="warn">remember { mutableStateOf("") }</span>，
+    并通过 <span class="warn">onValueChange</span> 更新，这是单向数据流的核心设计。
+</div>

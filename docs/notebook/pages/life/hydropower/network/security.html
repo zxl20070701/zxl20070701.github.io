@@ -1,0 +1,251 @@
+<header>
+    安防监控与门禁
+</header>
+<p>
+    安防系统的价值不在于设备多，而在于
+    <span class="special">关键位置有画面、异常能报警、断电不断记录</span>
+    。布点错了，装十个摄像头也拍不到门口。
+</p>
+<div class="tips">
+    优先级排序：
+    <span class="special">入户门 &gt; 庭院/楼道 &gt; 客厅 &gt; 阳台/车库</span>
+    。室内摄像头涉及隐私，非必要不装。
+</div>
+<h2>
+    摄像头选型
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>供电/传输</th>
+            <th>优点</th>
+            <th>限制</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>POE 网络摄像头</td>
+            <td>一根网线供电+数据</td>
+            <td>稳定、可集中管理、无电池焦虑</td>
+            <td>需
+                <strong>提前布网线</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>WiFi 摄像头</td>
+            <td>插座供电 + 无线</td>
+            <td>安装灵活</td>
+            <td>依赖无线覆盖，易被干扰</td>
+        </tr>
+        <tr>
+            <td>电池摄像头</td>
+            <td>电池 + 无线</td>
+            <td>无需布线</td>
+            <td>需定期充电，录像不连续</td>
+        </tr>
+        <tr>
+            <td>4G 摄像头</td>
+            <td>流量卡</td>
+            <td>无网络环境可用</td>
+            <td>有流量成本</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    关键参数
+</h3>
+<ul>
+    <li>
+        <strong>分辨率</strong>：门口、庭院建议
+        <span class="special">400 万像素以上</span>
+        ，看清人脸需要足够细节。
+    </li>
+    <li>
+        <strong>夜视</strong>：优先
+        <span class="special">全彩夜视或红外</span>
+        ，纯白光补光会扰邻。
+    </li>
+    <li>
+        <strong>宽动态</strong>：逆光位置（门口朝外）必须支持，
+        <span class="warn">否则白天一片白</span>
+        。
+    </li>
+    <li>
+        <strong>防护等级</strong>：室外
+        <span class="special">IP66 以上</span>
+        ，且接头朝下防水。
+    </li>
+    <li>
+        <strong>存储</strong>：本地 NVR + 存储卡 + 云存储三选二，避免单点失效。
+    </li>
+</ul>
+<h2>
+    布点原则
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>位置</th>
+            <th>安装高度</th>
+            <th>要点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>入户门</td>
+            <td>2.2～2.5m，向下俯拍</td>
+            <td>能看清人脸与快递，避免逆光</td>
+        </tr>
+        <tr>
+            <td>庭院 / 车位</td>
+            <td>2.5～3m</td>
+            <td>覆盖进出路径，不留死角</td>
+        </tr>
+        <tr>
+            <td>客厅</td>
+            <td>2.2～2.5m</td>
+            <td>朝向入口，不拍邻窗</td>
+        </tr>
+        <tr>
+            <td>阳台</td>
+            <td>2.2m</td>
+            <td>防高空坠物、看晾晒</td>
+        </tr>
+        <tr>
+            <td>楼道 / 电梯厅</td>
+            <td>2.5m</td>
+            <td>需物业同意，注意公共区域规定</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    摄像头
+    <span class="important">不得拍到邻居门窗、公共走廊内部</span>
+    ，否则可能涉及侵犯隐私。安装前最好与物业、邻居沟通。
+</div>
+<h2>
+    录像与存储
+</h2>
+<ul>
+    <li>
+        <strong>NVR</strong>：集中录像，支持多路摄像头，需放在
+        <span class="special">弱电箱或机房</span>
+        ，预留电源与网口。
+    </li>
+    <li>
+        <strong>硬盘容量</strong>：按“路数 × 码率 × 天数”估算，4 路 400 万像素存 30 天约需
+        <span class="special">2～4TB</span>
+        。
+    </li>
+    <li>
+        建议使用
+        <span class="special">监控专用硬盘</span>
+        ，普通硬盘 7×24 写入易损坏。
+    </li>
+    <li>
+        重要位置开启
+        <span class="special">移动侦测录像</span>
+        ，兼顾容量与关键画面。
+    </li>
+    <li>
+        录像机
+        <span class="warn">接入 UPS 或至少独立回路</span>
+        ，断电时仍能记录一段时间。
+    </li>
+</ul>
+<h2>
+    门禁与可视对讲
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>设备</th>
+            <th>布线需求</th>
+            <th>注意</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>可视对讲室内机</td>
+            <td>电源 + 网线/专用线</td>
+            <td>按厂家要求预埋，位置靠近入户门</td>
+        </tr>
+        <tr>
+            <td>智能门锁</td>
+            <td>电池供电为主</td>
+            <td>可预留
+                <strong>应急供电接口</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>电磁锁 / 电插锁</td>
+            <td>12V 电源 + 控制线</td>
+            <td>需
+                <strong>门禁电源 + 出门按钮</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>人脸/指纹门禁</td>
+            <td>电源 + 网线</td>
+            <td>室外需防水，避免阳光直射屏幕</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    报警设备
+</h2>
+<ul>
+    <li>
+        <span class="special">门磁</span>：入户门、窗户，布防后开门即报警。
+    </li>
+    <li>
+        <span class="special">红外探测器</span>：覆盖主要通道，避免对着热源与宠物。
+    </li>
+    <li>
+        <span class="special">水浸传感器</span>：厨房水槽下、热水器旁、卫生间，漏水立即推送。
+    </li>
+    <li>
+        <span class="special">烟感 / 燃气报警</span>：厨房必备，燃气报警按气种定安装高度。
+    </li>
+    <li>
+        报警建议
+        <span class="special">声光 + 手机推送 + 联动摄像头</span>
+        三重，只响不推送等于没有。
+    </li>
+</ul>
+<h2>
+    施工与验收
+</h2>
+<ul>
+    <li>
+        摄像头位置
+        <span class="special">提前布网线</span>
+        ，并预留 86 底盒或接线盒，接头不裸露。
+    </li>
+    <li>
+        室外线路
+        <span class="special">穿管、接头朝下</span>
+        ，穿墙孔打胶密封，防止雨水渗入。
+    </li>
+    <li>
+        弱电箱内为 NVR、交换机预留
+        <span class="special">插座与散热空间</span>
+        。
+    </li>
+    <li>
+        验收时逐路查看
+        <span class="special">白天、夜间、逆光</span>
+        三种画面，确认可辨识人脸。
+    </li>
+    <li>
+        确认断电后录像机与摄像头
+        <span class="special">恢复供电能自动重连</span>
+        。
+    </li>
+    <li>
+        修改所有设备的
+        <span class="important">默认密码</span>
+        ，关闭不必要的远程访问端口。
+    </li>
+</ul>

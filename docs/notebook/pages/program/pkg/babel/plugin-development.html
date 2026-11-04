@@ -1,0 +1,211 @@
+<header>
+    Babel 插件开发
+</header>
+<h2>
+    什么是Babel插件
+</h2>
+<p>
+    Babel插件是用来转换JavaScript代码的小型程序。它们通过修改AST（抽象语法树）来实现代码转换。
+</p>
+<h2>
+    插件结构
+</h2>
+<p>
+    一个基本的Babel插件结构如下：
+</p>
+<pre tag="javascript">
+module.exports = function(babel) {
+  const { types: t } = babel;
+  
+  return {
+    name: 'my-plugin', // 插件名称
+    visitor: {
+      // 访问者对象，定义如何处理不同类型的节点
+      Identifier(path) {
+        // 处理标识符节点
+      },
+      FunctionDeclaration(path) {
+        // 处理函数声明节点
+      }
+    }
+  };
+};
+</pre>
+<h2>
+    创建第一个插件
+</h2>
+<p>
+    让我们创建一个简单的插件，将所有的<span class="important">let</span>声明转换为<span class="important">const</span>：
+</p>
+<pre tag="javascript">
+module.exports = function(babel) {
+  const { types: t } = babel;
+  
+  return {
+    name: 'let-to-const',
+    visitor: {
+      VariableDeclaration(path) {
+        if (path.node.kind === 'let') {
+          path.node.kind = 'const';
+        }
+      }
+    }
+  };
+};
+</pre>
+<h2>
+    插件选项
+</h2>
+<p>
+    插件可以接受选项参数：
+</p>
+<pre tag="javascript">
+module.exports = function(babel, options) {
+  const { types: t } = babel;
+  const { target = 'const' } = options; // 默认值
+  
+  return {
+    name: 'variable-transformer',
+    visitor: {
+      VariableDeclaration(path) {
+        if (path.node.kind === 'let') {
+          path.node.kind = target;
+        }
+      }
+    }
+  };
+};
+</pre>
+<p>
+    使用带选项的插件：
+</p>
+<pre tag="javascript">
+{
+  "plugins": [
+    ["./my-plugin", { "target": "var" }]
+  ]
+}
+</pre>
+<h2>
+    插件预设
+</h2>
+<p>
+    预设是一组插件的集合：
+</p>
+<pre tag="javascript">
+module.exports = function() {
+  return {
+    presets: [
+      require('@babel/preset-env')
+    ],
+    plugins: [
+      require('./plugin1'),
+      require('./plugin2')
+    ]
+  };
+};
+</pre>
+<h2>
+    实用插件示例
+</h2>
+<h3>
+    移除console语句插件
+</h3>
+<pre tag="javascript">
+module.exports = function(babel) {
+  const { types: t } = babel;
+  
+  return {
+    name: 'remove-console',
+    visitor: {
+      CallExpression(path) {
+        if (
+          t.isMemberExpression(path.node.callee) &&
+          t.isIdentifier(path.node.callee.object, { name: 'console' })
+        ) {
+          path.remove();
+        }
+      }
+    }
+  };
+};
+</pre>
+<h3>
+    添加日志插件
+</h3>
+<pre tag="javascript">
+module.exports = function(babel) {
+  const { types: t } = babel;
+  
+  return {
+    name: 'add-logs',
+    visitor: {
+      FunctionDeclaration(path) {
+        // 在函数开头添加日志
+        const logStatement = t.expressionStatement(
+          t.callExpression(
+            t.memberExpression(t.identifier('console'), t.identifier('log')),
+            [t.stringLiteral(`进入函数: ${path.node.id.name}`)]
+          )
+        );
+        
+        path.get('body').unshiftContainer('body', logStatement);
+      }
+    }
+  };
+};
+</pre>
+<h3>
+    转换箭头函数插件
+</h3>
+<pre tag="javascript">
+module.exports = function(babel) {
+  const { types: t } = babel;
+  
+  return {
+    name: 'arrow-to-function',
+    visitor: {
+      ArrowFunctionExpression(path) {
+        // 将箭头函数转换为普通函数
+        const functionExpression = t.functionExpression(
+          null,
+          path.node.params,
+          t.isBlockStatement(path.node.body)
+            ? path.node.body
+            : t.blockStatement([t.returnStatement(path.node.body)])
+        );
+        
+        path.replaceWith(functionExpression);
+      }
+    }
+  };
+};
+</pre>
+<h2>
+    插件测试
+</h2>
+<p>
+    使用<span class="important">@babel/core</span>测试插件：
+</p>
+<pre tag="javascript">
+const babel = require('@babel/core');
+const myPlugin = require('./my-plugin');
+
+const code = 'let x = 1;';
+const result = babel.transformSync(code, {
+  plugins: [myPlugin]
+});
+
+console.log(result.code); // const x = 1;
+</pre>
+<h2>
+    插件开发最佳实践
+</h2>
+<ul>
+    <li>使用<span class="important">path.scope</span>处理作用域</li>
+    <li>使用<span class="important">path.getBinding</span>检查变量绑定</li>
+    <li>使用<span class="important">path.generateUidIdentifier</span>生成唯一标识符</li>
+    <li>避免直接修改节点，使用path方法</li>
+    <li>提供有意义的插件名称</li>
+    <li>考虑插件的执行顺序</li>
+</ul>

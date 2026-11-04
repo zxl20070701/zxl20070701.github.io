@@ -1,0 +1,135 @@
+<header>
+    Map 对象
+</header>
+<h2>
+    概述
+</h2>
+<pre tag="javascript">
+// Map 是一组键值对的集合，键可以是任何类型
+let map = new Map();
+</pre>
+<p>
+    Map 对象保存键值对，并且能够记住键的原始插入顺序。任何值（对象或者基本类型）都可以作为一个键或一个值。
+</p>
+<h2>
+    set()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.set(key, value)
+</pre>
+<p>
+    为 Map 对象添加或更新一个指定的键值对。返回 Map 对象本身，可链式调用。
+</p>
+<h2>
+    get()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.get(key)
+</pre>
+<p>
+    返回 Map 对象中指定的键值。如果键不存在则返回 undefined。
+</p>
+<h2>
+    has()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.has(key)
+</pre>
+<p>
+    判断 Map 对象中是否存在指定的键。返回 true 或 false。
+</p>
+<h2>
+    delete()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.delete(key)
+</pre>
+<p>
+    从 Map 对象中移除指定的键值对。删除成功返回 true，键不存在返回 false。
+</p>
+<h2>
+    clear()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.clear()
+</pre>
+<p>
+    移除 Map 对象中的所有键值对。没有返回值。
+</p>
+<h2>
+    size
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.size
+</pre>
+<p>
+    返回 Map 对象的成员数量（键值对数）。
+</p>
+<h2>
+    forEach()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.forEach(function(value, key, map) {
+    // 遍历回调
+}, thisArg)
+</pre>
+<p>
+    按插入顺序依次对 Map 对象中的每个键值对执行一次回调函数。
+</p>
+<h2>
+    keys()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.keys()
+</pre>
+<p>
+    返回一个包含 Map 对象中所有键的迭代器。
+</p>
+<h2>
+    values()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.values()
+</pre>
+<p>
+    返回一个包含 Map 对象中所有值的迭代器。
+</p>
+<h2>
+    entries()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+myMap.entries()
+</pre>
+<p>
+    返回一个包含 Map 对象中所有键值对的迭代器。每个键值对是 [key, value] 数组。
+</p>

@@ -7,13 +7,13 @@
 <h2>
     定义&获取
 </h2>
-<pre tag="javascript">
+<pre tag="c">
     int iValue = 10;
 </pre>
 <p>
     可以通过&运算符获取变量iValue的地址并保存到intP中去：
 </p>
-<pre tag="javascript">
+<pre tag="c">
     int *iPointer = &iValue;
 </pre>
 <h2>
@@ -25,20 +25,20 @@
 <p>
     比如我们现在有一个数组：
 </p>
-<pre tag="javascript">
+<pre tag="c">
     int arr[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 </pre>
 <p>
     定义一个指针，指向数组的第一个元素：
 </p>
-<pre tag="javascript">
+<pre tag="c">
 int *index = &arr[0];
 printf("此时index存储的地址为：%p，值为：%d\n", index, *index);
 </pre>
 <p>
     此时打印的值就是10。
 </p>
-<pre tag="javascript">
+<pre tag="c">
     index++;
 </pre>
 <p>
@@ -50,7 +50,7 @@ printf("此时index存储的地址为：%p，值为：%d\n", index, *index);
 <p>
     指针还可以指向指针，比如：
 </p>
-<pre tag="javascript">
+<pre tag="c">
 int j = 128;
 int *jPointer = &j;
 int **jPointerPointer = &jPointer;
@@ -65,7 +65,7 @@ printf("jPointerPointer指向的变量指向的变量的值：%d\n", **jPointerP
 <p>
     结构体中对指针的使用会稍微特殊一点，主要因为结构体本身的特殊性，想使用结构体中的一个值，一般分为通过结构体自身和指向结构体的指针两种情况，具体看下面的例子：
 </p>
-<pre tag="javascript">
+<pre tag="c">
 struct Node{
     int val;
 };

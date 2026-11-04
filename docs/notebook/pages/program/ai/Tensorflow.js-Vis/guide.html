@@ -36,3 +36,55 @@ import * as tfvis from '@tensorflow/tfjs-vis';
     下面是一个简单的例子，我们绘制了一个散点图：
 </p>
 <button tag="tfjs-vis_scatterplot">点击我查看例子</button>
+<h2>
+    核心用途
+</h2>
+<ul>
+    <li>训练前观察数据分布，例如散点图、柱状图。</li>
+    <li>训练中观察 loss、accuracy、val_loss、val_acc 等曲线。</li>
+    <li>训练后展示混淆矩阵，分析分类模型具体错在哪里。</li>
+    <li>检查模型结构、输出 shape 和参数量。</li>
+</ul>
+<h2>
+    常用能力
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>能力</th>
+            <th>API</th>
+            <th>适合场景</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>基础图表</td>
+            <td>tfvis.render.scatterplot、linechart、barchart</td>
+            <td>看数据分布和指标变化</td>
+        </tr>
+        <tr>
+            <td>模型摘要</td>
+            <td>tfvis.show.modelSummary</td>
+            <td>检查层结构和参数量</td>
+        </tr>
+        <tr>
+            <td>训练回调</td>
+            <td>tfvis.show.fitCallbacks</td>
+            <td>接入 model.fit 观察训练过程</td>
+        </tr>
+        <tr>
+            <td>评估图表</td>
+            <td>tfvis.metrics.confusionMatrix、tfvis.render.confusionMatrix</td>
+            <td>分析分类效果</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    推荐学习路线
+</h2>
+<ol>
+    <li>先学会创建 surface 和绘制基础图表。</li>
+    <li>再用 modelSummary 检查模型结构。</li>
+    <li>然后把 fitCallbacks 接入训练流程。</li>
+    <li>最后用混淆矩阵分析模型分类效果。</li>
+</ol>

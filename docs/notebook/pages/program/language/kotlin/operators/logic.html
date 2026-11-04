@@ -1,0 +1,56 @@
+<header>
+    逻辑运算符
+</header>
+<p>
+    逻辑运算符用于组合布尔表达式。Kotlin 支持 Java 风格的 <span class="special">&amp;&amp;</span>、<span class="special">||</span>、<span class="special">!</span>，同时也提供等价的单词形式 <span class="special">and</span>、<span class="special">or</span>、<span class="special">not</span>。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>符号形式</th>
+            <th>单词形式</th>
+            <th>描述</th>
+            <th>示例</th>
+            <th>结果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>&amp;&amp;</td>
+            <td>and</td>
+            <td>短路与：左侧为 false 则不计算右侧</td>
+            <td>true &amp;&amp; false</td>
+            <td>false</td>
+        </tr>
+        <tr>
+            <td>||</td>
+            <td>or</td>
+            <td>短路或：左侧为 true 则不计算右侧</td>
+            <td>false || true</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>!</td>
+            <td>not</td>
+            <td>取反</td>
+            <td>!true</td>
+            <td>false</td>
+        </tr>
+    </tbody>
+</table>
+<pre tag="kotlin">
+val age = 20
+val hasId = true
+
+// 符号形式
+println(age >= 18 && hasId) // true
+println(age < 18 || !hasId) // false
+
+// 单词形式
+println(age >= 18 and hasId) // true
+println(age < 18 or !hasId)  // false
+println(!true)              // false
+</pre>
+<p class="warn">
+    <span class="special">&amp;&amp;</span>、<span class="special">||</span> 是<span class="warn">短路</span>的：左侧已经能确定整个表达式的结果时，右侧不再计算；而单词形式 <span class="special">and</span>、<span class="special">or</span> 是<span class="warn">函数形式</span>，两侧都会被求值。
+</p>

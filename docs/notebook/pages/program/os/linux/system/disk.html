@@ -1,0 +1,20 @@
+<header>磁盘和存储</header>
+<h2>磁盘使用</h2>
+<p>
+    <span class="special">df</span> 看文件系统整体空间；
+    <span class="special">du</span> 看某个目录或文件占用了多少空间。
+</p>
+<pre>
+df -h
+du -sh /path/to/directory
+du -sh * | sort -h
+</pre>
+<h2>分区和挂载</h2>
+<p>
+    查看磁盘分区和挂载信息，或者把某个分区挂载到指定目录。
+</p>
+<pre>
+sudo fdisk -l
+mount
+sudo mount /dev/sdb1 /mnt/data
+</pre>

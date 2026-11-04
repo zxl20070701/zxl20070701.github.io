@@ -1,0 +1,89 @@
+<header>
+    自动求导 Autograd
+</header>
+
+<p>
+    深度学习训练的核心是反向传播。PyTorch 的 autograd 会在前向计算时记录计算过程，在调用 <span class="warn">backward()</span> 时自动计算梯度。
+</p>
+
+<h2>
+    requires_grad
+</h2>
+
+<p>
+    如果一个 Tensor 设置了 <span class="warn">requires_grad=True</span>，PyTorch 会跟踪它参与的计算，并在反向传播后把梯度保存在 <span class="warn">.grad</span> 中。
+</p>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+import torch
+
+x = torch.tensor(2.0, requires_grad=True)
+y = x * x + 3 * x + 1
+
+y.backward()
+
+print(x.grad)  # dy/dx = 2x + 3，当 x=2 时结果是 7
+</pre>
+
+<h2>
+    计算图
+</h2>
+
+<p>
+    PyTorch 使用动态计算图。每一次前向计算都会根据实际执行的 Python 代码构建计算图，因此调试起来比较直观，也方便写条件分支和循环。
+</p>
+
+<h2>
+    梯度清零
+</h2>
+
+<p>
+    PyTorch 默认会累积梯度。训练循环中每次反向传播前都要清零，否则当前 batch 的梯度会和上一次叠加。
+</p>
+
+<pre tag="python">
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+</pre>
+
+<h2>
+    关闭梯度计算
+</h2>
+
+<p>
+    验证和推理阶段不需要计算梯度，可以用 <span class="warn">torch.no_grad()</span> 降低内存占用并提升速度。
+</p>
+
+<pre tag="python">
+model.eval()
+
+with torch.no_grad():
+    pred = model(x)
+</pre>
+
+<h2>
+    detach
+</h2>
+
+<p>
+    <span class="warn">detach()</span> 会返回一个从当前计算图中分离出来的 Tensor。常见场景是记录中间结果、把 Tensor 转成 NumPy，或避免某段计算继续参与反向传播。
+</p>
+
+<pre tag="python">
+y = model(x)
+y_numpy = y.detach().cpu().numpy()
+</pre>
+
+<h2>
+    常见错误
+</h2>
+
+<ul>
+    <li>忘记 zero_grad，导致梯度累积异常。</li>
+    <li>在 no_grad 里训练，导致 loss 无法反向传播。</li>
+    <li>对非标量 Tensor 直接 backward，却没有传入梯度。</li>
+    <li>把 Tensor 转成 NumPy 后又希望继续自动求导。</li>
+</ul>

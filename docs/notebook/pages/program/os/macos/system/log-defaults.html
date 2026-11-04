@@ -1,0 +1,19 @@
+<header>系统日志和偏好设置</header>
+<h2>log</h2>
+<p>
+    <span class="special">log</span> 是 macOS 统一日志工具，适合排查系统应用或后台服务的问题。
+</p>
+<pre>
+log stream
+log stream --predicate 'process == "Finder"'
+log show --last 1h --predicate 'eventType == logEvent AND messageType == error'
+</pre>
+<h2>defaults</h2>
+<p>
+    <span class="special">defaults</span> 用来读写应用偏好设置。修改后通常需要重启对应应用才生效。
+</p>
+<pre>
+defaults read com.apple.finder
+defaults write com.apple.finder AppleShowAllFiles -bool true
+killall Finder
+</pre>

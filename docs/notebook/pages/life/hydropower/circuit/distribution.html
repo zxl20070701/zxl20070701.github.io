@@ -1,0 +1,294 @@
+<header>
+    配电与用电安全
+</header>
+<p>
+    电路装得好不好，看的不是插座好不好看，而是
+    <span class="special">配电箱分得对不对、保护配得全不全</span>
+    。这一篇整理总配电箱的结构、回路分配原则、常见保护装置，以及跳闸、漏电、触电的排查方法。
+</p>
+<h2>
+    家庭电路的组成
+</h2>
+<p>
+    户内电路从进户开始，路径是固定的：
+</p>
+<pre tag="text">
+进户线 → 总开关（总配电箱） → 分路断路器 → 室内配线 → 开关 / 插座 → 用电器
+</pre>
+<p>
+    <span class="special">总配电箱</span>
+    是整个家庭电路的“中控室”，改造时它决定了以后用电的稳定性。
+</p>
+<h2>
+    常见保护装置
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>装置</th>
+            <th>作用</th>
+            <th>判断依据</th>
+            <th>典型参数</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>空气开关（断路器）</td>
+            <td>过载 + 短路保护</td>
+            <td>电流超过整定值就
+                <strong>自动跳闸</strong>
+            </td>
+            <td>10A / 16A / 20A / 25A / 32A / 40A / 63A</td>
+        </tr>
+        <tr>
+            <td>漏电保护器（RCD/RLEB）</td>
+            <td>检测剩余电流，人触电或绝缘破损时跳闸</td>
+            <td>剩余电流超过 30mA 且持续 0.1 秒内动作</td>
+            <td>
+                <strong>30mA 高灵敏</strong>
+                ，时间为 0.1s
+            </td>
+        </tr>
+        <tr>
+            <td>漏电保护插排 / 转换器</td>
+            <td>末端精细保护，局部断电</td>
+            <td>同上，但只保护下游</td>
+            <td>家用 30mA</td>
+        </tr>
+        <tr>
+            <td>保险丝 / 保险电阻</td>
+            <td>老式短路保护</td>
+            <td>电流过大熔断，需更换</td>
+            <td>已较少使用</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    空开跳
+    <span class="special">闸</span>
+    说明过流保护动作，漏保跳
+    <span class="special">闸</span>
+    说明剩余电流超限。两种跳闸的原因完全不同，排查思路也不同。
+</div>
+<h2>
+    总配电箱的回路分配
+</h2>
+<p>
+    一个 100㎡ 左右的户型，通常按下面方式分回路：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>回路</th>
+            <th>空开规格</th>
+            <th>导线</th>
+            <th>覆盖范围</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>照明</td>
+            <td>16A</td>
+            <td>2.5mm² 或 1.5mm²</td>
+            <td>全屋灯具，不含大功率电器</td>
+        </tr>
+        <tr>
+            <td>普通插座</td>
+            <td>20A</td>
+            <td>2.5mm²</td>
+            <td>客厅、卧室常规插座</td>
+        </tr>
+        <tr>
+            <td>厨房</td>
+            <td>20A</td>
+            <td>4mm²</td>
+            <td>厨房操作台电器</td>
+        </tr>
+        <tr>
+            <td>卫生间</td>
+            <td>20A</td>
+            <td>4mm²</td>
+            <td>洗手台、马桶、花洒等
+                <strong>需防水</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>空调</td>
+            <td>25A</td>
+            <td>4mm²</td>
+            <td>单台挂机或小柜机</td>
+        </tr>
+        <tr>
+            <td>大功率（电热水器、烘干机）</td>
+            <td>
+                <strong>32A</strong>
+            </td>
+            <td>4mm² 或 6mm²</td>
+            <td>单台电器专用回路</td>
+        </tr>
+        <tr>
+            <td>洗衣机 / 烘干机</td>
+            <td>20A</td>
+            <td>4mm²</td>
+            <td>洗衣区专用</td>
+        </tr>
+        <tr>
+            <td>备用</td>
+            <td>16A</td>
+            <td>2.5mm²</td>
+            <td>为未来设备留出</td>
+        </tr>
+    </tbody>
+    </table>
+<div class="tips">
+    回路不是越多越好。回路过少，一个空开跳闸全屋都受影响；回路过多，
+    <span class="special">配电箱空间和成本</span>
+    都会紧张，还会拉长走线。照明 + 插座 + 空调 + 若干大功率专线，是最常见的组合。
+</div>
+<h2>
+    接地与等电位
+</h2>
+<p>
+    <span class="special">保护接地线（PE，黄绿双色）</span>
+    把设备外壳的漏电流导入大地，是防止触电的最后一道防线。
+</p>
+<ul>
+    <li>
+        插座的
+        <span class="special">三孔 / 三极</span>
+        必须可靠接地，热水器、洗衣机、空调、金属灯具外壳都要接。
+    </li>
+    <li>
+        卫生间需要做
+        <span class="special">局部等电位联结</span>
+        ：把卫生间内所有可触及金属（管道、淋浴器、插座金属面板）用 2.5mm² 或 4mm² 线连成等电位体，再单
+        <span class="warn">独</span>
+        接到配电箱 PE 母排。
+    </li>
+    <li>
+        <strong>绝对禁止</strong>：把零线当接地线用。零线上流过的是工作电流，接地一旦漏电跳闸，电器就无法工作，甚至造成触电。
+    </li>
+    <li>
+        接地线不能用
+        <span class="warn">开关控制</span>
+        ，不能装开关或保险，必须一路贯通到配电箱 PE 母排。
+    </li>
+</ul>
+<h2>
+    跳闸排查
+</h2>
+<h3>
+    空开跳闸（过载或短路）
+</h3>
+<ol>
+    <li>
+        <span class="special">全部断开</span>
+        下游电器，再逐个插上，找到引发跳闸的那台设备。
+    </li>
+    <li>
+        检查是否
+        <span class="warn">多台大功率电器同时使用</span>
+        ，导致回路总功率超限。
+    </li>
+    <li>
+        检查线路或电器是否
+        <span class="important">短路</span>
+        ，尤其是新装的电器、插座和接线盒内裸露的铜线。
+    </li>
+    <li>
+        若断开所有电器仍跳闸，基本可判断为
+        <span class="special">线路短路或空开本身损坏</span>
+        ，必须断总闸请电工排查。
+    </li>
+</ol>
+<h3>
+    漏保跳闸（剩余电流超限）
+</h3>
+<ol>
+    <li>
+        <span class="special">先看漏保上的按钮</span>
+        ：「T」或「试验」按钮按下去应当
+        <span class="warn">立刻跳闸</span>
+        。不跳说明漏保自身已失效，必须更换。
+    </li>
+    <li>
+        逐回路断开，定位问题回路。
+    </li>
+    <li>
+        在问题回路里逐个排除：关掉灯具和插座，按
+        <span class="special">「电学基础与线材选型」</span>
+        中的接线自查方法逐点测通断。常见原因包括：潮湿进水进线盒、PE 线误接零线、电器绝缘老化。
+    </li>
+    <li>
+        偶发跳闸之后没再复发，可能是
+        <span class="special">受潮</span>
+        的暂时性漏电，处理前先将相关线盒、插座
+        <span class="warn">干燥并密封</span>
+        。
+    </li>
+</ol>
+<h3>
+    一般过热、烧焦、异味
+</h3>
+<p>
+    检查优先顺序：配电箱内空开、插座面板、接线盒。重点找
+    <span class="warn">发黑、变黄、熔化、滋滋声</span>
+    的部位。发现后：
+</p>
+<ol>
+    <li>
+        <span class="special">立刻断总闸</span>
+        ，不要试图“再撑一撑”。
+    </li>
+    <li>
+        该回路电器全部停止使用，线路或面板
+        <span class="warn">必须更换</span>
+        ，不可复用。
+    </li>
+    <li>
+        记得再检查上游空开是否被“烧坏”，一并据实据量更换。
+    </li>
+</ol>
+<h2>
+    用电量与空开整定
+</h2>
+<p>
+    空开额定电流要
+    <span class="special">小于线路允许载流量</span>
+    ，同时
+    <span class="special">大于回路实际工作电流</span>
+    ，留 1.2～1.5 倍余量：
+</p>
+<pre tag="text">
+回路工作电流 = 回路内电器总功率 / 220V
+
+20A 空开 → 约 4400W
+32A 空开 → 约 7000W
+40A 空开 → 约 8800W
+</pre>
+<div class="tips">
+    空开额定电流必须
+    <span class="important">小于</span>
+    线径对应
+
+    的载流量——这条防线是“线先于开关烧”的关键。
+</div>
+<h2>
+    常见误区
+</h2>
+<ul>
+    <li>
+        <strong>“装大空开就不跳闸了”</strong>：换大空开等于放弃过载保护，线会先过热熔化，火灾风险剧增。
+    </li>
+    <li>
+        <strong>“零线能当地线”</strong>：见上文，属于严重违规接线。
+    </li>
+    <li>
+        <strong>“漏保越灵敏越好”</strong>：30mA 是
+        <span class="special">人身保护</span>
+        值，过于灵敏会导致正常漏电（如电容性漏电）频繁误跳，需按规范选型而非越小越好。
+    </li>
+    <li>
+        <strong>“插排可以接大功率”</strong>：普通插排额定电流通常只有 10A，不要串接大功率电器。
+    </li>
+</ul>

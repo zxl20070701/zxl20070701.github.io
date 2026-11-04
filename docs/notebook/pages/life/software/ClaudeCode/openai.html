@@ -1,0 +1,191 @@
+<header>
+    兼容OpenAI API
+</header>
+<p>
+    Claude Code 原生走的是 Anthropic 协议（<span class="special">POST /v1/messages</span>），而很多国产模型、本地
+    Ollama、Moonshot、豆包、DeepSeek 等只提供 OpenAI 协议（<span class="special">POST /v1/chat/completions</span>）。两边的字段、流式格式、tool
+    call 结构都不一样，直接把 OpenAI 兼容地址塞进 cc-switch 的 <span class="special">-u</span> 参数，大概率会报 400 校验错误。
+</p>
+<p>
+    解决办法很简单：在 Claude Code 和上游之间起一个零依赖的本地协议网关 <span class="special">llm-api-io</span>。网关只做一件事——"上游一种协议，本地同时暴露两种协议"，这样
+    Claude Code 继续发 Anthropic 请求，网关自动帮你转换成上游需要的 OpenAI 请求，再把返回结果转回 Anthropic 格式给 Claude Code。
+</p>
+<h2>
+    整体链路
+</h2>
+<pre>
+Claude Code (Anthropic /v1/messages)
+   │
+   ▼
+本地 llm-api-io（默认 127.0.0.1:8001）
+   │  自动做 Anthropic ↔ OpenAI 协议转换
+   ▼
+上游 OpenAI 兼容服务（Ollama / Moonshot / 豆包 / DeepSeek …）
+</pre>
+<h2>
+    安装 llm-api-io
+</h2>
+<p>
+    推荐全局安装一次，之后任意终端都能直接用：
+</p>
+<pre>
+npm install -g llm-api-io
+</pre>
+<p>
+    也可以不装，直接 npx 跑一次就启动：
+</p>
+<pre>
+npx llm-api-io --help
+</pre>
+<div class="tips">
+    llm-api-io 零依赖，不挑 Node 版本。如果 npx 报找不到包，先确认当前 npm registry 可达，或者显式带上 registry：<span class="special">npx
+        --registry=https://registry.npmmirror.com llm-api-io --help</span>。
+</div>
+<h2>
+    最小组合拳
+</h2>
+<p>
+    假设你本地 Ollama 跑在 <span class="special">http://localhost:11434</span>，有一个 <span class="special">qwen3.5</span> 模型。
+</p>
+<h3>
+    1. 起本地网关
+</h3>
+<p>
+    告诉 llm-api-io"上游是 OpenAI 协议"，然后在本机开一个默认 8001 端口的双向入口：
+</p>
+<pre>
+llm-api-io --openai-url http://localhost:11434 --port 8001
+</pre>
+<p>
+    终端会持续监听，不要关闭，保持这个窗口挂着即可。
+</p>
+<h3>
+    2. 让 Claude Code 指向本地网关
+</h3>
+<p>
+    用 cc-switch 新增一套配置。注意 URL 指向 <span class="special">http://localhost:8001</span>（不要带 /v1，网关会自动拼），模型名写你上游真实存在的那个。
+</p>
+<pre>
+cc-switch add local -t sk-local -u http://localhost:8001 -m qwen3.5
+cc-switch use local
+</pre>
+<p>
+    现在正常执行 <span class="special">claude</span>，Claude Code 发给 Anthropic 协议的请求会由 llm-api-io 自动转成 OpenAI 请求送进
+    Ollama，流式、tool call、图片都已覆盖。
+</p>
+<div class="tips">
+    如果不需要 cc-switch 这种多配置切换工具，直接在 <span class="important">~/.claude/settings.json</span> 里写 <span class="special">"env":
+        { "ANTHROPIC_BASE_URL": "http://localhost:8001", "ANTHROPIC_AUTH_TOKEN": "sk-local" }</span>
+    也是一样的。环境变量方式更稳，避免明文把 key 写进命令行。
+</div>
+<h2>
+    路由与协议关系
+</h2>
+<p>
+    llm-api-io 会根据请求路径自动判断该走哪条转换链路：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>本地入口</th>
+            <th>上游 OpenAI</th>
+            <th>上游 Anthropic</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">POST /v1/chat/completions</span></td>
+            <td>原样直通</td>
+            <td>OpenAI → Anthropic 转换</td>
+        </tr>
+        <tr>
+            <td><span class="special">POST /v1/messages</span></td>
+            <td>Anthropic → OpenAI 转换</td>
+            <td>原样直通</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    对 Claude Code 来说，它只会命中第二行的 <span class="special">/v1/messages</span>，所以上面的组合拳里，Claude Code → 网关 → 上游 OpenAI
+    的方向已经完全覆盖。
+</p>
+<h2>
+    进阶参数
+</h2>
+<h3>
+    统一覆盖上游密钥
+</h3>
+<p>
+    直接在命令行传 <span class="special">--api-key</span>，网关会用这个 key 覆盖所有客户端传入的 Authorization，适合上游只认固定凭证的场景：
+</p>
+<pre>
+llm-api-io --openai-url https://api.deepseek.com --api-key sk-xxxxxx --port 8001
+</pre>
+<p>
+    不写 <span class="special">--api-key</span> 时，网关默认<span class="important">透传客户端的密钥</span>——也就是 Claude Code 侧填的
+    ANTHROPIC_AUTH_TOKEN，会原样带到上游 OpenAI 的 Authorization 头里。两种方式根据上游鉴权策略选。
+</p>
+<h3>
+    强制指定上游模型
+</h3>
+<p>
+    有些场景希望不管 Claude Code 传入什么 model 字段，都打到上游固定模型上，直接用 <span class="special">--model</span>：
+</p>
+<pre>
+llm-api-io --openai-url http://localhost:11434 --model qwen3.5 --port 8001
+</pre>
+<p>
+    更常见的是<span class="important">模型名映射</span>：Claude Code 侧习惯写 <span class="special">claude-sonnet</span>，上游其实叫 <span
+        class="special">qwen3.5</span>，用 <span class="special">--model-map</span> 改一下：
+</p>
+<pre>
+llm-api-io --openai-url http://localhost:11434 \
+    --model-map claude-sonnet=qwen3.5 \
+    --model-map claude-opus=qwen3.5 \
+    --port 8001
+</pre>
+<p>
+    可以多次传，也可以写成逗号分隔：<span class="special">--model-map a=b,c=d</span>。
+</p>
+<h3>
+    端口、地址、超时
+</h3>
+<pre>
+llm-api-io --openai-url http://localhost:11434 \
+    --host 0.0.0.0 --port 8001 \
+    --timeout 600000 --verbose
+</pre>
+<p>
+    默认监听 <span class="special">127.0.0.1:8001</span>，如果要让同网段其他机器也能用，显式加上 <span class="special">--host
+        0.0.0.0</span>。上游超时默认 10 分钟，长对话可以按需调大。加 <span class="special">--verbose</span> 会打印每条请求的协议方向、目标路径、模型名、耗时和转换告警，排查字段兼容问题时先看这些日志。
+</p>
+<h2>
+    关于 max_tokens 兜底
+</h2>
+<p>
+    Anthropic 协议要求请求里必须传 <span class="special">max_tokens</span>，但 Claude Code 有时候不把这个字段给 llm-api-io。网关会自动补上一个兜底值，默认是
+    <span class="important">4096</span>。想改就加 <span class="special">--max-tokens</span>：
+</p>
+<pre>
+llm-api-io --openai-url http://localhost:11434 --max-tokens 8192 --port 8001
+</pre>
+<h2>
+    关于 CLAUDE_CODE_SIMPLE
+</h2>
+<p>
+    有些 OpenAI 兼容模型对 messages 数组的 role 校验非常严格，只允许 <span class="special">user</span> / <span
+        class="special">assistant</span>，不认 Claude Code 新版会直接塞进去的 <span class="special">system</span> 角色，然后返回 400 校验错误。
+</p>
+<p>
+    如果遇到这种报错，在 <span class="special">~/.claude/settings.json</span> 的顶层 env 节点加上：
+</p>
+<pre>
+{
+  "env": {
+    "CLAUDE_CODE_SIMPLE": "1"
+  }
+}
+</pre>
+<p>
+    保存后彻底重启 Claude Code。这条 workaround 是 Claude Code 侧的，不是 llm-api-io 网关的；llm-api-io 本身已经负责协议转换，role 问题主要出现在上游模型的校验策略上。
+</p>

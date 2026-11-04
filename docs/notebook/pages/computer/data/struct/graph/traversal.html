@@ -1,0 +1,302 @@
+<header>
+    图的遍历
+</header>
+
+<h2>
+    图遍历的基本概念
+</h2>
+
+<p>
+    图的遍历（Graph Traversal）是指从图的某一顶点出发，对图中所有顶点访问一次且仅访问一次。图的遍历是图的基本运算，是求解图的连通性问题、拓扑排序、关键路径等问题的基础。
+</p>
+
+<h3>
+    遍历的重要性
+</h3>
+
+<ul>
+    <li>
+        <span class="special">连通性检查</span>：判断图的连通性
+    </li>
+    <li>
+        <span class="special">路径查找</span>：寻找两点间的路径
+    </li>
+    <li>
+        <span class="special">拓扑排序</span>：对有向无环图进行拓扑排序
+    </li>
+    <li>
+        <span class="special">最小生成树</span>：寻找图的最小生成树
+    </li>
+</ul>
+
+<h2>
+    深度优先搜索（DFS）
+</h2>
+
+<h3>
+    基本概念
+</h3>
+
+<p>
+    深度优先搜索（Depth-First
+    Search，DFS）类似于树的先根遍历，是树的先根遍历的推广。它的基本思想是：从图中某个顶点v出发，访问此顶点，然后依次从v的未被访问的邻接点出发深度优先遍历图，直至图中所有和v有路径相通的顶点都被访问到；若此时图中尚有顶点未被访问，则另选图中一个未曾被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。
+</p>
+
+<h3>
+    DFS的实现（递归）
+</h3>
+
+<pre tag="c">
+#define MAX_VERTEX_NUM 100
+int visited[MAX_VERTEX_NUM];  // 访问标志数组
+
+void DFS(GraphAdjList G, int i) {
+    EdgeNode *p;
+    visited[i] = 1;
+    printf("%c ", G.adjList[i].data);
+
+    p = G.adjList[i].firstedge;
+    while (p) {
+        if (!visited[p->adjvex]) {
+            DFS(G, p->adjvex);
+        }
+        p = p->next;
+    }
+}
+
+void DFSTraverse(GraphAdjList G) {
+    int i;
+    for (i = 0; i < G.numVertexes; i++) {
+        visited[i] = 0;  // 初始化访问标志数组
+    }
+
+    for (i = 0; i < G.numVertexes; i++) {
+        if (!visited[i]) {
+            DFS(G, i);
+        }
+    }
+}
+</pre>
+
+<h3>
+    DFS的实现（非递归）
+</h3>
+
+<pre tag="c">
+void DFS_NonRecursive(GraphAdjList G, int i) {
+    int j;
+    EdgeNode *p;
+    Stack S;
+    InitStack(&S);
+
+    printf("%c ", G.adjList[i].data);
+    visited[i] = 1;
+    Push(&S, i);
+
+    while (!StackEmpty(S)) {
+        Pop(&S, &i);
+        p = G.adjList[i].firstedge;
+        while (p) {
+            j = p->adjvex;
+            if (!visited[j]) {
+                printf("%c ", G.adjList[j].data);
+                visited[j] = 1;
+                Push(&S, j);
+                break;
+            }
+            p = p->next;
+        }
+        if (p == NULL && !StackEmpty(S)) {
+            Pop(&S, &i);
+        }
+    }
+}
+</pre>
+
+<h2>
+    广度优先搜索（BFS）
+</h2>
+
+<h3>
+    基本概念
+</h3>
+
+<p>
+    广度优先搜索（Breadth-First
+    Search，BFS）类似于树的按层次遍历的过程。它的基本思想是：从图中某个顶点v出发，访问此顶点，然后依次访问v的各个未被访问过的邻接点，然后分别从这些邻接点出发依次访问它们的邻接点，并使"先被访问的顶点的邻接点"先于"后被访问的顶点的邻接点"被访问，直至图中所有已被访问的顶点的邻接点都被访问到；若此时图中尚有顶点未被访问，则另选图中一个未曾被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。
+</p>
+
+<h3>
+    BFS的实现
+</h3>
+
+<pre tag="c">
+void BFS(GraphAdjList G, int i) {
+    int j;
+    EdgeNode *p;
+    Queue Q;
+    InitQueue(&Q);
+
+    printf("%c ", G.adjList[i].data);
+    visited[i] = 1;
+    EnQueue(&Q, i);
+
+    while (!QueueEmpty(Q)) {
+        DeQueue(&Q, &i);
+        p = G.adjList[i].firstedge;
+        while (p) {
+            j = p->adjvex;
+            if (!visited[j]) {
+                printf("%c ", G.adjList[j].data);
+                visited[j] = 1;
+                EnQueue(&Q, j);
+            }
+            p = p->next;
+        }
+    }
+}
+
+void BFSTraverse(GraphAdjList G) {
+    int i;
+    for (i = 0; i < G.numVertexes; i++) {
+        visited[i] = 0;  // 初始化访问标志数组
+    }
+
+    for (i = 0; i < G.numVertexes; i++) {
+        if (!visited[i]) {
+            BFS(G, i);
+        }
+    }
+}
+</pre>
+
+<h2>
+    DFS与BFS的比较
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>特性</th>
+            <th>DFS</th>
+            <th>BFS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>数据结构</td>
+            <td>栈（递归或显式）</td>
+            <td>队列</td>
+        </tr>
+        <tr>
+            <td>遍历顺序</td>
+            <td>深度优先</td>
+            <td>广度优先</td>
+        </tr>
+        <tr>
+            <td>空间复杂度</td>
+            <td>O(h)</td>
+            <td>O(w)</td>
+        </tr>
+        <tr>
+            <td>时间复杂度</td>
+            <td>O(V+E)</td>
+            <td>O(V+E)</td>
+        </tr>
+        <tr>
+            <td>适用场景</td>
+            <td>寻找路径、连通分量</td>
+            <td>最短路径、层次遍历</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    其中，h是图的高度，w是图的最大宽度，V是顶点数，E是边数。
+</p>
+
+<h2>
+    图遍历的应用
+</h2>
+
+<h3>
+    连通分量
+</h3>
+
+<p>
+    通过一次遍历可以找到一个连通分量中的所有顶点。
+</p>
+
+<h3>
+    拓扑排序
+</h3>
+
+<p>
+    对有向无环图进行拓扑排序。
+</p>
+
+<h3>
+    最短路径
+</h3>
+
+<p>
+    BFS可以用于求解无权图的最短路径问题。
+</p>
+
+<h3>
+    最小生成树
+</h3>
+
+<p>
+    DFS和BFS都可以用于生成图的生成树。
+</p>
+
+<h2>
+    图遍历的复杂度分析
+</h2>
+
+<h3>
+    时间复杂度
+</h3>
+
+<ul>
+    <li>邻接矩阵存储：O(V²)</li>
+    <li>邻接表存储：O(V+E)</li>
+</ul>
+
+<h3>
+    空间复杂度
+</h3>
+
+<ul>
+    <li>邻接矩阵存储：O(V)</li>
+    <li>邻接表存储：O(V)</li>
+</ul>
+
+<h2>
+    图遍历的优化
+</h2>
+
+<h3>
+    双端队列BFS
+</h3>
+
+<p>
+    使用双端队列可以实现0-1权值图的最短路径算法。
+</p>
+
+<h3>
+    A*算法
+</h3>
+
+<p>
+    在BFS基础上加入启发式函数，可以加速路径搜索。
+</p>
+
+<h3>
+    迭代加深DFS
+</h3>
+
+<p>
+    结合了DFS的空间效率和BFS的完备性，适用于状态空间较大的问题。
+</p>

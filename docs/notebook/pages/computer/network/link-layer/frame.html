@@ -1,0 +1,305 @@
+<header>
+    帧
+</header>
+<p>
+    数据帧是数据链路层的协议数据单元(PDU)，负责在相邻节点间可靠地传输数据。帧结构设计直接影响网络的可靠性、效率和功能。理解帧的结构和工作机制对于网络设计、故障排除和性能优化至关重要。
+</p>
+<h2>
+    帧的基本结构
+</h2>
+<p>
+    典型的数据帧包含以下几个基本组成部分：
+</p>
+<h3>
+    1. 帧首部 (Frame Header)
+</h3>
+<ul>
+    <li><span class="special">帧开始标志</span>：标识帧的起始位置，如以太网的7字节前导码+1字节帧开始定界符</li>
+    <li><span class="special">目的地址</span>：接收方的物理地址(MAC地址)</li>
+    <li><span class="special">源地址</span>：发送方的物理地址(MAC地址)</li>
+    <li><span class="special">类型/长度字段</span>：标识上层协议类型或数据长度</li>
+    <li><span class="special">控制信息</span>：流量控制、优先级等控制信息</li>
+</ul>
+<h3>
+    2. 数据载荷 (Payload)
+</h3>
+<ul>
+    <li><span class="special">网络层数据</span>：来自网络层的IP数据报</li>
+    <li><span class="special">最小长度</span>：确保帧有足够长度便于检测冲突</li>
+    <li><span class="special">最大长度</span>：MTU(最大传输单元)限制</li>
+</ul>
+<h3>
+    3. 帧尾部 (Frame Trailer)
+</h3>
+<ul>
+    <li><span class="special">帧校验序列</span>：CRC校验码，用于错误检测</li>
+    <li><span class="special">帧结束标志</span>：标识帧的结束位置</li>
+</ul>
+<h2>
+    以太网帧格式
+</h2>
+<h3>
+    1. Ethernet II帧格式 (DIX Ethernet)
+</h3>
+<pre>
+| 目的MAC地址(6字节) | 源MAC地址(6字节) | 类型(2字节) | 数据(46-1500字节) | FCS(4字节) |
+</pre>
+<ul>
+    <li><span class="special">类型字段</span>：标识上层协议，如0x0800表示IPv4，0x86DD表示IPv6</li>
+    <li><span class="special">最小帧长</span>：64字节(包括18字节首部+46字节数据)</li>
+    <li><span class="special">最大帧长</span>：1518字节(包括18字节首部+1500字节数据)</li>
+</ul>
+<h3>
+    2. IEEE 802.3帧格式
+</h3>
+<pre>
+| 目的MAC地址(6字节) | 源MAC地址(6字节) | 长度(2字节) | LLC(3字节) | SNAP(5字节) | 数据 | FCS(4字节) |
+</pre>
+<ul>
+    <li><span class="special">长度字段</span>：指示数据字段的实际长度</li>
+    <li><span class="special">LLC首部</span>：逻辑链路控制子层首部</li>
+    <li><span class="special">SNAP首部</span>：子网访问协议首部，用于标识上层协议</li>
+</ul>
+<h3>
+    3. VLAN标签帧格式 (IEEE 802.1Q)
+</h3>
+<pre>
+| 目的MAC(6) | 源MAC(6) | VLAN标签(4) | 类型(2) | 数据 | FCS(4) |
+</pre>
+<ul>
+    <li><span class="special">TPID</span>：标签协议标识符，固定为0x8100</li>
+    <li><span class="special">TCI</span>：标签控制信息，包含优先级、CFI和VLAN ID</li>
+    <li><span class="special">最大帧长</span>：1522字节(增加了4字节VLAN标签)</li>
+</ul>
+<h2>
+    帧传输机制
+</h2>
+<h3>
+    1. 帧定界技术
+</h3>
+<h4>
+    1.1 字符计数法
+</h4>
+<ul>
+    <li><span class="special">原理</span>：在帧首部指定帧中字符数</li>
+    <li><span class="special">问题</span>：计数字段出错将导致帧边界错误</li>
+</ul>
+<h4>
+    1.2 字符填充法
+</h4>
+<ul>
+    <li><span class="special">原理</span>：使用特殊字符标记帧开始和结束</li>
+    <li><span class="special">转义机制</span>：数据中出现的特殊字符前添加转义字符</li>
+    <li><span class="special">应用</span>：PPP协议</li>
+</ul>
+<h4>
+    1.3 比特填充法
+</h4>
+<ul>
+    <li><span class="special">原理</span>：使用特定比特模式标记帧边界</li>
+    <li><span class="special">HDLC协议</span>：使用01111110作为标志字段</li>
+    <li><span class="special">填充规则</span>：数据中出现连续5个1时插入一个0</li>
+</ul>
+<h4>
+    1.4 违规编码法
+</h4>
+<ul>
+    <li><span class="special">原理</span>：使用物理层编码中不会出现的信号模式</li>
+    <li><span class="special">应用</span>：曼彻斯特编码中使用高-高或低-低电平</li>
+</ul>
+<h3>
+    2. 错误检测机制
+</h3>
+<h4>
+    2.1 奇偶校验
+</h4>
+<ul>
+    <li><span class="special">原理</span>：添加一个校验位使1的个数为奇数或偶数</li>
+    <li><span class="special">局限性</span>：只能检测奇数个比特错误</li>
+</ul>
+<h4>
+    2.2 循环冗余校验 (CRC)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：将数据视为多项式，用生成多项式除得到余数</li>
+    <li><span class="special">常用标准</span>：
+        <ul>
+            <li>CRC-8：ATM头部校验</li>
+            <li>CRC-16：HDLC、XMODEM</li>
+            <li>CRC-32：以太网、ZIP、PNG</li>
+            <li>CRC-CCITT：X.25、Bluetooth</li>
+        </ul>
+    </li>
+    <li><span class="special">检错能力</span>：能检测所有奇数个错误、所有双比特错误、所有长度小于等于r的突发错误</li>
+</ul>
+<h4>
+    2.3 校验和
+</h4>
+<ul>
+    <li><span class="special">原理</span>：将数据按字相加，取反码得到校验和</li>
+    <li><span class="special">应用</span>：IP、TCP、UDP协议</li>
+    <li><span class="special">特点</span>：计算简单，但检错能力有限</li>
+</ul>
+<h2>
+    流量控制机制
+</h2>
+<h3>
+    1. 停止等待协议 (Stop-and-Wait)
+</h3>
+<ul>
+    <li><span class="special">工作原理</span>：发送方发送一帧后等待确认，收到确认后再发送下一帧</li>
+    <li><span class="special">特点</span>：简单可靠，但信道利用率低</li>
+    <li><span class="special">效率计算</span>：效率 = T_frame / (T_frame + 2×T_prop + T_ack)</li>
+</ul>
+<h3>
+    2. 滑动窗口协议 (Sliding Window)
+</h3>
+<h4>
+    2.1 回退N帧 (Go-Back-N)
+</h4>
+<ul>
+    <li><span class="special">工作原理</span>：发送方可连续发送多个帧，收到确认后窗口向前滑动</li>
+    <li><span class="special">错误处理</span>：出错时重传出错帧及其后所有帧</li>
+    <li><span class="special">窗口大小</span>：最大为2ⁿ-1，n为序号位数</li>
+</ul>
+<h4>
+    2.2 选择重传 (Selective Repeat)
+</h4>
+<ul>
+    <li><span class="special">工作原理</span>：只重传出错的帧，其他正确帧被缓存</li>
+    <li><span class="special">窗口大小</span>：最大为2ⁿ⁻¹</li>
+    <li><span class="special">缓冲区需求</span>：发送方和接收方都需要额外缓冲区</li>
+</ul>
+<h2>
+    介质访问控制
+</h2>
+<h3>
+    1. 信道划分协议
+</h3>
+<h4>
+    1.1 频分多址 (FDMA)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：将频带划分为多个子频带，每个用户分配一个子频带</li>
+    <li><span class="special">特点</span>：频谱利用率低，但实现简单</li>
+    <li><span class="special">应用</span>：1G蜂窝系统、卫星通信</li>
+</ul>
+<h4>
+    1.2 时分多址 (TDMA)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：将时间划分为时隙，每个用户分配一个时隙</li>
+    <li><span class="special">特点</span>：需要精确的时钟同步</li>
+    <li><span class="special">应用</span>：2G蜂窝系统(GSM)、卫星通信</li>
+</ul>
+<h4>
+    1.3 码分多址 (CDMA)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：每个用户使用不同的编码序列，共享同一频带</li>
+    <li><span class="special">特点</span>：抗干扰能力强，容量大</li>
+    <li><span class="special">应用</span>：3G蜂窝系统、GPS</li>
+</ul>
+<h3>
+    2. 随机访问协议
+</h3>
+<h4>
+    2.1 ALOHA协议
+</h4>
+<ul>
+    <li><span class="special">纯ALOHA</span>：站点可随时发送，冲突后随机重传</li>
+    <li><span class="special">时隙ALOHA</span>：将时间划分为时隙，只能在时隙开始时发送</li>
+    <li><span class="special">最大效率</span>：纯ALOHA为18.4%，时隙ALOHA为36.8%</li>
+</ul>
+<h4>
+    2.2 CSMA协议族
+</h4>
+<ul>
+    <li><span class="special">1-坚持CSMA</span>：信道空闲立即发送，忙则持续监听</li>
+    <li><span class="special">非坚持CSMA</span>：信道忙时随机等待一段时间再监听</li>
+    <li><span class="special">p-坚持CSMA</span>：信道空闲时以概率p发送，以概率1-p延迟</li>
+</ul>
+<h4>
+    2.3 CSMA/CD (Collision Detection)
+</h4>
+<ul>
+    <li><span class="special">工作原理</span>：边发送边检测冲突，冲突后立即停止发送</li>
+    <li><span class="special">冲突处理</span>：发送干扰信号，等待随机时间后重传</li>
+    <li><span class="special">退避算法</span>：二进制指数退避算法</li>
+    <li><span class="special">应用</span>：传统以太网(10BASE5、10BASE2、10BASE-T)</li>
+    <li><span class="special">限制</span>：最小帧长64字节，最大电缆长度2500米</li>
+</ul>
+<h4>
+    2.4 CSMA/CA (Collision Avoidance)
+</h4>
+<ul>
+    <li><span class="special">工作原理</span>：通过预约机制避免冲突</li>
+    <li><span class="special">机制</span>：RTS/CTS握手、ACK确认、随机退避</li>
+    <li><span class="special">应用</span>：无线局域网(IEEE 802.11)</li>
+</ul>
+<h2>
+    高级帧处理技术
+</h2>
+<h3>
+    1. 帧优先级处理
+</h3>
+<ul>
+    <li><span class="special">IEEE 802.1p</span>：定义了8个优先级(0-7)</li>
+    <li><span class="special">QoS标记</span>：通过VLAN标签中的PCP字段标识优先级</li>
+    <li><span class="special">队列管理</span>：支持优先级队列、加权公平队列等调度算法</li>
+</ul>
+<h3>
+    2. 巨型帧 (Jumbo Frame)
+</h3>
+<ul>
+    <li><span class="special">定义</span>：超过标准MTU(1500字节)的帧</li>
+    <li><span class="special">常见大小</span>：9000字节(9KB)</li>
+    <li><span class="special">优势</span>：减少CPU开销，提高吞吐量</li>
+    <li><span class="special">限制</span>：需要全网设备支持，可能增加延迟</li>
+</ul>
+<h3>
+    3. 帧聚合技术
+</h3>
+<h4>
+    3.1 A-MSDU (Aggregated MSDU)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：将多个MSDU聚合成一个MPDU</li>
+    <li><span class="special">优势</span>：减少MAC层开销</li>
+    <li><span class="special">应用</span>：IEEE 802.11n/ac/ax</li>
+</ul>
+<h4>
+    3.2 A-MPDU (Aggregated MPDU)
+</h4>
+<ul>
+    <li><span class="special">原理</span>：将多个MPDU聚合成一个PSDU</li>
+    <li><span class="special">优势</span>：支持块确认，提高效率</li>
+    <li><span class="special">应用</span>：IEEE 802.11n/ac/ax</li>
+</ul>
+<h2>
+    帧处理性能优化
+</h2>
+<h3>
+    1. 硬件加速
+</h3>
+<ul>
+    <li><span class="special">校验和卸载</span>：网卡硬件计算IP/TCP/UDP校验和</li>
+    <li><span class="special">分段卸载</span>：TCP分段由网卡硬件完成</li>
+    <li><span class="special">接收端合并</span>：网卡合并多个小数据包</li>
+</ul>
+<h3>
+    2. 中断优化
+</h3>
+<ul>
+    <li><span class="special">中断合并</span>：减少中断频率，提高CPU效率</li>
+    <li><span class="special">轮询模式</span>：NAPI机制，混合中断和轮询</li>
+    <li><span class="special">RSS</span>：接收端缩放，多核CPU并行处理</li>
+</ul>
+<h3>
+    3. 内存管理
+</h3>
+<ul>
+    <li><span class="special">零拷贝技术</span>：减少数据在内核和用户空间间的拷贝</li>
+    <li><span class="special">DMA</span>：直接内存访问，减少CPU负担</li>
+    <li><span class="special">内存池</span>：预分配内存，避免动态分配开销</li>
+</ul>

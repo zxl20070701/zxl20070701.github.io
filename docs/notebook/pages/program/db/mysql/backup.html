@@ -1,0 +1,71 @@
+<header>
+    备份与恢复
+</header>
+<h2>
+    使用 mysqldump 备份
+</h2>
+<pre tag="sql">
+-- 备份整个数据库
+mysqldump -u root -p mydb > mydb_backup.sql
+-- 备份多个数据库
+mysqldump -u root -p --databases db1 db2 > backup.sql
+-- 备份所有数据库
+mysqldump -u root -p --all-databases > all_backup.sql
+-- 备份指定表
+mysqldump -u root -p mydb table1 table2 > tables_backup.sql
+-- 仅备份结构
+mysqldump -u root -p --no-data mydb > schema.sql
+-- 仅备份数据
+mysqldump -u root -p --no-create-info mydb > data.sql
+</pre>
+<h2>
+    使用 mysql 恢复
+</h2>
+<pre tag="sql">
+-- 恢复数据库
+mysql -u root -p mydb < mydb_backup.sql
+-- 或在 MySQL 命令行内恢复
+mysql -u root -p
+SOURCE /path/to/mydb_backup.sql;
+</pre>
+<h2>
+    物理备份
+</h2>
+<pre tag="sql">
+-- 使用 xtrabackup（Percona 提供）
+xtrabackup --backup --target-dir=/backup/mydb
+xtrabackup --prepare --target-dir=/backup/mydb
+xtrabackup --copy-back --target-dir=/backup/mydb
+</pre>
+<h2>
+    导出为 CSV
+</h2>
+<pre tag="sql">
+-- 查询结果导出为文件
+SELECT * FROM users INTO OUTFILE '/tmp/users.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+-- 从文件导入
+LOAD DATA INFILE '/tmp/users.csv'
+INTO TABLE users
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+</pre>
+<h2>
+    定时备份脚本示例
+</h2>
+<pre tag="sql">#!/bin/bash
+# MySQL 定时备份脚本
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="/backup/mysql"
+DB_NAME="mydb"
+
+mkdir -p $BACKUP_DIR
+mysqldump -u root -p'password' $DB_NAME | gzip > $BACKUP_DIR/${DB_NAME}_${DATE}.sql.gz
+
+# 删除30天前的备份
+find $BACKUP_DIR -name "*.sql.gz" -mtime +30 -delete
+</pre>

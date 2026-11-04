@@ -1,0 +1,82 @@
+<header>
+    Activity
+</header>
+<p>
+    Activity 是 Android 中负责界面交互的组件，是用户操作的入口。
+</p>
+<h2>
+    基本用法
+</h2>
+<h3>
+    创建 Activity
+</h3>
+<pre tag="java">
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 设置布局
+        setContentView(R.layout.activity_main);
+    }
+}
+</pre>
+<h3>
+    在清单文件中注册
+</h3>
+<pre tag="xml">
+&lt;application android:label="@string/app_name"&gt;
+    &lt;activity android:name=".MainActivity"&gt;
+        &lt;intent-filter&gt;
+            &lt;action android:name="android.intent.action.MAIN" /&gt;
+            &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+        &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+&lt;/application&gt;
+</pre>
+<h2>
+    生命周期
+</h2>
+<ul>
+    <li>
+        <span class="important">onCreate</span>
+        ：Activity 被创建时调用。
+    </li>
+    <li>
+        <span class="important">onStart</span>
+        ：Activity 即将可见。
+    </li>
+    <li>
+        <span class="important">onResume</span>
+        ：Activity 获得焦点，可以交互。
+    </li>
+    <li>
+        <span class="important">onPause</span>
+        ：Activity 失去焦点。
+    </li>
+    <li>
+        <span class="important">onStop</span>
+        ：Activity 不可见。
+    </li>
+    <li>
+        <span class="important">onDestroy</span>
+        ：Activity 被销毁。
+    </li>
+</ul>
+<h2>
+    启动方式
+</h2>
+<h3>
+    显式 Intent
+</h3>
+<pre tag="java">
+Intent intent = new Intent(this, SecondActivity.class);
+startActivity(intent);
+</pre>
+<h3>
+    隐式 Intent
+</h3>
+<pre tag="java">
+Intent intent = new Intent(Intent.ACTION_VIEW);
+intent.setData(Uri.parse("https://zxl20070701.github.io/notebook/index.html"));
+startActivity(intent);
+</pre>

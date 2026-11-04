@@ -1,0 +1,384 @@
+<header>
+    选区与抠图
+</header>
+<p>
+    选区是 Photoshop 里最基础也最容易用错的概念。它只定义「接下来操作影响哪些像素」，本身不改变图像。抠图、调整、裁剪、蒙版全都建立在选区之上——<span
+        class="important">90% 的「为什么我操作没效果」都是选区没选对</span>。
+</p>
+<h2>
+    选区基础操作
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>操作</th>
+            <th>快捷键</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>全选</td>
+            <td>Ctrl+A</td>
+            <td>选中整张画布</td>
+        </tr>
+        <tr>
+            <td>取消选择</td>
+            <td>Shift+Ctrl+A</td>
+            <td><span class="important">养成随手取消的习惯</span>，否则后续操作会莫名其妙只作用一部分</td>
+        </tr>
+        <tr>
+            <td>反选</td>
+            <td>Ctrl+I</td>
+            <td>选区与未选区互换</td>
+        </tr>
+        <tr>
+            <td>羽化</td>
+            <td>Shift+F6</td>
+            <td>让选区边缘产生过渡，配合羽化半径出柔和边缘</td>
+        </tr>
+        <tr>
+            <td>扩大选取</td>
+            <td>无默认键</td>
+            <td>在「选择」菜单里，比羽化可控</td>
+        </tr>
+        <tr>
+            <td>变换选区</td>
+            <td>Ctrl+T</td>
+            <td>旋转/缩放选区本身，不是像素</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    选区状态下，屏幕上的<span class="important">蚂蚁线</span>可能会让人误以为已经在操作了。用 <span class="special">Q</span> 或 <span
+        class="special">Alt+Ctrl+R</span> 切换「 Quick Mask（快速蒙版）」模式：被选区域会显示红色蒙版，一眼看清选区边界到底在哪。
+</div>
+<h2>
+    选区模式：三种叠加关系
+</h2>
+<p>
+    图层标题栏下方那四个小图标，决定了「新选区」和「现有选区」如何合并。搞错这四选一，行为会完全相反：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>快捷键</th>
+            <th>行为</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>新选区</td>
+            <td>默认</td>
+            <td>替换掉原来的选区</td>
+        </tr>
+        <tr>
+            <td>添加到选区</td>
+            <td>Shift</td>
+            <td>并集，区域变大</td>
+        </tr>
+        <tr>
+            <td>从选区减去</td>
+            <td>Alt</td>
+            <td>差集，<span class="important">用来挖洞</span></td>
+        </tr>
+        <tr>
+            <td>与选区交叉</td>
+            <td>Shift+Alt</td>
+            <td>交集，只保留重叠部分</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    按住 <span class="special">Shift</span> 拖拽任意选区工具，默认变成「添加到选区」，可以不受工具图标限制直接加选。这是加选最快的方式。
+</div>
+<h2>
+    快速选择与魔棒
+</h2>
+<h3>
+    快速选择工具（W）
+</h3>
+<p>
+    画笔式圈选，是目前效率最高的通用抠图工具。它靠算法判断边缘（受「对边缘进行探测」和「样例所有图层」两个选项影响）。
+</p>
+<p>
+    <span class="pip-block">选工具栏 W</span>
+    →
+    <span class="pip-block">用画笔在主体上涂抹</span>
+    →
+    <span class="pip-block">调整笔刷硬度</span>
+    →
+    <span class="pip-block">检查边缘误选区域</span>
+    →
+    <span class="pip-block">按住 Alt 点击误选处减选</span>
+</p>
+<div class="tips">
+    两个关键选项：<span class="special">样例所有图层</span> 在主体与背景同层时容易选错，建议关闭；<span class="special">对边缘进行探测</span> 负责识别发丝、半透明材质（纱、玻璃、毛发），遇到边缘选不干净先试它。
+</div>
+<h3>
+    魔棒工具（U）
+</h3>
+<p>
+    按<span class="important">颜色相似度</span>选区，适合背景纯净或主体颜色单一的场景。核心参数是容差（Tolerance），默认值 32：
+</p>
+<ul>
+    <li>容差太<strong>小</strong>：选区断裂成碎片，需要多次加选</li>
+    <li>容差太<strong>大</strong>：连带相近颜色一起选入，主体边缘被吃掉</li>
+    <li>按住 <span class="special">Shift</span> 点击多区域加选，<span class="special">Alt</span> 点击减选</li>
+    <li><span class="special">Shift+Alt+点击</span> 启动「取样相邻」选项</li>
+</ul>
+<h3>
+    色彩范围与通道
+</h3>
+<p>
+    <span class="special">选择 → 色彩范围</span> 用取样器逐个指定要保留的颜色，比魔棒直观得多，关键是下方的<span class="important">「消除杂边 / Fuzziness」</span>滑块。杂边是 Photoshop 抠不干净的白色羽化残留，Fuzziness 调高能去掉它，代价是可能吃掉真实细节。
+</p>
+<p>
+    通道（Channel）是选区的另一种形式。本质是<span class="important">按颜色分量拆分的灰度图</span>：RGB 通道就是三张灰度图，Alpha 通道专门存选区。<span
+        class="important">复杂抠图最终几乎都要落到通道里处理</span>——尤其是头发、半透明纱这类快速选择搞不定的情况，把亮度的明暗关系手动画进 Alpha 通道，往往比反复调参数有效得多。
+</p>
+<h2>
+    钢笔工具
+</h2>
+<p>
+    钢笔工具（P）是<span class="important">唯一能画出精确矢量路径</span>的工具，也是做硬边抠图（产品、logo、UI 元素）的第一选择。核心操作是<span
+        class="important">钢笔点击打点，拖动打曲线</span>：
+</p>
+<p>
+    <span class="pip-block">P 切换到钢笔</span>
+    →
+    <span class="pip-block">单击</span>
+    打直线锚点
+    →
+    <span class="pip-block">按住拖动</span>
+    出弧线锚点（带手柄）
+    →
+    <span class="pip-block">Alt+拖动锚点</span>
+    单独调整一侧手柄
+</p>
+<h3>
+    关键技巧
+</h3>
+<ul>
+    <li><span class="important">按住 Alt</span> 拖动已完成的锚点，可以单独调整它一侧的曲线，得到平滑过渡</li>
+    <li>闭合路径时鼠标变成<span class="special">圆形磁铁</span>，直接点击起点即可封闭</li>
+    <li>路径未闭合也能建立选区：<span class="special">路径面板 → 路径 → 建立选区</span>，未闭合部分会自动直线连接</li>
+    <li><span class="special">Shift</span> 按住可吸附到水平/垂直/45°，适合画规整的界面元素</li>
+    <li><span class="special">Ctrl+Alt+Z</span> 删除上一个锚点</li>
+</ul>
+<div class="tips">
+    钢笔不用一次画完。正确姿势是<span class="important">先粗略画一圈</span>（锚点越少越好），再 <span class="special">Ctrl+J</span> 转成选区看效果，然后 <span class="special">Ctrl+Alt+Z</span> 退回路径继续调整。反复在路径和选区之间切换，比一次画二十个锚点快得多。
+</div>
+<h3>
+    路径与选区的配合
+</h3>
+<p>
+    路径最大的价值是可以<span class="important">存储</span>：路径面板里的路径可以命名保存，配合「路径 → 从路径建立选区」随时复用。做产品图、多版本素材时，把每个部件的路径存好，换个背景继续用，比每次重画强。
+</p>
+<h2>
+    抠边缘：核心在于边缘处理
+</h2>
+<p>
+    决定抠图质量的不是选区本身，而是<span class="important">选区之后的边缘处理</span>。主体与背景之间那 1–2 像素的过渡像素，包含半透明混合信息，处理得好才有自然边缘。
+</p>
+<h3>
+    标准流程
+</h3>
+<p>
+    <span class="pip-block">大致选出主体</span>
+    →
+    <span class="pip-block">Shift+F6 羽化 0.5–1px</span>
+    →
+    <span class="pip-block">Alt+点击蒙版按钮（按选区生成）</span>
+    →
+    <span class="pip-block">黑白画笔在蒙版上修边缘</span>
+    →
+    <span class="pip-block">Shift+X 交换黑白，切换修亮/修暗</span>
+</p>
+<p>
+    羽化的作用：它让选区边缘变成渐变过渡，<span class="important">参与运算的是过渡像素而不是硬边界</span>，这样抠出来的边缘才有半透明的柔和感。直接硬选 + 硬删除会得到锯齿边。
+</p>
+<h3>
+    去黑边
+</h3>
+<p>
+    边缘常见的「白边/黑边」来自原始图像里主体和背景的混合像素。方法有三种，按情况选：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>方法</th>
+            <th>操作</th>
+            <th>适用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>图层 → 简化边缘</td>
+            <td>设半径 + 检查颜色</td>
+            <td><span class="important">最通用</span>，半径控制过渡宽度</td>
+        </tr>
+        <tr>
+            <td>去边</td>
+            <td>图层 → 修边 → 去边</td>
+            <td>边缘只有 1px 时最快</td>
+        </tr>
+        <tr>
+            <td>色彩范围去杂边</td>
+            <td>色彩范围 → 选白色 → Fuzziness 调高</td>
+            <td>背景纯白、边上有白色残留</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    「简化边缘」对话框里勾选 <span class="special">智能半径检测</span>，配合 <span class="special">Radius</span> 滑块，PS 会自动判断哪里需要更多过渡——这是目前最省事的边缘优化方式，比手动羽化半径更聪明。
+</div>
+<h3>
+    半透明主体
+</h3>
+<p>
+    头发、毛绒、纱、玻璃这类边缘是<span class="important">半透明渐变</span>的，硬选必然丢失信息。正确做法是<span class="special">不去除</span>这些像素，而是通过蒙版保留它们：
+</p>
+<p>
+    <span class="pip-block">选到主体主体区域（包含边缘渐变）</span>
+    →
+    <span class="pip-block">Ctrl+点击蒙版按钮生成蒙版</span>
+    →
+    <span class="pip-block">用 1–2px 柔边画笔把边缘灰度刷出来</span>
+</p>
+<div class="tips">
+    换成背景后边缘发灰、有「脏边」，通常是把半透明像素<b>降成了半灰</b>。修法是在新背景上加 <span class="special">色彩加深</span> 混合模式，复制主体图层放上去，能让半透明边缘重新「吸附」到新背景上。
+</div>
+<h2>
+    自动化抠图：命令面板
+</h2>
+<p>
+    「选择」菜单最底部有一组以 <span class="important">Adobe 开头</span> 的命令（早期叫 Select and Mask，后期改成菜单里的「选择并蒙版」）：
+</p>
+<p>
+    <span class="pip-block">先随便做出粗略选区</span>
+    →
+    <span class="pip-block">选择 → 选择并蒙版</span>
+    →
+    <span class="pip-block">在预览里调整「边缘」和「全局调整」</span>
+    →
+    <span class="pip-block">输出到「图层蒙版」</span>
+</p>
+<h3>
+    三个关键区域
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>区域</th>
+            <th>核心参数</th>
+            <th>作用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>视图模式</td>
+            <td>—</td>
+            <td>调试时切到「叠加」看清真实边缘</td>
+        </tr>
+        <tr>
+            <td>边缘检测</td>
+            <td>半径、<span class="special">智能半径</span>、细化边缘、对比度</td>
+            <td><span class="important">决定选区往哪边收缩</span>；半径越大越向内收缩</td>
+        </tr>
+        <tr>
+            <td>全局调整</td>
+            <td>羽化、对比度、边缘移动</td>
+            <td>边缘移动<strong>往外</strong>吃掉背景残留，<strong>往内</strong>保留主体细节</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    勾选 <span class="special">智能半径检测</span> 后，半径滑块会自动给发丝区域分配大半径、实心区域小半径。半径以画布像素为单位，<span
+        class="important">换高分辨率素材时记得按比例放大</span>，2000px 图用 1px，6000px 图就要用 3px 左右。
+</div>
+<h3>
+    输出到哪里
+</h3>
+<p>
+    「选择并蒙版」的输出选项里，<span class="special">图层蒙版</span> 是首选（可继续编辑）；<span class="special">新建图层</span> 会把抠好的主体变成独立图层；<span
+        class="special">新建文档</span> 适合提取单个通道。选蒙版而不是直接确定，能给边缘留出调整余地。
+</p>
+<h2>
+    选区扩展实战
+</h2>
+<h3>
+    一键抠主体换背景
+</h3>
+<p>
+    <span class="pip-block">W 快速选择涂抹主体</span>
+    →
+    <span class="pip-block">选择并蒙版修边缘</span>
+    →
+    <span class="pip-block">输出到图层蒙版</span>
+    →
+    <span class="pip-block">双击背景解锁</span>
+    →
+    <span class="pip-block">放新背景或纯色填充层</span>
+</p>
+<h3>
+    保留阴影抠商品
+</h3>
+<p>
+    快速选择只涂商品不涂阴影 → 选择并蒙版调整 → 然后 <span class="special">Shift+点击</span>主体图层再 <span class="special">Shift+Ctrl+E</span>
+    盖印，得到包含阴影的完整图层。
+</p>
+<h3>
+    抠图加阴影（合成技巧）
+</h3>
+<p>
+    抠好的主体放在新背景上 → 复制主体层 → <span class="special">Filter → 渲染 → 投影</span> 或图层样式加投影 → 把投影层不透明度降到 30%。比用 PS 的旧版「投影」图层样式更可控，也更接近摄影棚效果。
+</p>
+<h3>
+    只抠某个部件
+</h3>
+<p>
+    复杂产品图里想单独取出按钮：用钢笔勾出按钮路径 → 建立选区 → <span class="special">Alt+点击蒙版按钮</span>。不要先抠整个产品再局部擦，蒙版只会越来越难收拾。
+</p>
+<h2>
+    常见问题排查
+</h2>
+<h3>
+    操作只作用在一小块区域
+</h3>
+<p>
+    选区还残留着。按 <span class="special">Shift+Ctrl+A</span> 取消，或按 <span class="special">Q</span> 打开快速蒙版确认一遍。养成每步操作前 <span
+        class="special">Shift+Ctrl+A</span> 的习惯能避免 90% 的困惑。
+</p>
+<h3>
+    抠完边缘有白边
+</h3>
+<p>
+    没有去杂边。用「选择并蒙版 → 边缘检测 → 平滑/收缩」，或对边缘做一次「图层 → 简化边缘」。另外确认抠的时候选区没有包含背景像素——白边本质是背景被带进来了。
+</p>
+<h3>
+    魔棒选不中想要的区域
+</h3>
+<p>
+    背景色不连续或有渐变时，容差需要很大才能覆盖，结果就是主体也被吃掉。换成「色彩范围」逐个取样，或者直接用快速选择。
+</p>
+<h3>
+    钢笔画出来是折线
+</h3>
+<p>
+    只用单击打点就会得到折线。画曲线需要<span class="special">按住鼠标拖动</span>出手柄；如果某个锚点不需要曲线，选中它按 <span class="special">Shift+Alt</span>
+    切换为拐点。
+</p>
+<h3>
+    蒙版边缘发灰显脏
+</h3>
+<p>
+    半透明像素被压成了半灰。修法：新背景上加一层 <span class="special">色彩加深</span> 混合模式，复制主体层放上去，边缘会重新对上背景色。这是从半透明边缘抠图最常见的补救手段。
+</p>
+<h3>
+    边缘在不同背景下都「露馅」
+</h3>
+<p>
+    抠图只在一个背景上看过。半透明物体需要至少换两种亮度背景验证（深色和浅色），才能确认边缘信息是否完整。发货类素材尤其重要。
+</p>

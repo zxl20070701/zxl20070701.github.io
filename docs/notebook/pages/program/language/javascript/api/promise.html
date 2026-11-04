@@ -1,0 +1,158 @@
+<header>
+    Promise 对象
+</header>
+<h2>
+    Promise 基础
+</h2>
+<h3>
+    创建 Promise
+</h3>
+<pre tag="javascript">
+let promise = new Promise(function(resolve, reject) {
+    // 异步操作
+    if (/* 成功 */) {
+        resolve(value);
+    } else {
+        reject(error);
+    }
+});
+</pre>
+<p>
+    Promise 对象用于表示异步操作的最终完成（或失败）及其结果值。构造函数接收一个执行器函数，该函数立即执行。
+</p>
+<h3>
+    三种状态
+</h3>
+<pre tag="javascript">
+// pending: 初始状态
+// fulfilled: 操作成功完成（调用 resolve）
+// rejected: 操作失败（调用 reject）
+</pre>
+<h2>
+    then()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+promise.then(onFulfilled, onRejected)
+</pre>
+<p>
+    用于指定 Promise 成功时的回调。返回一个新的 Promise 对象，可实现链式调用。
+</p>
+<h3>
+    示例
+</h3>
+<pre tag="javascript">
+promise.then(function(result) {
+    console.log(result);
+}).then(function(result2) {
+    console.log(result2);
+});
+</pre>
+<h2>
+    catch()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+promise.catch(onRejected)
+</pre>
+<p>
+    用于指定 Promise 失败时的回调。等价于 then(null, onRejected)。返回一个新的 Promise 对象。
+</p>
+<h2>
+    finally()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+promise.finally(onFinally)
+</pre>
+<p>
+    用于指定 Promise 状态改变后（无论成功或失败）的回调。返回原 Promise 的结果。
+</p>
+<h2>
+    all()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Promise.all(iterable)
+</pre>
+<p>
+    用于将多个 Promise 实例包装成一个新的 Promise 实例。所有 Promise 都成功才返回成功，任一失败则返回失败。
+</p>
+<h3>
+    示例
+</h3>
+<pre tag="javascript">
+Promise.all([promise1, promise2]).then(function(results) {
+    // results 为所有成功结果的数组
+}).catch(function(error) {
+    // error 为第一个失败的原因
+});
+</pre>
+<h2>
+    race()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Promise.race(iterable)
+</pre>
+<p>
+    将多个 Promise 实例包装成一个新的 Promise 实例。返回最先解决或拒绝的 Promise 的结果。
+</p>
+<h2>
+    allSettled()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Promise.allSettled(iterable)
+</pre>
+<p>
+    返回一个在所有给定的 Promise 都已经解决或拒绝后才解决的 Promise，并带有一个对象数组，每个对象表示对应的 Promise 结果。
+</p>
+<h2>
+    any()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Promise.any(iterable)
+</pre>
+<p>
+    只要给定的 Promise 中有一个成功，就返回成功的结果。如果所有 Promise 都失败，则返回一个 AggregateError。
+</p>
+<h2>
+    resolve()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Promise.resolve(value)
+</pre>
+<p>
+    返回一个状态由给定 value 决定的 Promise 对象。如果 value 是 Promise 则直接返回，如果是 thenable 对象则等待其完成。
+</p>
+<h2>
+    reject()
+</h2>
+<h3>
+    语法
+</h3>
+<pre tag="javascript">
+Promise.reject(reason)
+</pre>
+<p>
+    返回一个带有拒绝原因 reason 的 Promise 对象。通常用于快速创建一个已拒绝的 Promise。
+</p>

@@ -1,0 +1,281 @@
+<header>
+    事件处理
+</header>
+<h2>
+    Canvas事件基础
+</h2>
+<p>
+    Canvas本身是一个HTML元素，可以像其他元素一样处理各种DOM事件。但由于Canvas是一个画布，我们需要根据事件坐标来确定用户与Canvas上内容的交互。
+</p>
+
+<h2>
+    基本事件处理
+</h2>
+<pre tag="javascript">
+const canvas = document.getElementById('myCanvas');
+
+// 鼠标事件
+canvas.addEventListener('mousedown', handleMouseDown);
+canvas.addEventListener('mouseup', handleMouseUp);
+canvas.addEventListener('mousemove', handleMouseMove);
+canvas.addEventListener('click', handleClick);
+canvas.addEventListener('dblclick', handleDoubleClick);
+
+// 触摸事件（移动设备）
+canvas.addEventListener('touchstart', handleTouchStart);
+canvas.addEventListener('touchend', handleTouchEnd);
+canvas.addEventListener('touchmove', handleTouchMove);
+
+// 键盘事件
+document.addEventListener('keydown', handleKeyDown);
+document.addEventListener('keyup', handleKeyUp);
+</pre>
+
+<h2>
+    获取鼠标坐标
+</h2>
+<pre tag="javascript">
+function getMousePos(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+    };
+}
+
+function handleMouseMove(event) {
+    const pos = getMousePos(canvas, event);
+    console.log(`鼠标位置: (${pos.x}, ${pos.y})`);
+}
+</pre>
+
+<h2>
+    获取触摸坐标
+</h2>
+<pre tag="javascript">
+function getTouchPos(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: event.touches[0].clientX - rect.left,
+        y: event.touches[0].clientY - rect.top
+    };
+}
+
+function handleTouchMove(event) {
+    event.preventDefault(); // 防止页面滚动
+    const pos = getTouchPos(canvas, event);
+    console.log(`触摸位置: (${pos.x}, ${pos.y})`);
+}
+</pre>
+
+<h2>
+    点击检测
+</h2>
+<h3>
+    矩形区域检测
+</h3>
+<pre tag="javascript">
+const rect = {
+    x: 50,
+    y: 50,
+    width: 100,
+    height: 100
+};
+
+function isPointInRect(point, rect) {
+    return point.x >= rect.x && 
+           point.x <= rect.x + rect.width &&
+           point.y >= rect.y && 
+           point.y <= rect.y + rect.height;
+}
+
+function handleClick(event) {
+    const pos = getMousePos(canvas, event);
+    
+    if (isPointInRect(pos, rect)) {
+        console.log('点击了矩形区域');
+    }
+}
+</pre>
+
+<h3>
+    圆形区域检测
+</h3>
+<pre tag="javascript">
+const circle = {
+    x: 100,
+    y: 100,
+    radius: 50
+};
+
+function isPointInCircle(point, circle) {
+    const dx = point.x - circle.x;
+    const dy = point.y - circle.y;
+    return dx * dx + dy * dy <= circle.radius * circle.radius;
+}
+
+function handleClick(event) {
+    const pos = getMousePos(canvas, event);
+    
+    if (isPointInCircle(pos, circle)) {
+        console.log('点击了圆形区域');
+    }
+}
+</pre>
+
+<h3>
+    复杂形状检测
+</h3>
+<pre tag="javascript">
+// 使用isPointInPath检测复杂路径
+function isPointInPath(point, pathFunction) {
+    ctx.save();
+    ctx.beginPath();
+    pathFunction(); // 绘制路径
+    const result = ctx.isPointInPath(point.x, point.y);
+    ctx.restore();
+    return result;
+}
+
+// 示例：检测多边形
+function drawPolygon() {
+    ctx.moveTo(100, 100);
+    ctx.lineTo(150, 50);
+    ctx.lineTo(200, 100);
+    ctx.lineTo(150, 150);
+    ctx.closePath();
+}
+
+function handleClick(event) {
+    const pos = getMousePos(canvas, event);
+    
+    if (isPointInPath(pos, drawPolygon)) {
+        console.log('点击了多边形');
+    }
+}
+</pre>
+
+<h2>
+    拖拽功能
+</h2>
+<pre tag="javascript">
+let isDragging = false;
+let dragTarget = null;
+let offsetX = 0;
+let offsetY = 0;
+
+function handleMouseDown(event) {
+    const pos = getMousePos(canvas, event);
+    
+    // 检查是否点击了可拖拽对象
+    if (isPointInRect(pos, rect)) {
+        isDragging = true;
+        dragTarget = rect;
+        offsetX = pos.x - rect.x;
+        offsetY = pos.y - rect.y;
+    }
+}
+
+function handleMouseMove(event) {
+    if (isDragging && dragTarget) {
+        const pos = getMousePos(canvas, event);
+        dragTarget.x = pos.x - offsetX;
+        dragTarget.y = pos.y - offsetY;
+        
+        // 重绘画布
+        redraw();
+    }
+}
+
+function handleMouseUp(event) {
+    isDragging = false;
+    dragTarget = null;
+}
+
+function redraw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+}
+</pre>
+
+<h2>
+    手势识别
+</h2>
+<pre tag="javascript">
+let lastTouch = null;
+let touchStartTime = 0;
+
+function handleTouchStart(event) {
+    event.preventDefault();
+    const pos = getTouchPos(canvas, event);
+    lastTouch = pos;
+    touchStartTime = Date.now();
+}
+
+function handleTouchEnd(event) {
+    event.preventDefault();
+    const pos = getTouchPos(canvas, event);
+    
+    // 计算触摸持续时间
+    const duration = Date.now() - touchStartTime;
+    
+    // 计算移动距离
+    if (lastTouch) {
+        const dx = pos.x - lastTouch.x;
+        const dy = pos.y - lastTouch.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // 判断手势类型
+        if (duration < 300 && distance < 10) {
+            console.log('轻触');
+        } else if (distance > 50) {
+            if (Math.abs(dx) > Math.abs(dy)) {
+                if (dx > 0) {
+                    console.log('向右滑动');
+                } else {
+                    console.log('向左滑动');
+                }
+            } else {
+                if (dy > 0) {
+                    console.log('向下滑动');
+                } else {
+                    console.log('向上滑动');
+                }
+            }
+        }
+    }
+    
+    lastTouch = null;
+}
+</pre>
+
+<h2>
+    键盘控制
+</h2>
+<pre tag="javascript">
+const keys = {};
+
+function handleKeyDown(event) {
+    keys[event.key] = true;
+}
+
+function handleKeyUp(event) {
+    keys[event.key] = false;
+}
+
+function update() {
+    if (keys['ArrowUp']) {
+        player.y -= 5;
+    }
+    if (keys['ArrowDown']) {
+        player.y += 5;
+    }
+    if (keys['ArrowLeft']) {
+        player.x -= 5;
+    }
+    if (keys['ArrowRight']) {
+        player.x += 5;
+    }
+}
+</pre>

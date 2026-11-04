@@ -1,0 +1,99 @@
+<header>
+    image
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>src</td>
+            <td>String</td>
+            <td></td>
+            <td>图片资源地址</td>
+        </tr>
+        <tr>
+            <td>mode</td>
+            <td>String</td>
+            <td>scaleToFill</td>
+            <td>图片裁剪、缩放的模式，有效值：scaleToFill, aspectFit, aspectFill, widthFix, top, bottom, center, left, right, top left, top right, bottom left, bottom right</td>
+        </tr>
+        <tr>
+            <td>lazy-load</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>图片懒加载。只针对page与scroll-view下的image有效</td>
+        </tr>
+        <tr>
+            <td>fade-show</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>图片显示动画效果</td>
+        </tr>
+        <tr>
+            <td>webp</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>默认不解析 webP 格式，只支持网络资源</td>
+        </tr>
+        <tr>
+            <td>show-menu-by-longpress</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>开启长按图片显示识别小程序码菜单</td>
+        </tr>
+        <tr>
+            <td>@error</td>
+            <td>HandleEvent</td>
+            <td></td>
+            <td>当错误发生时，发布到 AppService 的事件名，事件对象event.detail = {errMsg: 'something wrong'}</td>
+        </tr>
+        <tr>
+            <td>@load</td>
+            <td>HandleEvent</td>
+            <td></td>
+            <td>当图片载入完毕时，发布到 AppService 的事件名，事件对象event.detail = {height:'图片高度px', width:'图片宽度px'}</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <image class="img" src="/static/logo.png" mode="aspectFit" @error="imageError"></image>
+    <image class="img" src="https://example.com/image.jpg" mode="widthFix"></image>
+  </view>
+</template>
+
+<script>
+export default {
+  methods: {
+    imageError(e) {
+      console.error('图片加载失败：', e.detail.errMsg);
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.img {
+  width: 300px;
+  height: 200px;
+  margin-bottom: 20px;
+}
+</style>
+</pre>

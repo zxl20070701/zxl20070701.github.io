@@ -1,0 +1,43 @@
+<header>权限基础和 chmod</header>
+<h2>查看权限</h2>
+<pre>
+ls -l file.txt
+ls -ld directory/
+</pre>
+<pre>
+-rwxr-xr-x  1 user group  1234 Jan 1 12:00 file.txt
+</pre>
+<pre>
+r - 读权限 (read)
+w - 写权限 (write)
+x - 执行权限 (execute)
+- - 无权限
+</pre>
+<h2>chmod</h2>
+<pre>
+chmod 755 file.txt
+
+7 = rwx (4+2+1)
+6 = rw- (4+2)
+5 = r-x (4+1)
+4 = r-- (4)
+0 = --- (0)
+</pre>
+<pre>
+chmod u+x file.txt
+chmod g-w file.txt
+chmod o=r file.txt
+chmod a+r file.txt
+chmod -R 755 directory/
+</pre>
+<p>
+    常见权限示例：
+</p>
+<pre>
+chmod 644 file.txt
+chmod 755 script.sh
+chmod 600 id_rsa
+</pre>
+<p class="warn">
+    温馨提示：递归改权限前要确认目录范围，尤其不要随手对系统目录执行 <span class="special">chmod -R</span>。
+</p>

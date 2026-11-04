@@ -1,0 +1,374 @@
+<header>
+    存储层次结构
+</header>
+<h2>
+    存储层次结构概述
+</h2>
+<p>
+    <span class="important">存储层次结构</span>（Memory
+    Hierarchy）是计算机系统中按照速度和容量划分的多级存储体系。这种层次结构通过在不同层次之间平衡速度、容量和成本，实现了整体系统性能的最优化。
+</p>
+
+<h2>
+    存储层次结构的基本原理
+</h2>
+<h3>
+    1. 速度与容量的权衡
+</h3>
+<p>
+    存储设备的访问速度通常与其容量成反比，与其成本成正比。层次结构通过合理配置不同特性的存储设备，实现性能与成本的平衡。
+</p>
+
+<h3>
+    2. 局部性原理
+</h3>
+<ul>
+    <li><span class="special">时间局部性</span>：最近访问的数据很可能再次被访问</li>
+    <li><span class="special">空间局部性</span>：与当前访问数据相邻的数据很可能被访问</li>
+    <li><span class="special">应用</span>：Cache、预取、数据布局优化</li>
+</ul>
+
+<h3>
+    3. 数据迁移策略
+</h3>
+<ul>
+    <li><span class="special">包含策略</span>：上层存储包含下层存储的数据</li>
+    <li><span class="special">排他策略</span>：数据只存在于某一层</li>
+    <li><span class="special">写策略</span>：写直达、写回等</li>
+</ul>
+
+<h2>
+    存储层次结构的分层
+</h2>
+<h3>
+    1. 寄存器层（Register Level）
+</h3>
+<ul>
+    <li><span class="special">位置</span>：CPU内部</li>
+    <li><span class="special">容量</span>：几十个到几百个字节</li>
+    <li><span class="special">访问时间</span>：亚纳秒级（0.1-1ns）</li>
+    <li><span class="special">特点</span>：速度最快，容量最小，成本最高</li>
+    <li><span class="special">管理</span>：编译器分配，程序员可见</li>
+</ul>
+
+<h3>
+    2. Cache层（Cache Level）
+</h3>
+<h4>
+    L1 Cache
+</h4>
+<ul>
+    <li>位置：处理器芯片内</li>
+    <li>容量：16KB-128KB</li>
+    <li>访问时间：1-3ns</li>
+    <li>特点：指令和数据分离，每个核心独享</li>
+</ul>
+
+<h4>
+    L2 Cache
+</h4>
+<ul>
+    <li>位置：处理器芯片内</li>
+    <li>容量：256KB-2MB</li>
+    <li>访问时间：3-10ns</li>
+    <li>特点：统一Cache，每个核心独享或共享</li>
+</ul>
+
+<h4>
+    L3 Cache
+</h4>
+<ul>
+    <li>位置：处理器芯片内</li>
+    <li>容量：2MB-64MB</li>
+    <li>访问时间：10-50ns</li>
+    <li>特点：所有核心共享</li>
+</ul>
+
+<h3>
+    3. 主存储器层（Main Memory）
+</h3>
+<ul>
+    <li><span class="special">位置</span>：主板上的内存条</li>
+    <li><span class="special">容量</span>：几GB到几百GB</li>
+    <li><span class="special">访问时间</span>：50-200ns</li>
+    <li><span class="special">特点</span>：DRAM技术，易失性存储</li>
+    <li><span class="special">管理</span>：操作系统管理</li>
+</ul>
+
+<h3>
+    4. 辅助存储器层（Secondary Storage）
+</h3>
+<h4>
+    固态硬盘（SSD）
+</h4>
+<ul>
+    <li>容量：128GB-几TB</li>
+    <li>访问时间：几十微秒</li>
+    <li>特点：基于闪存技术，无机械部件</li>
+</ul>
+
+<h4>
+    机械硬盘（HDD）
+</h4>
+<ul>
+    <li>容量：500GB-几十TB</li>
+    <li>访问时间：几毫秒</li>
+    <li>特点：机械旋转，成本低，容量大</li>
+</ul>
+
+<h3>
+    5. 离线存储器层（Tertiary Storage）
+</h3>
+<ul>
+    <li><span class="special">类型</span>：磁带、光盘、网络存储</li>
+    <li><span class="special">容量</span>：TB到PB级别</li>
+    <li><span class="special">访问时间</span>：秒到分钟级别</li>
+    <li><span class="special">特点</span>：非易失性，主要用于备份和归档</li>
+    <li><span class="special">管理</span>：手动或自动加载机制</li>
+</ul>
+
+<h2>
+    存储层次结构的性能特征
+</h2>
+<h3>
+    1. 性能参数对比
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>存储层次</th>
+            <th>容量</th>
+            <th>访问时间</th>
+            <th>带宽</th>
+            <th>成本($/GB)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>寄存器</td>
+            <td>1KB</td>
+            <td>0.1ns</td>
+            <td>10TB/s</td>
+            <td>极高</td>
+        </tr>
+        <tr>
+            <td>L1 Cache</td>
+            <td>64KB</td>
+            <td>1ns</td>
+            <td>1TB/s</td>
+            <td>极高</td>
+        </tr>
+        <tr>
+            <td>L2 Cache</td>
+            <td>1MB</td>
+            <td>5ns</td>
+            <td>500GB/s</td>
+            <td>很高</td>
+        </tr>
+        <tr>
+            <td>L3 Cache</td>
+            <td>16MB</td>
+            <td>20ns</td>
+            <td>200GB/s</td>
+            <td>高</td>
+        </tr>
+        <tr>
+            <td>主存(DDR4)</td>
+            <td>16GB</td>
+            <td>100ns</td>
+            <td>50GB/s</td>
+            <td>中等</td>
+        </tr>
+        <tr>
+            <td>SSD</td>
+            <td>1TB</td>
+            <td>100μs</td>
+            <td>3GB/s</td>
+            <td>低</td>
+        </tr>
+        <tr>
+            <td>HDD</td>
+            <td>10TB</td>
+            <td>10ms</td>
+            <td>200MB/s</td>
+            <td>很低</td>
+        </tr>
+        <tr>
+            <td>磁带</td>
+            <td>100TB</td>
+            <td>1min</td>
+            <td>500MB/s</td>
+            <td>极低</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>
+    2. 性能指标分析
+</h3>
+<ul>
+    <li><span class="special">容量-速度关系</span>：容量每增加一级，访问时间增加约10倍</li>
+    <li><span class="special">成本-容量关系</span>：容量每增加一级，单位成本降低约10倍</li>
+    <li><span class="special">带宽变化</span>：随着层次下移，带宽显著降低</li>
+</ul>
+
+<h2>
+    存储层次结构的管理策略
+</h2>
+<h3>
+    1. 数据放置策略
+</h3>
+<ul>
+    <li><span class="special">直接映射</span>：每个数据项有固定的存储位置</li>
+    <li><span class="special">组相联</span>：数据项可以存储在有限个位置</li>
+    <li><span class="special">全相联</span>：数据项可以存储在任意位置</li>
+</ul>
+
+<h3>
+    2. 数据替换策略
+</h3>
+<ul>
+    <li><span class="special">LRU</span>：最近最少使用</li>
+    <li><span class="special">FIFO</span>：先进先出</li>
+    <li><span class="special">随机</span>：随机选择替换项</li>
+    <li><span class="special">LFU</span>：最不经常使用</li>
+</ul>
+
+<h3>
+    3. 数据一致性策略
+</h3>
+<ul>
+    <li><span class="special">写直达</span>：同时更新各级存储</li>
+    <li><span class="special">写回</span>：延迟更新，减少写操作</li>
+    <li><span class="special">写分配</span>：写缺失时调入数据</li>
+    <li><span class="special">非写分配</span>：写缺失时不调入数据</li>
+</ul>
+
+<h2>
+    存储层次结构的优化技术
+</h2>
+<h3>
+    1. 预取技术
+</h3>
+<ul>
+    <li><span class="special">顺序预取</span>：预取连续的数据块</li>
+    <li><span class="special">跨步预取</span>：预取固定间隔的数据</li>
+    <li><span class="special">自适应预取</span>：根据访问模式动态调整</li>
+</ul>
+
+<h3>
+    2. 数据布局优化
+</h3>
+<ul>
+    <li><span class="special">数据对齐</span>：提高访问效率</li>
+    <li><span class="special">数据压缩</span>：增加有效存储容量</li>
+    <li><span class="special">数据重组</span>：改善空间局部性</li>
+</ul>
+
+<h3>
+    3. 并行访问技术
+</h3>
+<ul>
+    <li><span class="special">多端口存储</span>：支持并行读写</li>
+    <li><span class="special">存储体交叉</span>：提高带宽利用率</li>
+    <li><span class="special">流水线访问</span>：重叠多个访问操作</li>
+</ul>
+
+<h2>
+    存储层次结构的性能模型
+</h2>
+<h3>
+    1. 平均访问时间模型
+</h3>
+<p>
+    平均访问时间 = 命中时间 + 缺失率 × 缺失惩罚
+</p>
+<ul>
+    <li>适用于Cache和虚拟存储器</li>
+    <li>需要考虑多级层次的影响</li>
+</ul>
+
+<h3>
+    2. 工作集模型
+</h3>
+<ul>
+    <li><span class="special">工作集</span>：程序在一段时间内活跃访问的数据集合</li>
+    <li><span class="special">局部性分析</span>：评估程序的访问模式</li>
+    <li><span class="special">容量规划</span>：指导存储层次配置</li>
+</ul>
+
+<h3>
+    3. 栈距离分析
+</h3>
+<ul>
+    <li><span class="special">栈距离</span>：两次访问同一数据之间的不同数据访问次数</li>
+    <li><span class="special">重用距离</span>：衡量数据重用模式</li>
+    <li><span class="special">性能预测</span>：预测不同Cache大小的性能</li>
+</ul>
+
+<h2>
+    现代存储层次结构实例
+</h2>
+<h3>
+    1. Intel Core处理器
+</h3>
+<ul>
+    <li><span class="special">寄存器</span>：16个64位通用寄存器</li>
+    <li><span class="special">L1 Cache</span>：32KB指令 + 32KB数据</li>
+    <li><span class="special">L2 Cache</span>：256KB</li>
+    <li><span class="special">L3 Cache</span>：共享，2-40MB</li>
+    <li><span class="special">主存</span>：DDR4/DDR5，支持ECC</li>
+</ul>
+
+<h3>
+    2. ARM Cortex处理器
+</h3>
+<ul>
+    <li><span class="special">寄存器</span>：31个64位通用寄存器</li>
+    <li><span class="special">L1 Cache</span>：16-64KB指令/数据</li>
+    <li><span class="special">L2 Cache</span>：128KB-2MB</li>
+    <li><span class="special">L3 Cache</span>：可选，1-8MB</li>
+    <li><span class="special">主存</span>：LPDDR4/LPDDR5，低功耗设计</li>
+</ul>
+
+<h3>
+    3. GPU存储层次
+</h3>
+<ul>
+    <li><span class="special">寄存器文件</span>：大量32位寄存器</li>
+    <li><span class="special">L1 Cache</span>：每个流处理器拥有</li>
+    <li><span class="special">L2 Cache</span>：所有流处理器共享</li>
+    <li><span class="special">显存</span>：GDDR6/GDDR6X，高带宽设计</li>
+    <li><span class="special">系统内存</span>：通过PCIe连接</li>
+</ul>
+
+<h2>
+    存储层次结构的发展趋势
+</h2>
+<h3>
+    1. 新型存储技术
+</h3>
+<ul>
+    <li><span class="special">3D XPoint</span>：Intel Optane，介于DRAM和SSD之间</li>
+    <li><span class="special">MRAM</span>：磁性随机存取存储器，非易失性</li>
+    <li><span class="special">ReRAM</span>：阻变存储器，高密度低功耗</li>
+    <li><span class="special">PCM</span>：相变存储器，可扩展性强</li>
+</ul>
+
+<h3>
+    2. 存内计算
+</h3>
+<ul>
+    <li><span class="special">近数据处理</span>：减少数据移动</li>
+    <li><span class="special">存储器内计算</span>：在存储器中执行计算</li>
+    <li><span class="special">AI加速器</span>：专门针对神经网络优化</li>
+</ul>
+
+<h3>
+    3. 异构存储系统
+</h3>
+<ul>
+    <li><span class="special">混合内存</span>：DRAM + NVM组合</li>
+    <li><span class="special">智能缓存</span>：基于访问模式的动态缓存</li>
+    <li><span class="special">软件定义存储</span>：灵活的存储资源管理</li>
+</ul>

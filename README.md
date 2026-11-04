@@ -1,6 +1,6 @@
-<img src='https://zxl20070701.github.io/images/zxl20070701.jpg' height='300px' style="border-radius:50%;border:5px solid black;"/>
+<img src='https://zxl20070701.github.io/images/zxl20070701.jpg' height='300px' width='300px'/>
 
-# [z Z ...](https://zxl20070701.github.io)
+# [开源主页](https://zxl20070701.github.io)
 
 <p>
     <a href="https://github.com/zxl20070701/zxl20070701.github.io" target='_blank'>
@@ -44,7 +44,13 @@ npm run build
 
 ### 文档笔记
 
-主要是一些文档笔记，包括编程、数学、计算机、英语、历史等各种常用的内容快速查询。
+主要是一些文档笔记，包括编程、数学、计算机、英语、历史等各种常用的内容快速查询：
+
+<img src="https://zxl20070701.github.io/images/snipping/notebook.jpeg">
+
+笔记支持代码、数学公式等特殊录入：
+
+<img src="https://zxl20070701.github.io/notebook/images/formula.jpeg">
 
 ### 实用工具
 
@@ -64,35 +70,72 @@ npm run build
 
 下面是部分功能的预览截图：
 
-- 代码编辑器
-
-支持图片、代码等查看和编辑，支持文件或目录打开、编辑、新建和保存
-
-<img src="https://zxl20070701.github.io/images/snipping/code-editor.jpeg">
- 
- - 图片编辑器
-
-可以对图片进行编辑，包括合并、修改大小、美化等
-
-<img src="https://zxl20070701.github.io/images/snipping/image-editor.jpeg">
-
-- 录屏软件
-
-一个H5版本的电脑屏幕录制软件
-
-<img src="https://zxl20070701.github.io/images/snipping/recorder-screen.jpeg">
-
-- 正则表达式可视化
-
-输入一个正则表达式后可以把其变成可视化的图表来快速读懂意义
-
-<img src="https://zxl20070701.github.io/images/snipping/regexper-visualization.jpeg">
-
-- 音频编辑器
-
-可以对音频文件进行切割、合并等操作，支持多种格式
-
-<img src="https://zxl20070701.github.io/images/snipping/audio-editor.jpeg">
+<table>
+    <tbody>
+        <tr>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/code-editor.jpeg">
+                代码编辑器
+            </th>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/image-editor.jpeg">
+                图片编辑器
+            </th>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/recorder-screen.jpeg">
+                录屏软件
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/regexper-visualization.jpeg">
+                正则表达式可视化
+            </th>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/audio-editor.jpeg">
+                音频编辑器
+            </th>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/snipping-tool.jpeg">
+                截图工具
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/model-editor.jpeg">
+                3D模型编辑器
+            </th>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/excel.jpeg">
+                Excel 表格
+            </th>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/geo-json.jpeg">
+                geoJSON查看器
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/drawio.jpeg">
+                draw.io
+            </th>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/type-practice.jpeg">
+                金山打字通
+            </th>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/job-resume.jpeg">
+                简历制作
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <img src="https://zxl20070701.github.io/images/snipping/echarts.jpeg">
+                可视化图表
+            </th>
+        </tr>
+    </tbody>
+</table>
 
 所有的功能都在初步完善和丰富，如果有什么建议或者希望我们提供的功能，可以通过[ 提issue ](https://github.com/zxl20070701/zxl20070701.github.io/issues)来给我们留言！
 

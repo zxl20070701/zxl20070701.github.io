@@ -1,0 +1,138 @@
+<header>
+    网络请求
+</header>
+<h2>
+    uni.request(OBJECT)
+</h2>
+<p>
+    发起网络请求。
+</p>
+<pre tag="javascript">
+uni.request({
+    url: 'https://www.example.com/request', //仅为示例，并非真实接口地址。
+    method: 'GET',
+    data: {
+        text: 'uni.request'
+    },
+    header: {
+        'custom-header': 'hello' //自定义请求头信息
+    },
+    success: (res) => {
+        console.log(res.data);
+    },
+    fail: (err) => {
+        console.error(err);
+    }
+});
+</pre>
+<h3>
+    请求参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>url</td>
+            <td>String</td>
+            <td>是</td>
+            <td></td>
+            <td>开发者服务器接口地址</td>
+        </tr>
+        <tr>
+            <td>data</td>
+            <td>Object/String/ArrayBuffer</td>
+            <td>否</td>
+            <td></td>
+            <td>请求的参数</td>
+        </tr>
+        <tr>
+            <td>header</td>
+            <td>Object</td>
+            <td>否</td>
+            <td></td>
+            <td>设置请求的 header，header 中不能设置 Referer</td>
+        </tr>
+        <tr>
+            <td>method</td>
+            <td>String</td>
+            <td>否</td>
+            <td>GET</td>
+            <td>有效值：OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT</td>
+        </tr>
+        <tr>
+            <td>timeout</td>
+            <td>Number</td>
+            <td>否</td>
+            <td></td>
+            <td>超时时间，单位 ms</td>
+        </tr>
+        <tr>
+            <td>dataType</td>
+            <td>String</td>
+            <td>否</td>
+            <td>json</td>
+            <td>如果设为 json，会尝试对返回的数据做一次 JSON.parse</td>
+        </tr>
+        <tr>
+            <td>responseType</td>
+            <td>String</td>
+            <td>否</td>
+            <td>text</td>
+            <td>设置响应的数据类型。合法值：text、arraybuffer</td>
+        </tr>
+        <tr>
+            <td>sslVerify</td>
+            <td>Boolean</td>
+            <td>否</td>
+            <td>true</td>
+            <td>验证 ssl 证书</td>
+        </tr>
+        <tr>
+            <td>withCredentials</td>
+            <td>Boolean</td>
+            <td>否</td>
+            <td>false</td>
+            <td>跨域请求时是否携带凭证（cookies）</td>
+        </tr>
+        <tr>
+            <td>firstIpv4</td>
+            <td>Boolean</td>
+            <td>否</td>
+            <td>false</td>
+            <td>DNS解析时优先使用ipv4</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    Promise 化使用
+</h2>
+<pre tag="javascript">
+// Promise 化
+uni.request({
+    url: 'https://www.example.com/request'
+}).then(res => {
+    console.log(res.data);
+}).catch(err => {
+    console.error(err);
+});
+
+// 或者使用 async/await
+async function fetchData() {
+    try {
+        const res = await uni.request({
+            url: 'https://www.example.com/request'
+        });
+        console.log(res.data);
+    } catch (err) {
+        console.error(err);
+    }
+}
+</pre>

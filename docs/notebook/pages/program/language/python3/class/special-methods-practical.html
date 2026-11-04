@@ -1,0 +1,264 @@
+<header>
+    特殊方法的实际应用
+</header>
+<h2>
+    矩阵类实现
+</h2>
+<pre tag="python">
+class Matrix:
+    def __init__(self, data):
+        self.data = data
+        self.rows = len(data)
+        self.cols = len(data[0]) if data else 0
+    
+    def __str__(self):
+        """矩阵的字符串表示"""
+        rows = [' '.join(f'{num:4}' for num in row) for row in self.data]
+        return '\n'.join(rows)
+    
+    def __repr__(self):
+        """矩阵的官方表示"""
+        return f"Matrix({self.data})"
+    
+    def __add__(self, other):
+        """矩阵加法"""
+        if not isinstance(other, Matrix):
+            return NotImplemented
+        if self.rows != other.rows or self.cols != other.cols:
+            raise ValueError("矩阵维度不匹配")
+        
+        result = []
+        for i in range(self.rows):
+            row = [self.data[i][j] + other.data[i][j] for j in range(self.cols)]
+            result.append(row)
+        return Matrix(result)
+    
+    def __mul__(self, other):
+        """矩阵乘法"""
+        if isinstance(other, (int, float)):
+            # 标量乘法
+            result = [[self.data[i][j] * other for j in range(self.cols)] 
+                     for i in range(self.rows)]
+            return Matrix(result)
+        elif isinstance(other, Matrix):
+            # 矩阵乘法
+            if self.cols != other.rows:
+                raise ValueError("矩阵维度不匹配")
+            
+            result = []
+            for i in range(self.rows):
+                row = []
+                for j in range(other.cols):
+                    sum_val = sum(self.data[i][k] * other.data[k][j] 
+                                for k in range(self.cols))
+                    row.append(sum_val)
+                result.append(row)
+            return Matrix(result)
+        return NotImplemented
+    
+    def __rmul__(self, other):
+        """右乘法"""
+        return self.__mul__(other)
+    
+    def __getitem__(self, key):
+        """获取元素"""
+        return self.data[key]
+    
+    def __len__(self):
+        """返回行数"""
+        return self.rows
+    
+    def __eq__(self, other):
+        """矩阵相等比较"""
+        if not isinstance(other, Matrix):
+            return False
+        return self.data == other.data
+
+# 使用矩阵类
+m1 = Matrix([[1, 2], [3, 4]])
+m2 = Matrix([[5, 6], [7, 8]])
+
+print("矩阵1:")
+print(m1)
+print("\n矩阵2:")
+print(m2)
+
+print("\n矩阵加法:")
+print(m1 + m2)
+
+print("\n矩阵乘法:")
+print(m1 * m2)
+
+print("\n标量乘法:")
+print(m1 * 2)
+print(3 * m1)
+</pre>
+
+<h2>
+    自定义范围类
+</h2>
+<pre tag="python">
+class CustomRange:
+    def __init__(self, start, stop=None, step=1):
+        if stop is None:
+            start, stop = 0, start
+        self.start = start
+        self.stop = stop
+        self.step = step
+    
+    def __iter__(self):
+        """使对象可迭代"""
+        current = self.start
+        if self.step > 0:
+            while current < self.stop:
+                yield current
+                current += self.step
+        else:
+            while current > self.stop:
+                yield current
+                current += self.step
+    
+    def __len__(self):
+        """返回长度"""
+        if self.step > 0:
+            return max(0, (self.stop - self.start + self.step - 1) // self.step)
+        else:
+            return max(0, (self.start - self.stop - self.step - 1) // (-self.step))
+    
+    def __getitem__(self, index):
+        """支持索引访问"""
+        if index < 0:
+            index += len(self)
+        if index < 0 or index >= len(self):
+            raise IndexError("索引超出范围")
+        
+        return self.start + index * self.step
+    
+    def __contains__(self, value):
+        """检查值是否在范围内"""
+        if self.step > 0:
+            return (self.start <= value < self.stop and 
+                   (value - self.start) % self.step == 0)
+        else:
+            return (self.stop < value <= self.start and 
+                   (value - self.start) % self.step == 0)
+    
+    def __str__(self):
+        return f"CustomRange({self.start}, {self.stop}, {self.step})"
+    
+    def __repr__(self):
+        return f"CustomRange({self.start}, {self.stop}, {self.step})"
+
+# 使用自定义范围
+cr = CustomRange(1, 10, 2)
+print(cr)  # CustomRange(1, 10, 2)
+
+print("列表形式:", list(cr))  # [1, 3, 5, 7, 9]
+print("长度:", len(cr))      # 5
+print("索引2:", cr[2])       # 5
+print("是否包含5:", 5 in cr) # True
+print("是否包含6:", 6 in cr) # False
+
+# 反向范围
+reverse_range = CustomRange(10, 0, -2)
+print("反向范围:", list(reverse_range))  # [10, 8, 6, 4, 2]
+</pre>
+
+<h2>
+    扑克牌类实现
+</h2>
+<pre tag="python">
+from enum import Enum
+import random
+
+class Suit(Enum):
+    HEARTS = "♥"
+    DIAMONDS = "♦"
+    CLUBS = "♣"
+    SPADES = "♠"
+
+class Card:
+    def __init__(self, suit, rank):
+        self.suit = suit
+        self.rank = rank  # 1-13 (A-K)
+    
+    def __str__(self):
+        """卡片字符串表示"""
+        rank_names = {1: 'A', 11: 'J', 12: 'Q', 13: 'K'}
+        rank_str = rank_names.get(self.rank, str(self.rank))
+        return f"{rank_str}{self.suit.value}"
+    
+    def __repr__(self):
+        """卡片官方表示"""
+        return f"Card({self.suit.name}, {self.rank})"
+    
+    def __eq__(self, other):
+        """卡片相等比较"""
+        if not isinstance(other, Card):
+            return False
+        return self.suit == other.suit and self.rank == other.rank
+    
+    def __lt__(self, other):
+        """卡片排序，先按花色再按点数"""
+        if not isinstance(other, Card):
+            return NotImplemented
+        if self.suit.value != other.suit.value:
+            return self.suit.value < other.suit.value
+        return self.rank < other.rank
+
+class Deck:
+    def __init__(self):
+        self.cards = [Card(suit, rank) for suit in Suit 
+                      for rank in range(1, 14)]
+    
+    def __len__(self):
+        """返回牌的数量"""
+        return len(self.cards)
+    
+    def __getitem__(self, index):
+        """支持索引访问"""
+        return self.cards[index]
+    
+    def __iter__(self):
+        """使牌组可迭代"""
+        return iter(self.cards)
+    
+    def __contains__(self, card):
+        """检查是否包含某张牌"""
+        return card in self.cards
+    
+    def shuffle(self):
+        """洗牌"""
+        random.shuffle(self.cards)
+    
+    def deal(self, num=1):
+        """发牌"""
+        if num > len(self.cards):
+            raise ValueError("牌不够了")
+        dealt = self.cards[:num]
+        self.cards = self.cards[num:]
+        return dealt
+    
+    def __str__(self):
+        """牌组字符串表示"""
+        return f"Deck({len(self.cards)} cards)"
+
+# 使用扑克牌
+deck = Deck()
+print(f"初始牌组: {deck}")
+
+deck.shuffle()
+print("洗牌完成")
+
+# 发5张牌
+hand = deck.deal(5)
+print("发到手中的牌:")
+for card in hand:
+    print(card)
+
+print(f"\n剩余牌数: {len(deck)}")
+
+# 检查特定牌是否在牌组中
+ace_of_spades = Card(Suit.SPADES, 1)
+print(f"黑桃A是否在牌组中: {ace_of_spades in deck}")
+</pre>

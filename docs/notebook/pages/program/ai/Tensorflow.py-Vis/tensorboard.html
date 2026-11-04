@@ -1,0 +1,74 @@
+<header>
+    TensorBoard
+</header>
+
+<p>
+    TensorBoard 是 TensorFlow 官方可视化工具，可以观察训练曲线、模型图、权重分布、图片、文本和性能分析信息。
+</p>
+
+<h2>
+    添加 TensorBoard 回调
+</h2>
+
+<pre tag="python">
+import tensorflow as tf
+
+tensorboard_cb = tf.keras.callbacks.TensorBoard(
+    log_dir="logs/exp01",
+    histogram_freq=1
+)
+
+model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=20,
+    callbacks=[tensorboard_cb]
+)
+</pre>
+
+<h2>
+    启动 TensorBoard
+</h2>
+
+<pre>
+tensorboard --logdir logs
+</pre>
+
+<p>
+    启动后通常打开 http://localhost:6006 查看。
+</p>
+
+<h2>
+    常看面板
+</h2>
+
+<ul>
+    <li>Scalars：查看 loss、accuracy 等指标曲线。</li>
+    <li>Graphs：查看模型计算图。</li>
+    <li>Histograms：查看权重、偏置等参数分布变化。</li>
+    <li>Profile：分析性能瓶颈。</li>
+</ul>
+
+<h2>
+    对比多个实验
+</h2>
+
+<pre tag="python">
+tensorboard_cb = tf.keras.callbacks.TensorBoard(
+    log_dir="logs/cnn_lr_0_001"
+)
+</pre>
+
+<p>
+    不同实验使用不同 log_dir，TensorBoard 会自动在同一个页面中对比它们的曲线。
+</p>
+
+<h2>
+    实践建议
+</h2>
+
+<ul>
+    <li>log_dir 名称写清楚实验信息，例如模型、学习率、数据集。</li>
+    <li>正式训练时保留 TensorBoard 日志，方便回看。</li>
+    <li>不要只看训练集曲线，验证集曲线更能反映泛化能力。</li>
+</ul>

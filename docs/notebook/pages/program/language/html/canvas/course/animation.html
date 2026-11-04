@@ -1,0 +1,219 @@
+<header>
+    动画基础
+</header>
+<h2>
+    动画原理
+</h2>
+<p>
+    Canvas动画的基本原理是：清除画布 → 更新状态 → 重新绘制 → 重复这个过程。
+</p>
+
+<h2>
+    基本动画循环
+</h2>
+<pre tag="javascript">
+function animate() {
+    // 清除画布
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 更新对象状态
+    updateObjects();
+    
+    // 绘制对象
+    drawObjects();
+    
+    // 请求下一帧
+    requestAnimationFrame(animate);
+}
+
+// 启动动画
+animate();
+</pre>
+
+<h2>
+    requestAnimationFrame vs setInterval
+</h2>
+<div class="tips">
+    推荐使用requestAnimationFrame而不是setInterval，因为：
+    <ul>
+        <li>与浏览器的刷新率同步，更加平滑</li>
+        <li>当页面不可见时自动暂停，节省资源</li>
+        <li>更加精确的时间控制</li>
+    </ul>
+</div>
+
+<h2>
+    简单动画示例
+</h2>
+<pre tag="javascript">
+let x = 0;
+let y = 100;
+let speed = 2;
+
+function animate() {
+    // 清除画布
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 更新位置
+    x += speed;
+    
+    // 边界检测
+    if (x > canvas.width || x < 0) {
+        speed = -speed; // 反弹
+    }
+    
+    // 绘制
+    ctx.fillStyle = 'blue';
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // 请求下一帧
+    requestAnimationFrame(animate);
+}
+
+animate();
+</pre>
+
+<h2>
+    缓动动画
+</h2>
+<pre tag="javascript">
+// 线性缓动
+function linearEase(current, target, speed) {
+    return current + (target - current) * speed;
+}
+
+// 二次缓动
+function quadraticEase(current, target, speed) {
+    return current + (target - current) * speed * speed;
+}
+
+// 使用缓动
+let currentX = 0;
+let targetX = 100;
+let easingSpeed = 0.1;
+
+function animateWithEasing() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 应用缓动
+    currentX = linearEase(currentX, targetX, easingSpeed);
+    
+    // 绘制
+    ctx.fillStyle = 'red';
+    ctx.fillRect(currentX, 50, 50, 50);
+    
+    // 如果还没有到达目标，继续动画
+    if (Math.abs(currentX - targetX) > 0.1) {
+        requestAnimationFrame(animateWithEasing);
+    }
+}
+</pre>
+
+<h2>
+    粒子系统
+</h2>
+<pre tag="javascript">
+class Particle {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = Math.random() * 4 - 2;
+        this.vy = Math.random() * 4 - 2;
+        this.life = 100;
+        this.maxLife = 100;
+    }
+    
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life--;
+    }
+    
+    draw(ctx) {
+        const alpha = this.life / this.maxLife;
+        ctx.fillStyle = `rgba(255, 100, 100, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    
+    isDead() {
+        return this.life <= 0;
+    }
+}
+
+const particles = [];
+
+function createParticles(x, y, count) {
+    for (let i = 0; i < count; i++) {
+        particles.push(new Particle(x, y));
+    }
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 更新和绘制粒子
+    for (let i = particles.length - 1; i >= 0; i--) {
+        const particle = particles[i];
+        particle.update();
+        particle.draw(ctx);
+        
+        // 移除死亡的粒子
+        if (particle.isDead()) {
+            particles.splice(i, 1);
+        }
+    }
+    
+    requestAnimationFrame(animateParticles);
+}
+</pre>
+
+<h2>
+    精灵动画
+</h2>
+<pre tag="javascript">
+const sprite = new Image();
+sprite.src = 'sprite.png';
+
+let frameIndex = 0;
+let frameCount = 8;
+let frameWidth = 64;
+let frameHeight = 64;
+let animationSpeed = 0.1;
+let animationCounter = 0;
+
+function animateSprite(x, y) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // 更新动画帧
+    animationCounter += animationSpeed;
+    if (animationCounter >= 1) {
+        frameIndex = (frameIndex + 1) % frameCount;
+        animationCounter = 0;
+    }
+    
+    // 绘制当前帧
+    const srcX = frameIndex * frameWidth;
+    ctx.drawImage(
+        sprite,
+        srcX, 0, frameWidth, frameHeight,
+        x, y, frameWidth, frameHeight
+    );
+    
+    requestAnimationFrame(() => animateSprite(x, y));
+}
+</pre>
+
+<h2>
+    性能优化技巧
+</h2>
+<ul>
+    <li>使用requestAnimationFrame而不是setInterval</li>
+    <li>尽可能复用对象，避免频繁创建和销毁</li>
+    <li>对于静态背景，可以绘制到离屏Canvas上</li>
+    <li>减少不必要的绘制操作</li>
+    <li>使用脏矩形技术，只重绘变化的部分</li>
+</ul>

@@ -1,0 +1,100 @@
+<header>
+    控制语法
+</header>
+<p>
+    break 语句可以跳出 for 和 while 的循环体。如果你从 for 或 while 循环中终止，任何对应的循环 else 块将不执行。
+</p>
+<p>
+    continue语句被用来告诉Python跳过当前循环块中的剩余语句，然后继续进行下一轮循环。
+</p>
+<h2>
+    if条件控制
+</h2>
+<pre tag="python">
+if 表达式:
+语句
+if 表达式:
+    语句
+elif 表达式:
+    语句
+else:
+    语句
+</pre>
+<h3>示例</h3>
+<pre tag="python">
+# 简单if判断
+age = 18
+if age >= 18:
+    print("你是成年人")
+
+# if-elif-else链
+score = 85
+if score >= 90:
+    grade = 'A'
+elif score >= 80:
+    grade = 'B'
+elif score >= 70:
+    grade = 'C'
+else:
+    grade = 'D'
+print(f"成绩等级: {grade}")
+</pre>
+<h2>
+    while循环
+</h2>
+<pre tag="python">
+while 判断条件:
+    语句
+else:
+    语句
+</pre>
+<h3>示例</h3>
+<pre tag="python">
+# 计算1到10的和
+count = 1
+total = 0
+while count <= 10:
+    total += count
+    count += 1
+print(f"1到10的和是: {total}")
+
+# while-else示例
+number = 3
+while number > 0:
+    print(number)
+    number -= 1
+else:
+    print("循环结束，number变为0")
+</pre>
+<p class="warn">
+    Python中没有do..while循环
+</p>
+<h2>
+    for语句
+</h2>
+<pre tag="python">
+for <variable> in <sequence>:
+    <statements>
+else:
+    <statements>
+</pre>
+<h3>示例</h3>
+<pre tag="python">
+# 遍历列表
+fruits = ['apple', 'banana', 'orange']
+for fruit in fruits:
+    print(f"我喜欢吃{fruit}")
+
+# 使用range函数
+for i in range(1, 6):
+    print(f"第{i}次循环")
+
+# for-else示例
+numbers = [2, 4, 6, 8]
+for num in numbers:
+    if num % 2 != 0:
+        print("发现奇数")
+        break
+else:
+    print("所有数字都是偶数")
+</pre>

@@ -1,0 +1,140 @@
+<header>
+    模型训练流程
+</header>
+
+<p>
+    Keras 中训练模型通常由四步组成：定义模型、compile 配置学习方式、fit 执行训练、evaluate 或 predict 检查效果。
+</p>
+
+<h2>
+    最小训练示例
+</h2>
+
+<pre tag="python">
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+x_train = tf.constant([[1.0], [2.0], [3.0], [4.0]])
+y_train = tf.constant([[2.0], [4.0], [6.0], [8.0]])
+
+model = keras.Sequential([
+    layers.Input(shape=(1,)),
+    layers.Dense(1)
+])
+
+model.compile(
+    optimizer=keras.optimizers.SGD(learning_rate=0.1),
+    loss="mean_squared_error"
+)
+
+model.fit(x_train, y_train, epochs=100)
+
+print(model.predict(tf.constant([[5.0]])))
+</pre>
+
+<h2>
+    compile 的作用
+</h2>
+
+<ul>
+    <li>optimizer：优化器，决定如何更新参数。</li>
+    <li>loss：损失函数，衡量预测和真实值的差距。</li>
+    <li>metrics：训练过程中额外观察的指标。</li>
+</ul>
+
+<pre tag="python">
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    loss="categorical_crossentropy",
+    metrics=["accuracy"]
+)
+</pre>
+
+<h2>
+    fit 常用参数
+</h2>
+
+<pre tag="python">
+history = model.fit(
+    x_train,
+    y_train,
+    epochs=20,
+    batch_size=32,
+    validation_split=0.2,
+    shuffle=True
+)
+</pre>
+
+<h2>
+    常见任务配置
+</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>任务</th>
+            <th>输出层</th>
+            <th>loss</th>
+            <th>标签格式</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>回归</td>
+            <td>Dense(1)</td>
+            <td>mean_squared_error</td>
+            <td>连续数值</td>
+        </tr>
+        <tr>
+            <td>二分类</td>
+            <td>Dense(1, activation="sigmoid")</td>
+            <td>binary_crossentropy</td>
+            <td>0 或 1</td>
+        </tr>
+        <tr>
+            <td>多分类</td>
+            <td>Dense(类别数, activation="softmax")</td>
+            <td>categorical_crossentropy</td>
+            <td>one-hot 向量</td>
+        </tr>
+        <tr>
+            <td>多分类</td>
+            <td>Dense(类别数, activation="softmax")</td>
+            <td>sparse_categorical_crossentropy</td>
+            <td>整数类别编号</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    自定义训练循环
+</h2>
+
+<p>
+    当需要完全控制训练细节时，可以使用 tf.GradientTape。
+</p>
+
+<pre tag="python">
+optimizer = keras.optimizers.Adam(0.001)
+loss_fn = keras.losses.SparseCategoricalCrossentropy()
+
+for x_batch, y_batch in train_ds:
+    with tf.GradientTape() as tape:
+        logits = model(x_batch, training=True)
+        loss = loss_fn(y_batch, logits)
+
+    grads = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(grads, model.trainable_variables))
+</pre>
+
+<h2>
+    常见问题
+</h2>
+
+<ul>
+    <li>loss 不下降：检查学习率、数据归一化、标签格式。</li>
+    <li>训练准确率高、验证准确率低：可能过拟合。</li>
+    <li>shape mismatch：检查输入和标签第一维 batch 数是否一致。</li>
+    <li>分类指标异常：检查最后一层 activation 和 loss 是否匹配。</li>
+</ul>

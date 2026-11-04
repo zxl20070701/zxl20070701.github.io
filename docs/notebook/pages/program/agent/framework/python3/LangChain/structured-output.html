@@ -1,0 +1,64 @@
+<header>
+    结构化输出
+</header>
+
+<p>
+    在真实应用中，模型输出经常要被程序继续处理，比如写入数据库、渲染 UI、驱动工作流。结构化输出可以让模型按指定 Schema 返回对象，减少解析自然语言的成本。
+</p>
+
+<h2>
+    使用 Pydantic 定义返回结构
+</h2>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+from pydantic import BaseModel, Field
+from langchain_openai import ChatOpenAI
+from langchain.agents import create_agent
+
+
+class TaskDecision(BaseModel):
+    action: str = Field(description="下一步动作，例如 search、answer、ask_user")
+    reason: str = Field(description="选择该动作的原因")
+    confidence: float = Field(description="置信度，0 到 1")
+
+
+llm = ChatOpenAI(
+    model="qwen3.5", api_key="ollama", base_url="http://localhost:11434/v1"
+)
+
+agent = create_agent(
+    model=llm,
+    tools=[],
+    response_format=TaskDecision,
+)
+
+result = agent.invoke({
+    "messages": [{"role": "user", "content": "帮我判断这个问题是否需要搜索资料"}]
+})
+
+print(result["structured_response"])
+</pre>
+
+<h2>
+    适合场景
+</h2>
+
+<ul>
+    <li>意图分类：返回 type、confidence、reason。</li>
+    <li>信息抽取：返回姓名、时间、金额、地址等字段。</li>
+    <li>流程决策：返回 next_step、risk_level、need_approval。</li>
+    <li>结果校验：返回 pass、issues、suggestions。</li>
+</ul>
+
+<h2>
+    设计建议
+</h2>
+
+<ul>
+    <li>字段名要贴近业务，不要使用 data、result 这类泛名。</li>
+    <li>枚举字段尽量写清楚可选值。</li>
+    <li>重要字段加 description，帮助模型理解含义。</li>
+    <li>不要一次要求输出过深的嵌套结构，容易失败。</li>
+</ul>

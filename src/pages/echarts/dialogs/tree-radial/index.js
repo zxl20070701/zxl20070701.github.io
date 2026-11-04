@@ -20,8 +20,8 @@ export default function (obj, props) {
             xhr({
                 method: "GET",
                 url: "../data/flare.json"
-            }, function (data) {
-                if (data.status == 200) {
+            }, function (res) {
+                if (res.status == 200) {
 
                     var mycontent = _this._refs.mycontent.value;
                     var mycanvas = _this._refs.mycanvas.value;
@@ -39,7 +39,7 @@ export default function (obj, props) {
                         x: cx,
                         y: cy,
                         radius: Math.min(mycontent.clientWidth, mycontent.clientHeight) * 0.5 - 100
-                    }).bind(JSON.parse(data.data), function (tree) {
+                    }).bind(JSON.parse(res.data), function (tree) {
                         painter.config({
                             fontSize: 9
                         }).clearRect(0, 0, mycontent.clientWidth, mycontent.clientHeight);

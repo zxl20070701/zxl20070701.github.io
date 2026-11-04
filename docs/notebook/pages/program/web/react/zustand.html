@@ -1,0 +1,124 @@
+<header>
+    Zustand
+</header>
+<h2>
+    引入和定义
+</h2>
+<p>
+    首先，你需要安装
+    <span class="warn">zustand</span>
+    并创建Store：
+</p>
+<pre tag="javascript">
+// stores/login.store.js
+import { create } from 'zustand'
+
+const useLoginStore = create((set) => ({
+    isLogin: false,
+
+    // 修改状态
+    changeLoginState: (loginFlag) =&gt; set({
+        isLogin: loginFlag === 'YES' ? true : false
+    })
+}))
+
+export default useLoginStore
+</pre>
+<div class="tips">
+    与Redux不同，Zustand不需要
+    <span class="warn">reducer</span>和
+    <span class="warn">action</span>的区分，状态和修改方法直接定义在一起，更加简洁。
+</div>
+<p>
+    现在，就准备好可以使用了。
+</p>
+<h2>
+    获取状态
+</h2>
+<p>
+    在组件中获取
+    <span class="warn">isLogin</span>
+    和修改方法，可以这样：
+</p>
+<pre tag="javascript">
+import useLoginStore from './stores/login.store'
+
+function App() {
+    // 按需获取，避免不必要的渲染
+    const isLogin = useLoginStore(state =&gt; state.isLogin)
+    const changeLoginState = useLoginStore(state =&gt; state.changeLoginState)
+
+    return (
+        &lt;div&gt;
+            &lt;p&gt;登录状态：{isLogin ? '已登录' : '未登录'}&lt;/p&gt;
+            &lt;button onClick={() =&gt; changeLoginState('YES')}&gt;登录&lt;/button&gt;
+        &lt;/div&gt;
+    )
+}
+</pre>
+<p>
+    使用选择器函数
+    <span class="warn">state =&gt; state.xxx</span>
+    可以精确订阅某个状态，只有该状态变化时组件才会重新渲染，性能更好。
+</p>
+<h2>
+    修改状态
+</h2>
+<p>
+    除了在定义时通过
+    <span class="warn">set</span>
+    方法创建修改函数外，也可以在任意地方调用：
+</p>
+<pre tag="javascript">
+import useLoginStore from './stores/login.store'
+
+// 在事件处理或异步逻辑中直接调用
+useLoginStore.getState().changeLoginState('YES')
+
+// 也可以直接使用 set 修改
+useLoginStore.setState({ isLogin: true })
+</pre>
+<p>
+    使用
+    <span class="warn">getState()</span>
+    可以在组件外部获取当前状态，使用
+    <span class="warn">setState()</span>
+    可以直接修改状态，无需通过
+    <span class="warn">dispatch</span>
+    派发action。
+</p>
+<h2>
+    监听变化
+</h2>
+<p>
+    如果需要在组件外部监听状态变化，可以使用
+    <span class="warn">subscribe</span>：
+</p>
+<pre tag="javascript">
+import useLoginStore from './stores/login.store'
+
+// 订阅指定状态的变化
+useLoginStore.subscribe(
+    state =&gt; state.isLogin,
+    isLogin =&gt; {
+        console.log('登录状态变化：', isLogin)
+    }
+)
+</pre>
+<div class="tips">
+    默认的
+    <span class="warn">subscribe</span>
+    监听整个state，配合选择器可以只监听关心的部分。如需使用选择器版本的subscribe，需要引入
+    <span class="special">zustand/middleware</span>
+    中的
+    <span class="warn">subscribeWithSelector</span>
+    中间件。
+</div>
+<p>
+    对比
+    <span class="special">Redux</span>，Zustand省去了
+    <span class="warn">action.type</span>、
+    <span class="warn">reducer</span>和
+    <span class="warn">combineReducers</span>
+    等样板代码，API更少，上手更简单。
+</p>

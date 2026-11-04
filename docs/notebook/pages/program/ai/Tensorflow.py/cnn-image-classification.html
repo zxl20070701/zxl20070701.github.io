@@ -1,0 +1,86 @@
+<header>
+    CNN 图像分类实战
+</header>
+
+<p>
+    CNN 图像分类的基本流程是：加载图片、归一化、构建卷积模型、训练、评估、预测类别。
+</p>
+
+<h2>
+    加载数据
+</h2>
+
+<pre tag="python">
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+
+x_train = x_train[..., None].astype("float32") / 255.0
+x_test = x_test[..., None].astype("float32") / 255.0
+</pre>
+
+<p>
+    MNIST 原始图片 shape 是 (28, 28)，这里通过 [..., None] 增加通道维度，变成 (28, 28, 1)。
+</p>
+
+<h2>
+    构建模型
+</h2>
+
+<pre tag="python">
+model = keras.Sequential([
+    layers.Input(shape=(28, 28, 1)),
+    layers.Conv2D(16, 3, activation="relu"),
+    layers.MaxPooling2D(),
+    layers.Conv2D(32, 3, activation="relu"),
+    layers.MaxPooling2D(),
+    layers.Flatten(),
+    layers.Dense(64, activation="relu"),
+    layers.Dense(10, activation="softmax")
+])
+</pre>
+
+<h2>
+    编译与训练
+</h2>
+
+<pre tag="python">
+model.compile(
+    optimizer="adam",
+    loss="sparse_categorical_crossentropy",
+    metrics=["accuracy"]
+)
+
+history = model.fit(
+    x_train,
+    y_train,
+    epochs=5,
+    batch_size=64,
+    validation_split=0.1
+)
+</pre>
+
+<h2>
+    评估与预测
+</h2>
+
+<pre tag="python">
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print(test_loss, test_acc)
+
+pred = model.predict(x_test[:1])
+print(tf.argmax(pred, axis=1).numpy())
+</pre>
+
+<h2>
+    常见错误
+</h2>
+
+<ul>
+    <li>忘记增加 channels 维度，导致 Conv2D 输入 shape 不匹配。</li>
+    <li>像素没有除以 255，训练变慢或不稳定。</li>
+    <li>使用 sparse_categorical_crossentropy 时，标签应该是整数类别编号。</li>
+    <li>使用 categorical_crossentropy 时，标签应该是 one-hot 向量。</li>
+</ul>

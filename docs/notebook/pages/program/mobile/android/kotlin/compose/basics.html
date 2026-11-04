@@ -1,0 +1,165 @@
+<header>
+    Compose 基础
+</header>
+<p>
+    Jetpack Compose 是 Android 官方声明式 UI 框架，
+    用 Kotlin 函数描述界面，状态变化自动触发 UI 刷新（重组）。
+</p>
+<h2>
+    第一个 Composable
+</h2>
+<pre tag="kotlin">
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            MyAppTheme {
+                Greeting("Compose")
+            }
+        }
+    }
+}
+
+@Composable
+fun Greeting(name: String) {
+    Text(text = "Hello $name!")
+}
+</pre>
+<h2>
+    状态管理（重组核心）
+</h2>
+<h3>
+    remember + mutableStateOf
+</h3>
+<pre tag="kotlin">
+@Composable
+fun Counter() {
+    // remember：跨重组保留值
+    // mutableStateOf：值变化时触发重组
+    var count by remember { mutableStateOf(0) }
+
+    Column {
+        Text("点击了 $count 次")
+        Button(onClick = { count++ }) {
+            Text("点我 +1")
+        }
+    }
+}
+</pre>
+<h3>
+    rememberSaveable（配置变化不丢）
+</h3>
+<pre tag="kotlin">
+// 旋转屏幕 / 深色模式切换后仍保留
+var input by rememberSaveable { mutableStateOf("") }
+</pre>
+<h3>
+    State Hoisting（状态提升）
+</h3>
+<p>
+    把状态下移到父组件，子组件只接收值和回调，便于复用与测试：
+</p>
+<pre tag="kotlin">
+@Composable
+fun Parent() {
+    var name by remember { mutableStateOf("") }
+    NameInput(value = name, onValueChange = { name = it })
+}
+
+@Composable
+fun NameInput(value: String, onValueChange: (String) -&gt; Unit) {
+    OutlinedTextField(value = value, onValueChange = onValueChange)
+}
+</pre>
+<h2>
+    Modifier 修饰符
+</h2>
+<pre tag="kotlin">
+Text(
+    text = "Hello",
+    modifier = Modifier
+        .fillMaxWidth()                 // 宽度撑满
+        .padding(16.dp)                 // 外边距
+        .background(Color(0xFF2196F3))  // 背景色
+        .padding(8.dp)                  // 内边距（顺序敏感）
+        .clickable { /* 点击 */ }
+)
+</pre>
+<div class="tips">
+    Modifier 链式调用顺序敏感：先 padding 再 background 是"内边距"；
+    反过来则是"外边距"。
+</div>
+<h2>
+    常用布局
+</h2>
+<pre tag="kotlin">
+// 纵向
+Column(
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+    horizontalAlignment = Alignment.CenterHorizontally
+) { /* 子项 */ }
+
+// 横向
+Row(
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically
+) { /* 子项 */ }
+
+// 层叠
+Box(contentAlignment = Alignment.Center) {
+    Image(...)
+    Text("浮在上层")
+}
+</pre>
+<h2>
+    副作用 API
+</h2>
+<ul>
+    <li>
+        <span class="important">LaunchedEffect(key)</span>
+        ：进入组合或 key 变化时启动协程；key 变化时旧协程取消。
+    </li>
+    <li>
+        <span class="important">DisposableEffect</span>
+        ：注册监听 / 资源，离开组合时释放。
+    </li>
+    <li>
+        <span class="important">derivedStateOf</span>
+        ：从其他 State 派生，避免不必要的重组。
+    </li>
+    <li>
+        <span class="important">rememberCoroutineScope</span>
+        ：在事件回调中启动协程（非 LaunchedEffect 场景）。
+    </li>
+</ul>
+<pre tag="kotlin">
+@Composable
+fun TimerScreen() {
+    var seconds by remember { mutableStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(1000)
+            seconds++
+        }
+    }
+    Text("已计时 $seconds 秒")
+}
+</pre>
+<h2>
+    预览
+</h2>
+<pre tag="kotlin">
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun GreetingPreview() {
+    MyAppTheme {
+        Greeting("Android")
+    }
+}
+</pre>
+<div class="tips">
+    给 Composable 设置 Modifier 默认值 <span class="warn">modifier: Modifier = Modifier</span>，
+    是 Compose 的官方推荐惯例，让调用方能自由控制外观。
+</div>

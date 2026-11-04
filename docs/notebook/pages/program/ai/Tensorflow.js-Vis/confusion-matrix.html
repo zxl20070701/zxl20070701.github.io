@@ -1,0 +1,61 @@
+<header>
+    分类评估与混淆矩阵
+</header>
+
+<p>
+    准确率只能说明总体对了多少，混淆矩阵可以看到每个类别具体被错分成了什么。
+</p>
+
+<h2>
+    生成预测类别
+</h2>
+
+<pre tag="javascript">
+const preds = model.predict(testXs);
+const predLabels = preds.argMax(-1);
+const trueLabels = testYs.argMax(-1);
+
+const predArray = Array.from(await predLabels.data());
+const trueArray = Array.from(await trueLabels.data());
+</pre>
+
+<h2>
+    绘制混淆矩阵
+</h2>
+
+<pre tag="javascript">
+const classNames = ["猫", "狗", "鸟"];
+
+const values = await tfvis.metrics.confusionMatrix(
+    trueArray,
+    predArray
+);
+
+tfvis.render.confusionMatrix(
+    { name: "混淆矩阵", tab: "评估" },
+    {
+        values,
+        tickLabels: classNames
+    }
+);
+</pre>
+
+<h2>
+    如何分析
+</h2>
+
+<ul>
+    <li>对角线数值越大，说明该类别预测越准确。</li>
+    <li>某一行大量分散，说明该真实类别容易被误判。</li>
+    <li>某两类互相混淆，可能需要更多样本或更清晰的特征。</li>
+</ul>
+
+<h2>
+    释放 Tensor
+</h2>
+
+<pre tag="javascript">
+preds.dispose();
+predLabels.dispose();
+trueLabels.dispose();
+</pre>

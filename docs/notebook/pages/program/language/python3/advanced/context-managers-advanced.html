@@ -1,0 +1,154 @@
+<header>
+    高级上下文管理器
+</header>
+<pre tag="python">
+import threading
+from contextlib import ExitStack, suppress
+import tempfile
+import os
+
+# 线程安全上下文管理器
+class ThreadSafeCounter:
+    """线程安全计数器"""
+
+    def __init__(self):
+        self._count = 0
+        self._lock = threading.Lock()
+
+    def __enter__(self):
+        """进入上下文"""
+        self._lock.acquire()
+        self._count += 1
+        print(f"计数器增加，当前值: {self._count}")
+        return self._count
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """退出上下文"""
+        self._lock.release()
+        print(f"计数器减少，当前值: {self._count}")
+        return False
+
+# 嵌套上下文管理器
+def nested_context_managers():
+    """嵌套上下文管理器"""
+
+    with ThreadSafeCounter() as count1:
+        print(f"第一层: 计数 = {count1}")
+
+        with ThreadSafeCounter() as count2:
+            print(f"第二层: 计数 = {count2}")
+
+            with ThreadSafeCounter() as count3:
+                print(f"第三层: 计数 = {count3}")
+
+# ExitStack - 管理多个上下文
+def use_exit_stack():
+    """使用ExitStack管理多个上下文"""
+
+    filenames = ["file1.txt", "file2.txt", "file3.txt"]
+
+    with ExitStack() as stack:
+        # 自动管理多个文件
+        files = [stack.enter_context(open(fname, 'w')) for fname in filenames]
+
+        # 写入数据到所有文件
+        for i, file in enumerate(files):
+            file.write(f"这是文件{i+1}的内容\n")
+
+        print(f"已创建 {len(files)} 个文件")
+
+        # 还可以添加其他资源
+        temp_dir = stack.enter_context(tempfile.TemporaryDirectory())
+        print(f"临时目录: {temp_dir}")
+
+        # 在临时目录中创建文件
+        temp_file = os.path.join(temp_dir, "temp.txt")
+        with open(temp_file, 'w') as f:
+            f.write("临时文件内容")
+
+        print("所有资源将在ExitStack退出时自动清理")
+
+# suppress - 抑制特定异常
+def use_suppress():
+    """使用suppress抑制异常"""
+
+    # 正常情况会抛出异常
+    try:
+        with open("nonexistent_file.txt", 'r') as f:
+            content = f.read()
+    except FileNotFoundError:
+        print("文件不存在异常被捕获")
+
+    # 使用suppress自动抑制异常
+    with suppress(FileNotFoundError):
+        with open("nonexistent_file.txt", 'r') as f:
+            content = f.read()
+        print("文件读取成功")  # 不会执行
+
+    print("suppress已自动抑制FileNotFoundError异常")
+
+# 重定向上下文管理器
+class OutputRedirector:
+    """输出重定向上下文管理器"""
+
+    def __init__(self, new_target):
+        self.new_target = new_target
+        self.old_targets = {}
+
+    def __enter__(self):
+        """重定向输出"""
+        import sys
+        self.old_targets['stdout'] = sys.stdout
+        self.old_targets['stderr'] = sys.stderr
+
+        if hasattr(self.new_target, 'write'):
+            sys.stdout = self.new_target
+            sys.stderr = self.new_target
+
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """恢复原始输出"""
+        import sys
+        sys.stdout = self.old_targets['stdout']
+        sys.stderr = self.old_targets['stderr']
+        return False
+
+# 使用高级上下文管理器
+def use_advanced_context_managers():
+    """使用高级上下文管理器"""
+
+    print("=== 线程安全计数器 ===")
+    nested_context_managers()
+
+    print("\n=== ExitStack示例 ===")
+    use_exit_stack()
+
+    print("\n=== suppress示例 ===")
+    use_suppress()
+
+    print("\n=== 输出重定向 ===")
+    import io
+
+    # 捕获输出
+    output_buffer = io.StringIO()
+
+    with OutputRedirector(output_buffer):
+        print("这行输出将被重定向")
+        print("这行也是")
+        import sys
+        print(f"当前stdout: {sys.stdout}")
+
+    # 恢复后输出
+    print("这行输出将正常显示")
+
+    # 查看捕获的输出
+    captured_output = output_buffer.getvalue()
+    print("捕获的输出:")
+    print(captured_output)
+
+    output_buffer.close()
+
+# 运行高级上下文管理器示例
+use_advanced_context_managers()
+</pre>

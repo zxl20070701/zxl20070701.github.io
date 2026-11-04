@@ -1,0 +1,65 @@
+<header>
+    Streamable HTTP 架构
+</header>
+<p>
+    通过 Fetch API 的 duplex: "half" 配置项，实现请求体可流式上传、同时响应体流式下载的半双工长连接。这是一种更简洁、更高效的单连接双向通信方案。
+</p>
+<p>
+    看一下浏览器端大体代码：
+</p>
+<pre tag="javascript">
+const uploadTs = new TransformStream();
+const writer = uploadTs.writable.getWriter();
+const res = await fetch("/mcp", {
+    method: "POST",
+    duplex: "half", // 关键开关
+    headers: {
+        "Content-Type": "application/json-seq",
+         Accept: "text/event-stream"
+    },
+    body: uploadTs.readable, // 上行流载体
+});
+</pre>
+<p>
+    其中下行读取 res.body.getReader() 可读流，也就是类似这样：
+</p>
+<pre tag="javascript">
+while(true) {
+    const {value} = await downloadReader.read();// 解析JSON-seq报文
+}
+</pre>
+<p>
+    上行发送 writer.write() 持续写入JSON-seq，类似这样：
+</p>
+<pre tag="javascript">
+    writer.write(new TextEncoder().encode(JSON.stringify(rpcObj) + "\x1e"));
+</pre>
+<p>
+    一次MCP调用的大体请求流转如下：
+</p>
+<ol>
+    <li>
+        客户端发起一次POST长请求（请求体是可写入的Writable 流（上行通道），响应体是可读的Readable 流（下行通道））
+    </li>
+    <li>
+        上行流写入：客户端往请求流发第一条 initialize JSON-RPC（换行分隔 JSON-seq）
+    </li>
+    <li>
+        下行流读出：服务端在响应流吐出 initialize 返回结果
+    </li>
+    <li>
+        上行流写入：客户端紧接着发 initialized 通知，握手完成
+    </li>
+    <li>
+        循环多轮 RPC 交互（核心业务，服务端和浏览器直接互相通信，比如客户端 → 上行流写入 RPC（tools/list/tools/call/ 自定义请求），服务端 → 下行流推送对应响应等）
+    </li>
+    <li>
+        心跳保活（穿插空闲时段，服务端下行流发 ping，客户端立刻上行流回一条 ping 通知保活）
+    </li>
+    <li>
+        关闭会话（客户端上行发送 shutdown、exit，客户端关闭 Fetch 读写流，服务端断开 TCP 连接，会话销毁）
+    </li>
+</ol>
+<p>
+    上面的1～4就是握手初始化，然后5～6是多轮业务 RPC 交互，最后7结束的时候关闭销毁。
+</p>

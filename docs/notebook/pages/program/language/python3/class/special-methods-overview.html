@@ -1,0 +1,77 @@
+<header>
+    特殊方法概述
+</header>
+<h2>
+    特殊方法概念
+</h2>
+<p>
+    <span class="important">特殊方法（Special Methods）</span>，也称为魔术方法（Magic Methods）或双下划线方法（Dunder Methods），是Python中以双下划线开头和结尾的方法。它们允许自定义类的行为，使对象能够像内置类型一样工作。
+</p>
+
+<h2>
+    特殊方法的命名规则
+</h2>
+<pre tag="python">
+# 特殊方法以双下划线开头和结尾
+class Example:
+    def __init__(self):           # 构造函数
+        pass
+    
+    def __str__(self):            # 字符串表示
+        return "Example object"
+    
+    def __repr__(self):           # 官方字符串表示
+        return "Example()"
+    
+    def __eq__(self, other):      # 等于比较
+        return True
+</pre>
+
+<h2>
+    特殊方法分类
+</h2>
+<ul>
+    <li><strong>对象创建和销毁</strong>：__init__, __new__, __del__</li>
+    <li><strong>字符串表示</strong>：__str__, __repr__, __format__</li>
+    <li><strong>比较操作</strong>：__eq__, __ne__, __lt__, __le__, __gt__, __ge__</li>
+    <li><strong>数值运算</strong>：__add__, __sub__, __mul__, __truediv__等</li>
+    <li><strong>容器操作</strong>：__len__, __getitem__, __setitem__, __iter__</li>
+    <li><strong>上下文管理</strong>：__enter__, __exit__</li>
+</ul>
+
+<h2>
+    特殊方法的优势
+</h2>
+<pre tag="python">
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    # 使对象支持 + 运算符
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+    
+    # 使对象支持 str() 函数
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+    
+    # 使对象支持 len() 函数
+    def __len__(self):
+        import math
+        return int(math.sqrt(self.x**2 + self.y**2))
+
+# 使用特殊方法
+v1 = Vector(3, 4)
+v2 = Vector(1, 2)
+
+# 运算符重载
+v3 = v1 + v2
+print(v3)  # Vector(4, 6)
+
+# 字符串表示
+print(str(v1))  # Vector(3, 4)
+
+# 长度计算
+print(len(v1))  # 5
+</pre>

@@ -1,0 +1,84 @@
+<header>
+    工具与结构化输出
+</header>
+
+<p>
+    只靠模型自身的知识，智能体能做的事情很有限。通过给 Agent 挂载<strong>工具（Tool）</strong>，模型就可以在对话过程中自主决定调用哪些外部能力（读文件、查时间、请求接口等），拿到结果后再继续推理。
+</p>
+
+<h2>
+    定义工具
+</h2>
+
+<p>
+    使用 <span class="warn">createTool</span> 定义工具，需要提供 <span class="warn">id</span>、<span class="warn">description</span>、<span class="warn">inputSchema</span>（入参结构，用 zod 描述）以及 <span class="warn">execute</span>（真正执行的逻辑）。比如下面给 Agent 挂一个"读取文件"的工具：
+</p>
+
+<pre tag="javascript">
+import { Agent } from "@mastra/core/agent";
+import { createTool } from "@mastra/core/tools";
+import { z } from "zod";
+
+const myAgent = new Agent({
+    id: "tool-agent",
+    name: "Tool Agent",
+    instructions: ``,
+    model: {
+        providerId: "ollama",
+        modelId: "qwen3.5",
+        apiKey: "ollama",
+        url: "http://127.0.0.1:11434/v1",
+    },
+    tools: {
+        readFile: createTool({
+            id: "read-file",
+            description: "读取文件内容",
+            inputSchema: z.object({
+                filepath: z.string().describe("文件路径"),
+            }),
+            outputSchema: z.string(),
+            execute: async (params) => {
+                // 这里替换成你自己的文件读取逻辑
+                return readFileContent(params.filepath);
+            },
+        })
+    },
+});
+
+myAgent.generate("告诉我 ./demo.txt 的内容").then(function (res) {
+    console.log(res.text);
+});
+</pre>
+
+<p>
+    提问"告诉我 ./AUTHORS.txt 的内容"时，模型会识别出需要使用 <span class="warn">read-file</span> 工具，按 <span class="warn">inputSchema</span> 生成入参 <span class="warn">{ filepath: "./AUTHORS.txt" }</span>，框架执行 <span class="warn">execute</span> 并把结果回传给模型，模型再基于文件内容组织最终回复。
+</p>
+
+<div class="tips">
+    <span class="warn">description</span> 写清楚非常关键——模型就是靠它来判断"什么时候该用这个工具、参数该怎么填"的。
+</div>
+
+<h2>
+    结构化输出
+</h2>
+
+<p>
+    除了自由文本，还可以要求模型按指定的 zod schema 返回结构化数据。在 <span class="warn">generate</span> 时传入 <span class="warn">structuredOutput</span> 配置，回复会出现在 <span class="warn">res.object</span> 中：
+</p>
+
+<pre tag="javascript">
+myAgent.generate("如何度过愉快的一天，给出几个方案", {
+    structuredOutput: {
+        schema: z.array(z.object({
+            label: z.string("方案名称"),
+            content: z.string("具体描述")
+        }))
+    }
+}).then(function (res) {
+    console.log(res.object);
+});
+</pre>
+
+<p>
+    这在需要把模型输出直接交给程序消费的场景（渲染列表、写入数据库、驱动后续流程）中非常有用，不用再自己解析和清洗自然语言回复。
+</p>

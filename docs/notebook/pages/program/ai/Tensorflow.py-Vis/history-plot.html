@@ -1,0 +1,61 @@
+<header>
+    Keras History 曲线
+</header>
+
+<p>
+    model.fit 会返回一个 History 对象，其中保存了每个 epoch 的 loss、accuracy、val_loss、val_accuracy 等指标。
+</p>
+
+<h2>
+    获取 History
+</h2>
+
+<pre tag="python">
+history = model.fit(
+    x_train,
+    y_train,
+    epochs=20,
+    validation_split=0.2
+)
+
+print(history.history.keys())
+</pre>
+
+<h2>
+    绘制 loss 曲线
+</h2>
+
+<pre tag="python">
+import matplotlib.pyplot as plt
+
+plt.plot(history.history["loss"], label="train_loss")
+plt.plot(history.history["val_loss"], label="val_loss")
+plt.xlabel("epoch")
+plt.ylabel("loss")
+plt.legend()
+plt.show()
+</pre>
+
+<h2>
+    绘制 accuracy 曲线
+</h2>
+
+<pre tag="python">
+plt.plot(history.history["accuracy"], label="train_acc")
+plt.plot(history.history["val_accuracy"], label="val_acc")
+plt.xlabel("epoch")
+plt.ylabel("accuracy")
+plt.legend()
+plt.show()
+</pre>
+
+<h2>
+    如何读曲线
+</h2>
+
+<ul>
+    <li>训练 loss 和验证 loss 都下降：模型正在学习。</li>
+    <li>训练 loss 下降但验证 loss 上升：可能过拟合。</li>
+    <li>两条曲线都不下降：可能欠拟合、学习率不合适或数据有问题。</li>
+    <li>曲线震荡很大：学习率可能过高，或 batch_size 太小。</li>
+</ul>

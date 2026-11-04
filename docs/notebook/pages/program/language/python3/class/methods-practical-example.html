@@ -1,0 +1,122 @@
+<header>
+    方法实际应用示例
+</header>
+<h2>
+    数据库连接管理示例
+</h2>
+<pre tag="python">
+class DatabaseConnection:
+    # 类属性 - 共享的连接池
+    connection_pool = []
+    max_connections = 5
+    
+    def __init__(self, host, port, database):
+        self.host = host
+        self.port = port
+        self.database = database
+        self.is_connected = False
+    
+    # 实例方法 - 操作特定连接
+    def connect(self):
+        if not self.is_connected:
+            print(f"连接到 {self.host}:{self.port}/{self.database}")
+            self.is_connected = True
+    
+    def disconnect(self):
+        if self.is_connected:
+            print(f"断开连接 {self.host}:{self.port}/{self.database}")
+            self.is_connected = False
+    
+    # 类方法 - 管理连接池
+    @classmethod
+    def get_connection_count(cls):
+        return len(cls.connection_pool)
+    
+    @classmethod
+    def add_to_pool(cls, connection):
+        if len(cls.connection_pool) < cls.max_connections:
+            cls.connection_pool.append(connection)
+            return True
+        return False
+    
+    # 静态方法 - 工具函数
+    @staticmethod
+    def validate_connection_string(conn_string):
+        """验证连接字符串格式"""
+        parts = conn_string.split(':')
+        return len(parts) == 3 and parts[0] and parts[1].isdigit() and parts[2]
+
+# 使用示例
+# 验证连接字符串
+is_valid = DatabaseConnection.validate_connection_string("localhost:5432:mydb")
+print(f"连接字符串有效: {is_valid}")  # True
+
+# 创建连接
+conn1 = DatabaseConnection("localhost", 5432, "mydb")
+conn2 = DatabaseConnection("remotehost", 3306, "webapp")
+
+# 使用实例方法
+conn1.connect()
+conn2.connect()
+
+# 使用类方法管理连接池
+DatabaseConnection.add_to_pool(conn1)
+DatabaseConnection.add_to_pool(conn2)
+print(f"连接池中的连接数: {DatabaseConnection.get_connection_count()}")  # 2
+
+# 断开连接
+conn1.disconnect()
+conn2.disconnect()
+</pre>
+
+<h2>
+    日志记录器示例
+</h2>
+<pre tag="python">
+class Logger:
+    # 类属性
+    log_level = "INFO"
+    log_file = "app.log"
+    
+    def __init__(self, name):
+        self.name = name
+    
+    # 实例方法
+    def log(self, message, level="INFO"):
+        if self._should_log(level):
+            print(f"[{level}] {self.name}: {message}")
+    
+    def _should_log(self, level):
+        levels = {"DEBUG": 0, "INFO": 1, "WARNING": 2, "ERROR": 3}
+        return levels[level] >= levels[self.log_level]
+    
+    # 类方法
+    @classmethod
+    def set_log_level(cls, level):
+        cls.log_level = level
+    
+    @classmethod
+    def get_log_level(cls):
+        return cls.log_level
+    
+    # 静态方法
+    @staticmethod
+    def format_message(message, timestamp=None):
+        if timestamp is None:
+            import datetime
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return f"{timestamp} - {message}"
+
+# 使用示例
+Logger.set_log_level("DEBUG")
+print(f"当前日志级别: {Logger.get_log_level()}")
+
+logger1 = Logger("Database")
+logger2 = Logger("API")
+
+logger1.log("数据库连接成功")
+logger2.log("API请求处理完成", "INFO")
+
+formatted = Logger.format_message("用户登录成功")
+print(formatted)
+</pre>

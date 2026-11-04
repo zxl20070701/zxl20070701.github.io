@@ -1,0 +1,226 @@
+<header>
+    Visual Viewport API 与软键盘
+</header>
+<p>
+    前面提到过，移动端同时存在布局视口和视觉视口。布局视口负责排版，尺寸相对稳定；视觉视口是用户此刻真正看到的区域，会被双指缩放、浏览器工具栏和软键盘改变。Visual Viewport API 就是用来读取视觉视口状态、监听其变化的接口。
+</p>
+<h2>
+    基本使用
+</h2>
+<p>
+    通过 <span class="special">window.visualViewport</span> 获取对象，不支持时会得到 undefined：
+</p>
+<pre tag="javascript">
+if (window.visualViewport) {
+    var vv = window.visualViewport;
+    console.log(vv.width, vv.height);
+}
+</pre>
+<h2>
+    对象属性
+</h2>
+<h3>
+    width 和 height
+</h3>
+<p>
+    视觉视口的宽高，单位是 CSS 像素。双指放大后，这两个值会变小，因为同样的屏幕物理区域能容纳的 CSS 像素变少了。
+</p>
+<h3>
+    scale
+</h3>
+<p>
+    当前的缩放比例。初始为 1，双指放大后大于 1。桌面端浏览器缩放页面时也可能变化。
+</p>
+<h3>
+    offsetLeft 和 offsetTop
+</h3>
+<p>
+    视觉视口左上角相对于布局视口左上角的偏移，单位是 CSS 像素。放大后拖动页面时，这两个值会变化。
+</p>
+<h3>
+    pageLeft 和 pageTop
+</h3>
+<p>
+    视觉视口左上角相对于文档原点的偏移，相当于 offsetLeft / offsetTop 再加上页面滚动距离。需要把元素坐标换算成页面绝对坐标时更直观。
+</p>
+<pre tag="javascript">
+var vv = window.visualViewport;
+console.log({
+    width: vv.width,
+    height: vv.height,
+    scale: vv.scale,
+    offsetLeft: vv.offsetLeft,
+    offsetTop: vv.offsetTop,
+    pageLeft: vv.pageLeft,
+    pageTop: vv.pageTop
+});
+</pre>
+<h2>
+    事件
+</h2>
+<p>
+    visualViewport 对象上可以监听两个事件：
+</p>
+<ul>
+    <li>
+        <span class="special">resize</span>：视觉视口尺寸发生变化，比如双指缩放、软键盘弹出、浏览器工具栏收展；
+    </li>
+    <li>
+        <span class="special">scroll</span>：视觉视口相对于布局视口发生位移，比如放大后拖动页面。
+    </li>
+</ul>
+<pre tag="javascript">
+window.visualViewport.addEventListener('resize', function () {
+    console.log('视觉视口尺寸变化', this.width, this.height);
+});
+
+window.visualViewport.addEventListener('scroll', function () {
+    console.log('视觉视口偏移', this.offsetLeft, this.offsetTop);
+});
+</pre>
+<div class="tips">
+    这两个事件不会因为普通的页面滚动而触发。监听时要加在 window.visualViewport 上，而不是 window 上。
+</div>
+<h2>
+    软键盘适配
+</h2>
+<p>
+    软键盘弹出时，不同浏览器的处理方式不同，但多数情况下布局视口不变，视觉视口变小。此时固定在底部的元素会停留在布局视口的底部，恰好被键盘挡住。
+</p>
+<p>
+    一种常见的做法是：根据视觉视口被压缩的高度，计算键盘遮挡的高度，再把底部栏向上平移。
+</p>
+<pre tag="html">
+&lt;div class="bottom-bar"&gt;
+    &lt;input type="text" placeholder="请输入内容"&gt;
+    &lt;button&gt;发送&lt;/button&gt;
+&lt;/div&gt;
+</pre>
+<pre tag="css">
+.bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    background: #ffffff;
+}
+</pre>
+<pre tag="javascript">
+var bar = document.querySelector('.bottom-bar');
+var vv = window.visualViewport;
+
+function syncBottomBar() {
+    if (!vv) return;
+
+    // 键盘遮挡的高度：布局视口底部减去视觉视口底部
+    var keyboardHeight = Math.max(
+        0,
+        window.innerHeight - vv.height - vv.offsetTop
+    );
+
+    bar.style.transform = 'translateY(' + (-keyboardHeight) + 'px)';
+}
+
+if (vv) {
+    vv.addEventListener('resize', syncBottomBar);
+    vv.addEventListener('scroll', syncBottomBar);
+    syncBottomBar();
+}
+</pre>
+<p>
+    如果事件触发频繁，可以把计算放到 requestAnimationFrame 中，避免在同一个渲染帧里重复读写样式：
+</p>
+<pre tag="javascript">
+var ticking = false;
+
+function onViewportChange() {
+    if (ticking) return;
+    ticking = true;
+
+    requestAnimationFrame(function () {
+        syncBottomBar();
+        ticking = false;
+    });
+}
+</pre>
+<h2>
+    判断软键盘是否弹出
+</h2>
+<p>
+    由于浏览器没有直接提供“键盘是否打开”的 API，通常根据视觉视口高度与布局视口高度的差值来估算：
+</p>
+<pre tag="javascript">
+function isKeyboardOpen() {
+    var vv = window.visualViewport;
+    if (!vv) return false;
+
+    // 差值为负数时说明视觉视口被压缩了
+    return window.innerHeight - (vv.height + vv.offsetTop) &gt; 100;
+}
+</pre>
+<p>
+    这个判断只是近似值。用户双指缩放同样会改变视觉视口高度，所以只适合和输入框聚焦状态、页面场景结合使用。
+</p>
+<h2>
+    interactive-widget 配置
+</h2>
+<p>
+    Chromium 提供了一项 viewport 配置，用来指定软键盘弹出时如何改变视口：
+</p>
+<pre tag="html">
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content"&gt;
+</pre>
+<ul>
+    <li>
+        <span class="special">resizes-visual</span>：默认值，只有视觉视口被键盘压缩，布局视口不变；
+    </li>
+    <li>
+        <span class="special">resizes-content</span>：布局视口和视觉视口一起被压缩，类似把键盘当作页面的一部分，vh 等尺寸会随之变化；
+    </li>
+    <li>
+        <span class="special">overlays-content</span>：键盘浮在页面之上，两个视口都不改变。
+    </li>
+</ul>
+<p>
+    如果页面希望键盘出现时整个布局重新排布（例如聊天页面把输入框顶上去），resizes-content 会更省心；如果希望页面保持原布局、自己控制滚动和弹层位置，则保持默认的 resizes-visual。
+</p>
+<div class="tips">
+    interactive-widget 目前主要由 Chromium 支持（Chrome 108+），Safari 并不支持，iOS 上仍需通过 Visual Viewport API 或滚动处理来适配。
+</div>
+<h2>
+    与 position: fixed 的关系
+</h2>
+<p>
+    现代浏览器中，position: fixed 的元素是相对布局视口定位的，而不是视觉视口。因此：
+</p>
+<ul>
+    <li>
+        页面放大后，固定元素可能移出当前视觉视口，这是正常现象；
+    </li>
+    <li>
+        软键盘弹出时，固定底部元素仍然贴布局视口底部，可能被键盘遮挡；
+    </li>
+    <li>
+        不能简单通过 window.innerHeight 判断可见高度，应优先读取 visualViewport.height。
+    </li>
+</ul>
+<h2>
+    兼容与性能
+</h2>
+<ul>
+    <li>
+        Chrome 61+、Safari 13+、Firefox 91+ 支持 Visual Viewport API；老浏览器需要退回到 window 的 resize 事件和定时器；
+    </li>
+    <li>
+        resize 和 scroll 可能高频触发，处理函数应保持轻量，并配合 requestAnimationFrame 合并计算；
+    </li>
+    <li>
+        不要在监听中频繁读取布局属性再写样式，容易造成布局抖动，优先使用 transform、CSS 变量等方式更新；
+    </li>
+    <li>
+        键盘适配涉及浏览器行为差异，需要在 iOS Safari、Android Chrome、App 内 WebView 中分别验证。
+    </li>
+</ul>

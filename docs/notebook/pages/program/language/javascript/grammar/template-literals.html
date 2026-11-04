@@ -1,0 +1,74 @@
+<header>
+    模板字符串
+</header>
+<h2>
+    基本用法
+</h2>
+<p>
+    模板字符串使用反引号(``)包裹，可以包含多行文本和变量插值。变量插值使用 ${} 语法。
+</p>
+<pre tag="javascript">
+let name = 'World';
+let greeting = `Hello, ${name}!`;
+console.log(greeting); // Hello, World!
+</pre>
+<h2>
+    多行字符串
+</h2>
+<p>
+    模板字符串可以直接书写多行，无需使用 \n 转义。
+</p>
+<pre tag="javascript">
+let html = `
+    <div>
+        <h1>Title</h1>
+        <p>Content</p>
+    </div>
+`;
+</pre>
+<h2>
+    嵌入表达式
+</h2>
+<p>
+    ${} 中可以放置任意 JavaScript 表达式，包括函数调用、运算、三元运算符等。
+</p>
+<pre tag="javascript">
+let a = 10;
+let b = 20;
+let result = `${a} + ${b} = ${a + b}`; // "10 + 20 = 30"
+let status = `${a > b ? 'a大' : 'b大'}`;
+</pre>
+<h2>
+    标签模板字符串
+</h2>
+<p>
+    可以在模板字符串前添加一个函数名，该函数会接收模板字符串的各个部分和变量值，用于自定义处理。
+</p>
+<pre tag="javascript">
+function tag(strings, ...values) {
+    let result = '';
+    strings.forEach((str, i) => {
+        result += str + (values[i] ?? '');
+    });
+    return result;
+}
+let x = 10;
+let y = 20;
+let output = tag`计算结果是 ${x} + ${y}`;
+</pre>
+<h2>
+    嵌套模板字符串
+</h2>
+<p>
+    模板字符串可以嵌套使用，便于构建复杂的字符串结构。
+</p>
+<pre tag="javascript">
+let items = ['apple', 'banana'];
+let list = `
+    <ul>
+        ${items.map(item => `
+            <li>${item}</li>
+        `).join('')}
+    </ul>
+`;
+</pre>

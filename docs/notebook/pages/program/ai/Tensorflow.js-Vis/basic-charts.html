@@ -1,0 +1,95 @@
+<header>
+    基础图表
+</header>
+
+<p>
+    tfjs-vis 可以快速画出散点图、折线图、柱状图等，非常适合观察数据分布和训练过程。
+</p>
+
+<h2>
+    Surface 容器
+</h2>
+
+<p>
+    大多数可视化都需要一个 surface，可以理解为图表显示的位置。
+</p>
+
+<pre tag="javascript">
+const surface = {
+    name: "训练数据",
+    tab: "数据分析"
+};
+</pre>
+
+<h2>
+    散点图</h2>
+
+<pre tag="javascript">
+const data = {
+    values: [
+        { x: 1, y: 2 },
+        { x: 2, y: 4 },
+        { x: 3, y: 6 }
+    ],
+    series: ["样本"]
+};
+
+tfvis.render.scatterplot(
+    { name: "x 与 y 的关系", tab: "数据分析" },
+    data,
+    {
+        xLabel: "x",
+        yLabel: "y",
+        height: 300
+    }
+);
+</pre>
+
+<h2>
+    折线图</h2>
+
+<pre tag="javascript">
+tfvis.render.linechart(
+    { name: "loss 曲线", tab: "训练过程" },
+    {
+        values: [
+            { x: 1, y: 0.8 },
+            { x: 2, y: 0.5 },
+            { x: 3, y: 0.3 }
+        ],
+        series: ["loss"]
+    },
+    {
+        xLabel: "epoch",
+        yLabel: "loss"
+    }
+);
+</pre>
+
+<h2>
+    柱状图</h2>
+
+<pre tag="javascript">
+tfvis.render.barchart(
+    { name: "类别数量", tab: "数据分析" },
+    [
+        { index: "猫", value: 120 },
+        { index: "狗", value: 100 },
+        { index: "鸟", value: 80 }
+    ],
+    {
+        xLabel: "类别",
+        yLabel: "数量"
+    }
+);
+</pre>
+
+<h2>
+    使用场景
+</h2>
+
+<ul>
+    <li>训练前先画散点图，观察特征和标签是否有关系。</li>
+    <li>分类任务先画柱状图，检查类别是否严重不均衡。</li>
+    <li>训练时画 loss 曲线，判断是否收敛。</li>
+</ul>

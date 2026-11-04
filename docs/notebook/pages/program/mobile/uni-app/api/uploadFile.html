@@ -1,0 +1,109 @@
+<header>
+    文件上传
+</header>
+<h2>
+    uni.uploadFile(OBJECT)
+</h2>
+<p>
+    将本地资源上传到开发者服务器，客户端发起一个 HTTPS POST 请求，其中 content-type 为 multipart/form-data。
+</p>
+<pre tag="javascript">
+uni.chooseImage({
+    success: (chooseImageRes) => {
+        const tempFilePaths = chooseImageRes.tempFilePaths;
+        uni.uploadFile({
+            url: 'https://www.example.com/upload', //仅为示例，并非真实的接口地址
+            filePath: tempFilePaths[0],
+            name: 'file',
+            formData: {
+                'user': 'test'
+            },
+            success: (uploadFileRes) => {
+                console.log(uploadFileRes.data);
+            }
+        });
+    }
+});
+</pre>
+<h3>
+    参数说明
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必填</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>url</td>
+            <td>String</td>
+            <td>是</td>
+            <td>开发者服务器 url</td>
+        </tr>
+        <tr>
+            <td>files</td>
+            <td>Array&lt;Object&gt;</td>
+            <td>否</td>
+            <td>需要上传的文件列表。使用 files 时，filePath 和 name 不生效</td>
+        </tr>
+        <tr>
+            <td>filePath</td>
+            <td>String</td>
+            <td>是</td>
+            <td>要上传文件资源的路径</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>String</td>
+            <td>是</td>
+            <td>文件对应的 key，开发者在服务器端通过这个 key 可以获取到文件二进制内容</td>
+        </tr>
+        <tr>
+            <td>header</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>HTTP 请求 Header, header 中不能设置 Referer</td>
+        </tr>
+        <tr>
+            <td>formData</td>
+            <td>Object</td>
+            <td>否</td>
+            <td>HTTP 请求中其他额外的 form data</td>
+        </tr>
+        <tr>
+            <td>timeout</td>
+            <td>Number</td>
+            <td>否</td>
+            <td>超时时间，单位 ms</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    返回值
+</h2>
+<p>
+    返回一个 uploadTask 对象，通过 uploadTask，可监听上传进度变化事件，以及取消上传任务。
+</p>
+<pre tag="javascript">
+const uploadTask = uni.uploadFile({
+    url: 'https://www.example.com/upload',
+    filePath: tempFilePaths[0],
+    name: 'file',
+    success: function (uploadFileRes) {
+        console.log(uploadFileRes.data);
+    }
+});
+
+uploadTask.onProgressUpdate((res) => {
+    console.log('上传进度', res.progress);
+    console.log('已经上传的数据长度', res.totalBytesSent);
+    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend);
+});
+
+// 取消上传任务
+// uploadTask.abort();
+</pre>

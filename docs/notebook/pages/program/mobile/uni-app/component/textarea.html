@@ -1,0 +1,191 @@
+<header>
+    textarea
+</header>
+<h2>
+    属性说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>属性名</th>
+            <th>类型</th>
+            <th>默认值</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>value</td>
+            <td>String</td>
+            <td></td>
+            <td>输入框的内容</td>
+        </tr>
+        <tr>
+            <td>placeholder</td>
+            <td>String</td>
+            <td></td>
+            <td>输入框为空时占位符</td>
+        </tr>
+        <tr>
+            <td>placeholder-style</td>
+            <td>String</td>
+            <td></td>
+            <td>指定 placeholder 的样式</td>
+        </tr>
+        <tr>
+            <td>placeholder-class</td>
+            <td>String</td>
+            <td>textarea-placeholder</td>
+            <td>指定 placeholder 的样式类</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否禁用</td>
+        </tr>
+        <tr>
+            <td>maxlength</td>
+            <td>Number</td>
+            <td>140</td>
+            <td>最大输入长度，设置为 -1 的时候不限制最大长度</td>
+        </tr>
+        <tr>
+            <td>focus</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>获取焦点</td>
+        </tr>
+        <tr>
+            <td>auto-height</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>是否自动增高，设置auto-height时，style.height不生效</td>
+        </tr>
+        <tr>
+            <td>fixed</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>如果 textarea 是在一个 position:fixed 的区域，需要显示指定属性 fixed 为 true</td>
+        </tr>
+        <tr>
+            <td>cursor-spacing</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>指定光标与键盘的距离，单位 px</td>
+        </tr>
+        <tr>
+            <td>cursor</td>
+            <td>Number</td>
+            <td></td>
+            <td>指定focus时的光标位置</td>
+        </tr>
+        <tr>
+            <td>show-confirm-bar</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>是否显示键盘上方带有"完成"按钮那一栏</td>
+        </tr>
+        <tr>
+            <td>selection-start</td>
+            <td>Number</td>
+            <td>-1</td>
+            <td>光标起始位置，自动聚集时有效，需与selection-end搭配使用</td>
+        </tr>
+        <tr>
+            <td>selection-end</td>
+            <td>Number</td>
+            <td>-1</td>
+            <td>光标结束位置，自动聚集时有效，需与selection-start搭配使用</td>
+        </tr>
+        <tr>
+            <td>adjust-position</td>
+            <td>Boolean</td>
+            <td>true</td>
+            <td>键盘弹起时，是否自动上推页面</td>
+        </tr>
+        <tr>
+            <td>@input</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>当键盘输入时，触发input事件，event.detail = {value, cursor, keyCode}</td>
+        </tr>
+        <tr>
+            <td>@focus</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>输入框聚焦时触发，event.detail = { value, height }</td>
+        </tr>
+        <tr>
+            <td>@blur</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>输入框失去焦点时触发，event.detail = {value: value}</td>
+        </tr>
+        <tr>
+            <td>@confirm</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>点击完成时， 触发 confirm 事件，event.detail = {value: value}</td>
+        </tr>
+        <tr>
+            <td>@linechange</td>
+            <td>EventHandle</td>
+            <td></td>
+            <td>行数变化时调用，event.detail = {lineCount: lineCount, height: height}</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    使用示例
+</h2>
+<pre tag="html">
+<template>
+  <view class="container">
+    <view class="form-item">
+      <text>请输入您的意见：</text>
+      <textarea 
+        v-model="content" 
+        placeholder="请输入您的意见或建议"
+        class="textarea"
+        maxlength="500"
+        auto-height
+        show-confirm-bar
+      ></textarea>
+    </view>
+    <view class="form-item">
+      <text>字符数：{{content.length}}/500</text>
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      content: ''
+    }
+  }
+}
+</script>
+
+<style>
+.container {
+  padding: 20px;
+}
+
+.form-item {
+  margin-bottom: 15px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+</style>
+</pre>

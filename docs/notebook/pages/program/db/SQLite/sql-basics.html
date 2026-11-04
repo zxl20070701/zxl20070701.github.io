@@ -1,0 +1,82 @@
+<header>
+    SQL 基础查询
+</header>
+<h2>
+    SELECT 查询
+</h2>
+<pre tag="sql">
+-- 查询所有字段
+SELECT * FROM users;
+-- 查询指定字段
+SELECT id, name, age FROM users;
+-- 去重查询
+SELECT DISTINCT city FROM users;
+-- 起别名
+SELECT name AS '姓名', age AS '年龄' FROM users;
+</pre>
+<h2>
+    WHERE 条件
+</h2>
+<pre tag="sql">
+SELECT * FROM users WHERE age > 18;
+SELECT * FROM users WHERE name = '张三';
+SELECT * FROM users WHERE age > 18 AND city = '北京';
+SELECT * FROM users WHERE age BETWEEN 20 AND 30;
+SELECT * FROM users WHERE city IN ('北京', '上海', '广州');
+SELECT * FROM users WHERE name LIKE '张%';
+SELECT * FROM users WHERE email IS NOT NULL;
+</pre>
+<h2>
+    ORDER BY 排序
+</h2>
+<pre tag="sql">
+SELECT * FROM users ORDER BY age ASC;
+SELECT * FROM users ORDER BY age DESC, name ASC;
+</pre>
+<h2>
+    LIMIT 限制
+</h2>
+<pre tag="sql">
+SELECT * FROM users LIMIT 10;
+SELECT * FROM users LIMIT 0, 10;
+SELECT * FROM users LIMIT 10 OFFSET 20;
+</pre>
+<h2>
+    INSERT 插入
+</h2>
+<pre tag="sql">
+INSERT INTO users (name, age, email) VALUES ('张三', 20, 'zhangsan@test.com');
+INSERT INTO users (name, age) VALUES ('李四', 25), ('王五', 30);
+</pre>
+<h2>
+    UPDATE 更新
+</h2>
+<pre tag="sql">
+UPDATE users SET age = 25 WHERE name = '张三';
+UPDATE users SET age = age + 1 WHERE age > 20;
+</pre>
+<h2>
+    DELETE 删除
+</h2>
+<pre tag="sql">
+DELETE FROM users WHERE id = 1;
+DELETE FROM users WHERE age < 18;
+DELETE FROM users;
+</pre>
+<h2>
+    聚合查询
+</h2>
+<pre tag="sql">
+SELECT COUNT(*) FROM users;
+SELECT AVG(age) FROM users;
+SELECT MAX(age), MIN(age) FROM users;
+SELECT city, COUNT(*) AS count FROM users GROUP BY city;
+SELECT city, COUNT(*) AS count FROM users GROUP BY city HAVING COUNT(*) > 3;
+</pre>
+<h2>
+    子查询
+</h2>
+<pre tag="sql">
+SELECT * FROM users WHERE id IN (SELECT user_id FROM orders);
+SELECT * FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
+</pre>

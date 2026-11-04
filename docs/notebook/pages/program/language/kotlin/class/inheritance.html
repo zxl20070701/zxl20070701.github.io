@@ -1,0 +1,190 @@
+<header>
+    继承基础
+</header>
+<p>
+    Kotlin 中的类默认是 <span class="special">final</span>（不可继承），要继承一个类，必须显式声明为 <span class="warn">open</span>。成员函数、属性默认也是 <span class="special">final</span>，要被覆盖也需要 <span class="special">open</span>。
+</p>
+<h2>
+    继承语法
+</h2>
+<pre tag="kotlin">
+// 父类必须 open
+open class 父类 {
+    open fun 方法() {}      // 子类允许重写
+    fun final方法() {}      // 子类不允许重写
+}
+
+// 子类通过 : 继承
+class 子类 : 父类() {
+    override fun 方法() {
+        // 重写父类实现
+        super.方法()        // 视需要调用父类
+    }
+}
+</pre>
+<h3>示例</h3>
+<pre tag="kotlin">
+// 父类：动物
+open class Animal(val name: String) {
+    open fun makeSound(): String = "某种叫声"
+    open fun describe(): String = "我是 $name"
+}
+
+// 子类：狗
+class Dog(name: String, val breed: String) : Animal(name) {
+    override fun makeSound(): String = "汪汪汪"
+    override fun describe(): String = "${super.describe()}，品种是 $breed"
+    fun fetch() = "$name 正在捡球"
+}
+
+// 子类：猫
+class Cat(name: String, val color: String) : Animal(name) {
+    override fun makeSound(): String = "喵喵喵"
+    fun climb() = "$name 在爬树"
+}
+
+val d = Dog("Buddy", "金毛")
+println(d.describe())   // 我是 Buddy，品种是金毛
+println(d.makeSound()) // 汪汪汪
+println(d.fetch())
+
+val c = Cat("Whiskers", "橘色")
+println(c.makeSound()) // 喵喵喵
+println(c.climb())
+</pre>
+<h2>
+    关于 super
+</h2>
+<p>
+    <span class="warn">super</span> 用来调用父类的实现，行为和 Java 类似。
+</p>
+<pre tag="kotlin">
+open class Base {
+    open fun greet() = "Hello"
+}
+
+class Child : Base() {
+    override fun greet() = super.greet() + ", Kotlin"
+}
+
+println(Child().greet()) // Hello, Kotlin
+</pre>
+<h2>
+    多态
+</h2>
+<p>
+    父类引用可以指向子类对象，这是 Java/Kotlin 多态的基础。
+</p>
+<pre tag="kotlin">
+val animals: List&lt;Animal&gt; = listOf(
+    Dog("Buddy", "金毛"),
+    Cat("Whiskers", "橘色")
+)
+
+for (a in animals) {
+    println("${a.name}: ${a.makeSound()}")
+}
+// Buddy: 汪汪汪
+// Whiskers: 喵喵喵
+</pre>
+<h2>
+    抽象类
+</h2>
+<p>
+    用 <span class="warn">abstract</span> 修饰的类不能直接实例化，可以包含抽象成员（没有实现），强制子类完成实现。
+</p>
+<pre tag="kotlin">
+abstract class Shape {
+    abstract fun area(): Double
+
+    open fun describe(): String = "我是一个形状，面积: ${area()}"
+}
+
+class Circle(val r: Double) : Shape() {
+    override fun area() = Math.PI * r * r
+}
+
+class Rect(val w: Double, val h: Double) : Shape() {
+    override fun area() = w * h
+}
+
+val list: List&lt;Shape&gt; = listOf(Circle(2.0), Rect(3.0, 4.0))
+list.forEach { println(it.describe()) }
+</pre>
+<h2>
+    接口
+</h2>
+<p>
+    Kotlin 的接口和 Java 8 之后的接口类似，可以有默认实现与抽象方法。
+</p>
+<pre tag="kotlin">
+interface Flyable {
+    fun fly()                    // 抽象方法
+    fun land() {                 // 默认实现
+        println("安全着陆")
+    }
+}
+
+interface Swimmable {
+    fun swim()
+}
+
+class Duck(val name: String) : Flyable, Swimmable {
+    override fun fly() {
+        println("$name 在飞")
+    }
+
+    override fun swim() {
+        println("$name 在水里游")
+    }
+}
+
+val d = Duck("唐老鸭")
+d.fly()
+d.land()    // 使用接口默认实现
+d.swim()
+</pre>
+<h2>
+    密封类（sealed class）
+</h2>
+<p>
+    密封类的子类只能定义在同一个文件中，常用于表达有限的类型集合，配合 <span class="special">when</span> 不需要 <span class="special">else</span> 分支。
+</p>
+<pre tag="kotlin">
+sealed class Result {
+    class Success(val data: String) : Result()
+    class Failure(val error: Throwable) : Result()
+}
+
+fun handle(result: Result): String = when (result) {
+    is Result.Success -> "成功: ${result.data}"
+    is Result.Failure -> "失败: ${result.error.message}"
+}
+</pre>
+<h2>
+    object 单例
+</h2>
+<pre tag="kotlin">
+// 单例对象
+object AppConfig {
+    val version = "1.0.0"
+    fun sayHello() = "Hello from $version"
+}
+
+println(AppConfig.sayHello())
+
+// object 表达式：类似 Java 匿名内部类
+val listener = object {
+    fun onClick() = println("clicked")
+}
+listener.onClick()
+</pre>
+<h2>
+    继承的几个注意点
+</h2>
+<ul>
+    <li>默认类、函数都是 <span class="special">final</span>，要继承/重写必须显式 <span class="special">open</span>。</li>
+    <li>子类覆盖成员时必须使用 <span class="warn">override</span> 关键字。</li>
+    <li>子类的主构造函数必须先初始化父类；如果父类有主构造函数，子类需要在 <span class="special">: 父类(...)</span> 中传递参数。</li>
+    <li>Kotlin 类只能单继承，但可以实现多个接口。</li>
+</ul>

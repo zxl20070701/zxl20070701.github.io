@@ -1,0 +1,120 @@
+<header>
+    属性装饰器 @property
+</header>
+<h2>
+    @property基础用法
+</h2>
+<p>
+    <span class="important">@property</span>装饰器将方法转换为只读属性，使得方法可以像属性一样访问。
+</p>
+<pre tag="python">
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+    
+    @property
+    def radius(self):
+        """获取半径"""
+        return self._radius
+    
+    @property
+    def area(self):
+        """计算面积"""
+        import math
+        return math.pi * self._radius ** 2
+    
+    @property
+    def circumference(self):
+        """计算周长"""
+        import math
+        return 2 * math.pi * self._radius
+
+# 使用@property
+circle = Circle(5)
+print(f"半径: {circle.radius}")           # 像访问属性一样访问方法
+print(f"面积: {circle.area:.2f}")         # 自动计算
+print(f"周长: {circle.circumference:.2f}") # 自动计算
+</pre>
+
+<h2>
+    只读属性
+</h2>
+<pre tag="python">
+class Person:
+    def __init__(self, name, birth_year):
+        self.name = name
+        self.birth_year = birth_year
+    
+    @property
+    def age(self):
+        """计算年龄，只读属性"""
+        from datetime import datetime
+        current_year = datetime.now().year
+        return current_year - self.birth_year
+    
+    @property
+    def name(self):
+        """获取姓名"""
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        """设置姓名，添加验证"""
+        if not value or not isinstance(value, str):
+            raise ValueError("姓名必须是非空字符串")
+        self._name = value
+
+# 使用只读属性
+person = Person("Alice", 1990)
+print(f"{person.name}的年龄是: {person.age}")  # age是只读的
+
+# 尝试修改age会报错
+# person.age = 25  # AttributeError: can't set attribute
+</pre>
+
+<h2>
+    延迟计算属性
+</h2>
+<pre tag="python">
+class DataProcessor:
+    def __init__(self, data):
+        self._data = data
+        self._processed_data = None
+        self._stats = None
+    
+    @property
+    def data(self):
+        return self._data
+    
+    @property
+    def processed_data(self):
+        """延迟计算处理后的数据"""
+        if self._processed_data is None:
+            print("正在处理数据...")
+            self._processed_data = [x * 2 for x in self._data]
+        return self._processed_data
+    
+    @property
+    def stats(self):
+        """延迟计算统计信息"""
+        if self._stats is None:
+            print("正在计算统计信息...")
+            data = self.processed_data
+            self._stats = {
+                'count': len(data),
+                'sum': sum(data),
+                'average': sum(data) / len(data) if data else 0
+            }
+        return self._stats
+
+# 使用延迟计算
+processor = DataProcessor([1, 2, 3, 4, 5])
+print("第一次访问processed_data:")
+print(processor.processed_data)
+
+print("第二次访问processed_data（不会重新计算）:")
+print(processor.processed_data)
+
+print("访问统计信息:")
+print(processor.stats)
+</pre>

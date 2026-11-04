@@ -1,0 +1,150 @@
+<header>
+    Button 按钮
+</header>
+<p>
+    Compose 中的 <span class="important">Button</span>、
+    <span class="important">OutlinedButton</span>、
+    <span class="important">TextButton</span>、
+    <span class="important">IconButton</span> 用于触发点击操作，
+    替代 View 时代的 Button / ImageButton。
+</p>
+<h2>
+    基础按钮
+</h2>
+<pre tag="kotlin">
+@Composable
+fun ButtonDemo() {
+    Column(
+        modifier = Modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        // 实心按钮
+        Button(onClick = { /* 点击逻辑 */ }) {
+            Text("主要操作")
+        }
+
+        // 描边按钮
+        OutlinedButton(onClick = { /* 点击逻辑 */ }) {
+            Text("次要操作")
+        }
+
+        // 文字按钮（最弱强调）
+        TextButton(onClick = { /* 点击逻辑 */ }) {
+            Text("取消")
+        }
+    }
+}
+</pre>
+<h2>
+    图标按钮
+</h2>
+<pre tag="kotlin">
+// IconButton：纯图标，无文字
+IconButton(onClick = { /* 返回 */ }) {
+    Icon(
+        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+        contentDescription = "返回"
+    )
+}
+
+// Button 内嵌图标
+Button(onClick = { /* 发送 */ }) {
+    Icon(
+        imageVector = Icons.AutoMirrored.Filled.Send,
+        contentDescription = null,
+        modifier = Modifier.size(18.dp)
+    )
+    Spacer(modifier = Modifier.width(4.dp))
+    Text("发送")
+}
+</pre>
+<h2>
+    FloatingActionButton
+</h2>
+<pre tag="kotlin">
+Scaffold(
+    floatingActionButton = {
+        FloatingActionButton(onClick = { /* 新增 */ }) {
+            Icon(Icons.Default.Add, contentDescription = "新增")
+        }
+    }
+) { padding -&gt;
+    // 页面内容
+    Box(modifier = Modifier.padding(padding)) { /* ... */ }
+}
+</pre>
+<h2>
+    按钮状态：加载中
+</h2>
+<pre tag="kotlin">
+@Composable
+fun SubmitButton() {
+    var isLoading by remember { mutableStateOf(false) }
+
+    Button(
+        onClick = {
+            isLoading = true
+            // 模拟网络请求
+        },
+        enabled = !isLoading,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(20.dp),
+                color = MaterialTheme.colorScheme.onPrimary,
+                strokeWidth = 2.dp
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("提交中...")
+        } else {
+            Text("提交")
+        }
+    }
+}
+</pre>
+<h2>
+    自定义颜色
+</h2>
+<pre tag="kotlin">
+Button(
+    onClick = { },
+    colors = ButtonDefaults.buttonColors(
+        containerColor = Color(0xFF6200EE),
+        contentColor = Color.White
+    )
+) {
+    Text("自定义主题色")
+}
+</pre>
+<h2>
+    点击事件最佳实践
+</h2>
+<pre tag="kotlin">
+// 推荐：将事件通过 lambda 传入，便于预览和测试
+@Composable
+fun ProfileScreen(
+    onEditClick: () -&gt; Unit,
+    onLogoutClick: () -&gt; Unit
+) {
+    Column {
+        OutlinedButton(onClick = onEditClick) {
+            Text("编辑资料")
+        }
+        TextButton(onClick = onLogoutClick) {
+            Text("退出登录", color = Color.Red)
+        }
+    }
+}
+
+// 调用处
+ProfileScreen(
+    onEditClick = { navController.navigate("edit") },
+    onLogoutClick = { viewModel.logout() }
+)
+</pre>
+<div class="tips">
+    Compose 中不再有 <span class="warn">setOnClickListener</span>，
+    所有交互事件都通过 Composable 的参数传入，
+    天然实现了状态提升和单向数据流。
+</div>

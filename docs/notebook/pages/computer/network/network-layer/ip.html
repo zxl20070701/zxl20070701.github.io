@@ -1,0 +1,349 @@
+<header>
+    IP协议
+</header>
+<p>
+    IP（Internet
+    Protocol，互联网协议）是TCP/IP协议族的核心协议，负责在网络中传输数据包。IP协议提供无连接、不可靠的数据报传输服务，是构建互联网的基础。理解IP协议的工作原理对于网络设计、故障排除和性能优化至关重要。
+</p>
+<h2>
+    IP协议基础
+</h2>
+<h3>
+    1. IP协议特点
+</h3>
+<ul>
+    <li><span class="special">无连接</span>：不建立连接，每个数据包独立路由</li>
+    <li><span class="special">不可靠</span>：不保证数据包一定到达，也不保证按顺序到达</li>
+    <li><span class="special">分组交换</span>：将数据分割成数据包进行传输</li>
+    <li><span class="special">路由选择</span>：根据路由表选择最佳路径</li>
+    <li><span class="special">最大努力交付</span>：尽力而为地传输数据</li>
+</ul>
+<h3>
+    2. IP地址版本
+</h3>
+<h4>
+    2.1 IPv4
+</h4>
+<ul>
+    <li><span class="special">地址长度</span>：32位，约43亿个地址</li>
+    <li><span class="special">表示方法</span>：点分十进制，如192.168.1.1</li>
+    <li><span class="special">地址空间</span>：理论上支持2³²=4,294,967,296个地址</li>
+    <li><span class="special">当前状态</span>：地址已接近枯竭，需要NAT等技术缓解</li>
+</ul>
+<h4>
+    2.2 IPv6
+</h4>
+<ul>
+    <li><span class="special">地址长度</span>：128位，约3.4×10³⁸个地址</li>
+    <li><span class="special">表示方法</span>：冒号分十六进制，如2001:0db8:85a3::8a2e:0370:7334</li>
+    <li><span class="special">地址空间</span>：理论上支持2¹²⁸个地址</li>
+    <li><span class="special">优势</span>：地址充足，内置安全特性，支持即插即用</li>
+</ul>
+<h2>
+    IPv4协议详解
+</h2>
+<h3>
+    1. IPv4数据报格式
+</h3>
+<pre>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Version|  IHL  |Type of Service|          Total Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Identification        |Flags|      Fragment Offset    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Time to Live |    Protocol   |         Header Checksum       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Source Address                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Destination Address                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Options                    |    Padding    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</pre>
+<h4>
+    1.1 首部字段说明
+</h4>
+<ul>
+    <li><span class="special">版本(Version)</span>：4位，IP协议版本，IPv4为4</li>
+    <li><span class="special">首部长度(IHL)</span>：4位，以32位字为单位的首部长度，最小值为5</li>
+    <li><span class="special">服务类型(Type of Service)</span>：8位，指定服务质量要求</li>
+    <li><span class="special">总长度(Total Length)</span>：16位，整个IP数据报的长度，最大65535字节</li>
+    <li><span class="special">标识(Identification)</span>：16位，标识主机发送的每个数据报</li>
+    <li><span class="special">标志(Flags)</span>：3位，控制和标识分片
+        <ul>
+            <li>Bit 0：保留，必须为0</li>
+            <li>Bit 1：DF(Don't Fragment)，不分片位</li>
+            <li>Bit 2：MF(More Fragments)，更多分片位</li>
+        </ul>
+    </li>
+    <li><span class="special">片偏移(Fragment Offset)</span>：13位，分片在原分组中的相对位置</li>
+    <li><span class="special">生存时间(TTL)</span>：8位，数据报在网络中的寿命，防止无限循环</li>
+    <li><span class="special">协议(Protocol)</span>：8位，标识上层协议类型</li>
+    <li><span class="special">首部校验和(Header Checksum)</span>：16位，只校验IP首部</li>
+    <li><span class="special">源地址(Source Address)</span>：32位，发送方IP地址</li>
+    <li><span class="special">目的地址(Destination Address)</span>：32位，接收方IP地址</li>
+    <li><span class="special">选项(Options)</span>：可变长度，可选字段</li>
+    <li><span class="special">填充(Padding)</span>：确保首部长度为32位的整数倍</li>
+</ul>
+<h3>
+    2. IPv4地址分类
+</h3>
+<h4>
+    2.1 传统分类方式
+</h4>
+<table>
+    <thead>
+        <tr>
+            <th>类别</th>
+            <th>地址范围</th>
+            <th>网络位</th>
+            <th>主机位</th>
+            <th>网络数量</th>
+            <th>主机数量</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A类</td>
+            <td>0.0.0.0 - 127.255.255.255</td>
+            <td>8位</td>
+            <td>24位</td>
+            <td>128</td>
+            <td>16,777,214</td>
+        </tr>
+        <tr>
+            <td>B类</td>
+            <td>128.0.0.0 - 191.255.255.255</td>
+            <td>16位</td>
+            <td>16位</td>
+            <td>16,384</td>
+            <td>65,534</td>
+        </tr>
+        <tr>
+            <td>C类</td>
+            <td>192.0.0.0 - 223.255.255.255</td>
+            <td>24位</td>
+            <td>8位</td>
+            <td>2,097,152</td>
+            <td>254</td>
+        </tr>
+        <tr>
+            <td>D类</td>
+            <td>224.0.0.0 - 239.255.255.255</td>
+            <td colspan="2">组播地址</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>E类</td>
+            <td>240.0.0.0 - 255.255.255.255</td>
+            <td colspan="2">保留地址</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+    </tbody>
+</table>
+<h4>
+    2.2 特殊用途地址
+</h4>
+<ul>
+    <li><span class="special">0.0.0.0</span>：表示本网络的本主机</li>
+    <li><span class="special">255.255.255.255</span>：受限广播地址</li>
+    <li><span class="special">127.0.0.0/8</span>：环回地址，用于本地测试</li>
+    <li><span class="special">私有地址</span>：
+        <ul>
+            <li>10.0.0.0/8 (A类)</li>
+            <li>172.16.0.0/12 (B类)</li>
+            <li>192.168.0.0/16 (C类)</li>
+        </ul>
+    </li>
+    <li><span class="special">链路本地地址</span>：169.254.0.0/16，用于自动配置</li>
+</ul>
+<h3>
+    3. 子网划分与子网掩码
+</h3>
+<h4>
+    3.1 子网掩码表示
+</h4>
+<ul>
+    <li><span class="special">点分十进制</span>：如255.255.255.0</li>
+    <li><span class="special">CIDR表示法</span>：如/24，表示前24位为网络位</li>
+    <li><span class="special">二进制表示</span>：网络位全为1，主机位全为0</li>
+</ul>
+<h4>
+    3.2 子网划分计算
+</h4>
+<ul>
+    <li><span class="special">子网数量</span>：2ⁿ，n为借用的主机位数</li>
+    <li><span class="special">每个子网主机数</span>：2ᵐ-2，m为剩余的主机位数</li>
+    <li><span class="special">子网掩码计算</span>：网络位全1，主机位全0</li>
+</ul>
+<h4>
+    3.3 VLSM (Variable Length Subnet Mask)
+</h4>
+<ul>
+    <li><span class="special">定义</span>：可变长子网掩码，允许在同一网络中使用不同长度的子网掩码</li>
+    <li><span class="special">优势</span>：提高地址利用率，按需分配地址空间</li>
+    <li><span class="special">应用</span>：层次化网络设计</li>
+</ul>
+<h3>
+    4. CIDR (Classless Inter-Domain Routing)
+</h3>
+<ul>
+    <li><span class="special">定义</span>：无类别域间路由，消除传统A、B、C类地址限制</li>
+    <li><span class="special">表示方法</span>：IP地址/前缀长度，如192.168.1.0/24</li>
+    <li><span class="special">优势</span>：减少路由表大小，提高地址利用率</li>
+    <li><span class="special">路由聚合</span>：将多个连续网络聚合成一个路由条目</li>
+</ul>
+<h2>
+    IP路由机制
+</h2>
+<h3>
+    1. 路由表结构
+</h3>
+<ul>
+    <li><span class="special">目的网络</span>：目标网络的IP地址</li>
+    <li><span class="special">子网掩码</span>：目的网络的子网掩码</li>
+    <li><span class="special">下一跳</span>：到达目的网络的下一跳IP地址</li>
+    <li><span class="special">出接口</span>：数据包应从哪个接口发送</li>
+    <li><span class="special">路由度量</span>：路由的优先级或成本</li>
+</ul>
+<h3>
+    2. 路由匹配原则
+</h3>
+<ul>
+    <li><span class="special">最长前缀匹配</span>：选择网络前缀最长的路由条目</li>
+    <li><span class="special">管理距离</span>：不同路由协议的可信度，值越小越可信</li>
+    <li><span class="special">度量值</span>：同一协议内路由的优先级</li>
+</ul>
+<h3>
+    3. 路由类型
+</h3>
+<ul>
+    <li><span class="special">直连路由</span>：直接连接到路由器接口的网络</li>
+    <li><span class="special">静态路由</span>：管理员手动配置的路由</li>
+    <li><span class="special">动态路由</span>：通过路由协议自动学习和更新的路由</li>
+    <li><span class="special">默认路由</span>：0.0.0.0/0，匹配所有未知目的网络</li>
+</ul>
+<h2>
+    IP分片与重组
+</h2>
+<h3>
+    1. 分片原因
+</h3>
+<ul>
+    <li><span class="special">MTU限制</span>：不同网络的MTU不同，可能需要分片</li>
+    <li><span class="special">路径MTU</span>：传输路径上的最小MTU</li>
+    <li><span class="special">IPv4分片</span>：中间路由器可分片，目的主机重组</li>
+</ul>
+<h3>
+    2. 分片机制
+</h3>
+<ul>
+    <li><span class="special">标识字段</span>：所有分片具有相同的标识值</li>
+    <li><span class="special">标志字段</span>：MF位标识是否为最后一个分片</li>
+    <li><span class="special">片偏移</span>：分片在原数据报中的位置</li>
+    <li><span class="special">重组</span>：目的主机根据标识、标志和片偏移重组数据报</li>
+</ul>
+<h3>
+    3. 分片问题
+</h3>
+<ul>
+    <li><span class="special">性能影响</span>：分片和重组消耗CPU资源</li>
+    <li><span class="special">安全风险</span>：分片攻击，如tiny fragment attack</li>
+    <li><span class="special">解决方案</span>：路径MTU发现，避免分片</li>
+</ul>
+<h2>
+    IP选项与扩展
+</h2>
+<h3>
+    1. 常见IP选项
+</h3>
+<ul>
+    <li><span class="special">记录路由</span>：记录数据报经过的路由器</li>
+    <li><span class="special">时间戳</span>：记录数据报经过路由器的时间</li>
+    <li><span class="special">严格源路由</span>：指定必须经过的确切路径</li>
+    <li><span class="special">松散源路由</span>：指定必须经过的部分路径</li>
+</ul>
+<h3>
+    2. IP选项问题
+</h3>
+<ul>
+    <li><span class="special">处理开销</span>：路由器需要特殊处理选项字段</li>
+    <li><span class="special">安全风险</span>：源路由可能被滥用</li>
+    <li><span class="special">现代应用</span>：大多数路由器忽略IP选项</li>
+</ul>
+<h2>
+    IP服务质量
+</h2>
+<h3>
+    1. ToS字段
+</h3>
+<ul>
+    <li><span class="special">结构</span>：3位优先级 + 4位TOS + 1位保留</li>
+    <li><span class="special">优先级</span>：0-7，数值越大优先级越高</li>
+    <li><span class="special">TOS类型</span>：最小延迟、最大吞吐量、最高可靠性、最小成本</li>
+</ul>
+<h3>
+    2. DSCP (Differentiated Services Code Point)
+</h3>
+<ul>
+    <li><span class="special">定义</span>：替代ToS字段，提供64个服务等级</li>
+    <li><span class="special">结构</span>：6位DSCP + 2位ECN</li>
+    <li><span class="special">PHB (Per-Hop Behavior)</span>：定义路由器对每个数据包的处理方式</li>
+</ul>
+<h2>
+    IP网络地址转换 (NAT)
+</h2>
+<h3>
+    1. NAT类型
+</h3>
+<ul>
+    <li><span class="special">静态NAT</span>：一对一的固定地址映射</li>
+    <li><span class="special">动态NAT</span>：从地址池中动态分配公网地址</li>
+    <li><span class="special">PAT (端口地址转换)</span>：多对一转换，通过端口号区分</li>
+</ul>
+<h3>
+    2. NAT工作原理
+</h3>
+<ul>
+    <li><span class="special">地址转换</span>：将私有地址转换为公网地址</li>
+    <li><span class="special">端口转换</span>：记录端口号映射关系</li>
+    <li><span class="special">会话跟踪</span>：维护转换表，支持双向通信</li>
+</ul>
+<h3>
+    3. NAT优缺点
+</h3>
+<ul>
+    <li><span class="special">优点</span>：节省公网地址，增强安全性，支持负载均衡</li>
+    <li><span class="special">缺点</span>：破坏端到端模型，影响某些应用，增加复杂性</li>
+</ul>
+<h2>
+    IP网络诊断工具
+</h2>
+<h3>
+    1. ping
+</h3>
+<ul>
+    <li><span class="special">功能</span>：测试网络连通性</li>
+    <li><span class="special">原理</span>：发送ICMP Echo请求，接收Echo响应</li>
+    <li><span class="special">参数</span>：包大小、数量、TTL、超时时间等</li>
+</ul>
+<h3>
+    2. traceroute
+</h3>
+<ul>
+    <li><span class="special">功能</span>：跟踪数据包传输路径</li>
+    <li><span class="special">原理</span>：逐步增加TTL值，记录中间路由器</li>
+    <li><span class="special">实现</span>：基于ICMP或UDP</li>
+</ul>
+<h3>
+    3. 其他工具
+</h3>
+<ul>
+    <li><span class="special">arp</span>：查看和修改ARP缓存</li>
+    <li><span class="special">netstat</span>：显示网络连接、路由表、接口统计</li>
+    <li><span class="special">route</span>：查看和修改路由表</li>
+</ul>

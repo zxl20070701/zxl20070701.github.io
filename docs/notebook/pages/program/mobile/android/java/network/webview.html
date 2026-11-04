@@ -1,0 +1,71 @@
+<header>
+    WebView
+</header>
+<p>
+    WebView 用于在 App 内显示网页内容，也可以与 JavaScript 交互。
+</p>
+<h2>
+    加载网页
+</h2>
+<pre tag="xml">
+&lt;WebView
+    android:id="@+id/web_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" /&gt;
+</pre>
+<pre tag="java">
+WebView webView = findViewById(R.id.web_view);
+webView.getSettings().setJavaScriptEnabled(true); // 启用 JS
+webView.loadUrl("https://zxl20070701.github.io/notebook/index.html");
+</pre>
+<h2>
+    与 JavaScript 交互
+</h2>
+<h3>
+    Android 调用 JS
+</h3>
+<pre tag="java">
+webView.evaluateJavascript("javascript:showMessage('Hello')", null);
+</pre>
+<h3>
+    JS 调用 Android
+</h3>
+<pre tag="java">
+webView.addJavascriptInterface(new Object() {
+    @android.webkit.JavascriptInterface
+    public void callFromJs(String msg) {
+        runOnUiThread(() -&gt; {
+            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+        });
+    }
+}, "Android");
+</pre>
+<h2>
+    常用设置
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>设置</td>
+            <td>说明</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>setJavaScriptEnabled(true)</td>
+            <td>启用 JavaScript。</td>
+        </tr>
+        <tr>
+            <td>setSupportZoom(true)</td>
+            <td>支持缩放。</td>
+        </tr>
+        <tr>
+            <td>setCacheMode(...)</td>
+            <td>设置缓存策略。</td>
+        </tr>
+        <tr>
+            <td>setDomStorageEnabled(true)</td>
+            <td>启用 DOM 存储。</td>
+        </tr>
+    </tbody>
+</table>

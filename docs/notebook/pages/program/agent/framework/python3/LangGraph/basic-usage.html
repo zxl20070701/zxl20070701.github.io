@@ -1,0 +1,103 @@
+<header>
+    基本使用
+</header>
+
+<p>
+    LangGraph 是一个基于<strong>图（Graph）</strong>的 Agent 编排框架。它把一次任务的执行过程拆成一个个节点（Node），用边（Edge）把节点连成确定的路径，并在节点之间共享一份状态（State）。相比让模型自由发挥，图的方式流程可控，适合"步骤确定、需要精确编排"的场景。
+</p>
+
+<h2>
+    安装
+</h2>
+
+<p>
+    安装 LangGraph 和 OpenAI 协议的模型接入包：
+</p>
+
+<pre>
+    pip3 install langgraph langchain-openai
+</pre>
+
+<div class="tips">
+    本文的示例使用本地 Ollama 服务提供的模型，需要提前启动 Ollama 并拉取好模型（默认使用 <span class="warn">qwen3.5</span>）。
+</div>
+
+<h2>
+    搭建第一个图
+</h2>
+
+<p>
+    搭建一张图需要三步：定义状态、定义节点、用边把节点连起来。下面搭建一个最简单的图——只有一个"调用模型"的节点：
+</p>
+
+<pre tag="python">
+#!/usr/bin/python3
+
+from typing import TypedDict, List
+from langchain_openai import ChatOpenAI
+from langgraph.graph import StateGraph
+from langchain_core.messages import BaseMessage, HumanMessage
+
+
+# 定义状态
+class GraphState(TypedDict):
+    messages: List[BaseMessage]
+
+
+# 初始化 LLM
+llm = ChatOpenAI(
+    model="qwen3.5", api_key="ollama", base_url="http://localhost:11434/v1"
+)
+
+
+# 定义节点函数
+def call_model(state: GraphState) -> GraphState:
+    messages = state["messages"]
+    response = llm.invoke(messages)
+    return {"messages": messages + [response]}
+
+
+# 创建图
+workflow = StateGraph(GraphState)
+
+# 添加节点
+workflow.add_node("model", call_model)
+
+# 添加边
+workflow.add_edge("__start__", "model")
+workflow.add_edge("model", "__end__")
+
+# 编译图
+app = workflow.compile()
+
+# 运行图
+result = app.invoke(
+    {"messages": [HumanMessage(content="你是谁?")]}
+)
+
+print(result["messages"][-1].content)
+</pre>
+
+<h2>
+    逐段解读
+</h2>
+
+<p>
+    <strong>状态（State）</strong>：用 <span class="warn">TypedDict</span> 定义整张图共享的数据结构，这里只有一个消息列表 <span class="warn">messages</span>。每个节点都从状态里读数据、往状态里写数据。
+</p>
+
+<p>
+    <strong>节点（Node）</strong>：一个普通的 Python 函数，入参是当前状态，返回值是要合并进状态的增量数据。<span class="warn">call_model</span> 做的事情就是把当前消息列表交给模型，再把模型的回复追加到列表里。
+</p>
+
+<p>
+    <strong>边（Edge）</strong>：通过 <span class="warn">add_edge</span> 声明节点的执行顺序。<span class="warn">__start__</span> 和 <span class="warn">__end__</span> 是两个特殊的虚拟节点，分别表示图的入口和出口。
+</p>
+
+<div class="tips">
+    图定义好之后必须调用 <span class="warn">compile()</span> 编译才能运行；编译后的应用通过 <span class="warn">invoke</span> 传入初始状态启动整张图。
+</div>
+
+<p>
+    这个例子只有一个节点，和直接调用模型差别不大；LangGraph 真正的威力在于多个节点组合——比如"模型节点 → 工具节点 → 模型节点"的循环，或者根据状态走不同分支的条件边，都可以用同样的方式搭建。
+</p>

@@ -1,0 +1,60 @@
+<header>
+    模型结构可视化
+</header>
+
+<p>
+    模型结构可视化可以帮助检查层顺序、输出 shape 和参数数量。最常用的是 model.summary，也可以导出结构图。
+</p>
+
+<h2>
+    model.summary
+</h2>
+
+<pre tag="python">
+model.summary()
+</pre>
+
+<p>
+    summary 中重点看三列：Layer、Output Shape、Param #。
+</p>
+
+<h2>
+    导出模型结构图
+</h2>
+
+<pre tag="python">
+tf.keras.utils.plot_model(
+    model,
+    to_file="model.png",
+    show_shapes=True,
+    show_layer_names=True
+)
+</pre>
+
+<p>
+    如果 plot_model 报缺少依赖，通常需要安装 pydot 和 graphviz。
+</p>
+
+<pre>
+pip install pydot graphviz
+</pre>
+
+<h2>
+    检查每层输出 shape
+</h2>
+
+<pre tag="python">
+for layer in model.layers:
+    print(layer.name, layer.output_shape)
+</pre>
+
+<h2>
+    判断建议
+</h2>
+
+<ul>
+    <li>Dense 第一层前需要明确输入 shape。</li>
+    <li>Conv2D 输入通常是 (height, width, channels)。</li>
+    <li>Flatten 后参数量可能突然变大，需要特别注意。</li>
+    <li>分类模型最后一层 units 应该等于类别数。</li>
+</ul>

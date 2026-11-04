@@ -1,0 +1,113 @@
+<header>
+    迭代器与生成器
+</header>
+<h2>
+    可迭代协议
+</h2>
+<p>
+    实现了 Symbol.iterator 方法的对象是可迭代的。该方法返回一个迭代器对象。
+</p>
+<pre tag="javascript">
+let iterable = {
+    [Symbol.iterator]() {
+        let step = 0;
+        return {
+            next() {
+                step++;
+                if (step <= 3) {
+                    return { value: step, done: false };
+                }
+                return { value: undefined, done: true };
+            }
+        };
+    }
+};
+for (let v of iterable) {
+    console.log(v); // 1, 2, 3
+}
+</pre>
+<h2>
+    for...of 循环
+</h2>
+<p>
+    for...of 用于遍历可迭代对象（数组、字符串、Map、Set 等），自动调用迭代器。
+</p>
+<pre tag="javascript">
+let arr = [1, 2, 3];
+for (let val of arr) {
+    console.log(val); // 1, 2, 3
+}
+let str = 'hello';
+for (let char of str) {
+    console.log(char); // h, e, l, l, o
+}
+</pre>
+<h2>
+    生成器函数
+</h2>
+<p>
+    使用 function* 定义生成器函数，通过 yield 关键字暂停和恢复执行。每次 yield 返回一个值并暂停。
+</p>
+<pre tag="javascript">
+function* generator() {
+    yield 1;
+    yield 2;
+    yield 3;
+}
+let gen = generator();
+console.log(gen.next()); // { value: 1, done: false }
+console.log(gen.next()); // { value: 2, done: false }
+console.log(gen.next()); // { value: 3, done: false }
+console.log(gen.next()); // { value: undefined, done: true }
+</pre>
+<h2>
+    yield* 委托
+</h2>
+<p>
+    使用 yield* 可以将生成器的执行委托给另一个可迭代对象或生成器。
+</p>
+<pre tag="javascript">
+function* inner() {
+    yield 'a';
+    yield 'b';
+}
+function* outer() {
+    yield* inner();
+    yield 'c';
+}
+// 依次产出 'a', 'b', 'c'
+</pre>
+<h2>
+    生成器实现可迭代
+</h2>
+<p>
+    生成器函数返回的生成器对象本身也是可迭代的，可以直接用于 for...of。
+</p>
+<pre tag="javascript">
+function* range(start, end) {
+    for (let i = start; i <= end; i++) {
+        yield i;
+    }
+}
+for (let n of range(1, 5)) {
+    console.log(n); // 1, 2, 3, 4, 5
+}
+</pre>
+<h2>
+    实用场景
+</h2>
+<p>
+    生成器适合用于惰性求值、数据流处理、异步控制流等场景。
+</p>
+<pre tag="javascript">
+// 无限序列
+function* infinite() {
+    let n = 0;
+    while (true) {
+        yield n++;
+    }
+}
+let gen = infinite();
+console.log(gen.next().value); // 0
+console.log(gen.next().value); // 1
+</pre>
