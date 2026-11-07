@@ -1,0 +1,72 @@
+<header>
+    Spring Boot IoC与依赖注入
+</header>
+<h2>
+    什么是 IoC
+</h2>
+<p>
+    传统方式自己 new 对象，依赖关系散落在代码里。IoC（控制反转）把对象创建交给 Spring 容器，你只声明需要什么，容器帮你组装。
+</p>
+<h2>
+    Bean
+</h2>
+<p>
+    被 Spring 容器管理的对象叫 Bean。默认单例，整个应用只有一个实例。
+</p>
+<pre tag="java">
+@Repository
+public class UserRepository { }
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+
+    // 构造器注入：Spring 自动从容器拿 UserRepository 塞进来
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+}
+</pre>
+<h2>
+    三层注解
+</h2>
+<p>
+    本质上都是 @Component，语义不同：
+</p>
+<ul>
+    <li><strong>@Repository</strong>：数据访问层，操作数据库</li>
+    <li><strong>@Service</strong>：业务逻辑层，写业务规则</li>
+    <li><strong>@RestController</strong>：控制层，处理 HTTP 请求</li>
+</ul>
+<h2>
+    构造器注入 vs 字段注入
+</h2>
+<p>
+    官方推荐构造器注入：
+</p>
+<pre tag="java">
+// 推荐：字段 final，单测友好，依赖缺失立刻报错
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+}
+
+// 不推荐：不能 final，难单测，隐藏过度依赖
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+}
+</pre>
+<p>
+    Spring 4.3 后单构造器可以省略 @Autowired。
+</p>
+<h2>
+    循环依赖
+</h2>
+<p>
+    A 依赖 B，B 又依赖 A，说明职责划分有问题，应该合并或抽离公共部分。构造器注入会让循环依赖在编译期就暴露。
+</p>

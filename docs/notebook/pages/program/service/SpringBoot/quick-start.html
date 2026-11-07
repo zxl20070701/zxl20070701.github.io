@@ -1,0 +1,56 @@
+<header>
+    快速开始
+</header>
+<h2>
+    Spring Boot是什么
+</h2>
+<p>
+    Spring Boot基于Spring框架，提供自动配置和内嵌服务器，适合快速构建独立运行的Java应用。本文以Spring Boot 3.x和Java 17为例。
+</p>
+<h2>
+    创建项目
+</h2>
+<p>
+    使用Spring Initializr创建项目，选择Maven、Java、Spring Boot 3.x，并添加Spring Web依赖。生成并解压项目后，用IDE打开项目根目录。
+</p>
+<p>
+    Spring Web提供构建Web应用和REST接口所需的Spring MVC组件。Initializr会生成依赖配置和Maven Wrapper。
+</p>
+<h2>
+    项目入口
+</h2>
+<p>
+    默认生成的主类通常位于src/main/java下。它负责启动Spring容器，并通过组件扫描发现同包及其子包中的控制器和其他组件。
+</p>
+<pre tag="java">
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+</pre>
+<p>
+    保留Initializr生成的主类和包名即可。新增类应放在主类所在包或其子包中，以便被自动扫描。
+</p>
+<h2>
+    添加Web依赖
+</h2>
+<p>
+    如果没有通过Initializr选择Spring Web，可在Maven项目的pom.xml中添加以下依赖；Spring Boot parent会管理依赖版本，无需单独指定。
+</p>
+<pre tag="xml">
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+<p>
+    下一步可以创建控制器并通过HTTP请求访问接口。
+</p>

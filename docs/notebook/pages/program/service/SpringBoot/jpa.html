@@ -1,0 +1,77 @@
+<header>
+    Spring Data JPA
+</header>
+<h2>
+    只写接口不写实现
+</h2>
+<p>
+    Spring Data JPA 最神奇的特性：你只定义接口，Spring 自动生成动态代理实现。
+</p>
+<pre tag="java">
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    Optional&lt;User&gt; findByEmail(String email);
+    boolean existsByEmail(String email);
+}
+</pre>
+<h2>
+    定义 Entity
+</h2>
+<pre tag="java">
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 100)
+    private String name;
+
+    @Column(nullable = false, unique = true, length = 191)
+    private String email;
+
+    private Integer age;
+}
+</pre>
+<h2>
+    方法名推导 SQL
+</h2>
+<p>
+    Spring 根据方法名自动生成查询：
+</p>
+<ul>
+    <li><strong>findByEmail</strong> → WHERE email = ?</li>
+    <li><strong>findByNameContaining</strong> → WHERE name LIKE %?%</li>
+    <li><strong>findByAgeGreaterThanEqual</strong> → WHERE age &gt;= ?</li>
+    <li><strong>existsByEmail</strong> → SELECT COUNT(*) &gt; 0</li>
+</ul>
+<p>
+    复杂查询用 @Query 写 JPQL：
+</p>
+<pre tag="java">
+@Query("SELECT u FROM User u WHERE u.age &gt;= :minAge ORDER BY u.createdAt DESC")
+List&lt;User&gt; findOldUsers(@Param("minAge") int minAge);
+</pre>
+<h2>
+    分页
+</h2>
+<pre tag="java">
+Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdAt").descending());
+Page&lt;User&gt; result = userRepository.findAll(pageable);
+</pre>
+<h2>
+    事务
+</h2>
+<p>
+    Service 写方法加 @Transactional，异常自动回滚：
+</p>
+<pre tag="java">
+@Transactional
+public User createWithProfile(User user, Profile profile) {
+    userRepository.save(user);
+    profile.setUser(user);
+    profileRepository.save(profile);
+    return user;
+}
+</pre>

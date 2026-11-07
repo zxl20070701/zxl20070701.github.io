@@ -1,0 +1,75 @@
+<header>
+    Spring Boot Docker部署
+</header>
+<h2>
+    打 Jar 包
+</h2>
+<pre tag="bash">
+./mvnw clean package -DskipTests
+java -jar target/demo-0.0.1-SNAPSHOT.jar
+</pre>
+<p>
+    Spring Boot 的 Jar 是胖 Jar，内嵌 Tomcat 和所有依赖。
+</p>
+<h2>
+    多阶段 Dockerfile
+</h2>
+<pre tag="dockerfile">
+# 阶段 1：构建
+FROM maven:3.9-eclipse-temurin-17 AS builder
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+COPY src ./src
+RUN mvn clean package -DskipTests -q
+
+# 阶段 2：运行
+FROM eclipse-temurin:17-jre-alpine
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Shanghai
+WORKDIR /app
+COPY --from=builder /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+</pre>
+<h2>
+    优雅停机
+</h2>
+<p>
+    Spring Boot 内置优雅停机，配置即可：
+</p>
+<pre tag="yaml">
+server:
+  shutdown: graceful
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+</pre>
+<p>
+    Docker stop 时自动等正在处理的请求跑完（最多 30 秒）。
+</p>
+<h2>
+    docker-compose
+</h2>
+<pre tag="yaml">
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/demo
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
+</pre>

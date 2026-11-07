@@ -1,0 +1,85 @@
+<header>
+    编写REST接口
+</header>
+<h2>
+    创建控制器
+</h2>
+<p>
+    在主应用类所在包或其子包下创建控制器。@RestController表示该类处理Web请求，并将方法返回值直接写入HTTP响应体。
+</p>
+<pre tag="java">
+package com.example.demo.controller;
+
+public record GreetingResponse(String message) {
+}
+</pre>
+<p>
+    将请求JSON映射到Java对象时，也可以定义一个请求record：
+</p>
+<pre tag="java">
+package com.example.demo.controller;
+
+public record GreetingRequest(String name) {
+}
+</pre>
+<p>
+    新建GreetingController.java，添加查询参数、路径参数和JSON请求体处理方法：
+</p>
+<pre tag="java">
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+public class GreetingController {
+
+    @GetMapping("/greeting")
+    public String greeting(
+            @RequestParam(defaultValue = "World") String name) {
+        return "Hello, " + name + "!";
+    }
+
+    @GetMapping("/greeting/{name}")
+    public String greetingByPath(@PathVariable String name) {
+        return "Hello, " + name + "!";
+    }
+
+    @GetMapping("/greeting-json")
+    public GreetingResponse greetingJson(
+            @RequestParam(defaultValue = "World") String name) {
+        return new GreetingResponse("Hello, " + name + "!");
+    }
+
+    @PostMapping("/greeting")
+    public GreetingResponse createGreeting(@RequestBody GreetingRequest request) {
+        return new GreetingResponse("Hello, " + request.name() + "!");
+    }
+}
+</pre>
+<p>
+    @RequestMapping设置类级别的公共路径。@GetMapping和@PostMapping声明HTTP方法，@RequestParam读取查询参数，@PathVariable读取路径中的变量，@RequestBody将JSON请求体映射为Java对象。
+</p>
+<h2>
+    调用接口
+</h2>
+<p>
+    GET /api/greeting?name=Spring返回文本Hello, Spring!。GET /api/greeting/Spring使用路径参数，GET /api/greeting-json?name=Spring返回JSON：{"message":"Hello, Spring!"}。
+</p>
+<p>
+    POST接口可以使用curl发送JSON请求：
+</p>
+<pre tag="bash">
+curl -X POST http://localhost:8080/api/greeting \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Spring"}'
+</pre>
+<p>
+    请求体中的name会映射到GreetingRequest，响应JSON示例为{"message":"Hello, Spring!"}。
+</p>

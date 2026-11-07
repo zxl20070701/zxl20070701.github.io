@@ -1,0 +1,81 @@
+<header>
+    Spring Boot 参数校验与异常处理
+</header>
+<h2>
+    @Valid 校验
+</h2>
+<p>
+    在 DTO 字段上写校验规则，Controller 参数加 @Valid 触发：
+</p>
+<pre tag="java">
+public class UserCreateRequest {
+    @NotBlank(message = "name 不能为空")
+    @Size(min = 2, max = 20, message = "name 长度 2-20")
+    private String name;
+
+    @NotBlank(message = "email 不能为空")
+    @Email(message = "email 格式不正确")
+    private String email;
+
+    @NotNull(message = "age 不能为空")
+    @Min(value = 0, message = "age 不能小于 0")
+    @Max(value = 150, message = "age 不能大于 150")
+    private Integer age;
+}
+</pre>
+<pre tag="java">
+@PostMapping
+public Result create(@RequestBody @Valid UserCreateRequest req) {
+    return Result.ok(userService.create(req));
+}
+</pre>
+<h2>
+    常用校验注解
+</h2>
+<ul>
+    <li><strong>@NotBlank</strong>：字符串必填，不能纯空格</li>
+    <li><strong>@NotNull</strong>：不能为 null（字符串可以是空串）</li>
+    <li><strong>@Size(min, max)</strong>：长度范围</li>
+    <li><strong>@Min / @Max</strong>：数字范围</li>
+    <li><strong>@Email</strong>：邮箱格式</li>
+    <li><strong>@Pattern(regexp)</strong>：自定义正则</li>
+</ul>
+<h2>
+    全局异常处理
+</h2>
+<p>
+    用 @RestControllerAdvice 统一捕获所有异常，返回统一格式：
+</p>
+<pre tag="java">
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result&lt;Map&lt;String, String&gt;&gt; handleValidation(MethodArgumentNotValidException e) {
+        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();
+        for (FieldError error : e.getBindingResult().getFieldErrors()) {
+            errors.put(error.getField(), error.getDefaultMessage());
+        }
+        return Result.fail(400, "参数校验失败", errors);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result&lt;Void&gt; handleBusiness(BusinessException e) {
+        return Result.fail(e.getCode(), e.getMessage());
+    }
+}
+</pre>
+<h2>
+    业务异常
+</h2>
+<p>
+    Service 里抛业务异常，Controller 不用 try-catch：
+</p>
+<pre tag="java">
+public User getById(Long id) {
+    return userRepository.findById(id)
+        .orElseThrow(() -&gt; new BusinessException(1001, "用户不存在"));
+}
+</pre>

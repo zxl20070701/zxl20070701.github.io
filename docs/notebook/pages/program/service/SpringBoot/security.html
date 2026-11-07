@@ -1,0 +1,82 @@
+<header>
+    Spring Security与JWT
+</header>
+<h2>
+    过滤链
+</h2>
+<p>
+    请求进来经过一串 Filter，每个 Filter 干一件事，最后才到 Controller：
+</p>
+<h2>
+    密码哈希
+</h2>
+<p>
+    用 BCryptPasswordEncoder，永远不明文存密码：
+</p>
+<pre tag="java">
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
+// 注册时
+user.setPassword(passwordEncoder.encode(rawPassword));
+
+// 登录时验证
+passwordEncoder.matches(rawPassword, storedHash);
+</pre>
+<h2>
+    JWT 认证过滤器
+</h2>
+<p>
+    每个请求解析 Authorization 头，验签通过后把 userId 塞进 SecurityContext：
+</p>
+<pre tag="java">
+@Component
+public class JwtAuthFilter extends OncePerRequestFilter {
+
+    private final JwtUtil jwtUtil;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain) throws ServletException, IOException {
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+            try {
+                Long userId = jwtUtil.parseUserId(token);
+                var auth = new UsernamePasswordAuthenticationToken(userId, null, Collections.emptyList());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            } catch (Exception ignored) {}
+        }
+        chain.doFilter(request, response);
+    }
+}
+</pre>
+<h2>
+    Security 配置
+</h2>
+<pre tag="java">
+@Configuration
+public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -&gt; csrf.disable())
+            .sessionManagement(s -&gt; s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -&gt; auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+}
+</pre>
+<p>
+    STATELESS 表示不用 HttpSession，纯 JWT 无状态。
+</p>

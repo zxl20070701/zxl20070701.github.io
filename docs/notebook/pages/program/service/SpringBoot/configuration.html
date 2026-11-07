@@ -1,0 +1,53 @@
+<header>
+    配置与运行
+</header>
+<h2>
+    配置应用
+</h2>
+<p>
+    将配置写入src/main/resources/application.properties。默认HTTP端口为8080，可通过server.port修改。
+</p>
+<pre tag="properties">
+server.port=8081
+spring.application.name=demo
+</pre>
+<p>
+    修改端口后，示例接口地址也相应变为http://localhost:8081/api/greeting。
+</p>
+<h2>
+    启动开发服务器
+</h2>
+<p>
+    在项目根目录执行Maven Wrapper命令。首次启动时，Maven可能需要下载依赖。
+</p>
+<pre tag="bash">
+# macOS或Linux
+./mvnw spring-boot:run
+
+# Windows
+mvnw.cmd spring-boot:run
+</pre>
+<p>
+    启动成功后访问http://localhost:8081/api/greeting?name=Spring。若使用默认端口8080，请将地址中的端口改为8080。
+</p>
+<h2>
+    打包和运行
+</h2>
+<p>
+    执行以下命令生成可执行JAR，再使用Java运行：
+</p>
+<pre tag="bash">
+./mvnw package
+java -jar target/demo-0.0.1-SNAPSHOT.jar
+</pre>
+<p>
+    Windows可将./mvnw替换为mvnw.cmd。生成的JAR文件名由pom.xml中的项目版本决定。
+</p>
+<h2>
+    常见问题
+</h2>
+<ul>
+    <li>端口已被占用：修改server.port，或停止占用该端口的进程。</li>
+    <li>接口返回404：确认控制器位于主应用类所在包或其子包，并检查请求路径和HTTP方法。</li>
+    <li>命令无法执行：确认已安装JDK 17或更高版本，并在项目根目录运行Maven Wrapper。</li>
+</ul>
