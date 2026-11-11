@@ -1,0 +1,158 @@
+<header>
+    从零搭一个原生项目
+</header>
+<h2>
+    Spring MVC 是什么
+</h2>
+<p>
+    Spring MVC 是 Spring 的 Web 层模块：一个 Servlet（DispatcherServlet）加上一整套处理请求的组件。它本身不含自动配置、不含内嵌服务器，需要你自己写 web.xml、自己部署到 Servlet 容器（Tomcat 10+）。Spring Boot 的 spring-boot-starter-web 底层用的就是它。
+</p>
+<h2>
+    依赖与打包方式
+</h2>
+<p>
+    关键点有两个：packaging 必须是 war；Servlet API 由 Tomcat 提供，所以 scope 是 provided，不打进 war。
+</p>
+<pre tag="xml">
+&lt;packaging&gt;war&lt;/packaging&gt;
+
+&lt;properties&gt;
+    &lt;java.version&gt;21&lt;/java.version&gt;
+    &lt;spring-framework.version&gt;6.2.7&lt;/spring-framework.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+        &lt;version&gt;${spring-framework.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+        &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+        &lt;version&gt;6.0.0&lt;/version&gt;
+        &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</pre>
+<p>
+    注意是 jakarta.servlet 而不是 javax.servlet。Spring 6 只认 Jakarta 命名空间，对应的容器是 Tomcat 10 及以上，Tomcat 9 会直接启动失败。
+</p>
+<h2>
+    目录结构
+</h2>
+<pre tag="text">
+SpringMVC6.x-project
+├── pom.xml
+└── src/main
+    ├── java/.../controller/HelloController.java
+    ├── java/.../service/HelloService.java
+    ├── resources/springmvc.xml          # 容器配置
+    └── webapp/WEB-INF/web.xml           # 注册 DispatcherServlet
+</pre>
+<h2>
+    springmvc.xml：容器里放什么
+</h2>
+<pre tag="xml">
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="... "&gt;
+
+    &lt;context:component-scan base-package="io.github.zxl20070701.springmvc"/&gt;
+
+    &lt;!-- 注册 HandlerMapping、HandlerAdapter、消息转换器等核心组件 --&gt;
+    &lt;mvc:annotation-driven/&gt;
+
+&lt;/beans&gt;
+</pre>
+<p>
+    没有 &lt;mvc:annotation-driven/&gt; 时，@RequestMapping 仍然能识别（较老版本靠默认策略），但参数绑定、JSON 转换会缺失。加上它是最省心的写法，等价于 Spring Boot 的 WebMvcAutoConfiguration。
+</p>
+<h2>
+    web.xml：Boot 里不存在的那份文件
+</h2>
+<pre tag="xml">
+&lt;web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         version="6.0"&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+            &lt;param-value&gt;classpath:springmvc.xml&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;springmvc&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</pre>
+<p>
+    三个细节：contextConfigLocation 不写会去找 /WEB-INF/springmvc-servlet.xml；load-on-startup 为 1 表示容器启动时就初始化，而不是等第一个请求；url-pattern 用 / 而不是 /*，写成 /* 会把 JSP 也拦进 DispatcherServlet。
+</p>
+<h2>
+    控制器与业务类
+</h2>
+<pre tag="java">
+@RestController
+public class HelloController {
+
+    private final HelloService helloService;
+
+    // 单构造器不用写 @Autowired，容器自己注入
+    public HelloController(HelloService helloService) {
+        this.helloService = helloService;
+    }
+
+    @GetMapping(value = "/hello", produces = "text/plain;charset=UTF-8")
+    public String hello(@RequestParam(value = "name", required = false) String name) {
+        return helloService.greet(name);
+    }
+}
+</pre>
+<p>
+    之所以要写 value = "name" 和 charset，是因为原生项目没有 Boot 帮忙，这两处后面各有一篇专门讲。
+</p>
+<h2>
+    跑起来
+</h2>
+<p>
+    不想自己装 Tomcat 时，借 cargo 临时拉一个 Tomcat 10 部署 war，context 就是 finalName：
+</p>
+<pre tag="xml">
+&lt;build&gt;
+    &lt;finalName&gt;springmvc6&lt;/finalName&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.codehaus.cargo&lt;/groupId&gt;
+            &lt;artifactId&gt;cargo-maven3-plugin&lt;/artifactId&gt;
+            &lt;version&gt;1.10.15&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;container&gt;
+                    &lt;containerId&gt;tomcat10x&lt;/containerId&gt;
+                    &lt;artifactInstaller&gt;
+                        &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;
+                        &lt;artifactId&gt;tomcat&lt;/artifactId&gt;
+                        &lt;version&gt;10.1.34&lt;/version&gt;
+                    &lt;/artifactInstaller&gt;
+                &lt;/container&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+</pre>
+<pre tag="bash">
+mvn package cargo:run -Dcargo.servlet.port=8090 -Dcargo.rmi.port=8215
+
+curl -s "http://localhost:8090/springmvc6/hello?name=world"
+# Hello, world! （来自纯 Spring MVC 6.x，无 Spring Boot）
+</pre>
+<p>
+    换端口是为了避开本机可能已被占用的 8080。传统做法则是 mvn package 之后把 target/springmvc6.war 丢进 Tomcat 10 的 webapps 目录。
+</p>

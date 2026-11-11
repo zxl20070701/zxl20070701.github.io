@@ -1,0 +1,84 @@
+<header>
+    映射与参数绑定
+</header>
+<h2>
+    @RequestMapping 与其组合注解
+</h2>
+<pre tag="java">
+@RequestMapping("/users")            // 类上写前缀，方法上写剩余部分
+public class UserController {
+
+    @GetMapping("/{id}")             // = @RequestMapping(value="/{id}", method=GET)
+    public User get(@PathVariable("id") Long id) { ... }
+
+    @PostMapping("/")
+    public User create(@RequestBody User user) { ... }
+}
+</pre>
+<p>
+    @GetMapping / @PostMapping / @PutMapping / @DeleteMapping 都是 @RequestMapping 的组合注解，唯一区别是内置了 method。团队里通常统一用组合注解，读代码时能直接看出方法语义。
+</p>
+<h2>
+    @RequestMapping 的常用属性
+</h2>
+<ul>
+    <li><strong>value / path</strong>：路径，支持 {变量} 占位。</li>
+    <li><strong>method</strong>：只接受哪些 HTTP 方法，不匹配返回 405。</li>
+    <li><strong>params</strong>：要求请求里带某些参数，例如 params = "action=save"。</li>
+    <li><strong>headers</strong>：要求某些请求头。</li>
+    <li><strong>consumes / produces</strong>：限定请求体的 Content-Type 和响应的 Content-Type。</li>
+</ul>
+<h2>
+    参数怎么进方法
+</h2>
+<pre tag="java">
+@GetMapping("/search")
+public String search(
+        @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+        @RequestParam(value = "page", defaultValue = "1") int page,
+        @RequestHeader(value = "token", required = false) String token) { ... }
+</pre>
+<ul>
+    <li><strong>@RequestParam</strong>：取查询串或表单字段。required 默认 true，取不到直接 400；给了 defaultValue 就不会因为缺参数报错。</li>
+    <li><strong>@PathVariable</strong>：取路径占位符，和 /{id} 配对使用。</li>
+    <li><strong>@RequestBody</strong>：取请求体，按消息转换器反序列化成对象，需要 JSON 依赖。</li>
+    <li><strong>@ModelAttribute</strong>：把一组参数绑到对象属性上，表单提交常用。</li>
+    <li><strong>@RequestHeader / @CookieValue</strong>：取请求头、Cookie。</li>
+</ul>
+<p>
+    简单类型（String、int、long 等）不加注解时，默认按参数名从请求里取值，规则等同于 @RequestParam。
+</p>
+<h2>
+    为什么参数名必须写死
+</h2>
+<p>
+    Spring 6.1 起不再从字节码里「猜」参数名，必须能真实读到方法参数名。如果只写 @RequestParam 又不带 value，且编译时没加 -parameters，运行时会直接 500：
+</p>
+<pre tag="text">
+Name for argument of type [java.lang.String] not specified, and parameter name
+information not available via reflection. Ensure that the compiler uses the '-parameters' flag.
+</pre>
+<p>
+    两个办法，建议都用上：注解里显式写 value；同时在 pom 里让编译器保留参数名。Spring Boot 的 parent 已经帮你加了这条编译参数，所以 Boot 项目里从未遇到这个问题——这正是「用 Boot 久了会忘记底层约定」的典型例子。
+</p>
+<pre tag="xml">
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.13.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;compilerArgs&gt;
+            &lt;arg&gt;-parameters&lt;/arg&gt;
+        &lt;/compilerArgs&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</pre>
+<h2>
+    多个映射都能匹配时选谁
+</h2>
+<p>
+    Spring 会按「更具体优先」排序，大致是：精确路径 &gt; 带路径变量的模式 &gt; 通配符。例如 /users/me 和 /users/{id} 同时存在时，请求 /users/me 打到前者。
+</p>
+<p>
+    路径变量尽量少用正则，也避免同时存在 {a}/x 与 y/{b} 这类互相交叠的映射——虽然能跑，但后续加接口时非常容易踩到「莫名其妙进了另一个方法」。
+</p>

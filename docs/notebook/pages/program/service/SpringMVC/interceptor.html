@@ -1,0 +1,86 @@
+<header>
+    拦截器与过滤器
+</header>
+<h2>
+    HandlerInterceptor 三个回调
+</h2>
+<pre tag="java">
+public class LoginInterceptor implements HandlerInterceptor {
+
+    // 目标方法执行之前：这里返回 false 就中断请求
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response, Object handler) throws Exception {
+        if (request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("/login");
+            return false;
+        }
+        return true;
+    }
+
+    // 目标方法执行之后、渲染之前
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response,
+                           Object handler, ModelAndView modelAndView) { }
+
+    // 整个请求结束后（含异常），适合清理资源
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+                                Object handler, Exception ex) { }
+}
+</pre>
+<h2>
+    注册拦截器
+</h2>
+<p>
+    XML 写法，可以配顺序和路径匹配。多个拦截器按声明顺序执行 preHandle，按相反顺序执行 afterCompletion。
+</p>
+<pre tag="xml">
+&lt;mvc:interceptors&gt;
+    &lt;mvc:interceptor&gt;
+        &lt;mvc:mapping path="/api/**"/&gt;
+        &lt;mvc:exclude-mapping path="/api/login"/&gt;
+        &lt;bean class="io.github.zxl20070701.springmvc.interceptor.LoginInterceptor"/&gt;
+    &lt;/mvc:interceptor&gt;
+&lt;/mvc:interceptors&gt;
+</pre>
+<p>
+    注解写法：实现 WebMvcConfigurer 的 addInterceptors，Spring Boot 项目里也是同一个接口，只是不再写 XML。
+</p>
+<pre tag="java">
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/login");
+    }
+}
+</pre>
+<h2>
+    和 Filter 的区别
+</h2>
+<ul>
+    <li><strong>Filter</strong> 属于 Servlet 规范，在 DispatcherServlet 之前执行，拿不到「将要调用哪个方法」的信息，也能拦静态资源。</li>
+    <li><strong>拦截器</strong> 属于 Spring MVC，在 DispatcherServlet 内部执行，能拿到 handler（方法信息）、ModelAndView，还能向容器注入 Bean。</li>
+</ul>
+<pre tag="text">
+Filter → DispatcherServlet → Interceptor(preHandle) → Controller
+                          ← Interceptor(postHandle) ←
+                          ← Interceptor(afterCompletion) ←
+</pre>
+<p>
+    记忆点：需要在 Spring 上下文里工作（注入 Service、读写容器里的 Bean）就用拦截器；完全不依赖 Spring、要处理编码或跨域这类底层问题就用 Filter。
+</p>
+<h2>
+    典型用途与坑
+</h2>
+<ul>
+    <li>登录校验、权限判断：preHandle 里判断，不通过直接返回 false 并写响应。</li>
+    <li>接口耗时统计：preHandle 记开始时间，afterCompletion 打印。</li>
+    <li>坑一：preHandle 返回 false 时如果不写响应体，客户端会收到一个空 200，看起来像「接口没返回数据」。</li>
+    <li>坑二：拦截器对静态资源也会生效，路径匹配写 /** 时记得排除 /static/**、/**/*.js 这类。</li>
+    <li>坑三：拦截器里抛异常会走统一异常处理，但那时响应可能已经提交，日志里能看到 IllegalStateException: response already committed。</li>
+</ul>

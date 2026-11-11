@@ -1,0 +1,67 @@
+<header>
+    DispatcherServlet 与请求流程
+</header>
+<h2>
+    一个 Servlet 接管所有请求
+</h2>
+<p>
+    Spring MVC 的入口只有一个：DispatcherServlet。web.xml 里把它映射到 /，于是所有请求都先进它，再由它分发给具体的 Controller 方法。这种设计叫前端控制器模式（Front Controller），好处是参数绑定、异常处理、拦截器这些公共逻辑只写一遍。
+</p>
+<h2>
+    完整流程
+</h2>
+<p>
+    一次请求在 DispatcherServlet.doDispatch 里走完下面几步：
+</p>
+<ul>
+    <li><strong>1. 找映射</strong>：HandlerMapping 根据 URL 找到处理方法，返回 HandlerExecutionChain（处理方法 + 匹配到的拦截器）。</li>
+    <li><strong>2. 前置拦截</strong>：依次执行拦截器 preHandle，任何一个返回 false 就中断，请求结束。</li>
+    <li><strong>3. 适配调用</strong>：HandlerAdapter 负责把 HttpServletRequest 里的参数绑定到方法参数上，然后反射调用方法。</li>
+    <li><strong>4. 拿返回值</strong>：可能是字符串、对象、ModelAndView、ResponseEntity。</li>
+    <li><strong>5. 处理返回值</strong>：@ResponseBody 走消息转换器写响应体；否则按视图名交给 ViewResolver 解析。</li>
+    <li><strong>6. 后置拦截</strong>：执行业务方法之后、视图渲染之前的 postHandle。</li>
+    <li><strong>7. 渲染</strong>：视图负责把模型数据写进响应。</li>
+    <li><strong>8. 完成回调</strong>：afterCompletion，无论成功失败都会执行，适合清理资源。</li>
+    <li><strong>9. 异常兜底</strong>：过程中抛异常时交给 HandlerExceptionResolver，没有能处理的就往外抛给 Servlet 容器。</li>
+</ul>
+<h2>
+    核心组件各自负责什么
+</h2>
+<ul>
+    <li><strong>HandlerMapping</strong>：URL 到方法的映射表，注解写法是 RequestMappingHandlerMapping。</li>
+    <li><strong>HandlerAdapter</strong>：怎么调用那个方法，注解写法是 RequestMappingHandlerAdapter，参数绑定就在它这里。</li>
+    <li><strong>HttpMessageConverter</strong>：对象和 HTTP 报文之间的转换，返回 JSON 靠它。</li>
+    <li><strong>ViewResolver</strong>：视图名到具体视图实现，前后端分离项目里基本用不到。</li>
+    <li><strong>HandlerExceptionResolver</strong>：异常到响应的转换，@ExceptionHandler 就是挂在它上面。</li>
+</ul>
+<h2>
+    想看懂它，按这个顺序打断点
+</h2>
+<pre tag="bash">
+HelloController.hello(...)                      # 你的方法被调用
+DispatcherServlet.doDispatch(...)               # 分发总入口
+RequestMappingHandlerMapping.getHandler(...)    # URL 匹配
+RequestMappingHandlerAdapter.invokeHandlerMethod(...)  # 参数绑定 + 调用
+AbstractMessageConverterMethodProcessor.writeWithMessageConverters(...)  # 写响应
+</pre>
+<p>
+    顺着这几层断下去，你会发现 Spring MVC 没有任何魔法：就是「查表 → 反射调用 → 写响应」。Spring Boot 无非是在启动时把这张表和这些组件自动准备好。
+</p>
+<h2>
+    两个容器
+</h2>
+<p>
+    传统项目里其实有两个 Spring 容器：ContextLoaderListener 创建的根容器（放 Service、DataSource 等），和 DispatcherServlet 自己的子容器（放 Controller、HandlerMapping）。子容器能看到父容器的 Bean，反过来不行。
+</p>
+<pre tag="xml">
+&lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;classpath:applicationContext.xml&lt;/param-value&gt;
+&lt;/context-param&gt;
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+&lt;/listener&gt;
+</pre>
+<p>
+    本项目只用了 DispatcherServlet 一个容器，为了让示例尽量短。真实的老项目常见这种父子两层，Spring Boot 则用父子合并的方式统一管理，所以你不需要关心。
+</p>

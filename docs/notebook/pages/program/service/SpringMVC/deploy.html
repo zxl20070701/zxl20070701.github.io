@@ -1,0 +1,75 @@
+<header>
+    打包与部署
+</header>
+<h2>
+    war 包与 context path
+</h2>
+<p>
+    packaging 为 war 时，mvn package 会在 target 下产出 war。war 的文件名（去掉 .war）就是访问路径的第一段，所以用 finalName 固定它，别让它带着版本号。
+</p>
+<pre tag="xml">
+&lt;build&gt;
+    &lt;finalName&gt;springmvc6&lt;/finalName&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.4.0&lt;/version&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+</pre>
+<pre tag="bash">
+mvn package
+# target/springmvc6.war  →  访问 http://localhost:8080/springmvc6/hello
+</pre>
+<h2>
+    方式一：丢进 Tomcat 10
+</h2>
+<pre tag="bash">
+cp target/springmvc6.war $TOMCAT_HOME/webapps/
+$TOMCAT_HOME/bin/startup.sh
+</pre>
+<p>
+    必须 Tomcat 10 及以上，因为它提供的是 jakarta.servlet 6.0。用 Tomcat 9 启动时会出现 ClassNotFoundException: jakarta.servlet.Filter 这类错误，看到这个报错先查版本，不要怀疑代码。
+</p>
+<h2>
+    方式二：借 cargo 临时起一个 Tomcat
+</h2>
+<pre tag="bash">
+mvn package cargo:run -Dcargo.servlet.port=8090 -Dcargo.rmi.port=8215
+</pre>
+<p>
+    cargo 会第一次下载 Tomcat 10 到本地仓库，之后复用。context 由 pom 的 deployable 配置指定，通常和 finalName 一致。两个端口参数分别对应 HTTP 端口和 Tomcat 的 JMX/RMI 端口，后者默认 8205，上次没退干净时会被占用。
+</p>
+<h2>
+    方式三：IDE 里配 Tomcat
+</h2>
+<p>
+    IDEA Ultimate 可以新建 Tomcat Server 运行配置，Deployment 里加 war exploded，Application context 填 /springmvc6。Community 版没有这个功能，用前两种方式即可。
+</p>
+<h2>
+    部署问题排查顺序
+</h2>
+<ul>
+    <li><strong>404</strong>：先确认 war 名与访问前缀一致，再确认请求路径是否带上了 context path。</li>
+    <li><strong>500 + NoSuchBeanDefinition</strong>：component-scan 的包名写错，或 Controller 不在扫描范围。</li>
+    <li><strong>500 + jasper 相关</strong>：用了 JSP 却没加 tomcat-embed-jasper 或没配 ViewResolver。</li>
+    <li><strong>中文乱码</strong>：看响应头 charset，再决定是 produces 还是消息转换器的问题。</li>
+    <li><strong>端口占用</strong>：lsof -nP -iTCP:8080 -sTCP:LISTEN，确认是本机别的应用再换端口，不要盲目 kill。</li>
+</ul>
+<h2>
+    和 Spring Boot 的差别
+</h2>
+<p>
+    Boot 用内嵌 Tomcat，打出来是一个可执行 jar，java -jar 就能跑，没有 webapps 目录、没有 context path 概念（默认就是 /）。代价是你不再掌控容器的部署方式——需要外置容器、集群部署、共享容器时，仍然要回到 war 模式，Boot 也支持继承 SpringBootServletInitializer 打成 war。
+</p>
+<pre tag="java">
+// Boot 项目要打成 war 部署时，加这个类
+public class ServletInitializer extends SpringBootServletInitializer {
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(DemoApplication.class);
+    }
+}
+</pre>

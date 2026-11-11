@@ -1,0 +1,93 @@
+<header>
+    返回值与消息转换器
+</header>
+<h2>
+    @ResponseBody 决定走哪条路
+</h2>
+<p>
+    方法返回 String 时，Spring MVC 有两种截然不同的处理：没有 @ResponseBody 就把这个字符串当成视图名，去找 JSP/模板；有 @ResponseBody 就把它直接写进响应体。类上加 @RestController 等于 @Controller + @ResponseBody，类里所有方法都走后者。
+</p>
+<pre tag="java">
+@RestController                        // 类级 @ResponseBody
+public class HelloController {
+
+    @GetMapping(value = "/hello", produces = "text/plain;charset=UTF-8")
+    public String hello() {
+        return "你好";                  // 直接写进响应体，不做视图跳转
+    }
+}
+</pre>
+<h2>
+    写响应体靠 HttpMessageConverter
+</h2>
+<p>
+    返回对象时，由 HttpMessageConverter 负责把它变成 JSON 或 XML。这一步在原生项目里必须自己检查依赖：Boot 的 starter-web 自带 Jackson，你只加 spring-webmvc 时容器里没有 JSON 转换器，返回对象会报 406 或直接把对象 toString。
+</p>
+<pre tag="xml">
+&lt;dependency&gt;
+    &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+    &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+    &lt;version&gt;2.17.1&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+<p>
+    加上之后，@RestController 返回任意 POJO 都会被转成 application/json，状态码默认 200。
+</p>
+<h2>
+    中文变成 ??? 的原因
+</h2>
+<p>
+    返回 String 走的是 StringHttpMessageConverter，它的默认字符集是 ISO-8859-1，中文会被写成问号。web.xml 里那个 CharacterEncodingFilter 只管请求解码，管不了响应写出——这点很容易误解。
+</p>
+<pre tag="java">
+// 错：中文变 ???
+@GetMapping("/hello")
+public String hello() { return "你好"; }
+
+// 对：显式声明响应字符集
+@GetMapping(value = "/hello", produces = "text/plain;charset=UTF-8")
+public String hello() { return "你好"; }
+</pre>
+<p>
+    Boot 项目里没遇到过，是因为它的 HttpMessageConvertersAutoConfiguration 把转换器默认字符集配成了 UTF-8。
+</p>
+<h2>
+    想控制状态码和响应头
+</h2>
+<pre tag="java">
+@GetMapping("/users/{id}")
+public ResponseEntity&lt;User&gt; get(@PathVariable("id") Long id) {
+    User user = userService.find(id);
+    if (user == null) {
+        return ResponseEntity.notFound().build();          // 404
+    }
+    return ResponseEntity.ok()
+            .header("X-Trace-Id", "abc")
+            .body(user);                                    // 200 + 自定义头
+}
+</pre>
+<h2>
+    视图跳转与重定向
+</h2>
+<p>
+    去掉 @ResponseBody 后，返回值是视图名，靠 ViewResolver 解析成具体页面。返回值以 redirect: 开头表示重定向，以 forward: 开头表示服务端转发。
+</p>
+<pre tag="java">
+@Controller
+public class PageController {
+
+    @GetMapping("/old")
+    public String old() {
+        return "redirect:/new";     // 302
+    }
+
+    @GetMapping("/new")
+    public String home(Model model) {
+        model.addAttribute("name", "world");
+        return "home";              // 解析成 /WEB-INF/views/home.jsp
+    }
+}
+</pre>
+<p>
+    前后端分离的项目基本不用视图解析，全是 @RestController 返回 JSON。但读懂这部分，才能理解为什么有些注解必须加、有些方法返回 String 却不报错。
+</p>
