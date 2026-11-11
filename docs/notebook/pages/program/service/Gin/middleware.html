@@ -1,0 +1,42 @@
+<header>
+    中间件与路由分组
+</header>
+<h2>
+    使用中间件
+</h2>
+<p>
+    中间件可以在路由处理前后执行通用逻辑。gin.Default()已包含日志和恢复中间件；也可以通过 Use 注册自定义逻辑：
+</p>
+<pre tag="go">
+router.Use(func(c *gin.Context) {
+    c.Header("X-Service", "gin-example")
+    c.Next()
+})
+</pre>
+<p>
+    c.Next()会继续执行后续中间件和路由处理函数。若中间件决定直接结束请求，可以设置响应并调用 c.Abort()。
+</p>
+<h2>
+    按功能分组路由
+</h2>
+<p>
+    路由组可共享路径前缀，也可以在组上注册只作用于该组的中间件：
+</p>
+<pre tag="go">
+api := router.Group("/api")
+api.GET("/health", func(c *gin.Context) {
+    c.JSON(200, gin.H{"status": "ok"})
+})
+
+admin := router.Group("/admin")
+admin.Use(func(c *gin.Context) {
+    c.Header("X-Route-Group", "admin")
+    c.Next()
+})
+admin.GET("/dashboard", func(c *gin.Context) {
+    c.JSON(200, gin.H{"page": "dashboard"})
+})
+</pre>
+<p>
+    分组适合整理版本前缀、业务模块或需要相同处理逻辑的路由。真实项目中应根据需求添加身份验证等中间件。
+</p>

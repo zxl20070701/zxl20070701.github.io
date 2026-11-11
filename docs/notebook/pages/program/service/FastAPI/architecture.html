@@ -1,0 +1,60 @@
+<header>
+    项目分层架构
+</header>
+<h2>
+    为什么需要分层
+</h2>
+<p>
+    接口少的时候所有逻辑写在 main.py 里没问题，但接口一多就乱：换数据库要改路由、加缓存要改路由、统一错误格式要改每个路由函数。分层的目的是让每种变化只碰一层。
+</p>
+<h2>
+    推荐目录结构
+</h2>
+<pre tag="text">
+app/
+├── main.py          # 入口：创建 FastAPI 实例、注册路由
+├── config.py        # 配置：读取环境变量
+├── dependencies.py  # 公共依赖：数据库会话、当前用户
+├── models/          # SQLAlchemy ORM 模型
+├── schemas/         # Pydantic 请求/响应模型
+├── api/             # 路由层：只做参数解析和响应
+├── services/        # 业务逻辑层
+└── core/            # 基础设施：数据库连接、安全工具
+</pre>
+<h2>
+    四层职责
+</h2>
+<ul>
+    <li><strong>api 层（路由）</strong>：只跟 HTTP 打交道，解析请求、调 service、返回响应</li>
+    <li><strong>service 层（业务）</strong>：只写业务规则，不认识 Request/Response</li>
+    <li><strong>models 层（ORM）</strong>：数据库表结构定义</li>
+    <li><strong>schemas 层（DTO）</strong>：请求/响应的数据格式，和 ORM 模型分开</li>
+</ul>
+<h2>
+    ORM 和 DTO 必须分开
+</h2>
+<p>
+    直接把 SQLAlchemy 模型当返回值是坑——password_hash 会泄露给前端。用单独的 Pydantic schema 控制输出字段：
+</p>
+<pre tag="python">
+class UserOut(BaseModel):
+    id: int
+    name: str
+    email: str
+    # 不包含 password_hash
+
+@app.get("/users/{user_id}", response_model=UserOut)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    return db.query(User).get(user_id)
+</pre>
+<h2>
+    路由聚合
+</h2>
+<p>
+    main.py 里用 include_router 把子路由挂进来，main.py 永远干净：
+</p>
+<pre tag="python">
+app = FastAPI(title="Demo API")
+app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+</pre>

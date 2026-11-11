@@ -1,0 +1,166 @@
+<header>
+    结果映射与关联查询
+</header>
+<h2>
+    自动映射的边界
+</h2>
+<p>
+    只要列名和属性名能对上，MyBatis 就自己填，不需要任何配置。能对上指两种情况：一模一样，或者开了 mapUnderscoreToCamelCase 之后的下划线转驼峰。
+</p>
+<p>
+    自动映射有个开关 autoMappingBehavior，默认 PARTIAL，含义很关键：<strong>不带嵌套的 resultMap 会自动映射没写到的列，带嵌套的一律不自动映射</strong>。所以「简单查询一切正常，一加关联查询字段就变成 null」不是巧合，是这条规则在起作用。
+</p>
+<h2>
+    resultMap 基本写法
+</h2>
+<pre tag="xml">
+&lt;resultMap id="userMap" type="User"&gt;
+    &lt;!-- id 标记主键，是身份标识，不是普通字段 --&gt;
+    &lt;id property="id" column="id"/&gt;
+    &lt;result property="userName" column="user_name"/&gt;
+    &lt;result property="createTime" column="create_time"/&gt;
+&lt;/resultMap&gt;
+
+&lt;select id="selectById" resultMap="userMap"&gt;
+    SELECT id, user_name, email, status, create_time
+    FROM sys_user WHERE id = #{id}
+&lt;/select&gt;
+</pre>
+<p>
+    这里只声明了三个字段，email 和 status 依然能查出来——自动映射补的。&lt;id&gt; 和 &lt;result&gt; 的差别在嵌套查询里才看得出来：主键用来判断两行是不是「同一个对象」，同一用户的多条订单会被收进同一个 User 的集合；把 user_name 也标成 id，重名用户就会被错误合并。
+</p>
+<p>
+    想复用已有映射，用 extends 继承，改一处全生效：
+</p>
+<pre tag="xml">
+&lt;resultMap id="userWithOrdersMap" type="User" extends="userMap"&gt;
+    ...
+&lt;/resultMap&gt;
+</pre>
+<h2>
+    多对一：association
+</h2>
+<pre tag="xml">
+&lt;resultMap id="orderMap" type="Order"&gt;
+    &lt;id property="id" column="id"/&gt;
+    &lt;result property="userId" column="user_id"/&gt;
+    &lt;result property="orderNo" column="order_no"/&gt;
+    &lt;result property="amount" column="amount"/&gt;
+
+    &lt;association property="user" javaType="User"&gt;
+        &lt;id property="id" column="user_id"/&gt;
+        &lt;result property="userName" column="user_name"/&gt;
+        &lt;result property="email" column="email"/&gt;
+    &lt;/association&gt;
+&lt;/resultMap&gt;
+
+&lt;select id="selectById" resultMap="orderMap"&gt;
+    SELECT o.id, o.user_id, o.order_no, o.amount, o.create_time,
+           u.user_name, u.email
+    FROM orders o
+    JOIN sys_user u ON u.id = o.user_id
+    WHERE o.id = #{id}
+&lt;/select&gt;
+</pre>
+<p>
+    association 表示「这里是另一个对象」，javaType 告诉 MyBatis 要 new 什么类型。它内部的 &lt;id&gt; 用 user_id 这一列：同一个列名可以既映射外层实体的 userId，又作为嵌套对象的标识，两者不冲突。
+</p>
+<h2>
+    一对多：collection
+</h2>
+<pre tag="xml">
+&lt;resultMap id="userWithOrdersMap" type="User" extends="userMap"&gt;
+    &lt;collection property="orders" ofType="Order"&gt;
+        &lt;id property="id" column="order_id"/&gt;
+        &lt;result property="userId" column="user_id"/&gt;
+        &lt;result property="orderNo" column="order_no"/&gt;
+        &lt;result property="amount" column="amount"/&gt;
+        &lt;result property="createTime" column="order_create_time"/&gt;
+    &lt;/collection&gt;
+&lt;/resultMap&gt;
+
+&lt;select id="selectWithOrders" resultMap="userWithOrdersMap"&gt;
+    SELECT u.id, u.user_name, u.email, u.status, u.create_time,
+           o.user_id, o.id AS order_id, o.order_no, o.amount,
+           o.create_time AS order_create_time
+    FROM sys_user u
+    LEFT JOIN orders o ON o.user_id = u.id
+    ORDER BY u.id, o.id
+&lt;/select&gt;
+</pre>
+<pre tag="text">
+User{id=1, userName='alice', orders=[Order{id=1, orderNo='A001', amount=99.00},
+                                     Order{id=2, orderNo='A002', amount=199.50}]}
+User{id=2, userName='bob',   orders=[Order{id=3, orderNo='A003', amount=20.00}]}
+User{id=3, userName='carol', orders=[]}
+</pre>
+<p>
+    三个坑全在这段代码里：
+</p>
+<ul>
+    <li><strong>列名必须起别名</strong>：user 表和 orders 表都有 id、create_time，不打别名会撞在一起，MyBatis 只取到其中一个。惯例是给子表统一加前缀（order_id、order_create_time）。</li>
+    <li><strong>collection 内部必须逐字段写 result</strong>：漏掉 userId，它就是 null。因为带嵌套的 resultMap 自动映射整体失效，前面那条 PARTIAL 规则。表现是「数据库里明明有值，对象里是 null」，查起来很费时间。</li>
+    <li><strong>ofType 里的 &lt;id&gt; 不能省</strong>：它决定同一用户的多行怎么折叠成一个对象。省掉后会出现订单重复或丢失，而且是静默的。</li>
+</ul>
+<h2>
+    嵌套 select：另一种关联
+</h2>
+<p>
+    除了 JOIN 一次取回，还可以让主查询只查主表，再按需要触发子查询：
+</p>
+<pre tag="xml">
+&lt;resultMap id="userWithOrdersNestedMap" type="User" extends="userMap"&gt;
+    &lt;collection property="orders" ofType="Order"
+                column="id"
+                select="io.github.zxl20070701.mybatis.mapper.OrderMapper.selectSimpleByUserId"/&gt;
+&lt;/resultMap&gt;
+
+&lt;select id="selectWithOrdersByNested" resultMap="userWithOrdersNestedMap"&gt;
+    SELECT id, user_name, email, status, create_time
+    FROM sys_user
+    ORDER BY id
+&lt;/select&gt;
+</pre>
+<p>
+    column 是「从主查询的结果里取哪个列，当作子查询的参数」，select 是子语句的全限定 id。执行日志能直接暴露代价：
+</p>
+<pre tag="text">
+==>  Preparing: SELECT id, user_name, ... FROM sys_user ORDER BY id
+====>  Preparing: SELECT ... FROM orders WHERE user_id = ? ORDER BY id
+====>  Preparing: SELECT ... FROM orders WHERE user_id = ? ORDER BY id
+====>  Preparing: SELECT ... FROM orders WHERE user_id = ? ORDER BY id
+</pre>
+<p>
+    一行主查询带三条子查询，这就是 N+1：3 个用户 4 次查询，100 个用户 101 次。管住它的办法是 batch fetch——给 SqlSession 打开延迟加载之后再遍历，MyBatis 会把同一类子查询合并成 IN 一次；或者干脆用 JOIN 版。
+</p>
+<p>
+    需要多个列做参数时，column 写成映射形式，子语句里就能用这些名字：
+</p>
+<pre tag="xml">
+&lt;association property="user" column="{uid=user_id, amt=amount}"
+             select="...ExtraMapper.findUser"/&gt;
+</pre>
+<pre tag="xml">
+&lt;select id="findUser" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user WHERE id = #{uid} AND #{amt} &gt; 0
+&lt;/select&gt;
+</pre>
+<p>
+    想只在访问时才查，加 fetchType="lazy"（或者在全局 settings 里开 lazyLoadingEnabled 并关掉 aggressiveLazyLoading）。但延迟加载是靠代理对象实现的，把对象序列化出去（存 Redis、返回 JSON 时被 Jackson 处理）很容易踩到 proxy 序列化异常或提前触发全部查询。
+</p>
+<h2>
+    JOIN 还是嵌套 select
+</h2>
+<ul>
+    <li><strong>JOIN</strong>：一次往返，适合「子记录不多且一定需要」的场景，比如订单详情带出用户。缺点是结果集行数膨胀，主表字段被重复传输。</li>
+    <li><strong>嵌套 select</strong>：主查询干净，适合「子集合可选、可能为空、量很大」的场景，配合延迟加载能省掉不需要的查询。缺点是默认 N+1，必须靠 batch fetch 或按需触发。</li>
+</ul>
+<p>
+    最常见的错误组合是「JOIN + 一对多 + LIMIT 分页」：LIMIT 作用在 JOIN 后的行上，取 10 行可能只是 3 个用户的订单，翻页数量和预期完全对不上。正确做法是先分页主表拿到 id 列表，再用 IN 查子表；或者用 PageHelper 的 count 查询只对主表做。
+</p>
+<h2>
+    什么时候不用 resultMap
+</h2>
+<p>
+    只有一种情况必须用：结构是嵌套的。列名个别对不上，用 resultType + SQL 里 AS 起别名更省事（SELECT user_name AS userName），一行 SQL 解决，不用多写十行映射。resultMap 的成本在于它是一份需要维护的隐式契约，表结构一改，改的是两处。
+</p>

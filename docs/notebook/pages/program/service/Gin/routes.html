@@ -1,0 +1,34 @@
+<header>
+    路由与参数
+</header>
+<h2>
+    声明路由
+</h2>
+<p>
+    Gin使用HTTP方法对应的函数注册路由，例如 GET、POST、PUT 和 DELETE。下面的接口通过路径参数读取资源编号，并通过查询参数设置筛选条件：
+</p>
+<pre tag="go">
+router.GET("/users/:id", func(c *gin.Context) {
+    id := c.Param("id")
+    c.JSON(200, gin.H{"id": id})
+})
+
+router.GET("/users", func(c *gin.Context) {
+    role := c.DefaultQuery("role", "member")
+    c.JSON(200, gin.H{"role": role})
+})
+</pre>
+<p>
+    请求 GET /users/42 时，c.Param("id")得到字符串"42"。请求 GET /users?role=admin 时，c.DefaultQuery读取role；参数缺失则使用默认值member。
+</p>
+<h2>
+    选择状态码
+</h2>
+<p>
+    c.JSON的第一个参数是HTTP状态码，第二个参数是响应数据。成功读取资源通常返回200；创建资源的接口通常返回201。保持状态码与接口结果一致，便于客户端处理。
+</p>
+<pre tag="go">
+router.POST("/users", func(c *gin.Context) {
+    c.JSON(201, gin.H{"message": "user created"})
+})
+</pre>

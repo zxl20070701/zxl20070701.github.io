@@ -1,0 +1,193 @@
+<header>
+    与 Spring 集成
+</header>
+<h2>
+    不集成会怎样
+</h2>
+<p>
+    纯 MyBatis 的写法是每次自己 openSession、自己 commit、自己 close。放到 Web 应用里，问题全在细节上：连接与事务没办法和 Spring 的声明式事务统一、Mapper 没法当 Bean 注入到 Service、每个请求都要正确关 session 才不会泄漏连接。
+</p>
+<p>
+    mybatis-spring 解决的正是这一层：把 SqlSession 的创建/关闭交给 Spring 管，Mapper 接口变成可以直接 @Autowired 的 Bean，@Transactional 能同时覆盖多个 Mapper 调用。
+</p>
+<h2>
+    依赖
+</h2>
+<pre tag="xml">
+&lt;properties&gt;
+    &lt;spring.version&gt;6.2.7&lt;/spring.version&gt;
+    &lt;mybatis.version&gt;3.5.19&lt;/mybatis.version&gt;
+    &lt;mybatis-spring.version&gt;3.0.4&lt;/mybatis-spring.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+        &lt;version&gt;${spring.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
+        &lt;version&gt;${spring.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-tx&lt;/artifactId&gt;
+        &lt;version&gt;${spring.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+        &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+        &lt;version&gt;${mybatis.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+        &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
+        &lt;version&gt;${mybatis-spring.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</pre>
+<p>
+    mybatis-spring 3.x 是给 Spring 6 用的，要求 Java 17+；Spring 5 的项目得用 2.x。版本对不上时典型的报错是 NoClassDefFoundError 或 AbstractMethodError，不是配置错误。
+</p>
+<h2>
+    容器配置
+</h2>
+<pre tag="xml">
+&lt;context:property-placeholder location="classpath:db.properties"/&gt;
+
+&lt;bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"&gt;
+    &lt;property name="driverClassName" value="${jdbc.driver}"/&gt;
+    &lt;property name="url" value="${jdbc.url}"/&gt;
+    &lt;property name="username" value="${jdbc.username}"/&gt;
+    &lt;property name="password" value="${jdbc.password}"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"&gt;
+    &lt;property name="dataSource" ref="dataSource"/&gt;
+    &lt;property name="configLocation" value="classpath:mybatis-config.xml"/&gt;
+    &lt;property name="mapperLocations" value="classpath:mapper/*.xml"/&gt;
+&lt;/bean&gt;
+
+&lt;bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"&gt;
+    &lt;property name="basePackage" value="io.github.zxl20070701.mbspring.mapper"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="transactionManager"
+      class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;
+    &lt;property name="dataSource" ref="dataSource"/&gt;
+&lt;/bean&gt;
+
+&lt;tx:annotation-driven/&gt;
+
+&lt;context:component-scan base-package="io.github.zxl20070701.mbspring.service"/&gt;
+</pre>
+<p>
+    对照纯 MyBatis 的积累能看出对应关系：dataSource 原来写在 environments 里，现在由 Spring 的 DataSource 提供（DriverManagerDataSource 只是示例，生产换 HikariCP 或 Druid）；SqlSessionFactoryBean 就是原来的 SqlSessionFactoryBuilder，它接住数据源并造出 factory；MapperScannerConfigurer 干的是「批量注册 Mapper」，比手写 &lt;mapper class&gt; 省事，还有一点不同——它生成的是可以直接注入的 Bean。
+</p>
+<p>
+    mybatis-config.xml 这时只需要保留 settings 和 typeAliases，environments 要整段删掉：数据源由 Spring 提供，两份配置同时写会导致 Spring 的那份被忽略或者直接报错。
+</p>
+<h2>
+    Service 与事务
+</h2>
+<pre tag="java">
+@Service
+public class UserService {
+
+    private final UserMapper userMapper;
+
+    // 单构造器不用 @Autowired，容器自己注入
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+    @Transactional
+    public void createBatch(List&lt;String&gt; names) {
+        for (String name : names) {
+            User user = new User();
+            user.setUserName(name);
+            user.setEmail(name + "@example.com");
+            userMapper.insert(user);
+            if ("boom".equals(name)) {
+                throw new IllegalStateException("故意失败");
+            }
+        }
+    }
+}
+</pre>
+<p>
+    实测：先插 erin、frank（成功），再插 grace、boom、heidi 时在 boom 处抛异常，事务回滚后总条数是 5 —— grace 并没有留下来。如果这里忘了 tx:annotation-driven，@Transactional 不会报错但完全不生效，grace 会留在库里，这类问题只看代码是看不出来的。
+</p>
+<h2>
+    为什么事务里能复用同一个 SqlSession
+</h2>
+<p>
+    每个 Mapper 方法的代理对象底层都持有 SqlSessionTemplate，它每次调用都会向 Spring 请求一个 session。Spring 事务开启时会把 session 绑定到当前事务（TransactionSynchronizationManager），同一个事务里的所有 Mapper 调用共享它，事务结束时统一提交并 close。
+</p>
+<p>
+    这解释了两件常见疑惑：一是同一个事务内多次查询会命中一级缓存（因为共用 session）；二是事务外的每次调用都是新 session，用完即还，所以一级缓存几乎用不上——和上一篇讲的完全对得上。
+</p>
+<h2>
+    注解方式配置
+</h2>
+<pre tag="java">
+@Configuration
+@ComponentScan("io.github.zxl20070701.mbspring.service")
+@MapperScan("io.github.zxl20070701.mbspring.mapper")
+@EnableTransactionManagement
+public class AppConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        return new DriverManagerDataSource(url, username, password);
+    }
+
+    @Bean
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+        factoryBean.setDataSource(dataSource);
+        // 复用同一份 mybatis-config.xml，settings 和别名才会生效
+        factoryBean.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
+        factoryBean.setMapperLocations(
+                new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
+        return factoryBean.getObject();
+    }
+
+    @Bean
+    public DataSourceTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
+}
+</pre>
+<p>
+    @MapperScan 来自 org.mybatis.spring.annotation.MapperScan，是 MapperScannerConfigurer 的注解版，作用一模一样。ClassPathResource 和 PathMatchingResourcePatternResolver 都在 org.springframework.core.io 包下。两种配置方式不要混用，否则同一个接口会被注册两次。
+</p>
+<h2>
+    和 Spring Boot 的关系
+</h2>
+<p>
+    Boot 项目里没有上面这些 XML，是因为 mybatis-spring-boot-starter 已经把这三个 Bean 全自动配好了。yml 里的 mybatis.mapper-locations、mybatis.configuration.map-underscore-to-camel-case 就是在往 SqlSessionFactoryBean 和 Configuration 上塞值。所以「Boot 里 MyBatis 配不生效」的排查思路和原生完全一致：去看 SqlSessionFactoryBean 最后拿到的是什么。
+</p>
+<pre tag="yaml">
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+</pre>
+<h2>
+    四个容易踩的坑
+</h2>
+<ul>
+    <li><strong>@Transactional 不生效</strong>：忘了 @EnableTransactionManagement（XML 是 &lt;tx:annotation-driven/&gt;）；或者方法不是 public；或者异常被自己 catch 掉了没往外抛——默认只对 RuntimeException 回滚。</li>
+    <li><strong>同类内部调用不带事务</strong>：this.methodB() 走的是原对象，不经过代理，@Transactional 直接失效。要拆到另一个 Bean，或者注入自己（不推荐）。</li>
+    <li><strong>Mapper 注入不进来</strong>：扫描包里没有该接口、接口没有被 MapperScanner 扫到，或者同一个接口既在 XML 里注册又被扫描，报 already contains value for ...。</li>
+    <li><strong>多数据源</strong>：一个 SqlSessionFactory 只认一个数据源，多库必须配多套 factory + 多个 MapperScan 包路径，事务管理器也要分开。</li>
+</ul>
+<h2>
+    一句话总结
+</h2>
+<p>
+    MyBatis 负责「SQL 怎么写、结果怎么装」，Spring 负责「对象谁来管、事务谁来开」。整合之后你写的 Service 只关心业务，Session 的开关、提交、归还都从代码里消失了——代价是这些行为变成隐式的，出问题时得知道它藏在哪。
+</p>

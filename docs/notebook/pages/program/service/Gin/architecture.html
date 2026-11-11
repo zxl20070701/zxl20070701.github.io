@@ -1,0 +1,76 @@
+<header>
+    项目分层架构
+</header>
+<h2>
+    为什么需要分层
+</h2>
+<p>
+    接口少的时候所有逻辑写在 handler 里没问题，但接口一多就会乱：换数据库要改 handler、加缓存要改 handler、统一错误格式要改每个 handler。分层的目的是让每种变化只碰一层。
+</p>
+<h2>
+    四层结构
+</h2>
+<p>
+    典型的 Go Web 项目分四层，依赖方向单向向下：
+</p>
+<ul>
+    <li><strong>handler 层</strong>：只跟 HTTP 打交道，解析请求、校验参数、返回响应</li>
+    <li><strong>service 层</strong>：只写业务规则，不 import gin，不认识 *gin.Context</li>
+    <li><strong>repository 层</strong>：只跟数据源打交道，从内存或数据库读写</li>
+    <li><strong>model 层</strong>：纯数据结构定义，谁都能用</li>
+</ul>
+<h2>
+    依赖注入
+</h2>
+<p>
+    在 main 里手动组装依赖，而不是在每个包里 new 全局单例：
+</p>
+<pre tag="go">
+userRepo := repository.NewInMemoryUserRepo()
+userSvc := service.NewUserService(userRepo)
+userH := handler.NewUserHandler(userSvc)
+</pre>
+<p>
+    这样换数据库实现时只改一行，service 和 handler 不用动。repository 用 interface 定义能力，service 依赖接口而不是具体实现。
+</p>
+<h2>
+    统一响应格式
+</h2>
+<p>
+    所有接口返回统一壳，前端只写一个分支处理：
+</p>
+<pre tag="go">
+type Result struct {
+    Code int         `json:"code"`
+    Msg  string      `json:"msg"`
+    Data interface{} `json:"data"`
+}
+
+func OK(c *gin.Context, data interface{}) {
+    c.JSON(200, Result{Code: 0, Msg: "ok", Data: data})
+}
+
+func Fail(c *gin.Context, status int, msg string) {
+    c.JSON(status, Result{Code: 1, Msg: msg, Data: nil})
+}
+</pre>
+<h2>
+    全局异常兜底
+</h2>
+<p>
+    写一个 Recovery 中间件兜底 panic，返回统一格式的 500，而不是暴露堆栈：
+</p>
+<pre tag="go">
+func Recovery() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        defer func() {
+            if r := recover(); r != nil {
+                c.AbortWithStatusJSON(500, gin.H{
+                    "code": 500, "msg": "internal server error",
+                })
+            }
+        }()
+        c.Next()
+    }
+}
+</pre>

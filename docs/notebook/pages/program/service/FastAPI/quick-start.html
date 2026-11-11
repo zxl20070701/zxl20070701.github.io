@@ -1,0 +1,45 @@
+<header>
+    快速开始
+</header>
+<h2>
+    FastAPI是什么
+</h2>
+<p>
+    FastAPI是一个用于构建Python Web API的框架。它使用Python类型标注声明参数类型，并据此完成数据校验和生成交互式API文档。本文使用Python 3.10及以上版本。
+</p>
+<h2>
+    安装并创建应用
+</h2>
+<p>
+    建议在项目目录中创建虚拟环境，再安装包含开发服务器和命令行工具的标准依赖：
+</p>
+<pre tag="bash">
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install "fastapi[standard]"
+</pre>
+<p>
+    Windows PowerShell中可使用 .venv\Scripts\Activate.ps1 激活虚拟环境。创建 main.py：
+</p>
+<pre tag="python">
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+def read_root():
+    return {"message": "Hello, FastAPI!"}
+</pre>
+<h2>
+    启动并访问
+</h2>
+<p>
+    在 main.py 所在目录启动开发服务器：
+</p>
+<pre tag="bash">
+fastapi dev main.py
+</pre>
+<p>
+    打开 http://127.0.0.1:8000/ 查看JSON响应。访问 http://127.0.0.1:8000/docs 可以试用自动生成的交互式API文档。
+</p>

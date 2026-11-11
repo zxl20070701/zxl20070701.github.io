@@ -1,0 +1,70 @@
+<header>
+    Docker部署
+</header>
+<h2>
+    优雅停机
+</h2>
+<p>
+    Ctrl+C 直接杀进程会断掉正在处理的请求。优雅停机流程：停止接收新请求 → 等正在跑的请求跑完 → 关数据库连接 → 退出。
+</p>
+<pre tag="go">
+srv := &http.Server{Addr: ":8080", Handler: r}
+
+go func() { srv.ListenAndServe() }()
+
+quit := make(chan os.Signal, 1)
+signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+&lt;-quit
+
+ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+defer cancel()
+srv.Shutdown(ctx)
+</pre>
+<h2>
+    多阶段 Dockerfile
+</h2>
+<p>
+    构建阶段用 Maven/Go 镜像，运行阶段只用最小 JRE/Alpine：
+</p>
+<pre tag="dockerfile">
+FROM golang:1.21-alpine AS builder
+WORKDIR /app
+COPY go.mod go.sum .
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o app .
+
+FROM alpine:3.19
+RUN apk add --no-cache tzdata
+WORKDIR /app
+COPY --from=builder /app/app .
+EXPOSE 8080
+CMD ["./app"]
+</pre>
+<h2>
+    docker-compose
+</h2>
+<pre tag="yaml">
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
+</pre>
+<p>
+    volumes 保证删容器后数据不丢。
+</p>

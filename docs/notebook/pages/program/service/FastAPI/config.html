@@ -1,0 +1,62 @@
+<header>
+    配置管理
+</header>
+<h2>
+    配置外置
+</h2>
+<p>
+    数据库密码、API 密钥不能写死在代码里，dev 和 prod 不一样。用 pydantic-settings 管理配置。
+</p>
+<pre tag="bash">
+pip install pydantic-settings
+</pre>
+<h2>
+    定义配置类
+</h2>
+<pre tag="python">
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env")
+
+    app_name: str = "Demo API"
+    debug: bool = False
+    database_url: str = "sqlite:///./dev.db"
+    jwt_secret: str = "change-me"
+    jwt_expire_hours: int = 24
+
+settings = Settings()
+</pre>
+<h2>
+    使用
+</h2>
+<pre tag="python">
+from app.config import settings
+print(settings.database_url)
+</pre>
+<h2>
+    环境变量覆盖
+</h2>
+<p>
+    优先级：环境变量 > .env 文件 > 默认值。密码不进 git，部署时注入：
+</p>
+<pre tag="bash">
+DATABASE_URL=postgresql://user:pass@host/db JWT_SECRET=real uvicorn app.main:app
+</pre>
+<h2>
+    多环境
+</h2>
+<p>
+    按环境分文件，启动时指定：
+</p>
+<pre tag="bash">
+ENVIRONMENT=production uvicorn app.main:app
+</pre>
+<pre tag="python">
+import os
+env = os.getenv("ENVIRONMENT", "development")
+settings = Settings(_env_file=f".env.{env}")
+</pre>
+<p>
+    配置项启动时自动校验类型，类型错了直接报错，不会带病运行。
+</p>

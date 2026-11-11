@@ -1,0 +1,42 @@
+<header>
+    JSON请求与响应
+</header>
+<h2>
+    绑定JSON请求
+</h2>
+<p>
+    定义带有JSON标签的结构体，再调用 ShouldBindJSON 解析并校验请求体。binding:"required"表示字段必须提供。
+</p>
+<pre tag="go">
+type CreateUserRequest struct {
+    Name string `json:"name" binding:"required"`
+    Age  int    `json:"age" binding:"required"`
+}
+
+router.POST("/users", func(c *gin.Context) {
+    var request CreateUserRequest
+    if err := c.ShouldBindJSON(&amp;request); err != nil {
+        c.JSON(400, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(201, gin.H{"name": request.Name, "age": request.Age})
+})
+</pre>
+<p>
+    ShouldBindJSON解析失败或校验未通过时返回错误；应立即结束当前处理函数，避免继续使用无效数据。
+</p>
+<h2>
+    调用接口
+</h2>
+<p>
+    发送JSON请求时设置 Content-Type 为 application/json：
+</p>
+<pre tag="bash">
+curl -X POST http://localhost:8080/users \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Lin","age":20}'
+</pre>
+<p>
+    成功时返回201和用户JSON；缺少必填字段或JSON格式错误时返回400。
+</p>

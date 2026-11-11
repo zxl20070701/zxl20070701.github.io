@@ -1,0 +1,58 @@
+<header>
+    与 Spring Core、Spring MVC 的关系
+</header>
+<h2>
+    一图说清
+</h2>
+<pre tag="text">
+Spring Framework
+├── Spring Core        IOC 容器、Bean、依赖注入、AOP       ← 一切的地基
+├── Spring MVC         DispatcherServlet + Web 处理组件     ← 依赖 Core
+└── Spring Boot        starter 依赖 + 自动配置 + 内嵌容器    ← 把上面两者打包好
+
+Spring Boot Web ≈ Spring Core + Spring MVC + 自动配置 + 内嵌 Tomcat + 版本管理
+</pre>
+<p>
+    关键认知：Spring Boot 不是 Spring MVC 的替代品。你没有「从 Spring MVC 换成 Boot」，而是「用 Boot 来组织 Spring MVC」。控制器里写的 @RestController、@GetMapping、@RequestParam，全部来自 Spring MVC。
+</p>
+<h2>
+    Boot 到底替你省了什么
+</h2>
+<ul>
+    <li><strong>web.xml 里的 DispatcherServlet</strong>：由 DispatcherServletAutoConfiguration 自动注册，映射到 /。</li>
+    <li><strong>springmvc.xml 里的组件注册</strong>：由 WebMvcAutoConfiguration 完成，等于自动写好了 &lt;mvc:annotation-driven/&gt;。</li>
+    <li><strong>依赖与版本</strong>：spring-boot-starter-web 聚合 spring-webmvc + jackson + tomcat，版本由 parent 统一管。</li>
+    <li><strong>Servlet 容器</strong>：内嵌 Tomcat，main 方法启动，不用装、不用部署 war。</li>
+    <li><strong>字符编码过滤器</strong>：HttpEncodingAutoConfiguration 注册 CharacterEncodingFilter。</li>
+    <li><strong>编译参数 -parameters</strong>：parent 里已配置，参数名能被反射读到，所以 @RequestParam 不写名字也不报错。</li>
+    <li><strong>消息转换器字符集</strong>：默认 UTF-8，所以返回中文不会变成问号。</li>
+</ul>
+<p>
+    后两条特别值得记住：它们不是「Boot 更聪明」，而是「原生项目里需要你自己补，Boot 替你补了」。一旦你写原生项目或迁移老项目，这些默认值就全部消失。
+</p>
+<h2>
+    原生项目里必须自己做的三件事
+</h2>
+<p>
+    同样的 Controller 代码，从 Boot 搬到纯 Spring MVC 后经常会 500 或乱码，原因就这三处：
+</p>
+<ul>
+    <li>编译器加 -parameters，并在 @RequestParam / @PathVariable 里写死名字，否则报 Name for argument ... not specified。</li>
+    <li>返回字符串的接口加 produces = "text/plain;charset=UTF-8"，否则 StringHttpMessageConverter 按 ISO-8859-1 写出中文问号。</li>
+    <li>返回对象时要自己加 Jackson 依赖，否则没有 JSON 消息转换器可用。</li>
+</ul>
+<h2>
+    什么时候该用哪个
+</h2>
+<ul>
+    <li><strong>新项目</strong>：默认 Boot，省配置、生态齐、部署简单。</li>
+    <li><strong>学习</strong>：先 Core（容器怎么管对象）→ 再 MVC（请求怎么走）→ 最后 Boot（这些是怎么被自动化的）。反过来先学 Boot，容易只会写注解、不懂为什么。</li>
+    <li><strong>老项目</strong>：SSM（Spring + Spring MVC + MyBatis）还在大量存在，没有 web.xml 之外的配置能力时，仍然要手写这些。</li>
+    <li><strong>特殊部署</strong>：必须共享外置容器、或公司统一用 war 时，Boot 也能打成 war（继承 SpringBootServletInitializer）。</li>
+</ul>
+<h2>
+    一句话总结
+</h2>
+<p>
+    Spring Core 管对象，Spring MVC 管请求，Spring Boot 管「怎么把前两者快速装起来」。三个词不是并列的三套技术，而是层层包含的三层。
+</p>

@@ -1,0 +1,148 @@
+<header>
+    全局配置都管什么
+</header>
+<h2>
+    配置从哪来
+</h2>
+<p>
+    三种方式，能力等价：mybatis-config.xml（最常用）、Java 代码里 new Configuration() 手工装配、或者交给 Spring Boot 用 application.yml 配（底层仍然是在造 Configuration）。本文按 XML 讲，因为它是理解后面所有配置项的基准。
+</p>
+<h2>
+    节点顺序是死的
+</h2>
+<p>
+    这是第一个坑：configuration 下的节点必须按 DTD 规定的顺序出现，跳着写、或者把 mappers 写在 settings 前面，启动直接报 XML 解析错误。
+</p>
+<pre tag="text">
+configuration
+├── properties          外部属性
+├── settings            全局开关
+├── typeAliases         类型别名
+├── typeHandlers        自定义类型转换器
+├── objectFactory       对象工厂（极少改）
+├── plugins             插件（分页、审计等）
+├── environments        数据源 + 事务管理器
+├── databaseIdProvider  多数据库厂商适配
+└── mappers             Mapper 注册
+</pre>
+<p>
+    报错长这样，看到它就知道是顺序问题，不是内容写错了：元素类型为 "configuration" 的内容必须匹配 "(properties?, settings?, typeAliases?, typeHandlers?, objectFactory?, objectWrapperFactory?, reflectorFactory?, plugins?, environments?, databaseIdProvider?, mappers?)"。
+</p>
+<h2>
+    properties：配置外置
+</h2>
+<pre tag="xml">
+&lt;properties resource="db.properties"/&gt;
+</pre>
+<p>
+    写法有三种：resource 从 classpath 读、url 从绝对路径或网络读、直接写在 XML 里用 &lt;property name="..." value="..."/&gt;。加载优先级是「外部传入的 &gt; resource/url 的 &gt; 内联的」，所以想临时覆盖连接串，可以在 build 时传一份：
+</p>
+<pre tag="java">
+Properties props = new Properties();
+props.setProperty("jdbc.url", "jdbc:mysql://localhost:3306/prod_db");
+factory = new SqlSessionFactoryBuilder().build(reader, props);
+</pre>
+<p>
+    注意这一层的 ${} 是 MyBatis 自己的属性替换，发生在解析 XML 阶段，和 SQL 里的 #{}/${} 完全是两套机制，不要混。
+</p>
+<h2>
+    settings：真正影响行为的开关
+</h2>
+<ul>
+    <li><strong>mapUnderscoreToCamelCase</strong>：user_name 自动映射到 userName。开了它，绝大多数表都能用 resultType 直接接住，只有列名和字段名彻底对不上时才需要 resultMap。</li>
+    <li><strong>logImpl</strong>：日志实现。开发期用 STDOUT_LOGGING 把 SQL、参数、结果行打到控制台；接 SLF4J 时它会把日志交给 logback，别两套同时开。</li>
+    <li><strong>cacheEnabled</strong>：二级缓存总开关，默认 true，但真正生效还要在 XML 里写 &lt;cache/&gt;。</li>
+    <li><strong>localCacheScope</strong>：一级缓存范围，默认 SESSION；改成 STATEMENT 就是每条语句执行完就清缓存，专治「同一个 session 里改了对象没重查」的怪异现象。</li>
+    <li><strong>lazyLoadingEnabled / aggressiveLazyLoading</strong>：关联对象要不要延迟加载。默认开启延迟加载，但 aggressiveLazyLoading 默认 true 会让一次调用触发全部延迟属性——这也是很多人以为「延迟加载没生效」的原因。</li>
+    <li><strong>defaultExecutorType</strong>：SIMPLE（默认）、REUSE（复用 Statement）、BATCH（批量）。批量插入几万条时切 BATCH 能差出数量级的性能，但它不带返回值语义，要配合 flushStatements。</li>
+    <li><strong>jdbcTypeForNull</strong>：参数为 null 时用哪种 JDBC 类型。Oracle 里必须设成 NULL，MySQL 一般不用管。</li>
+    <li><strong>defaultStatementTimeout</strong>：全局语句超时秒数，防止某个慢查询把线程池拖死。</li>
+</ul>
+<pre tag="xml">
+&lt;settings&gt;
+    &lt;setting name="mapUnderscoreToCamelCase" value="true"/&gt;
+    &lt;setting name="logImpl" value="STDOUT_LOGGING"/&gt;
+    &lt;setting name="defaultStatementTimeout" value="30"/&gt;
+&lt;/settings&gt;
+</pre>
+<h2>
+    typeAliases：少写全类名
+</h2>
+<pre tag="xml">
+&lt;typeAliases&gt;
+    &lt;typeAlias type="io.github.zxl20070701.mybatis.entity.User" alias="User"/&gt;
+    &lt;package name="io.github.zxl20070701.mybatis.entity"/&gt;
+&lt;/typeAliases&gt;
+</pre>
+<p>
+    第二种是包扫描，别名默认取类名首字母小写（user、order），大小写不敏感，所以 resultType="User" 和 "user" 都能用。别名只为少打字，一旦有同名类（不同包里各一个 User）就会冲突，那时只能老老实实写全限定名。
+</p>
+<h2>
+    environments：数据源与事务
+</h2>
+<pre tag="xml">
+&lt;environments default="dev"&gt;
+    &lt;environment id="dev"&gt;
+        &lt;transactionManager type="JDBC"/&gt;
+        &lt;dataSource type="POOLED"&gt;
+            &lt;property name="driver" value="${jdbc.driver}"/&gt;
+            &lt;property name="url" value="${jdbc.url}"/&gt;
+            &lt;property name="username" value="${jdbc.username}"/&gt;
+            &lt;property name="password" value="${jdbc.password}"/&gt;
+        &lt;/dataSource&gt;
+    &lt;/environment&gt;
+&lt;/environments&gt;
+</pre>
+<p>
+    transactionManager 有两种：JDBC 就是自己调 Connection 的 commit/rollback（无容器时的标准选择）；MANAGED 表示事务交给外部容器（如 EJB），自己不管。用 Spring 之后这一节会整个消失，事务由 Spring 的 DataSourceTransactionManager 接管。
+</p>
+<p>
+    dataSource 三种：UNPOOLED 每次新建连接；POOLED 内置连接池，参数可调（poolMaximumActiveConnections、poolMaximumIdleConnections 等）；JNDI 从容器拿。POOLED 的池很朴素，没有连接有效性检测，生产上基本都用 HikariCP 替换。
+</p>
+<h2>
+    mappers：四种注册方式
+</h2>
+<pre tag="xml">
+&lt;mappers&gt;
+    &lt;!-- 1. 按 classpath 路径找 XML --&gt;
+    &lt;mapper resource="mapper/UserMapper.xml"/&gt;
+
+    &lt;!-- 2. 绝对路径或网络地址，基本不用 --&gt;
+    &lt;mapper url="file:///opt/mapper/UserMapper.xml"/&gt;
+
+    &lt;!-- 3. 按接口注册：XML 必须和接口同包同名 --&gt;
+    &lt;mapper class="io.github.zxl20070701.mybatis.mapper.UserMapper"/&gt;
+
+    &lt;!-- 4. 按包批量注册：同样要求 XML 与接口编译后同目录 --&gt;
+    &lt;package name="io.github.zxl20070701.mybatis.mapper"/&gt;
+&lt;/mappers&gt;
+</pre>
+<p>
+    第 3、4 种要求 Mapper XML 与接口「同包同名」：接口是 com.x.mapper.UserMapper，XML 就必须在编译输出里位于 com/x/mapper/UserMapper.xml。做法是在 resources 下建同名目录结构，或者在 Maven 的 resources 配置里把 XML 一起拷过去。第 4 种最省事，加接口不用再改配置；第 1 种最直观，路径写在哪一目了然。混用会重复注册同名 Mapper，启动时报 Type interface ... is already known to the MapperRegistry。
+</p>
+<h2>
+    不想写 XML 时：编程式配置
+</h2>
+<pre tag="java">
+PooledDataSource dataSource = new PooledDataSource(
+        "com.mysql.cj.jdbc.Driver",
+        "jdbc:mysql://localhost:3306/demo",
+        "root", "123456");
+
+Configuration configuration = new Configuration();
+configuration.setEnvironment(new Environment("dev", new JdbcTransactionFactory(), dataSource));
+configuration.setMapUnderscoreToCamelCase(true);
+configuration.addMapper(UserMapper.class);
+
+SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(configuration);
+</pre>
+<p>
+    这条路径的价值在于：Spring Boot 的自动配置最终就是拼出这个 Configuration 对象，mybatis-spring 的 SqlSessionFactoryBean 也是。理解它之后，「配置为什么没生效」这类问题就有地方可查了——直接在启动时打一行 configuration.getEnvironment() 看看里面到底是什么。
+</p>
+<h2>
+    两个容易忽略的点
+</h2>
+<ul>
+    <li>环境可以配多个（dev、test、prod），但运行时只会用 default 指定的那一个，或者 build 时传入环境 id。别指望它按 profile 自动切换——那是 Spring 的活。</li>
+    <li>名字拼错会启动失败，报 The setting xxx is not known. Make sure you spelled it correctly (case sensitive)，这个还算好查。真正阴的是 value 写错：布尔项写 ture、写成 "yes"，一律按 false 处理且不报任何错，表现就是「开关明明配了却没生效」。怀疑配置没生效时，先打一行 configuration.isMapUnderscoreToCamelCase() 确认。</li>
+</ul>

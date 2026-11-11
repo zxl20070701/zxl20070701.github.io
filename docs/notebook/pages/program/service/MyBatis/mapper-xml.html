@@ -1,0 +1,230 @@
+<header>
+    映射文件与增删改查
+</header>
+<h2>
+    接口和 XML 是怎么对上的
+</h2>
+<p>
+    没有实现类，也没有注解扫描的魔法，绑定靠四条硬规则同时成立：
+</p>
+<ul>
+    <li>XML 的 <strong>namespace</strong> 等于接口的全限定名。</li>
+    <li>语句的 <strong>id</strong> 等于方法名。</li>
+    <li>语句的<strong>参数类型</strong>能接住方法参数，结果类型能接住返回值。</li>
+    <li>这个 XML（或这个接口）已经在 &lt;mappers&gt; 里注册过。</li>
+</ul>
+<p>
+    任意一条不满足，运行时都是 Invalid bound statement (not found)，不是编译错误，所以最容易在「改了个方法名」之后炸。
+</p>
+<h2>
+    参数怎么进 SQL
+</h2>
+<pre tag="java">
+User selectById(Long id);                                  // 单个简单参数
+User selectByNameAndStatus(String name, Integer status);   // 多个参数：必须 @Param
+int updateEmail(@Param("id") Long id, @Param("email") String email);
+List&lt;User&gt; selectByUser(User user);                       // 一个对象
+</pre>
+<pre tag="xml">
+&lt;!-- 单个参数：名字随便写，#{id} / #{value} / #{aaa} 都行 --&gt;
+&lt;select id="selectById" resultType="User"&gt;
+    SELECT * FROM sys_user WHERE id = #{id}
+&lt;/select&gt;
+
+&lt;!-- 多个参数：不写 @Param 就只能用 arg0 / param1 这种位置名 --&gt;
+&lt;select id="selectByNameAndStatus" resultType="User"&gt;
+    SELECT * FROM sys_user WHERE user_name = #{name} AND status = #{status}
+&lt;/select&gt;
+
+&lt;!-- 对象：按属性名取 --&gt;
+&lt;select id="selectByUser" resultType="User"&gt;
+    SELECT * FROM sys_user
+    WHERE user_name = #{userName} AND status = #{status}
+&lt;/select&gt;
+</pre>
+<p>
+    单个参数时名字随意，是 MyBatis 的宽容之处；一旦有第二个参数，它就把所有参数塞进一个 Map，你能用的名字只剩 arg0、arg1 和 param1、param2。忘了 @Param 的报错非常直白，照抄原文就能定位：
+</p>
+<pre tag="text">
+org.apache.ibatis.binding.BindingException:
+Parameter 'keyword' not found.
+Available parameters are [arg1, arg0, param1, param2]
+</pre>
+<p>
+    看到 Available parameters 里出现 arg0 这种名字，就说明方法上少写了 @Param。规则很简单：<strong>参数超过一个，全部加 @Param</strong>，别去记位置名。
+</p>
+<h2>
+    集合参数
+</h2>
+<pre tag="java">
+List&lt;User&gt; selectByIds(List&lt;Long&gt; ids);
+</pre>
+<pre tag="xml">
+&lt;select id="selectByIds" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user
+    WHERE id IN
+    &lt;foreach collection="list" item="item" open="(" separator="," close=")"&gt;
+        #{item}
+    &lt;/foreach&gt;
+&lt;/select&gt;
+</pre>
+<p>
+    只有一个集合参数时，MyBatis 会把它单独包一层，默认名字是 <strong>list</strong>（数组则是 <strong>array</strong>），所以 collection 写 list 而不是方法参数名。加了 @Param("ids") 之后就改成 collection="ids"，和普通多参数一致。写成方法参数名会报 Parameter 'ids' not found 之类的错。
+</p>
+<h2>
+    语句标签的常用属性
+</h2>
+<ul>
+    <li><strong>parameterType</strong>：可以完全不写。MyBatis 从接口方法签名就能推断参数类型，写错反而会覆盖成错误类型。</li>
+    <li><strong>resultType / resultMap</strong>：二选一。列名与属性名能对上（含下划线转驼峰）用 resultType；有嵌套对象、列名要改名、需要类型转换时用 resultMap。</li>
+    <li><strong>useGeneratedKeys + keyProperty</strong>：自增主键回填，keyProperty 是实体里的字段名，不是列名。</li>
+    <li><strong>timeout</strong>：这条语句的超时秒数，覆盖全局的 defaultStatementTimeout。</li>
+    <li><strong>useCache / flushCache</strong>：是否走二级缓存、是否执行前清缓存。默认 select 的 useCache 是 true、flushCache 是 false，增删改的 flushCache 是 true——这就是「一改就查得到新数据」的原因。</li>
+    <li><strong>statementType</strong>：STATEMENT / PREPARED / CALLABLE。默认 PREPARED，用 #{} 就是预编译；CALLABLE 用于存储过程。</li>
+</ul>
+<h2>
+    返回什么类型都行
+</h2>
+<pre tag="xml">
+&lt;!-- 基本类型：统计 --&gt;
+&lt;select id="count" resultType="long"&gt;
+    SELECT COUNT(*) FROM sys_user
+&lt;/select&gt;
+
+&lt;!-- 一个对象 --&gt;
+&lt;select id="selectById" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user WHERE id = #{id}
+&lt;/select&gt;
+
+&lt;!-- 对象列表：resultType 写元素类型 --&gt;
+&lt;select id="selectAll" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user
+&lt;/select&gt;
+
+&lt;!-- 无实体时用 Map，key 是列名 --&gt;
+&lt;select id="statByStatus" resultType="map"&gt;
+    SELECT status, COUNT(*) AS total FROM sys_user GROUP BY status
+&lt;/select&gt;
+</pre>
+<p>
+    <strong>resultType 永远写「一个元素」的类型</strong>，集合交给接口返回值声明，MyBatis 自己知道要装 List。resultType="map" 返回的 Map 里 key 是列名原样（大小写跟随数据库），下游按字符串取值，一旦表结构改名就会悄悄变成 null。
+</p>
+<h2>
+    增删改返回的是行数
+</h2>
+<pre tag="java">
+int rows = userMapper.deleteById(1L);
+if (rows == 0) {
+    throw new IllegalStateException("记录不存在");
+}
+</pre>
+<p>
+    返回 0 不代表出错，只代表条件没匹配到任何行。用它做乐观锁是最常见的用法：UPDATE ... SET version = version + 1 WHERE id = ? AND version = ?，返回 0 就说明版本已被别人改过。
+</p>
+<h2>
+    批量插入的两种做法
+</h2>
+<p>
+    第一种是拼一条多值 INSERT，一次往返：
+</p>
+<pre tag="xml">
+&lt;insert id="insertBatch"&gt;
+    INSERT INTO sys_user (user_name, email, status)
+    VALUES
+    &lt;foreach collection="list" item="u" separator=","&gt;
+        (#{u.userName}, #{u.email}, #{u.status})
+    &lt;/foreach&gt;
+&lt;/insert&gt;
+</pre>
+<p>
+    第二种是开 BATCH 执行器，把 N 条普通 insert 攒成一批发送，代码不改、SQL 不改，只换 Session 的创建方式：
+</p>
+<pre tag="java">
+try (SqlSession session = factory.openSession(ExecutorType.BATCH, false)) {
+    UserMapper mapper = session.getMapper(UserMapper.class);
+    for (User user : users) {
+        mapper.insert(user);
+    }
+    session.flushStatements();   // 真正发送
+    session.commit();
+}
+</pre>
+<p>
+    BATCH 模式下每句的返回值不再即时可得，得看 flushStatements 的结果；而且一旦中途某条失败，整批的报错位置会很模糊。几万条以内的批量，多值 INSERT 更好排查；上更大数量级，配合 rewriteBatchedStatements=true 的 JDBC 参数，BATCH 才有明显优势。
+</p>
+<h2>
+    分页只能自己写
+</h2>
+<pre tag="xml">
+&lt;select id="selectPage" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user
+    ORDER BY id
+    LIMIT #{limit} OFFSET #{offset}
+&lt;/select&gt;
+</pre>
+<pre tag="java">
+int pageNo = 1, pageSize = 10;
+List&lt;User&gt; rows = userMapper.selectPage(pageSize, (pageNo - 1) * pageSize);
+long total = userMapper.count();
+</pre>
+<p>
+    MyBatis 不做物理分页，只有 RowBounds 这种「把结果全查出来再在内存里截断」的逻辑分页，数据量大时等于自己造一次 OOM。生产上要么像上面手写 LIMIT，要么用 PageHelper 这种拦截器插件——它在 Executor 层拦下查询，自动拼 LIMIT 并执行一次 count，代价是 SQL 由插件改写，出问题时要看插件拼出来的最终语句。
+</p>
+<h2>
+    update 的两个陷阱
+</h2>
+<pre tag="xml">
+&lt;!-- 危险：没传的字段会被写成 null --&gt;
+&lt;update id="update"&gt;
+    UPDATE sys_user
+    SET user_name = #{userName}, email = #{email}, status = #{status}
+    WHERE id = #{id}
+&lt;/update&gt;
+
+&lt;!-- 安全：只更新非空字段 --&gt;
+&lt;update id="updateSelective"&gt;
+    UPDATE sys_user
+    &lt;set&gt;
+        &lt;if test="userName != null"&gt;user_name = #{userName},&lt;/if&gt;
+        &lt;if test="email != null"&gt;email = #{email},&lt;/if&gt;
+        &lt;if test="status != null"&gt;status = #{status},&lt;/if&gt;
+    &lt;/set&gt;
+    WHERE id = #{id}
+&lt;/update&gt;
+</pre>
+<p>
+    第一种是全字段覆盖：如果前端只传了 id 和 email，user_name 就会被覆盖成 null，而数据库里完全看不出是谁干的。第二种是选择性更新，也是 tk-mybatis、MyBatis-Plus 里 updateById 的默认行为。
+</p>
+<p>
+    另一个陷阱是「更新了但没生效」：语句确实执行了，只是字段值没变。多数是参数名对不上（对象里叫 userName，SQL 写了 #{username}），而 MyBatis 对对象属性取不到值时不报错，直接给 null。
+</p>
+<h2>
+    注解写法和 XML 写法
+</h2>
+<pre tag="java">
+public interface AnnoMapper {
+
+    @Select("SELECT id, user_name FROM sys_user WHERE id = #{id}")
+    @Results(id = "userMap", value = {
+            @Result(column = "id", property = "id", id = true),
+            @Result(column = "user_name", property = "userName")
+    })
+    User findById(Long id);
+
+    @Insert("INSERT INTO sys_user (user_name, email, status) VALUES (#{userName}, #{email}, #{status})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int save(User user);
+
+    @Update("UPDATE sys_user SET email = #{email} WHERE id = #{id}")
+    int updateEmail(@Param("id") Long id, @Param("email") String email);
+
+    @Delete("DELETE FROM sys_user WHERE id = #{id}")
+    int remove(Long id);
+}
+</pre>
+<p>
+    简单固定的 SQL 用注解更清爽，省掉一个 XML 和一次文件跳转；一旦涉及动态条件、复用片段、resultMap 嵌套，注解会退化成一长串字符串拼接，可读性远不如 XML。实践中的折中是：单表 CRUD 用注解，复杂查询放 XML，同一个接口两种混用是允许的（只要不重名）。
+</p>
+<p>
+    注意用注解的接口必须在配置里注册，&lt;mapper class="..."&gt; 或 &lt;package&gt; 都行。只把接口放在包里、不注册，session.getMapper 会报 Type interface ... is not known to the MapperRegistry。
+</p>

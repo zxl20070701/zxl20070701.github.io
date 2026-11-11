@@ -1,0 +1,46 @@
+<header>
+    JSON请求体
+</header>
+<h2>
+    定义请求模型
+</h2>
+<p>
+    使用Pydantic的BaseModel描述JSON请求体。FastAPI会解析请求、检查字段类型，并在输入不符合模型时返回校验错误。
+</p>
+<pre tag="python">
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+
+class Item(BaseModel):
+    name: str
+    price: float
+    is_offer: bool = False
+
+
+@app.post("/items/")
+def create_item(item: Item):
+    return {"name": item.name, "price": item.price, "is_offer": item.is_offer}
+</pre>
+<p>
+    name 和 price 是必填字段，is_offer 有默认值。Item对象可通过属性访问，也可以直接作为响应返回。
+</p>
+<h2>
+    发送请求
+</h2>
+<p>
+    启动服务后，用curl发送JSON数据：
+</p>
+<pre tag="bash">
+curl -X POST http://127.0.0.1:8000/items/ \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Notebook","price":12.5,"is_offer":true}'
+</pre>
+<p>
+    成功时接口返回JSON对象。省略必填字段或传入错误类型时，可以查看FastAPI生成的校验错误。
+</p>
+<p>
+    BaseModel也可以用作响应模型。
+</p>

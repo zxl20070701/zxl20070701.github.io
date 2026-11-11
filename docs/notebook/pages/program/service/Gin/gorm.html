@@ -1,0 +1,88 @@
+<header>
+    GORM数据持久化
+</header>
+<h2>
+    连接 MySQL
+</h2>
+<p>
+    GORM 是 Go 生态最流行的 ORM。先配连接池：
+</p>
+<pre tag="go">
+dsn := "root:root@tcp(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"
+db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+sqlDB, _ := db.DB()
+sqlDB.SetMaxOpenConns(50)
+sqlDB.SetMaxIdleConns(10)
+sqlDB.SetConnMaxLifetime(time.Hour)
+</pre>
+<p>
+    连接池三件套一定要设，不设高并发时会 Too many connections。
+</p>
+<h2>
+    定义 Model
+</h2>
+<pre tag="go">
+type User struct {
+    ID        uint      `gorm:"primaryKey" json:"id"`
+    Name      string    `gorm:"size:100;not null" json:"name"`
+    Email     string    `gorm:"size:191;uniqueIndex" json:"email"`
+    Age       int       `json:"age"`
+    CreatedAt time.Time `json:"created_at"`
+    UpdatedAt time.Time `json:"updated_at"`
+}
+</pre>
+<p>
+    AutoMigrate 自动建表，开发阶段方便，生产用 migration 工具。
+</p>
+<h2>
+    CRUD
+</h2>
+<pre tag="go">
+// 查询
+var users []User
+db.Where("age >= ?", 18).Order("id DESC").Find(&users)
+
+// 按 ID 查
+var user User
+db.First(&user, id)
+
+// 创建
+db.Create(&User{Name: "Carol", Email: "carol@example.com"})
+
+// 更新（用 map 避免零值覆盖）
+db.Model(&User{}).Where("id = ?", id).Updates(map[string]interface{}{
+    "name": newName,
+})
+
+// 删除
+db.Delete(&User{}, id)
+</pre>
+<h2>
+    事务
+</h2>
+<p>
+    多步操作要原子性：
+</p>
+<pre tag="go">
+db.Transaction(func(tx *gorm.DB) error {
+    if err := tx.Create(&user).Error; err != nil {
+        return err
+    }
+    if err := tx.Create(&profile).Error; err != nil {
+        return err
+    }
+    return nil
+})
+</pre>
+<p>
+    任何一步返回 error，整个事务自动回滚。
+</p>
+<h2>
+    常见坑
+</h2>
+<ul>
+    <li>N+1 查询：循环里查关联数据，用 Preload 一次性加载</li>
+    <li>Updates 用结构体忽略零值，用 map 才能更新 0</li>
+    <li>RowsAffected 判断删除是否成功，删不存在的 ID GORM 不报错</li>
+</ul>

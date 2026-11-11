@@ -1,0 +1,46 @@
+<header>
+    路径与查询参数
+</header>
+<h2>
+    路径参数
+</h2>
+<p>
+    将路径中的变量写在花括号内，并在函数中声明同名参数。类型标注会让FastAPI自动转换并校验输入。
+</p>
+<pre tag="python">
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int):
+    return {"item_id": item_id}
+</pre>
+<p>
+    请求 GET /items/3 会得到 {"item_id":3}。如果传入的 item_id 不是整数，FastAPI会返回包含校验详情的错误响应。
+</p>
+<h2>
+    查询参数
+</h2>
+<p>
+    不属于路径模板的函数参数会作为查询参数读取。为参数提供默认值即可使它成为可选参数：
+</p>
+<pre tag="python">
+from typing import Optional
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/items/")
+def list_items(skip: int = 0, limit: int = 10, q: Optional[str] = None):
+    return {"skip": skip, "limit": limit, "q": q}
+</pre>
+<p>
+    例如 GET /items/?skip=10&amp;limit=5&amp;q=book 会返回对应的分页和筛选参数。skip 和 limit 有默认值，q 默认是 None，因此它们都可以省略。
+</p>
+<p>
+    实际项目中通常将查询参数用于筛选或分页，将路径参数用于标识具体资源。
+</p>

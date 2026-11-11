@@ -1,0 +1,277 @@
+<header>
+    从零跑起来
+</header>
+<h2>
+    MyBatis 是什么
+</h2>
+<p>
+    MyBatis 是一个「半自动」的持久层框架：SQL 由你写，它负责把参数塞进 SQL、把结果集塞进对象。和 Hibernate、JPA 那种全自动 ORM 比，它不做表结构到对象的推导，也不会替你生成 SQL，所以复杂查询、慢 SQL 调优都完全可控——这也是国内项目大量用它的原因。
+</p>
+<p>
+    核心只有三样东西：一个全局配置（数据源 + 设置）、一批 Mapper 接口、一批 Mapper XML（SQL 写在里面）。没有 Spring、没有容器，一个 main 方法就能跑。
+</p>
+<h2>
+    依赖
+</h2>
+<p>
+    只要两个包：mybatis 本身，和一个 JDBC 驱动。下面用 H2 内存库，好处是不用装数据库，进程退出数据就没了；换成 MySQL 时只改驱动坐标和 url，代码一行不动。
+</p>
+<pre tag="xml">
+&lt;properties&gt;
+    &lt;mybatis.version&gt;3.5.19&lt;/mybatis.version&gt;
+    &lt;h2.version&gt;2.3.232&lt;/h2.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
+        &lt;artifactId&gt;mybatis&lt;/artifactId&gt;
+        &lt;version&gt;${mybatis.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+        &lt;artifactId&gt;h2&lt;/artifactId&gt;
+        &lt;version&gt;${h2.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</pre>
+<h2>
+    目录结构
+</h2>
+<pre tag="text">
+mybatis-demo
+├── pom.xml
+└── src/main
+    ├── java/.../entity/User.java
+    ├── java/.../mapper/UserMapper.java        # 接口，只有方法签名
+    ├── java/.../Main.java                     # 组装并调用
+    └── resources
+        ├── mybatis-config.xml                 # 全局配置
+        ├── db.properties                      # 连接参数
+        ├── schema.sql                         # 建表 + 初始数据
+        └── mapper/UserMapper.xml              # SQL 写这里
+</pre>
+<h2>
+    建表
+</h2>
+<pre tag="sql">
+CREATE TABLE sys_user (
+    id          BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_name   VARCHAR(32)  NOT NULL,
+    email       VARCHAR(128),
+    status      TINYINT      DEFAULT 1,
+    create_time TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO sys_user (user_name, email, status) VALUES ('alice', 'alice@example.com', 1);
+INSERT INTO sys_user (user_name, email, status) VALUES ('bob', 'bob@example.com', 1);
+INSERT INTO sys_user (user_name, email, status) VALUES ('carol', 'carol@example.com', 0);
+</pre>
+<p>
+    表名用 sys_user 而不是 user：user 在不少数据库里是保留字或内置表名（H2 里直接写 FROM user 会报语法错误），加个前缀能省掉一堆莫名其妙的报错。
+</p>
+<h2>
+    实体与 Mapper 接口
+</h2>
+<pre tag="java">
+public class User {
+    private Long id;
+    private String userName;
+    private String email;
+    private Integer status;
+    private LocalDateTime createTime;
+
+    // 省略 getter / setter
+}
+</pre>
+<pre tag="java">
+public interface UserMapper {
+
+    User selectById(Long id);
+
+    List&lt;User&gt; selectAll();
+
+    int insert(User user);
+
+    int update(User user);
+
+    int deleteById(Long id);
+}
+</pre>
+<p>
+    接口里没有实现类，也不需要实现类。MyBatis 用动态代理给这个接口生成实现：调用 selectById 时，它去配置里找「namespace 等于接口全限定名、id 等于方法名」的那条 SQL 执行。所以接口全限定名和 XML 的 namespace 必须一字不差，方法名和 SQL 的 id 也必须一致。
+</p>
+<h2>
+    Mapper XML
+</h2>
+<pre tag="xml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
+
+&lt;mapper namespace="io.github.zxl20070701.mybatis.mapper.UserMapper"&gt;
+
+    &lt;select id="selectById" resultType="User"&gt;
+        SELECT id, user_name, email, status, create_time
+        FROM sys_user
+        WHERE id = #{id}
+    &lt;/select&gt;
+
+    &lt;select id="selectAll" resultType="User"&gt;
+        SELECT id, user_name, email, status, create_time
+        FROM sys_user
+        ORDER BY id
+    &lt;/select&gt;
+
+    &lt;insert id="insert" useGeneratedKeys="true" keyProperty="id"&gt;
+        INSERT INTO sys_user (user_name, email, status, create_time)
+        VALUES (#{userName}, #{email}, #{status}, #{createTime})
+    &lt;/insert&gt;
+
+    &lt;update id="update"&gt;
+        UPDATE sys_user
+        SET user_name = #{userName}, email = #{email}, status = #{status}
+        WHERE id = #{id}
+    &lt;/update&gt;
+
+    &lt;delete id="deleteById"&gt;
+        DELETE FROM sys_user WHERE id = #{id}
+    &lt;/delete&gt;
+
+&lt;/mapper&gt;
+</pre>
+<p>
+    三个细节值得记住：<strong>resultType="User"</strong> 里写的是别名而不是全类名，别名在全局配置的 typeAliases 里注册；<strong>useGeneratedKeys + keyProperty</strong> 让自增主键回填到对象的 id 字段，不写的话插入后拿不到 id；<strong>#{}</strong> 是占位符，会被编译成 JDBC 的 ?，不是字符串拼接。
+</p>
+<h2>
+    全局配置
+</h2>
+<pre tag="xml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd"&gt;
+
+&lt;configuration&gt;
+
+    &lt;!-- 把外部 properties 读进来，下面用 ${} 引用 --&gt;
+    &lt;properties resource="db.properties"/&gt;
+
+    &lt;settings&gt;
+        &lt;!-- user_name -&gt; userName，省掉大部分 resultMap --&gt;
+        &lt;setting name="mapUnderscoreToCamelCase" value="true"/&gt;
+        &lt;!-- 打印 SQL，开发期必开 --&gt;
+        &lt;setting name="logImpl" value="STDOUT_LOGGING"/&gt;
+    &lt;/settings&gt;
+
+    &lt;typeAliases&gt;
+        &lt;typeAlias type="io.github.zxl20070701.mybatis.entity.User" alias="User"/&gt;
+    &lt;/typeAliases&gt;
+
+    &lt;environments default="dev"&gt;
+        &lt;environment id="dev"&gt;
+            &lt;transactionManager type="JDBC"/&gt;
+            &lt;dataSource type="POOLED"&gt;
+                &lt;property name="driver" value="${jdbc.driver}"/&gt;
+                &lt;property name="url" value="${jdbc.url}"/&gt;
+                &lt;property name="username" value="${jdbc.username}"/&gt;
+                &lt;property name="password" value="${jdbc.password}"/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+
+    &lt;mappers&gt;
+        &lt;mapper resource="mapper/UserMapper.xml"/&gt;
+    &lt;/mappers&gt;
+
+&lt;/configuration&gt;
+</pre>
+<pre tag="properties">
+jdbc.driver=org.h2.Driver
+jdbc.url=jdbc:h2:mem:mybatis;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+jdbc.username=sa
+jdbc.password=
+</pre>
+<p>
+    dataSource 的 type 只有三种：UNPOOLED（每次新建连接，只适合调试）、POOLED（内置连接池，够用）、JNDI（从容器取）。POOLED 是 MyBatis 自带的简易池，生产上一般换成 Druid 或 HikariCP，接入 Spring 后就是把 dataSource 换掉而已。
+</p>
+<h2>
+    跑起来
+</h2>
+<pre tag="java">
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+
+        SqlSessionFactory factory;
+        try (Reader reader = Resources.getResourceAsReader("mybatis-config.xml")) {
+            factory = new SqlSessionFactoryBuilder().build(reader);
+        }
+
+        initSchema(factory);    // 只在示例里需要：建表 + 灌初始数据
+
+        // openSession()   默认不自动提交，写操作要自己 commit()
+        // openSession(true) 自动提交，示例里省事
+        try (SqlSession session = factory.openSession(true)) {
+
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+
+            System.out.println(userMapper.selectById(1L));
+
+            User user = new User();
+            user.setUserName("dave");
+            user.setEmail("dave@example.com");
+            user.setStatus(1);
+            user.setCreateTime(LocalDateTime.now());
+            userMapper.insert(user);
+            System.out.println("回填的主键 = " + user.getId());
+
+            System.out.println("删除行数 = " + userMapper.deleteById(user.getId()));
+        }
+    }
+}
+</pre>
+<pre tag="java">
+// 建表由外部工具负责，示例里用 ScriptRunner 跑一次 schema.sql
+private static void initSchema(SqlSessionFactory factory) throws Exception {
+    try (SqlSession session = factory.openSession();
+         Reader schema = Resources.getResourceAsReader("schema.sql")) {
+        ScriptRunner runner = new ScriptRunner(session.getConnection());
+        runner.setLogWriter(null);
+        runner.runScript(schema);
+        session.commit();
+    }
+}
+</pre>
+<pre tag="bash">
+mvn -q compile
+
+CP="target/classes:$HOME/.m2/repository/org/mybatis/mybatis/3.5.19/mybatis-3.5.19.jar:$HOME/.m2/repository/com/h2database/h2/2.3.232/h2-2.3.232.jar"
+java -cp "$CP" io.github.zxl20070701.mybatis.Main
+
+# User{id=1, userName='alice', email='alice@example.com', status=1, createTime=2026-11-10T11:26:41}
+# 回填的主键 = 4
+# 删除行数 = 1
+</pre>
+<p>
+    建表和初始数据不在 MyBatis 的职责里，示例用 ScriptRunner 执行 schema.sql 完成初始化（这个类本身来自 mybatis 包，跑测试脚本很方便）。真实项目里建表交给 Flyway、Liquibase 或 DBA。
+</p>
+<h2>
+    三个对象，三种生命周期
+</h2>
+<ul>
+    <li><strong>SqlSessionFactoryBuilder</strong>：只负责读配置、造工厂，造完就可以丢。方法级局部变量。</li>
+    <li><strong>SqlSessionFactory</strong>：重量级，但线程安全，一个应用只留一个实例（静态字段或交给 Spring 管），反复 new 会不停重解析 XML、重建连接池。</li>
+    <li><strong>SqlSession</strong>：轻量但不线程安全，代表一次数据库会话，用完必须 close 把连接还给池。一次请求一个，绝对不能做成单例或成员变量共享。</li>
+</ul>
+<p>
+    把 SqlSession 塞进 Controller 的字段里，是新手最典型的错误：并发时两个线程共用一个连接，轻则事务串味，重则连接被提前关闭，报 Connection is closed。
+</p>
+<h2>
+    两个必踩的坑
+</h2>
+<ul>
+    <li><strong>Invalid bound statement (not found)</strong>：namespace、SQL 的 id、方法名三者有任何一个对不上，或者 XML 没在 &lt;mappers&gt; 里注册（mapper 放在 resources 下没被打进 classpath 也会这样）。</li>
+    <li><strong>插入成功但查不到</strong>：openSession() 不带 true 时写操作不会提交，方法返回后连接一关，数据就回滚了。要么 commit，要么开自动提交。</li>
+</ul>

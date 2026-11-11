@@ -1,0 +1,62 @@
+<header>
+    依赖注入
+</header>
+<h2>
+    依赖注入是什么
+</h2>
+<p>
+    FastAPI 最有特色的功能。你声明需要什么，FastAPI 自动注入。
+</p>
+<pre tag="python">
+@app.get("/users")
+def list_users(db: Session = Depends(get_db)):
+    return db.query(User).all()
+</pre>
+<p>
+    Depends(get_db)告诉 FastAPI：执行这个路由前先调用 get_db()，把返回值注入 db 参数。
+</p>
+<h2>
+    常见用法
+</h2>
+<p><strong>数据库会话</strong>：每个请求拿一个会话，结束自动关。</p>
+<p><strong>分页参数</strong>：把重复的 skip/limit 抽成依赖类：</p>
+<pre tag="python">
+class Pagination:
+    def __init__(self, skip: int = 0, limit: int = 10):
+        self.skip = skip
+        self.limit = limit
+
+@app.get("/users")
+def list_users(p: Pagination = Depends()):
+    return {"skip": p.skip, "limit": p.limit}
+</pre>
+<p><strong>当前登录用户</strong>：解 token 查用户，受保护路由直接注入：</p>
+<pre tag="python">
+@app.get("/me")
+def read_me(user: User = Depends(get_current_user)):
+    return user
+</pre>
+<h2>
+    依赖可以嵌套
+</h2>
+<p>
+    get_current_user 自己也依赖 get_db 和 oauth2_scheme，FastAPI 自动递归解析，不用手动传。
+</p>
+<h2>
+    路由级和全局依赖
+</h2>
+<pre tag="python">
+# 整个路由组需要登录
+router = APIRouter(prefix="/users", dependencies=[Depends(get_current_user)])
+
+# 全局所有请求都经过
+app = FastAPI(dependencies=[Depends(log_request)])
+</pre>
+<h2>
+    为什么用依赖注入
+</h2>
+<ul>
+    <li><strong>复用</strong>：数据库会话、当前用户逻辑写一次到处用</li>
+    <li><strong>可测试</strong>：单测时替换成假依赖</li>
+    <li><strong>清晰</strong>：函数签名直接声明需要什么</li>
+</ul>

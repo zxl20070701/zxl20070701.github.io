@@ -1,0 +1,180 @@
+<header>
+    动态 SQL
+</header>
+<h2>
+    为什么需要它
+</h2>
+<p>
+    查询条件往往是组合出来的：关键字可有可无、状态可能不筛、id 列表可能一次性传一批。用静态 SQL 就得为每种组合写一条，或者退化成在 Java 里拼字符串——后者等于把 SQL 交给字符串加法维护，迟早出现语法错误和注入。
+</p>
+<p>
+    动态 SQL 的本质是在 XML 里用标签搭出一棵语法树，执行前按参数算出最终的 SQL。它只是「拼接」，拼完的 SQL 仍然交给 #{} 预编译，所以安全性和手写 SQL 一致。
+</p>
+<h2>
+    if 与 where
+</h2>
+<pre tag="xml">
+&lt;select id="selectByCondition" resultType="User"&gt;
+    SELECT id, user_name, email, status, create_time
+    FROM sys_user
+    &lt;where&gt;
+        &lt;if test="keyword != null and keyword != ''"&gt;
+            AND user_name LIKE CONCAT('%', #{keyword}, '%')
+        &lt;/if&gt;
+        &lt;if test="minStatus != null"&gt;
+            AND status &gt;= #{minStatus}
+        &lt;/if&gt;
+        &lt;if test="ids != null and ids.size() &gt; 0"&gt;
+            AND id IN
+            &lt;foreach collection="ids" item="item" open="(" separator="," close=")"&gt;
+                #{item}
+            &lt;/foreach&gt;
+        &lt;/if&gt;
+    &lt;/where&gt;
+    ORDER BY id
+&lt;/select&gt;
+</pre>
+<p>
+    where 标签干两件事：所有条件都不成立时整段消失（不会留下一个孤零零的 WHERE）；有条件时去掉开头多余的 AND 或 OR。所以每个 if 里都可以放心写 AND，不用管谁是第一个。
+</p>
+<pre tag="text">
+无条件：SELECT ... FROM sys_user ORDER BY id
+关键字 + 状态：SELECT ... FROM sys_user WHERE user_name LIKE CONCAT('%', ?, '%') AND status >= ? ORDER BY id
+id 列表：SELECT ... FROM sys_user WHERE id IN ( ? , ? ) ORDER BY id
+</pre>
+<h2>
+    choose / when / otherwise
+</h2>
+<p>
+    这是 if-else 的版本，多个分支只命中一个。注意 when 的 test 里要比较字符串时，<strong>必须用双引号</strong>：
+</p>
+<pre tag="xml">
+&lt;select id="selectByFlag" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user
+    &lt;where&gt;
+        &lt;choose&gt;
+            &lt;when test='flag == "Y"'&gt;AND status = 1&lt;/when&gt;
+            &lt;when test='flag == "N"'&gt;AND status = 0&lt;/when&gt;
+            &lt;otherwise&gt;AND status = 1&lt;/otherwise&gt;
+        &lt;/choose&gt;
+    &lt;/where&gt;
+&lt;/select&gt;
+</pre>
+<p>
+    写成 test="flag == 'Y'"（单引号）会直接抛异常，不是静默不生效——这一点很多人猜错：
+</p>
+<pre tag="text">
+Cause: java.lang.NumberFormatException: For input string: "Y"
+</pre>
+<p>
+    原因是在 OGNL 里单引号包单个字符是 char 字面量，拿 char 和 String 比较时它试图做类型转换，于是报数字格式错误。单字符比较一律用双引号（XML 属性值用单引号包住整段 test，里面就能直接写双引号）。多字符的 'AB' 在 OGNL 里会被当字符串，所以这个坑只在单字符时出现，更隐蔽。
+</p>
+<h2>
+    set：选择性更新
+</h2>
+<pre tag="xml">
+&lt;update id="updateSelective"&gt;
+    UPDATE sys_user
+    &lt;set&gt;
+        &lt;if test="userName != null"&gt;user_name = #{userName},&lt;/if&gt;
+        &lt;if test="email != null"&gt;email = #{email},&lt;/if&gt;
+        &lt;if test="status != null"&gt;status = #{status},&lt;/if&gt;
+    &lt;/set&gt;
+    WHERE id = #{id}
+&lt;/update&gt;
+</pre>
+<p>
+    set 会自动处理末尾多余的逗号，也会在全部条件都不成立时……什么都不剩，于是拼出 UPDATE sys_user WHERE id = ? 这种非法 SQL。所以 update 场景至少要保证有一个条件恒成立，或者在外层先校验参数。
+</p>
+<p>
+    只传 email 时实际执行的是：
+</p>
+<pre tag="text">
+==>  Preparing: UPDATE sys_user SET email = ? WHERE id = ?
+</pre>
+<h2>
+    foreach：批量和 IN
+</h2>
+<pre tag="xml">
+&lt;!-- IN 查询 --&gt;
+&lt;select id="selectByIds" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user
+    WHERE id IN
+    &lt;foreach collection="ids" item="item" open="(" separator="," close=")"&gt;
+        #{item}
+    &lt;/foreach&gt;
+&lt;/select&gt;
+
+&lt;!-- 多值插入 --&gt;
+&lt;insert id="insertBatch"&gt;
+    INSERT INTO sys_user (user_name, email, status)
+    VALUES
+    &lt;foreach collection="list" item="u" separator=","&gt;
+        (#{u.userName}, #{u.email}, #{u.status})
+    &lt;/foreach&gt;
+&lt;/insert&gt;
+</pre>
+<p>
+    属性含义：collection 是集合的键名，item 是每次迭代的变量名，open / close 是整段前后的符号，separator 是元素之间的分隔，index 在 List 时是下标、在 Map 时是 key。
+</p>
+<p>
+    collection 写什么，取决于参数怎么传：方法只有一个 List 参数且没加 @Param，键名是 <strong>list</strong>（数组是 array）；加了 @Param("ids") 就是 ids；如果是对象里的一个集合属性，写属性名（比如 collection="user.orders" 之外的 orders）。
+</p>
+<h2>
+    trim：set 和 where 的底层
+</h2>
+<pre tag="xml">
+&lt;select id="selectLikeTrim" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user
+    &lt;trim prefix="WHERE" prefixOverrides="AND |OR "&gt;
+        &lt;if test="kw != null"&gt;AND user_name LIKE CONCAT('%', #{kw}, '%')&lt;/if&gt;
+    &lt;/trim&gt;
+&lt;/select&gt;
+</pre>
+<p>
+    自定义前后缀比 where、set 灵活：prefix 加在整段开头，suffix 加在结尾，prefixOverrides / suffixOverrides 去掉多余的开头或结尾内容。where 本质上就是 prefix="WHERE" + prefixOverrides="AND |OR "，set 是 prefix="SET" + suffixOverrides=","。理解了 trim，这两个标签就不再是黑盒。
+</p>
+<pre tag="text">
+kw = "ali"：SELECT ... FROM sys_user WHERE user_name LIKE CONCAT('%', ?, '%')
+kw = null ：SELECT ... FROM sys_user
+</pre>
+<h2>
+    sql 与 include：复用片段
+</h2>
+<pre tag="xml">
+&lt;sql id="Base_Column_List"&gt;
+    id, user_name, email, status, create_time
+&lt;/sql&gt;
+
+&lt;select id="selectById" resultType="User"&gt;
+    SELECT &lt;include refid="Base_Column_List"/&gt;
+    FROM sys_user WHERE id = #{id}
+&lt;/select&gt;
+</pre>
+<p>
+    列清单抽出来是有实际意义的：加一个字段只改一处，不会出现「某个查询漏了新列，返回对象里那个字段永远是 null」这种极难发现的问题。include 里还能用 &lt;property&gt; 传变量，做同一片段在不同表里的复用，但那属于少数场景。
+</p>
+<h2>
+    test 表达式怎么写
+</h2>
+<ul>
+    <li><strong>判 null</strong>：test="keyword != null"，注意字符串还要额外判空串，否则关键字传空串时照样拼出 LIKE '%%'。</li>
+    <li><strong>判空集合</strong>：test="ids != null and ids.size() &gt; 0"，也可以用 ids.size() &gt; 0 配合 length。</li>
+    <li><strong>布尔</strong>：test="enabled" 直接写属性名即可，别写 test="enabled == true"，虽然也对，但容易和字符串 'true' 混淆。</li>
+    <li><strong>数字比较</strong>：test="status &gt;= 1" 直接写即可。大于号在 XML 属性里虽然合法，但习惯上写成 &amp;gt; 更保险，避免被某些 XML 工具按标签解析。</li>
+    <li><strong>字符串比较</strong>：单字符用双引号，多字符单引号双引号都行，但统一用双引号最省心。</li>
+</ul>
+<p>
+    表达式里不能用 Java 方法调用的花活（除了 OGNL 支持的少数），也别在里面做业务判断。真要算，用 &lt;bind&gt; 提前算好一个变量：
+</p>
+<pre tag="xml">
+&lt;bind name="likeKeyword" value="'%' + keyword + '%'"/&gt;
+... WHERE user_name LIKE #{likeKeyword}
+</pre>
+<h2>
+    两个静默失败的坑
+</h2>
+<ul>
+    <li>test 里引用了不存在的属性：OGNL 把缺失属性当 null，条件恒不成立，SQL 少了这一项，没有任何报错。参数类改名后忘了同步，就会这样。</li>
+    <li>集合为空却写了 foreach：IN () 是非法 SQL，MySQL、H2 都会报语法错误，Oracle 也会。所以集合条件必须先用 size &gt; 0 挡一层。</li>
+</ul>

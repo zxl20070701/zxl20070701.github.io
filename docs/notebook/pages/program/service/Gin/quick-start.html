@@ -1,0 +1,50 @@
+<header>
+    快速开始
+</header>
+<h2>
+    Gin是什么
+</h2>
+<p>
+    Gin是一个使用Go语言编写的Web框架，提供路由、中间件和请求绑定等功能。下面从一个最小的HTTP服务开始。
+</p>
+<h2>
+    创建项目并安装Gin
+</h2>
+<p>
+    为项目创建目录并初始化Go模块，然后添加Gin依赖：
+</p>
+<pre tag="bash">
+mkdir gin-hello
+cd gin-hello
+go mod init example.com/gin-hello
+go get github.com/gin-gonic/gin
+</pre>
+<p>
+    在项目根目录创建 main.go：
+</p>
+<pre tag="go">
+package main
+
+import (
+    "log"
+
+    "github.com/gin-gonic/gin"
+)
+
+func main() {
+    router := gin.Default()
+    router.GET("/", func(c *gin.Context) {
+        c.JSON(200, gin.H{"message": "Hello, Gin!"})
+    })
+
+    if err := router.Run(":8080"); err != nil {
+        log.Fatal(err)
+    }
+}
+</pre>
+<h2>
+    运行服务
+</h2>
+<p>
+    在项目目录执行 <span class="special">go run .</span>，再访问 http://localhost:8080/。gin.Default()创建包含日志记录和崩溃恢复中间件的路由器，Run启动HTTP服务。
+</p>

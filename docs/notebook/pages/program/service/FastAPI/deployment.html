@@ -1,0 +1,78 @@
+<header>
+    中间件与部署
+</header>
+<h2>
+    自定义中间件
+</h2>
+<pre tag="python">
+import time
+from fastapi import Request
+
+@app.middleware("http")
+async def log_request(request: Request, call_next):
+    start = time.time()
+    response = await call_next(request)
+    duration = time.time() - start
+    print(f"{request.method} {request.url.path} -> {response.status_code} {duration:.3f}s")
+    return response
+</pre>
+<h2>
+    CORS 跨域
+</h2>
+<pre tag="python">
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+</pre>
+<h2>
+    Dockerfile
+</h2>
+<pre tag="dockerfile">
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+</pre>
+<h2>
+    docker-compose
+</h2>
+<pre tag="yaml">
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://user:pass@db:5432/demo
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: demo
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
+</pre>
+<h2>
+    启动命令
+</h2>
+<pre tag="bash">
+uvicorn app.main:app --reload      # 开发
+uvicorn app.main:app --workers 4   # 生产
+</pre>
+<p>
+    uvicorn 收到 SIGTERM 自动停止接新连接，等处理完的请求跑完再退出，Docker stop 默认给 10 秒够用。
+</p>

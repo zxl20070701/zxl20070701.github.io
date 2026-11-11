@@ -1,0 +1,73 @@
+<header>
+    配置与日志
+</header>
+<h2>
+    配置外置
+</h2>
+<p>
+    端口、数据库连接串、密钥不能写死在代码里，dev 和 prod 不一样。用 viper 读取 yaml 配置：
+</p>
+<pre tag="yaml">
+app:
+  port: 8080
+  mode: debug
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  user: root
+  dbname: gin_hello
+jwt:
+  secret: dev-secret-change-me
+  expire_hours: 24
+</pre>
+<p>
+    环境变量可以覆盖 yaml 里的值，密码不进 git：
+</p>
+<pre tag="bash">
+MYSQL_PASSWORD=realpass APP_ENV=prod go run .
+</pre>
+<h2>
+    多环境
+</h2>
+<p>
+    按环境拆分配置文件，启动时指定激活哪个：
+</p>
+<pre tag="bash">
+APP_ENV=dev go run .   # 读 config.dev.yaml
+APP_ENV=prod go run .  # 读 config.prod.yaml
+</pre>
+<h2>
+    结构化日志
+</h2>
+<p>
+    Gin 默认日志是一行字符串，不好检索。用 zap 替换成 JSON 格式日志：
+</p>
+<pre tag="go">
+logger, _ := zap.NewProduction()
+logger.Info("user created",
+    zap.Int("user_id", 1),
+    zap.String("email", "alice@example.com"),
+)
+</pre>
+<p>
+    输出变成结构化 JSON，日志系统能按 user_id 字段索引。
+</p>
+<h2>
+    请求 ID
+</h2>
+<p>
+    每个请求生成一个唯一 ID，往后所有日志都带上它，出问题能串起来：
+</p>
+<pre tag="go">
+func RequestID() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        rid := c.GetHeader("X-Request-Id")
+        if rid == "" {
+            rid = generateID()
+        }
+        c.Set("request_id", rid)
+        c.Header("X-Request-Id", rid)
+        c.Next()
+    }
+}
+</pre>

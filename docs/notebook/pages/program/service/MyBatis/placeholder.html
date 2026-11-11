@@ -1,0 +1,89 @@
+<header>
+    #{} 与 ${} 的区别
+</header>
+<h2>
+    一个是占位符，一个是字符串替换
+</h2>
+<p>
+    两者长得像，机制完全不同：
+</p>
+<ul>
+    <li><strong>#{}</strong>：编译成 JDBC 的 ?，参数通过 PreparedStatement 传入。SQL 结构和参数值彻底分离，参数里带什么引号、分号、注释符，都只是一个值。</li>
+    <li><strong>${}</strong>：在解析阶段就把值拼进 SQL 文本，之后才交给数据库执行。等价于你在 Java 里用 + 拼字符串。</li>
+</ul>
+<pre tag="xml">
+&lt;select id="selectByNameLikeSafe" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user
+    WHERE user_name LIKE CONCAT('%', #{keyword}, '%')
+&lt;/select&gt;
+
+&lt;select id="selectByNameLikeUnsafe" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user
+    WHERE user_name LIKE '%${keyword}%'
+&lt;/select&gt;
+</pre>
+<p>
+    日志里能直接看出差别：安全版是预编译的 ?，危险版把值写死进了语句：
+</p>
+<pre tag="text">
+安全版：==>  Preparing: SELECT ... WHERE user_name LIKE CONCAT('%', ?, '%')
+危险版：==>  Preparing: SELECT ... WHERE user_name LIKE '%ali%'
+</pre>
+<h2>
+    注入是怎么发生的
+</h2>
+<p>
+    给危险版传一个正常关键字，结果是 1 条；换成 <strong>' OR 1=1 --</strong>，拼出来的语句变成：
+</p>
+<pre tag="text">
+==>  Preparing: SELECT ... WHERE user_name LIKE '%' OR 1=1 --%'
+</pre>
+<p>
+    OR 1=1 让条件恒真，后面的 -- 把残余的 '%' 注释掉，于是整表数据都被查出来（3 条）。同样的入参给安全版，返回 0 条——因为它在拿这串字符当「用户名里的字面」去匹配，匹配不到任何行。这就是「参数化查询不区分数据和代码」的意义。
+</p>
+<p>
+    更危险的是 UPDATE / DELETE 里的 ${}，一个 admin' -- 就可能把 WHERE 条件整体失效。所以判断标准很简单：<strong>凡是用户能控制的输入，一律 #{}</strong>。
+</p>
+<h2>
+    那 ${} 什么时候必须用
+</h2>
+<p>
+    预编译参数只能填「值」，不能填表名、列名、ORDER BY 的排序字段、LIKE 的通配符位置。这些属于 SQL 结构，只能用 ${}：
+</p>
+<pre tag="xml">
+&lt;select id="selectAllOrderBy" resultType="User"&gt;
+    SELECT id, user_name FROM sys_user ORDER BY ${sortBy} ${sortDirection}
+&lt;/select&gt;
+</pre>
+<pre tag="java">
+private static final Map&lt;String, String&gt; SORTABLE = Map.of(
+        "id", "id",
+        "name", "user_name",
+        "time", "create_time");
+
+public List&lt;User&gt; list(String sortBy, String direction) {
+
+    String column = SORTABLE.getOrDefault(sortBy, "id");     // 白名单映射，取不到就用默认
+    String order = "desc".equalsIgnoreCase(direction) ? "DESC" : "ASC";
+
+    return userMapper.selectAllOrderBy(column, order);
+}
+</pre>
+<p>
+    关键点是：<strong>进 SQL 的不是用户传的字符串，而是白名单里查出来的常量</strong>。这样即使前端传 orderBy=1;drop table，也只会得到默认的 id。直接把参数丢进 ${} 的写法，等价于在 SQL 里执行任意代码。
+</p>
+<h2>
+    三个容易混的地方
+</h2>
+<ul>
+    <li><strong>配置文件的 ${}</strong>：mybatis-config.xml 里的 ${jdbc.url} 是属性替换，发生在解析配置阶段，和 SQL 里的 ${} 完全是两套机制，只是语法撞了。</li>
+    <li><strong>#{} 里还能写别的</strong>：#{createTime,jdbcType=TIMESTAMP} 指定 JDBC 类型，#{user.userName} 取嵌套属性，#{id,typeHandler=...} 指定类型处理器。逗号后面的部分都是给驱动和 TypeHandler 的提示，不是 SQL。</li>
+    <li><strong>用了 #{} 也不代表绝对安全</strong>：如果 SQL 结构本身由外部决定（整段 where 由前端传、排序字段直连、LIKE 的 % 由前端拼接），仍然是注入。判断标准永远是「这段字符串进的是值的位置，还是结构的位置」。</li>
+</ul>
+<h2>
+    一句话记法
+</h2>
+<p>
+    交给数据库当<strong>值</strong>的，用 #{}；只能靠拼进<strong>结构</strong>的（表名、列名、排序方向），用 ${} 且必须走代码里的白名单。前者是默认选择，后者是需要写注释说明理由的例外。
+</p>
+

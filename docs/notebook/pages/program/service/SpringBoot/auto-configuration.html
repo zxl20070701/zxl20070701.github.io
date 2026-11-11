@@ -1,0 +1,105 @@
+<header>
+    自动配置是怎么生效的
+</header>
+<h2>
+    @SpringBootApplication 是三个注解
+</h2>
+<p>
+    启动类上的这一个注解，等价于下面三个叠加。理解它，Boot 就没有「魔法」了。
+</p>
+<pre tag="java">
+@SpringBootApplication
+// = @SpringBootConfiguration   （本质是 @Configuration，声明配置类）
+// + @EnableAutoConfiguration   （开启自动配置，核心）
+// + @ComponentScan             （扫描启动类所在包及其子包）
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+</pre>
+<p>
+    @ComponentScan 默认只扫启动类所在的包。控制器放在别的包下就扫不到，接口自然 404——这是新手最常见的 404 原因，比路径写错还常见。
+</p>
+<h2>
+    自动配置类的清单从哪来
+</h2>
+<p>
+    @EnableAutoConfiguration 会去 classpath 里找所有 jar 的自动配置清单文件，把列出的配置类统统加载进容器：
+</p>
+<pre tag="text">
+META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+</pre>
+<p>
+    Boot 3.x 用这个文件替代了 2.x 的 spring.factories。打开 spring-boot-autoconfigure 的 jar 就能看到几百个类名，例如：
+</p>
+<pre tag="text">
+org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration
+org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration
+org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
+</pre>
+<p>
+    这些类都只是普通的 @Configuration，里面写的是「怎么创建 DispatcherServlet」「怎么创建数据源」。它们能进清单却不一定生效，靠的是条件注解。
+</p>
+<h2>
+    条件注解决定生不生效
+</h2>
+<ul>
+    <li><strong>@ConditionalOnClass</strong>：classpath 里有某个类才生效。没引 spring-webmvc，WebMvcAutoConfiguration 直接跳过。</li>
+    <li><strong>@ConditionalOnMissingBean</strong>：容器里没有同类型 Bean 才生效。你自己定义了一个，Boot 就让位。</li>
+    <li><strong>@ConditionalOnProperty</strong>：配置项满足条件才生效，例如 spring.datasource.url 配了才建数据源。</li>
+</ul>
+<p>
+    这就是「约定优于配置」：配置能自动就自动，你一旦显式给出，Boot 立刻让步。所以覆盖自动配置最稳的办法不是找开关，而是自己定义同类型 Bean。
+</p>
+<pre tag="java">
+@Configuration
+public class MyWebConfig {
+
+    // 容器里已有 DispatcherServlet 时 Boot 不再创建；
+    // 这里自定义 ObjectMapper，JacksonAutoConfiguration 里那个就失效
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return mapper;
+    }
+}
+</pre>
+<h2>
+    排查自动配置有没有生效
+</h2>
+<p>
+    启动时加 --debug（或配置 debug=true），控制台会打印一份「条件评估报告」，逐条列出每个自动配置类为什么生效、为什么跳过。排查「为什么我的数据源没被创建」「为什么 Web 配置没起作用」时，这份报告比猜快得多。
+</p>
+<pre tag="bash">
+java -jar demo.jar --debug
+# 或
+./mvnw spring-boot:run -Dspring-boot.run.arguments=--debug
+</pre>
+<h2>
+    显式排除某个自动配置
+</h2>
+<p>
+    少见但确实会遇到：某些自动配置和环境冲突（比如自带容器的安全组件）。可以在注解上排除，也可以用配置项排除。
+</p>
+<pre tag="java">
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+public class DemoApplication { }
+</pre>
+<pre tag="properties">
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+</pre>
+<h2>
+    自己的 starter 也是这个套路
+</h2>
+<p>
+    写一个内部 starter 时，做两件事就够了：一个 jar 放自动配置类，一个 jar 放依赖聚合；自动配置类里写好条件注解，并在 imports 文件里登记类名。使用者加上依赖，配置就自动生效——这就是所有 spring-boot-starter-xxx 的共同结构。
+</p>
+<h2>
+    和手写配置的对照
+</h2>
+<p>
+    原生 Spring MVC 里 &lt;mvc:annotation-driven/&gt; 手写的那些组件，在 Boot 里由 WebMvcAutoConfiguration 创建，且大部分被 @ConditionalOnMissingBean 包着。所以「Boot 自动配置 = 一批带条件的 @Configuration 类」，不再是黑盒。
+</p>

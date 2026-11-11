@@ -1,0 +1,55 @@
+<header>
+    错误处理与API文档
+</header>
+<h2>
+    声明响应模型
+</h2>
+<p>
+    使用 response_model 指定响应结构。FastAPI会校验并按模型整理返回数据，也会将该结构展示在API文档中。
+</p>
+<pre tag="python">
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+
+class Item(BaseModel):
+    name: str
+    price: float
+
+
+@app.get("/items/{item_id}", response_model=Item)
+def read_item(item_id: int):
+    return {"name": "Notebook", "price": 12.5, "internal_note": "not returned"}
+</pre>
+<p>
+    响应中只包含Item声明的字段，internal_note不会出现在客户端响应中。
+</p>
+<h2>
+    返回HTTP错误
+</h2>
+<p>
+    对于业务上无法处理的请求，可以抛出 HTTPException，并设置合适的状态码和错误说明：
+</p>
+<pre tag="python">
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI()
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int):
+    if item_id &lt; 1:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return {"item_id": item_id}
+</pre>
+<p>
+    调用 GET /items/0 会得到404响应，其JSON内容包含 detail 字段。
+</p>
+<h2>
+    查看交互式文档
+</h2>
+<p>
+    启动应用后访问 /docs 查看并试用Swagger UI，访问 /redoc 查看另一种API文档页面。文档根据路由、参数类型和模型自动生成。
+</p>

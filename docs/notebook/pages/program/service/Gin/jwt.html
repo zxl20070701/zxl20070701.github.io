@@ -1,0 +1,83 @@
+<header>
+    JWT鉴权
+</header>
+<h2>
+    密码哈希
+</h2>
+<p>
+    密码绝不能明文存。用 bcrypt，它故意设计得慢，每次自动加随机 salt：
+</p>
+<pre tag="go">
+// 注册时哈希
+hash, _ := bcrypt.GenerateFromPassword([]byte(rawPassword), bcrypt.DefaultCost)
+
+// 登录时比对
+err := bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(rawPassword))
+</pre>
+<h2>
+    JWT 三段结构
+</h2>
+<p>
+    JWT 由 Header.Payload.Signature 三段组成。Header 和 Payload 是 Base64 编码不是加密，谁都能解开看内容，所以不要塞敏感信息。Signature 用服务器 secret 签名，防止篡改。
+</p>
+<p>
+    关键认知：JWT 不是加密，是签名。
+</p>
+<h2>
+    签发与解析
+</h2>
+<pre tag="go">
+func generateToken(userId uint, secret string) (string, error) {
+    claims := jwt.MapClaims{
+        "user_id": userId,
+        "exp":     time.Now().Add(24 * time.Hour).Unix(),
+    }
+    token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+    return token.SignedString([]byte(secret))
+}
+
+func parseToken(tokenStr string, secret string) (uint, error) {
+    token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
+        return []byte(secret), nil
+    })
+    if err != nil {
+        return 0, err
+    }
+    claims := token.Claims.(jwt.MapClaims)
+    return uint(claims["user_id"].(float64)), nil
+}
+</pre>
+<h2>
+    鉴权中间件
+</h2>
+<p>
+    从 Authorization 头拿 token，验签通过后把 user_id 塞进 context：
+</p>
+<pre tag="go">
+func Auth(secret string) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        h := c.GetHeader("Authorization")
+        if !strings.HasPrefix(h, "Bearer ") {
+            c.AbortWithStatusJSON(401, gin.H{"error": "unauthorized"})
+            return
+        }
+        userId, err := parseToken(h[7:], secret)
+        if err != nil {
+            c.AbortWithStatusJSON(401, gin.H{"error": "invalid token"})
+            return
+        }
+        c.Set("user_id", userId)
+        c.Next()
+    }
+}
+</pre>
+<p>
+    受保护的路由组统一挂这个中间件：
+</p>
+<pre tag="go">
+private := r.Group("/api")
+private.Use(middleware.Auth(secret))
+{
+    private.GET("/users/me", userH.Me)
+}
+</pre>

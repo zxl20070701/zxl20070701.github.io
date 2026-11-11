@@ -1,0 +1,114 @@
+<header>
+    一级与二级缓存
+</header>
+<h2>
+    两级缓存的层级
+</h2>
+<pre tag="text">
+二级缓存  &lt;cache/&gt;        namespace 级，跨 SqlSession 共享，默认关闭，要手动开
+一级缓存  localCache       SqlSession 级，默认开启，作用域就是这一次会话
+数据库
+</pre>
+<p>
+    查询先查一级，再查二级，最后才到数据库；写操作会把两级都清掉。理解这一点，「为什么改了数据但查询还是旧值」和「为什么多开一个 session 就突然查到了」都能解释。
+</p>
+<h2>
+    一级缓存实测
+</h2>
+<pre tag="java">
+try (SqlSession session = factory.openSession()) {
+    UserMapper userMapper = session.getMapper(UserMapper.class);
+    userMapper.selectById(1L);
+    userMapper.selectById(1L);   // 第二次不走数据库
+}
+</pre>
+<pre tag="text">
+==>  Preparing: SELECT id, user_name, ... FROM sys_user WHERE id = ?
+（第二次调用没有任何 Preparing，说明直接命中缓存）
+</pre>
+<p>
+    缓存 key 由「语句 id + 参数 + 分页参数 + SQL 文本」组成，所以参数不同、SQL 不同都不会命中；也意味着拿到的是<strong>同一个对象实例</strong>，改它的字段，缓存里的内容就跟着变了。
+</p>
+<h2>
+    一级缓存什么时候失效
+</h2>
+<ul>
+    <li><strong>执行了增删改</strong>：同一 session 里任何 update / insert / delete 都会清空整个一级缓存（不是只清受影响的表）。实测：查一次 → 更新一次 → 再查，第三次会重新打 SQL。</li>
+    <li><strong>commit / rollback</strong>：事务结束即清空。</li>
+    <li><strong>手动 clearCache()</strong>：想强制重查时用。</li>
+    <li><strong>不同的 SqlSession</strong>：各管各的，互不可见。</li>
+    <li><strong>localCacheScope = STATEMENT</strong>：配成这个值，每条语句执行完就清缓存，等于关掉一级缓存。</li>
+</ul>
+<p>
+    最现实的一条：<strong>接上 Spring 之后，一级缓存几乎不生效</strong>。因为每次 mapper 调用都是一个新 SqlSession，用完整就关。只有在一个事务内（Spring 把同一个 SqlSession 绑定到当前事务）连续调用多次，才可能命中。所以「一级缓存让我的查询不刷新」这种问题，通常来自自己 new 的 session 或者长事务。
+</p>
+<p>
+    还有一个真实事故场景：从缓存里拿到的对象被下游改了字段，之后同一事务里再查，拿到的就是被改过的对象——数据库里其实没变。这不是缓存错了，是它返回了同一个引用。
+</p>
+<h2>
+    二级缓存怎么开
+</h2>
+<pre tag="xml">
+&lt;mapper namespace="io.github.zxl20070701.mybatis.mapper.UserMapper"&gt;
+
+    &lt;!-- 只需要这一行 --&gt;
+    &lt;cache/&gt;
+
+    ...
+&lt;/mapper&gt;
+</pre>
+<pre tag="java">
+try (SqlSession session = factory.openSession()) {
+    session.getMapper(UserMapper.class).selectById(1L);
+}
+try (SqlSession session = factory.openSession()) {
+    session.getMapper(UserMapper.class).selectById(1L);   // 命中二级缓存
+}
+</pre>
+<pre tag="text">
+第一个 session：==>  Preparing: SELECT ...
+第二个 session：（没有 Preparing，命中二级缓存）
+</pre>
+<p>
+    注意两个前置条件：全局 cacheEnabled 为 true（默认就是），以及结果对象必须<strong>可序列化</strong>。MyBatis 默认用 SerializedCache 把对象写进缓存，对象不是 Serializable 就会在执行时炸出来：
+</p>
+<pre tag="text">
+org.apache.ibatis.cache.CacheException: Error serializing object.
+Cause: java.io.NotSerializableException: io.github.zxl20070701.mybatis.entity.Order
+</pre>
+<p>
+    这里报的是 Order 而不是 User，因为 User 里有一个 List&lt;Order&gt;，序列化会连带处理成员。给实体加 implements Serializable 只是第一步，集合里的元素类型也要加。
+</p>
+<p>
+    同样是「写进缓存」这件事决定了时机：session 关闭（或提交）时才把本次会话的读结果刷进二级缓存，所以第一个 session 里查完但还没关，第二个 session 是拿不到的。
+</p>
+<h2>
+    二级缓存的四个坑
+</h2>
+<ul>
+    <li><strong>按 namespace 隔离，不跨表联动</strong>：UserMapper 的缓存里存了含订单的 User，OrderMapper 更新了订单，UserMapper 的缓存不会失效，读到脏数据。这是官方文档明确提示的风险。</li>
+    <li><strong>写操作清空整个 namespace</strong>：只要这条 mapper 里有任何 insert / update / delete（flushCache 默认为 true），整个 namespace 的缓存全清。缓存收益没想象中大。</li>
+    <li><strong>只在单机成立</strong>：缓存是 JVM 内存里的，多实例部署时 A 节点改了数据，B 节点的缓存还是旧的。所以集群环境要么别开，要么用 Redis 做统一缓存层。</li>
+    <li><strong>默认 LRU、无过期</strong>：&lt;cache/&gt; 不设参数时是 LRU + 1024 个引用 + 无刷新间隔，数据变更全靠写操作触发清理，读多写少的表才适合。</li>
+</ul>
+<h2>
+    &lt;cache/&gt; 的可调参数
+</h2>
+<pre tag="xml">
+&lt;cache eviction="LRU"          &lt;!-- LRU / FIFO / SOFT / WEAK --&gt;
+       flushInterval="60000"   &lt;!-- 毫秒，定期清空 --&gt;
+       size="1024"             &lt;!-- 最多缓存多少个引用 --&gt;
+       readOnly="false"/&gt;       &lt;!-- true 则直接返回缓存对象，不复制 --&gt;
+</pre>
+<p>
+    readOnly="true" 快，但它把同一个实例发给所有调用方，谁改了都影响别人；false 每次返回副本（因为要反序列化），安全但多一次序列化开销。这也是为什么二级缓存要求实体可序列化。
+</p>
+<h2>
+    该不该用
+</h2>
+<p>
+    结论是多数互联网项目不用 MyBatis 二级缓存：写多读少、多实例部署、缓存粒度不可控，收益低风险高。真需要缓存，通常是在 Service 层用 Redis 自己管，key 由业务定、过期时间自己设、失效时机自己控——可控性远好过框架内置的这一层。
+</p>
+<p>
+    如果确实要关：全局 &lt;setting name="cacheEnabled" value="false"/&gt;，或者在单条语句上用 useCache="false"（当前查询不进二级缓存）、flushCache="true"（执行前先清空）。
+</p>

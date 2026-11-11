@@ -1,0 +1,73 @@
+<header>
+    参数校验
+</header>
+<h2>
+    binding 标签
+</h2>
+<p>
+    在结构体字段上写校验规则，Gin 自动执行：
+</p>
+<pre tag="go">
+type CreateUserReq struct {
+    Name  string `json:"name" binding:"required,min=2,max=20"`
+    Email string `json:"email" binding:"required,email"`
+    Age   int    `json:"age" binding:"gte=0,lte=150"`
+}
+</pre>
+<p>
+    ShouldBindJSON 自动触发校验，失败返回 error。
+</p>
+<h2>
+    常用校验规则
+</h2>
+<ul>
+    <li><strong>required</strong>：必填</li>
+    <li><strong>omitempty</strong>：字段为空时跳过后续规则</li>
+    <li><strong>min / max</strong>：长度范围</li>
+    <li><strong>gte / lte</strong>：数字范围</li>
+    <li><strong>email</strong>：邮箱格式</li>
+    <li><strong>oneof=a b c</strong>：枚举值</li>
+</ul>
+<h2>
+    字段级错误响应
+</h2>
+<p>
+    默认错误信息是给开发者看的，前端没法用。把它翻译成字段级错误：
+</p>
+<pre tag="go">
+func FormatValidationError(err error) map[string]string {
+    var verrs validator.ValidationErrors
+    if !errors.As(err, &verrs) {
+        return map[string]string{"_": err.Error()}
+    }
+    out := make(map[string]string)
+    for _, fe := range verrs {
+        out[fe.Field()] = messageFor(fe)
+    }
+    return out
+}
+</pre>
+<p>
+    返回格式：
+</p>
+<pre tag="json">
+{
+  "code": 400,
+  "msg": "validation failed",
+  "errors": {
+    "email": "邮箱格式不正确",
+    "name": "长度至少 2 个字符"
+  }
+}
+</pre>
+<p>
+    前端拿到 errors 对象，直接红在对应 input 下面。
+</p>
+<h2>
+    三种参数绑定
+</h2>
+<ul>
+    <li><strong>ShouldBindJSON</strong>：请求体 JSON</li>
+    <li><strong>ShouldBindQuery</strong>：URL query string</li>
+    <li><strong>ShouldBindUri</strong>：路径参数</li>
+</ul>
