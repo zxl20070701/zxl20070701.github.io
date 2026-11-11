@@ -1,0 +1,66 @@
+<header>
+    IoC 容器与 Bean
+</header>
+<h2>
+    容器在管什么
+</h2>
+<p>
+    IOC 容器（ApplicationContext）管理的是「对象的整个生命周期」：什么时候创建、构造时注入什么、初始化后回调哪个方法、是不是单例、什么时候销毁。你不再 new，也不用操心依赖顺序——容器会先创建被依赖的对象。
+</p>
+<h2>
+    Bean 就是被容器管理的对象
+</h2>
+<p>
+    普通 Java 对象和 Bean 的区别只有一条：生命周期归谁管。前者归你，后者归容器。默认作用域是 singleton，整个容器里只有一个实例，所以多个地方注入到的是同一个对象。
+</p>
+<h2>
+    getBean 的几种写法
+</h2>
+<pre tag="java">
+// 按类型取：容器里该类型只有一个时最常用
+HelloService service = context.getBean(HelloService.class);
+
+// 按名字取：可以取到 JDK 类型、接口实现等没有类型唯一性的 Bean
+Object obj = context.getBean("appName");
+
+// 名字 + 类型：既明确又安全
+String appName = context.getBean("appName", String.class);
+
+// 该类型的所有 Bean（包括实现类）
+Map&lt;String, HelloService&gt; beans = context.getBeansOfType(HelloService.class);
+</pre>
+<p>
+    按类型取 Bean 时，如果容器里有多个同类型候选，会抛 NoUniqueBeanDefinitionException——这时要么用名字取，要么用 @Primary / @Qualifier 指定。
+</p>
+<h2>
+    Bean 的名字从哪来
+</h2>
+<p>
+    注解注册的 Bean，名字默认是「类名首字母小写」：HelloService 对应 helloService。XML 注册的 Bean 用 id 指定。名字冲突时后注册的会覆盖前者，容器启动不报错，但注入时可能拿到不是你预期的那个。
+</p>
+<h2>
+    容器什么时候创建、什么时候关
+</h2>
+<ul>
+    <li><strong>纯 Java 项目</strong>：自己 new ClassPathXmlApplicationContext，用完 close()。</li>
+    <li><strong>Web 项目</strong>：由 web.xml 里的 ContextLoaderListener 在应用启动时创建根容器，应用卸载时关闭。业务代码里从不出现 new ApplicationContext。</li>
+    <li><strong>Spring Boot</strong>：SpringApplication.run 内部创建，关闭时通过 shutdown hook 触发。</li>
+</ul>
+<p>
+    所以「容器」这个概念在三种项目里是同一个，只是谁来启动它不同。理解这一点，再看 Spring MVC 的两个容器、Spring Boot 的自动配置，就不会觉得是两套东西。
+</p>
+<h2>
+    两种容器实现
+</h2>
+<p>
+    按配置来源区分，读 XML 用 ClassPathXmlApplicationContext（也可以 FileSystemXmlApplicationContext），读注解配置类用 AnnotationConfigApplicationContext。两者拿到的都是 ApplicationContext，上层用法完全一样。
+</p>
+<pre tag="java">
+// 注解配置版：不再需要 xml
+ApplicationContext context =
+        new AnnotationConfigApplicationContext(AppConfig.class);
+
+@Configuration
+@ComponentScan("io.github.zxl20070701.springcore")
+public class AppConfig { }
+</pre>

@@ -1,0 +1,79 @@
+<header>
+    Bean 的三种注册方式
+</header>
+<h2>
+    注解扫描
+</h2>
+<p>
+    最常用的方式。类上写 @Component（或它的语义化子注解 @Service / @Repository / @Controller），容器扫描到包下的这些类就注册成 Bean。
+</p>
+<pre tag="java">
+@Service
+public class HelloService { }
+
+@Repository
+public class UserRepository { }
+</pre>
+<p>
+    扫描范围由 &lt;context:component-scan base-package="..."/&gt; 或 @ComponentScan 指定。注意它只扫指定包的子包，包写错就会出现「容器里没有这个 Bean」的典型报错 NoSuchBeanDefinitionException。
+</p>
+<h2>
+    XML 里写 bean
+</h2>
+<p>
+    适合两种情况：一是第三方类不能改代码加注解，二是想显式看到对象是怎么拼出来的。JDK 自带类型也能这样交给容器。
+</p>
+<pre tag="xml">
+&lt;bean id="appName" class="java.lang.String"&gt;
+    &lt;constructor-arg value="SpringCore 最小示例"/&gt;
+&lt;/bean&gt;
+
+&lt;!-- 引用另一个 Bean 作为构造参数 --&gt;
+&lt;bean id="greetingTask" class="io.github.zxl20070701.springcore.task.GreetingTask"&gt;
+    &lt;constructor-arg ref="appName"/&gt;
+&lt;/bean&gt;
+</pre>
+<h2>
+    Java 配置类 + @Bean
+</h2>
+<p>
+    Spring 3.0 之后可以不写 XML，用配置类代替。@Bean 标注在方法上，方法返回值就是注册进容器的对象，方法名默认是 Bean 名。
+</p>
+<pre tag="java">
+@Configuration
+@ComponentScan("io.github.zxl20070701.springcore")
+public class AppConfig {
+
+    @Bean
+    public String appName() {
+        return "SpringCore 最小示例";
+    }
+
+    // 需要别的 Bean 时，直接作为方法参数，容器会注入
+    @Bean
+    public GreetingTask greetingTask(String appName) {
+        return new GreetingTask(appName);
+    }
+}
+</pre>
+<p>
+    启动时换一个实现类即可：new AnnotationConfigApplicationContext(AppConfig.class)。
+</p>
+<h2>
+    怎么选
+</h2>
+<ul>
+    <li>自己写的类，优先注解扫描，省事。</li>
+    <li>第三方类、需要精细控制构造过程，用 @Bean 或 XML。</li>
+    <li>同一个 Bean 不要在两处重复注册，否则按名字覆盖，排查起来很费时间。</li>
+</ul>
+<h2>
+    三种方式可以混用
+</h2>
+<p>
+    一个容器里同时存在 component-scan、XML bean、@Bean 完全合法。Spring 把它们统一转换成 BeanDefinition 注册进容器，之后所有使用方只看到「容器里有这么个 Bean」，不关心它怎么来的。
+</p>
+<pre tag="xml">
+&lt;!-- XML 里也可以引入 Java 配置类 --&gt;
+&lt;bean class="io.github.zxl20070701.springcore.AppConfig"/&gt;
+</pre>

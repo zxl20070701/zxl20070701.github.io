@@ -1,0 +1,93 @@
+<header>
+    依赖注入
+</header>
+<h2>
+    三种注入方式
+</h2>
+<pre tag="java">
+@Service
+public class UserService {
+
+    // 1. 构造器注入（推荐）
+    private final UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // 2. 字段注入（简单直观，但不推荐用在核心代码上）
+    @Autowired
+    private MailService mailService;
+
+    // 3. Setter 注入（可选依赖时用）
+    private CacheService cacheService;
+    @Autowired
+    public void setCacheService(CacheService cacheService) {
+        this.cacheService = cacheService;
+    }
+}
+</pre>
+<h2>
+    为什么推荐构造器注入
+</h2>
+<ul>
+    <li>字段能声明成 final，对象一旦创建依赖就不可变。</li>
+    <li>依赖缺失时容器启动就报错，而不是跑到业务代码里才空指针。</li>
+    <li>单元测试直接 new 一个对象传假依赖，不需要启动容器。</li>
+    <li>依赖太多时构造器会变长——那正好是个提醒：这个类职责过重了。</li>
+</ul>
+<p>
+    Spring 4.3 之后，类里只有一个构造器时可以省掉 @Autowired，容器会自动用它注入。
+</p>
+<h2>
+    @Autowired 是怎么找到 Bean 的
+</h2>
+<p>
+    默认按类型匹配（byType）。容器里该类型有两个及以上候选时会失败，此时用下面三种手段消除歧义：
+</p>
+<pre tag="java">
+@Primary
+@Service
+public class MysqlUserRepository implements UserRepository { }
+
+@Service
+public class RedisUserRepository implements UserRepository { }
+
+@Service
+public class UserService {
+    // 方案一：@Primary 标在默认实现上，不写注解也能优先选中
+
+    // 方案二：用 @Qualifier 指定名字
+    @Autowired
+    @Qualifier("redisUserRepository")
+    private UserRepository userRepository;
+}
+</pre>
+<p>
+    @Resource 是 JDK 自带的注解，语义是先按名字匹配、找不到再按类型匹配，和 @Autowired 的（默认按类型）恰好相反。团队里最好统一用其中一种，别混着写。
+</p>
+<h2>
+    注入 null 的坑
+</h2>
+<p>
+    @Autowired(required = false) 允许容器里没有该类型时不报错，但字段就是 null，用之前必须判空。现场最常见的事故是：加了这个属性以为「可选」，结果业务路径真的走了 null。
+</p>
+<h2>
+    循环依赖
+</h2>
+<p>
+    A 的构造器要 B，B 的构造器要 A，容器无法决定先创建谁，启动直接失败（BeanCurrentlyInCreationException）。这不是 Spring 的毛病，而是设计信号：两个类职责耦合过度，应该抽公共部分或改成事件/回调。
+</p>
+<pre tag="java">
+@Service
+public class A {
+    public A(B b) { }   // 循环构造器 → 启动失败
+}
+
+@Service
+public class B {
+    public B(A a) { }
+}
+</pre>
+<p>
+    字段注入在单例场景下可以靠提前暴露引用「绕」过去，但那只是把问题推到运行时。能改设计就改设计。
+</p>

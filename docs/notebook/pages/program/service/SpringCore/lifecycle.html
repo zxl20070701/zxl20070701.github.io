@@ -1,0 +1,83 @@
+<header>
+    作用域与生命周期
+</header>
+<h2>
+    作用域
+</h2>
+<ul>
+    <li><strong>singleton</strong>（默认）：容器里只有一个实例，所有注入点共享它。</li>
+    <li><strong>prototype</strong>：每次 getBean 得到新实例，适合有状态的短生命周期对象。</li>
+    <li><strong>request / session</strong>：只在 Web 环境有意义，把对象绑到单次请求或会话上。</li>
+</ul>
+<pre tag="java">
+@Service
+@Scope("prototype")
+public class ReportBuilder { }
+</pre>
+<p>
+    因为默认单例，Bean 里不要放可变状态。Controller 里放一个成员变量累加计数，多个请求就会互相污染——这是新手最常见的并发事故，容器本身不帮你隔离。
+</p>
+<h2>
+    生命周期回调的顺序
+</h2>
+<p>
+    实例化 → 依赖注入 → 初始化回调 → 正常使用 → 销毁回调。初始化和销毁有三种写法，效果等价，推荐注解：
+</p>
+<pre tag="java">
+@Service
+public class ConnectionPool {
+
+    @PostConstruct
+    public void init() {
+        // 依赖已经注入完成，这里做初始化最合适
+    }
+
+    @PreDestroy
+    public void destroy() {
+        // 容器关闭时释放资源
+    }
+}
+</pre>
+<p>
+    接口方式是同一时机的另一种写法，类要 exposed 出 Spring 的 API：
+</p>
+<pre tag="java">
+@Service
+public class ConnectionPool implements InitializingBean, DisposableBean {
+
+    @Override
+    public void afterPropertiesSet() {
+        // 等价于 @PostConstruct
+    }
+
+    @Override
+    public void destroy() {
+        // 等价于 @PreDestroy
+    }
+}
+</pre>
+<p>
+    注解写法的优点是类不依赖 Spring 接口，换容器也能用。XML 里还有一种 init-method / destroy-method 的写法，老项目里常见。
+</p>
+<h2>
+    懒加载
+</h2>
+<p>
+    默认容器启动时就创建所有单例 Bean。Bean 很多、启动慢时，可以对个别 Bean 加 @Lazy，第一次被用到时才创建。
+</p>
+<pre tag="java">
+@Lazy
+@Service
+public class HeavyReportService { }
+</pre>
+<p>
+    代价是启动期的错误被推迟到运行期：配置写错时启动是成功的，第一次调用才炸。核心链路上的 Bean 不要开懒加载。
+</p>
+<h2>
+    几个容易混的点
+</h2>
+<ul>
+    <li>prototype Bean 的销毁回调不会自动执行，容器只负责单例的销毁。</li>
+    <li>@PostConstruct 属于 Jakarta 注解（jakarta.annotation），不是 Spring 自己的。</li>
+    <li>BeanPostProcessor 是所有 Bean 初始化前后的统一扩展点，Spring AOP 代理、@Autowired 注入都是借它实现的。</li>
+</ul>

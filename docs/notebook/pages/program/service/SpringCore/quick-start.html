@@ -1,0 +1,116 @@
+<header>
+    从零跑起来
+</header>
+<h2>
+    Spring Core 是什么
+</h2>
+<p>
+    Spring Core 是整个 Spring 家族最底层的一块：一个 IOC 容器，负责创建对象、组装对象、管理对象的生命周期。它不含任何 Web 能力，跑在普通 JVM 里就能用——这也是 Spring MVC 和 Spring Boot 的共同地基。
+</p>
+<h2>
+    依赖只要一个
+</h2>
+<p>
+    只需要 spring-context，它会传递引入 spring-core、spring-beans、spring-aop、spring-expression。版本不需要自己逐个对齐，统一写在一个属性里。
+</p>
+<pre tag="xml">
+&lt;properties&gt;
+    &lt;java.version&gt;21&lt;/java.version&gt;
+    &lt;spring-framework.version&gt;6.2.7&lt;/spring-framework.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+        &lt;version&gt;${spring-framework.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</pre>
+<h2>
+    容器配置
+</h2>
+<p>
+    applicationContext.xml 就是给容器的一份说明书：扫描哪些包、要额外注册哪些 Bean。放在 src/main/resources 下，最终会被打到 classpath 根目录。
+</p>
+<pre tag="xml">
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd"&gt;
+
+    &lt;!-- 扫描包下的 @Service / @Component / @Repository --&gt;
+    &lt;context:component-scan base-package="io.github.zxl20070701.springcore"/&gt;
+
+    &lt;!-- 不写注解的类也能交给容器管理，连 JDK 自带类型都可以 --&gt;
+    &lt;bean id="appName" class="java.lang.String"&gt;
+        &lt;constructor-arg value="SpringCore 最小示例"/&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</pre>
+<h2>
+    启动容器并取 Bean
+</h2>
+<pre tag="java">
+package io.github.zxl20070701.springcore;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import io.github.zxl20070701.springcore.service.HelloService;
+
+public class App {
+
+    public static void main(String[] args) {
+        // 启动容器：读 classpath 下的 applicationContext.xml
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+        // 按类型取 Bean，不用自己 new
+        HelloService helloService = context.getBean(HelloService.class);
+        System.out.println(helloService.greet("World"));
+
+        // 按名字取 Bean（XML 里定义的那个）
+        String appName = context.getBean("appName", String.class);
+        System.out.println(appName);
+
+        // 容器用完要关，单例 Bean 的销毁回调才会执行
+        ((ClassPathXmlApplicationContext) context).close();
+    }
+}
+</pre>
+<p>
+    被容器管理的 HelloService 只需要一个注解，方法体里没有任何 Spring 相关代码：
+</p>
+<pre tag="java">
+@Service
+public class HelloService {
+    public String greet(String name) {
+        String safeName = (name == null || name.isBlank()) ? "World" : name.trim();
+        return "Hello, " + safeName + "!";
+    }
+}
+</pre>
+<h2>
+    运行
+</h2>
+<p>
+    命令行用 exec 插件直接跑 main，也可以在自己 IDE 里运行 App。输出只有两行，说明容器确实在工作。
+</p>
+<pre tag="bash">
+mvn -q compile exec:java
+
+# [注解 Bean] Hello, World!
+# [XML  Bean] SpringCore 最小示例
+</pre>
+<h2>
+    记住三件事
+</h2>
+<ul>
+    <li><strong>IOC</strong>：对象创建权从「自己 new」交给容器，容器由配置文件驱动。</li>
+    <li><strong>DI</strong>：容器创建对象时，顺手把它依赖的对象塞进去。</li>
+    <li><strong>生命周期</strong>：启动容器 → 取 Bean 使用 → 关闭容器。Web 项目里这三步由框架代劳，你只写 Bean。</li>
+</ul>
