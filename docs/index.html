@@ -1,81 +1,644 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" data-theme="auto">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>导航 | z Z ...</title>
+    <title>z Z ... ｜ 文档笔记 · 实用工具 · 开源项目</title>
+    <meta name="description" content="把日常的积累，做成能用的工具。文档笔记、浏览器工具箱、开源库与桌面应用，全部由原生 HTML / CSS / JavaScript 写成。">
     <link rel="shortcut icon" href="./images/index.png">
+    <script>
+        // 首屏主题（防闪烁），与 styles/theme.js 共用同一存储键
+        (function () {
+            var m = "auto";
+            try {
+                m = localStorage.getItem("zzz-theme") || "auto";
+            } catch (e) { }
+            if (["light", "dark", "auto"].indexOf(m) < 0) m = "auto";
+            document.documentElement.setAttribute("data-theme", m);
+        })();
+    </script>
     <link rel="stylesheet" href="./styles/normalize.css">
+    <link rel="stylesheet" href="./styles/theme.css">
     <link rel="stylesheet" href="./styles/index.css">
 </head>
 
 <body>
-    <header>
-        <h2>
-            导航
-        </h2>
-        <a class="nav-item" target="_blank" href='./notebook/index.html'>文档笔记</a>
-        <a class="nav-item" target="_blank" href='./toolbox/index.html'>实用工具</a>
-        <div class="right">
-            <a target="_blank" href='https://github.com/zxl20070701'>Github</a>
+
+    <header class="hd">
+        <div class="wrap hd-in">
+            <a class="brand" href="./index.html">
+                <span class="glyph">z</span>
+                <span class="brand-txt">
+                    <span class="brand-name">z Z ...</span>
+                    <span class="brand-sub">zxl20070701.github.io</span>
+                </span>
+            </a>
+
+            <nav class="nav">
+                <a class="active" href="#top">首页</a>
+                <a href="#workspace">工作台</a>
+                <a href="#oss">开源项目</a>
+                <a href="#apps">应用市场</a>
+                <a href="#orgs">组织</a>
+            </nav>
+
+            <div class="hd-right">
+                <form class="search" onsubmit="return doSearch(event)">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+                        <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2"></path>
+                    </svg>
+                    <input id="q" type="text" placeholder="搜索笔记与工具" spellcheck="false" autocomplete="off">
+                    <kbd class="kbd">⌘K</kbd>
+                </form>
+
+                <div class="theme-switch" role="group" aria-label="主题模式">
+                    <button type="button" data-theme-set="light" aria-label="浅色" title="浅色">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"></circle>
+                            <path
+                                d="M12 2.6v2.2M12 19.2v2.2M21.4 12h-2.2M4.8 12H2.6M18.6 5.4l-1.6 1.6M7 16.9l-1.6 1.6M18.6 18.6l-1.6-1.6M7 7.1L5.4 5.4"
+                                stroke="currentColor" stroke-width="1.8"></path>
+                        </svg>
+                    </button>
+                    <button type="button" data-theme-set="dark" aria-label="深色" title="深色">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M20.5 15.2A8.6 8.6 0 0 1 8.8 3.5a8.6 8.6 0 1 0 11.7 11.7Z" stroke="currentColor"
+                                stroke-width="1.8"></path>
+                        </svg>
+                    </button>
+                    <button type="button" data-theme-set="auto" aria-label="跟随系统" title="跟随系统">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <rect x="3" y="4.5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8">
+                            </rect>
+                            <path d="M8.5 20h7" stroke="currentColor" stroke-width="1.8"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <a class="gh-link" href="https://github.com/zxl20070701" target="_blank" rel="noopener">
+                    <span>打开 Github</span>
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                        </path>
+                    </svg>
+                </a>
+            </div>
         </div>
     </header>
-    <div class="homepage">
-        <h1>
-            电子笔记
-        </h1>
-        <p>
-            日常记录“工作&生活”若干随笔，方便查询等
-        </p>
-        <a class="btn" href="./notebook/index.html#/program/language">
-            Get Started
-        </a>
-    </div>
-    <div class="organizations section-item">
-        <a class="item" target="_blank" href="https://github.com/oi-contrib">
-            <div class="icon oi-contrib"></div>
-            <h2 title="主要是一些代码笔记和个人开源项目">OI 开源</h2>
-            <p>
-                OI 开源组织倾情贡献，致力于更多有价值的灵感。
+
+    <main id="top">
+
+        <!-- ============ Hero ============ -->
+        <section class="wrap hero">
+            <span class="kicker accent">SINCE 2007 — PRESENT</span>
+            <h1>
+                把日常的积累，<br>
+                做成能用的工具。
+            </h1>
+            <p class="lede">
+                文档笔记、浏览器工具箱、开源库与桌面应用。全部由 HTML / CSS / JavaScript 原生写成，
+                没有框架，没有第三方依赖，我们一直在这里。
             </p>
-        </a>
-        <a class="item" target="_blank" href="https://github.com/NN-Studio">
-            <div class="icon nn-studio"></div>
-            <h2 title="AI相关项目">NN-Studio</h2>
-            <p>
-                神经网络等基础研究
-            </p>
-        </a>
-        <a class="item" target="_blank" href="https://github.com/handless-ui">
-            <div class="icon handless-ui"></div>
-            <h2 title="一些复用的组件等">handlessUI</h2>
-            <p>
-                包括无头组件等常用框架或场景组件库系列项目。
-            </p>
-        </a>
-        <a class="item" target="_blank" href="https://github.com/rapid-start">
-            <div class="icon rapid-start"></div>
-            <h2 title="一些原型项目等">快速开发</h2>
-            <p>
-                帮助你快速搭建业务项目(或代码用例等)的仓库代码。
-            </p>
-        </a>
-        <a class="item" target="_blank" href="https://github.com/LL-Store">
-            <div class="icon ll-store"></div>
-            <h2 title="业务产品为主，期望为日常工作&生活提供便捷">LL小店</h2>
-            <p>
-                持续维护一些开源业务产品，欢迎任何人加入。
-            </p>
-        </a>
-    </div>
-    <footer>
-        <div class="copyright">
-            Copyright&copy;2007-2026.Build width <a class="btn" target="_blank" href="./notebook/home.html">z Z ...</a>
-            ｜ <a href="./notebook/privacy.html" target="_blank" style="color:black;font-style:italic;font-size:15px;font-weight:200;text-decoration:underline;cursor:pointer;">隐私政策</a>
+            <div class="hero-act">
+                <a class="btn btn-solid" href="./notebook/index.html#/program/language">
+                    进入文档笔记
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"></path>
+                    </svg>
+                </a>
+                <a class="btn btn-line" href="#oss">浏览开源项目</a>
+            </div>
+            <div class="meta">
+                <span><i></i>100% 原生实现</span>
+                <span><i></i>0 第三方依赖</span>
+                <span><i></i>MIT 开源</span>
+            </div>
+        </section>
+
+        <!-- ============ 工作台 ============ -->
+        <section class="wrap" id="workspace">
+            <div class="board">
+                <div class="board-top">
+                    <div>
+                        <span class="kicker">WORKSPACE</span>
+                        <p class="claim">三块随手可用的地方，进来就能干活。</p>
+                    </div>
+                    <a class="btn btn-solid btn-sm" href="./notebook/index.html#/">
+                        全部入口
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2"></path>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="board-cards">
+                    <a class="bcard" href="./notebook/index.html">
+                        <span class="bico">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path
+                                    d="M5 4.5h11l3 3v12a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5V6A1.5 1.5 0 0 1 5 4.5Z"
+                                    stroke="currentColor" stroke-width="1.7"></path>
+                                <path d="M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.7"></path>
+                            </svg>
+                        </span>
+                        <h3>文档笔记</h3>
+                        <p>按领域切分的结构化速查：程序、数学、计算机、图形与人文，全部支持代码高亮和公式。</p>
+                        <span class="go">打开笔记本 →</span>
+                    </a>
+
+                    <a class="bcard" href="./toolbox/index.html">
+                        <span class="bico">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M14.7 4.3a4 4 0 0 1 5.3 5.3l-8.4 8.4-4.6 1.3 1.3-4.6Z" stroke="currentColor"
+                                    stroke-width="1.7"></path>
+                                <path d="M4 20.5h7" stroke="currentColor" stroke-width="1.7"></path>
+                            </svg>
+                        </span>
+                        <h3>实用工具</h3>
+                        <p>截图、代码编辑、图片处理、JSON 格式化、正则可视化，全部在浏览器里跑。</p>
+                        <span class="go">打开工具箱 →</span>
+                    </a>
+
+                    <a class="bcard" href="#oss">
+                        <span class="bico">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M9 7 4.5 12 9 17M15 7l4.5 5-4.5 5" stroke="currentColor" stroke-width="1.7">
+                                </path>
+                            </svg>
+                        </span>
+                        <h3>开源与产品</h3>
+                        <p>四个开源库、两款跨平台桌面应用，可视化、表达式、数据库与截图都能覆盖。</p>
+                        <span class="go">查看全部 →</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 开源项目 ============ -->
+        <section class="wrap sec" id="oss">
+            <div class="sec-head">
+                <div>
+                    <span class="kicker accent">OPEN SOURCE</span>
+                    <h2>开源项目</h2>
+                    <p class="sub">从可视化渲染、模板解析到表达式求值，都是可以直接拿来用的基础能力。</p>
+                </div>
+                <a class="link-more" href="https://github.com/oi-contrib" target="_blank" rel="noopener">OI开源 →</a>
+            </div>
+
+            <div class="feat">
+                <div class="feat-main">
+                    <div class="feat-title">
+                        <h3><a href="https://github.com/oi-contrib/VISLite" target="_blank" rel="noopener">VISLite</a>
+                        </h3>
+                        <span class="badge">Featured</span>
+                    </div>
+                    <p>
+                        灵活、快速、简单的数据可视化交互式跨端前端库。一套 API 覆盖 Canvas / SVG / WebGL，
+                        同时支持 Web、小程序与 UniApp。
+                    </p>
+                    <div class="feat-meta">
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Canvas / SVG / WebGL</span>
+                        <span class="tag">Cross-platform</span>
+                    </div>
+                    <div class="feat-act">
+                        <a class="btn btn-solid btn-sm" href="https://oi-contrib.github.io/VISLite" target="_blank"
+                            rel="noopener">查看文档</a>
+                        <a class="btn btn-line btn-sm" href="https://github.com/oi-contrib/VISLite" target="_blank"
+                            rel="noopener">源码</a>
+                    </div>
+                </div>
+
+                <div class="plate">
+                    <a class="oss-entry" href="https://www.oschina.net/p/vislite" target="_blank" rel="noopener">
+                        <span class="oss-ico" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13 5l-2 14" stroke="currentColor" stroke-width="1.7"
+                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </span>
+                        <span class="oss-txt">
+                            <span class="oss-title">开源中国 · OSCHINA</span>
+                            <span class="oss-sub">VISLite 项目主页 · 收录与下载</span>
+                        </span>
+                        <svg class="oss-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round"></path>
+                        </svg>
+                    </a>
+
+                    <div class="chart">
+                        <div class="chart-head">
+                            <span class="chart-ico" aria-hidden="true"></span>
+                            <span class="chart-name">vislite</span>
+                            <span class="chart-tag">npm 周下载量</span>
+                        </div>
+                        <svg class="chart-svg" viewBox="0 0 460 226" role="img" aria-label="vislite 近一年 npm 周下载量趋势图">
+                            <g class="grid" id="vis-grid"></g>
+                            <g class="ylabels" id="vis-ylabels"></g>
+                            <polygon class="area" id="vis-area" points=""></polygon>
+                            <polyline class="trend" id="vis-trend" points=""></polyline>
+                            <g class="dots" id="vis-dots"></g>
+                            <g class="xlabels" id="vis-xlabels"></g>
+                            <text class="chart-note" id="vis-note" x="248" y="105" text-anchor="middle"
+                                visibility="hidden"></text>
+                        </svg>
+                    </div>
+
+                    <a class="trend-link" href="./toolbox/index.html#/npm-download?packages=vislite&interval=7"
+                        target="_blank" rel="noopener">
+                        在工具箱查看完整下载趋势
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="list">
+                <a class="row" href="https://github.com/oi-contrib/oipage-cli" target="_blank" rel="noopener">
+                    <span class="glyphbox">&gt;_</span>
+                    <span class="n">oipage-cli <span class="st">★ 2</span></span>
+                    <span class="d">开发快速助手，一个包含常用功能的命令行工具，用来提升日常开发效率。</span>
+                    <span class="r">访问</span>
+                </a>
+                <a class="row" href="https://github.com/oi-contrib/xhtmlToJson" target="_blank" rel="noopener">
+                    <span class="glyphbox">&lt;&gt;</span>
+                    <span class="n">xhtmlToJson <span class="st">★ 5</span></span>
+                    <span class="d">把 xhtml 模板字符串解析成可操作对象，模板引擎与编译器的基础零件。</span>
+                    <span class="r">访问</span>
+                </a>
+                <a class="row" href="https://github.com/oi-contrib/evalExpress" target="_blank" rel="noopener">
+                    <span class="glyphbox">{ }</span>
+                    <span class="n">evalExpress <span class="st">★ 4</span></span>
+                    <span class="d">字符串表达式的解析与求解运行库，适合规则引擎、动态条件与公式计算。</span>
+                    <span class="r">访问</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ============ 应用市场 ============ -->
+        <section class="wrap sec" id="apps">
+            <div class="sec-head">
+                <div>
+                    <span class="kicker accent">APP STORE</span>
+                    <h2>应用市场</h2>
+                    <p class="sub">跨平台桌面应用，一件事做到底，装完就能用。</p>
+                </div>
+                <a class="link-more" href="https://github.com/LL-Store" target="_blank" rel="noopener">LL小店 →</a>
+            </div>
+
+            <div class="apps">
+                <article class="app">
+                    <div class="app-top">
+                        <span class="app-ico">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path
+                                    d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5A1.5 1.5 0 0 1 18.5 20H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"
+                                    stroke="currentColor" stroke-width="1.7"></path>
+                                <path d="M8.5 15.5 15 9M9 9.5l1.2 1.2M13.2 12.8l1.2 1.2" stroke="currentColor"
+                                    stroke-width="1.7"></path>
+                            </svg>
+                        </span>
+                        <div>
+                            <h3>Snipdraw <em>v0.1.0</em></h3>
+                        </div>
+                    </div>
+                    <p>跨平台截图标注工具。选框、箭头、文字、马赛克一步到位，截完就能直接发。</p>
+                    <div class="plats">
+                        <span class="tag">macOS</span>
+                        <span class="tag">Windows</span>
+                        <span class="tag">Linux</span>
+                    </div>
+                    <div class="app-act">
+                        <a href="https://LL-Store.github.io/Snipdraw" target="_blank" rel="noopener">访问主页 →</a>
+                        <a href="https://github.com/LL-Store/Snipdraw" target="_blank" rel="noopener">GitHub</a>
+                    </div>
+                </article>
+
+                <article class="app">
+                    <div class="app-top">
+                        <span class="app-ico">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <ellipse cx="12" cy="6.5" rx="7" ry="2.8" stroke="currentColor" stroke-width="1.7">
+                                </ellipse>
+                                <path d="M5 6.5v11c0 1.55 3.13 2.8 7 2.8s7-1.25 7-2.8v-11" stroke="currentColor"
+                                    stroke-width="1.7"></path>
+                                <path d="M5 12c0 1.55 3.13 2.8 7 2.8s7-1.25 7-2.8" stroke="currentColor"
+                                    stroke-width="1.7"></path>
+                            </svg>
+                        </span>
+                        <div>
+                            <h3>SQLL <em>v0.1.0</em></h3>
+                        </div>
+                    </div>
+                    <p>轻量、专注「看数据、改数据」的跨平台数据库管理工具，打开就能查。</p>
+                    <div class="plats">
+                        <span class="tag">macOS</span>
+                        <span class="tag">Windows</span>
+                        <span class="tag">Linux</span>
+                    </div>
+                    <div class="app-act">
+                        <a href="https://LL-Store.github.io/SQLL" target="_blank" rel="noopener">访问主页 →</a>
+                        <a href="https://github.com/LL-Store/SQLL" target="_blank" rel="noopener">GitHub</a>
+                    </div>
+                </article>
+            </div>
+
+            <div class="soon">
+                <span>更多应用持续上架 · coming soon</span>
+                <span>LL-Store</span>
+            </div>
+        </section>
+
+        <!-- ============ 组织 ============ -->
+        <section class="wrap sec" id="orgs">
+            <div class="sec-head">
+                <div>
+                    <span class="kicker accent">ORGANIZATIONS</span>
+                    <h2>参与与维护的开源组织</h2>
+                </div>
+            </div>
+            <div class="orgs">
+                <a class="org" href="https://github.com/oi-contrib" target="_blank" rel="noopener"
+                    title="主要是一些代码笔记和个人开源项目">
+                    <img src="./images/oi-contrib.png" alt="OI 开源"> OI 开源
+                </a>
+                <a class="org" href="https://github.com/NN-Studio" target="_blank" rel="noopener" title="AI 相关项目">
+                    <img src="./images/NN-Studio.png" alt="NN-Studio"> NN-Studio
+                </a>
+                <a class="org" href="https://github.com/handless-ui" target="_blank" rel="noopener" title="一些复用的组件等">
+                    <img src="./images/handlessUI.png" alt="handlessUI"> handlessUI
+                </a>
+                <a class="org" href="https://github.com/rapid-start" target="_blank" rel="noopener" title="一些原型项目等">
+                    <img src="./images/rapid-start.png" alt="快速开发"> 快速开发
+                </a>
+                <a class="org" href="https://github.com/LL-Store" target="_blank" rel="noopener"
+                    title="业务产品为主，期望为日常工作与生活提供便捷">
+                    <img src="./images/LL-Store.png" alt="LL 小店"> LL 小店
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="ft">
+        <div class="wrap">
+            <div class="ft-grid">
+                <div class="ft-brand">
+                    <a class="brand" href="./index.html">
+                        <span class="glyph">z</span>
+                        <span class="brand-txt">
+                            <span class="brand-name">z Z ...</span>
+                            <span class="brand-sub">zxl20070701.github.io</span>
+                        </span>
+                    </a>
+                    <p>走一步，再走一步。写一点笔记，做一点工具，剩下的交给时间。</p>
+                </div>
+                <div class="ft-col">
+                    <h4>内容</h4>
+                    <a href="./notebook/index.html">文档笔记</a>
+                    <a href="./toolbox/index.html">实用工具</a>
+                </div>
+                <div class="ft-col">
+                    <h4>开源</h4>
+                    <a href="https://github.com/oi-contrib/VISLite" target="_blank" rel="noopener">VISLite</a>
+                    <a href="https://github.com/oi-contrib/oipage-cli" target="_blank" rel="noopener">oipage-cli</a>
+                    <a href="https://github.com/oi-contrib/xhtmlToJson" target="_blank" rel="noopener">xhtmlToJson</a>
+                    <a href="https://github.com/oi-contrib/evalExpress" target="_blank" rel="noopener">evalExpress</a>
+                </div>
+                <div class="ft-col">
+                    <h4>关于</h4>
+                    <a href="./notebook/home.html">个人主页</a>
+                    <a href="https://github.com/zxl20070701" target="_blank" rel="noopener">GitHub</a>
+                    <a href="./notebook/privacy.html" target="_blank">隐私政策</a>
+                </div>
+            </div>
+            <div class="ft-btm">
+                <span>© 2007-2026 zxl20070701</span>
+                <span>Built with HTML / CSS / JavaScript</span>
+            </div>
         </div>
     </footer>
+
+    <!-- 移动端底部导航 -->
+    <nav class="tabbar">
+        <a class="on" href="#top">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1Z" stroke="currentColor"
+                    stroke-width="1.7"></path>
+            </svg>
+            首页
+        </a>
+        <a href="./notebook/index.html">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 4.5h11l3 3v12a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5V6A1.5 1.5 0 0 1 5 4.5Z"
+                    stroke="currentColor" stroke-width="1.7"></path>
+                <path d="M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.7"></path>
+            </svg>
+            笔记
+        </a>
+        <a href="./toolbox/index.html">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M14.7 4.3a4 4 0 0 1 5.3 5.3l-8.4 8.4-4.6 1.3 1.3-4.6Z" stroke="currentColor"
+                    stroke-width="1.7"></path>
+            </svg>
+            工具
+        </a>
+        <a href="#oss">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 7 4.5 12 9 17M15 7l4.5 5-4.5 5" stroke="currentColor" stroke-width="1.7"></path>
+            </svg>
+            开源
+        </a>
+    </nav>
+
+    <script src="./styles/theme.js"></script>
+    <script>
+        // 顶部搜索：跳到文档笔记的搜索路由
+        function doSearch(event) {
+            event.preventDefault();
+            var v = document.getElementById("q").value.replace(/\s+/g, " ").trim();
+            window.location.href = "./notebook/index.html#/?search=" + encodeURIComponent(v);
+            return false;
+        }
+
+        // ⌘K / Ctrl+K 聚焦搜索
+        document.addEventListener("keydown", function (e) {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+                var input = document.getElementById("q");
+                if (input) {
+                    e.preventDefault();
+                    input.focus();
+                }
+            }
+        });
+
+        // 锚点平滑滚动（尊重减少动效偏好）
+        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+            a.addEventListener("click", function (e) {
+                var id = a.getAttribute("href").slice(1);
+                var target = id ? document.getElementById(id) : null;
+                if (!target) return;
+                e.preventDefault();
+                var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+                history.replaceState(null, "", "#" + id);
+            });
+        });
+
+        // VISLite npm 周下载量趋势图：请求近一年真实数据，按 7 天求和聚合后渲染
+        // 同页签内缓存到 sessionStorage，关闭页签后清除；首次加载显示“加载中…”
+        (function initVisliteChart() {
+            var trend = document.getElementById("vis-trend");
+            if (!trend) return;
+
+            var NS = "http://www.w3.org/2000/svg";
+            var grid = document.getElementById("vis-grid");
+            var ylab = document.getElementById("vis-ylabels");
+            var area = document.getElementById("vis-area");
+            var dots = document.getElementById("vis-dots");
+            var xlab = document.getElementById("vis-xlabels");
+            var note = document.getElementById("vis-note");
+
+            var L = 46, R = 450, T = 18, B = 184;
+            var W = R - L, H = B - T;
+
+            var end = new Date();
+            var start = new Date();
+            start.setFullYear(start.getFullYear() - 1);
+            var url = "https://api.npmjs.org/downloads/range/" + iso(start) + ":" + iso(end) + "/vislite";
+            var CACHE_KEY = "vislite-npm-downloads";
+
+            function svgEl(name, attrs) {
+                var e = document.createElementNS(NS, name);
+                Object.keys(attrs).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+                return e;
+            }
+            function clear(node) {
+                while (node.firstChild) node.removeChild(node.firstChild);
+            }
+            function iso(d) {
+                var p = function (n) { return String(n).padStart(2, "0"); };
+                return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+            }
+            function showNote(msg) {
+                note.textContent = msg;
+                note.setAttribute("visibility", "visible");
+            }
+            function hideNote() {
+                note.setAttribute("visibility", "hidden");
+            }
+            function readCache() {
+                try {
+                    var raw = sessionStorage.getItem(CACHE_KEY);
+                    if (!raw) return null;
+                    var obj = JSON.parse(raw);
+                    // 仅当天缓存有效，跨天（页签跨午夜）重新请求
+                    if (obj && obj.day === iso(end)) return obj.data;
+                } catch (e) { }
+                return null;
+            }
+            function writeCache(data) {
+                try {
+                    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ day: iso(end), data: data }));
+                } catch (e) { }
+            }
+            function tickStep(v, target) {
+                if (v <= 0) return 20;
+                var rough = v / target;
+                var pow = Math.pow(10, Math.floor(Math.log10(rough)));
+                var n = rough / pow;
+                var nice = n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10;
+                return nice * pow;
+            }
+            function aggregate(data) {
+                var days = (data.downloads || []).slice().sort(function (a, b) { return a.day < b.day ? -1 : 1; });
+                if (!days.length) throw new Error("empty");
+                // 按 7 天求和聚合（与工具箱 interval=7 口径一致，末尾向前取整周）
+                var weeks = [];
+                for (var i = days.length - 1; i >= 6; i -= 7) {
+                    var sum = 0;
+                    for (var j = 0; j < 7; j++) sum += days[i - j].downloads;
+                    weeks.unshift({
+                        label: days[i - 6].day.slice(5) + " 至 " + days[i].day.slice(5),
+                        value: sum
+                    });
+                }
+                return weeks;
+            }
+
+            function render(weeks) {
+                var rawMax = Math.max.apply(null, weeks.map(function (w) { return w.value; }));
+                var step = tickStep(rawMax, 5);
+                var top = Math.max(step, Math.ceil(rawMax / step) * step);
+                var nTicks = Math.round(top / step);
+                var n = weeks.length;
+                function X(i) { return n === 1 ? (L + R) / 2 : L + i * W / (n - 1); }
+                function Y(v) { return B - v / top * H; }
+
+                clear(grid); clear(ylab);
+                for (var t = 0; t <= nTicks; t++) {
+                    var v = step * t;
+                    var yy = Y(v);
+                    grid.appendChild(svgEl("line", { "class": "grid-h", x1: L, y1: yy, x2: R, y2: yy }));
+                    var txt = svgEl("text", { "class": "ylab", x: L - 8, y: yy + 3, "text-anchor": "end" });
+                    txt.textContent = Math.round(v);
+                    ylab.appendChild(txt);
+                }
+
+                var pts = weeks.map(function (w, i) { return [X(i), Y(w.value)]; });
+                var poly = pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ");
+                trend.setAttribute("points", poly);
+                area.setAttribute("points", L + "," + B + " " + poly + " " + R + "," + B);
+
+                clear(dots);
+                pts.forEach(function (p) {
+                    dots.appendChild(svgEl("circle", { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 2.2 }));
+                });
+
+                clear(xlab);
+                var idx = [0, Math.round((n - 1) * .25), Math.round((n - 1) * .5), Math.round((n - 1) * .75), n - 1];
+                idx.forEach(function (bi, k) {
+                    var txt = svgEl("text", {
+                        "class": "xlab",
+                        x: X(bi).toFixed(1),
+                        y: k % 2 === 0 ? 208 : 219,
+                        "text-anchor": bi === 0 ? "start" : (bi === n - 1 ? "end" : "middle")
+                    });
+                    txt.textContent = weeks[bi].label;
+                    xlab.appendChild(txt);
+                });
+            }
+
+            showNote("加载中…");
+            var cached = readCache();
+            if (cached) {
+                try {
+                    render(aggregate(cached));
+                    hideNote();
+                    return;
+                } catch (e) { /* 缓存异常则丢弃，重新请求 */ }
+            }
+
+            fetch(url)
+                .then(function (r) {
+                    if (!r.ok) throw new Error("HTTP " + r.status);
+                    return r.json();
+                })
+                .then(function (data) {
+                    writeCache(data);
+                    render(aggregate(data));
+                    hideNote();
+                })
+                .catch(function () {
+                    showNote("下载数据暂不可用");
+                });
+        })();
+    </script>
 </body>
 
 </html>

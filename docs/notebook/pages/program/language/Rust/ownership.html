@@ -1,0 +1,87 @@
+<header>
+    所有权与借用
+</header>
+<p>
+    所有权是 Rust 管理内存的核心规则。每个值有一个所有者；同一时刻只能有一个所有者；所有者离开作用域时，值会被释放。编译器在编译阶段检查这些规则，因此许多内存错误无需垃圾回收器即可避免。
+</p>
+<h2>
+    移动与复制
+</h2>
+<p>
+    对于像整数这样实现了 <span class="special">Copy</span> 的简单类型，赋值会复制值。对于 <span class="special">String</span> 这类拥有堆内存的类型，赋值通常会移动所有权，原变量之后不能再使用。
+</p>
+<pre tag="javascript">
+fn main() {
+    let a = 5;
+    let b = a;
+    println!("{a}, {b}"); // 整数实现 Copy，a 仍然可用
+
+    let first = String::from("Rust");
+    let second = first; // 所有权移动到 second
+    println!("{second}");
+    // println!("{first}"); // 编译错误：first 已经被移动
+}
+</pre>
+<p>
+    如果确实需要独立副本，可以显式调用 <span class="special">clone</span>；克隆可能需要分配内存，因此应按需使用。
+</p>
+<pre tag="javascript">
+fn main() {
+    let first = String::from("Rust");
+    let second = first.clone();
+    println!("{first} 和 {second}");
+}
+</pre>
+<h2>
+    借用与引用
+</h2>
+<p>
+    函数可以接收引用来读取数据，而不取得所有权。创建引用的行为称为借用。
+</p>
+<pre tag="javascript">
+fn length(text: &amp;String) -&gt; usize {
+    text.len()
+}
+
+fn main() {
+    let word = String::from("hello");
+    println!("长度：{}", length(&amp;word));
+    println!("{word}"); // word 的所有权没有转移
+}
+</pre>
+<p>
+    可变引用使用 <span class="special">&amp;mut</span>。同一时刻，对同一数据要么可以有多个不可变引用，要么只能有一个可变引用，不能同时存在。
+</p>
+<pre tag="javascript">
+fn append_world(text: &amp;mut String) {
+    text.push_str(", world");
+}
+
+fn main() {
+    let mut message = String::from("hello");
+    append_world(&amp;mut message);
+    println!("{message}");
+}
+</pre>
+<h2>
+    切片
+</h2>
+<p>
+    切片是对集合中一段连续元素的引用。字符串切片的边界必须落在有效的 UTF-8 字符边界上。
+</p>
+<pre tag="javascript">
+fn first_word(text: &amp;str) -&gt; &amp;str {
+    match text.find(' ') {
+        Some(index) =&gt; &amp;text[..index],
+        None =&gt; text,
+    }
+}
+
+fn main() {
+    let sentence = String::from("hello rust");
+    println!("{}", first_word(&amp;sentence));
+}
+</pre>
+<p class="important">
+    引用不能比它指向的数据活得更久。编译器会检查引用的有效范围，避免悬垂引用。
+</p>

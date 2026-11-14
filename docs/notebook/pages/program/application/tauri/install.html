@@ -1,0 +1,62 @@
+<header>
+    环境搭建与创建项目
+</header>
+<p>
+    Tauri 使用系统 WebView 显示前端界面，并以 Rust 实现桌面端功能。开始前需要安装 Rust 工具链和当前操作系统所需的原生依赖；如果前端使用 JavaScript 或 TypeScript，还需要安装 Node.js。
+</p>
+<h2>
+    安装开发环境
+</h2>
+<ul>
+    <li>
+        Rust：通过 <a href="https://www.rust-lang.org/tools/install" target="_blank">rustup</a> 安装，并确认终端可以运行 <span class="special">rustc --version</span> 和 <span class="special">cargo --version</span>。
+    </li>
+    <li>
+        macOS：仅开发桌面应用可先安装 Xcode Command Line Tools，执行 <span class="special">xcode-select --install</span>。
+    </li>
+    <li>
+        Windows：安装 Visual Studio C++ Build Tools 的“使用 C++ 的桌面开发”工作负载，以及 Microsoft Edge WebView2 Runtime。
+    </li>
+    <li>
+        Linux：根据发行版安装 WebKitGTK、编译工具链和相关系统开发库。依赖包名称因发行版而异，请按
+        <a href="https://v2.tauri.app/start/prerequisites/" target="_blank">Tauri 官方先决条件说明</a>
+        选择对应命令。
+    </li>
+</ul>
+<p>
+    本教程使用 npm 展示命令；也可以选择 pnpm、Yarn 等包管理器，执行时将命令替换为对应工具的写法。
+</p>
+<h2>
+    创建项目
+</h2>
+<p>
+    在希望保存项目的目录执行官方脚手架：
+</p>
+<pre tag="javascript">
+npm create tauri-app@latest
+</pre>
+<p>
+    按提示填写项目名称和应用标识符，选择前端语言、包管理器及界面模板。初学者可以选择 Vanilla + JavaScript，也可以选择熟悉的 Vue、React 或 Svelte 模板。
+</p>
+<h2>
+    安装依赖并启动
+</h2>
+<p>
+    进入新建的项目目录，安装前端依赖并启动桌面开发模式：
+</p>
+<pre tag="javascript">
+cd tauri-app
+npm install
+npm run tauri dev
+</pre>
+<p>
+    首次运行时，Rust 依赖需要编译，启动可能会花一些时间。成功后会打开桌面窗口；之后修改前端代码通常可以通过开发服务器热更新看到效果。
+</p>
+<h2>
+    项目中的主要目录
+</h2>
+<ul>
+    <li><span class="special">src/</span>：前端页面和应用代码，具体结构由所选模板决定。</li>
+    <li><span class="special">src-tauri/</span>：Tauri 与 Rust 后端代码、Cargo 配置及桌面应用配置。</li>
+    <li><span class="special">src-tauri/tauri.conf.json</span>：应用名称、标识符、开发命令和打包资源等配置。</li>
+</ul>

@@ -1,0 +1,489 @@
+<header>
+    pnpm 工作空间
+</header>
+<h2>
+    基本使用
+</h2>
+<p>
+    比如我们现在有一个项目，项目中有两个子项目，大体结构如下：
+</p>
+<pre>
+- packages
+    - pkg1
+        - package.json
+    - pkg2
+        - package.json
+- package.json
+- pnpm-workspace.yaml
+</pre>
+<p>
+    其中<span class="special">pnpm-workspace.yaml</span>内容如下：
+</p>
+<pre>
+packages:
+  - 'packages/*'
+</pre>
+<p>
+    而<span class="warn">pkg1</span>和<span class="warn">pkg12</span>的项目名称分别是<span class="special">mypkg1</span>和<span
+        class="special">mypkg2</span>。
+</p>
+<h3>
+    主目录下安装：
+</h3>
+<p>
+    比如在项目根项目下安装<span class="special">pkg1</span>，只需要：
+</p>
+<pre>
+    pnpm install mypkg1 -w
+</pre>
+<h3>
+    子项目下安装：
+</h3>
+<p>
+    比如在子项目<span class="special">pkg2</span>下安装<span class="special">pkg1</span>，只需要：
+</p>
+<pre>
+cd packages/pkg1
+pnpm install mypkg1
+</pre>
+<h2>
+    工作空间配置文件
+</h2>
+<p>
+    pnpm 的工作空间必须有一个根目录下的
+    <span class="special">pnpm-workspace.yaml</span>
+    文件。它既是工作空间的声明文件，也是 pnpm 的项目级配置文件。
+</p>
+<h3>
+    packages 字段
+</h3>
+<p>
+    <span class="special">packages</span>
+    字段决定哪些目录会被纳入工作空间，既可以写具体的子目录，也可以用 glob 通配符，还可以用
+    <span class="special">!</span>
+    排除某些目录：
+</p>
+<pre tag="yaml">
+packages:
+  # 直接子目录下的某个包
+  - 'my-app'
+  # packages 目录下的所有包
+  - 'packages/*'
+  # components 目录下的所有包（含多层）
+  - 'components/**'
+  # 排除测试目录下的包
+  - '!**/test/**'
+</pre>
+<div class="tips">
+    <span class="important">pnpm 只读取 pnpm-workspace.yaml，不读取根 package.json 的 workspaces 字段。</span>
+    从
+    <span class="important">v12.7.0</span>
+    起，如果仓库里只有
+    <span class="special">workspaces</span>
+    字段而没有
+    <span class="special">pnpm-workspace.yaml</span>
+    ，执行
+    <span class="special">pnpm install</span>
+    会自动生成一份内容相同的
+    <span class="special">pnpm-workspace.yaml</span>
+    ；但如果两个地方都写了且内容不一致，pnpm 会打印警告并只认
+    <span class="special">pnpm-workspace.yaml</span>
+    。
+    <br />
+    根包永远属于工作空间，即使
+    <span class="special">packages</span>
+    用了自定义的通配符。
+</div>
+<h3>
+    packageConfigs 字段
+</h3>
+<p>
+    <span class="special">packageConfigs</span>
+    用来给个别工作空间单独设置 npm 配置（替代以前在各子包下放
+    <span class="special">.npmrc</span>
+    的做法）：
+</p>
+<pre tag="yaml">
+packages:
+  - "packages/project-1"
+  - "packages/project-2"
+
+packageConfigs:
+  "project-1":
+    saveExact: true
+  "project-2":
+    savePrefix: "~"
+</pre>
+<h2>
+    引用工作空间包
+</h2>
+<p>
+    pnpm 默认开启
+    <span class="special">linkWorkspacePackages</span>
+    的判断逻辑：只要工作空间里存在与依赖名相同、且版本满足声明范围的包，就会链接本地包而不是从仓库下载。这种行为存在不确定性，所以 pnpm 提供了
+    <span class="special">workspace:</span>
+    协议来显式声明：
+</p>
+<pre tag="json">
+{
+    "dependencies": {
+        "mypkg1": "workspace:^"
+    }
+}
+</pre>
+<p>
+    用了
+    <span class="special">workspace:</span>
+    协议后，pnpm 拒绝解析到工作空间之外的任何包。如果本地没有对应版本，安装会直接失败。这在把
+    <span class="special">linkWorkspacePackages</span>
+    关掉时尤其有用。
+</p>
+<p>
+    协议后面可以跟：
+</p>
+<table>
+    <thead>
+        <tr>
+            <td>
+                写法
+            </td>
+            <td>
+                说明
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                workspace:*
+            </td>
+            <td>
+                任意版本，发布时替换为工作空间的实际版本
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspace:~
+            </td>
+            <td>
+                发布时替换为 ~实际版本
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspace:^
+            </td>
+            <td>
+                发布时替换为 ^实际版本
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspace:^1.0.0
+            </td>
+            <td>
+                发布时保留原样
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspace:../foo
+            </td>
+            <td>
+                通过相对路径引用另一个工作空间包
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspace:foo@*
+            </td>
+            <td>
+                用别名引用，发布时转换为 npm:foo@版本
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    发布时（无论
+    <span class="special">pnpm pack</span>
+    还是
+    <span class="special">pnpm publish</span>
+    ），
+    <span class="special">workspace:</span>
+    协议会被自动替换成普通版本范围。比如各包版本都是
+    <span class="special">1.5.0</span>
+    时：
+</p>
+<pre tag="json">
+{
+    "dependencies": {
+        "foo": "workspace:*",
+        "bar": "workspace:~",
+        "qar": "workspace:^",
+        "zoo": "workspace:^1.5.0"
+    }
+}
+</pre>
+<p>
+    会被转换成：
+</p>
+<pre tag="json">
+{
+    "dependencies": {
+        "foo": "1.5.0",
+        "bar": "~1.5.0",
+        "qar": "^1.5.0",
+        "zoo": "^1.5.0"
+    }
+}
+</pre>
+<div class="tips">
+    这样既能在本地依赖工作空间的源码，又能把包正常发布到仓库，不需要先发一个再发下一个。
+</div>
+<h2>
+    版本目录（Catalog）
+</h2>
+<p>
+    monorepo 里同一个依赖经常被十几个包引用，版本号散落在各个
+    <span class="special">package.json</span>
+    里既难维护又容易冲突。pnpm 的
+    <span class="special">catalog:</span>
+    协议可以把版本范围收敛成一份常量：
+</p>
+<pre tag="yaml">
+packages:
+  - 'packages/*'
+
+catalog:
+  react: ^18.3.1
+  redux: ^5.0.1
+</pre>
+<p>
+    然后在各个包中直接引用：
+</p>
+<pre tag="json">{
+    "dependencies": {
+        "react": "catalog:",
+        "redux": "catalog:"
+    }
+}</pre>
+<p>
+    这等价于直接写
+    <span class="special">^18.3.1</span>
+    。也可以定义多个具名目录，通过
+    <span class="special">catalog:名称</span>
+    引用：
+</p>
+<pre tag="yaml">
+catalog:
+  react: ^16.14.0
+
+catalogs:
+  react17:
+    react: ^17.0.2
+  react18:
+    react: ^18.2.0
+</pre>
+<p>
+    <span class="special">catalog:</span>
+    协议可以用在
+    <span class="special">dependencies</span>
+    、
+    <span class="special">devDependencies</span>
+    、
+    <span class="special">peerDependencies</span>
+    、
+    <span class="special">optionalDependencies</span>
+    以及
+    <span class="special">pnpm-workspace.yaml</span>
+    的
+    <span class="special">overrides</span>
+    中，发布时同样会被替换成实际版本范围。
+</p>
+<h2>
+    常用命令
+</h2>
+<h3>
+    递归执行命令
+</h3>
+<p>
+    <span class="special">-r</span>
+    （
+    <span class="special">--recursive</span>
+    ）可以对工作空间中的所有包执行命令：
+</p>
+<pre tag="shell">
+# 对所有包执行发布
+pnpm -r publish
+
+# 对所有包执行测试
+pnpm -r test
+
+# 对所有包执行构建
+pnpm -r build
+
+# 某个包失败时继续执行其余包
+pnpm -r --no-bail test
+</pre>
+<p>
+    <span class="special">run</span>
+    、
+    <span class="special">exec</span>
+    、
+    <span class="special">test</span>
+    默认按照依赖拓扑顺序执行（依赖先于依赖方），加上
+    <span class="special">--parallel</span>
+    可以并行执行，加上
+    <span class="special">--reverse</span>
+    可以反向执行。
+</p>
+<h3>
+    过滤包
+</h3>
+<p>
+    <span class="special">--filter</span>
+    （简写
+    <span class="special">-F</span>
+    ）可以精确挑选要操作的包：
+</p>
+<pre tag="shell">
+# 精确匹配
+pnpm --filter mypkg1 test
+
+# 按作用域匹配
+pnpm --filter "@myorg/*" test
+
+# 选中包及其所有依赖
+pnpm --filter "mypkg1..." test
+
+# 只选中它的依赖
+pnpm --filter "mypkg1^..." test
+
+# 选中包以及所有依赖它的包
+pnpm --filter "...mypkg1" test
+
+# 按目录 glob 匹配
+pnpm --filter "./packages/**" build
+
+# 选中自某个提交以来有改动的包，以及依赖它们的包
+pnpm --filter "...[origin/master]" test
+
+# 排除
+pnpm --filter=!mypkg1 test
+</pre>
+<h3>
+    查看信息
+</h3>
+<pre tag="shell">
+# 列出工作空间中的所有包
+pnpm list -r --depth -1
+
+# 查看某个包为什么被安装
+pnpm why react
+
+# 查出过期的依赖
+pnpm outdated -r
+</pre>
+<h2>
+    关键配置
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>
+                配置
+            </td>
+            <td>
+                默认值
+            </td>
+            <td>
+                说明
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                linkWorkspacePackages
+            </td>
+            <td>
+                false
+            </td>
+            <td>
+                是否自动把工作空间里的包链接为依赖，可选 true / false / deep
+            </td>
+        </tr>
+        <tr>
+            <td>
+                includeWorkspaceRoot
+            </td>
+            <td>
+                false
+            </td>
+            <td>
+                递归执行脚本时是否把根包也算进去
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspaceConcurrency
+            </td>
+            <td>
+                4
+            </td>
+            <td>
+                递归执行时最大并发任务数，设为 Infinity 表示不限制
+            </td>
+        </tr>
+        <tr>
+            <td>
+                failIfNoMatch
+            </td>
+            <td>
+                false
+            </td>
+            <td>
+                过滤条件没有匹配到任何包时是否报错
+            </td>
+        </tr>
+        <tr>
+            <td>
+                catalogMode
+            </td>
+            <td>
+                manual
+            </td>
+            <td>
+                pnpm add 时是否自动把依赖写入目录，可选 manual / strict / prefer
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    注意事项
+</h2>
+<ul>
+    <li>
+        pnpm 使用硬链接 + 内容寻址的存储方式，磁盘占用远小于 npm，但如果你手工把
+        <span class="special">node_modules</span>
+        整体拷走，会破坏硬链接关系。
+    </li>
+    <li>
+        如果出现
+        <span class="important">There are cyclic workspace dependencies</span>
+        警告，说明工作空间之间存在循环依赖，pnpm 无法保证脚本的执行顺序，需要检查
+        <span class="special">dependencies</span>
+        、
+        <span class="special">optionalDependencies</span>
+        和
+        <span class="special">devDependencies</span>
+        中的声明。
+    </li>
+    <li>
+        pnpm 没有内置的多包版本编排能力，统一发版推荐使用
+        <span class="important">changesets</span>
+        或
+        <span class="important">Rush</span>
+        。
+    </li>
+</ul>

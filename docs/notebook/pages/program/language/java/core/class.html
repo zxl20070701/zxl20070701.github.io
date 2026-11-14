@@ -1,0 +1,81 @@
+<header>
+    类、对象与成员
+</header>
+<h2>
+    定义类和创建对象
+</h2>
+<p>
+    类是对象的模板，描述对象具有的数据和行为。对象是类的一个实例。Java 源文件通常以
+    <span class="important">.java</span>
+    结尾；一个
+    <span class="important">public</span>
+    顶层类的名称应与文件名一致。
+</p>
+<pre tag="javascript">
+public class User {
+    private final String name;
+
+    public User(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public static void main(String[] args) {
+        User user = new User("小明");
+        System.out.println(user.getName());
+    }
+}
+</pre>
+<p>
+    <span class="important">new</span>
+    会创建对象并调用构造方法。构造方法名称与类名相同，没有返回类型；如果没有声明任何构造方法，编译器才会提供无参构造方法。
+</p>
+<h2>
+    字段、局部变量和方法
+</h2>
+<ul>
+    <li>字段属于对象或类；实例字段各对象分别保存，静态字段由类共享。</li>
+    <li>局部变量在方法或代码块中声明，使用前必须明确赋值；不会自动获得默认值。</li>
+    <li>方法定义对象或类可以执行的操作，可接收参数并返回结果。</li>
+</ul>
+<pre tag="javascript">
+public class Counter {
+    private int value;                 // 实例字段
+    private static int createdCount;   // 类字段
+
+    public Counter() {
+        createdCount++;
+    }
+
+    public int add(int amount) {
+        value += amount;
+        return value;
+    }
+}
+</pre>
+<h2>
+    static 与 final
+</h2>
+<p>
+    <span class="important">static</span>
+    成员属于类本身，可以通过类名访问；实例方法可以访问实例状态，而静态方法不能直接访问实例字段。
+    <span class="important">final</span>
+    字段只能赋值一次，常量通常声明为
+    <span class="important">static final</span>。
+    final 引用不能改为指向另一个对象，但不代表该对象内部不可变。
+</p>
+<h2>
+    访问控制
+</h2>
+<ul>
+    <li><span class="important">public</span>：任何可访问该类型的代码都能使用。</li>
+    <li><span class="important">protected</span>：同包可访问，其他包中的子类也可按继承规则访问。</li>
+    <li>不写修饰符：包级访问，仅同一个包可访问。</li>
+    <li><span class="important">private</span>：仅声明它的顶层类内部可访问。</li>
+</ul>
+<p>
+    通常将字段设为 private，通过构造方法和公开方法控制对象状态，从而保持封装。
+</p>

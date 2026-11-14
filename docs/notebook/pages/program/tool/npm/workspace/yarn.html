@@ -1,0 +1,391 @@
+<header>
+    yarn 工作空间
+</header>
+<p>
+    Yarn 从
+    <span class="important">1.0</span>
+    开始就原生支持工作空间（Workspaces），也就是常说的 monorepo：一仓库多包。它会自动把各个子包软链接（symlink）到根目录的
+    <span class="special">node_modules</span>
+    中，因此只需要执行一次安装命令，就能把所有子包的依赖一次性装好。
+</p>
+<h2>
+    基本使用
+</h2>
+<p>
+    比如我们现在有一个项目，项目中有两个子项目，大体结构如下：
+</p>
+<pre>
+- packages
+    - pkg1
+        - package.json
+    - pkg2
+        - package.json
+- package.json
+- yarn.lock
+</pre>
+<p>
+    而<span class="warn">pkg1</span>和<span class="warn">pkg2</span>的项目名称分别是<span class="special">mypkg1</span>和<span
+        class="special">mypkg2</span>。
+</p>
+<p>
+    在根目录的<span class="special">package.json</span>中声明<span class="special">workspaces</span>字段即可，它既支持直接写路径，也支持 glob 通配符：
+</p>
+<pre tag="json">
+{
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ]
+}
+</pre>
+<div class="tips">
+    根包强烈建议加上
+    <span class="important">"private": true</span>
+    。工作空间本身就是用来放子包的，不应该被发布，加 private 是一道安全保险。
+    <br />
+    Yarn 1（classic）中根包的
+    <span class="important">private: true</span>
+    是硬性要求；从 Yarn 2 起这个限制被取消，根包可以不是 private。
+</div>
+<p>
+    声明完成后，在根目录执行一次
+    <span class="special">yarn install</span>
+    即可。安装完成后目录结构大致如下：
+</p>
+<pre>
+/package.json
+/yarn.lock
+
+/node_modules
+/node_modules/cross-env
+/node_modules/mypkg1 -&gt; /packages/pkg1
+
+/packages/pkg1/package.json
+/packages/pkg2/package.json
+</pre>
+<p>
+    注意<span class="special">node_modules</span>
+    中的软链接用的是
+    <span class="special">package.json</span>
+    里的
+    <span class="special">name</span>
+    字段，而不是文件夹名字。也就是说，如果
+    <span class="special">packages/pkg1</span>
+    的名字叫
+    <span class="special">mypkg1</span>
+    ，那链接就是
+    <span class="special">node_modules/mypkg1 -&gt; /packages/pkg1</span>
+    ，代码里
+    <span class="special">require('mypkg1')</span>
+    引用到的就是它。
+</p>
+<h2>
+    引用工作空间包
+</h2>
+<h3>
+    Yarn 1（classic）
+</h3>
+<p>
+    Yarn 1 中直接写普通的版本号范围即可，只要版本对得上就会优先链接本地工作空间：
+</p>
+<pre tag="json">
+{
+    "dependencies": {
+        "mypkg1": "^1.0.0"
+    }
+}
+</pre>
+<h3>
+    Yarn 2+（Berry）
+</h3>
+<p>
+    Yarn 2 引入了
+    <span class="special">workspace:</span>
+    协议，明确表示“这个依赖必须来自本地工作空间”，写法如下：
+</p>
+<pre tag="json">
+{
+    "dependencies": {
+        "mypkg1": "workspace:^"
+    }
+}
+</pre>
+<p>
+    其中冒号后面可以是普通版本范围，也可以是
+    <span class="special">^</span>
+    、
+    <span class="special">~</span>
+    、
+    <span class="special">*</span>
+    这三个特殊符号。它们不会影响本地解析方式（永远只认同名的工作空间包），但会影响发布后写进 npm 仓库的版本范围。假设
+    <span class="special">mypkg1</span>
+    当前版本是
+    <span class="special">3.2.1</span>
+    ，发布时的转换规则如下：
+</p>
+<table>
+    <thead>
+        <tr>
+            <td>
+                声明时
+            </td>
+            <td>
+                发布后
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                workspace:^3.0.0
+            </td>
+            <td>
+                ^3.0.0
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspace:^
+            </td>
+            <td>
+                ^3.2.1
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspace:~
+            </td>
+            <td>
+                ~3.2.1
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspace:*
+            </td>
+            <td>
+                =3.2.1
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    常用命令
+</h2>
+<h3>
+    在单个工作空间中执行命令
+</h3>
+<p>
+    Yarn 2+ 使用
+    <span class="special">yarn workspace</span>
+    子命令：
+</p>
+<pre tag="shell">
+# 在 mypkg1 中添加依赖
+yarn workspace mypkg1 add react
+
+# 在 mypkg1 中移除依赖
+yarn workspace mypkg1 remove some-package
+
+# 运行 mypkg1 的 build 脚本
+yarn workspace mypkg1 run build
+</pre>
+<p>
+    Yarn 1 中的写法是
+    <span class="special">yarn workspace</span>
+    命令名和参数名（注意中间有空格），比如：
+</p>
+<pre tag="shell">
+yarn workspace awesome-package add react react-dom --dev
+</pre>
+<h3>
+    在所有工作空间中执行命令
+</h3>
+<p>
+    Yarn 1 使用
+    <span class="special">yarn workspaces run</span>
+    ：
+</p>
+<pre tag="shell">
+# 在每个工作空间中执行 test 脚本
+yarn workspaces run test
+
+# 透传参数，常用于 CI 流程
+yarn workspaces run test --ci
+</pre>
+<p>
+    Yarn 2+ 使用
+    <span class="special">yarn workspaces foreach</span>
+    ，功能更强大：
+</p>
+<pre tag="shell">
+# 对所有工作空间执行 build
+yarn workspaces foreach -A run build
+
+# 并行执行，并实时输出日志
+yarn workspaces foreach -Apt run build
+
+# 按拓扑顺序执行（依赖先于依赖方），且只发布非 private 的包
+yarn workspaces foreach -A --no-private npm publish --tolerate-republish
+</pre>
+<p>
+    <span class="special">yarn workspaces foreach</span>
+    的常用参数：
+</p>
+<table>
+    <thead>
+        <tr>
+            <td>
+                参数
+            </td>
+            <td>
+                说明
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                -A, --all
+            </td>
+            <td>
+                对项目中的所有工作空间执行
+            </td>
+        </tr>
+        <tr>
+            <td>
+                -R, --recursive
+            </td>
+            <td>
+                对当前工作空间及其递归依赖执行
+            </td>
+        </tr>
+        <tr>
+            <td>
+                -p, --parallel
+            </td>
+            <td>
+                并行执行
+            </td>
+        </tr>
+        <tr>
+            <td>
+                -t, --topological
+            </td>
+            <td>
+                等依赖执行完后再执行当前工作空间
+            </td>
+        </tr>
+        <tr>
+            <td>
+                -j, --jobs
+            </td>
+            <td>
+                并发任务数上限，也可用 unlimited
+            </td>
+        </tr>
+        <tr>
+            <td>
+                --include / --exclude
+            </td>
+            <td>
+                白名单 / 黑名单，支持 glob
+            </td>
+        </tr>
+        <tr>
+            <td>
+                --since
+            </td>
+            <td>
+                只处理自指定 ref 以来有改动的工作空间
+            </td>
+        </tr>
+        <tr>
+            <td>
+                --no-private
+            </td>
+            <td>
+                跳过 private 的工作空间
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    查看工作空间
+</h3>
+<pre tag="shell">
+# 列出所有工作空间
+yarn workspaces list
+
+# 列出工作空间之间的依赖关系
+yarn workspaces list --verbose
+
+# Yarn 1：查看工作空间依赖树
+yarn workspaces info
+</pre>
+<h3>
+    聚焦安装（focused install）
+</h3>
+<p>
+    如果你只想开发其中一个子包，而不想把其他子包都构建一遍，可以使用聚焦安装。Yarn 2+ 的命令是：
+</p>
+<pre tag="shell">
+yarn workspaces focus mypkg1
+</pre>
+<p>
+    Yarn 1 中对应的写法是进入子包目录后执行：
+</p>
+<pre tag="shell">
+cd packages/pkg1
+yarn install --focus
+</pre>
+<p>
+    聚焦安装会把兄弟依赖从 npm 仓库拉取一份浅安装（而不是链接本地源码），这样就不需要先构建兄弟包了。
+</p>
+<h2>
+    全局脚本
+</h2>
+<p>
+    普通脚本只能在声明它的工作空间里执行（需要在对应目录下运行），但<span class="important">名字里带冒号（:）</span>
+    的脚本会被提升为全局脚本，可以在项目任意位置执行：
+</p>
+<pre tag="json">
+{
+    "scripts": {
+        "build:app": "vite build",
+        "build:lib": "tsc -p tsconfig.build.json"
+    }
+}
+</pre>
+<pre tag="shell">
+# 在根目录直接执行
+yarn build:app
+</pre>
+<div class="tips">
+    如果有两个工作空间定义了同名的全局脚本，它们都不会被提升为全局脚本，此时需要注意重名。
+</div>
+<h2>
+    与 Lerna 的关系
+</h2>
+<p>
+    Yarn 的工作空间只是提供了底层的“依赖解析 + 软链接”能力，不负责版本管理和发布编排。Lerna、Changesets、Rush 这类工具都是在 Yarn 工作空间之上做更上层的封装。
+</p>
+<h2>
+    注意事项
+</h2>
+<ul>
+    <li>
+        工作空间必须是根目录的子目录，不能引用层级之外的项目；Yarn 1 也不支持嵌套工作空间。
+    </li>
+    <li>
+        Yarn 1 中如果某个工作空间声明的依赖版本和根目录不一致（比如 workspace-a 用的是 1.x，workspace-b 用的是 2.x），那么不一致的那一个会从 npm 仓库安装而不是链接本地包。
+    </li>
+    <li>
+        发布前务必检查每个子包的依赖是否都写全了。本地测试可能因为根目录已经装过该依赖而通过，但发布后使用者会因为依赖缺失而报错。
+    </li>
+    <li>
+        Yarn 1 可以在 .yarnrc 中通过
+        <span class="special">workspaces-experimental false</span>
+        关闭工作空间特性。
+    </li>
+</ul>

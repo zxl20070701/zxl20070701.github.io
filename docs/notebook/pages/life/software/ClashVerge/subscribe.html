@@ -1,0 +1,242 @@
+<header>
+    导入订阅与节点选择
+</header>
+<p>
+    上一篇把软件装好了，但里面一个节点都没有。这篇解决三件事：<span class="important">怎么把订阅装进去、怎么挑一个能用的节点、怎么让它真正跑起来</span>。
+</p>
+<h2>
+    订阅链接从哪来
+</h2>
+<p>
+    订阅链接就是你买的服务商（俗称「机场」）给你的那一串地址，通常长这样：
+</p>
+<pre>
+https://example.com/link/xxxxxxxx?token=abcdefg
+</pre>
+<p>
+    一般在服务商的<span class="special">用户中心 → 订阅设置 / 一键订阅</span>页面能找到，部分服务商也提供二维码。
+</p>
+<div class="warn">
+    订阅链接<span class="important">等同于你的账号密码</span>，不要发给别人，也不要贴到任何公开的地方（截图、聊天记录、在线文档）。泄露了别人就能用你的流量额度。
+</div>
+<h2>
+    导入订阅
+</h2>
+<h3>
+    第一步：复制链接
+</h3>
+<p>
+    在服务商页面复制订阅地址。
+</p>
+<h3>
+    第二步：粘贴到 Clash Verge
+</h3>
+<p>
+    左侧点<span class="special">卡片图标（订阅）</span>，在「订阅」页面右上角找到<span class="special">「新建」</span>按钮：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>字段</th>
+            <th>填什么</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>名称</td>
+            <td>随便起，比如「我的机场」，只是给自己看的标签</td>
+        </tr>
+        <tr>
+            <td>订阅地址（URL）</td>
+            <td><span class="important">粘贴刚才复制的链接</span></td>
+        </tr>
+        <tr>
+            <td>更新间隔</td>
+            <td>保持默认（1440 分钟 = 每天一次）即可</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    点<span class="special">「保存」</span>，软件会自动去拉取配置，页面上就会多出一张订阅卡片。成功后节点列表就出现了。
+</p>
+<div class="tips">
+    服务商页面一般有「一键导入」入口，会直接唤起 Clash Verge，帮你把链接填好：<span class="important">在机场网页上找「导入到 Clash Verge Rev」的选项，点一下它，比手动复制更省事</span>。
+</div>
+<img src="./images/clashverge/quickstart-subscribe.png" width="600px">
+<p>
+    上图就是机场的订阅页面，<span class="special">「复制订阅链接」</span>就在右上角的下拉菜单里。
+</p>
+<h3>
+    第三步：点卡片上的「更新」
+</h3>
+<p>
+    订阅卡片上有一个<span class="special">刷新图标</span>，点一下是手动更新。机场改了节点、加了新线路、涨价换线路后，都靠它同步。
+</p>
+<div class="tips">
+    正常情况下软件每天会自动更新一次订阅。<span class="important">但如果你发现节点突然全没了、或者节点名一直不变，多半是自动更新失败了</span>，手动点一下刷新看看。
+</div>
+<h3>
+    订阅导入失败怎么办
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>报错</th>
+            <th>原因</th>
+            <th>解决</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>401 / 订阅已过期</td>
+            <td>链接失效或套餐到期</td>
+            <td>去服务商后台重新复制链接；确认套餐没过期</td>
+        </tr>
+        <tr>
+            <td><span class="special">invalid peer certificate: UnknownIssuer</span></td>
+            <td>订阅服务器证书校验失败</td>
+            <td>编辑该订阅，勾选<span class="important">「允许无效证书（危险）」</span></td>
+        </tr>
+        <tr>
+            <td>更新了但内容没变</td>
+            <td>缓存住了旧配置</td>
+            <td>设置页 → 配置目录 → 全删 → 重启软件</td>
+        </tr>
+    </tbody>
+</table>
+<div class="warn">
+    「允许无效证书」这一项确实有风险——它关掉了对订阅服务器身份的校验。如果这个订阅链接来自你信任的服务商，开着方便；如果链接来源不明，<span class="important">宁可换一家</span>。
+</div>
+<h2>
+    挑节点：看延迟就够
+</h2>
+<p>
+    回到<span class="special">代理</span>页面，会看到一列「代理组」（就是订阅里定义的一堆节点分类，比如「自动选择」「故障转移」「ChatGPT」）。
+</p>
+<p>
+    每个节点后面的数字就是<span class="special">延迟（毫秒）</span>，越小越快。第一次用直接选<span class="important">「自动选择」</span>这个组，它会自动挑延迟最低的节点，省事。
+</p>
+<h3>
+    三种代理组的区别
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>组类型</th>
+            <th>行为</th>
+            <th>适合谁</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Selector（手动）</span></td>
+            <td>你自己指定用哪个节点</td>
+            <td>知道哪个节点好的人</td>
+        </tr>
+        <tr>
+            <td><span class="special">URLTest（自动选择）</span></td>
+            <td>定期测速，自动选最快的</td>
+            <td><span class="important">大多数人用这个就够了</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">Fallback（故障转移）</span></td>
+            <td>主节点挂了自动切备用</td>
+            <td>想要稳定、省心的场景</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    节点右侧的 <span class="special">UDP</span> 标签表示这个节点支持 UDP 转发（打游戏、语音通话需要）。<span class="important">没有 UDP 的节点不适合打游戏</span>，看视频没问题。
+</div>
+<h3>
+    手动挑节点的几个经验
+</h3>
+<ul>
+    <li><span class="important">看延迟不看标签</span>：名字里写「香港 IEPL 专线」的不一定快，实测延迟才是真的</li>
+    <li>延迟在 <span class="special">200ms 以内</span> 体感就不错，超过 300ms 看视频会卡</li>
+    <li>延迟显示 <span class="special">timeout</span> 说明这个节点连不上，换一个</li>
+    <li>点节点名前面的<span class="special">小图钉 📌</span> 可以把节点锁定，锁定后自动选择组会优先用它（红色=锁定且可用，灰色=锁定但当前不可用）</li>
+</ul>
+<h3>
+    测延迟
+</h3>
+<p>
+    左侧<span class="special">靶心图标（测试）</span>页面可以手动测所有节点的延迟。节点很多时测一轮要等一会儿，<span class="important">测的时候别切节点，等它跑完</span>。
+</p>
+<div class="tips">
+    测延迟提示「超时」但网站其实能正常访问，通常是<span class="important">杀毒软件（火绒等）的 HTTPS 扫描加密</span>在捣乱。关掉它的 Web 扫描功能，或者把软件目录加进信任名单。
+</div>
+<h2>
+    三种模式：规则 / 全局 / 直连
+</h2>
+<p>
+    代理页面右上角有三个按钮切换模式，这是 Clash 最核心的概念之一：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>行为</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">规则</span></td>
+            <td><span class="important">按规则分流</span>：国内网站直连、国外网站走代理。国内日常用这个，速度快</td>
+        </tr>
+        <tr>
+            <td><span class="special">全局</span></td>
+            <td>所有流量都走你选的节点。等价于「无脑翻墙」</td>
+        </tr>
+        <tr>
+            <td><span class="special">直连</span></td>
+            <td>所有流量都不走代理，等于关掉代理</td>
+        </tr>
+    </tbody>
+</table>
+<img src="./images/clashverge/proxy-groups-modes.png" width="600px">
+<p>
+    图里标得很清楚：<span class="special">规则</span>按订阅下发的配置文件自动分流，<span class="special">全局</span>把全部流量走你选的节点，<span class="special">直连</span>则完全不经过节点。
+</p>
+<div class="tips">
+    <span class="important">日常就用「规则」模式。</span>全局模式下国内网站也绕一圈，速度会慢、流量消耗翻倍。只有在排查「某个网站到底是不是被代理影响了」时，才临时切全局对比一下。
+</div>
+<h2>
+    最后一步：打开系统代理
+</h2>
+<p>
+    节点选好了，别忘了<span class="important">打开系统代理开关</span>，否则浏览器根本不会来找 Clash：
+</p>
+<p>
+    左下角<span class="special">齿轮 → 设置</span> → 左侧「系统设置」区域 → 打开<span class="special">「系统代理」</span>。
+</p>
+<img src="./images/clashverge/settings-system-proxy.png" width="600px">
+<p>
+    红框标的就是「系统代理」开关，<span class="important">打开它，浏览器立刻就能用</span>。
+</p>
+<div class="tips">
+    开关旁边那个<span class="special">小齿轮</span>是详细设置（指定代理地址、绕过地址、是否开机自动开等），一般不用动。如果你的网络是「公司内网 + 外网」这种复杂环境，可以把内网网段加进 bypass 列表，避免内网流量也走代理。
+</div>
+<h2>
+    验证成功
+</h2>
+<p>
+    打开浏览器访问 <span class="special">ip.sb</span> 或 <span class="special">ipinfo.io</span>，如果显示的是境外 IP，说明成功了。
+</p>
+<p>
+    更直接的验证方式是看<span class="special">连接</span>页面：正常情况下会实时刷出「哪个程序 → 哪个域名 → 走了哪个节点」的记录。<span class="important">如果这里什么都没有，说明流量根本没进到 Clash</span>，八成是系统代理开关没打开。
+</p>
+<h2>
+    上手检查清单
+</h2>
+<ul>
+    <li>订阅已导入，节点列表不为空</li>
+    <li>在「自动选择」组里选了一个可用节点</li>
+    <li>模式保持在<span class="important">「规则」</span></li>
+    <li><span class="important">系统代理开关已打开</span></li>
+    <li>浏览器访问 ip.sb 显示的是境外 IP</li>
+    <li>「连接」页面能看到实时流量记录</li>
+</ul>
+<p>
+    这六条全过，就可以开始正常使用了。下一篇讲怎么让代理更省、更快、更有条理：《模式与规则分流》。
+</p>

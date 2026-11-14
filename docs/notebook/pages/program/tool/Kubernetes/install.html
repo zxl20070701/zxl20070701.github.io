@@ -1,0 +1,158 @@
+<header>
+    环境准备与集群搭建
+</header>
+<p>
+    学习 Kubernetes 最快的方式，是先在本机跑一个真实的集群。本篇介绍安装
+    <span class="special">kubectl</span>
+    命令行工具，并用
+    <span class="special">kind</span>
+    在本地创建单节点集群。
+</p>
+<h2>
+    安装 kubectl
+</h2>
+<p>
+    kubectl 是操作集群的命令行工具。macOS 上用 Homebrew 安装最方便：
+</p>
+<pre tag="bash">
+brew install kubectl
+kubectl version --client
+</pre>
+<p>
+    Windows 可以用 winget 或 scoop，Linux 也可以直接下载官方二进制：
+</p>
+<pre tag="bash">
+# Linux 下载官方二进制
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+</pre>
+<div class="tips">
+    kubectl 与集群控制面允许存在一个次版本号的偏差（版本偏移不超过 ±1）。版本差距过大时，某些子命令可能行为不一致，建议保持 kubectl 为较新版本。
+</div>
+<h2>
+    创建本地集群
+</h2>
+<p>
+    <span class="special">kind</span>
+    （Kubernetes IN Docker）借助 Docker 容器来模拟 Kubernetes 节点，搭建速度快，是最常用的本地开发方案。
+</p>
+<pre tag="bash">
+brew install kind
+
+# 创建一个名为 k8s-demo 的集群
+kind create cluster --name k8s-demo
+</pre>
+<p>
+    创建完成后，kubectl 会自动把新集群写入配置文件并设为当前上下文。验证一下：
+</p>
+<pre tag="bash">
+kubectl cluster-info
+kubectl get nodes
+</pre>
+<pre>
+NAME                       STATUS   ROLES           AGE   VERSION
+k8s-demo-control-plane   Ready    control-plane   30s   v1.34.0
+</pre>
+<p>
+    如果你更希望体验接近「真实多节点集群」的效果，可以写一个配置文件来指定节点数量。先新建
+    <span class="special">kind-cluster.yaml</span>
+    ：
+</p>
+<pre tag="yaml">
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
+</pre>
+<p>
+    然后用这个配置创建集群：
+</p>
+<pre tag="bash">
+kind create cluster --name k8s-multi --config kind-cluster.yaml
+</pre>
+<p>
+    其他常用操作：
+</p>
+<pre tag="bash">
+# 列出所有 kind 集群
+kind get clusters
+
+# 删除集群
+kind delete cluster --name k8s-demo
+</pre>
+<div class="tips">
+    除了 kind，minikube 也是一个经典选择，它会直接拉起一台虚拟机，还支持通过
+    <span class="special">minikube dashboard</span>
+    打开可视化界面。想要图形化界面体验时，minikube 更方便。
+</div>
+<h2>
+    集群与上下文
+</h2>
+<p>
+    kubectl 的所有操作都依赖于
+    <span class="important">kubeconfig</span>
+    文件（默认在
+    <span class="special">~/.kube/config</span>
+    ）。它描述了「集群、用户、上下文」三者的组合关系：
+</p>
+<pre tag="bash">
+# 查看当前上下文
+kubectl config current-context
+
+# 列出全部上下文
+kubectl config get-contexts
+
+# 切换上下文
+kubectl config use-context kind-k8s-demo
+</pre>
+<p>
+    切换上下文后，所有命令都会作用到对应的集群上。
+    <span class="important">在多集群环境下操作前，务必用 current-context 确认一下</span>
+    ，避免误操作生产环境。
+</p>
+<h2>
+    命名空间
+</h2>
+<p>
+    命名空间用于在同一集群内隔离资源（类似 Docker 的项目划分）。默认有
+    <span class="special">default</span>
+    、
+    <span class="special">kube-system</span>
+    等几个命名空间。
+</p>
+<pre tag="bash">
+# 列出命名空间
+kubectl get namespaces
+
+# 创建命名空间
+kubectl create namespace demo
+
+# 在指定命名空间操作
+kubectl get pods -n demo
+</pre>
+<p>
+    也可以为命令设置默认命名空间，之后就不用每次带
+    <span class="special">-n</span>
+    参数了：
+</p>
+<pre tag="bash">
+kubectl config set-context --current --namespace=demo
+</pre>
+<h2>
+    验证环境
+</h2>
+<p>
+    跑一个最简单的 Deployment，确认整条链路是通的：
+</p>
+<pre tag="bash">
+kubectl create deployment hello --image=nginx:alpine
+kubectl get pods -w
+</pre>
+<p>
+    看到
+    <span class="special">Running</span>
+    状态就说明环境已经就绪。下一篇会详细讲 Deployment 的用法。
+</p>

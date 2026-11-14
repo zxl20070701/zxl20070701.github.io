@@ -1,0 +1,90 @@
+<header>
+    流程控制
+</header>
+<h2>
+    if 条件表达式
+</h2>
+<p>
+    条件必须是 <span class="special">bool</span> 类型。Rust 的 <span class="warn">if</span> 也是表达式，可以将分支结果赋给变量。
+</p>
+<pre tag="javascript">
+fn main() {
+let number = 7;
+
+if number &lt; 5 {
+    println!("小于 5");
+} else if number == 5 {
+    println!("等于 5");
+} else {
+    println!("大于 5");
+}
+
+let label = if number % 2 == 0 { "偶数" } else { "奇数" };
+println!("{label}");
+}
+</pre>
+<h2>
+    loop 循环
+</h2>
+<p>
+    <span class="warn">loop</span> 会持续执行，直到遇到 <span class="special">break</span>。<span class="special">break</span> 可以返回一个值，也可以使用循环标签跳出外层循环。
+</p>
+<pre tag="javascript">
+fn main() {
+let mut attempts = 0;
+let result = loop {
+    attempts += 1;
+    if attempts == 3 {
+        break attempts * 10;
+    }
+};
+println!("结果：{result}");
+
+'outer: loop {
+    loop {
+        break 'outer;
+    }
+}
+}
+</pre>
+<h2>
+    while 与 for
+</h2>
+<pre tag="javascript">
+fn main() {
+let mut n = 3;
+while n &gt; 0 {
+    println!("{n}");
+    n -= 1;
+}
+
+for score in [90, 85, 100] {
+    println!("分数：{score}");
+}
+
+for number in 1..=5 {
+    println!("{number}");
+}
+}
+</pre>
+<p>
+    <span class="special">1..5</span> 表示左闭右开区间（不包含 5），<span class="special">1..=5</span> 表示两端都包含。遍历集合时，通常优先使用 <span class="special">for</span>。
+</p>
+<h2>
+    match 分支
+</h2>
+<p>
+    <span class="warn">match</span> 按模式匹配值，分支必须覆盖所有可能情况；<span class="special">_</span> 可作为兜底分支。
+</p>
+<pre tag="javascript">
+fn main() {
+let score = 82;
+let grade = match score {
+    90..=100 =&gt; "优秀",
+    60..=89 =&gt; "合格",
+    0..=59 =&gt; "继续努力",
+    _ =&gt; "分数无效",
+};
+println!("{grade}");
+}
+</pre>

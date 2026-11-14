@@ -1,0 +1,61 @@
+<header>
+    前端调用 Rust
+</header>
+<p>
+    Tauri command 是前端调用 Rust 后端函数的常用方式。Rust 函数需要使用 <span class="special">#[tauri::command]</span> 标记，并注册到应用；前端通过 <span class="special">invoke</span> 按命令名调用。参数使用 JSON 对象传递，字段名使用 camelCase。
+</p>
+<h2>
+    在 Rust 中定义并注册命令
+</h2>
+<p>
+    在 Tauri Rust 入口（模板通常位于 <span class="special">src-tauri/src/lib.rs</span> 或 <span class="special">src-tauri/src/main.rs</span>）中添加命令：
+</p>
+<pre tag="javascript">
+#[tauri::command]
+fn greet(name: String) -&gt; String {
+    format!("你好，{name}！")
+}
+
+pub fn run() {
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![greet])
+        .run(tauri::generate_context!())
+        .expect("运行 Tauri 应用失败");
+}
+</pre>
+<p>
+    这是应用初始化部分的示意。若模板已经提供 <span class="special">run</span> 函数或 <span class="special">main</span> 入口，请将命令注册到现有的 <span class="special">Builder</span> 链中，不要再额外创建第二个入口函数。
+</p>
+<h2>
+    在前端调用
+</h2>
+<p>
+    JavaScript/TypeScript 脚手架通常已包含 <span class="special">@tauri-apps/api</span>。若项目尚未安装，可在项目根目录执行：
+</p>
+<pre tag="javascript">
+npm install @tauri-apps/api
+</pre>
+<pre tag="javascript">
+import { invoke } from "@tauri-apps/api/core";
+
+async function sayHello() {
+    try {
+        const message = await invoke("greet", { name: "Rust" });
+        console.log(message);
+    } catch (error) {
+        console.error("调用 greet 命令失败：", error);
+    }
+}
+</pre>
+<p>
+    Rust 参数 <span class="special">name</span> 对应前端对象中的 <span class="special">name</span> 属性。命令调用是异步的，返回值会作为 Promise 的结果；调用失败时应处理拒绝状态。
+</p>
+<h2>
+    数据类型与错误处理
+</h2>
+<p>
+    Tauri 会在 Rust 与 JavaScript 之间序列化数据。命令的参数和返回值需要使用可序列化类型；对复杂类型通常会使用 <span class="special">serde</span>。如果命令可能失败，可以返回 <span class="special">Result&lt;T, E&gt;</span>，其中错误类型需要可序列化（例如 <span class="special">String</span>），并让前端处理调用失败，而不是将错误伪装成正常结果。
+</p>
+<p class="warn">
+    修改 Rust 代码后，开发构建需要重新编译后端。若命令未注册、名称不一致或参数不能序列化，前端调用会失败，请同时检查 Rust 输出和浏览器控制台。
+</p>

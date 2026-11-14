@@ -1,0 +1,81 @@
+<header>
+    基础语法
+</header>
+<h2>
+    程序入口
+</h2>
+<p>
+    Rust 可执行程序从 <span class="warn">main</span> 函数开始运行。使用 <span class="special">println!</span> 宏向终端输出内容。
+</p>
+<pre tag="javascript">
+fn main() {
+    println!("你好，Rust！");
+}
+</pre>
+<h2>
+    变量与可变性
+</h2>
+<p>
+    Rust 默认变量不可变，使用 <span class="warn">let</span> 声明。需要重新赋值时，在变量名前加 <span class="special">mut</span>。
+</p>
+<pre tag="javascript">
+fn main() {
+    let name = "Rust";
+    let mut count = 1;
+    count += 1;
+
+    println!("你好，{}！运行次数：{}", name, count);
+}
+</pre>
+<p>
+    也可以使用格式化捕获变量：
+</p>
+<pre tag="javascript">
+fn main() {
+    let language = "Rust";
+    println!("正在学习 {language}");
+}
+</pre>
+<h2>
+    常量
+</h2>
+<p>
+    常量使用 <span class="warn">const</span> 声明，必须标注类型，并且只能绑定到编译期可计算的常量表达式。常量命名通常使用全大写和下划线。
+</p>
+<pre tag="javascript">
+const MAX_POINTS: u32 = 100_000;
+</pre>
+<h2>
+    遮蔽
+</h2>
+<p>
+    可以用 <span class="warn">let</span> 再次声明同名变量，新的绑定会遮蔽之前的绑定。遮蔽与 <span class="special">mut</span> 不同，它可以改变值的类型。
+</p>
+<pre tag="javascript">
+fn main() {
+    let value = "42";
+    let value: u32 = value.parse().expect("请输入有效数字");
+    println!("数字是 {value}");
+}
+</pre>
+<h2>
+    注释
+</h2>
+<p>
+    <span class="special">//</span> 用于单行注释，<span class="special">/* ... */</span> 用于块注释。以 <span class="special">///</span> 开头的文档注释可用于生成 API 文档。
+</p>
+<pre tag="javascript">
+// 这是单行注释
+
+/*
+这是可以跨越多行的块注释
+*/
+
+/// 计算两个整数的和。
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+</pre>
+<p class="important">
+    Rust 语句通常以分号结束；函数体最后一个表达式可以不写分号，它会作为函数的返回值。
+</p>

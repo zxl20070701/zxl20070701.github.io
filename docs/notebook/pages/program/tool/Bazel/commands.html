@@ -1,0 +1,64 @@
+<header>
+    构建、运行与测试命令
+</header>
+<p>
+    以下命令在包含
+    <span class="important">MODULE.bazel</span>
+    的项目根目录执行。以“创建第一个项目”中的
+    <span class="important">hello</span>
+    和
+    <span class="important">greeter_test</span>
+    目标为例。
+</p>
+<h2>
+    常用命令
+</h2>
+<pre tag="shell">
+# 构建一个目标
+bazel build //:hello
+
+# 构建当前工作区中的所有目标
+bazel build //...
+
+# 构建并运行可执行目标
+bazel run //:hello
+
+# 运行一个测试目标
+bazel test //:greeter_test
+
+# 运行工作区中的全部测试
+bazel test //...
+</pre>
+<h2>
+    目标标签
+</h2>
+<ul>
+    <li>
+        <span class="important">//:hello</span>：根目录包中的 hello 目标。
+    </li>
+    <li>
+        <span class="important">//lib:greeter</span>：lib 包中的 greeter 目标。
+    </li>
+    <li>
+        <span class="important">//...</span>：当前工作区下所有包和目标，常用于批量构建或测试。
+    </li>
+</ul>
+<h2>
+    常见选项
+</h2>
+<pre tag="shell">
+# 显示更详细的构建过程
+bazel build --verbose_failures //:hello
+
+# 强制重新执行测试，不使用测试结果缓存
+bazel test --cache_test_results=no //:greeter_test
+</pre>
+<p>
+    Bazel 会缓存构建产物和测试结果；输入和依赖未改变时，重复执行通常会更快。若遇到缓存相关的问题，先确认目标、输入和构建配置，再按需使用清理命令，不要把每次构建前执行清理作为常规步骤。
+</p>
+<p>
+    想了解完整选项，可运行
+    <span class="important">bazel help</span>
+    或查看
+    <a href="https://bazel.build/run/build" target="_blank" rel="noopener noreferrer">官方构建命令文档</a>。
+</p>

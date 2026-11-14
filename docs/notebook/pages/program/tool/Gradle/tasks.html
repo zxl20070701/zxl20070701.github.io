@@ -1,0 +1,63 @@
+<header>
+    常用任务与命令
+</header>
+<h2>
+    常用命令
+</h2>
+<p>
+    在包含gradlew的项目根目录运行命令。Wrapper可以确保团队成员使用项目指定的Gradle版本。
+</p>
+<pre tag="bash">
+# 查看Gradle版本
+./gradlew -v
+
+# 查看可用任务
+./gradlew tasks
+
+# 编译主代码
+./gradlew compileJava
+
+# 运行测试
+./gradlew test
+
+# 构建项目（包括编译、测试和打包等）
+./gradlew build
+
+# 运行Application插件配置的应用
+./gradlew run
+
+# 清理构建产物
+./gradlew clean
+</pre>
+<p>
+    Windows命令提示符或PowerShell中使用gradlew.bat替代./gradlew。
+</p>
+<h2>
+    任务与构建生命周期
+</h2>
+<p>
+    Gradle将构建工作组织为任务。任务可以依赖其他任务；执行build等任务时，Gradle会按依赖关系执行所需工作。Java插件提供compileJava、test、jar、build和clean等常用任务。
+</p>
+<p>
+    构建产物通常位于对应项目的build目录。例如，app子项目的产物会生成在app/build中。可使用./gradlew :app:tasks查看子项目任务，或用./gradlew :app:test运行指定子项目的测试。
+</p>
+<h2>
+    Wrapper维护
+</h2>
+<p>
+    Wrapper配置位于gradle/wrapper/gradle-wrapper.properties。需要升级Gradle时，可使用本机Gradle执行：
+</p>
+<pre tag="bash">
+gradle wrapper --gradle-version 8.10.2
+</pre>
+<p>
+    将生成或更新的Wrapper文件与项目配置一起提交，其他开发者即可通过Wrapper使用指定版本。升级前请确认该Gradle版本与项目使用的JDK及插件兼容。
+</p>
+<h2>
+    常见问题
+</h2>
+<ul>
+    <li>任务不存在：运行./gradlew tasks确认当前项目包含该任务；多项目构建时检查是否需要使用:子项目名:任务名。</li>
+    <li>依赖下载失败：检查网络和仓库配置，确认依赖坐标有效。</li>
+    <li>构建使用了错误的Java版本：检查JAVA_HOME，并核对构建脚本中的Java toolchain配置。</li>
+</ul>

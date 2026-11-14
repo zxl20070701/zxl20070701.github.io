@@ -1,0 +1,44 @@
+<header>
+    Record 数据载体
+</header>
+<h2>
+    声明 Record
+</h2>
+<p>
+    Record 用于简洁地表达以数据为主的类型。组件会生成对应的 private final 字段、访问器、构造方法、
+    <span class="important">equals</span>、
+    <span class="important">hashCode</span>
+    和
+    <span class="important">toString</span>：
+</p>
+<pre tag="javascript">
+record Point(int x, int y) {}
+
+Point point = new Point(3, 4);
+System.out.println(point.x());
+</pre>
+<p>
+    Record 组件的访问器名称是组件名（例如
+    <span class="important">x()</span>），
+    而不是 JavaBean 风格的
+    <span class="important">getX()</span>。
+    Record 类是 final 的，不能显式继承其他类，但可以实现接口。
+</p>
+<h2>
+    校验和规范化组件
+</h2>
+<p>
+    紧凑构造方法适合校验组件。构造方法结束时，组件字段会由对应参数赋值：
+</p>
+<pre tag="javascript">
+record Range(int start, int end) {
+    Range {
+        if (start &gt; end) {
+            throw new IllegalArgumentException("start must not exceed end");
+        }
+    }
+}
+</pre>
+<p>
+    Record 的不可变性是浅层的：组件引用不能重新赋值，但若组件引用指向可变对象，该对象仍可能被修改。需要真正不可变的数据时，应选择不可变组件或在构造时复制可变数据。
+</p>

@@ -1,0 +1,46 @@
+<header>
+    编写 Dockerfile 并构建镜像
+</header>
+<p>
+    Dockerfile 是描述镜像构建步骤的文本文件。下面用 Nginx 托管一个静态页面，练习准备文件、构建镜像和运行容器。
+</p>
+<h2>
+    准备项目文件
+</h2>
+<p>
+    新建一个目录，在其中创建 index.html 和 Dockerfile 两个文件：
+</p>
+<pre tag="html">
+&lt;!doctype html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;&lt;meta charset="utf-8"&gt;&lt;title&gt;Docker 入门&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;&lt;h1&gt;Hello from Docker&lt;/h1&gt;&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<pre tag="dockerfile">
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/index.html
+</pre>
+<p>
+    FROM 指定基础镜像，COPY 将构建目录中的页面复制到镜像内 Nginx 默认的网站目录。
+</p>
+<h2>
+    构建镜像
+</h2>
+<p>
+    在包含 Dockerfile 的目录中运行构建命令。末尾的点表示将当前目录作为构建上下文：
+</p>
+<pre tag="shell">
+docker build -t my-nginx:1.0 .
+docker image ls
+</pre>
+<h2>
+    运行构建好的镜像
+</h2>
+<pre tag="shell">
+docker run --name my-nginx-demo -d my-nginx:1.0
+docker logs my-nginx-demo
+</pre>
+<p>
+    容器可以运行，但尚未将网站端口发布到主机，因此浏览器还无法从主机访问它。
+</p>

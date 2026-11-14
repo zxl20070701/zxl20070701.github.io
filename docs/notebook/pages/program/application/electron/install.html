@@ -1,0 +1,54 @@
+<header>
+    安装与创建项目
+</header>
+<p>
+    Electron 使用 Chromium 显示应用界面，并通过 Node.js 主进程访问桌面能力。建议初学者使用 Electron Forge 创建项目，它会生成开发脚本和打包配置。
+</p>
+<h2>
+    安装前准备
+</h2>
+<p>
+    安装 Node.js 的 LTS 版本，并确认 npm 可用：
+</p>
+<pre tag="javascript">
+node --version
+npm --version
+</pre>
+<h2>
+    创建 Electron 项目
+</h2>
+<p>
+    在项目所在目录运行 Electron Forge 脚手架：
+</p>
+<pre tag="javascript">
+npm init electron-app@latest my-electron-app
+cd my-electron-app
+</pre>
+<p>
+    脚手架会生成应用入口和 Forge 配置。首次运行开发模式前按提示安装项目依赖。
+</p>
+<h2>
+    启动应用
+</h2>
+<pre tag="javascript">
+npm start
+</pre>
+<p>
+    成功后会打开桌面窗口。开发过程中修改代码后，可按项目脚本重新启动或使用模板配置的开发工具。
+</p>
+<h2>
+    生成安装包
+</h2>
+<p>
+    Electron Forge 项目可以使用下面的命令构建并打包：
+</p>
+<pre tag="javascript">
+npm run make
+</pre>
+<p>
+    安装包会生成在项目的 <span class="special">out/make/</span> 目录。不同操作系统的打包目标和签名要求不同；准备发布时请查看
+    <a href="https://www.electronforge.io/" target="_blank">Electron Forge 文档</a>。
+</p>
+<p class="warn">
+    本教程使用 Electron Forge。仓库中另有 electron-builder 相关问题记录；Forge 与 electron-builder 是不同的打包方案，请根据项目实际配置选择，不要把两套配置命令混用。
+</p>

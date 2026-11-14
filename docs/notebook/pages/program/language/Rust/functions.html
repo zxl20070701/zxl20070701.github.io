@@ -1,0 +1,76 @@
+<header>
+    函数
+</header>
+<h2>
+    定义函数
+</h2>
+<p>
+    使用 <span class="warn">fn</span> 定义函数。参数必须标注类型；有返回值时，在箭头后声明返回类型。
+</p>
+<pre tag="javascript">
+fn add(a: i32, b: i32) -&gt; i32 {
+    a + b
+}
+
+fn main() {
+    println!("1 + 2 = {}", add(1, 2));
+}
+</pre>
+<p>
+    函数体末尾不带分号的表达式是返回值，也可以用 <span class="special">return</span> 提前返回。没有返回值的函数返回单元类型 <span class="special">()</span>。
+</p>
+<pre tag="javascript">
+fn is_positive(value: i32) -&gt; bool {
+    if value &gt; 0 {
+        return true;
+    }
+    false
+}
+
+fn print_message(message: &amp;str) {
+    println!("{message}");
+}
+</pre>
+<h2>
+    语句与表达式
+</h2>
+<p>
+    语句执行操作但不返回值；表达式会计算出一个值。赋值、函数定义等是语句，而不带分号的代码块末尾表达式可以作为结果。
+</p>
+<pre tag="javascript">
+fn main() {
+let result = {
+    let base = 10;
+    base + 5
+};
+println!("{result}"); // 15
+}
+</pre>
+<h2>
+    参数与返回多个值
+</h2>
+<p>
+    Rust 函数不支持默认参数或重载。需要返回多个值时，可以使用元组。
+</p>
+<pre tag="javascript">
+fn min_max(values: [i32; 4]) -&gt; (i32, i32) {
+    let mut min = values[0];
+    let mut max = values[0];
+
+    for value in values {
+        if value &lt; min {
+            min = value;
+        }
+        if value &gt; max {
+            max = value;
+        }
+    }
+
+    (min, max)
+}
+
+fn main() {
+let (smallest, largest) = min_max([8, 3, 10, 5]);
+println!("{smallest}, {largest}");
+}
+</pre>

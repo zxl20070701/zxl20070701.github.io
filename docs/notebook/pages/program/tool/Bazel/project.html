@@ -1,0 +1,123 @@
+<header>
+    创建第一个项目
+</header>
+<p>
+    下面创建一个由可执行程序、库和测试组成的 C++ 项目。示例目录结构如下：
+</p>
+<pre tag="text">
+hello-bazel/
+├── MODULE.bazel
+├── BUILD
+├── main.cc
+├── greeter.h
+├── greeter.cc
+└── greeter_test.cc
+</pre>
+<p>
+    在项目根目录创建
+    <span class="important">MODULE.bazel</span>，声明模块名称和版本：
+</p>
+<pre tag="python">
+module(
+    name = "hello_bazel",
+    version = "1.0",
+)
+</pre>
+<p>
+    创建
+    <span class="important">greeter.h</span>
+    和
+    <span class="important">greeter.cc</span>，分别声明和实现一个函数：
+</p>
+<pre tag="cpp">
+// greeter.h
+#ifndef GREETER_H
+#define GREETER_H
+
+#include &lt;string&gt;
+
+std::string greet();
+
+#endif
+</pre>
+<pre tag="cpp">
+// greeter.cc
+#include "greeter.h"
+
+std::string greet() {
+    return "Hello, Bazel!";
+}
+</pre>
+<p>
+    创建程序入口
+    <span class="important">main.cc</span>：
+</p>
+<pre tag="cpp">
+#include &lt;iostream&gt;
+#include "greeter.h"
+
+int main() {
+    std::cout &lt;&lt; greet() &lt;&lt; '\n';
+    return 0;
+}
+</pre>
+<p>
+    再创建一个简单测试
+    <span class="important">greeter_test.cc</span>。测试程序返回非零状态时，Bazel 会将测试标记为失败：
+</p>
+<pre tag="cpp">
+#include &lt;cassert&gt;
+#include "greeter.h"
+
+int main() {
+    assert(greet() == "Hello, Bazel!");
+    return 0;
+}
+</pre>
+<p>
+    最后在根目录的
+    <span class="important">BUILD</span>
+    文件中声明这些构建目标：
+</p>
+<pre tag="python">
+cc_library(
+    name = "greeter",
+    srcs = ["greeter.cc"],
+    hdrs = ["greeter.h"],
+)
+
+cc_binary(
+    name = "hello",
+    srcs = ["main.cc"],
+    deps = [":greeter"],
+)
+
+cc_test(
+    name = "greeter_test",
+    srcs = ["greeter_test.cc"],
+    deps = [":greeter"],
+)
+</pre>
+<p>
+    进入项目根目录后，构建并运行程序：
+</p>
+<pre tag="shell">
+bazel build //:hello
+bazel run //:hello
+</pre>
+<p>
+    运行测试：
+</p>
+<pre tag="shell">
+bazel test //:greeter_test
+</pre>
+<p>
+    <span class="important">//:hello</span>
+    是根目录包中名为
+    <span class="important">hello</span>
+    的目标；
+    <span class="important">:greeter</span>
+    是同一个包中的目标。BUILD 中的
+    <span class="important">deps</span>
+    声明了目标间的依赖关系，Bazel 会据此确定构建顺序。
+</p>

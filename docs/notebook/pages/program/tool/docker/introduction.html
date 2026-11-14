@@ -1,0 +1,31 @@
+<header>
+    概念与环境检查
+</header>
+<p>
+    Docker 可以把应用及其运行环境打包成镜像，再用镜像创建容器。镜像是只读的应用模板，容器是镜像运行起来后的实例；同一个镜像可以创建多个彼此独立的容器。
+</p>
+<h2>
+    先准备 Docker
+</h2>
+<p>
+    请先安装并启动适用于自己系统的 Docker。在终端运行以下命令，确认 Docker 命令行可以连接到 Docker Engine：
+</p>
+<pre tag="shell">
+docker --version
+docker info
+</pre>
+<p>
+    如果命令不可用，请检查 Docker 是否已安装；如果 docker info 提示无法连接，请先启动 Docker Desktop 或对应系统上的 Docker 服务。
+</p>
+<h2>
+    运行第一个容器
+</h2>
+<p>
+    hello-world 是 Docker 提供的入门镜像。第一次运行时，Docker 会在本地查找镜像；如果没有找到，就从镜像仓库下载，然后创建容器并运行：
+</p>
+<pre tag="shell">
+docker run hello-world
+</pre>
+<p>
+    看到欢迎信息表示容器成功运行。
+</p>

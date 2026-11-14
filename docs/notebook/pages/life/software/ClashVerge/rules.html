@@ -1,0 +1,370 @@
+<header>
+    模式与规则分流
+</header>
+<p>
+    上一篇已经能用起来了。但默认的「规则」模式是机场下发的规则，<span class="important">不一定是针对你实际需求优化的</span>。这篇讲清楚分流是怎么回事、怎么按自己的需求改，以及怎么用「扩展配置」加自己的规则。
+</p>
+<h2>
+    分流到底在分什么
+</h2>
+<p>
+    一句话解释：<span class="important">软件拿到每个网络请求后，拿它去比对一张「规则表」，命中哪条就走哪条路</span>。
+</p>
+<pre>
+你访问 example.com
+   ↓
+比对规则表（从上到下，命中即停）
+   ↓
+命中 "DOMAIN-SUFFIX,com,DIRECT"  →  直连，不走代理
+命中 "MATCH,🚀 节点选择"            →  走代理
+</pre>
+<p>
+    规则表通常长这样：
+</p>
+<pre>
+rules:
+  - GEOSITE,category-ads-all,REJECT      # 广告 → 直接拦截
+  - GEOIP,CN,DIRECT                       # 中国 IP → 直连
+  - GEOSITE,cn,DIRECT                     # 中国域名 → 直连
+  - MATCH,🚀 节点选择                      # 其余全部 → 走代理
+</pre>
+<div class="tips">
+    <span class="important">规则从上到下匹配，命中第一条就停止</span>，后面的不再看。所以规则顺序直接决定结果，「把某网站加在最前面」就意味着「强制它走/不走代理」。
+</div>
+<h2>
+    常用规则类型速查
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>匹配什么</th>
+            <th>例子</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">DOMAIN</span></td>
+            <td>完全匹配的域名</td>
+            <td><span class="special">DOMAIN,google.com,DIRECT</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">DOMAIN-SUFFIX</span></td>
+            <td>域名后缀（含子域）</td>
+            <td><span class="special">DOMAIN-SUFFIX,youtube.com,🚀 节点选择</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">DOMAIN-KEYWORD</span></td>
+            <td>域名里含关键词</td>
+            <td><span class="special">DOMAIN-KEYWORD,ads,REJECT</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">GEOSITE</span></td>
+            <td>按地理站点库匹配（最常用）</td>
+            <td><span class="special">GEOSITE,cn,DIRECT</span>、<span class="special">GEOSITE,youtube,📹 YouTube</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">GEOIP</span></td>
+            <td>按 IP 归属地匹配</td>
+            <td><span class="special">GEOIP,CN,DIRECT</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">IP-CIDR</span></td>
+            <td>IP 段</td>
+            <td><span class="special">IP-CIDR,192.168.0.0/16,DIRECT</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">DST-PORT</span></td>
+            <td>目标端口</td>
+            <td><span class="special">DST-PORT,22,DIRECT</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">PROCESS-NAME</span></td>
+            <td>程序进程名</td>
+            <td><span class="special">PROCESS-NAME,WeChat.exe,DIRECT</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">REJECT</span></td>
+            <td>特殊值：直接拦截</td>
+            <td><span class="special">GEOSITE,category-ads-all,REJECT</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">MATCH</span></td>
+            <td>特殊值：兜底，必须放最后</td>
+            <td><span class="special">MATCH,🚀 节点选择</span></td>
+        </tr>
+    </tbody>
+</table>
+<div class="warn">
+    <span class="important">MATCH 是兜底规则，必须写在最后一条。</span>放前面的话后面所有规则都永远不会生效，配置看起来"生效了"但完全不是你想要的效果。
+</div>
+<h2>
+    改规则的三种入口
+</h2>
+<p>
+    左侧<span class="special">分叉箭头图标（规则）</span>页面可以看到当前生效的完整规则列表。想改规则有三条路，区别在于<span class="important">会不会被订阅更新冲掉</span>：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>方式</th>
+            <th>怎么改</th>
+            <th>订阅更新后</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">编辑规则</span></td>
+            <td>右键订阅卡片 → 编辑规则 → 填 prepend / append</td>
+            <td><span class="important">保留</span>，机场更新不会冲掉</td>
+        </tr>
+        <tr>
+            <td><span class="special">扩展配置</span></td>
+            <td>订阅页新建「配置」类型，YAML 覆写</td>
+            <td><span class="important">保留</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">扩展脚本</span></td>
+            <td>订阅页新建「脚本」类型，JavaScript 改配置</td>
+            <td><span class="important">保留</span></td>
+        </tr>
+        <tr>
+            <td>直接改订阅 YAML</td>
+            <td>点订阅卡片的编辑按钮</td>
+            <td><span class="warn">会被冲掉</span>，机场更新后你的修改就没了</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    记住这条原则：<span class="important">凡是自己的定制，都放在「编辑规则」/「扩展配置」/「扩展脚本」里，别直接改订阅原文</span>。只有这三种方式能在订阅更新后存活。
+</div>
+<h2>
+    方式一：编辑规则（最常用）
+</h2>
+<p>
+    在<span class="special">订阅</span>页面<span class="important">右键点击订阅卡片</span>，选择「编辑规则」，可以填两个位置：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>位置</th>
+            <th>含义</th>
+            <th>建议</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">prepend（前置规则）</span></td>
+            <td>插到订阅规则<span class="important">最前面</span>，优先级最高</td>
+            <td><span class="important">自定义规则放这里</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">append（后置规则）</span></td>
+            <td>插到订阅规则<span class="important">最后面</span>（MATCH 之后其实已经不生效了）</td>
+            <td>基本不用</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    实战一：让某个网站直连
+</h3>
+<p>
+    假设你用 <span class="special">DOMAIN-SUFFIX</span> 让公司内网域名走直连：
+</p>
+<pre>
+- DOMAIN-SUFFIX,mycompany.com,DIRECT
+- DOMAIN-SUFFIX,intranet.local,DIRECT
+</pre>
+<h3>
+    实战二：屏蔽广告
+</h3>
+<pre>
+- GEOSITE,category-ads-all,REJECT
+- DOMAIN-KEYWORD,ads,REJECT
+- DOMAIN-KEYWORD,tracker,REJECT
+</pre>
+<div class="tips">
+    广告规则用 <span class="special">REJECT</span> 直接掐断，比走代理再丢弃省流量也省事。不过 <span class="important">用多了可能误伤</span>，比如某些站点 URL 里就带 "ads" 字样却不是广告，出现页面空白时先怀疑它。
+</div>
+<h3>
+    实战三：某个网站必须走代理
+</h3>
+<p>
+    规则模式默认走代理，但如果某个国内网站被误判成直连导致打不开，就在最前面加一条强制走代理：
+</p>
+<pre>
+- DOMAIN-SUFFIX,example.com,🚀 节点选择
+</pre>
+<p>
+    这里的 <span class="special">🚀 节点选择</span> 换成你订阅里<span class="important">真实存在的代理组名称</span>。名称写错会导致规则匹配不到任何东西——去代理页面看一眼组名，注意带 emoji 和空格。
+</p>
+<h3>
+    实战四：让某个程序走代理
+</h3>
+<pre>
+- PROCESS-NAME,Telegram.exe,📱 Telegram
+- PROCESS-NAME,steam.exe,🎮 游戏加速
+- PROCESS-NAME,WeChat.exe,DIRECT
+</pre>
+<div class="tips">
+    <span class="important">PROCESS-NAME 规则依赖内核的进程匹配功能</span>，部分版本/模式下可能不生效。不确定的话在「规则」页面看命中情况，或者改用域名规则。
+</div>
+<h2>
+    方式二：扩展配置
+</h2>
+<p>
+    扩展配置是一段 YAML，用来<span class="important">覆写订阅里的配置项</span>，比如强制打开 DNS、开启 IPv6、调整并发数。
+</p>
+<p>
+    在<span class="special">订阅</span>页面点「新建」→ 类型选<span class="special">「配置」</span>，写好后<span class="important">右键卡片点「启用」</span>。
+</p>
+<pre tag="yaml">
+dns:
+  enable: true
+  ipv6: false
+tcp-concurrent: true
+</pre>
+<h3>
+    合并规则（重要）
+</h3>
+<p>
+    扩展配置只改你写了的字段，但<span class="important">不同类型字段的覆盖方式不一样</span>，搞清楚能少踩很多坑：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>字段类型</th>
+            <th>行为</th>
+            <th>例子</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>列表 / 普通值</td>
+            <td><span class="important">整体替换</span></td>
+            <td><span class="special">rules</span>、<span class="special">dns.nameserver</span>、<span class="special">tcp-concurrent</span></td>
+        </tr>
+        <tr>
+            <td>嵌套对象</td>
+            <td>逐项合并</td>
+            <td><span class="special">tun</span>、<span class="special">sniffer</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">dns</span> 下的字段 + 顶层 <span class="special">hosts</span></td>
+            <td><span class="important">整体替换</span>（v2.5.5 起）</td>
+            <td>写 <span class="special">dns.nameserver</span> 会把订阅原有的整个 <span class="special">nameserver</span> 换掉</td>
+        </tr>
+    </tbody>
+</table>
+<div class="warn">
+    「整体替换」很容易出事。比如你只想加一条 <span class="special">nameserver-policy</span>，结果把订阅原有的整张表换掉了，其他内网域名就解析不了了。<span class="important">要保留原有条目就得把原有的一起写上</span>，或者改用扩展脚本追加。
+</div>
+<h3>
+    哪些字段写了也没用
+</h3>
+<p>
+    设置页里的选项优先级最高，这些字段由应用接管，扩展写了会在最后被丢弃并弹出提示：
+</p>
+<pre>
+external-controller、external-controller-cors、secret
+mixed-port、socks-port、port、redir-port、tproxy-port
+mode、allow-lan、log-level、ipv6、unified-delay
+tun.enable、stack、device、auto-route、mtu ...
+</pre>
+<div class="tips">
+    想改端口、去设置页改；想在扩展里改 <span class="special">tun.stack</span> 之类的，得去<span class="important">设置页的 TUN 对话框</span>里改（保存过的字段会被应用接管）。这不是 bug，是防止配置互相打架的设计。
+</div>
+<h2>
+    方式三：扩展脚本
+</h2>
+<p>
+    当配置项写死满足不了需求，用 JavaScript 改最灵活。订阅页新建「脚本」类型，内容是一个 <span class="special">main(config)</span> 函数：
+</p>
+<pre tag="javascript">
+function main(config) {
+  // 追加一条 nameserver-policy，保留订阅原有的
+  config.dns = config.dns || {};
+  config.dns["nameserver-policy"] = config.dns["nameserver-policy"] || {};
+  config.dns["nameserver-policy"]["+.example.com"] = "https://1.1.1.1/dns-query";
+
+  // 关掉查询系统 hosts
+  config.dns["use-system-hosts"] = false;
+
+  return config;
+}
+</pre>
+<h3>
+    实战五：解决 localhost 被代理导致 502
+</h3>
+<p>
+    这是新手最容易遇到的坑之一：<span class="important">本地开发时访问 localhost 报 502 / 连接被拒</span>。原因是本地请求被当成普通流量丢给节点了，节点那边根本没有你的服务。
+</p>
+<p>
+    解决办法是让 localhost 走直连。在订阅卡片的<span class="special">「编辑规则」→ prepend</span> 里加：
+</p>
+<pre>
+- DOMAIN-SUFFIX,localhost,DIRECT
+- IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+- IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+</pre>
+<div class="tips">
+    <span class="important">no-resolve 一定要加</span>，表示匹配 IP 段时不要反查域名，能避免额外 DNS 请求和延迟。
+</div>
+<h3>
+    实战六：让内网域名走内网 DNS
+</h3>
+<p>
+    公司内网域名用公网 DNS 解析不出来（本来就不对公网公开）。在扩展脚本里指定内网 DNS：
+</p>
+<pre tag="javascript">
+function main(config) {
+  config.dns = config.dns || {};
+  config.dns["nameserver-policy"] = config.dns["nameserver-policy"] || {};
+  config.dns["nameserver-policy"]["+.helloworld.com"] = "10.10.10.1";
+  return config;
+}
+</pre>
+<p>
+    假设你的内网 IP 是 <span class="special">10.10.10.123</span>，网关是 <span class="special">10.10.10.1</span>，要访问的域名是 <span class="special">www.helloworld.com</span>。
+</p>
+<h2>
+    排查规则有没有生效
+</h2>
+<p>
+    改了规则不确定对不对，<span class="special">规则</span>页面每一行右侧都有「命中次数」。改完访问一次目标网站，回来看看对应规则的命中数涨了没：
+</p>
+<ul>
+    <li><span class="important">命中数涨了</span> → 规则生效</li>
+    <li><span class="important">命中数是 0</span> → 域名写错了、位置不对、或者被前面的规则抢先命中了</li>
+</ul>
+<p>
+    另一个更直接的办法是<span class="special">看「连接」页面</span>：每条连接的「规则」列会显示它命中了哪条规则，一目了然。
+</p>
+<div class="tips">
+    还可以在<span class="special">日志</span>页把日志等级调到 <span class="special">debug</span>，能看到完整的匹配过程。查完记得调回 <span class="special">warn</span> 或 <span class="special">error</span>，debug 日志涨得很快。
+</div>
+<h2>
+    一份实用规则模板
+</h2>
+<p>
+    新手可以直接照抄这个思路（放在订阅卡片的<span class="special">编辑规则 → prepend</span>）：
+</p>
+<pre>
+# —— 本地与内网直连 ——
+- DOMAIN-SUFFIX,localhost,DIRECT
+- IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+
+# —— 广告拦截 ——
+- GEOSITE,category-ads-all,REJECT
+
+# —— 必须走代理的网站 ——
+- DOMAIN-SUFFIX,youtube.com,🚀 节点选择
+
+# —— 剩下的交给订阅自带的规则 ——
+</pre>
+<div class="tips">
+    记住核心原则：<span class="important">定制放前置、用 GEOIP/GEOSITE 做粗粒度判断、用 DOMAIN 规则处理特例</span>。规则不是越多越好，够用就行。
+</div>

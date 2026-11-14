@@ -1,0 +1,50 @@
+<header>
+    嵌套类与内部类
+</header>
+<h2>
+    静态嵌套类
+</h2>
+<p>
+    在类中声明的
+    <span class="important">static</span>
+    类称为静态嵌套类。它不依赖外部类对象，可用于将辅助类型与外部类组织在一起：
+</p>
+<pre tag="javascript">
+class Outer {
+    static class Entry {
+        final String key;
+
+        Entry(String key) {
+            this.key = key;
+        }
+    }
+}
+
+Outer.Entry entry = new Outer.Entry("id");
+</pre>
+<h2>
+    非静态内部类
+</h2>
+<p>
+    非静态成员类（常称内部类）与外部类的某个实例关联，可以访问该外部实例的成员。创建时需要先有外部对象：
+</p>
+<pre tag="javascript">
+class Outer {
+    private String name = "outer";
+
+    class Inner {
+        String describe() {
+            return name;
+        }
+    }
+}
+
+Outer outer = new Outer();
+Outer.Inner inner = outer.new Inner();
+</pre>
+<h2>
+    局部类和匿名类
+</h2>
+<p>
+    局部类在方法或代码块中声明；匿名类在创建对象时直接实现接口或继承类，适合一次性实现。对于函数式接口，通常可用 Lambda 替代匿名类；需要保存状态或多个方法时，具名类往往更清晰。
+</p>

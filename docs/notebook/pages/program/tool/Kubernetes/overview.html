@@ -1,0 +1,140 @@
+<header>
+    Kubernetes是什么
+</header>
+<p>
+    Kubernetes（常简写为
+    <span class="special">K8s</span>
+    ）是一个开源的容器编排系统。它把一堆容器（通常是 Docker 容器）组织起来，对外提供统一的服务发现、扩缩容和自愈能力。
+</p>
+<p>
+    一句话概括它的价值：
+    <span class="important">你只需要描述「应用应该长什么样」，Kubernetes 负责让它一直保持这个状态</span>
+    。某个副本挂了会自动重建，某台机器宕机会自动重新调度到其它节点。
+</p>
+<h2>
+    为什么需要容器编排
+</h2>
+<p>
+    单机跑 Docker 很轻松，但一旦服务多了，就会遇到这些问题：
+</p>
+<ul>
+    <li>容器之间怎么互相找到对方（服务发现）；</li>
+    <li>访问量涨了怎么自动加机器（弹性伸缩）；</li>
+    <li>某个容器崩了谁来重启（自愈）；</li>
+    <li>发布新版本怎么做到不中断老版本（滚动更新）。</li>
+</ul>
+<p>
+    Kubernetes 就是用来集中解决这些问题的。
+</p>
+<h2>
+    核心概念
+</h2>
+<p>
+    Kubernetes 里的一切都是「对象」，对象之间通过
+    <span class="important">标签（label）</span>
+    和
+    <span class="important">选择器（selector）</span>
+    建立联系。下面是最常用的几个对象：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>对象</th>
+            <th>作用</th>
+            <th>类比</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Pod</span></td>
+            <td>最小调度单位，里面装一个或多个容器</td>
+            <td>一个「进程实例」</td>
+        </tr>
+        <tr>
+            <td><span class="special">Deployment</span></td>
+            <td>管理一组无状态 Pod 副本，负责滚动更新</td>
+            <td>「应用 + 副本数」</td>
+        </tr>
+        <tr>
+            <td><span class="special">Service</span></td>
+            <td>为一组 Pod 提供固定访问入口和负载均衡</td>
+            <td>「域名 + 负载均衡」</td>
+        </tr>
+        <tr>
+            <td><span class="special">Ingress</span></td>
+            <td>七层 HTTP/HTTPS 路由，按域名和路径分发流量</td>
+            <td>「反向代理 / 网关」</td>
+        </tr>
+        <tr>
+            <td><span class="special">ConfigMap</span></td>
+            <td>存放非敏感的配置（配置文件、环境变量）</td>
+            <td>「配置字典」</td>
+        </tr>
+        <tr>
+            <td><span class="special">Secret</span></td>
+            <td>存放敏感信息（密码、Token、证书）</td>
+            <td>「保险箱」</td>
+        </tr>
+        <tr>
+            <td><span class="special">PVC</span></td>
+            <td>持久化存储的申请凭证</td>
+            <td>「硬盘订单」</td>
+        </tr>
+        <tr>
+            <td><span class="special">Namespace</span></td>
+            <td>对资源做逻辑分组隔离</td>
+            <td>「虚拟文件夹」</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    集群架构
+</h2>
+<p>
+    一个 Kubernetes 集群分为控制面（Control Plane）和工作节点（Worker Node）两部分：
+</p>
+<ul>
+    <li>
+        <span class="important">控制面</span>：负责整个集群的“大脑”，包含 API Server、调度器（Scheduler）、控制器管理器（Controller Manager）和 etcd。所有的变更都要经过 API Server。
+    </li>
+    <li>
+        <span class="important">工作节点</span>：真正跑业务容器的地方，上面运行 kubelet（负责和 API Server 通信、管理本机 Pod）以及容器运行时（如 containerd、docker）。
+    </li>
+</ul>
+<p>
+    <span class="special">kubectl</span>
+    是和 API Server 通信的命令行工具，你在终端敲的每条命令，本质上都是一次 REST 请求。
+</p>
+<pre>
+    kubectl  ---&gt;  API Server  ---&gt;  etcd
+                      |
+            Scheduler / Controller
+                      |
+              Worker Node (kubelet + 容器运行时)
+</pre>
+<div class="tips">
+    官方文档：
+    <a href="https://kubernetes.io/zh-cn/docs/concepts/overview/" target="_blank" rel="noopener noreferrer">Kubernetes 概览</a>、
+    <a href="https://kubernetes.io/zh-cn/docs/concepts/overview/components/" target="_blank" rel="noopener noreferrer">集群组件</a>。
+</div>
+<h2>
+    声明式 API
+</h2>
+<p>
+    Kubernetes 的核心理念是
+    <span class="important">声明式</span>
+    ：你描述期望的状态（desired state），控制器（Controller）持续对比实际状态并做出修正，直到两者一致。
+</p>
+<p>
+    所以在 Kubernetes 上工作，习惯是「写 YAML 然后 apply」，而不是「手动一条条命令创建」。
+</p>
+<pre tag="bash">
+# 查看当前实际状态
+kubectl get pods
+
+# 声明期望状态，让集群去满足
+kubectl apply -f deploy.yaml
+</pre>
+<p>
+    这也是为什么「一份 YAML 可以同时用于开发、测试和生产」——它描述的是应用本身，而不是操作步骤。
+</p>

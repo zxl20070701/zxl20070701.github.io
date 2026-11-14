@@ -1,0 +1,88 @@
+<header>
+    pom.xml与依赖
+</header>
+<h2>
+    项目坐标和基本配置
+</h2>
+<p>
+    Maven通过groupId、artifactId和version标识一个项目（通常称为坐标）。下面的配置声明了项目坐标、Java版本和一个仅用于测试的JUnit依赖：
+</p>
+<pre tag="xml">
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.example&lt;/groupId&gt;
+    &lt;artifactId&gt;demo&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;maven.compiler.release&gt;17&lt;/maven.compiler.release&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.13.2&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.13.0&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</pre>
+<p>
+    示例使用Java 17编译；请确保本机JDK版本不低于pom.xml配置的版本。dependencies用于声明项目依赖，build中的plugins用于配置构建插件。
+</p>
+<h2>
+    依赖scope
+</h2>
+<p>
+    依赖默认使用compile scope。常见scope的含义如下：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>scope</th>
+            <th>用途</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>compile</td>
+            <td>默认值，参与主代码编译，并通常包含在运行时类路径中。</td>
+        </tr>
+        <tr>
+            <td>provided</td>
+            <td>编译和测试时可用，预期由运行环境提供，例如Servlet容器。</td>
+        </tr>
+        <tr>
+            <td>runtime</td>
+            <td>运行和测试时需要，但不参与主代码编译。</td>
+        </tr>
+        <tr>
+            <td>test</td>
+            <td>仅用于测试编译和测试运行，例如JUnit。</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    本机依赖仓库
+</h2>
+<p>
+    Maven默认将下载的依赖保存到用户目录下的.m2/repository，供本机其他Maven项目复用。在pom.xml的dependencies中添加依赖后，执行编译或测试命令，Maven会解析并下载所需依赖。
+</p>
+<p>
+    如果依赖下载失败，请检查网络、仓库配置和依赖坐标；也可以使用mvn -U package重新检查远程依赖更新。
+</p>

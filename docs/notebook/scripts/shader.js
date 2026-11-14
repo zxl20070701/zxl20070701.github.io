@@ -3428,6 +3428,20 @@ var replaceCode = function (source) {
         .replace(/\&lt;/g, '<')
         .replace(/\&gt;/g, '>');
 }
+/* 把着色器给出的颜色映射成 token 类名，浅色 / 深色两套配色都由样式表决定 */
+function _tokenClass(color) {
+    switch (String(color || '').toLowerCase()) {
+        case '#000000': case '#000': case 'black': return 'tk-t';
+        case '#6a9955': return 'tk-c';
+        case '#9e9e9e': return 'tk-s';
+        case '#1e50b3': return 'tk-n';
+        case '#1e83b1': return 'tk-a';
+        case '#ac4c1e': return 'tk-v';
+        case '#ff0000': return 'tk-k';
+        default: return 'tk-t';
+    }
+}
+
 window.doShader = function (el) {
 
     var preEls = el.getElementsByTagName('pre'), i, j;
@@ -3517,7 +3531,7 @@ window.doShader = function (el) {
         }
         if (shaderJSON) {
             preEls[i].innerHTML = "";
-            preEls[i].style.backgroundColor = '#f2f2f3';
+            /* 背景色交由主题样式决定，这里不再写死浅色 */
             preEls[i].style.padding = '10px';
             preEls[i].style.fontSize = '13px';
             preEls[i].style.fontFamily = 'monospace';
@@ -3529,7 +3543,7 @@ window.doShader = function (el) {
                 itemEl = document.createElement('span');
                 preEls[i].appendChild(itemEl);
 
-                itemEl.style.color = shaderJSON[j].color;
+                itemEl.className = _tokenClass(shaderJSON[j].color);
                 itemEl.innerText = replaceCode(shaderJSON[j].content);
             }
 

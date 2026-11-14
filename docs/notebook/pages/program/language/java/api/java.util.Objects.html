@@ -1,0 +1,42 @@
+<header>
+    java.util.Objects
+</header>
+<p>
+    Objects 提供常用静态辅助方法，可减少空值判断和对象通用操作的重复代码。
+</p>
+<h2>
+    安全比较与哈希
+</h2>
+<pre tag="javascript">
+boolean same = java.util.Objects.equals(left, right);
+int hash = java.util.Objects.hash(name, age);
+</pre>
+<p>
+    equals 在两个参数都为 null 时返回 true，只有一个为 null 时返回 false。hash 可方便地组合多个字段；实现高性能哈希结构时，应结合对象的
+    <span class="important">equals</span>
+    与
+    <span class="important">hashCode</span>
+    契约理解其行为。
+</p>
+<h2>
+    参数空值校验
+</h2>
+<pre tag="javascript">
+public User(String name) {
+    this.name = java.util.Objects.requireNonNull(name, "name must not be null");
+}
+</pre>
+<p>
+    <span class="important">requireNonNull</span>
+    会在参数为空时立即抛出 NullPointerException，可将错误尽早暴露在边界处。
+</p>
+<h2>
+    默认值与字符串表示
+</h2>
+<pre tag="javascript">
+String label = java.util.Objects.toString(value, "(未设置)");
+int result = java.util.Objects.requireNonNullElse(input, 0);
+</pre>
+<p>
+    requireNonNullElse 在第一个参数为 null 时返回默认值；默认值本身也不能为 null。对复杂对象生成日志时，应避免无意调用代价很高或包含敏感内容的 toString。
+</p>

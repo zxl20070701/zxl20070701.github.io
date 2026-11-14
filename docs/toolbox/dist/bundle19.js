@@ -81,13 +81,13 @@ __pkg__scope_bundle__.default= function (obj) {
 
             // 刷新视图
             updateView: function () {
-                var i;
+                var i, context = painter.painter;
 
                 painter.clearRect(0, 0, 500, 500);
 
                 // 先绘制格子
                 painter.config({
-                    strokeStyle: "white"
+                    strokeStyle: "#e7eee2"
                 });
                 for (i = 0; i < 25; i++) {
                     painter
@@ -100,15 +100,98 @@ __pkg__scope_bundle__.default= function (obj) {
 
                 }
 
-                //  然后绘制小格子
+                // 蛇身使用圆角分段，头部根据前进方向绘制眼睛
                 for (i = 0; i < this.blocks.length; i++) {
-                    painter.config({
-                        fillStyle: i == 0 ? "#aaaaaa" : "white"
-                    }).fillRect(this.blocks[i][0] * 20, this.blocks[i][1] * 20, 20, 20);
+                    var x = this.blocks[i][0] * 20 + 2;
+                    var y = this.blocks[i][1] * 20 + 2;
+                    var size = 16;
+
+                    context.beginPath();
+                    context.moveTo(x + 6, y);
+                    context.lineTo(x + size - 6, y);
+                    context.quadraticCurveTo(x + size, y, x + size, y + 6);
+                    context.lineTo(x + size, y + size - 6);
+                    context.quadraticCurveTo(x + size, y + size, x + size - 6, y + size);
+                    context.lineTo(x + 6, y + size);
+                    context.quadraticCurveTo(x, y + size, x, y + size - 6);
+                    context.lineTo(x, y + 6);
+                    context.quadraticCurveTo(x, y, x + 6, y);
+                    context.closePath();
+
+                    var bodyGradient = context.createLinearGradient(x, y, x + size, y + size);
+                    if (i === 0) {
+                        bodyGradient.addColorStop(0, "#69c98d");
+                        bodyGradient.addColorStop(1, "#269565");
+                    } else {
+                        var shade = Math.max(0, 1 - i / Math.max(this.blocks.length, 12));
+                        bodyGradient.addColorStop(0, "rgba(136, 219, 157, " + (0.72 + shade * 0.28) + ")");
+                        bodyGradient.addColorStop(1, "rgba(65, 174, 113, " + (0.72 + shade * 0.28) + ")");
+                    }
+                    context.fillStyle = bodyGradient;
+                    context.shadowColor = "rgba(31, 112, 71, 0.16)";
+                    context.shadowBlur = 3;
+                    context.fill();
+                    context.shadowBlur = 0;
+
+                    if (i === 0) {
+                        var direction = this.mulpD && this.mulpD.length ? this.mulpD : [0, -1];
+                        var centerX = x + size / 2 + direction[0] * 2;
+                        var centerY = y + size / 2 + direction[1] * 2;
+                        var perpendicularX = -direction[1] * 4;
+                        var perpendicularY = direction[0] * 4;
+
+                        [[-1, 1], [1, -1]].forEach(function (side) {
+                            var eyeX = centerX + perpendicularX * side[0];
+                            var eyeY = centerY + perpendicularY * side[0];
+                            context.beginPath();
+                            context.arc(eyeX, eyeY, 2.5, 0, Math.PI * 2);
+                            context.fillStyle = "#fff";
+                            context.fill();
+                            context.beginPath();
+                            context.arc(eyeX + direction[0], eyeY + direction[1], 1.2, 0, Math.PI * 2);
+                            context.fillStyle = "#174d3b";
+                            context.fill();
+                        });
+                    }
                 }
 
-                // 最后绘制食物
-                painter.config('fillStyle', 'red').fillRect(this.foodBlock[0] * 20, this.foodBlock[1] * 20, 20, 20);
+                // 食物绘制成带叶子的苹果
+                if (this.foodBlock.length) {
+                    var foodX = this.foodBlock[0] * 20 + 10;
+                    var foodY = this.foodBlock[1] * 20 + 10;
+
+                    context.save();
+                    context.shadowColor = "rgba(190, 67, 58, 0.22)";
+                    context.shadowBlur = 5;
+                    context.beginPath();
+                    context.moveTo(foodX, foodY - 5);
+                    context.bezierCurveTo(foodX - 2, foodY - 9, foodX - 9, foodY - 5, foodX - 8, foodY + 1);
+                    context.bezierCurveTo(foodX - 7, foodY + 9, foodX - 2, foodY + 10, foodX, foodY + 7);
+                    context.bezierCurveTo(foodX + 3, foodY + 10, foodX + 8, foodY + 8, foodX + 8, foodY + 1);
+                    context.bezierCurveTo(foodX + 9, foodY - 5, foodX + 2, foodY - 9, foodX, foodY - 5);
+                    var foodGradient = context.createRadialGradient(foodX - 3, foodY - 3, 1, foodX, foodY, 10);
+                    foodGradient.addColorStop(0, "#ff9b83");
+                    foodGradient.addColorStop(1, "#e94e55");
+                    context.fillStyle = foodGradient;
+                    context.fill();
+                    context.shadowBlur = 0;
+
+                    context.beginPath();
+                    context.moveTo(foodX, foodY - 5);
+                    context.quadraticCurveTo(foodX + 1, foodY - 9, foodX + 3, foodY - 10);
+                    context.strokeStyle = "#79563c";
+                    context.lineWidth = 1.5;
+                    context.lineCap = "round";
+                    context.stroke();
+
+                    context.beginPath();
+                    context.moveTo(foodX + 1, foodY - 8);
+                    context.bezierCurveTo(foodX + 5, foodY - 12, foodX + 9, foodY - 8, foodX + 6, foodY - 6);
+                    context.bezierCurveTo(foodX + 4, foodY - 5, foodX + 2, foodY - 6, foodX + 1, foodY - 8);
+                    context.fillStyle = "#57ae70";
+                    context.fill();
+                    context.restore();
+                }
 
             },
 
@@ -228,7 +311,7 @@ window.__pkg__bundleSrc__['238']=function(){
     var __pkg__scope_args__;
     var styleElement = document.createElement('style');
 var head = document.head || document.getElementsByTagName('head')[0];
-styleElement.innerHTML = "\n [page-view=\"snake-eating\"]{\n\nwidth: 500px;\n\nleft: calc(50vw - 250px);\n\ntop: 50px;\n\nfont-size: 0;\n\n}\n\n [page-view=\"snake-eating\"][focus=\"no\"]>h2{\n\nbackground-color: #817e22;\n\n}\n\n [page-view=\"snake-eating\"]>h2{\n\nfont-size: 18px;\n\nbackground-color: #98942e;\n\nline-height: 50px;\n\nbackground-image: url(\"./snake-eating.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 80%;\n\nbackground-position: 5px center;\n\npadding-left: 51px;\n\nfont-weight: 200;\n\n}\n\n [page-view=\"snake-eating\"]>canvas{\n\nbackground-color: #d3d0d0;\n\nheight: 500px;\n\nwidth: 500px;\n\n}\n\n [page-view=\"snake-eating\"]>div{\n\nposition: absolute;\n\nleft: 0;\n\ntop: 50px;\n\nwidth: 500px;\n\nheight: 500px;\n\nbackground-color: rgba(0, 0, 0, 0.36);\n\n}\n\n [page-view=\"snake-eating\"]>div[active='no']{\n\ndisplay: none;\n\n}\n\n [page-view=\"snake-eating\"]>div>span{\n\ndisplay: inline-block;\n\nposition: absolute;\n\nleft: 20px;\n\ntop: 20px;\n\nfont-weight: 200;\n\ncolor: white;\n\nfont-size: 12px;\n\n}\n\n [page-view=\"snake-eating\"]>div>button{\n\nmargin: auto;\n\ndisplay: block;\n\nbackground-color: red;\n\ncolor: white;\n\nwidth: 70px;\n\nheight: 30px;\n\nmargin-top: 235px;\n\noutline: none;\n\nborder: none;\n\ncursor: pointer;\n\n}\n";
+styleElement.innerHTML = "\n [page-view=\"snake-eating\"]{\n\nwidth: 500px;\n\nleft: calc(50vw - 250px);\n\ntop: 50px;\n\nfont-size: 0;\n\noverflow: hidden;\n\nborder: 1px solid rgba(111, 158, 120, 0.24);\n\nborder-radius: 20px;\n\nbackground-color: #f5fbf1;\n\nbox-shadow:\n        0 18px 48px rgba(84, 126, 91, 0.16),\n        0 3px 10px rgba(84, 126, 91, 0.08);\n\n}\n\n [page-view=\"snake-eating\"][focus=\"no\"]>h2{\n\ncolor: #9aaa98;\n\nbackground-color: #edf4e9;\n\n}\n\n [page-view=\"snake-eating\"][focus=\"no\"]>h2::after{\n\nopacity: 0.45;\n\n}\n\n [page-view=\"snake-eating\"][focus=\"no\"]>canvas{\n\nfilter: saturate(0.75);\n\n}\n\n [page-view=\"snake-eating\"]>h2{\n\nposition: relative;\n\nz-index: 1;\n\nheight: 56px;\n\nbox-sizing: border-box;\n\npadding-left: 62px;\n\nfont-size: 16px;\n\nfont-weight: 600;\n\nline-height: 56px;\n\nletter-spacing: 2px;\n\ncolor: #473d1c;\n\nbackground-color: #e8f4e4;\n\nbackground-image: url(\"./snake-eating.png\");\n\nbackground-repeat: no-repeat;\n\nbackground-size: auto 80%;\n\nbackground-position: 10px center;\n\nborder-bottom: 1px solid rgba(111, 158, 120, 0.2);\n\n}\n\n [page-view=\"snake-eating\"]>h2 .win-btns>button{\n\nopacity: 0.75;\n\ntransition: opacity 0.2s ease, filter 0.2s ease;\n\n}\n\n [page-view=\"snake-eating\"]>h2 .win-btns>button:hover{\n\nopacity: 1;\n\nfilter: drop-shadow(0 2px 4px rgba(74, 130, 86, 0.25));\n\n}\n\n [page-view=\"snake-eating\"]>canvas{\n\ndisplay: block;\n\nwidth: 500px;\n\nheight: 500px;\n\nbackground-color: #f7fbf2;\n\nfilter: drop-shadow(0 2px 4px rgba(96, 145, 99, 0.08));\n\n}\n\n [page-view=\"snake-eating\"]::after{\n\ncontent: \" \";\n\nposition: absolute;\n\nleft: 0;\n\ntop: 56px;\n\nz-index: 1;\n\nwidth: 500px;\n\nheight: 500px;\n\nbox-sizing: border-box;\n\nborder: 1px solid rgba(125, 164, 117, 0.12);\n\nbox-shadow: inset 0 0 32px rgba(220, 238, 210, 0.18);\n\npointer-events: none;\n\n}\n\n [page-view=\"snake-eating\"]>div{\n\nposition: absolute;\n\nleft: 0;\n\ntop: 56px;\n\nz-index: 2;\n\ndisplay: flex;\n\nflex-direction: column;\n\nalign-items: center;\n\njustify-content: center;\n\nwidth: 500px;\n\nheight: 500px;\n\nborder-radius: 0 0 20px 20px;\n\nbackground-color: rgba(245, 250, 239, 0.72);\n\nbackground-image: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.52), rgba(231, 243, 224, 0.74));\n\n-webkit-backdrop-filter: blur(5px);\n\nbackdrop-filter: blur(5px);\n\n}\n\n [page-view=\"snake-eating\"]>div[active='no']{\n\ndisplay: none;\n\n}\n\n [page-view=\"snake-eating\"]>div>span{\n\nposition: absolute;\n\nleft: 20px;\n\ntop: 20px;\n\nmax-width: calc(100% - 40px);\n\nbox-sizing: border-box;\n\npadding: 9px 14px;\n\nborder: 1px solid rgba(133, 178, 127, 0.24);\n\nborder-radius: 12px;\n\ncolor: #979324;\n\nbackground-color: rgba(255, 255, 255, 0.74);\n\nbox-shadow: 0 4px 14px rgba(85, 126, 88, 0.08);\n\nfont-size: 12px;\n\nfont-weight: 400;\n\nline-height: 1.7em;\n\nletter-spacing: 0.3px;\n\n}\n\n [page-view=\"snake-eating\"]>div>span::before{\n\ncontent: \" \";\n\ndisplay: inline-block;\n\nwidth: 7px;\n\nheight: 7px;\n\nmargin-right: 8px;\n\nmargin-top: -1px;\n\nvertical-align: middle;\n\nborder-radius: 50%;\n\nbackground-color: #58531d;\n\n}\n\n [page-view=\"snake-eating\"]>div>button{\n\nposition: relative;\n\ndisplay: block;\n\nmin-width: 168px;\n\nheight: 46px;\n\nmargin: 0;\n\npadding: 0 32px;\n\nborder: 1px solid rgba(107, 163, 116, 0.2);\n\nborder-radius: 999px;\n\noutline: none;\n\ncolor: #fff;\n\nbackground-color: #979326;\n\nbackground-image: linear-gradient(135deg, #989427, #8a861f);\n\nbox-shadow:\n                0 8px 18px rgba(99, 158, 107, 0.24),\n                inset 0 1px 0 rgba(255, 255, 255, 0.5);\n\nfont-size: 14px;\n\nfont-weight: 600;\n\nletter-spacing: 3px;\n\ncursor: pointer;\n\ntransition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;\n\n}\n\n [page-view=\"snake-eating\"]>div>button::after{\n\ncontent: \" \";\n\nposition: absolute;\n\ninset: -5px;\n\nborder: 1px solid rgba(126, 184, 132, 0.25);\n\nborder-radius: 999px;\n\npointer-events: none;\n\n}\n\n [page-view=\"snake-eating\"]>div>button:hover{\n\ntransform: translateY(-2px);\n\nfilter: brightness(1.04);\n\nbox-shadow:\n                    0 12px 22px rgba(99, 158, 107, 0.3),\n                    inset 0 1px 0 rgba(255, 255, 255, 0.58);\n\n}\n\n [page-view=\"snake-eating\"]>div>button:active{\n\ntransform: translateY(0) scale(0.98);\n\n}\n";
 styleElement.setAttribute('type', 'text/css');head.appendChild(styleElement);
 
     return __pkg__scope_bundle__;

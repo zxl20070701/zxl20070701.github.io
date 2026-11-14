@@ -1,0 +1,49 @@
+<header>
+    java.nio.file.Files 与 Path
+</header>
+<p>
+    Path 表示文件系统路径，Files 提供读取、写入、复制和查询文件的静态方法。相较于字符串拼路径，Path API 更易于跨平台处理路径分隔符。
+</p>
+<h2>
+    创建路径并读取文本
+</h2>
+<pre tag="javascript">
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.io.IOException;
+
+Path path = Path.of("data", "notes.txt");
+try {
+    String content = Files.readString(path);
+    System.out.println(content);
+} catch (IOException exception) {
+    System.err.println("读取失败：" + exception.getMessage());
+}
+</pre>
+<p>
+    readString、writeString 和 Path.of 在 Java 11 起可用。文件操作可能因文件不存在、权限不足或磁盘错误而失败，应按程序需要处理 IOException。
+</p>
+<h2>
+    写入与检查
+</h2>
+<pre tag="javascript">
+Files.writeString(path, "Hello");
+boolean exists = Files.exists(path);
+boolean directory = Files.isDirectory(path);
+</pre>
+<p>
+    Files.writeString 默认会创建文件或覆盖已有内容；追加时可通过 StandardOpenOption 指定 APPEND。exists 等检查与后续操作之间可能发生文件系统变化，不能替代对实际操作异常的处理。
+</p>
+<h2>
+    遍历目录
+</h2>
+<pre tag="javascript">
+try (var entries = Files.list(Path.of("data"))) {
+    entries.forEach(System.out::println);
+}
+</pre>
+<p>
+    Files.list 返回需要关闭的惰性流，因此用 try-with-resources 管理。若需要递归遍历目录，可查看
+    <span class="important">Files.walk</span>，
+    并注意关闭流及处理访问权限错误。
+</p>

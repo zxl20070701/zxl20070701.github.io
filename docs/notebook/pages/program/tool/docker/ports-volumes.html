@@ -1,0 +1,48 @@
+<header>
+    端口映射与数据卷
+</header>
+<p>
+    容器默认使用独立的网络环境，主机不能直接通过容器端口访问服务。端口映射可以将主机端口转发到容器端口；数据卷则用于在容器生命周期之外保存或共享文件。
+</p>
+<h2>
+    发布容器端口
+</h2>
+<p>
+    以下命令把主机的 8080 端口映射到 Nginx 容器的 80 端口：
+</p>
+<pre tag="shell">
+docker run --name web-port-demo -d -p 8080:80 nginx:alpine
+</pre>
+<p>
+    在本机浏览器打开 http://localhost:8080，即可访问 Nginx 欢迎页。访问端口的格式是 http://主机地址:主机端口；若主机的 8080 端口已被占用，请换一个主机端口。停止和删除示例容器：
+</p>
+<pre tag="shell">
+docker stop web-port-demo
+docker rm web-port-demo
+</pre>
+<h2>
+    使用绑定挂载共享文件
+</h2>
+<p>
+    在当前目录创建 site/index.html，然后在该目录运行下面的命令。$PWD/site 指向主机上的页面目录，:ro 表示容器只能读取该目录：
+</p>
+<pre tag="shell">
+docker run --name web-files-demo -d -p 8080:80 \
+  -v "$PWD/site:/usr/share/nginx/html:ro" nginx:alpine
+</pre>
+<p>
+    修改主机上的 site/index.html 后刷新页面即可看到变化。该示例使用 macOS/Linux shell；Windows 用户可使用 WSL，或按所用终端的路径格式调整绑定挂载路径。
+</p>
+<h2>
+    命名数据卷
+</h2>
+<p>
+    命名卷由 Docker 管理，适合保存不依赖某个特定容器的持久数据：
+</p>
+<pre tag="shell">
+docker volume create app-data
+docker volume ls
+</pre>
+<p>
+    创建容器时可通过 -v app-data:/data 将卷挂载到容器的 /data。删除容器不会自动删除命名卷；请先确认卷中的数据不再需要，再单独清理。
+</p>

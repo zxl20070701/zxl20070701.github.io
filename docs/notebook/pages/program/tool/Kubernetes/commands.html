@@ -1,0 +1,272 @@
+<header>
+    kubectl 常用命令速查
+</header>
+<p>
+    kubectl 的子命令基本遵循
+    <span class="important">动词 + 资源</span>
+    的结构，比如
+    <span class="special">get</span>
+    、
+    <span class="special">describe</span>
+    、
+    <span class="special">apply</span>
+    、
+    <span class="special">delete</span>
+    。本篇是一份速查手册。
+</p>
+<h2>
+    查看资源
+</h2>
+<pre tag="bash">
+# 列出所有命名空间下的 Pod
+kubectl get pods -A
+
+# 按标签筛选
+kubectl get pods -l app=hello
+
+# 查看完整 YAML
+kubectl get deployment hello -o yaml
+
+# 只看某个字段
+kubectl get pod hello-xxxxx -o jsonpath='{.status.podIP}'
+kubectl get pods -o wide
+
+# 持续监听变化
+kubectl get pods -w
+
+# 按名称排序输出
+kubectl get pods --sort-by=.metadata.creationTimestamp
+</pre>
+<p>
+    常用资源缩写：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>资源</th>
+            <th>缩写</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Pod</td>
+            <td><span class="special">po</span></td>
+        </tr>
+        <tr>
+            <td>Deployment</td>
+            <td><span class="special">deploy</span></td>
+        </tr>
+        <tr>
+            <td>Service</td>
+            <td><span class="special">svc</span></td>
+        </tr>
+        <tr>
+            <td>Node</td>
+            <td><span class="special">no</span></td>
+        </tr>
+        <tr>
+            <td>Namespace</td>
+            <td><span class="special">ns</span></td>
+        </tr>
+        <tr>
+            <td>ConfigMap</td>
+            <td><span class="special">cm</span></td>
+        </tr>
+        <tr>
+            <td>Secret</td>
+            <td><span class="special">se</span></td>
+        </tr>
+        <tr>
+            <td>PersistentVolume</td>
+            <td><span class="special">pv</span></td>
+        </tr>
+        <tr>
+            <td>PersistentVolumeClaim</td>
+            <td><span class="special">pvc</span></td>
+        </tr>
+        <tr>
+            <td>HorizontalPodAutoscaler</td>
+            <td><span class="special">hpa</span></td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    描述与排查
+</h2>
+<pre tag="bash">
+# 查看详细信息（含事件）
+kubectl describe pod hello-xxxxx
+
+# 查看最近日志
+kubectl logs hello-xxxxx
+
+# 跟踪日志输出
+kubectl logs -f hello-xxxxx
+
+# 查看上一个崩溃容器的日志
+kubectl logs hello-xxxxx --previous
+
+# 多容器 Pod，指定容器名
+kubectl logs hello-xxxxx -c nginx
+
+# 进入容器
+kubectl exec -it hello-xxxxx -- sh
+</pre>
+<div class="tips">
+    <span class="special">describe</span>
+    输出末尾的
+    <span class="special">Events</span>
+    段落是排查问题的关键，它会直接告诉你镜像拉取失败、内存不足等原因。
+</div>
+<h2>
+    创建与更新
+</h2>
+<pre tag="bash">
+# 用 YAML 创建或更新
+kubectl apply -f deploy.yaml
+
+# 应用整个目录（只处理 .yaml/.yml/.json）
+kubectl apply -f ./k8s/
+
+# 从标准输入创建
+kubectl apply -f -
+
+# 只创建，不存在就报错
+kubectl create -f deploy.yaml
+
+# 预览将要发生的变更（不会真正提交）
+kubectl diff -f deploy.yaml
+
+# 服务端演练
+kubectl apply -f deploy.yaml --dry-run=server
+</pre>
+<div class="warn">
+    <span class="special">apply</span>
+    是「声明式」的，重复执行是安全的；<span class="special">create</span>
+    是「命令式」的，对象已存在会直接报错。
+</div>
+<h2>
+    修改资源
+</h2>
+<pre tag="bash">
+# 修改副本数
+kubectl scale deployment/hello --replicas=5
+
+# 修改镜像（触发滚动更新）
+kubectl set image deployment/hello hello=nginx:1.27
+
+# 打标签
+kubectl label pod hello-xxxxx env=prod --overwrite
+
+# 加注解
+kubectl annotate pod hello-xxxxx owner=zhangsan
+
+# 修改 Deployment 的字段
+kubectl patch deployment hello -p '{"spec":{"replicas":3}}'
+</pre>
+<h2>
+    部署相关
+</h2>
+<pre tag="bash">
+# 查看发布状态
+kubectl rollout status deployment/hello
+
+# 查看发布历史
+kubectl rollout history deployment/hello
+
+# 回滚
+kubectl rollout undo deployment/hello
+kubectl rollout undo deployment/hello --to-revision=2
+
+# 暂停 / 恢复滚动更新
+kubectl rollout pause deployment/hello
+kubectl rollout resume deployment/hello
+
+# 重启（让 Pod 用新配置重建）
+kubectl rollout restart deployment/hello
+</pre>
+<h2>
+    资源清理
+</h2>
+<pre tag="bash">
+# 删除单个资源
+kubectl delete deployment hello
+
+# 按标签删除
+kubectl delete pods -l app=hello
+
+# 删除 YAML 中定义的资源
+kubectl delete -f deploy.yaml
+
+# 删除命名空间（会级联删除其中所有资源）
+kubectl delete namespace demo
+</pre>
+<div class="warn">
+    删除命名空间会连带删除其中所有资源，且该操作是异步的，数据无法恢复，执行前请再三确认。
+</div>
+<h2>
+    上下文与配置
+</h2>
+<pre tag="bash">
+# 查看当前上下文
+kubectl config current-context
+
+# 切换上下文
+kubectl config use-context kind-k8s-demo
+
+# 查看所有上下文
+kubectl config get-contexts
+
+# 设置默认命名空间
+kubectl config set-context --current --namespace=demo
+
+# 查看集群信息
+kubectl cluster-info
+kubectl config view
+</pre>
+<h2>
+    实用技巧
+</h2>
+<pre tag="bash">
+# 在 Pod 里执行一条命令（非交互）
+kubectl exec hello-xxxxx -- ls /usr/share/nginx/html
+
+# 把本地文件拷进容器
+kubectl cp ./index.html hello-xxxxx:/usr/share/nginx/html/
+
+# 把容器里的文件拷到本地
+kubectl cp hello-xxxxx:/etc/nginx/nginx.conf ./nginx.conf
+
+# 端口转发，把本地 8080 转到 Pod 的 80
+kubectl port-forward hello-xxxxx 8080:80
+
+# 临时调试容器（用到即删）
+kubectl run debug --rm -it --image=busybox -- sh
+</pre>
+<div class="tips">
+    <span class="special">kubectl run --rm -it</span>
+    配合
+    <span class="special">--rm</span>
+    和
+    <span class="special">-it</span>
+    可以在排查网络问题时快速进入一个临时容器，用完自动清理。
+</div>
+<h2>
+    常用组合
+</h2>
+<pre tag="bash">
+# 找出使用 CPU 最多的 Pod
+kubectl top pods --sort-by=cpu
+
+# 找出所有非 Running 状态的 Pod
+kubectl get pods -A --field-selector=status.phase!=Running
+
+# 列出所有 Service 及其端口
+kubectl get svc -A -o wide
+
+# 查看某个节点的 Pod
+kubectl get pods --field-selector=spec.nodeName=kind-worker
+
+# 删除所有已完成的 Job
+kubectl delete jobs --field-selector=status.successful=1
+</pre>

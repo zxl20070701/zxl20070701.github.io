@@ -1,0 +1,98 @@
+<header>
+    BUILD 文件与依赖
+</header>
+<h2>
+    BUILD 文件定义目标
+</h2>
+<p>
+    BUILD 文件使用 Starlark 语法描述包中的目标。常见目标包括：
+</p>
+<ul>
+    <li>
+        <span class="important">cc_binary</span>：C/C++ 可执行程序。
+    </li>
+    <li>
+        <span class="important">cc_library</span>：C/C++ 库。
+    </li>
+    <li>
+        <span class="important">cc_test</span>：C/C++ 测试。
+    </li>
+</ul>
+<p>
+    一个目标通常通过
+    <span class="important">srcs</span>
+    声明源文件、
+    <span class="important">hdrs</span>
+    声明公开头文件，并通过
+    <span class="important">deps</span>
+    声明它需要的其他目标。目标的名称在同一个包中必须唯一。
+</p>
+<h2>
+    包和标签
+</h2>
+<p>
+    包是 BUILD 文件所在的目录。假设项目结构如下：
+</p>
+<pre tag="text">
+project/
+├── MODULE.bazel
+├── BUILD
+├── main.cc
+└── lib/
+    ├── BUILD
+    ├── greeter.cc
+    └── greeter.h
+</pre>
+<p>
+    根目录和
+    <span class="important">lib/</span>
+    分别是一个包。在根目录 BUILD 中，可以用
+    <span class="important">//lib:greeter</span>
+    引用
+    <span class="important">lib/BUILD</span>
+    中名为
+    <span class="important">greeter</span>
+    的目标。同一个包内也可以使用简写
+    <span class="important">:greeter</span>。
+</p>
+<p>
+    BUILD 文件不会自动把子目录变成同一个包：每个有 BUILD 文件的目录都是独立的包。跨包依赖时，目标还需要允许被其他包访问，例如在
+    <span class="important">lib/BUILD</span>
+    中为 greeter 库设置：
+</p>
+<pre tag="python">
+cc_library(
+    name = "greeter",
+    srcs = ["greeter.cc"],
+    hdrs = ["greeter.h"],
+    visibility = ["//visibility:public"],
+)
+</pre>
+<p>
+    然后在根目录 BUILD 的
+    <span class="important">deps</span>
+    中声明
+    <span class="important">//lib:greeter</span>。
+</p>
+<h2>
+    声明模块依赖
+</h2>
+<p>
+    外部模块依赖由根目录的
+    <span class="important">MODULE.bazel</span>
+    管理。使用规则集时，可在这里声明它的名称和版本：
+</p>
+<pre tag="python">
+bazel_dep(
+    name = "rules_example",
+    version = "1.2.3",
+)
+</pre>
+<p>
+    上面的名称和版本仅为语法示意，实际使用时应选择
+    <a href="https://registry.bazel.build/" target="_blank" rel="noopener noreferrer">Bazel Central Registry</a>
+    中存在的模块版本，并按照该规则集的文档在 BUILD 文件中加载和使用规则。模块的传递依赖由 Bzlmod 一并解析。
+</p>
+<div class="tips">
+    增加或升级模块依赖后，应检查代码评审中的 MODULE.bazel 变更，并在本地运行相关构建和测试。不要把机器本地的绝对路径作为团队共享依赖。
+</div>

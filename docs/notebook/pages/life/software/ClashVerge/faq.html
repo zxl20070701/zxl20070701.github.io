@@ -1,0 +1,309 @@
+<header>
+    常见问题与排错
+</header>
+<p>
+    这篇汇总用 Clash Verge 过程中最常遇到的问题，按「现象 → 原因 → 解决」的格式整理。<span class="important">遇到搞不定的问题，先看这篇，再去日志页看具体报错</span>。
+</p>
+<h2>
+    排错总原则
+</h2>
+<p>
+    代理出问题，排查顺序永远是这四步：
+</p>
+<ol>
+    <li><span class="special">连接</span>页面：有没有流量进来？没进来 = 系统代理没开 / 流量根本没到 Clash</li>
+    <li><span class="special">规则</span>页面：流量命中了哪条规则？走的是 DIRECT 还是代理组？</li>
+    <li><span class="special">日志</span>页面：具体报了什么错？</li>
+    <li><span class="special">测试</span>页面：节点本身通不通？</li>
+</ol>
+<div class="tips">
+    <span class="important">「连接」页面是万能的第一现场</span>。它是实时滚动的，能直接看到「哪个程序访问了哪个域名、走了哪个节点、命中哪条规则」。大部分问题看一眼这里就能定位。
+</div>
+<h2>
+    装不上 / 装完打不开
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>现象</th>
+            <th>原因</th>
+            <th>解决</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>提示「此应用无法在你的电脑上运行」</td>
+            <td>下错架构了</td>
+            <td>换成对应你电脑的架构包，<span class="important">不确定就选 x64</span></td>
+        </tr>
+        <tr>
+            <td>提示缺少 <span class="special">VCRUNTIME140.dll</span> 之类</td>
+            <td>系统没装 VC 运行库</td>
+            <td>装 Microsoft Visual C++ Redistributable 对应版本</td>
+        </tr>
+        <tr>
+            <td>双击没反应 / 闪退 / 只有托盘图标</td>
+            <td><span class="special">WebView2</span> 没装或被禁用</td>
+            <td>装 WebView2；或下 <span class="special">fixed_webview2</span> 版本；检查是否被第三方软件禁用了 WebView2</td>
+        </tr>
+        <tr>
+            <td>macOS 提示「无法验证开发者」</td>
+            <td>未签名应用被 Gatekeeper 拦</td>
+            <td>系统设置 → 隐私与安全性 → 仍要打开；或执行 <span class="special">xattr -d com.apple.quarantine</span></td>
+        </tr>
+        <tr>
+            <td>Linux 提示缺 libwebkit2gtk</td>
+            <td>系统太老</td>
+            <td>Ubuntu 20.04 建议直接升级系统到 24.04</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    能连上但没网
+</h2>
+<h3>
+    现象一：关掉 Clash 就完全没网
+</h3>
+<p>
+    这是<span class="important">系统代理没被正确关闭</span>——软件退出了，但系统的代理开关还指着 127.0.0.1，流量全打到一个不存在的端口上。
+</p>
+<p>
+    解决：Windows 打开<span class="special">设置 → 网络和 Internet → 代理 → 手动设置代理</span>，关掉「使用代理服务器」。
+</p>
+<h3>
+    现象二：只有部分网站打不开
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>原因</th>
+            <th>解决</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>代理端口被别的程序占用（默认 <span class="special">7897</span>）</td>
+            <td>设置页改端口，或关掉占用程序</td>
+        </tr>
+        <tr>
+            <td>游戏加速器等软件改过 <span class="special">hosts</span> 文件</td>
+            <td>检查并清理 hosts：Windows 在 <span class="special">C:\Windows\System32\drivers\etc\hosts</span>，Linux/macOS 在 <span class="special">/etc/hosts</span></td>
+        </tr>
+        <tr>
+            <td>规则把该网站判成了直连</td>
+            <td>规则页面看命中情况，加一条前置规则强制走代理</td>
+        </tr>
+        <tr>
+            <td>DNS 解析失败</td>
+            <td>开 <span class="special">DNS</span> 模块；或用扩展脚本指定 nameserver</td>
+        </tr>
+    </tbody>
+    </table>
+<h3>
+    现象三：本地开发访问 localhost 报 502
+</h3>
+<p>
+    本地请求被丢给节点了。加直连规则即可，详见上一篇《模式与规则分流》里的实战五。
+</p>
+<h2>
+    公司内网访问不了
+</h2>
+<p>
+    典型现象：内网<span class="special">域名</span>打不开，但内网 <span class="special">IP</span> 能打开。原因是开了 DNS 模块后，内网域名被交给公网 DNS 解析（公网当然查不到不公开的记录）。
+</p>
+<p>
+    解决：用扩展脚本给内网域名指定内网 DNS：
+</p>
+<pre tag="javascript">
+function main(config) {
+  config.dns = config.dns || {};
+  config.dns["nameserver-policy"] = config.dns["nameserver-policy"] || {};
+  config.dns["nameserver-policy"]["+.helloworld.com"] = "10.10.10.1";
+  return config;
+}
+</pre>
+<h2>
+    节点相关
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>现象</th>
+            <th>原因</th>
+            <th>解决</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>延迟测出来是 timeout，但网站能正常访问</td>
+            <td>杀毒软件（火绒等）的 HTTPS 扫描加密</td>
+            <td>关掉杀毒软件的 Web 扫描功能，或把软件目录加信任名单</td>
+        </tr>
+        <tr>
+            <td>所有节点都连不上</td>
+            <td>订阅过期 / 内核没跑起来</td>
+            <td>先更新订阅；再检查设置页内核版本；还不行就删配置目录重启</td>
+        </tr>
+        <tr>
+            <td>节点名称改了、还是旧的</td>
+            <td>订阅没更新成功</td>
+            <td>订阅卡片点刷新；还是不行就删配置目录重启</td>
+        </tr>
+        <tr>
+            <td>更新订阅报 401</td>
+            <td>链接失效</td>
+            <td>去后台重新复制链接</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    界面异常
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>现象</th>
+            <th>解决</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>代理页一片空白，但代理其实在跑</td>
+            <td>外部控制端口被占用。设置页「Clash 设置 → 外部控制」换一个监听端口，保存后重启</td>
+        </tr>
+        <tr>
+            <td>右上角小图钉不知道是干嘛的</td>
+            <td><span class="important">红色=锁定且可用，灰色=锁定但不可用</span>。点它可取消锁定</td>
+        </tr>
+        <tr>
+            <td>GPU 占用高 / 界面卡</td>
+            <td>设置 → 界面设置 → 关闭「流量图显」</td>
+        </tr>
+        <tr>
+            <td>Windows 更新后图标变成白方块</td>
+            <td>图标缓存没更新。Win+R 输入 cmd，粘贴 <span class="special">ie4uinit.exe -show</span> 回车，或重启资源管理器</td>
+        </tr>
+        <tr>
+            <td>macOS 菜单栏图标重叠</td>
+            <td>macOS Sonoma 的系统 BUG，改一下分辨率再改回来</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    系统代理相关
+</h2>
+<h3>
+    Windows 应用商店（UWP）的应用不走代理
+</h3>
+<p>
+    UWP 应用有沙盒限制，访问不了本机的 127.0.0.1。解决：设置页找到 <span class="special">UWP 工具</span>，勾选要放行的应用，点顶部的 <span class="special">Save Changes</span>。
+</p>
+<h3>
+    宽带拨号连不上
+</h3>
+<p>
+    Windows 宽带拨号有时不认系统代理。解决：删掉原有的宽带拨号连接，<span class="important">重新创建（连接名称不要用中文）</span>。
+</p>
+<h3>
+    macOS 系统代理开关点了没反应
+</h3>
+<p>
+    改系统代理需要管理员密码，当前权限不够。解决：系统设置 → 隐私与安全性 → 高级 → 关闭「访问系统范围偏好设置需要输入管理员密码」。
+</p>
+<h2>
+    TUN 模式的坑
+</h2>
+<p>
+    TUN 模式会装虚拟网卡接管全部流量，比系统代理激进得多。<span class="important">能用系统代理就别开 TUN</span>。真需要开时注意：
+</p>
+<ul>
+    <li>需要<span class="important">管理员权限</span>，Linux 下可能要装服务（设置页里有「服务模式」相关开关）</li>
+    <li>开启后所有流量都进 Clash，包括内网，可能和公司 VPN 冲突</li>
+    <li>有些杀毒软件会拦截 TUN 的网卡驱动，导致网断</li>
+    <li>出问题时先关掉 TUN，用系统代理验证，排除是代理本身的问题还是 TUN 的问题</li>
+</ul>
+<h3>
+    和 Watt Toolkit / steamcommunity 302 冲突
+</h3>
+<p>
+    这类工具靠改 <span class="special">hosts</span> 文件工作，而 Clash Verge 用的 Meta 内核默认会查询系统 hosts，两边打架就都访问不了被加速的站点。
+</p>
+<p>
+    解决：禁用内核查询系统 hosts。设置页新建「脚本」类型的扩展：
+</p>
+<pre tag="javascript">
+function main(config) {
+  config.dns = config.dns || {};
+  config.dns["use-system-hosts"] = false;
+  return config;
+}
+</pre>
+<div class="tips">
+    内核版本 ≥ <span class="special">v1.18.5</span> 的话，也可以直接设系统环境变量 <span class="special">DISABLE_SYSTEM_HOSTS=1</span>。实在解决不了，<span class="important">两个软件别同时用</span>。
+</div>
+<h2>
+    日志与数据
+</h2>
+<h3>
+    日志占满磁盘
+</h3>
+<p>
+    设置里把日志等级调成 <span class="special">Silent</span> 或 <span class="special">Error</span>，并在杂项设置里开启自动清理日志间隔。
+</p>
+<h3>
+    数据都在哪
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>系统</th>
+            <th>路径</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Windows</td>
+            <td><span class="special">%APPDATA%\io.github.clash-verge-rev.clash-verge-rev\</span></td>
+        </tr>
+        <tr>
+            <td>macOS</td>
+            <td><span class="special">~/Library/Application Support/io.github.clash-verge-rev.clash-verge-rev/</span></td>
+        </tr>
+        <tr>
+            <td>Linux</td>
+            <td><span class="special">~/.local/share/io.github.clash-verge-rev.clash-verge-rev/</span></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    设置页右下角有个<span class="special">「配置目录」</span>按钮可以直接打开这个位置。
+</p>
+<div class="warn">
+    <span class="important">删掉配置目录 = 重置所有设置</span>，包括订阅、节点、规则。这是解决「配置乱掉了」最干净的办法，但会丢失所有自定义，<span class="important">先备份</span>。
+</div>
+<h2>
+    命令行里也想用代理
+</h2>
+<p>
+    设置页选择<span class="special">「复制环境变量类型」</span>（Bash / PowerShell / CMD），然后右键托盘图标 → 「复制环境变量」，粘贴到终端即可。
+</p>
+<pre tag="bash">
+export http_proxy=http://127.0.0.1:7897
+export https_proxy=http://127.0.0.1:7897
+export all_proxy=socks5://127.0.0.1:7897
+</pre>
+<div class="tips">
+    复制出来的地址是 <span class="special">127.0.0.1</span> 却连不上？加一个系统环境变量 <span class="special">CLASH_VERGE_REV_IP</span>，值填你实际想用的 IP，重启软件再复制。
+</div>
+<h2>
+    快速自查表
+</h2>
+<ul>
+    <li>系统代理开关<span class="important">已打开</span>？（连接页面有流量吗）</li>
+    <li>节点选好了吗？延迟是数字不是 timeout？</li>
+    <li>模式是<span class="important">规则</span>还是全局？</li>
+    <li>规则页面上目标站点的规则<span class="important">命中数有增长</span>吗？</li>
+    <li>日志里有没有明显的 error 关键字？</li>
+    <li>订阅是不是很久没更新了？</li>
+    <li>试过把配置目录清空重启吗？</li>
+</ul>

@@ -286,6 +286,32 @@ var initToggle = function (idName) {
                         urlObj.router[2] = tag;
                         loadPage("pages/" + urlObj.router.join('/'), function (data) {
                             docEl.innerHTML = data;
+
+                            // 阅读视图：标题上方补一行层级路径、标题下方补分类标签（纯展示，不参与任何逻辑）
+                            (function () {
+                                var labels = [], node = spans[i].parentElement, isLeaf = true;
+                                while (node && node.id !== 'menu-id') {
+                                    if (node.tagName === 'LI') {
+                                        var headEl = node.querySelector(':scope>span');
+                                        if (isLeaf) {
+                                            isLeaf = false;
+                                        } else if (headEl && headEl.innerText.trim()) {
+                                            labels.unshift(headEl.innerText.trim());
+                                        }
+                                    }
+                                    node = node.parentElement;
+                                }
+                                if (!labels.length) {
+                                    return;
+                                }
+                                var crumbEl = document.createElement('div');
+                                crumbEl.className = 'doc-crumb';
+                                crumbEl.innerHTML = labels.map(function (text) {
+                                    return '<span>' + text + '</span>';
+                                }).join('<i>/</i>');
+                                docEl.insertBefore(crumbEl, docEl.firstChild);
+                            })();
+
                             updateUrl();
                             window.doShader(docEl);
                             window.doFormula(docEl);

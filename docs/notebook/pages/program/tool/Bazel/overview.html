@@ -1,0 +1,70 @@
+<header>
+    安装与基本概念
+</header>
+<p>
+    Bazel 是一个开源构建工具，适用于多语言、多平台项目。它根据目标之间声明的依赖关系执行构建，并缓存构建结果，适合从小型项目到大型代码仓库。
+</p>
+<h2>
+    安装
+</h2>
+<p>
+    初学时建议安装 Bazelisk。它提供 <span class="important">bazel</span> 命令，并能根据项目中的
+    <span class="important">.bazelversion</span>
+    自动选择对应版本，避免团队成员使用不同版本的 Bazel。
+</p>
+<p>
+    macOS 可使用 Homebrew 安装：
+</p>
+<pre tag="shell">
+brew install bazelisk
+bazel --version
+</pre>
+<p>
+    Windows、Linux 以及其他安装方式请参考
+    <a href="https://bazel.build/install" target="_blank" rel="noopener noreferrer">Bazel 官方安装指南</a>。
+    安装完成后，可在项目根目录创建
+    <span class="important">.bazelversion</span>
+    并填写团队选定的 Bazel 版本号，以固定构建版本。
+</p>
+<h2>
+    先认识几个概念
+</h2>
+<ul>
+    <li>
+        <span class="important">工作区（workspace）</span>：项目的源码目录；在现代 Bazel 项目中，通常由根目录的
+        <span class="important">MODULE.bazel</span>
+        声明模块信息和外部模块依赖。
+    </li>
+    <li>
+        <span class="important">包（package）</span>：包含
+        <span class="important">BUILD</span>
+        或
+        <span class="important">BUILD.bazel</span>
+        文件的目录。每个 BUILD 文件定义一个包。
+    </li>
+    <li>
+        <span class="important">目标（target）</span>：BUILD 文件中声明的可构建单元，例如可执行程序、库或测试。
+    </li>
+    <li>
+        <span class="important">标签（label）</span>：目标的唯一名称。例如根目录包里的
+        <span class="important">//:hello</span>；
+        <span class="important">//lib:greeter</span>
+        表示
+        <span class="important">lib</span>
+        包中的
+        <span class="important">greeter</span>
+        目标。
+    </li>
+</ul>
+<p>
+    入门时优先使用 Bzlmod（
+    <span class="important">MODULE.bazel</span>
+    ）管理模块依赖。较早的项目可能使用
+    <span class="important">WORKSPACE</span>
+    文件；阅读旧项目时会遇到它，但新项目不必从 WORKSPACE 开始。
+</p>
+<p>
+    官方文档：
+    <a href="https://bazel.build/start" target="_blank" rel="noopener noreferrer">Bazel 入门</a>、
+    <a href="https://bazel.build/external/overview" target="_blank" rel="noopener noreferrer">依赖管理</a>。
+</p>

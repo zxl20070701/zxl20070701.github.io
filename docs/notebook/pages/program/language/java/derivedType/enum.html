@@ -1,0 +1,66 @@
+<header>
+    枚举类型
+</header>
+<h2>
+    定义枚举
+</h2>
+<p>
+    枚举用
+    <span class="important">enum</span>
+    声明一组有限且固定的常量。每个枚举常量都是该枚举类型的实例：
+</p>
+<pre tag="javascript">
+enum Direction {
+    NORTH, EAST, SOUTH, WEST
+}
+
+Direction direction = Direction.NORTH;
+</pre>
+<p>
+    枚举常量比较可使用
+    <span class="important">==</span>；
+    输出名称可使用
+    <span class="important">name()</span>，
+    但不要依赖
+    <span class="important">ordinal()</span>
+    保存业务含义，因为调整声明顺序会改变序号。
+</p>
+<h2>
+    带字段和方法的枚举
+</h2>
+<p>
+    枚举可以有字段、构造方法和方法。枚举构造方法不能声明为 public 或 protected，常量声明必须位于枚举体开头：
+</p>
+<pre tag="javascript">
+enum Status {
+    PENDING("待处理"),
+    DONE("已完成");
+
+    private final String label;
+
+    Status(String label) {
+        this.label = label;
+    }
+
+    public String label() {
+        return label;
+    }
+}
+</pre>
+<h2>
+    配合 switch 使用
+</h2>
+<pre tag="javascript">
+switch (direction) {
+    case NORTH -&gt; System.out.println("向北");
+    case EAST -&gt; System.out.println("向东");
+    case SOUTH -&gt; System.out.println("向南");
+    case WEST -&gt; System.out.println("向西");
+}
+</pre>
+<p>
+    switch 箭头语法适用于较新的 Java 版本；在需要兼容旧版 JDK 的项目中，可使用传统的
+    <span class="important">case ...:</span>
+    写法并注意
+    <span class="important">break</span>。
+</p>

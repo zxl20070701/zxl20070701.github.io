@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" data-theme="auto">
 
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="shortcut icon" href="./images/home.png">
     <meta name="keywords" content="zxl20070701 1904314465@qq.com 个人主页 数学及相关衍生物 捐款支持我们">
+    <meta name="description" content="z Z ... 的个人主页：写一点笔记，做一点工具，剩下的交给时间。">
+    <script>
+        // 首屏主题（防闪烁）
+        (function () {
+            var m = "auto";
+            try {
+                m = localStorage.getItem("zzz-theme") || "auto";
+            } catch (e) { }
+            if (["light", "dark", "auto"].indexOf(m) < 0) m = "auto";
+            document.documentElement.setAttribute("data-theme", m);
+        })();
+    </script>
     <link rel="stylesheet" href="../styles/normalize.css">
+    <link rel="stylesheet" href="../styles/theme.css">
     <link rel="stylesheet" href="./styles/common.css">
     <link rel="stylesheet" href="./styles/home.css">
     <script src="./scripts/tool.js"></script>
@@ -26,113 +39,141 @@
     <!-- 主体内容 -->
     <div class="body" id="body">
         <nav>
-            <a href="javascript:void(0)" class="active">
-                首页
-            </a>
-            <a href="./index.html">
-                文档笔记
-            </a>
-            <a href="../toolbox/index.html" target="_blank">
-                实用工具
-            </a>
-            <a href="https://github.com/oi-contrib" target="_blank">
-                OI开源
-            </a>
-            <a href="../index.html">
-                更多...
-            </a>
+            <div class="nav-in">
+                <a class="nav-brand" href="./home.html">z Z ...</a>
+                <div class="nav-links">
+                    <a href="javascript:void(0)" class="active">首页</a>
+                    <a href="./index.html">文档笔记</a>
+                    <a href="../toolbox/index.html" target="_blank">实用工具</a>
+                    <a href="https://github.com/oi-contrib" target="_blank">OI开源</a>
+                    <a href="../index.html">更多...</a>
+                </div>
+                <div class="theme-switch" role="group" aria-label="主题模式">
+                    <button type="button" data-theme-set="light" aria-label="浅色" title="浅色">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"></circle>
+                            <path d="M12 2.6v2.2M12 19.2v2.2M21.4 12h-2.2M4.8 12H2.6M18.6 5.4l-1.6 1.6M7 16.9l-1.6 1.6M18.6 18.6l-1.6-1.6M7 7.1L5.4 5.4" stroke="currentColor" stroke-width="1.8"></path>
+                        </svg>
+                    </button>
+                    <button type="button" data-theme-set="dark" aria-label="深色" title="深色">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M20.5 15.2A8.6 8.6 0 0 1 8.8 3.5a8.6 8.6 0 1 0 11.7 11.7Z" stroke="currentColor" stroke-width="1.8"></path>
+                        </svg>
+                    </button>
+                    <button type="button" data-theme-set="auto" aria-label="跟随系统" title="跟随系统">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <rect x="3" y="4.5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+                            <path d="M8.5 20h7" stroke="currentColor" stroke-width="1.8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </nav>
 
         <div class="view">
-            <h2>
-                <a target="_blank" href="https://github.com/zxl20070701"></a>
-                z Z ...
-                <form onsubmit="doSearch(event)">
-                    <input placeholder="输入内容后回车查询" type="text" id="search-input" spellcheck="false" autocomplete="off"
-                        onkeydown="doSearch">
+
+            <!-- 身份区 -->
+            <div class="ident">
+                <h2>
+                    <a class="avatar" target="_blank" href="https://github.com/zxl20070701" aria-label="GitHub 主页"></a>
+                    <span class="who">
+                        <span class="kicker">SINCE 2007 · PERSONAL PAGE</span>
+                        <span class="name">z Z ...</span>
+                        <span class="bio">走一步，再走一步。写一点笔记，做一点工具，剩下的交给时间。</span>
+                    </span>
+                </h2>
+
+                <form class="psearch" onsubmit="doSearch(event)">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+                        <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2"></path>
+                    </svg>
+                    <input placeholder="输入内容后回车查询" type="text" id="search-input" spellcheck="false"
+                        autocomplete="off">
+                    <kbd class="kbd">ENTER</kbd>
                 </form>
-            </h2>
-
-            <div class="containter">
-                <div class="dream"></div>
-                <div class="content">
-                    <div class="title">
-                        《滕王阁序》
-                    </div>
-                    <div class="author">
-                        王勃
-                    </div>
-                    <div class="line">
-                        豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。雄州雾列，俊采星驰。台隍枕夷夏之交，宾主尽东南之美。都督阎公之雅望，棨戟遥临；宇文新州之懿范，襜帷暂驻。十旬休假，胜友如云；千里逢迎，高朋满座。腾蛟起凤，孟学士之词宗；紫电青霜，王将军之武库。家君作宰，路出名区；童子何知，躬逢胜饯。
-                    </div>
-                    <div class="line">
-                        时维九月，序属三秋。潦水尽而寒潭清，烟光凝而暮山紫。俨骖騑于上路，访风景于崇阿；临帝子之长洲，得天人之旧馆。层峦耸翠，上出重霄；飞阁流丹，下临无地。鹤汀凫渚，穷岛屿之萦回；桂殿兰宫，即冈峦之体势。
-                    </div>
-                    <div class="line">
-                        披绣闼，俯雕甍，山原旷其盈视，川泽纡其骇瞩。闾阎扑地，钟鸣鼎食之家；舸舰弥津，青雀黄龙之舳。云销雨霁，彩彻区明。落霞与孤鹜齐飞，秋水共长天一色。渔舟唱晚，响穷彭蠡之滨；雁阵惊寒，声断衡阳之浦。
-                    </div>
-                    <div class="line">
-                        遥襟甫畅，逸兴遄飞。爽籁发而清风生，纤歌凝而白云遏。睢园绿竹，气凌彭泽之樽；邺水朱华，光照临川之笔。四美具，二难并。穷睇眄于中天，极娱游于暇日。天高地迥，觉宇宙之无穷；兴尽悲来，识盈虚之有数。望长安于日下，目吴会于云间。地势极而南溟深，天柱高而北辰远。关山难越，谁悲失路之人？萍水相逢，尽是他乡之客。怀帝阍而不见，奉宣室以何年？
-                    </div>
-                    <div class="line">
-                        嗟乎！时运不齐，命途多舛。冯唐易老，李广难封。屈贾谊于长沙，非无圣主；窜梁鸿于海曲，岂乏明时？所赖君子见机，达人知命。老当益壮，宁移白首之心？穷且益坚，不坠青云之志。酌贪泉而觉爽，处涸辙以犹欢。北海虽赊，扶摇可接；东隅已逝，桑榆非晚。孟尝高洁，空余报国之情；阮籍猖狂，岂效穷途之哭！
-                    </div>
-                    <div class="line">
-                        勃，三尺微命，一介书生。无路请缨，等终军之弱冠；有怀投笔，慕宗悫之长风。舍簪笏于百龄，奉晨昏于万里。非谢家之宝树，接孟氏之芳邻。他日趋庭，叨陪鲤对；今兹捧袂，喜托龙门。杨意不逢，抚凌云而自惜；钟期既遇，奏流水以何惭？
-                    </div>
-                    <div class="line">
-                        呜乎！胜地不常，盛筵难再；兰亭已矣，梓泽丘墟。临别赠言，幸承恩于伟饯；登高作赋，是所望于群公。敢竭鄙怀，恭疏短引；一言均赋，四韵俱成。请洒潘江，各倾陆海云尔：
-                    </div>
-                    <div class="line">
-                        滕王高阁临江渚，佩玉鸣鸾罢歌舞。
-                    </div>
-                    <div class="line">
-                        画栋朝飞南浦云，珠帘暮卷西山雨。
-                    </div>
-                    <div class="line">
-                        闲云潭影日悠悠，物换星移几度秋。
-                    </div>
-                    <div class="line">
-                        阁中帝子今何在？槛外长江空自流。
-                    </div>
-
-                </div>
-
-                <!-- 右侧内容 -->
-                <div class="right">
-                    <h2>
-                        推荐项目
-                    </h2>
-                    <ul>
-                        <li class="vislite">
-                            <div class="content">
-                                <h3>
-                                    VISLite
-                                </h3>
-                                数据可视化交互式跨端前端库
-                            </div>
-                            <div class="link">
-                                <a href="https://oi-contrib.github.io/VISLite" target="_blank">文档</a>
-                                <a href="https://github.com/oi-contrib/VISLite" target="_blank">源码</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="sponsors">
-                        <div class="item zfb"></div>
-                        <div class="item wx"></div>
-                    </div>
-                    <div class="cat">
-                        <button tag="miss-cat" name="dialog-btn">《由老猫的离世而引发的追忆》</button>
-                    </div>
-                </div>
             </div>
 
+            <div class="main">
+
+                <!-- 文章 -->
+                <article class="paper">
+                    <div class="p-kicker">古文观止 · 阅读</div>
+                    <div class="title">《滕王阁序》</div>
+                    <div class="author">王勃</div>
+                    <div class="rule"></div>
+                    <div class="line">豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。雄州雾列，俊采星驰。台隍枕夷夏之交，宾主尽东南之美。都督阎公之雅望，棨戟遥临；宇文新州之懿范，襜帷暂驻。十旬休假，胜友如云；千里逢迎，高朋满座。腾蛟起凤，孟学士之词宗；紫电青霜，王将军之武库。家君作宰，路出名区；童子何知，躬逢胜饯。</div>
+                    <div class="line">时维九月，序属三秋。潦水尽而寒潭清，烟光凝而暮山紫。俨骖騑于上路，访风景于崇阿；临帝子之长洲，得天人之旧馆。层峦耸翠，上出重霄；飞阁流丹，下临无地。鹤汀凫渚，穷岛屿之萦回；桂殿兰宫，即冈峦之体势。</div>
+                    <div class="line">披绣闼，俯雕甍，山原旷其盈视，川泽纡其骇瞩。闾阎扑地，钟鸣鼎食之家；舸舰弥津，青雀黄龙之舳。云销雨霁，彩彻区明。落霞与孤鹜齐飞，秋水共长天一色。渔舟唱晚，响穷彭蠡之滨；雁阵惊寒，声断衡阳之浦。</div>
+                    <div class="line">遥襟甫畅，逸兴遄飞。爽籁发而清风生，纤歌凝而白云遏。睢园绿竹，气凌彭泽之樽；邺水朱华，光照临川之笔。四美具，二难并。穷睇眄于中天，极娱游于暇日。天高地迥，觉宇宙之无穷；兴尽悲来，识盈虚之有数。望长安于日下，目吴会于云间。地势极而南溟深，天柱高而北辰远。关山难越，谁悲失路之人？萍水相逢，尽是他乡之客。怀帝阍而不见，奉宣室以何年？</div>
+                    <div class="line">嗟乎！时运不齐，命途多舛。冯唐易老，李广难封。屈贾谊于长沙，非无圣主；窜梁鸿于海曲，岂乏明时？所赖君子见机，达人知命。老当益壮，宁移白首之心？穷且益坚，不坠青云之志。酌贪泉而觉爽，处涸辙以犹欢。北海虽赊，扶摇可接；东隅已逝，桑榆非晚。孟尝高洁，空余报国之情；阮籍猖狂，岂效穷途之哭！</div>
+                    <div class="line">勃，三尺微命，一介书生。无路请缨，等终军之弱冠；有怀投笔，慕宗悫之长风。舍簪笏于百龄，奉晨昏于万里。非谢家之宝树，接孟氏之芳邻。他日趋庭，叨陪鲤对；今兹捧袂，喜托龙门。杨意不逢，抚凌云而自惜；钟期既遇，奏流水以何惭？</div>
+                    <div class="line">呜乎！胜地不常，盛筵难再；兰亭已矣，梓泽丘墟。临别赠言，幸承恩于伟饯；登高作赋，是所望于群公。敢竭鄙怀，恭疏短引；一言均赋，四韵俱成。请洒潘江，各倾陆海云尔：</div>
+                    <div class="line">滕王高阁临江渚，佩玉鸣鸾罢歌舞。</div>
+                    <div class="line">画栋朝飞南浦云，珠帘暮卷西山雨。</div>
+                    <div class="line">闲云潭影日悠悠，物换星移几度秋。</div>
+                    <div class="line">阁中帝子今何在？槛外长江空自流。</div>
+                </article>
+
+                <!-- 右侧内容 -->
+                <aside class="rail">
+
+                    <section>
+                        <div class="rail-h">
+                            <span class="no">01</span>
+                            <h2>推荐项目</h2>
+                        </div>
+                        <ul>
+                            <li class="vislite">
+                                <div class="content">
+                                    <h3>VISLite</h3>
+                                    数据可视化交互式跨端前端库
+                                </div>
+                                <div class="link">
+                                    <a href="https://oi-contrib.github.io/VISLite" target="_blank">文档 →</a>
+                                    <a href="https://github.com/oi-contrib/VISLite" target="_blank">源码 →</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <div class="rail-h">
+                            <span class="no">02</span>
+                            <h2>支持作者</h2>
+                        </div>
+                        <div class="sponsors">
+                            <div class="item zfb">
+                                <img src="./images/zfb.jpeg" alt="支付宝收款码" loading="lazy">
+                                <span>支付宝</span>
+                            </div>
+                            <div class="item wx">
+                                <img src="./images/wx.jpeg" alt="微信收款码" loading="lazy">
+                                <span>微信</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="rail-h">
+                            <span class="no">03</span>
+                            <h2>随手记</h2>
+                        </div>
+                        <div class="cat">
+                            <img src="./images/cat.webp" alt="老猫" loading="lazy">
+                            <button tag="miss-cat" name="dialog-btn">《由老猫的离世而引发的追忆》</button>
+                        </div>
+                    </section>
+
+                </aside>
+            </div>
         </div>
+
         <footer>
             Copyright © 2007-2026
             <a href="https://github.com/zxl20070701" target="_blank">zxl20070701 走一步，再走一步。</a>
             All rights reserved.
-            <br />
+            <br>
             本网站由“z Z ...”设计、开发和维护 ｜ <a href="./privacy.html" target="_blank">隐私政策</a>
         </footer>
     </div>
@@ -142,6 +183,8 @@
         <div class="close" id="pageview-content-close-id" title="关闭">+</div>
         <div id="pageview-content-view-id" class="doc item"></div>
     </div>
+
+    <script src="../styles/theme.js"></script>
 
     <script>
         function doSearch(event) {

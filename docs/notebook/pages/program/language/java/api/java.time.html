@@ -1,0 +1,45 @@
+<header>
+    java.time 日期与时间
+</header>
+<p>
+    java.time 是现代 Java 日期时间 API。日期和时间类型大多不可变，方法会返回新对象；表示具体时间线上的时刻与表示本地日期时间的类型用途不同。
+</p>
+<h2>
+    本地日期和时间
+</h2>
+<pre tag="javascript">
+java.time.LocalDate date = java.time.LocalDate.of(2025, 6, 1);
+java.time.LocalTime time = java.time.LocalTime.of(9, 30);
+java.time.LocalDateTime local =
+    java.time.LocalDateTime.of(date, time);
+</pre>
+<p>
+    LocalDate 和 LocalDateTime 不包含时区，也不能单独确定全球唯一的时刻；生日、营业日期等不需要时区的场景适合使用本地日期类型。
+</p>
+<h2>
+    时区和时间点
+</h2>
+<pre tag="javascript">
+java.time.Instant now = java.time.Instant.now();
+java.time.ZonedDateTime tokyo =
+    now.atZone(java.time.ZoneId.of("Asia/Tokyo"));
+</pre>
+<p>
+    记录日志时间点或跨时区交换时间时，可保存 Instant，并在展示时按明确的 ZoneId 转换。不要假定服务器默认时区就是业务时区。
+</p>
+<h2>
+    计算和格式化
+</h2>
+<pre tag="javascript">
+java.time.LocalDate nextWeek = date.plusWeeks(1);
+java.time.Duration elapsed =
+    java.time.Duration.between(time, time.plusHours(2));
+String formatted = date.format(
+    java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
+);
+</pre>
+<p>
+    DateTimeFormatter 是不可变且线程安全的。解析用户指定格式时，可以用
+    <span class="important">DateTimeFormatter.ofPattern</span>；
+    自定义格式时应明确语言区域与时区，不要把区域相关格式当作固定协议格式。
+</p>

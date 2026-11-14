@@ -1,0 +1,80 @@
+<header>
+    继承、多态与抽象类
+</header>
+<h2>
+    继承
+</h2>
+<p>
+    类使用
+    <span class="important">extends</span>
+    继承一个类。Java 类只有单继承：一个类只能有一个直接父类，但可以实现多个接口。
+    <span class="important">super</span>
+    用于调用父类构造方法或访问父类实现。
+</p>
+<pre tag="javascript">
+class Animal {
+    public void speak() {
+        System.out.println("...");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void speak() {
+        System.out.println("汪");
+    }
+}
+</pre>
+<p>
+    子类构造方法中，若要显式调用父类构造方法，必须将
+    <span class="important">super(...)</span>
+    放在构造方法第一条语句。父类没有无参构造方法时，子类必须显式选择一个父类构造方法。
+</p>
+<h2>
+    多态与方法重写
+</h2>
+<p>
+    父类引用可以指向子类对象。调用被重写的实例方法时，运行时根据对象的实际类型选择实现，这就是动态分派：
+</p>
+<pre tag="javascript">
+Animal animal = new Dog();
+animal.speak(); // 输出“汪”
+</pre>
+<p>
+    重写（override）是子类提供父类实例方法的新实现；重载（overload）是在同一作用域提供名称相同、参数列表不同的方法。使用
+    <span class="important">@Override</span>
+    能让编译器检查重写是否正确。字段和静态方法不按实例方法的方式进行动态分派。
+</p>
+<h2>
+    抽象类
+</h2>
+<p>
+    使用
+    <span class="important">abstract class</span>
+    定义抽象类。抽象类不能直接实例化，可以包含字段、构造方法、具体方法和抽象方法。抽象方法只有声明，没有方法体；非抽象子类必须实现所有继承来的抽象方法。
+</p>
+<pre tag="javascript">
+abstract class Shape {
+    public abstract double area();
+
+    public void printArea() {
+        System.out.println(area());
+    }
+}
+
+class Circle extends Shape {
+    private final double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+</pre>
+<p>
+    抽象类适合多个相关类型共享状态或实现的场景。若只需要定义一组能力契约，通常优先考虑接口。
+</p>

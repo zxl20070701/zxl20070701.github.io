@@ -1,0 +1,68 @@
+<header>
+    接口与实现
+</header>
+<h2>
+    定义接口
+</h2>
+<p>
+    接口用
+    <span class="important">interface</span>
+    声明可由不同类实现的能力契约。类使用
+    <span class="important">implements</span>
+    实现接口，并可同时实现多个接口。
+</p>
+<pre tag="javascript">
+interface Payable {
+    double amount();
+}
+
+class Invoice implements Payable {
+    @Override
+    public double amount() {
+        return 99.0;
+    }
+}
+</pre>
+<p>
+    接口抽象方法默认是
+    <span class="important">public abstract</span>；
+    接口字段默认是
+    <span class="important">public static final</span>。
+    实现方法必须是 public，不能缩小接口方法的访问范围。
+</p>
+<h2>
+    默认方法、静态方法与私有方法
+</h2>
+<p>
+    <span class="important">Java 8</span>
+    起，接口可以提供
+    <span class="important">default</span>
+    默认方法和静态方法。默认方法允许接口在演进时为已有实现提供通用行为；实现类可以重写默认方法。
+    <span class="important">Java 9</span>
+    起，接口还可以声明 private 方法，供接口内部复用。
+</p>
+<pre tag="javascript">
+interface Named {
+    String name();
+
+    default String label() {
+        return format(name());
+    }
+
+    private String format(String value) {
+        return "[" + value + "]";
+    }
+}
+</pre>
+<h2>
+    何时使用接口或抽象类
+</h2>
+<ul>
+    <li>接口：表达能力或契约，支持一个类组合多种能力。</li>
+    <li>抽象类：表达相关类型的共同基础，可共享实例状态、构造逻辑和受保护实现。</li>
+</ul>
+<p>
+    若类实现的多个接口提供同签名的默认方法，类需要自行重写以解决冲突；可通过
+    <span class="important">接口名.super.方法名()</span>
+    调用指定接口的默认实现。
+</p>

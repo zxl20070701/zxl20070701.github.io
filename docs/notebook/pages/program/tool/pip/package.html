@@ -1,0 +1,83 @@
+<header>
+    现代 Python 包的构建与发布
+</header>
+<p>
+    本页补充
+    <span class="important">pyproject.toml</span>
+    项目的构建与发布流程。已有项目的配置可能不同，发布前请按项目所用的构建后端调整示例。
+</p>
+<h2>
+    配置项目元数据
+</h2>
+<p>
+    下面是使用 setuptools 作为构建后端的最小示例。请将包名、版本、描述和 Python 版本要求替换为项目的实际值：
+</p>
+<pre tag="toml">
+[build-system]
+requires = ["setuptools&gt;=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "your-package-name"
+version = "0.1.0"
+description = "A short description of the package"
+readme = "README.md"
+requires-python = "&gt;=3.9"
+license = "MIT"
+</pre>
+<p>
+    包名必须符合 PyPI 的命名要求且未被占用。项目还应准备 README、许可证和正确的包文件配置；不同项目布局可能需要在构建后端中额外配置要包含的模块。
+</p>
+<h2>
+    构建并检查分发文件
+</h2>
+<p>
+    在项目虚拟环境中安装构建和上传工具：
+</p>
+<pre>
+    python -m pip install --upgrade build twine
+</pre>
+<p>从包含 pyproject.toml 的项目根目录构建源码包和 wheel：</p>
+<pre>
+    python -m build
+</pre>
+<p>
+    生成的文件位于
+    <span class="important">dist/</span>。
+    上传之前检查分发文件的元数据：
+</p>
+<pre>
+    python -m twine check dist/*
+</pre>
+<h2>
+    先使用 TestPyPI 验证
+</h2>
+<p>
+    可以先把分发文件上传到独立的
+    <a href="https://test.pypi.org/" target="_blank" rel="noopener noreferrer">TestPyPI</a>
+    测试站点：
+</p>
+<pre>
+    python -m twine upload --repository testpypi dist/*
+</pre>
+<p>
+    TestPyPI 与正式 PyPI 相互独立，测试站点上的账号和包不会自动复制到正式站点。
+</p>
+<h2>
+    发布到 PyPI
+</h2>
+<p>
+    在
+    <a href="https://pypi.org/" target="_blank" rel="noopener noreferrer">PyPI</a>
+    为项目准备发布凭据，然后上传构建产物：
+</p>
+<pre>
+    python -m twine upload dist/*
+</pre>
+<p>
+    使用 API token 时，Twine 的用户名填写
+    <span class="important">__token__</span>，密码填写 token 内容。不要把 token 写入源代码、提交到版本控制或打印到公开日志；自动化发布应使用 CI 平台的密钥管理功能。
+</p>
+<div class="tips">
+    已发布的版本通常不能覆盖。修改包内容后，应更新 pyproject.toml 中的版本号，再重新构建、检查并上传新版本。
+</div>

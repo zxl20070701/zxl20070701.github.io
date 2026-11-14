@@ -1,0 +1,48 @@
+<header>
+    Lambda 与 Stream
+</header>
+<h2>
+    Lambda 表达式
+</h2>
+<p>
+    Lambda 表达式可以为函数式接口提供实现。函数式接口只有一个抽象方法，常用类型位于
+    <span class="important">java.util.function</span>，例如 Predicate、Function 和 Consumer。
+    Lambda 与方法引用在
+    <span class="important">Java 8</span>
+    中引入。
+</p>
+<pre tag="javascript">
+java.util.function.Predicate&lt;String&gt; nonEmpty =
+    value -&gt; !value.isEmpty();
+
+java.util.function.Consumer&lt;String&gt; printer =
+    System.out::println;
+</pre>
+<h2>
+    Stream 管道
+</h2>
+<p>
+    Stream 用于描述数据处理管道。中间操作（如 filter、map）通常是惰性的；终止操作（如 collect、forEach）触发处理。Stream 不存储数据，也不应重复使用已经执行过终止操作的流。
+</p>
+<pre tag="javascript">
+java.util.List&lt;String&gt; names =
+    java.util.List.of("Ada", "Lin", "Grace");
+
+java.util.List&lt;String&gt; longNames = names.stream()
+    .filter(name -&gt; name.length() &gt; 3)
+    .map(String::toUpperCase)
+    .toList();
+</pre>
+<p>
+    <span class="important">Stream.toList()</span>
+    从
+    <span class="important">Java 16</span>
+    起可用，返回不可修改的列表；若需要可修改结果，可使用
+    <span class="important">collect(Collectors.toCollection(ArrayList::new))</span>。
+</p>
+<h2>
+    何时使用并行流
+</h2>
+<p>
+    并行流不一定更快，并会带来线程调度、共享状态和顺序方面的额外约束。只有在任务可安全拆分、数据规模合适且经过测量确认后，再考虑并行处理。
+</p>

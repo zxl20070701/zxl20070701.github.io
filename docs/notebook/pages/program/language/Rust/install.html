@@ -1,0 +1,54 @@
+<header>
+    如何搭建环境和运行？
+</header>
+<h2>
+    安装 Rust
+</h2>
+<p>
+    Rust 官方推荐使用 <span class="special">rustup</span> 安装工具链。可以从
+    <a href="https://www.rust-lang.org/tools/install" target="_blank">Rust 安装页面</a>
+    下载适合当前操作系统的安装程序。安装后，rustup 会提供 Rust 编译器 <span class="special">rustc</span> 和包管理、构建工具 <span class="special">cargo</span>。
+</p>
+<p>
+    安装完成后，在终端检查版本：
+</p>
+<pre tag="javascript">
+rustc --version
+cargo --version
+</pre>
+<p>
+    Rust 工具链发布更新时，可以使用下面的命令更新：
+</p>
+<pre tag="javascript">
+rustup update
+</pre>
+<h2>
+    创建项目
+</h2>
+<p>
+    使用 Cargo 创建一个名为 hello-rust 的可执行项目：
+</p>
+<pre tag="javascript">
+cargo new hello-rust
+cd hello-rust
+</pre>
+<p>
+    Cargo 会生成 <span class="special">Cargo.toml</span> 项目配置文件和 <span class="special">src/main.rs</span> 程序入口文件。默认程序如下：
+</p>
+<pre tag="javascript">
+fn main() {
+    println!("你好，Rust！");
+}
+</pre>
+<h2>
+    编译和运行
+</h2>
+<p>
+    在项目根目录运行：
+</p>
+<pre tag="javascript">
+cargo run
+</pre>
+<p>
+    只检查代码能否通过编译而不生成可执行文件，可以运行 <span class="special">cargo check</span>；准备发布时可以运行 <span class="special">cargo build --release</span>。
+</p>

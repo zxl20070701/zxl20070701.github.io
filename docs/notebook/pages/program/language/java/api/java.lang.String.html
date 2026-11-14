@@ -1,0 +1,70 @@
+<header>
+    java.lang.String
+</header>
+<p>
+    String 位于 java.lang 包中，通常无需显式导入。String 对象不可变；修改字符串的操作会返回新字符串。
+</p>
+<h2>
+    比较字符串
+</h2>
+<p>
+    使用
+    <span class="important">equals</span>
+    比较内容，不要用
+    <span class="important">==</span>
+    判断两个字符串内容是否相同（== 比较的是引用是否相同）：
+</p>
+<pre tag="javascript">
+String first = new String("Java");
+String second = "Java";
+System.out.println(first.equals(second)); // true
+</pre>
+<p>
+    如果可能为 null，可使用
+    <span class="important">Objects.equals(a, b)</span>；
+    若要忽略大小写，可使用
+    <span class="important">equalsIgnoreCase</span>。
+</p>
+<h2>
+    查找、截取和替换
+</h2>
+<pre tag="javascript">
+String text = "hello java";
+int index = text.indexOf("java");
+String part = text.substring(0, 5);
+String replaced = text.replace("java", "world");
+</pre>
+<p>
+    substring 的结束下标不包含在结果中；查找失败时
+    <span class="important">indexOf</span>
+    返回 -1。String 不可变，因此 replace 等方法不会修改原字符串。
+</p>
+<h2>
+    空白处理和拆分
+</h2>
+<pre tag="javascript">
+String cleaned = text.strip();
+boolean blank = text.isBlank();
+String[] words = text.split("\\s+");
+</pre>
+<p>
+    <span class="important">strip</span>
+    和
+    <span class="important">isBlank</span>
+    可识别 Unicode 空白；split 参数是正则表达式。如果按字面量拆分，需先对分隔符做正则转义。
+</p>
+<h2>
+    拼接大量文本
+</h2>
+<p>
+    少量拼接可使用
+    <span class="important">+</span>。
+    循环中不断拼接大量字符串时，可使用 StringBuilder：
+</p>
+<pre tag="javascript">
+StringBuilder builder = new StringBuilder();
+for (String word : words) {
+    builder.append(word).append(' ');
+}
+String result = builder.toString();
+</pre>

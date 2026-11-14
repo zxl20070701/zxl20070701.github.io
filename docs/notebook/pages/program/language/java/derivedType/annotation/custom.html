@@ -1,0 +1,65 @@
+<header>
+    自定义注解
+</header>
+<h2>
+    用 @interface 声明
+</h2>
+<p>
+    自定义注解用一个特殊的接口声明：关键字
+    <span class="important">@interface</span>
+    ，里面写的是元素，不是普通方法。
+</p>
+<pre tag="javascript">
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD, ElementType.TYPE })
+public @interface Audit {
+
+    String value();                                  // 没有默认值，使用时必须赋值
+
+    int level() default 1;                           // 有默认值，可以省略
+
+    String[] tags() default {};                      // 数组的空值写成 {}
+}
+</pre>
+<h2>
+    元素的规则
+</h2>
+<ul>
+    <li>元素无参、不能抛异常、不能有方法体，写法上像一个不带实现的方法。</li>
+    <li>返回类型只允许基本类型、String、Class、枚举、其他注解，以及它们的数组；不能是 Object、List 或泛型。</li>
+    <li>元素可以有默认值，默认值必须是常量表达式，写 <span class="important">default null</span> 会直接编译失败，报「元素值必须为常量表达式」。</li>
+    <li>没有默认值的元素，使用该注解时必须全部赋值；漏一个就是编译错误。</li>
+    <li>注解类型本身也不能带类型参数，声明成泛型会报「批注接口 X 不能为泛型」。</li>
+</ul>
+<h2>
+    使用时的两种写法
+</h2>
+<pre tag="javascript">
+@Audit("下单")
+public void create() { }
+
+@Audit(value = "支付", level = 3, tags = { "money", "core" })
+public void pay() { }
+</pre>
+<p>
+    只有一个名为
+    <span class="important">value</span>
+    的元素要赋值时，可以省略元素名，直接写
+    <span class="important">@Audit("下单")</span>
+    ；一旦同时要赋多个元素，就得把名字写全，元素之间用逗号分隔。
+</p>
+<h2>
+    单值注解的常见用法
+</h2>
+<p>
+    绝大多数自定义注解只带一个 value，用来放一个标识或一段描述，例如
+    <span class="important">@Log("下单")</span>
+    、
+    <span class="important">@Permission("order:create")</span>
+    。真正需要多个元素时，通常意味着注解的职责已经不单一，可以拆成两个注解。
+</p>

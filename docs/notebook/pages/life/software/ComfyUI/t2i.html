@@ -1,0 +1,192 @@
+<header>
+    文生图入门
+</header>
+<p>
+    文生图是 ComfyUI 最基础的能力：给一段文字，出一张图。它是后面视频那两篇的前置——图生视频要用它出首帧，所以先把这一步练熟最划算。
+</p>
+<p>
+    本文所有耗时都是本机实测（Apple M4 / 16 GB 统一内存），不是估算。
+</p>
+<h2>
+    一、前置：一个模型文件就够
+</h2>
+<p>
+    ComfyUI 本身不带模型，装完是个空壳。文生图只需要一个 checkpoint——注意是"整合了 CLIP 的完整 checkpoint"，不是单独下载的 UNet。
+</p>
+<pre>
+models/checkpoints/Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors   约 6.6 GB
+https://modelscope.cn/models/lzllover/Juggernaut-XL_v9_RunDiffusionPhoto_v2
+（文件在该仓库的 checkpoints 子目录下，大小 7 105 348 188 字节）
+</pre>
+<p>
+    检查一下在不在：
+</p>
+<pre>
+ls -lh ~/Desktop/ComfyUI/models/checkpoints/*.safetensors
+</pre>
+<p>
+    这个模型自带 CLIP 和 VAE，所以工作流里只连一个 Load Checkpoint，它的三个输出（MODEL / CLIP / VAE）分别喂给采样器和编解码。如果换成只含 UNet 的版本，就得另外配编码器和 VAE，麻烦得多。
+</p>
+<div class="tips">
+    为什么选它：Juggernaut 是 SDXL 系的写实向模型，暗调、旧木、纸张、暖光这些题材表现稳定，不会出塑料感的皮肤。想要动漫画风或二次元，换别的 checkpoint 即可，工作流完全不用改。
+</div>
+<h2>
+    二、从官方模板起步
+</h2>
+<p>
+    ComfyUI 自带一套官方模板，不需要自己搭节点。顶部菜单「Templates」→ 图像分类下搜 <code>sdxl</code>，选标题是 <b>「SDXL1.0：文生图（简单）」</b> 的那个。
+</p>
+<p>
+    它一共八个节点，其中七个是干活的：<code>Load Checkpoint</code> 开头，接两个 <code>CLIP Text Encode</code>（正/负）、一个 <code>Empty Latent Image</code>、一个 <code>KSampler</code>、<code>VAE Decode</code>、<code>Save Image</code>，另一个是右侧的说明便签。默认是 <code>sd_xl_base_1.0</code>、1024×1024、25 步、cfg 7、<code>dpmpp_2m</code>+<code>karras</code>。
+</p>
+<p>
+    要改的就是三处，改完就是一个属于自己的文生图工作流：
+</p>
+<pre>
+Load Checkpoint   ckpt_name 换成 Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors
+Empty Latent      宽 768 / 高 1344
+KSampler          steps 28、cfg 6.5（采样器和调度器模板已经选对了，不用动）
+</pre>
+<p>
+    模板里的提示词也是一段现成的例子（一个白色虚空里的古典大理石雕像），想先看看原版效果，不改也能直接跑一次。
+</p>
+<div class="tips">
+    改完点「保存」，会存进你自己的 workflows 目录，下次从侧边栏「工作流」就能直接打开，不用每次重搭。
+</div>
+<h2>
+    三、七个节点分别是干什么的
+</h2>
+<pre>
+Load Checkpoint       模型入口，输出 MODEL / CLIP / VAE 三路
+CLIP Text Encode（正）  你要画什么，接到 KSampler 的 positive
+CLIP Text Encode（负）  你不要什么，接到 KSampler 的 negative
+Empty Latent Image    画布尺寸，宽高和批量数
+KSampler              去噪采样，真正"画"的地方
+VAE Decode            潜空间转回像素
+Save Image            存盘
+</pre>
+<p>
+    新手只需要碰三个：正向提示词、负向提示词、KSampler 里的参数。其余不动。
+</p>
+<h2>
+    四、参数
+</h2>
+<pre>
+steps        28        SDXL 写实向的甜点，20 以下细节明显掉
+cfg          6.5       5~7 之间；超过 8 画面会发硬、过饱和
+sampler      dpmpp_2m
+scheduler    karras
+denoise      1         文生图固定 1，图生图才降
+</pre>
+<p>
+    <code>dpmpp_2m</code> + <code>karras</code> 是 SDXL 上最稳的组合，20 多步就能收敛。换成 <code>euler</code> + <code>normal</code> 也能出图，但暗调场景更容易糊。
+</p>
+<h2>
+    五、画幅只能用标准尺寸
+</h2>
+<p>
+    SDXL 是在一组固定分辨率上训练的，只能在这些"桶"里填，随意填数字会出重复纹理、畸形肢体、画面被切成两半：
+</p>
+<pre>
+1024×1024    方图
+896×1152    竖版 3:4
+832×1216    竖版
+768×1344    竖版 9:16   ← 短视频用这个
+640×1536    超长竖版
+1152×896    横版
+1216×832    横版
+1344×768    横版 16:9
+</pre>
+<p>
+    要做 9:16 竖屏就填 768×1344，比值 0.571，比精确的 9:16（0.5625）略宽一点点，后期裁一两个像素即可，肉眼看不出来。
+</p>
+<div class="warn">
+    不要填 800×1200 这种"看起来差不多"的尺寸。不是标准桶的尺寸，模型会用重复图案去填空白，出来的人有六根手指、墙有接缝。
+</div>
+<h2>
+    六、提示词怎么写
+</h2>
+<p>
+    有效的写法是三段并列，不是一句话叙述：
+</p>
+<pre>
+[主体与场景] + [影调与光线] + [镜头语言]
+</pre>
+<p>
+    举例，同一个风格锚、只换主体，出来的两张气质是一致的：
+</p>
+<pre>
+cinematic film still, 35mm, low-key lighting, single warm tungsten light source,
+aged dark wood and old paper textures, deep shadows, muted amber and teal palette,
+fine film grain, shallow depth of field, no people, no faces,
++ [主体] an old wooden staircase leading to a half-open bookstore door
+   或   + [主体] an extreme close-up of a kraft-paper notebook with a pencil
+</pre>
+<img src="./images/comfyui/txt2img-door.png" width="260px" />
+<img src="./images/comfyui/txt2img-notebook.png" width="260px" />
+<p>
+    左：楼梯与门；右：牛皮纸本子。两张是同一套参数、同一串风格锚跑出来的，只有末尾的主体描述不同——这就是"风格锚"的用法：全片共用前半段，只换后半段，多镜头才连得成一整部片子。
+</p>
+<p>
+    负向提示词建议固定带上这几组：
+</p>
+<pre>
+text, watermark, signature, subtitle, person, face, people, portrait,
+cartoon, 3d render, illustration, bright daylight, overexposed, oversaturated,
+worst quality, low quality, jpeg artifacts, blurry, deformed
+</pre>
+<h2>
+    七、抽卡：种子与批量
+</h2>
+<p>
+    种子（seed）决定初始噪声，同一段提示词换种子会得到完全不同的构图。KSampler 里那个「生成后控制」就是管这个的：
+</p>
+<pre>
+randomize   每次跑都换种子，适合挑构图
+fixed       固定种子，适合微调提示词时对比效果
+increment   每次 +1，适合一次跑一组做筛选
+</pre>
+<p>
+    想一次出一组，把 Empty Latent Image 的 batch_size 改成 2 或 3，一次采样同时出多张。
+</p>
+<div class="warn">
+    但这台机器上批量别超过 2。实测 batch_size 3 时内存吃紧，单步从 7 秒退化到 94 秒，28 步要四十多分钟，得不偿失。想要多张，宁可跑三次单张。
+</div>
+<h2>
+    八、实测耗时
+</h2>
+<pre>
+768×1344 / 28 步 / batch 1
+  单步 7.4~7.7 秒，采样约 3.5 分钟
+  含模型加载首次 4 分 49 秒，模型已在内存时 3 分 18 秒
+
+内存被别的模型占住时（视频模型还缓存着）
+  单步掉到 94 / 250 / 418 秒，几乎是几十倍的退化
+</pre>
+<p>
+    最后一行是这篇最值钱的结论：<b>出图变慢通常不是参数问题，是内存被占了。</b>换模型、跑完视频再回来出图、开着一堆浏览器标签，都会让单步从 7 秒掉到几分钟。症状是进程 CPU 很低、磁盘一直在响、swap 用到 12 GB 以上。处理办法只有一个：重启 ComfyUI 进程。
+</p>
+<h2>
+    九、常见的四种翻车
+</h2>
+<p>
+    <b>脸上有塑料感、五官漂移。</b>SDXL 画正脸本来就不稳，尤其在 768 宽度上。要么把脸裁掉只给侧脸和背影，要么把分辨率提到 896×1152 以上。
+</p>
+<p>
+    <b>画面里出现乱码文字。</b>SDXL 打不出可读文字，中文更是必崩。需要画面里有招牌、书名，一律留白后期贴字，别让模型硬写。
+</p>
+<p>
+    <b>看提示词里没有的内容。</b>负向词写太弱，或者 cfg 太高把提示词过度强化。把 <code>text</code>、<code>watermark</code> 这类词补进负向，并把 cfg 压回 6 附近。
+</p>
+<p>
+    <b>整体发灰、发闷。</b>多半是采样器选了 <code>euler</code> + <code>normal</code>，或者步数太低。换回 <code>dpmpp_2m</code>+<code>karras</code>、步数提到 28 就正常。
+</p>
+<h2>
+    十、出完图之后
+</h2>
+<p>
+    单张图可以直接用（封面、插图、公众号配图都行）。如果要做视频，这张图就是"首帧"，接着读「图生视频入门」那一篇，把这图喂给视频模型让它动起来。
+</p>
+<div class="tips">
+    做分镜短片时，出图这一步是<b>最便宜也最该反复做</b>的一步：3 分钟一张，抽十次也就半小时。别在这一步偷懒，因为后面视频模型每跑一次要十一分钟，而且它救不回一张构图就错的图。
+</div>

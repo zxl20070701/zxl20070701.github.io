@@ -1,0 +1,229 @@
+<header>
+    下载安装与界面入门
+</header>
+<p>
+    Clash Verge Rev 是一款基于 <span class="special">Tauri</span> + <span class="special">Mihomo（Clash.Meta）</span> 内核的桌面代理客户端，支持 Windows / macOS / Linux。
+    对纯小白来说，它的价值就一句话：<span class="important">一个图形界面，把「订阅、节点、分流」这些原本要手写 YAML 的事情点几下就能用</span>。
+</p>
+<div class="tips">
+    这篇是零基础篇。看完你会知道去哪儿下载、该下哪个文件、装完之后软件长什么样、每个按钮是干什么的。看完直接跳到《导入订阅》那篇。
+</div>
+<h2>
+    它到底是什么
+</h2>
+<p>
+    先建立几个概念，后面所有操作都围绕这三个词转：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>名词</th>
+            <th>说人话</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">内核（Mihomo）</span></td>
+            <td>真正干活的那个程序，负责接收你的网络请求、判断该走哪条线路。Clash Verge 只是一个<span class="important">套在它外面的壳</span>，内核坏了软件就没用</td>
+        </tr>
+        <tr>
+            <td><span class="special">订阅（Profile）</span></td>
+            <td>一份配置文件，机场给你的一串链接，里面写满了节点、代理组和规则</td>
+        </tr>
+        <tr>
+            <td><span class="special">节点</span></td>
+            <td>一台位于境外的服务器。订阅里通常有几十个，可以自己挑一个用</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    认准<span class="important">Clash Verge Rev</span>这个项目（GitHub：<span class="special">clash-verge-rev/clash-verge-rev</span>）。老版的 clash-verge、Clash for Windows 都已停止维护，CFW 的作者还删库跑路了，千万别装。
+</div>
+<h2>
+    下载：去哪儿拿
+</h2>
+<p>
+    官方只通过 <span class="special">GitHub Release</span> 发布，官网 <span class="special">www.clashverge.dev</span> 只是文档站，下载页也是跳转到 GitHub：
+</p>
+<pre>
+https://github.com/clash-verge-rev/clash-verge-rev/releases
+</pre>
+<p>
+    打开后展开最新的 Release（写作时为 <span class="special">v2.5.8</span>），在 Assets 列表里找对应你系统的文件。<span class="important">不要下载 Source code (zip)</span>，那是源码包，装不了。
+</p>
+<h2>
+    下哪个：认准架构
+</h2>
+<p>
+    这是小白最容易踩的坑。文件名的 <span class="special">x64 / arm64</span> 指的是 CPU 架构，<span class="important">下错了会直接提示「此应用无法在你的电脑上运行」</span>。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>你的电脑</th>
+            <th>Windows</th>
+            <th>macOS</th>
+            <th>Linux</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>绝大多数人</td>
+            <td><span class="special">x64-setup.exe</span></td>
+            <td>Intel 选 <span class="special">x64.dmg</span>，M 芯片选 <span class="special">aarch64.dmg</span></td>
+            <td><span class="special">amd64.deb</span> / <span class="special">x86_64.rpm</span></td>
+        </tr>
+        <tr>
+            <td>少数新型设备</td>
+            <td><span class="special">arm64-setup.exe</span></td>
+            <td>Apple M 芯片（2020 年后）</td>
+            <td><span class="special">arm64.deb</span> / <span class="special">aarch64.rpm</span></td>
+        </tr>
+    </tbody>
+</table>
+<div class="warn">
+    不确定自己是什么架构？<span class="important">一律选 x64</span>，这是目前绝大多数 Windows 电脑和 Intel Mac 的配置，选错的概率极低。
+</div>
+<div class="tips">
+    文件名里带 <span class="special">fixed_webview2</span> 的版本体积更大，它把 <span class="special">WebView2</span> 运行环境（Clash Verge 的界面就是靠它渲染的）打包进去了。系统里没装 WebView2、装不上的时候才用这个，正常情况别下。
+</div>
+<h3>
+    三个平台的安装方式
+</h3>
+<p>
+    <span class="special">Windows</span>：双击 <span class="special">-setup.exe</span> 一路下一步。装完建议右键图标「以管理员身份运行」一次，让它把服务模式装上。
+</p>
+<p>
+    <span class="special">macOS</span>：拖进「应用程序」文件夹即可。首次打开如果提示「无法验证开发者」，去<span class="special">系统设置 → 隐私与安全性</span>点「仍要打开」，或者终端执行：
+</p>
+<pre tag="bash">
+sudo xattr -d com.apple.quarantine /Applications/Clash\ Verge.app
+</pre>
+<p>
+    <span class="special">Linux</span>（Debian/Ubuntu 系）：
+</p>
+<pre tag="bash">
+sudo apt install -y ./Clash.Verge_2.5.8_amd64.deb
+</pre>
+<p>
+    <span class="special">Linux</span>（CentOS/Fedora 系）：
+</p>
+<pre tag="bash">
+sudo dnf install ./Clash.Verge-2.5.8-1.x86_64.rpm
+</pre>
+<div class="tips">
+    Ubuntu 20.04 装不上（缺 <span class="special">libwebkit2gtk</span> 依赖）？官方建议直接升级系统，别去硬凑依赖。另外这个软件是 GUI 程序，<span class="important">纯命令行服务器上用不了</span>，那种场景请直接用 Mihomo 内核。
+</div>
+<h2>
+    装完先做一件事：确认内核能跑
+</h2>
+<p>
+    打开软件，左下角有个<span class="special">齿轮图标（设置）</span>，进去以后能直接看到「内核版本」。如果这里显示错误、或者代理页面一片空白，说明内核文件没加载成功。
+</p>
+<div class="tips">
+    遇到这种情况，去设置页右下角找到<span class="important">「配置目录」</span>，把里面所有文件删掉再重启软件，让它重新下载一份干净的内核。杀毒软件误删内核文件也是常见原因，记得把安装目录加白名单。
+</div>
+<h2>
+    界面速览
+</h2>
+<p>
+    左侧竖着一排图标就是全部功能了，从上到下依次是：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>图标</th>
+            <th>页面</th>
+            <th>干什么用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>信号格</td>
+            <td><span class="special">代理</span></td>
+            <td><span class="important">最常用的一页</span>。选节点、看延迟、切换模式（规则/全局/直连）都在这</td>
+        </tr>
+        <tr>
+            <td>卡片</td>
+            <td><span class="special">订阅</span></td>
+            <td>管理你的订阅链接，新增、删除、更新</td>
+        </tr>
+        <tr>
+            <td>地球</td>
+            <td><span class="special">连接</span></td>
+            <td>实时显示当前有哪些程序在联网、走了哪个节点，排查「哪个软件在偷偷走代理」用</td>
+        </tr>
+        <tr>
+            <td>分叉箭头</td>
+            <td><span class="special">规则</span></td>
+            <td>看分流规则命中情况，也能可视化加规则</td>
+        </tr>
+        <tr>
+            <td>列表</td>
+            <td><span class="special">日志</span></td>
+            <td>出问题时看这里，是排错的第一现场</td>
+        </tr>
+        <tr>
+            <td>靶心</td>
+            <td><span class="special">测试</span></td>
+            <td>测各节点的延迟和连通性</td>
+        </tr>
+        <tr>
+            <td>齿轮</td>
+            <td><span class="special">设置</span></td>
+            <td>系统代理、TUN 模式、端口、界面主题都在这</td>
+        </tr>
+    </tbody>
+</table>
+<img src="./images/clashverge/verge-preview-dark.png" width="480px">
+<p>
+    浅色主题长这样：
+</p>
+<img src="./images/clashverge/verge-preview-light.png" width="480px">
+<div class="tips">
+    默认主题在设置页的「主题模式」里切换：<span class="special">浅色 / 深色 / 系统</span>。软件启动后常驻在系统托盘（右下角小图标），<span class="important">关掉主窗口不等于退出</span>，要真正停止代理得右键托盘图标选「退出」。
+</div>
+<h2>
+    三个必看的设置项
+</h2>
+<p>
+    第一次用，先去<span class="special">设置</span>页把这三件事确认好，后面所有操作都依赖它们：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>设置项</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">系统代理</span></td>
+            <td><span class="important">最核心的开关</span>。打开后系统会把浏览器的代理指向本机，浏览器才能走代理。绝大部分日常需求只开它就够了</td>
+        </tr>
+        <tr>
+            <td><span class="special">Tun（虚拟网卡）模式</span></td>
+            <td>接管系统所有流量，游戏、命令行、某些不认系统代理的软件需要它。开启会装虚拟网卡，<span class="important">权限要求更高</span>，建议先用系统代理，用不够再开</td>
+        </tr>
+        <tr>
+            <td><span class="special">开机自启</span> + <span class="special">静默启动</span></td>
+            <td>开机自动运行，且不弹主窗口只留托盘图标。配合使用体验最顺</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    三个开关的官方位置就是左下角<span class="special">齿轮 → 设置</span>，截图里红框标注的就是「系统代理」开关：<span class="important">打开它，浏览器立刻就能用</span>。
+</div>
+<h2>
+    上手检查清单
+</h2>
+<ul>
+    <li>软件能正常打开，代理页能看到界面（不是空白）</li>
+    <li>设置页里内核版本正常显示</li>
+    <li>已导入订阅（下一篇讲）</li>
+    <li>已选好一个节点</li>
+    <li>已打开<span class="important">系统代理</span>开关</li>
+</ul>
+<p>
+    以上五步做完，浏览器应该已经能访问境外网站了。接下来看《导入订阅与节点选择》。
+</p>

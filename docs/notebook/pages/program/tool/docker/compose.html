@@ -1,0 +1,50 @@
+<header>
+    使用 Compose 管理应用
+</header>
+<p>
+    当应用包含多个配置项或多个服务时，逐条输入 docker run 命令不容易维护。Docker Compose 使用一个 YAML 文件描述应用，并通过统一命令启动和管理服务。
+</p>
+<h2>
+    准备项目
+</h2>
+<p>
+    新建项目目录，在其中创建 site/index.html，并创建 compose.yaml：
+</p>
+<pre tag="yaml">
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+</pre>
+<p>
+    Compose 会使用 Nginx 镜像启动 web 服务，将主机 8080 端口映射到容器 80 端口，并只读挂载项目内的 site 目录。
+</p>
+<h2>
+    启动和查看服务
+</h2>
+<p>
+    在 compose.yaml 所在目录运行：
+</p>
+<pre tag="shell">
+docker compose up -d
+docker compose ps
+docker compose logs
+</pre>
+<p>
+    浏览器访问 http://localhost:8080 查看页面。修改 site/index.html 后刷新浏览器即可看到更新。
+</p>
+<h2>
+    停止应用
+</h2>
+<pre tag="shell">
+docker compose down
+</pre>
+<p class="warn">
+    docker compose down 会停止并删除此 Compose 项目创建的容器和网络，不会删除项目文件。添加 --volumes 会同时删除关联的数据卷，执行前请确认其中的数据不再需要。
+</p>
+<p>
+    Compose 命令需要较新的 Docker Desktop 或安装了 Compose 插件的 Docker Engine。可以通过 docker compose version 检查是否可用。
+</p>

@@ -1,0 +1,36 @@
+<header>
+    构建与发布
+</header>
+<h2>
+    本地构建
+</h2>
+<p>
+    在项目根目录执行 Tauri CLI 的构建命令。命令会构建前端资源、编译 Rust 后端，并生成当前主机平台支持的应用包。
+</p>
+<pre tag="javascript">
+npm run tauri build
+</pre>
+<p>
+    构建产物通常位于 <span class="special">src-tauri/target/release/bundle/</span> 下；具体安装包类型和路径由操作系统及 Tauri 配置决定。
+</p>
+<h2>
+    构建前检查
+</h2>
+<ul>
+    <li>在 <span class="special">src-tauri/tauri.conf.json</span> 中设置正确的应用名称、唯一标识符、版本和图标。</li>
+    <li>确认前端构建命令与资源目录配置正确，并在本机先运行 <span class="special">npm run tauri dev</span> 验证功能。</li>
+    <li>根据目标系统安装原生构建依赖。通常需要在对应操作系统上构建；跨平台构建还需要额外配置目标工具链。</li>
+    <li>正式分发前准备代码签名，并按 macOS、Windows 或 Linux 的分发要求完成签名与校验。</li>
+</ul>
+<h2>
+    移动端
+</h2>
+<p>
+    Tauri 也支持 Android 和 iOS，但需要分别安装 Android Studio 或 Xcode 等移动开发工具链，并按平台配置 Rust target。桌面项目不能仅靠桌面构建命令直接生成移动安装包；请参阅
+    <a href="https://v2.tauri.app/start/prerequisites/" target="_blank">官方环境要求</a>
+    和移动端指南。
+</p>
+<p>
+    更多打包格式、签名和发布设置见
+    <a href="https://v2.tauri.app/distribute/" target="_blank">Tauri 官方分发文档</a>。
+</p>

@@ -1,0 +1,245 @@
+<header>
+    Service 与 Ingress
+</header>
+<p>
+    Pod 的 IP 会随着重建而变化，所以不能直接用 IP 访问。
+    <span class="special">Service</span>
+    提供一个稳定的服务入口，
+    <span class="special">Ingress</span>
+    则在其上再叠一层按域名和路径分流的七层路由。
+</p>
+<h2>
+    Service
+</h2>
+<p>
+    先用命令快速体验一下：
+</p>
+<pre tag="bash">
+# 把 Deployment 暴露成一个 Service
+kubectl expose deployment hello --port=80 --target-port=80
+
+kubectl get services
+</pre>
+<p>
+    对应的 YAML 写法：
+</p>
+<pre tag="yaml">
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+spec:
+  type: ClusterIP
+  selector:
+    app: hello
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+</pre>
+<p>
+    Service 通过
+    <span class="important">selector</span>
+    找到后端的 Pod，只要 selector 匹配上 Pod 的标签，Service 就会自动把流量负载均衡过去。因此 Pod 扩缩容后，Service 无需任何修改。
+</p>
+<div class="tips">
+    <span class="special">port</span>
+    是 Service 自己监听的端口，
+    <span class="special">targetPort</span>
+    是容器实际监听的端口。两者可以不同，比如 Service 用 80，容器用 8080。
+</div>
+<h2>
+    Service 的四种类型
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">ClusterIP</span></td>
+            <td>默认类型，只能在集群内部访问</td>
+        </tr>
+        <tr>
+            <td><span class="special">NodePort</span></td>
+            <td>在每个节点上开一个随机端口（30000-32767），通过节点 IP 访问</td>
+        </tr>
+        <tr>
+            <td><span class="special">LoadBalancer</span></td>
+            <td>由云厂商分配外部负载均衡器，最常用</td>
+        </tr>
+        <tr>
+            <td><span class="special">ExternalName</span></td>
+            <td>把流量直接转到集群外部的域名，不做任何代理</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    本地环境用 kind 时，LoadBalancer 类型的外部地址会一直显示
+    <span class="special">&lt;pending&gt;</span>
+    ，因为本地没有云厂商的负载均衡器。可以直接用 NodePort 访问：
+</p>
+<pre tag="bash">
+kubectl expose deployment hello --type=NodePort --port=80
+kubectl get svc hello
+</pre>
+<pre>
+NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+hello   NodePort    10.96.141.52   &lt;none&gt;        80:31234/TCP   20s
+</pre>
+<p>
+    然后在浏览器访问
+    <span class="special">http://localhost:31234</span>
+    即可。
+</p>
+<h2>
+    DNS 解析
+</h2>
+<p>
+    集群内每个 Service 都会自动获得一个 DNS 域名，格式是：
+</p>
+<pre>
+&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local
+</pre>
+<p>
+    比如同一个命名空间里访问 hello，直接用
+    <span class="special">hello</span>
+    就行；跨命名空间则写
+    <span class="special">hello.demo</span>
+    。
+</p>
+<h2>
+    Ingress
+</h2>
+<p>
+    Ingress 在 Service 之上提供基于域名和路径的路由。要使用它，需要集群里已经安装了
+    <span class="special">Ingress Controller</span>
+    （例如 Nginx Ingress、Traefik 等）。
+</p>
+<div class="tips">
+    kind 创建的默认集群不包含 Ingress Controller。可以在安装时指定：
+    <span class="special">kind create cluster --config kind-cluster.yaml</span>
+    时加入 Ingress 节点，或者事后单独安装。本篇只介绍 Ingress 的配置写法。
+</div>
+<pre tag="yaml">
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: hello.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello
+                port:
+                  number: 80
+</pre>
+<p>
+    应用后可以查看状态：
+</p>
+<pre tag="bash">
+kubectl apply -f ingress.yaml
+kubectl get ingress
+</pre>
+<pre>
+NAME            CLASS    HOSTS               ADDRESS     PORTS   AGE
+hello-ingress   nginx    hello.example.com   localhost   80      20s
+</pre>
+<div class="warn">
+    Ingress 只是「路由规则」，真正的转发由 Ingress Controller 完成。如果访问不通，先确认 Ingress Controller 是否已安装并正常运行，再排查规则本身。
+</div>
+<h2>
+    给 Ingress 配置域名与路径
+</h2>
+<p>
+    一个 Ingress 可以同时配置多个域名，也可以按路径分流到不同的 Service：
+</p>
+<pre tag="yaml">
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: multi-ingress
+spec:
+  rules:
+    - host: shop.example.com
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: hello-api
+                port:
+                  number: 80
+    - host: www.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello-web
+                port:
+                  number: 80
+</pre>
+<div class="tips">
+    <span class="special">pathType</span>
+    常用两个值：
+    <span class="special">Prefix</span>
+    表示路径前缀匹配（路径按
+    <span class="special">/</span>
+    分段匹配），
+    <span class="special">Exact</span>
+    表示完全精确匹配。默认行为容易出坑，建议显式写出来。
+</div>
+<h2>
+    HTTPS
+</h2>
+<p>
+    在 Ingress 里声明
+    <span class="special">tls</span>
+    字段即可启用 HTTPS：
+</p>
+<pre tag="yaml">
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tls-ingress
+spec:
+  tls:
+    - hosts:
+        - hello.example.com
+      secretName: hello-tls
+  rules:
+    - host: hello.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hello
+                port:
+                  number: 80
+</pre>
+<p>
+    其中
+    <span class="special">hello-tls</span>
+    是存放证书的 Secret，类型需要为
+    <span class="special">kubernetes.io/tls</span>
+    ，包含
+    <span class="special">tls.crt</span>
+    和
+    <span class="special">tls.key</span>
+    两个键。
+</p>

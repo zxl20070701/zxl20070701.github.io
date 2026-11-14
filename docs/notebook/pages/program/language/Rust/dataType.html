@@ -1,0 +1,87 @@
+<header>
+    数据类型
+</header>
+<p>
+    Rust 是静态类型语言，编译器通常可以根据上下文推断变量类型；无法推断时，需要显式标注。
+</p>
+<h2>
+    标量类型
+</h2>
+<h3>
+    整数
+</h3>
+<p>
+    有符号整数类型为 <span class="special">i8</span>、<span class="special">i16</span>、<span class="special">i32</span>、<span class="special">i64</span>、<span class="special">i128</span> 和 <span class="special">isize</span>；无符号整数类型为 <span class="special">u8</span>、<span class="special">u16</span>、<span class="special">u32</span>、<span class="special">u64</span>、<span class="special">u128</span> 和 <span class="special">usize</span>。<span class="special">isize</span> 与 <span class="special">usize</span> 的位数取决于目标平台。
+</p>
+<pre tag="javascript">
+fn main() {
+let age: u8 = 20;
+let distance: i64 = -120;
+let count: usize = 3;
+let million = 1_000_000; // 下划线可用于分隔数字
+}
+</pre>
+<h3>
+    浮点数、布尔值和字符
+</h3>
+<p>
+    <span class="special">f32</span> 和 <span class="special">f64</span> 是两种浮点数类型，默认推断为 <span class="special">f64</span>。布尔类型为 <span class="special">bool</span>；字符类型 <span class="special">char</span> 使用单引号，表示一个 Unicode 标量值。
+</p>
+<pre tag="javascript">
+fn main() {
+let price = 3.14;        // f64
+let enabled: bool = true;
+let letter: char = '中';
+}
+</pre>
+<h2>
+    复合类型
+</h2>
+<h3>
+    元组
+</h3>
+<p>
+    元组可以把不同类型的多个值组合成一个值。可以通过模式解构或下标访问元素。
+</p>
+<pre tag="javascript">
+fn main() {
+let user: (&amp;str, u8) = ("小明", 18);
+let (name, age) = user;
+println!("{name}，{age} 岁");
+println!("名字：{}", user.0);
+}
+</pre>
+<h3>
+    数组
+</h3>
+<p>
+    数组中的元素类型相同，长度固定。数组的类型写作 <span class="special">[类型; 长度]</span>。
+</p>
+<pre tag="javascript">
+fn main() {
+let scores: [i32; 4] = [95, 88, 76, 100];
+let zeros = [0; 5]; // [0, 0, 0, 0, 0]
+println!("第一个分数：{}", scores[0]);
+}
+</pre>
+<p class="warn">
+    访问越界的数组下标会在运行时触发 panic；需要可变长度集合时，通常使用 Vec。
+</p>
+<h2>
+    字符串与切片
+</h2>
+<p>
+    字符串字面量的类型是字符串切片 <span class="special">&amp;str</span>；<span class="special">String</span> 是可增长、可修改的字符串类型。切片借用一段连续数据，而不取得其所有权。
+</p>
+<pre tag="javascript">
+fn main() {
+let greeting: &amp;str = "你好";
+let mut message = String::from("Hello");
+message.push_str(", Rust");
+println!("{greeting}，{message}");
+
+let numbers = [10, 20, 30, 40];
+let first_two = &amp;numbers[0..2];
+println!("{:?}", first_two);
+}
+</pre>

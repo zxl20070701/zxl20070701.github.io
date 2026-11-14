@@ -1,0 +1,231 @@
+<header>
+    配置与资源管理
+</header>
+<p>
+    应用要跑起来，除了镜像还需要配置和资源。本篇介绍
+    <span class="special">ConfigMap</span>
+    、
+    <span class="special">Secret</span>
+    以及容器资源的声明方式。
+</p>
+<h2>
+    ConfigMap
+</h2>
+<p>
+    ConfigMap 用来存放非敏感的配置，比如环境变量、配置文件内容、启动参数等。
+</p>
+<pre tag="yaml">
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  LOG_LEVEL: debug
+  APP_NAME: demo
+  app.conf: |
+    server {
+      listen 8080;
+    }
+</pre>
+<p>
+    在 Deployment 中引用：
+</p>
+<pre tag="yaml">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+        - name: hello
+          image: nginx:alpine
+          envFrom:
+            - configMapRef:
+                name: app-config
+</pre>
+<p>
+    也可以只引用单个键，或以文件形式挂载：
+</p>
+<pre tag="yaml">
+          env:
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: LOG_LEVEL
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/app
+      volumes:
+        - name: config-volume
+          configMap:
+            name: app-config
+            items:
+              - key: app.conf
+                path: app.conf
+</pre>
+<p>
+    对应的命令行操作：
+</p>
+<pre tag="bash">
+kubectl create configmap app-config --from-literal=LOG_LEVEL=debug
+kubectl create configmap app-config --from-file=app.conf
+kubectl get configmap
+kubectl describe configmap app-config
+</pre>
+<div class="tips">
+    <span class="special">--from-literal</span>
+    传的是键值对，
+    <span class="special">--from-file</span>
+    传的是文件（默认以文件名作为键）。
+</div>
+<h2>
+    Secret
+</h2>
+<p>
+    Secret 结构和 ConfigMap 几乎一样，区别在于它专门存放敏感信息，且默认以 Base64 编码存储。
+</p>
+<pre tag="yaml">
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+type: Opaque
+data:
+  username: YWRtaW4=
+  password: cGFzc3dvcmQ=
+</pre>
+<p>
+    用命令行创建更方便，它会自动完成编码：
+</p>
+<pre tag="bash">
+kubectl create secret generic app-secret --from-literal=username=admin --from-literal=password=passw0rd
+
+# 查看解码后的内容
+kubectl get secret app-secret -o jsonpath='{.data.password}' | base64 -d
+</pre>
+<p>
+    引用方式和 ConfigMap 一致，把
+    <span class="special">configMapRef</span>
+    换成
+    <span class="special">secretRef</span>
+    即可：
+</p>
+<pre tag="yaml">
+          envFrom:
+            - secretRef:
+                name: app-secret
+</pre>
+<div class="warn">
+    Base64 只是编码，不是加密。Secret 在 etcd 中默认仍是明文存储，生产环境需要配合
+    <span class="special">开启 etcd 静态加密</span>
+    或使用
+    <span class="special">Sealed Secrets</span>
+    、
+    <span class="special">External Secrets</span>
+    等方案，避免把密钥直接提交到 Git 仓库。
+</div>
+<h2>
+    声明资源请求
+</h2>
+<p>
+    每个容器都应该声明
+    <span class="important">requests</span>
+    （调度依据）和
+    <span class="important">limits</span>
+    （运行上限）。不声明的话，Pod 会被当成「BestEffort」 QoS 等级，在资源紧张时优先被驱逐。
+</p>
+<pre tag="yaml">
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+</pre>
+<p>
+    单位说明：
+</p>
+<ul>
+    <li>
+        <span class="special">cpu</span>：100m 表示 0.1 个核；也可以写 0.5、1、2。
+    </li>
+    <li>
+        <span class="special">memory</span>：Mi、M、G、Gi 等，常用 Mi 和 Gi。
+    </li>
+</ul>
+<div class="warn">
+    CPU 超限会被限流（进程被冻结等待），内存超限则直接触发 OOMKilled。内存的 limit 要留足余量，否则容器会因为内存波动被反复杀掉。
+</div>
+<h2>
+    QoS 等级
+</h2>
+<p>
+    Kubernetes 根据 requests 和 limits 的声明方式，把 Pod 分为三个
+    <span class="important">服务质量等级</span>：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>等级</th>
+            <th>条件</th>
+            <th>特点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Guaranteed</span></td>
+            <td>所有容器的 requests 与 limits 完全相等</td>
+            <td>最稳定，资源紧张时最后被驱逐</td>
+        </tr>
+        <tr>
+            <td><span class="special">Burstable</span></td>
+            <td>声明了 requests，但 limits 更大或未声明</td>
+            <td>最常见</td>
+        </tr>
+        <tr>
+            <td><span class="special">BestEffort</span></td>
+            <td>完全没有声明 resources</td>
+            <td>资源紧张时最先被驱逐</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    可以查看某个 Pod 的 QoS 等级：
+</p>
+<pre tag="bash">
+kubectl get pod hello-xxxxx -o jsonpath='{.status.qosClass}'
+</pre>
+<h2>
+    生效配置的方式
+</h2>
+<p>
+    修改 ConfigMap 后，引用它的 Pod
+    <span class="important">不会自动重启</span>
+    （环境变量方式挂载时不会更新）。有两种处理办法：
+</p>
+<ul>
+    <li>手动触发滚动更新，让 Pod 用新配置重建。</li>
+    <li>以文件形式挂载整个目录时（约 1 分钟同步周期），文件内容会自动更新，无需重启。</li>
+</ul>
+<pre tag="bash">
+# 手动触发滚动更新
+kubectl rollout restart deployment/hello
+</pre>
+<p>
+    查看实际生效的配置：
+</p>
+<pre tag="bash">
+kubectl get configmap app-config -o yaml
+kubectl describe pod hello-xxxxx
+</pre>

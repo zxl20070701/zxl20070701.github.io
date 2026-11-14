@@ -857,12 +857,16 @@ window.doFormula = function (el) {
 
         } catch (event) {
 
-            console.log(event)
-            codeEls[i].innerText = event.message + " " + event.filename + " " + event.lineno + " \nstack :\n" + (event.error ? event.error.stack : "");
+            // console.log(event)
+            // codeEls[i].innerText = event.message + " " + event.filename + " " + event.lineno + " \nstack :\n" + (event.error ? event.error.stack : "");
 
-            codeEls[i].style.color = 'red';
-            codeEls[i].style.fontSize = "12px";
-            codeEls[i].style.textDecoration = "underline";
+            // codeEls[i].style.color = 'red';
+            // codeEls[i].style.fontSize = "12px";
+            // codeEls[i].style.textDecoration = "underline";
+            // codeEls[i].style.fontWeight = 800;
+
+            // 如果不满足，可能就是单纯的文本，直接显示即可
+            // 2026年11月9日 于南京
             codeEls[i].style.fontWeight = 800;
         }
     }

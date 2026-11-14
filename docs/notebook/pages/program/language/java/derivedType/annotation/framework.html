@@ -1,0 +1,50 @@
+<header>
+    框架中的注解
+</header>
+<h2>
+    从扫描到注册
+</h2>
+<p>
+    注解本身不产生任何效果，框架要做的是「读注解 → 翻译成内部结构 → 改变行为」。以 Spring 为例，第一步是扫描：启动时按
+    <span class="important">@ComponentScan</span>
+    指定的包遍历 class 文件，读类上的
+    <span class="important">@Component</span>
+    、
+    <span class="important">@Service</span>
+    、
+    <span class="important">@Repository</span>
+    、
+    <span class="important">@Controller</span>
+    ，为命中的类生成一份 BeanDefinition 注册进容器。
+</p>
+<p>
+    这一步和反射读注解是两件事：扫描阶段读的是 class 文件里的注解表（用 ASM 之类的字节码库），并不要求类已经被加载；只有需要创建实例时才真正反射。
+</p>
+<h2>
+    @Bean 与配置类代理
+</h2>
+<p>
+    <span class="important">@Bean</span>
+    走的是另一条路：配置类里的方法被解析成 BeanDefinition，方法名成为 Bean 名，方法参数按类型从容器里取。配置类本身会被 CGLIB 增强，所以配置类内部方法之间的调用拿到的是容器里那一个实例，而不是重新 new 一个——这就是
+    <span class="important">@Configuration</span>
+    和
+    <span class="important">@Component</span>
+    的实质差别。
+</p>
+<h2>
+    @Transactional 的代理
+</h2>
+<p>
+    事务注解生效得更晚：容器在创建 Bean 时检查类或接口上有没有
+    <span class="important">@Transactional</span>
+    ，决定是否为它生成代理；代理在方法调用前后插入 commit / rollback。注解只写了「需要事务」，怎么开、什么时候关，全在代理里。
+</p>
+<p>
+    同一条链路也适用于
+    <span class="important">@Cacheable</span>
+    、
+    <span class="important">@Async</span>
+    、
+    <span class="important">@PreAuthorize</span>
+    ：注解声明意图，拦截器或代理负责实现。理解了这个模型，看到一个新注解时只需要问三个问题——谁扫它、扫到之后生成什么、运行时在哪一层拦截。
+</p>

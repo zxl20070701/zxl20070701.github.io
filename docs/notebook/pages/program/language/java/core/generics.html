@@ -1,0 +1,71 @@
+<header>
+    泛型与类型安全
+</header>
+<h2>
+    泛型类和泛型方法
+</h2>
+<p>
+    泛型让类型作为参数传递，使编译器能在编译期检查类型，而不必在读取时到处强制转换。
+</p>
+<pre tag="javascript">
+class Box&lt;T&gt; {
+    private final T value;
+
+    Box(T value) {
+        this.value = value;
+    }
+
+    public T get() {
+        return value;
+    }
+}
+
+Box&lt;String&gt; box = new Box&lt;&gt;("hello");
+String text = box.get();
+</pre>
+<p>
+    泛型方法可以独立声明类型参数，例如
+    <span class="important">&lt;T&gt; T first(T left, T right)</span>。
+    编译器通常能够从参数推断类型。泛型类型不支持基本类型作为类型参数，可使用
+    <span class="important">Integer</span>、
+    <span class="important">Double</span>
+    等包装类型。
+</p>
+<h2>
+    有界类型参数
+</h2>
+<p>
+    使用
+    <span class="important">extends</span>
+    限制类型参数，以便在泛型代码中使用边界声明的能力：
+</p>
+<pre tag="javascript">
+static &lt;T extends Number&gt; double sum(T left, T right) {
+    return left.doubleValue() + right.doubleValue();
+}
+</pre>
+<h2>
+    通配符与 PECS
+</h2>
+<p>
+    <span class="important">? extends T</span>
+    表示某种未知的 T 子类型，适合从集合读取 T；
+    <span class="important">? super T</span>
+    表示某种未知的 T 父类型，适合向集合写入 T。常用记忆方式是“生产者 extends，消费者 super”（PECS）。
+</p>
+<pre tag="javascript">
+static double total(java.util.List&lt;? extends Number&gt; values) {
+    double result = 0;
+    for (Number value : values) {
+        result += value.doubleValue();
+    }
+    return result;
+}
+</pre>
+<p>
+    Java 泛型主要通过类型擦除实现。不能直接创建
+    <span class="important">new T()</span>
+    或
+    <span class="important">new T[... ]</span>；
+    也不能重载两个擦除后参数类型相同的方法。
+</p>

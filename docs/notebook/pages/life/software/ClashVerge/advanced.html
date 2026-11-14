@@ -1,0 +1,299 @@
+<header>
+    进阶配置：TUN、备份与内核
+</header>
+<p>
+    前三篇覆盖了日常使用。这篇讲几个<span class="important">用得少但很关键</span>的功能：TUN 模式到底要不要开、配置怎么备份同步、内核怎么管理、以及一些提效小技巧。
+</p>
+<h2>
+    TUN 模式：什么时候才需要
+</h2>
+<p>
+    先搞清楚两个模式的区别，这是理解 TUN 的前提：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>原理</th>
+            <th>接管范围</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">系统代理</span></td>
+            <td>修改操作系统的代理设置，<span class="important">应用主动读系统代理设置</span>才会走 Clash</td>
+            <td>浏览器、部分遵循系统代理的 GUI 应用</td>
+        </tr>
+        <tr>
+            <td><span class="special">TUN</span></td>
+            <td>在系统里装一张虚拟网卡，把所有 IP 流量<span class="important">从网络层接管</span>过来</td>
+            <td><span class="important">全部流量</span>：游戏、命令行、命令行工具、UWP 应用</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    判断你要不要开
+</h3>
+<p>
+    按这个顺序自查，<span class="special">有一条满足才考虑开 TUN</span>：
+</p>
+<ul>
+    <li>游戏 / Steam / Epic 商店不走代理</li>
+    <li>命令行工具（git、npm、docker pull）不走代理</li>
+    <li>某些桌面应用（Electron、Java 程序）不走代理</li>
+    <li>你接了公司 VPN，两边冲突</li>
+</ul>
+<div class="tips">
+    <span class="important">能用系统代理解决的，就别开 TUN。</span>TUN 需要管理员权限、会装虚拟网卡、和公司 VPN/安全软件更容易冲突，出问题时排查成本也高得多。
+</div>
+<h3>
+    怎么开
+</h3>
+<p>
+    设置页 → 左侧「系统设置」→ 打开 <span class="special">Tun（虚拟网卡）模式</span>，旁边的齿轮进详细设置。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>配置项</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">stack</span></td>
+            <td>虚拟网卡栈。一般用默认的 <span class="special">system</span> 或 <span class="special">gvisor</span>；gvisor 兼容性最好但更吃 CPU</td>
+        </tr>
+        <tr>
+            <td><span class="special">auto-route</span></td>
+            <td>自动接管路由，<span class="important">保持开启</span>，不然很多流量抓不到</td>
+        </tr>
+        <tr>
+            <td><span class="special">dns-hijack</span></td>
+            <td>劫持 DNS 请求，解决 DNS 污染。<span class="important">保持开启</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">mtu</span></td>
+            <td>默认 1500。网络卡顿、某些网站加载一半断掉时<span class="important">调到 1400 或 1280 试试</span></td>
+        </tr>
+        <tr>
+            <td><span class="special">strict-route</span></td>
+            <td>严格路由，会拦截更多流量，也更容易和别的软件冲突</td>
+        </tr>
+    </tbody>
+</table>
+<div class="warn">
+    TUN 模式下的这些字段<span class="important">由应用接管</span>，你在扩展配置里写了也会被丢弃并弹提示。要改就去设置页的 TUN 对话框里改。
+</div>
+<h3>
+    常见 TUN 问题
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>现象</th>
+            <th>解决</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>开 TUN 后完全没网</td>
+            <td>多半是路由冲突。<span class="important">先关掉 TUN 确认代理本身正常</span>；公司网络加 <span class="special">route-exclude-address</span> 排除内网段</td>
+        </tr>
+        <tr>
+            <td>TUN 下比系统代理卡</td>
+            <td>换 <span class="special">stack</span>；关掉 <span class="special">strict-route</span>；调小 <span class="special">mtu</span></td>
+        </tr>
+        <tr>
+            <td>提示找不到内核 / 服务相关报错</td>
+            <td>Windows 下去安装目录找 <span class="special">uninstall-service.exe</span>，以管理员身份执行后重装</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    配置备份与同步
+</h2>
+<p>
+    订阅链接、扩展配置、规则设置全在本地，换电脑或重装系统就没了。Clash Verge 支持 <span class="special">WebDav</span> 备份同步。
+</p>
+<h3>
+    开启 WebDav 同步
+</h3>
+<ol>
+    <li>准备一个 <span class="important">支持 WebDav 的网盘</span>（坚果云、NextCloud、自建等）</li>
+    <li>在网盘里新建一个目录，记下它的 WebDav 地址和账号密码</li>
+    <li>Clash Verge 设置页 → 找到 <span class="special">WebDav</span> 相关设置，填入地址、用户名、密码</li>
+    <li>点击<span class="special">「备份」</span> / 「同步」</li>
+</ol>
+<div class="tips">
+    坚果云有免费额度且自建 WebDav 友好，是最省事的选择。注意<span class="important">网盘里存的就是你的订阅链接，等于密码也存在网盘里</span>，选可信的服务。
+</div>
+<h3>
+    手动备份
+</h3>
+<p>
+    不想折腾 WebDav 的话，最简单可靠的方式就是<span class="important">直接复制配置目录</span>：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>系统</th>
+            <th>路径</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Windows</td>
+            <td><span class="special">%APPDATA%\io.github.clash-verge-rev.clash-verge-rev\</span></td>
+        </tr>
+        <tr>
+            <td>macOS</td>
+            <td><span class="special">~/Library/Application Support/io.github.clash-verge-rev.clash-verge-rev/</span></td>
+        </tr>
+        <tr>
+            <td>Linux</td>
+            <td><span class="special">~/.local/share/io.github.clash-verge-rev.clash-verge-rev/</span></td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    设置页右下角的<span class="special">「配置目录」</span>按钮可以直接打开这个位置。
+</p>
+<h2>
+    内核管理
+</h2>
+<p>
+    Clash Verge 内置了 <span class="special">Mihomo（Clash.Meta）</span> 内核，也支持切换 <span class="special">Alpha</span> 版内核。
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>内核</th>
+            <th>特点</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">Meta（正式版）</span></td>
+            <td><span class="important">日常用这个</span>，稳定、兼容性好，新特性会慢慢合入</td>
+        </tr>
+        <tr>
+            <td><span class="special">Alpha</span></td>
+            <td>抢先体验新特性，可能有 bug</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    内核出问题时，第一反应是<span class="important">切回正式版内核</span>，或者在设置里手动下载一个指定版本。很多「莫名其妙的连不上」都是内核版本和订阅配置不匹配造成的。
+</div>
+<h3>
+    自己下载内核
+</h3>
+<p>
+    设置页的内核管理区域可以手动选择本地内核文件。内核文件可以从 <span class="special">MetaCubeX/mihomo</span> 的 Release 下载，对应平台的文件名一般是：
+</p>
+<pre>
+mihomo-darwin-amd64      # macOS Intel
+mihomo-darwin-arm64     # macOS M 芯片
+mihomo-linux-amd64      # Linux x64
+mihomo-windows-amd64.exe # Windows x64
+</pre>
+<p>
+    放到软件安装目录下的 <span class="special">resources</span> 目录并命名为 <span class="special">verge-mihomo</span>（macOS 是 <span class="special">verge-mihomo</span>，注意没有扩展名）即可。
+</p>
+<div class="tips">
+    <span class="important">先备份原来的内核文件</span>，替换失败还能退回去。macOS 用户如果是因为系统版本太老（11 以下）用不了新版，可以自己换带 <span class="special">go124</span> 标签的 mihomo 内核。
+</div>
+<h2>
+    提效小技巧
+</h2>
+<h3>
+    托盘图标右键菜单
+</h3>
+<p>
+    右下角托盘图标右键，菜单里有一堆常用操作，不用打开主窗口：
+</p>
+<ul>
+    <li>快速切换<span class="special">系统代理 / TUN</span> 开关</li>
+    <li>快速切换<span class="special">规则 / 全局 / 直连</span> 模式</li>
+    <li>切换最近使用的节点</li>
+    <li><span class="special">复制环境变量</span>（给命令行用）</li>
+    <li><span class="special">退出</span>（真正停止代理）</li>
+</ul>
+<div class="warn">
+    <span class="important">关主窗口 ≠ 退出程序</span>。关掉窗口后它还在托盘里跑着，代理依然生效。要彻底关掉，右键托盘图标选「退出」。
+</div>
+<h3>
+    静默启动
+</h3>
+<p>
+    设置页打开<span class="special">「开机自启」</span>和<span class="special">「静默启动」</span>，开机就自动运行且不弹窗口。
+</p>
+<div class="tips">
+    如果静默启动偶尔失效（开机还是弹窗），多半是任务管理器里存在<span class="important">两个启动项</span>。用管理员权限启动软件后开关一次「开机自启」，多余的那个启动项会被清掉。
+</div>
+<h3>
+    代理组改名与图标
+</h3>
+<p>
+    订阅里的代理组名字带一堆 emoji（🚀 节点选择、📹 YouTube），看久了容易乱。可以在订阅的<span class="special">扩展脚本</span>里批量改名：
+</p>
+<pre tag="javascript">
+function main(config) {
+  if (config["proxy-groups"]) {
+    for (const group of config["proxy-groups"]) {
+      group.name = group.name.replace(/^[^\u4e00-\u9fa5A-Za-z]+/, "");
+    }
+  }
+  return config;
+}
+</pre>
+<h3>
+    启动页面
+</h3>
+<p>
+    设置页的<span class="special">「启动页面」</span>可以选打开软件时停在哪个页。选「代理」最省事，选「订阅」适合管理多份订阅的人。
+</p>
+<h3>
+    日志等级
+</h3>
+<table>
+    <thead>
+        <tr>
+            <th>等级</th>
+            <th>什么时候用</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">silent / error</span></td>
+            <td><span class="important">日常推荐</span>，省磁盘</td>
+        </tr>
+        <tr>
+            <td><span class="special">warn</span></td>
+            <td>想看主要警告时</td>
+        </tr>
+        <tr>
+            <td><span class="special">info / debug</span></td>
+            <td><span class="important">排错时临时开</span>，查完立刻调回去</td>
+        </tr>
+    </tbody>
+</table>
+<h3>
+    主题与 CSS 注入
+</h3>
+<p>
+    设置页可以自定义主题色、托盘图标，还支持 <span class="special">CSS Injection</span>——写一段 CSS 改界面样式，比如把字体调大、把某块区域隐藏掉。
+</p>
+<div class="tips">
+    CSS 注入对版本敏感，升级后样式可能失效。<span class="important">别写太复杂的规则</span>，否则界面可能显示异常。
+</div>
+<h2>
+    安全与合规
+</h2>
+<ul>
+    <li>Clash Verge Rev <span class="important">不收集任何用户数据</span>，配置和日志都只留在本机</li>
+    <li>订阅链接等同于账号凭证，<span class="important">不要外传</span></li>
+    <li>「允许无效证书（危险）」只在信任订阅来源时开启</li>
+    <li>公司设备上使用前先了解公司的网络使用规定</li>
+</ul>

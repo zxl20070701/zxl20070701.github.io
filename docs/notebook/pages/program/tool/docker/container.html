@@ -1,0 +1,50 @@
+<header>
+    容器的常用操作
+</header>
+<p>
+    容器是镜像的运行实例。本篇使用 Nginx 示例，介绍如何创建容器、查看状态和日志，以及停止和删除容器。
+</p>
+<h2>
+    创建并运行容器
+</h2>
+<p>
+    --name 为容器指定易识别的名称，-d 让容器在后台运行：
+</p>
+<pre tag="shell">
+docker run --name demo-nginx -d nginx:alpine
+</pre>
+<p>
+    如果本地没有 nginx:alpine 镜像，Docker 会先下载它。容器列表命令可以查看正在运行的容器：
+</p>
+<pre tag="shell">
+docker ps
+</pre>
+<p>
+    若要查看包含已停止容器在内的全部容器，可以添加 -a：
+</p>
+<pre tag="shell">
+docker ps -a
+</pre>
+<h2>
+    查看日志与进入容器
+</h2>
+<pre tag="shell">
+docker logs demo-nginx
+docker logs -f demo-nginx
+docker exec -it demo-nginx sh
+</pre>
+<p>
+    docker logs 查看容器输出；添加 -f 可以持续跟踪日志。docker exec 在运行中的容器内启动一个命令，退出容器终端可输入 exit。
+</p>
+<h2>
+    停止、启动和删除
+</h2>
+<pre tag="shell">
+docker stop demo-nginx
+docker start demo-nginx
+docker stop demo-nginx
+docker rm demo-nginx
+</pre>
+<p>
+    删除前先停止容器。删除容器不会删除创建它所用的镜像；如果容器仍在运行，Docker 会拒绝删除。
+</p>

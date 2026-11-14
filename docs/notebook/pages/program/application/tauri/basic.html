@@ -1,0 +1,36 @@
+<header>
+    项目结构与运行原理
+</header>
+<p>
+    Tauri 应用通常由前端界面和 Rust 后端组成。前端可以使用普通 HTML、CSS、JavaScript，也可以使用 Vue、React、Svelte 等框架；Tauri 负责启动系统 WebView、托管 Rust 代码，并提供受权限控制的桌面 API。
+</p>
+<h2>
+    前端与后端各自负责什么？
+</h2>
+<ul>
+    <li>前端负责界面、交互和页面状态，按 Web 项目的方式开发。</li>
+    <li>Rust 后端负责需要本地能力或系统访问的逻辑，例如文件处理、计算和数据存取。</li>
+    <li>前后端通过 Tauri 的命令（command）和事件（event）交换数据，而不是让页面直接访问操作系统接口。</li>
+</ul>
+<h2>
+    开发与生产运行
+</h2>
+<p>
+    开发时，Tauri CLI 启动前端开发服务器，并打开桌面 WebView 加载开发页面；生产构建时，它会先构建前端资源，再编译 Rust 程序并按目标平台生成应用包。
+</p>
+<pre tag="javascript">
+// 开发模式
+npm run tauri dev
+
+// 生成发布包
+npm run tauri build
+</pre>
+<h2>
+    配置与代码位置
+</h2>
+<p>
+    前端文件位于模板创建的前端目录（常见为 <span class="special">src/</span>）；桌面端代码和配置位于 <span class="special">src-tauri/</span>。配置文件中常见的内容包括产品名称、应用标识符、窗口设置、前端开发服务器地址和打包选项。
+</p>
+<p>
+    文件名会因脚手架版本及所选模板而略有不同。先查看 <span class="special">src-tauri/tauri.conf.json</span>、<span class="special">src-tauri/src/</span> 和根目录的 <span class="special">package.json</span>，确认项目实际入口及可用脚本。
+</p>

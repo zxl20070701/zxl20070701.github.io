@@ -1,0 +1,198 @@
+<header>
+    持久化存储
+</header>
+<p>
+    容器是「短命」的，Pod 一旦重建，容器内部的文件就没了。持久化存储（PV / PVC）用来解决数据在 Pod 重建后依然存在的问题。
+</p>
+<h2>
+    三个核心概念
+</h2>
+<ul>
+    <li>
+        <span class="important">PV（PersistentVolume）</span>：集群中的一块存储资源，由管理员创建，代表「实际存在的存储」。
+    </li>
+    <li>
+        <span class="important">PVC（PersistentVolumeClaim）</span>：对存储的「申请单」，由应用创建并声明需要多大的空间、什么访问模式。
+    </li>
+    <li>
+        <span class="important">StorageClass</span>：存储的「规格说明」，描述这类存储用什么provisioner创建（本地磁盘、NFS、云盘等）。
+    </li>
+</ul>
+<p>
+    一句话概括它们的配合：
+    <span class="special">PVC 申请存储，StorageClass 负责动态创建 PV，PV 最终挂载到 Pod 上</span>
+    。
+</p>
+<h2>
+    使用 PVC 挂载存储
+</h2>
+<p>
+    先声明一个 PVC：
+</p>
+<pre tag="yaml">
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+</pre>
+<p>
+    在 Deployment 中挂载它：
+</p>
+<pre tag="yaml">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+        - name: hello
+          image: nginx:alpine
+          volumeMounts:
+            - name: data
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data-pvc
+</pre>
+<p>
+    应用后查看状态：
+</p>
+<pre tag="bash">
+kubectl apply -f pvc.yaml
+kubectl get pvc
+</pre>
+<pre>
+NAME       STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-pvc   Bound    pvc-xxx  1Gi        RWO            standard       10s
+</pre>
+<p>
+    <span class="special">STATUS</span>
+    变成
+    <span class="special">Bound</span>
+    就说明存储已经分配好了。
+</p>
+<h2>
+    访问模式
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>含义</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">ReadWriteOnce (RWO)</span></td>
+            <td>只能被一个节点挂载读写，大多数块存储的默认模式</td>
+        </tr>
+        <tr>
+            <td><span class="special">ReadOnlyMany (ROX)</span></td>
+            <td>可以被多个节点以只读方式挂载</td>
+        </tr>
+        <tr>
+            <td><span class="special">ReadWriteMany (RWX)</span></td>
+            <td>可以被多个节点同时读写，需要 NFS、CephFS 等支持</td>
+        </tr>
+        <tr>
+            <td><span class="special">ReadWriteOncePod (RWOP)</span></td>
+            <td>只能被一个 Pod 挂载读写，Pod 释放后卷才能被其它 Pod 使用</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    StorageClass 与动态供应
+</h2>
+<p>
+    kind 默认带有
+    <span class="special">standard</span>
+    这个 StorageClass（使用 hostpath 动态供应）。查看集群里可用的存储类：
+</p>
+<pre tag="bash">
+kubectl get storageclass
+</pre>
+<pre>
+NAME                   PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE
+standard (default)    kubernetes.io/host-path   Delete          WaitForFirstConsumer
+</pre>
+<p>
+    声明 PVC 时指定存储类：
+</p>
+<pre tag="yaml">
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+</pre>
+<p>
+    如果不写
+    <span class="special">storageClassName</span>
+    ，就会使用默认存储类。
+</p>
+<h2>
+    本地目录与 emptyDir
+</h2>
+<p>
+    有些场景不需要真正的持久化存储，可以用更轻量的
+    <span class="special">emptyDir</span>
+    ：它在 Pod 创建时生成一个空目录，Pod 被删除时数据一起消失。
+</p>
+<pre tag="yaml">
+      volumes:
+        - name: cache
+          emptyDir: {}
+</pre>
+<p>
+    常见用途是「缓存目录」和「临时共享目录」（比如多个容器之间交换中间文件）。
+</p>
+<div class="tips">
+    还可以用
+    <span class="special">emptyDir.medium: Memory</span>
+    把它挂载到内存里，速度更快但会占用节点内存，且受内存 limit 限制。
+</div>
+<h2>
+    清理资源
+</h2>
+<pre tag="bash">
+# 查看存储相关资源
+kubectl get pv
+kubectl get pvc
+
+# 删除 PVC（PV 的回收策略决定后续行为）
+kubectl delete pvc data-pvc
+
+# 手动删除 PV
+kubectl delete pv pvc-xxxxx
+</pre>
+<div class="warn">
+    PVC 删除后，PV 不会立刻消失，它会进入
+    <span class="special">Released</span>
+    状态等待处理。回收策略为
+    <span class="special">Delete</span>
+    时底层存储会被一并删除，
+    <span class="special">Retain</span>
+    则保留数据需要手动清理。
+</div>

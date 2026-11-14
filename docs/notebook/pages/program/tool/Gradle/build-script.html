@@ -1,0 +1,63 @@
+<header>
+    构建脚本与依赖
+</header>
+<h2>
+    构建脚本基础
+</h2>
+<p>
+    Gradle支持Groovy DSL和Kotlin DSL。文件名分别是build.gradle和build.gradle.kts。下面以Kotlin DSL为例，在app/build.gradle.kts中配置Java应用：
+</p>
+<pre tag="kotlin">
+plugins {
+    application
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass.set("org.example.App")
+}
+</pre>
+<p>
+    这是一个使用Java 17、JUnit 5和Application插件的示例。请根据项目实际的JDK版本和主类全名调整配置；如果使用其他测试框架，也要相应调整依赖和测试任务。
+</p>
+<h2>
+    插件、仓库和依赖
+</h2>
+<ul>
+    <li>plugins：声明构建所需的插件。application插件在Java插件基础上提供应用运行等能力。</li>
+    <li>repositories：声明查找依赖的仓库。mavenCentral()表示使用Maven Central。</li>
+    <li>dependencies：声明项目依赖。testImplementation表示依赖仅用于测试编译和运行。</li>
+</ul>
+<p>
+    常用依赖配置还包括implementation（主代码编译和运行需要）和runtimeOnly（只在运行时需要）。依赖坐标通常由group、artifact和version组成。
+</p>
+<h2>
+    子项目配置
+</h2>
+<p>
+    使用Gradle init生成的Java应用一般包含app子项目。settings.gradle.kts负责将它加入构建，例如：
+</p>
+<pre tag="kotlin">
+rootProject.name = "demo"
+include("app")
+</pre>
+<p>
+    根项目可以配置多个子项目；在多项目构建中，可通过./gradlew :app:build等形式指定子项目任务。
+</p>

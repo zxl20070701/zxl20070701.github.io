@@ -1,0 +1,64 @@
+<header>
+    重复注解
+</header>
+<h2>
+    为什么要容器注解
+</h2>
+<p>
+    Java 最初的语法规定一个位置只能贴同一个注解一次，所以「重复」这件事只能靠一个容器装起来：
+    <span class="important">@Repeatable</span>
+    指向一个容器注解，容器里放一个数组元素。
+</p>
+<pre tag="javascript">
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Repeatable(Tags.class)
+@interface Tag { String value(); }
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@interface Tags { Tag[] value(); }
+</pre>
+<h2>
+    使用与读取
+</h2>
+<pre tag="javascript">
+@Tag("a")
+@Tag("b")
+public void multi() { }
+
+// 读取
+Tag[] tags = Demo.class.getMethod("multi").getAnnotationsByType(Tag.class);
+// 输出：[@Demo.Tag("a"), @Demo.Tag("b")]
+</pre>
+<p>
+    要注意两点：一是读取必须用
+    <span class="important">getAnnotationsByType</span>
+    ，
+    <span class="important">getAnnotation(Tag.class)</span>
+    会返回 null，因为元素上实际存的是容器注解；二是
+    <span class="important">getAnnotations()</span>
+    拿到的是容器实例
+    <span class="important">@Tags</span>
+    ，而不是两枚
+    <span class="important">@Tag</span>
+    。
+</p>
+<h2>
+    容器注解的约束
+</h2>
+<ul>
+    <li>容器的
+        <span class="important">@Target</span>
+        必须覆盖被重复注解的
+        <span class="important">@Target</span>
+        ，否则编译报错。</li>
+    <li>容器的
+        <span class="important">@Retention</span>
+        不能比被重复注解的短，否则同样编译失败。</li>
+    <li>容器必须有且只有一个名为 <span class="important">value</span>
+        的元素，类型是被重复注解的数组。</li>
+</ul>
+<p>
+    实践里重复注解用得不多，典型场景是「同一个方法要挂多条同类规则」：多条权限、多组参数校验、多个数据源标记。这类需求如果只有一个值，不如让元素的类型直接是数组。
+</p>

@@ -1,0 +1,220 @@
+<header>
+    Deployment 与工作负载
+</header>
+<p>
+    Deployment 是最常用的工作负载控制器。它负责维持一组 Pod 副本的运行，并提供
+    <span class="important">滚动更新</span>
+    、
+    <span class="important">回滚</span>
+    和
+    <span class="important">副本扩缩</span>
+    能力。
+</p>
+<h2>
+    快速创建一个 Deployment
+</h2>
+<p>
+    用命令快速创建一个 Deployment：
+</p>
+<pre tag="bash">
+kubectl create deployment hello --image=nginx:alpine
+
+# 查看创建结果
+kubectl get deployments
+kubectl get pods
+</pre>
+<p>
+    更推荐的方式是写一份 YAML，用
+    <span class="special">apply</span>
+    声明期望状态。新建
+    <span class="special">deploy.yaml</span>
+    ：
+</p>
+<pre tag="yaml">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  labels:
+    app: hello
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+        - name: hello
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+</pre>
+<p>
+    应用它：
+</p>
+<pre tag="bash">
+kubectl apply -f deploy.yaml
+kubectl get pods -l app=hello
+</pre>
+<h2>
+    YAML 里最关键的四个字段
+</h2>
+<ul>
+    <li>
+        <span class="important">metadata.name</span>：对象名称，同一命名空间内唯一。
+    </li>
+    <li>
+        <span class="important">spec.selector</span>：选择器，Deployment 用它来识别「哪些 Pod 属于我」。
+    </li>
+    <li>
+        <span class="important">spec.template.metadata.labels</span>：Pod 模板上的标签，必须
+        <span class="special">与 selector 匹配</span>，否则 apply 会直接报错。
+    </li>
+    <li>
+        <span class="important">spec.replicas</span>：期望运行的副本数量。
+    </li>
+</ul>
+<div class="warn">
+    selector 一旦创建就不要再修改。改标签时，Deployment 不会自动接管新标签的 Pod，老 Pod 会变成「孤儿」。如果确实要改，需要先删掉 Deployment 再用新 selector 重建。
+</div>
+<h2>
+    滚动更新与回滚
+</h2>
+<p>
+    修改镜像版本并重新应用，就会触发一次滚动更新：
+</p>
+<pre tag="bash">
+kubectl set image deployment/hello hello=nginx:1.27
+
+# 观察更新过程
+kubectl rollout status deployment/hello
+
+# 查看更新历史
+kubectl rollout history deployment/hello
+</pre>
+<p>
+    滚动更新的默认策略是
+    <span class="special">maxSurge: 25%</span>
+    、
+    <span class="special">maxUnavailable: 25%</span>
+    ：先启动新 Pod，再逐步下线旧 Pod，因此发布过程中服务不中断。
+</p>
+<p>
+    如果新版本有问题，可以回滚：
+</p>
+<pre tag="bash">
+# 回滚到上一个版本
+kubectl rollout undo deployment/hello
+
+# 回滚到指定版本
+kubectl rollout undo deployment/hello --to-revision=2
+</pre>
+<h2>
+    扩缩容
+</h2>
+<pre tag="bash">
+# 手动扩容到 5 个副本
+kubectl scale deployment/hello --replicas=5
+
+# 查看副本变化
+kubectl get pods -l app=hello
+</pre>
+<p>
+    注意
+    <span class="important">kubectl scale 改的是副本数，不会修改 YAML 文件</span>
+    。如果这份 YAML 存在 Git 仓库里，下次别人
+    <span class="special">apply</span>
+    就会把副本数改回去。需要长期保留的副本数，应该写进 YAML 一起管理。
+</p>
+<h2>
+    Job 与 CronJob
+</h2>
+<p>
+    有些任务只需要执行一次（比如数据迁移），用
+    <span class="special">Job</span>
+    更合适：
+</p>
+<pre tag="yaml">
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: hello
+          image: busybox
+          command: ["echo", "job 完成"]
+</pre>
+<p>
+    需要定时执行则用
+    <span class="special">CronJob</span>
+    ，通过
+    <span class="special">schedule</span>
+    字段声明触发时间（标准 Cron 表达式，5 个字段）：
+</p>
+<pre tag="yaml">
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello-cronjob
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: hello
+              image: busybox
+              command: ["echo", "每天凌晨 3 点执行"]
+</pre>
+<div class="tips">
+    CronJob 默认要求一个 Job 成功完成后才会触发下一次，且默认只保留 3 个历史记录、并发数为 1。需要堆积任务或保留更多历史时，修改
+    <span class="special">concurrencyPolicy</span>
+    和
+    <span class="special">successfulJobsHistoryLimit</span>
+    即可。
+</div>
+<h2>
+    StatefulSet 与 DaemonSet
+</h2>
+<ul>
+    <li>
+        <span class="special">StatefulSet</span>：用于有状态服务（数据库、消息队列等）。每个 Pod 有固定的序号和独立存储，Pod 名称是稳定的（如
+        <span class="special">mysql-0</span>
+        、
+        <span class="special">mysql-1</span>
+        ），可以按顺序启动和就绪。
+    </li>
+    <li>
+        <span class="special">DaemonSet</span>：每个节点都运行一个副本，适合日志收集、监控代理这类「必须覆盖所有节点」的场景。
+    </li>
+</ul>
+<pre tag="bash">
+# 查看 StatefulSet 的 Pod
+kubectl get pods -l app=mysql -o wide
+</pre>
+<h2>
+    删除资源
+</h2>
+<pre tag="bash">
+# 删除 Deployment（级联删除它管理的 Pod）
+kubectl delete deployment hello
+
+# 删除 YAML 中定义的所有资源
+kubectl delete -f deploy.yaml
+
+# 先看会删什么再删
+kubectl delete -f deploy.yaml --dry-run=client
+</pre>
+<div class="warn">
+    kubectl delete deployment 会连带删除它创建的 Pod，但不会删除 PVC 和 PV，存储数据仍然保留。
+</div>

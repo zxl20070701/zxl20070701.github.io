@@ -1,7 +1,734 @@
 <header>
-    什么是ReAct模式？
+    ReAct 模式：让大模型边推理边行动
 </header>
+
 <p>
-    ReAct（Reason + Act）是最常见的 Agent 模式：LLM 思考 -> 选择工具 -> 执行工具 -> 观察结果 -> 继续思考。
+    ReAct（<span class="warn">Re</span>easoning + <span class="warn">Act</span>ing）是 2022 年由普林斯顿与 Google Brain 团队提出的 Agent 范式。它的核心想法特别朴素：<span class="important">别让模型在脑子里空想</span>，让它一边写推理过程，一边调用工具获取真实信息，再基于新信息继续推理。
 </p>
-<img src="./images/ReAct.svg">
+
+<p>
+    今天几乎所有主流 Agent 框架（LangChain、LangGraph、OpenAI Agents、Cline、Cursor 等）底层的循环思想，都能追溯到这篇论文。
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>项目</th>
+            <th>信息</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>论文标题</td>
+            <td>ReAct: Synergizing Reasoning and Acting in Language Models</td>
+        </tr>
+        <tr>
+            <td>作者</td>
+            <td>Shunyu Yao、Jeffrey Zhao、Dian Yu、Nan Du、Izhak Shafran、Karthik Narasimhan、Yuan Cao</td>
+        </tr>
+        <tr>
+            <td>发表</td>
+            <td>ICLR 2023（arXiv 首次发布于 2022 年 10 月）</td>
+        </tr>
+        <tr>
+            <td>论文地址</td>
+            <td><a href="https://arxiv.org/abs/2210.03629" target="_blank">https://arxiv.org/abs/2210.03629</a></td>
+        </tr>
+        <tr>
+            <td>项目主页</td>
+            <td><a href="https://react-lm.github.io/" target="_blank">https://react-lm.github.io/</a></td>
+        </tr>
+        <tr>
+            <td>实验模型</td>
+            <td>PaLM-540B（附录中补充了 GPT-3 的实验）</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    一句话理解
+</h2>
+
+<pre>
+思考（Thought） → 行动（Action） → 观察（Observation） → 思考 → 行动 → 观察 → ... → 最终答案
+</pre>
+
+<p>
+    <span class="warn">思考</span>是把推理过程写出来，<span class="warn">行动</span>是调用外部工具，<span class="warn">观察</span>是工具返回的真实结果。三者交替出现，直到模型给出最终答案。
+</p>
+
+<img src="./images/ReAct.svg" width="100%">
+
+<h2>
+    为什么需要 ReAct？
+</h2>
+
+<p>
+    论文发表之前，「让模型推理」和「让模型行动」是两个被分开研究的方向，而它们各有致命短板。
+</p>
+
+<h3>
+    只推理（CoT）的困境
+</h3>
+
+<p>
+    Chain-of-Thought 通过让模型"一步步想"显著提升了推理能力，但整个过程是一个<span class="important">静态黑盒</span>：模型完全依赖参数里的内部知识，一旦某个事实记错了，后续每一步都会在错误的基础上继续推理，最终变成彻底跑偏。
+</p>
+
+<p>
+    论文把它称为<span class="warn">幻觉（hallucination）</span>与<span class="warn">错误传播（error propagation）</span>。想象让模型凭记忆回答"某杂志创刊于哪一年"，它可能编出一个看起来非常合理的年份，而且越往后推理越自信。
+</p>
+
+<h3>
+    只行动（Act）的困境
+</h3>
+
+<p>
+    反过来，如果只让模型输出动作（类似 WebGPT 的做法），模型虽然能联网，但不会规划。论文里 Act-only 的 Agent 会一边翻页一边重复同样的话，最后根本走不到"给出答案"那一步，因为它缺少把长链条串起来的推理能力。
+</p>
+
+<h3>
+    ReAct 的解法
+</h3>
+
+<p>
+    ReAct 把两者缝在一起，形成一个闭环：<span class="warn">reason to act</span>（用推理指导该做什么）和 <span class="warn">act to reason</span>（用行动获取的信息支撑推理）。
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>维度</th>
+            <th>CoT（只推理）</th>
+            <th>Act（只行动）</th>
+            <th>ReAct（推理 + 行动）</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>信息来源</td>
+            <td>模型内部知识</td>
+            <td>外部环境</td>
+            <td>内部知识 + 外部环境</td>
+        </tr>
+        <tr>
+            <td>能否纠正自己</td>
+            <td>不能</td>
+            <td>部分能</td>
+            <td>能</td>
+        </tr>
+        <tr>
+            <td>主要失败模式</td>
+            <td>幻觉事实、错误传播</td>
+            <td>目标分解失败、丢失状态</td>
+            <td>检索不到信息、陷入重复循环</td>
+        </tr>
+        <tr>
+            <td>可解释性</td>
+            <td>有推理链，但无法溯源</td>
+            <td>只有动作序列</td>
+            <td>可区分"内部知识"与"外部事实"</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>
+    核心机制：扩展动作空间
+</h2>
+
+<p>
+    从形式化角度看，论文把 Agent 的动作空间从 <span class="warn">A</span> 扩展为 <span class="warn">A ∪ L</span>，其中 <span class="warn">L</span> 是自然语言空间。
+</p>
+
+<ul>
+    <li>普通动作 <span class="warn">a ∈ A</span>：会真正影响外部环境，比如搜索、点击、运行代码，因此会返回观察结果。</li>
+    <li>语言动作 <span class="warn">â ∈ L</span>：也就是"思考"，不影响外部环境、没有观察反馈，但会更新上下文 <span class="warn">c(t+1) = (c(t), â)</span>，为后续推理和行动提供素材。</li>
+</ul>
+
+<p>
+    一句话：<span class="important">思考是"写给自己的备注"，行动是"和世界的对话"</span>。两者都进入同一条上下文流，交替推进。
+</p>
+
+<h2>
+    轨迹格式
+</h2>
+
+<p>
+    论文用统一的三段式描述完整轨迹。以多跳问答为例（原文示例，已翻译）：
+</p>
+
+<pre>
+问题：科罗拉多造山带东翼延伸区域的海拔范围是多少？
+
+思考 1：我需要搜索科罗拉多造山带，找到东翼延伸到的区域，然后查该区域的海拔范围。
+行动 1：Search[Colorado orogeny]
+观察 1：科罗拉多造山带是科罗拉多及周边地区的一次造山运动。
+
+思考 2：文中没有提到东翼，所以我需要查找"东翼"。
+行动 2：Lookup[eastern sector]
+观察 2：（第 1 条 / 共 1 条）东翼延伸至高平原，被称为中央平原造山带。
+
+思考 3：东翼延伸至高平原，所以我需要搜索高平原并查找其海拔范围。
+行动 3：Search[High Plains]
+观察 3：高平原指两个不同的陆地区域之一。
+
+思考 4：我应该改搜 High Plains (United States)。
+行动 4：Search[High Plains (United States)]
+观察 4：高平原是大平原的次区域。从东到西，高平原海拔从约 1,800 英尺上升到 7,000 英尺。
+
+思考 5：高平原海拔从约 1,800 到 7,000 英尺，所以答案是 1,800 到 7,000 英尺。
+行动 5：Finish[1,800 to 7,000 ft]
+</pre>
+
+<div class="tips">
+    注意观察到的细节：<span class="warn">思考 3</span> 之后模型得到的只是模糊条目，于是它主动改写了检索词；<span class="warn">思考 2</span> 则体现了"这段没说要什么"的自我察觉。这些都是纯 CoT 模式里不会出现的动作。
+</div>
+
+<h2>
+    两种思考节奏
+</h2>
+
+<p>
+    论文强调：思考出现的密度应该由任务性质决定，而不是一刀切。
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>任务类型</th>
+            <th>思考节奏</th>
+            <th>原因</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>知识密集型推理（问答、事实核查）</td>
+            <td>密集思考（dense）</td>
+            <td>步骤少但每一步都依赖上一步的信息，需要细粒度拆解与校验</td>
+        </tr>
+        <tr>
+            <td>交互式决策（游戏、网页操作）</td>
+            <td>稀疏思考（sparse）</td>
+            <td>动作可能高达几十上百步，每步都思考既昂贵又啰嗦，只在关键节点思考即可</td>
+        </tr>
+    </thead>
+</table>
+
+<p>
+    稀疏思考场景下，模型自己决定"此刻要不要说一句"，思考与行动变成<span class="warn">异步交错</span>。论文给出的 ALFWorld 提示词就是这样设计的。
+</p>
+
+<pre>
+你是站在房间中央。环顾四周，你看到柜子
+1-6、咖啡机 1、台面 1-3、抽屉 1-3、冰箱 1、垃圾桶 1、微波炉 1、
+置物架 1-3、水槽 1、炉灶 1-4、烤面包机 1。
+你的任务是：把一把干净的刀放到台面上。
+
+&gt; 思考：为了完成任务，我需要先找到并拿起一把刀，然后用水槽清洗，最后放到台面上。
+OK.
+&gt; 思考：我需要先找一把刀。刀更可能出现在柜子（1-6）、抽屉（1-3）、台面（1-3）里，我可以逐个查找，先从柜子 1 开始。
+OK.
+&gt; go to cabinet 1
+你看到柜子 1 上有一个碗 1。
+...
+</pre>
+
+<div class="tips">
+    这里用 <span class="warn">think:</span> 开头表示"思考"，其余行是真正的环境动作。环境中无意义的位置（没有刀的台面）会被跳过，模型会结合常识"台灯一般在桌子、置物架或衣柜上"来缩小搜索范围——这正是稀疏思考里最有价值的部分。
+</div>
+
+<h2>
+    论文的四大优点
+</h2>
+
+<ol>
+    <li><span class="warn">直观易设计</span>：提示词就是人类在动作上"把自己的想法写出来"，不需要复杂的格式设计、思维链模板或示例挑选技巧。</li>
+    <li><span class="warn">通用灵活</span>：思考空间自由、动作格式可定制，同一套范式能套到问答、事实核查、文本游戏、网页导航等不同动作空间的任务上。</li>
+    <li><span class="warn">性能强健</span>：只用 1~6 个上下文示例就能泛化到新任务实例，稳定优于"只推理"或"只行动"的基线；论文还验证了微调后的进一步提升。</li>
+    <li><span class="warn">人类对齐可控</span>：推理轨迹可读可查，人类可以中途编辑模型的想法来纠正行为（详见后文"人在环路"）。</li>
+</ol>
+
+<h2>
+    实验一：知识密集型推理
+</h2>
+
+<h3>
+    任务与动作空间
+</h3>
+
+<p>
+    论文在两个数据集上验证：<span class="warn">HotpotQA</span>（需要跨多篇文档推理的多跳问答）和 <span class="warn">FEVER</span>（事实核查，标注为 SUPPORTS / REFUTES / NOT ENOUGH INFO）。两者都采用<span class="important">只给问题、不给背景资料</span>的设置，模型必须自己决定去检索什么。
+</p>
+
+<p>
+    为了模拟人类操作维基百科，作者设计了一个极简的 API，只有三个动作：
+</p>
+
+<ul>
+    <li><span class="warn">search[实体]</span>：返回该实体 wiki 页的前 5 句；若不存在则给出最相似的 5 个候选实体。</li>
+    <li><span class="warn">lookup[字符串]</span>：返回当前页面中包含该字符串的下一句，相当于浏览器的 Ctrl+F。</li>
+    <li><span class="warn">finish[答案]</span>：结束任务并给出答案。</li>
+</ul>
+
+<p>
+    这个动作空间比真正的检索器弱得多（只能靠精确名称取到片段），目的正是<span class="warn">逼模型靠显式推理来驱动检索</span>。
+</p>
+
+<h3>
+    四种提示方法
+</h3>
+
+<p>
+    论文通过"消融"同一批 ReAct 轨迹来构造基线，这组对比是全文最有说服力的部分：
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>方法</th>
+            <th>保留了什么</th>
+            <th>代表的能力</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Standard</td>
+            <td>只留问题和答案</td>
+            <td>纯参数化知识</td>
+        </tr>
+        <tr>
+            <td>CoT</td>
+            <td>保留思考，去掉动作与观察</td>
+            <td>只推理</td>
+        </tr>
+        <tr>
+            <td>CoT-SC</td>
+            <td>CoT + 采样 21 条轨迹取多数答案</td>
+            <td>只推理 + 自洽性投票</td>
+        </tr>
+        <tr>
+            <td>Act</td>
+            <td>保留动作与观察，去掉思考</td>
+            <td>只行动</td>
+        </tr>
+        <tr>
+            <td>ReAct</td>
+            <td>思考 + 动作 + 观察</td>
+            <td>推理与行动协同</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>
+    结果
+</h3>
+
+<p>
+    基于 PaLM-540B 的提示词实验结果：
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>提示方法</th>
+            <th>HotpotQA（EM）</th>
+            <th>FEVER（Acc）</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Standard</td>
+            <td>28.7</td>
+            <td>57.1</td>
+        </tr>
+        <tr>
+            <td>CoT</td>
+            <td>29.4</td>
+            <td>56.3</td>
+        </tr>
+        <tr>
+            <td>CoT-SC</td>
+            <td>33.4</td>
+            <td>60.4</td>
+        </tr>
+        <tr>
+            <td>Act</td>
+            <td>25.7</td>
+            <td>58.9</td>
+        </tr>
+        <tr>
+            <td>ReAct</td>
+            <td>27.4</td>
+            <td>60.9</td>
+        </tr>
+        <tr>
+            <td>CoT-SC → ReAct</td>
+            <td>34.2</td>
+            <td>64.6</td>
+        </tr>
+        <tr>
+            <td>ReAct → CoT-SC</td>
+            <td>35.1</td>
+            <td>62.0</td>
+        </tr>
+        <tr>
+            <td>监督学习 SoTA</td>
+            <td>67.5</td>
+            <td>89.5</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    可以读出三条结论：
+</p>
+
+<ul>
+    <li><span class="warn">ReAct 稳定优于 Act</span>：说明"用推理指导行动"确实有价值，尤其是在综合最终答案时。</li>
+    <li><span class="warn">ReAct 与 CoT 互有胜负</span>：HotpotQA 上 ReAct 略低于 CoT（27.4 vs 29.4），但 FEVER 上明显更高（60.9 vs 56.3）。原因是事实核查的 SUPPORTS/REFUTES 往往只差几个字，必须查到准确且最新的信息才行。</li>
+    <li><span class="warn">混合策略最好</span>：CoT-SC → ReAct 在 FEVER 上达到 64.6，ReAct → CoT-SC 在 HotpotQA 上达到 35.1；两者都稳定超过单独使用 CoT-SC，且用 3~5 个采样就达到了 CoT-SC 采样 21 次的效果。</li>
+</ul>
+
+<h2>
+    实验二：交互式决策
+</h2>
+
+<p>
+    论文还在两个需要长程交互、奖励稀疏的环境上测试：<span class="warn">ALFWorld</span>（文本版家居模拟，一个任务可能涉及 50+ 个位置、专家也要 50+ 步）和 <span class="warn">WebShop</span>（118 万真实商品的购物网站环境）。
+</p>
+
+<h3>
+    ALFWorld 任务成功率（%）
+</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>方法</th>
+            <th>Pick</th>
+            <th>Clean</th>
+            <th>Heat</th>
+            <th>Cool</th>
+            <th>Look</th>
+            <th>Pick 2</th>
+            <th>All</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Act（6 次最佳）</td>
+            <td>88</td>
+            <td>42</td>
+            <td>74</td>
+            <td>67</td>
+            <td>72</td>
+            <td>41</td>
+            <td>45</td>
+        </tr>
+        <tr>
+            <td>ReAct（平均）</td>
+            <td>65</td>
+            <td>39</td>
+            <td>83</td>
+            <td>76</td>
+            <td>55</td>
+            <td>24</td>
+            <td>57</td>
+        </tr>
+        <tr>
+            <td>ReAct（6 次最佳）</td>
+            <td>92</td>
+            <td>58</td>
+            <td>96</td>
+            <td>86</td>
+            <td>78</td>
+            <td>41</td>
+            <td>71</td>
+        </tr>
+        <tr>
+            <td>ReAct-IM（6 次最佳）</td>
+            <td>62</td>
+            <td>68</td>
+            <td>87</td>
+            <td>57</td>
+            <td>39</td>
+            <td>33</td>
+            <td>53</td>
+        </tr>
+        <tr>
+            <td>BUTLER（模仿学习）</td>
+            <td>46</td>
+            <td>39</td>
+            <td>74</td>
+            <td>100</td>
+            <td>22</td>
+            <td>24</td>
+            <td>37</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    两个关键点：<span class="warn">最差的一次 ReAct（48%）仍然打败了 Act 的最好一次（45%）和 BUTLER 的最好一次（37%）</span>；而在 6 组受控对比中，ReAct 相对 Act 的相对提升在 33%~90% 之间，平均 62%。
+</p>
+
+<h3>
+    WebShop 结果
+</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>方法</th>
+            <th>Score</th>
+            <th>成功率 SR</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Act（1-shot 提示）</td>
+            <td>62.3</td>
+            <td>30.1</td>
+        </tr>
+        <tr>
+            <td>ReAct（1-shot 提示）</td>
+            <td>66.6</td>
+            <td>40.0</td>
+        </tr>
+        <tr>
+            <td>IL（模仿学习）</td>
+            <td>59.9</td>
+            <td>29.1</td>
+        </tr>
+        <tr>
+            <td>IL + RL</td>
+            <td>62.4</td>
+            <td>28.7</td>
+        </tr>
+        <tr>
+            <td>人类专家</td>
+            <td>82.1</td>
+            <td>59.6</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    也就是说，<span class="warn">只用 1~2 个示例的提示词，就超过了用上千条人工轨迹训练的模仿学习和强化学习方法</span>，成功率绝对提升 10%。
+</p>
+
+<h2>
+    失败模式分析
+</h2>
+
+<p>
+    论文随机抽取了 200 条轨迹（ReAct 和 CoT 各 50 条正确 + 50 条错误）做人工标注，结论非常有指导意义：
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>定义</th>
+            <th>ReAct</th>
+            <th>CoT</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>成功 · 真阳性</td>
+            <td>推理链与事实都正确</td>
+            <td>94%</td>
+            <td>86%</td>
+        </tr>
+        <tr>
+            <td>成功 · 假阳性</td>
+            <td>推理链或事实存在幻觉</td>
+            <td>6%</td>
+            <td>14%</td>
+        </tr>
+        <tr>
+            <td>失败 · 推理错误</td>
+            <td>推理链错误（含陷入重复循环）</td>
+            <td>47%</td>
+            <td>16%</td>
+        </tr>
+        <tr>
+            <td>失败 · 检索错误</td>
+            <td>搜索返回空或无用信息</td>
+            <td>23%</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>失败 · 幻觉</td>
+            <td>推理链或事实被凭空编造</td>
+            <td>0%</td>
+            <td>56%</td>
+        </tr>
+        <tr>
+            <td>失败 · 标注歧义</td>
+            <td>预测正确但未精确匹配标注</td>
+            <td>29%</td>
+            <td>28%</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    三个洞察：
+</p>
+
+<ul>
+    <li><span class="warn">CoT 的头号杀手是幻觉</span>，占其失败案例的 56%；ReAct 因为有外部知识兜底，幻觉占比直接为 0%——这正是"让模型接触真实世界"的价值。</li>
+    <li><span class="warn">ReAct 的代价是推理灵活性下降</span>。因为每一步都被"思考 → 动作 → 观察"的结构约束住了，模型有时会机械地重复上一步的思考和动作，掉进循环里出不来。</li>
+    <li><span class="warn">检索质量直接决定成败</span>。23% 的失败是搜了个寂寞，模型拿到无用信息后很难自我修复和重新组织检索词。</li>
+</ul>
+
+<div class="tips">
+    换成现代 Agent 的语言：<span class="warn">工具返回的信息质量</span>，和 <span class="warn">是否会陷入重复调用</span>，是评估 ReAct 类系统最值得盯的两个指标。
+</div>
+
+<h2>
+    进阶玩法
+</h2>
+
+<h3>
+    混合 ReAct 与 CoT-SC
+</h3>
+
+<p>
+    既然"外部检索更可靠"和"内部推理更结构化"各有优势，论文让模型自己决定何时切换：
+</p>
+
+<ul>
+    <li><span class="warn">ReAct → CoT-SC</span>：ReAct 在限定步数内没能给出答案时，退回 CoT-SC。HotpotQA 限 7 步、FEVER 限 5 步（因为更长的轨迹几乎不再提升正确率）。</li>
+    <li><span class="warn">CoT-SC → ReAct</span>：当 21 条 CoT 采样中多数答案的出现次数不足一半时，说明模型内部知识对这个任务并不自信，转而使用 ReAct 去查证。</li>
+</ul>
+
+<h3>
+    自举式微调
+</h3>
+
+<p>
+    人工标注推理轨迹太贵，论文借鉴 STaR 的思路：先用 ReAct 生成 3000 条答案正确的轨迹，再用这些轨迹微调更小的模型（PaLM-8B / 62B）去解码完整的"思考 + 动作 + 观察"序列。
+</p>
+
+<p>
+    结果很有意思：<span class="warn">用提示词时，小模型跑 ReAct 表现最差</span>（因为它很难仅从几个示例里同时学会推理和行动），但<span class="warn">微调之后 ReAct 反而成为四者中最强的方法</span>——微调后的 PaLM-8B 超过了所有 PaLM-62B 的提示词结果。
+</p>
+
+<p>
+    作者的解释很到位：微调 Standard 或 CoT 本质上是在教模型<span class="warn">背诵知识</span>（还可能背进幻觉），而微调 ReAct 或 Act 教的是<span class="warn">"如何去获取信息"这种可迁移的技能</span>。
+</p>
+
+<h3>
+    人在环路：编辑模型的想法
+</h2>
+
+<p>
+    论文附录里做了一个很吸引人的实验：在 ALFWorld 中，ReAct 因为一句幻觉的想法而失败；人类只是<span class="warn">删掉第 17 步的一句幻觉，并在第 23 步加了一句提示</span>，整条轨迹就转危为安、任务成功。
+</p>
+
+<p>
+    对人类来说，介入成本从"手打几十个动作"降到了"改两句话"。这种能力是 Act 或早期强化学习方法给不了的——你没法通过改几个动作去改变模型的参数，也没法让模型自己长出新习惯。
+</p>
+
+<h3>
+    ReAct 与 Inner Monologue 的区别
+</h3>
+
+<p>
+    论文认为 ReAct 是第一个在交互式环境中用 LLM 实现"推理 + 行动"闭环的工作，而 Inner Monologue（IM）的"内心独白"只是<span class="warn">环境反馈的复述</span>，仅限于"当前看到了什么、目标还差什么"，缺少目标分解、常识推理等高层思考。
+</p>
+
+<p>
+    消融实验支持了这个论断：ReAct 总体成功率 71%，而 IM 风格的 ReAct-IM 只有 53%。IM 常常搞不清子目标是否完成、下一个子目标该是什么，也缺少"台灯一般在哪"这类常识判断。
+</p>
+
+<h2>
+    局限性
+</h2>
+
+<ul>
+    <li><span class="warn">提示词范式有上限</span>：动作空间大、任务复杂时需要更多示例，容易超出上下文长度限制。</li>
+    <li><span class="warn">离领域 SOTA 仍有距离</span>：HotpotQA 上 35.1 对监督学习的 67.5，差距明显，作者认为需要更多人工标注数据。</li>
+    <li><span class="warn">成本与延迟</span>：每一步思考都会多消耗一次模型调用，长任务里 token 消耗会迅速膨胀。</li>
+    <li><span class="warn">循环与假死</span>：贪心解码下容易重复上一步动作，作者猜测用 beam search 之类的更好解码策略会有帮助。</li>
+    <li><span class="warn">安全风险</span>：论文专门强调，把 LLM 接到真实环境（网页、文件系统、支付）上有危险，实验中被限制在 Wikipedia 和 WebShop 这类无副作用的环境里。</li>
+</ul>
+
+<h2>
+    今天如何落地 ReAct
+</h2>
+
+<p>
+    论文写于 2022 年，但它的思想已经内化进现代 Agent 工程。做一个对照翻译：
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>论文概念</th>
+            <th>现代工程对应</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Thought</td>
+            <td>模型输出中的自然语言推理（也可用推理模型代替显式 CoT）</td>
+        </tr>
+        <tr>
+            <td>Action</td>
+            <td>function calling / tool call</td>
+        </tr>
+        <tr>
+            <td>Observation</td>
+            <td>工具返回值（消息列表中 role 为 tool 的消息）</td>
+        </tr>
+        <tr>
+            <td>动作空间 A ∪ L</td>
+            <td>工具集 + 自由文本输出</td>
+        </tr>
+        <tr>
+            <td>finish[answer]</td>
+            <td>结构化最终答案，或专门的终止工具</td>
+        </tr>
+        <tr>
+            <td>密集 / 稀疏思考</td>
+            <td>每次工具调用前都推理，或只在关键节点推理</td>
+        </tr>
+        <tr>
+            <td>人类编辑思考</td>
+            <td>中断任务、修正历史消息后继续执行</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    一个最朴素的 ReAct 循环，大概就是这样：
+</p>
+
+<pre tag="python">
+messages = [{"role": "user", "content": question}]
+
+for _ in range(MAX_STEPS):
+    # 1) 思考 + 行动：模型自己决定这一步说什么、调用什么工具
+    response = llm.invoke(messages, tools=tool_schemas)
+
+    # 2) 没有工具调用，说明模型认为已经想清楚了
+    if not response.tool_calls:
+        return response.content
+
+    messages.append(response)
+
+    # 3) 行动 → 观察：执行工具，把真实结果写回上下文
+    for call in response.tool_calls:
+        result = run_tool(call.name, call.args)
+        messages.append({
+            "role": "tool",
+            "tool_call_id": call.id,
+            "content": str(result),
+        })
+
+raise RuntimeError("超过最大步数仍未得到答案")
+</pre>

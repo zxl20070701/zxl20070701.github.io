@@ -1,0 +1,43 @@
+<header>
+    镜像的下载与管理
+</header>
+<p>
+    镜像包含应用运行所需的文件和默认配置。镜像名称通常由仓库名和标签组成，例如 nginx:alpine；标签用于区分版本或变体。
+</p>
+<h2>
+    下载并查看镜像
+</h2>
+<pre tag="shell">
+docker pull nginx:alpine
+docker image ls
+</pre>
+<p>
+    docker pull 下载指定镜像，docker image ls 列出本地镜像。运行 docker run 时如果镜像尚未下载，Docker 通常也会自动拉取。
+</p>
+<h2>
+    查看镜像详情
+</h2>
+<pre tag="shell">
+docker image inspect nginx:alpine
+</pre>
+<p>
+    详情包含镜像的配置、平台和层等信息。查看完后，可以用镜像创建容器：
+</p>
+<pre tag="shell">
+docker run --name image-demo -d nginx:alpine
+docker ps
+</pre>
+<h2>
+    删除不再需要的镜像
+</h2>
+<pre tag="shell">
+docker stop image-demo
+docker rm image-demo
+docker image rm nginx:alpine
+</pre>
+<p class="warn">
+    先停止并删除本篇创建的示例容器，镜像才能删除。如果其他容器仍依赖此镜像，Docker 会拒绝删除；请先确认不再需要相关容器，不要为了清理而删除正在使用的数据或镜像。
+</p>
+<p>
+    除了下载现成镜像，也可以通过 Dockerfile 构建自己的镜像。
+</p>

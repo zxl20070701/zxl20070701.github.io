@@ -1,0 +1,81 @@
+<header>
+    运行时读取
+</header>
+<h2>
+    反射 API
+</h2>
+<p>
+    RUNTIME 级别的注解，在运行时通过
+    <span class="important">Class</span>
+    、
+    <span class="important">Method</span>
+    、
+    <span class="important">Field</span>
+    、
+    <span class="important">Constructor</span>
+    的一组同名方法读取：
+</p>
+<pre tag="javascript">
+Method method = OrderService.class.getMethod("create");
+
+method.getAnnotation(Audit.class);            // 取单个，没有则返回 null
+method.getAnnotations();                      // 取全部，含 @Inherited 从父类继承来的
+method.getDeclaredAnnotations();              // 只取自身声明的
+method.getParameterAnnotations();             // 参数上的注解，返回二维数组
+method.getAnnotationsByType(Tag.class);       // 重复注解，自动拆开容器
+</pre>
+<p>
+    两个容易记错的细节：反射返回的注解对象是 JVM 生成的代理实例，适合读值，不适合当 Map 的键；判断两个注解是否等价要用
+    <span class="important">equals</span>
+    ，它按元素值逐项比较，用
+    <span class="important">==</span>
+    比较不可靠。
+</p>
+<h2>
+    一个完整的例子
+</h2>
+<pre tag="javascript">
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@interface Log {
+    String value() default "";
+}
+
+class OrderService {
+
+    @Log("下单")
+    public void create() { /* ... */ }
+
+    public void query() { /* ... */ }
+}
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        OrderService service = new OrderService();
+
+        for (Method method : OrderService.class.getDeclaredMethods()) {
+            Log log = method.getAnnotation(Log.class);
+            if (log == null) {
+                continue;
+            }
+            long start = System.nanoTime();
+            method.invoke(service);
+            System.out.println(log.value() + " 耗时 " + (System.nanoTime() - start) / 1000 + " us");
+        }
+    }
+}
+</pre>
+<p>
+    这段代码把分工说得很清楚：注解只提供
+    <span class="important">value</span>
+    ，反射负责发现，循环里的几行负责执行。框架做的事，无非是把这段循环写得更通用——启动时扫一批类，把命中注解的方法包成代理或拦截器，运行时统一处理。
+</p>
+<h2>
+    读取的时机
+</h2>
+<p>
+    反射读注解本身不贵，贵的是「遍历」：每次调用都扫一遍所有方法、所有类，累积起来才是开销。因此框架几乎都在启动时扫一次并缓存结果（Spring 就有专门的注解工具类做缓存），运行期只查表。自己写的小工具也建议遵循这个模式，不要在热点路径里反复
+    <span class="important">getAnnotations()</span>
+    。
+</p>

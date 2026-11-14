@@ -1,0 +1,179 @@
+<header>
+    文生视频入门
+</header>
+<p>
+    这一篇只讲一件事：给 ComfyUI 一个模型、一段文字，让它直接产出一小段视频。环境安装见「环境搭建」那一篇，这里默认 ComfyUI 已经能正常启动。
+</p>
+<p>
+    先说清楚它能给你什么：480×832 竖屏、1.4 秒、24 fps、无声、无字幕的 mp4。
+</p>
+<h2>
+    一、前置：四个文件到位
+</h2>
+<p>
+    文生视频不是 ComfyUI 自带的功能，默认装完只能出图。要跑起来需要三个模型文件加一个加载插件，缺一个都会在界面上报"模型缺失"。
+</p>
+<pre>
+models/diffusion_models/Wan2.2-TI2V-5B-Q5_K_M.gguf     主模型，约 3.5 GB
+models/text_encoders/umt5-xxl-encoder-Q5_K_M.gguf     文本编码器，约 3.86 GB
+models/vae/wan2.2_vae.safetensors                      VAE，约 1.41 GB
+custom_nodes/ComfyUI-GGUF                             加载上面两个 GGUF 的插件
+</pre>
+<p>
+    一条命令确认齐不齐：
+</p>
+<pre>
+ls -lh ~/Desktop/ComfyUI/models/diffusion_models/*.gguf \
+       ~/Desktop/ComfyUI/models/text_encoders/*.gguf \
+       ~/Desktop/ComfyUI/models/vae/*.safetensors \
+       -d ~/Desktop/ComfyUI/custom_nodes/ComfyUI-GGUF
+</pre>
+<p>
+    三行文件加一行目录都打出来，就说明齐了。缺文件时的下载地址和"为什么必须用 GGUF 而不是 fp16"在「环境搭建」篇的模型章节里，这里是结论：16 GB 内存只扛得住 Q5_K_M 这一档，fp16 版本会把内存撑爆。
+</p>
+<div class="warn">
+    VAE 只能用 <code>wan2.2_vae.safetensors</code>（1.41 GB）。同目录下的 <code>wan_2.1_vae.safetensors</code>（254 MB）是 14B 模型专用的，加载错了视频会变成一团噪点，这个坑很容易踩。
+</div>
+<h2>
+    二、从官方模板起步
+</h2>
+<p>
+    顶部菜单「Templates」→ 视频分类下选标题是 <b>「Wan 2.2 5B视频生成」</b> 的那个（搜 <code>wan</code> 就能定位）。它一共十二个节点，可以拿下面这张清单核对有没有选错：
+</p>
+<pre>
+UNET 加载器   wan2.2_ti2v_5B_fp16.safetensors     ← 要换
+CLIP 加载器   umt5_xxl_fp8_e4m3fn_scaled.safetensors，type=wan   ← 要换
+VAE 加载器    wan2.2_vae.safetensors              ← 保持不动
+Wan22ImageToVideoLatent   1280×704 / 121 帧 / batch 1   ← 要改
+ModelSamplingSD3  shift 8
+KSampler          20 步 / cfg 5 / uni_pc / simple   ← 步数要改
+VAE Decode → Create Video(24fps) → Save Video
+外加两个文本编码节点、一个 Load Image
+</pre>
+<p>
+    注意两点：这个模板默认开的是 <b>1280×704 横屏 121 帧</b>，竖屏短片要改；而且它本身就带着 <code>Load Image</code>，所以它其实是"图生视频"版，拿来当文生视频用时把那张图换成任意首帧，或者干脆断开 <code>start_image</code> 那条线。
+</p>
+<p>
+    最要紧的是模型：模板用的是 fp16 主模型（10 GB）加 fp8 编码器（6.74 GB），在 16 GB 内存的机器上会把内存直接撑爆，跑二十分钟也不出画面。所以第一步不是点运行，而是把两个加载节点换成 GGUF 版。
+</p>
+<div class="warn">
+    换节点不是改下拉值，GGUF 加载器是另外两种节点。做法：删掉原来的 <code>UNETLoader</code> 和 <code>CLIPLoader</code>，在空白处双击搜索 <code>Unet Loader (GGUF)</code>、<code>CLIP Loader (GGUF)</code> 各拖一个出来，再把线接回原来的接口——MODEL 接 <code>ModelSamplingSD3</code>，CLIP 接两个文本编码节点。接线时从输出端点拖到输入端点即可，位置和原来完全对应。
+</div>
+<h2>
+    三、三个加载节点认一下
+</h2>
+<p>
+    整个工作流只有三个开关值得注意，其余都是固定管线：
+</p>
+<pre>
+Unet Loader (GGUF)    unet_name = Wan2.2-TI2V-5B-Q5_K_M.gguf     主模型
+CLIP Loader (GGUF)    clip_name = umt5-xxl-encoder-Q5_K_M.gguf   编码器
+                      type      = wan                            ← 必须是 wan
+Load VAE              vae_name  = wan2.2_vae.safetensors
+</pre>
+<div class="tips">
+    三个下拉值的文件名必须和 <code>models/</code> 下实际文件一字不差。找不到某个选项通常有两种原因：文件放错目录（主模型在 diffusion_models、编码器在 text_encoders、VAE 在 vae），或者放进去之后没重启 ComfyUI。
+</div>
+<h2>
+    四、参数怎么设
+</h2>
+<p>
+    打开模板后，按这张表把参数改到位：
+</p>
+<pre>
+分辨率      480×832      竖屏 9:16；改成 720p 会慢三四倍
+length      33           帧数，必须是 4n+1，见下表
+steps       16           12 也能出片，降到 12 省三分之一时间
+cfg         5
+sampler     uni_pc
+scheduler   simple
+shift       8            ModelSamplingSD3 节点里
+fps         24           Create Video 节点里
+</pre>
+<p>
+    <code>length</code> 有个硬性规则：只能填 4n+1。填 30 会直接报错，合法值是 33、49、81、121。对应的时长：
+</p>
+<pre>
+33 帧  ≈ 1.4 秒
+49 帧  ≈ 2.0 秒
+81 帧  ≈ 3.4 秒
+121 帧 ≈ 5.0 秒（耗时约为 33 帧的四倍）
+</pre>
+<h2>
+    五、提示词怎么写
+</h2>
+<p>
+    这是文生视频最容易写错的地方。图像模型只需要写"画面里有什么"，视频模型还得多给两样东西：<b>镜头怎么动</b>、<b>光怎么变</b>。不写就会得到一段几乎静止的画面，或者画面元素乱飘。
+</p>
+<p>
+    下面这段可以直接拿去改：
+</p>
+<pre>
+Cinematic film still. A narrow old wooden staircase at night leading up to a
+half-open bookstore door, a single warm tungsten desk lamp glowing inside,
+aged wood and dust motes, a wet umbrella leaning by the door, low-key lighting,
+deep shadows, muted teal and amber palette, fine film grain, shallow depth of
+field, slow camera push in
+</pre>
+<p>
+    拆开看就是三段：<b>场景</b>（楼梯、门、台灯、伞）＋<b>影调</b>（low-key、deep shadows、teal and amber）＋<b>运镜</b>（slow camera push in）。三段缺哪段，出来的东西就缺哪一维。
+</p>
+<p>
+    负向提示词里除了常规质量词，建议固定带上 <code>static</code>、<code>fast motion</code>、<code>camera shake</code>，能压住画面不动和乱抖两种极端。
+</p>
+<h2>
+    六、运行与取片
+</h2>
+<p>
+    点右上角「运行」，等它跑完。不需要守着，进度在终端日志里能看到每秒多少。
+</p>
+<p>
+    产物路径由 <code>Save Video</code> 节点的 <code>filename_prefix</code> 决定。模板默认是 <code>video/ComfyUI</code>，所以第一段视频落在：
+</p>
+<pre>
+~/Desktop/ComfyUI/output/video/ComfyUI_00001_.mp4
+</pre>
+<p>
+    建议一开始就把这个前缀改成有意义的名字，比如 <code>wan_test/shot1</code>，这样多跑几个镜头后不会分不清哪个是哪个，序号由 ComfyUI 自动追加。
+</p>
+<p>
+    跑完也可以直接在页面上点播放预览，满意了再从 output 目录里把文件拖出来用。
+</p>
+<h2>
+    七、实测耗时
+</h2>
+<pre>
+480×832 / 33 帧 / 16 步
+  采样 12 分 17 秒，含 VAE 解码总耗时 14 分 43 秒
+  单步约 46 秒
+</pre>
+<p>
+    单步耗时由分辨率和帧数决定，跟步数几乎无关——16 步和 12 步的单步都是 46 秒左右。所以想快就降步数，别降分辨率。
+</p>
+<h2>
+    八、跑不起来的四种情况
+</h2>
+<p>
+    <b>报 <code>cannot reshape array of size ... into shape ...</code></b>：GGUF 文件被下断了。编码器正确大小是 4 145 878 880 字节，比这个小就是没下完，重新下载并核对字节数。
+</p>
+<p>
+    <b>节点下拉里找不到模型</b>：文件名放错目录，或者放进去之后没重启 ComfyUI。三个文件各有各的目录，别全堆进 diffusion_models。
+</p>
+<p>
+    <b>跑很久没动静、磁盘一直在响</b>：内存不够，正在换页。换 GGUF 版，或者把 length 降到 33、分辨率降到 480×832。
+</p>
+<p>
+    <b>端口被占用、重启后行为没变</b>：旧进程没死。要 <code>kill -9</code> 之后确认端口释放，否则你以为重启了其实还在跑旧实例。
+</p>
+<h2>
+    九、它的边界，以及什么时候该换另一篇
+</h2>
+<p>
+    文生视频最根本的问题是<b>每一次都重新构图</b>。同样一段文字跑两次，楼梯的样式、灯的位置都会变。做单镜头素材没问题，做多镜头叙事就会像好几部不同的片子拼在一起。
+</p>
+<p>
+    所以如果你的目标是做一条有分镜的短片（比如那批竖屏故事脚本），正确路径是先用图像模型把每一镜的画面定死，再让视频模型只负责"让它动起来"。这套流程写在「图生视频入门」那一篇里。
+</p>
+<div class="tips">
+    一句话记住两者的分工：文生视频负责<b>探索画面</b>，图生视频负责<b>保证连续</b>。前者便宜好用但不可控，后者可控但依赖首帧质量。
+</div>

@@ -1,0 +1,38 @@
+<header>
+    权限与安全
+</header>
+<p>
+    Tauri 使用 capability 和 permission 控制窗口及 WebView 可调用的系统 API。插件安装后不代表前端自动拥有全部能力；应只为需要的窗口授予必要权限。
+</p>
+<h2>
+    检查 capability
+</h2>
+<p>
+    Tauri 2 项目的权限配置通常位于 <span class="special">src-tauri/capabilities/</span>。脚手架会生成默认 capability；添加插件后，按插件文档选择需要的 permission，并检查其作用的窗口范围。
+</p>
+<pre tag="javascript">
+// capability 文件为 JSON 配置，以下仅展示结构示意
+{
+    "identifier": "main-window",
+    "description": "主窗口所需权限",
+    "windows": ["main"],
+    "permissions": [
+        "core:default"
+    ]
+}
+</pre>
+<p>
+    这里只为说明配置结构；不要将注释直接复制到 JSON 文件中。具体 permission 标识符以所安装插件的文档和项目生成的配置为准。
+</p>
+<h2>
+    前端安全边界
+</h2>
+<ul>
+    <li>不要给不可信页面开启不必要的系统 API 权限，也不要把文件系统、Shell 等高权限能力无条件暴露给所有窗口。</li>
+    <li>对插件权限使用最小授权原则，并按窗口分别配置；应用加入新插件后，重新检查 capability。</li>
+    <li>不要将密码、令牌等秘密写入前端资源或提交到版本库。前端代码和打包资源对用户可见。</li>
+    <li>生产环境应审查内容安全策略（CSP），避免允许不必要的远程脚本和不可信内容。</li>
+</ul>
+<p>
+    更多说明见 <a href="https://v2.tauri.app/security/" target="_blank">Tauri 安全指南</a> 和对应插件的权限文档。
+</p>

@@ -1,0 +1,67 @@
+<header>
+    异常处理
+</header>
+<h2>
+    异常类型
+</h2>
+<p>
+    Java 的异常都继承自
+    <span class="important">Throwable</span>。
+    <span class="important">Error</span>
+    通常表示应用不应尝试恢复的严重问题；
+    <span class="important">Exception</span>
+    表示程序可以处理的异常。检查型异常需要捕获或在方法签名中声明，运行时异常
+    <span class="important">RuntimeException</span>
+    不要求显式声明。
+</p>
+<h2>
+    捕获和声明异常
+</h2>
+<p>
+    使用
+    <span class="important">try</span>、
+    <span class="important">catch</span>
+    处理异常，使用
+    <span class="important">finally</span>
+    表达无论是否发生异常都应执行的收尾逻辑。按从具体到宽泛的顺序排列多个 catch 分支。
+</p>
+<pre tag="javascript">
+try {
+    String text = java.nio.file.Files.readString(
+        java.nio.file.Path.of("data.txt")
+    );
+    System.out.println(text);
+} catch (java.io.IOException exception) {
+    System.err.println("读取文件失败：" + exception.getMessage());
+}
+</pre>
+<p>
+    方法可用
+    <span class="important">throws</span>
+    声明可能抛出的检查型异常；用
+    <span class="important">throw</span>
+    主动抛出异常。不要捕获后静默忽略异常，也不要用宽泛的异常类型掩盖可恢复与不可恢复错误的区别。
+</p>
+<h2>
+    try-with-resources
+</h2>
+<p>
+    对实现
+    <span class="important">AutoCloseable</span>
+    的资源，优先使用 try-with-resources 自动关闭资源，包括异常发生时：
+</p>
+<pre tag="javascript">
+try (var reader = java.nio.file.Files.newBufferedReader(
+        java.nio.file.Path.of("data.txt"))) {
+    System.out.println(reader.readLine());
+}
+</pre>
+<p>
+    try-with-resources 自
+    <span class="important">Java 7</span>
+    起可用；示例中的
+    <span class="important">var</span>
+    局部变量推断则要求
+    <span class="important">Java 10</span>
+    或更高版本。
+</p>

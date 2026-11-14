@@ -1,0 +1,103 @@
+<header>
+    虚拟环境与依赖管理
+</header>
+<h2>
+    使用对应的 Python 安装包
+</h2>
+<p>
+    一台电脑上可能同时安装了多个 Python 解释器。使用
+    <span class="important">python -m pip</span>
+    可以让 pip 明确对应到当前的 Python；macOS 或 Linux 上也可以将命令中的
+    <span class="important">python</span>
+    换成
+    <span class="important">python3</span>。
+</p>
+<pre>
+    python3 --version
+    python3 -m pip --version
+    python3 -m pip install requests
+</pre>
+<h2>
+    为项目创建虚拟环境
+</h2>
+<p>
+    虚拟环境可以隔离不同项目的依赖。在项目根目录执行：
+</p>
+<pre>
+    python3 -m venv .venv
+</pre>
+<p>macOS 或 Linux 激活环境：</p>
+<pre>
+    source .venv/bin/activate
+</pre>
+<p>Windows PowerShell 激活环境：</p>
+<pre>
+    .venv\Scripts\Activate.ps1
+</pre>
+<p>
+    激活后，使用
+    <span class="important">python</span>
+    和
+    <span class="important">python -m pip</span>
+    就会操作该虚拟环境。完成工作后，可以运行
+    <span class="important">deactivate</span>
+    退出。也可以不激活环境，直接调用其中的解释器：
+</p>
+<pre>
+    .venv/bin/python -m pip install requests
+</pre>
+<p>
+    Windows 对应的解释器路径为
+    <span class="important">.venv\Scripts\python.exe</span>。
+    通常不应把
+    <span class="important">.venv</span>
+    目录提交到版本控制。
+</p>
+<h2>
+    记录与安装依赖
+</h2>
+<p>
+    项目可以使用
+    <span class="important">requirements.txt</span>
+    记录要安装的依赖。例如：
+</p>
+<pre>
+requests&gt;=2.31,&lt;3
+flask==3.0.0
+</pre>
+<p>在虚拟环境中安装清单里的依赖：</p>
+<pre>
+    python -m pip install -r requirements.txt
+</pre>
+<p>
+    <span class="important">pip freeze</span>
+    可以导出当前环境所有已安装包的确切版本，常用于记录可复现的环境：
+</p>
+<pre>
+    python -m pip freeze &gt; requirements.txt
+</pre>
+<p>
+    freeze 会包含传递依赖和环境中的其他包。长期维护的项目通常需要区分直接依赖与完整环境锁定结果，不要不加检查地把临时环境的所有包都作为项目依赖。
+</p>
+<h2>
+    检查依赖状态
+</h2>
+<p>检查当前环境中已安装包的依赖关系，并查看可升级的包：</p>
+<pre>
+    python -m pip check
+    python -m pip list --outdated
+</pre>
+<p>
+    <span class="important">pip check</span>
+    报告缺失或冲突的依赖，但不会自动修复问题。升级包之前，应确认项目代码和其他依赖仍然兼容。
+</p>
+<h2>
+    安装本地项目
+</h2>
+<p>
+    如果 Python 项目已配置
+    <span class="important">pyproject.toml</span>，可以在项目根目录以可编辑模式安装。开发过程中修改源代码后，无需反复重新安装：
+</p>
+<pre>
+    python -m pip install -e .
+</pre>

@@ -1,0 +1,299 @@
+<header>
+    npm 工作空间
+</header>
+<p>
+    npm 从
+    <span class="important">7.0</span>
+    开始支持工作空间（Workspaces）。它可以在一个顶层根包中管理多个本地文件系统中的包，安装时自动把这些包软链接（symlink）到根目录的
+    <span class="special">node_modules</span>
+    中，从而省去手工执行
+    <span class="special">npm link</span>
+    的麻烦。
+</p>
+<h2>
+    基本使用
+</h2>
+<p>
+    比如我们现在有一个项目，项目中有两个子项目，大体结构如下：
+</p>
+<pre>
+- packages
+    - pkg1
+        - package.json
+    - pkg2
+        - package.json
+- package.json
+- package-lock.json
+</pre>
+<p>
+    而<span class="warn">pkg1</span>和<span class="warn">pkg2</span>的项目名称分别是<span class="special">mypkg1</span>和<span
+        class="special">mypkg2</span>。
+</p>
+<p>
+    在根目录的<span class="special">package.json</span>中声明<span class="special">workspaces</span>字段即可，它既支持直接写路径，也支持 glob 通配符：
+</p>
+<pre tag="json">
+{
+    "name": "my-workspaces-powered-project",
+    "private": true,
+    "workspaces": [
+        "./packages/*"
+    ]
+}
+</pre>
+<p>
+    在根目录执行一次
+    <span class="special">npm install</span>
+    之后，子包会被软链接到根目录的
+    <span class="special">node_modules</span>
+    中：
+</p>
+<pre>
+- node_modules
+    - mypkg1 -&gt; ../packages/pkg1
+- package-lock.json
+- package.json
+- packages
+    - pkg1
+        - package.json
+    - pkg2
+        - package.json
+</pre>
+<p>
+    链接用的名字来自各子包
+    <span class="special">package.json</span>
+    的
+    <span class="special">name</span>
+    字段，所以代码里直接
+    <span class="special">require('mypkg1')</span>
+    就能引用到
+    <span class="special">packages/pkg1</span>
+    。这正是 Node.js 的模块解析机制决定的：任何工作空间都可以按声明的名字被消费。
+</p>
+<h2>
+    常用命令
+</h2>
+<h3>
+    创建工作空间
+</h3>
+<p>
+    可以用
+    <span class="special">npm init</span>
+    配合
+    <span class="special">-w</span>
+    自动创建目录、生成
+    <span class="special">package.json</span>
+    ，并同步维护根包的
+    <span class="special">workspaces</span>
+    配置：
+</p>
+<pre tag="shell">
+npm init -w ./packages/pkg1
+</pre>
+<h3>
+    为工作空间添加依赖
+</h3>
+<p>
+    <span class="special">-w</span>
+    （
+    <span class="special">--workspace</span>
+    ）可以在指定的工作空间上下文中执行安装：
+</p>
+<pre tag="shell">
+# 给工作空间 a 添加 registry 上的依赖
+npm install abbrev -w a
+
+# 把工作空间 b 作为工作空间 a 的依赖
+npm install b -w a
+</pre>
+<p>
+    第二条命令中，npm 会识别出
+    <span class="special">b</span>
+    是一个工作空间，于是直接软链接而不是去仓库下载，写进
+    <span class="special">package.json</span>
+    的是一个普通的版本范围：
+</p>
+<pre tag="json">
+{
+    "dependencies": {
+        "b": "^1.0.0"
+    }
+}
+</pre>
+<div class="tips">
+    <span class="important">npm 目前不支持 pnpm / Yarn Berry 的 workspace: 协议。</span>
+    写成
+    <span class="important">"b": "workspace:*"</span>
+    会直接报错
+    <span class="important">EUNSUPPORTEDPROTOCOL</span>
+    （Unsupported URL Type "workspace:"）。npm 里请使用
+    <span class="special">"b": "*"</span>
+    或
+    <span class="special">"b": "^1.0.0"</span>
+    这类普通版本范围。
+    <br />
+    其他像
+    <span class="special">uninstall</span>
+    、
+    <span class="special">ci</span>
+    等安装类命令同样会遵循
+    <span class="special">workspace</span>
+    配置。
+</div>
+<h3>
+    在工作空间上下文中执行脚本
+</h3>
+<p>
+    <span class="special">--workspace</span>
+    （或简写
+    <span class="special">-w</span>
+    ）用于指定单个工作空间，
+    <span class="special">--workspaces</span>
+    用于指定所有工作空间：
+</p>
+<pre tag="shell">
+# 在工作空间 a 中执行 test
+npm run test --workspace=a
+
+# 同时在 a 和 b 中执行 test
+npm run test --workspace=a --workspace=b
+
+# 在 packages 目录下的所有工作空间中执行 test
+npm run test --workspace=packages
+
+# 在所有工作空间中执行 test
+npm run test --workspaces
+
+# 跳过没有定义该脚本的工作空间
+npm run test --workspaces --if-present
+</pre>
+<p>
+    命令的执行顺序与根包
+    <span class="special">package.json</span>
+    中
+    <span class="special">workspaces</span>
+    数组的书写顺序一致。也就是说：
+</p>
+<pre tag="json">
+{
+    "workspaces": ["packages/a", "packages/b"]
+}
+</pre>
+<p>
+    和
+    <span class="special">"workspaces": ["packages/b", "packages/a"]</span>
+    的执行顺序是不一样的。
+</p>
+<p>
+    如果当前目录就在某个工作空间内部，那么
+    <span class="special">workspace</span>
+    配置会被隐式设置，
+    <span class="special">prefix</span>
+    也会指向根工作空间，所以下面两种写法效果相同：
+</p>
+<pre tag="shell">
+npm run test --workspace=a
+
+cd packages/a &amp;&amp; npm run test
+</pre>
+<h3>
+    发布工作空间
+</h3>
+<pre tag="shell">
+# 发布指定工作空间
+npm publish --workspace=mypkg1
+
+# 发布多个工作空间
+npm publish --workspace=mypkg1 --workspace=mypkg2
+
+# 发布所有工作空间
+npm publish --workspaces
+</pre>
+<p>
+    默认情况下不会发布根包，如果需要把根包也算进去，加上
+    <span class="special">--include-workspace-root</span>
+    ：
+</p>
+<pre tag="shell">
+npm publish --workspaces --include-workspace-root
+</pre>
+<h3>
+    查询工作空间依赖
+</h3>
+<p>
+    <span class="special">npm query</span>
+    支持用 CSS 选择器查询依赖树，其中
+    <span class="special">.workspace</span>
+    表示工作空间：
+</p>
+<pre tag="shell">
+# 列出所有工作空间
+npm query ".workspace"
+
+# 列出所有依赖了其他工作空间的工作空间
+npm query ".workspace &gt; .workspace"
+</pre>
+<h2>
+    配置项说明
+</h2>
+<table>
+    <thead>
+        <tr>
+            <td>
+                配置
+            </td>
+            <td>
+                说明
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                workspace
+            </td>
+            <td>
+                指定单个工作空间，可传多次。取值可以是工作空间名、工作空间目录路径，或者父目录路径（会选中该目录下的全部工作空间）
+            </td>
+        </tr>
+        <tr>
+            <td>
+                workspaces
+            </td>
+            <td>
+                置为 true 表示在所有工作空间的上下文中执行命令；显式置为 false 则完全忽略工作空间
+            </td>
+        </tr>
+        <tr>
+            <td>
+                include-workspace-root
+            </td>
+            <td>
+                默认 false。开启后执行命令时会把根包也算进去
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    注意事项
+</h2>
+<ul>
+    <li>
+        npm 只把工作空间链接进
+        <span class="special">node_modules</span>
+        ，不做依赖提升（hoisting）优化，磁盘占用会明显大于 pnpm。
+    </li>
+    <li>
+        npm 没有内置的版本编排能力，多包统一发版需要借助 Lerna、Changesets 之类的工具。
+    </li>
+    <li>
+        根包建议设置
+        <span class="important">"private": true</span>
+        ，避免误把根包发布到仓库。
+    </li>
+    <li>
+        如果从 pnpm / Yarn Berry 迁移到 npm，需要把所有
+        <span class="special">workspace:</span>
+        协议改成普通版本范围，否则安装会直接失败。
+    </li>
+</ul>

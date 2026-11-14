@@ -1,73 +1,89 @@
 <header>
-    事件和数据传递
+    安全的进程通信
 </header>
 <p class="warn">
-    无论是何种方式，事件传播都需要保证先注册监听再发送，否则接收方会接收不到。
+    Electron 的主进程和渲染进程通过 IPC 通信。推荐在 preload 中使用 contextBridge 暴露单一、明确的方法；不要向渲染页面暴露完整的 ipcRenderer 或 Node.js require。
 </p>
 <h2>
-    异步
+    渲染进程调用主进程并获取结果
 </h2>
-<h3>
-    渲染层 → 主进程
-</h3>
-<h4>
-    主进程注册监听
-</h4>
+<p>
+    主进程使用 <span class="special">ipcMain.handle</span> 注册请求处理器，Preload 使用 <span class="special">ipcRenderer.invoke</span> 转发请求。渲染层只调用通过 contextBridge 暴露的函数。
+</p>
+<h3>主进程（main.js）</h3>
 <pre tag="javascript">
-ipcMain.on('eventName', function (evnet, data) {
-    // todo
+const { app, ipcMain } = require("electron");
+
+ipcMain.handle("app:get-version", () =&gt; {
+    return app.getVersion();
 });
 </pre>
-<h4>
-    渲染层发送事件
-</h4>
-<p class="warn">
-    nodeRequire就是require，我们默认重新定义node.js暴露和web冲突的名称，执行了 window.nodeRequire = require 下同。
-</p>
+<h3>Preload（preload.js）</h3>
 <pre tag="javascript">
-window.nodeRequire("electron").ipcRenderer.send("eventName", data);
-</pre>
-<h3>
-    主进程 → 渲染层
-</h3>
-<h4>
-    渲染层注册监听
-</h4>
-<pre tag="javascript">
-window.nodeRequire("electron").ipcRenderer.on("eventName", function(event, data){
-    // todo
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("desktop", {
+    getVersion: () =&gt; ipcRenderer.invoke("app:get-version")
 });
 </pre>
-<h4>
-    主进程发送事件
-</h4>
-<p class="warn">
-    win就是 new BrowserWindow() 返回的窗口实例，下同。
+<h3>渲染进程（renderer.js）</h3>
+<pre tag="javascript">
+async function showVersion() {
+    const version = await window.desktop.getVersion();
+    console.log("应用版本：", version);
+}
+
+showVersion();
+</pre>
+<p>
+    如果项目没有启用支持顶层 await 的模块配置，可以把调用放进 async 函数中。IPC 参数和返回值应使用可结构化克隆的数据。
+</p>
+<h2>
+    主进程主动通知渲染进程
+</h2>
+<p>
+    主进程可以通过窗口的 <span class="special">webContents.send</span> 发送通知。Preload 应过滤 IPC 事件对象，只把需要的数据传给页面，并返回取消监听函数。
+</p>
+<h3>Preload（preload.js）</h3>
+<p>
+    如需同时支持请求和通知，请把两个方法合并到同一个 <span class="special">desktop</span> bridge 中：
 </p>
 <pre tag="javascript">
-win.webContents.send("eventName", data);
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("desktop", {
+    getVersion: () =&gt; ipcRenderer.invoke("app:get-version"),
+    onStatusChanged: (callback) =&gt; {
+        const listener = (_event, value) =&gt; callback(value);
+        ipcRenderer.on("app:status-changed", listener);
+
+        return () =&gt; {
+            ipcRenderer.removeListener("app:status-changed", listener);
+        };
+    }
+});
+</pre>
+<h3>主进程（main.js）</h3>
+<pre tag="javascript">
+const { BrowserWindow } = require("electron");
+
+// 确认对应页面已经注册监听后，再发送通知。
+for (const window of BrowserWindow.getAllWindows()) {
+    window.webContents.send("app:status-changed", { ready: true });
+}
+</pre>
+<h3>渲染进程（renderer.js）</h3>
+<pre tag="javascript">
+const unsubscribe = window.desktop.onStatusChanged((status) =&gt; {
+    console.log("状态更新：", status);
+});
+
+// 页面不再需要监听时调用
+unsubscribe();
 </pre>
 <h2>
-    同步
+    不要使用同步 IPC
 </h2>
-<h3>
-    渲染层 → 主进程
-</h3>
-<p class="warn">
-    温馨提示：在主进程响应前，渲染线程会处于‘卡死’状态。
+<p>
+    <span class="special">sendSync</span> 会阻塞渲染进程，导致界面卡顿；新代码应优先使用 <span class="special">invoke/handle</span>。若只需发送无需响应的通知，可以使用 <span class="special">send/on</span>，并在页面卸载时清理监听。
 </p>
-<h4>
-    主进程注册监听
-</h4>
-<pre tag="javascript">
-ipcMain.on("eventName", function (event, data) {
-    // todo
-    event.returnValue = returnData;
-});
-</pre>
-<h4>
-    渲染层发送事件
-</h4>
-<pre tag="javascript">
-var returnData = window.nodeRequire("electron").ipcRenderer.sendSync("eventName",data);
-</pre>

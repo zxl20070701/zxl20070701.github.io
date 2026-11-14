@@ -1,0 +1,51 @@
+<header>
+    注解是什么
+</header>
+<h2>
+    为声明附加元数据
+</h2>
+<p>
+    注解可以贴在类、方法、字段、参数、构造方法等声明上，用来附加一段结构化信息。它本身不执行任何逻辑：写
+    <span class="important">@Override</span>
+    不会让方法真的去重写，写
+    <span class="important">@Transactional</span>
+    也不会自动开事务。
+</p>
+<p>
+    真正干活的是读注解的那一方——编译器、编译期注解处理器，或者运行时的框架。所以理解注解要分两步：一是它声明了什么信息，二是谁在什么时机把这条信息读出来、拿它做什么。两步缺一，注解就只是一行没人看的装饰。
+</p>
+<h2>
+    JDK 自带的内置注解
+</h2>
+<pre tag="javascript">
+@Override
+public String toString() {
+    return "example";
+}
+
+@Deprecated(since = "1.8", forRemoval = true)
+public void oldApi() { }
+
+@SuppressWarnings("unchecked")
+List&lt;String&gt; list = (List&lt;String&gt;) obj;
+
+@FunctionalInterface
+interface Handler { void handle(String event); }
+</pre>
+<p>
+    <span class="important">@Override</span>
+    的保留策略是 SOURCE：编译期检查签名是否真的覆盖了父类型的方法，编译完就丢弃，运行时读不到。
+    <span class="important">@Deprecated</span>
+    是 RUNTIME，还会被 javadoc 收录，Java 9 起带
+    <span class="important">since</span>
+    和
+    <span class="important">forRemoval</span>
+    两个元素。
+</p>
+<p>
+    <span class="important">@SuppressWarnings</span>
+    只作用于紧跟的那个声明，同样是 SOURCE。括号里的「unchecked」是编译器认识的字符串常量，拼错字母不会报错，只是不生效——这类「字符串开关」是注解静默失效的常见来源。
+</p>
+<p>
+    这几个都是 JDK 自带的，覆盖了「检查、弃用、压制警告、函数式接口约束」四种编译期需求。业务代码里真正天天见到的注解，绝大多数来自框架，或者自己定义。
+</p>

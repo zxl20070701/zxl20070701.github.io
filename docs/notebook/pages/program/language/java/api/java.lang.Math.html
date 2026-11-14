@@ -1,0 +1,46 @@
+<header>
+    java.lang.Math
+</header>
+<p>
+    Math 位于 java.lang 包中，无需显式导入。常用方法都是静态方法。
+</p>
+<h2>
+    取整与取绝对值
+</h2>
+<pre tag="javascript">
+double value = -3.7;
+double absolute = Math.abs(value); // 3.7
+double up = Math.ceil(2.1);        // 3.0
+double down = Math.floor(2.9);     // 2.0
+long rounded = Math.round(2.5);    // 3
+</pre>
+<p>
+    ceil 返回不小于参数的最小整数值（以浮点数表示），floor 返回不大于参数的最大整数值。round 对负数的行为与简单的“远离零”理解不同，边界逻辑应按 API 定义确认。
+</p>
+<h2>
+    幂、平方根与范围
+</h2>
+<pre tag="javascript">
+double square = Math.pow(3, 2);
+double root = Math.sqrt(16);
+int bounded = Math.max(0, Math.min(value, 100));
+</pre>
+<p>
+    <span class="important">Math.random()</span>
+    返回大于等于 0 且小于 1 的伪随机 double。若需要指定范围或更丰富的随机 API，可使用
+    <span class="important">java.util.Random</span>
+    或
+    <span class="important">java.util.concurrent.ThreadLocalRandom</span>。
+</p>
+<h2>
+    溢出检查
+</h2>
+<p>
+    整数加法和乘法溢出时通常不会自动报错。需要检测溢出时使用
+    <span class="important">Math.addExact</span>
+    或
+    <span class="important">Math.multiplyExact</span>：
+</p>
+<pre tag="javascript">
+int total = Math.addExact(10, 20);
+</pre>

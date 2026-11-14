@@ -1,0 +1,56 @@
+<header>
+    保留策略
+</header>
+<h2>
+    三档保留范围
+</h2>
+<p>
+    <span class="important">@Retention</span>
+    决定注解能活到哪一层，三档的差别直接决定它能不能被反射读到：
+</p>
+<ul>
+    <li><span class="important">SOURCE</span>：只存在于源码，编译后丢弃，用于编译期检查与代码生成。</li>
+    <li><span class="important">CLASS</span>：写进 class 文件但 JVM 运行时不加载，字节码工具能读。这是不写 @Retention 时的默认值。</li>
+    <li><span class="important">RUNTIME</span>：写进 class 文件且运行时可见，反射能读——框架注解基本都是这一档。</li>
+</ul>
+<pre tag="javascript">
+@Retention(RetentionPolicy.SOURCE)
+@interface Src { String value() default ""; }
+
+@Retention(RetentionPolicy.CLASS)
+@interface Cls { String value() default ""; }
+
+@Retention(RetentionPolicy.RUNTIME)
+@interface Rt { String value() default ""; }
+</pre>
+<h2>
+    差别在字节码里
+</h2>
+<p>
+    在同一个方法上贴这三种注解，运行时反射的输出是：
+</p>
+<pre tag="text">
+Runtime 可见的注解: [@Demo.Rt("")]
+getAnnotation(Src) = null
+getAnnotation(Cls) = null
+</pre>
+<p>
+    用
+    <span class="important">javap -v</span>
+    能看到更底层的原因：RUNTIME 的注解编译进
+    <span class="important">RuntimeVisibleAnnotations</span>
+    属性，CLASS 的（含默认策略）进
+    <span class="important">RuntimeInvisibleAnnotations</span>
+    ，SOURCE 的在 class 文件里根本不出现。
+</p>
+<h2>
+    三个容易混的点
+</h2>
+<ul>
+    <li>不写 <span class="important">@Retention</span> 不是「运行时能读到」，而是 CLASS：反射恒为 null，且编译、运行都不报错，是最典型的静默失效。</li>
+    <li>CLASS 不等于没用：JVM 不加载它，但 ASM、Javassist、字节码插桩仍能读到，很多构建期工具就靠这一档工作。</li>
+    <li>SOURCE 不等于没用：Lombok、MapStruct 这类编译期处理器连 class 文件都不看，只处理源码，SOURCE 足够。</li>
+</ul>
+<p>
+    结论是一句话：能被反射读到的前提是 RUNTIME，其余两档都要在编译期或字节码阶段消费掉。
+</p>

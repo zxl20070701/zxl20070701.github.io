@@ -1,0 +1,271 @@
+<header>
+    常见问题排查
+</header>
+<p>
+    本篇整理了学习和使用 Kubernetes 时最常遇到的问题，以及对应的排查思路。
+</p>
+<h2>
+    排查问题的通用步骤
+</h2>
+<p>
+    遇到问题基本都按这个顺序来：
+</p>
+<pre tag="bash">
+# 1. 看状态
+kubectl get pods
+
+# 2. 看详情和事件（最关键）
+kubectl describe pod hello-xxxxx
+
+# 3. 看日志
+kubectl logs hello-xxxxx
+
+# 4. 看上一个崩溃实例的日志
+kubectl logs hello-xxxxx --previous
+</pre>
+<div class="tips">
+    <span class="special">describe</span>
+    输出末尾的
+    <span class="special">Events</span>
+    部分几乎能解决 80% 的问题，比如
+    <span class="special">Failed to pull image</span>
+    、
+    <span class="special">OOMKilled</span>
+    、
+    <span class="special">Back-off pulling image</span>
+    等等。
+</div>
+<h2>
+    Pod 一直处于 Pending
+</h2>
+<p>
+    Pending 表示 Pod 已经被创建但还没被调度到节点上。用 describe 查看事件：
+</p>
+<pre tag="bash">
+kubectl describe pod hello-xxxxx
+</pre>
+<p>
+    常见原因：
+</p>
+<ul>
+    <li>
+        <span class="special">资源不足</span>：节点 CPU/内存不够，或者节点被打了污点（taint）。
+    </li>
+    <li>
+        <span class="special">PVC 未绑定</span>：Pending 的 Pod 一直等不到存储。
+    </li>
+    <li>
+        <span class="special">节点选择器或亲和性不匹配</span>：Deployment 里写了 nodeSelector，但没有任何节点满足条件。
+    </li>
+</ul>
+<pre tag="bash">
+# 查看 PVC 状态
+kubectl get pvc
+</pre>
+<h2>
+    ImagePullBackOff / ErrImagePull
+</h2>
+<p>
+    镜像拉不下来。依次排查：
+</p>
+<ul>
+    <li>镜像名和 tag 是否正确（私有镜像需要正确的 registry 凭证）；</li>
+    <li>网络是否能访问镜像仓库（集群内可能需要配置代理或镜像加速）；</li>
+    <li>如果是私有仓库，确认 imagePullSecrets 已配置且 Secret 存在。</li>
+</ul>
+<pre tag="bash">
+# 确认拉取失败的具体错误
+kubectl describe pod hello-xxxxx
+
+# 在节点上手动拉取验证
+docker pull nginx:alpine
+</pre>
+<h2>
+    CrashLoopBackOff
+</h2>
+<p>
+    容器反复启动又崩溃。先看上一次崩溃的日志：
+</p>
+<pre tag="bash">
+kubectl logs hello-xxxxx --previous
+</pre>
+<p>
+    常见原因：
+</p>
+<ul>
+    <li>启动命令执行失败（配置缺失、依赖的 Secret/ConfigMap 不存在）；</li>
+    <li>健康检查接口路径写错，livenessProbe 一直失败；</li>
+    <li>应用启动耗时超过 startupProbe 的容忍时间。</li>
+</ul>
+<pre tag="bash">
+# 看重启次数
+kubectl get pods
+</pre>
+<pre>
+NAME                        READY   STATUS             RESTARTS   AGE
+hello-6d8c9f7b4f-xk2mq     0/1     CrashLoopBackOff   5          3m
+</pre>
+<h2>
+    OOMKilled
+</h2>
+<p>
+    容器内存超出 limit 被杀掉。查看状态和内存设置：
+</p>
+<pre tag="bash">
+kubectl describe pod hello-xxxxx
+kubectl top pod hello-xxxxx
+</pre>
+<p>
+    解决办法是提高
+    <span class="special">resources.limits.memory</span>
+    ，或排查应用是否存在内存泄漏。
+</p>
+<div class="warn">
+    如果状态是
+    <span class="special">OOMKilled</span>
+    但应用看起来内存占用不高，可能是被 Node 层面的 OOM 杀掉了，需要查看节点日志（dmesg）。
+</div>
+<h2>
+    ImagePullBackOff 之外的拉取正常但 Pod 不 Ready
+</h2>
+<p>
+    容器运行了但没进入 Ready 状态，通常是 readinessProbe 没通过。此时 Service 不会把流量转发给它：
+</p>
+<pre tag="bash">
+kubectl describe pod hello-xxxxx
+kubectl get endpoints hello
+</pre>
+<p>
+    确认 Pod 标签和 Service 的 selector 能匹配上，这是最常见的低级错误：
+</p>
+<pre tag="bash">
+kubectl get pods --show-labels
+kubectl get svc hello -o jsonpath='{.spec.selector}'
+</pre>
+<h2>
+    kubectl 连不上集群
+</h2>
+<pre tag="bash">
+# 看看当前到底连的是哪个集群
+kubectl config current-context
+kubectl cluster-info
+
+# 看看配置里有哪些集群
+kubectl config get-contexts
+</pre>
+<p>
+    常见情况：
+</p>
+<ul>
+    <li>上下文切错了，用
+        <span class="special">kubectl config use-context</span>
+        切回来；
+    </li>
+    <li>kind 集群被删了但配置还在，重新创建或清理掉旧上下文；
+    </li>
+    <li>本地集群需要确认 Docker 正常运行。</li>
+</ul>
+<h2>
+    资源一直无法创建
+</h2>
+<p>
+    apply 时报错，先用 dry-run 看看具体是什么问题：
+</p>
+<pre tag="bash">
+# 服务端校验，不实际提交
+kubectl apply -f deploy.yaml --dry-run=server
+
+# 对比当前状态和目标状态
+kubectl diff -f deploy.yaml
+</pre>
+<p>
+    常见报错：
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>报错</th>
+            <th>原因</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">selector does not match template labels</span></td>
+            <td>Deployment 的 selector 和 Pod 模板标签不匹配</td>
+        </tr>
+        <tr>
+            <td><span class="special">field is immutable</span></td>
+            <td>修改了不可变字段（比如 Deployment 的 selector）</td>
+        </tr>
+        <tr>
+            <td><span class="special">already exists</span></td>
+            <td>用了 create 而不是 apply</td>
+        </tr>
+        <tr>
+            <td><span class="special">no matches for kind</span></td>
+            <td>apiVersion 写错，或 CRD 没有安装</td>
+        </tr>
+    </tbody>
+</table>
+<h2>
+    滚动更新卡住
+</h2>
+<pre tag="bash">
+kubectl rollout status deployment/hello
+kubectl describe deployment hello
+</pre>
+<p>
+    常见原因：
+</p>
+<ul>
+    <li>新 Pod 无法通过 readinessProbe；
+    </li>
+    <li>maxUnavailable 设成了 0 且 maxSurge 也不够，导致没有可用的新 Pod；
+    </li>
+    <li>资源不足，新 Pod 一直 Pending。</li>
+</ul>
+<div class="tips">
+    回滚比排查更快：
+    <span class="special">kubectl rollout undo deployment/hello</span>
+    先把服务恢复，再慢慢查原因。
+</div>
+<h2>
+    端口占用与访问不通
+</h2>
+<pre tag="bash">
+# 本地端口转发到 Pod
+kubectl port-forward hello-xxxxx 8080:80
+
+# 查看 Service 分配的端口
+kubectl get svc hello
+
+# 查看集群端口占用
+kubectl get svc -A
+</pre>
+<p>
+    kind 本地集群里，用 NodePort 访问时记得用
+    <span class="special">kubectl get svc</span>
+    输出的
+    <span class="special">PORT(S)</span>
+    列里的端口号，而不是 80。
+</p>
+<h2>
+    清理本地环境
+</h2>
+<pre tag="bash">
+# 删除所有 kind 集群
+kind delete cluster
+
+# 查看还剩哪些集群
+kind get clusters
+
+# 删除命名空间及其所有资源
+kubectl delete namespace demo
+</pre>
+<div class="warn">
+    删除命名空间是异步的，资源不会立刻消失，可以加
+    <span class="special">--wait=false</span>
+    立即返回，或者用
+    <span class="special">kubectl get ns</span>
+    确认状态。
+</div>

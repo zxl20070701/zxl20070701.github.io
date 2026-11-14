@@ -1,0 +1,110 @@
+<header>
+    结构体、枚举与集合
+</header>
+<h2>
+    结构体
+</h2>
+<p>
+    结构体将相关数据组合成一个类型。使用 <span class="special">.</span> 访问字段；修改字段时，实例必须声明为可变。
+</p>
+<pre tag="javascript">
+struct User {
+    name: String,
+    age: u8,
+    active: bool,
+}
+
+fn main() {
+    let user = User {
+        name: String::from("小明"),
+        age: 18,
+        active: true,
+    };
+    println!("{}，{} 岁", user.name, user.age);
+}
+</pre>
+<p>
+    使用 <span class="warn">impl</span> 为类型定义关联函数和方法。方法的第一个参数通常是 <span class="special">&amp;self</span> 或 <span class="special">&amp;mut self</span>。
+</p>
+<pre tag="javascript">
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&amp;self) -&gt; u32 {
+        self.width * self.height
+    }
+}
+
+fn main() {
+    let rect = Rectangle { width: 30, height: 20 };
+    println!("面积：{}", rect.area());
+}
+</pre>
+<h2>
+    枚举与模式匹配
+</h2>
+<p>
+    枚举可以定义多种可能的变体，每个变体还可以携带不同类型的数据。
+</p>
+<pre tag="javascript">
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+}
+
+fn main() {
+    let message = Message::Move { x: 10, y: 20 };
+    match message {
+        Message::Quit =&gt; println!("退出"),
+        Message::Move { x, y } =&gt; println!("移动到 {x}, {y}"),
+        Message::Write(text) =&gt; println!("{text}"),
+    }
+}
+</pre>
+<p>
+    标准库的 <span class="special">Option&lt;T&gt;</span> 表示一个值可能存在或不存在，<span class="special">Some</span> 表示有值，<span class="special">None</span> 表示无值。Rust 没有空指针；使用 Option 时需要明确处理两种情况。
+</p>
+<pre tag="javascript">
+fn main() {
+    let maybe_number: Option&lt;i32&gt; = Some(5);
+    match maybe_number {
+        Some(value) =&gt; println!("值是 {value}"),
+        None =&gt; println!("没有值"),
+    }
+}
+</pre>
+<h2>
+    集合
+</h2>
+<p>
+    <span class="special">Vec&lt;T&gt;</span> 是可增长的同类型元素序列。
+</p>
+<pre tag="javascript">
+fn main() {
+    let mut numbers = vec![1, 2, 3];
+    numbers.push(4);
+    for number in &amp;numbers {
+        println!("{number}");
+    }
+}
+</pre>
+<p>
+    <span class="special">HashMap&lt;K, V&gt;</span> 用于保存键值对，读取时可以得到一个 <span class="special">Option</span>。
+</p>
+<pre tag="javascript">
+use std::collections::HashMap;
+
+fn main() {
+    let mut scores = HashMap::new();
+    scores.insert(String::from("蓝队"), 10);
+    scores.insert(String::from("红队"), 8);
+
+    if let Some(score) = scores.get("蓝队") {
+        println!("蓝队：{score}");
+    }
+}
+</pre>

@@ -1,0 +1,60 @@
+<header>
+    元注解
+</header>
+<h2>
+    贴在注解上的注解
+</h2>
+<p>
+    元注解用来描述一个注解自身的性质：保留到哪一层、能贴在哪里、能否重复、是否传给子类。JDK 在
+    <span class="important">java.lang.annotation</span>
+    包里提供了这几个：
+</p>
+<ul>
+    <li><span class="important">@Retention</span>：保留策略，SOURCE / CLASS / RUNTIME 三档，不写时默认 CLASS。</li>
+    <li><span class="important">@Target</span>：允许贴的位置，TYPE、METHOD、FIELD、PARAMETER、CONSTRUCTOR、ANNOTATION_TYPE 等，可传数组指定多个。</li>
+    <li><span class="important">@Documented</span>：让注解出现在 javadoc 里，纯文档意义。</li>
+    <li><span class="important">@Inherited</span>：只有类注解能用，子类未声明时从父类继承；对方法、字段无效。</li>
+    <li><span class="important">@Repeatable</span>：允许同一个位置写多次，需要配一个容器注解。</li>
+</ul>
+<h2>
+    @Target 写窄了会怎样
+</h2>
+<pre tag="javascript">
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@interface OnlyMethod { }
+
+class Wrong {
+    @OnlyMethod int x;        // 编译错误：批注接口不适用于此类型的声明
+}
+</pre>
+<p>
+    @Target 起的是编译期保护作用：贴错位置立刻报错，而不是等到运行时反射返回 null。对框架注解来说，这条保护很有价值——它把「用法错」和「配置错」分成了两类问题。
+</p>
+<h2>
+    @Inherited 只对类生效
+</h2>
+<p>
+    这是最容易误解的一条：注解不在继承体系里，普通方法是读不到父类方法上的注解的；
+    <span class="important">@Inherited</span>
+    只对类注解生效，并且只是让子类「看起来也有了这个注解」。
+</p>
+<pre tag="javascript">
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Inherited
+@interface Tagged { String value(); }
+
+@Tagged("父类标签")
+class Base { }
+
+class Child extends Base { }
+
+// Child.class.getAnnotation(Tagged.class) → @Tagged("父类标签")
+// 去掉 @Inherited 后，同样的调用返回 null
+</pre>
+<p>
+    实测就是这两行输出：带
+    <span class="important">@Inherited</span>
+    时子类能读到父类的标签，去掉之后返回 null。所以想在子类上生效的类注解，务必记得加这个元注解。
+</p>

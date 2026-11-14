@@ -1,0 +1,79 @@
+<header>
+    基础语法与数据类型
+</header>
+<h2>
+    基本类型与引用类型
+</h2>
+<p>Java 有八种基本类型：</p>
+<ul>
+    <li>整数：byte、short、int、long。</li>
+    <li>浮点数：float、double。</li>
+    <li>字符：char，表示一个 UTF-16 代码单元。</li>
+    <li>布尔值：boolean，取值为 true 或 false。</li>
+</ul>
+<p>
+    变量可以保存基本类型的值，或保存对象的引用。引用类型包括类、接口、数组和枚举；引用可以是
+    <span class="important">null</span>，
+    使用前要考虑空值。基本类型与对应包装类型（如
+    <span class="important">int</span>
+    与
+    <span class="important">Integer</span>）
+    可在需要时自动装箱和拆箱，但拆箱 null 会抛出 NullPointerException。
+</p>
+<pre tag="javascript">
+int count = 3;
+long population = 8_000_000_000L;
+double price = 12.5;
+boolean enabled = true;
+String title = "Java";
+</pre>
+<h2>
+    变量初始化和常量
+</h2>
+<p>
+    局部变量必须在读取前赋值；字段和数组元素会获得默认值，例如数值类型为 0、boolean 为 false、引用为 null。使用
+    <span class="important">final</span>
+    声明只能赋值一次的变量；常量通常写作
+    <span class="important">static final</span>。
+</p>
+<h2>
+    条件和循环
+</h2>
+<p>Java 常用流程控制包括 if/else、switch、for、while 和 do/while：</p>
+<pre tag="javascript">
+int total = 0;
+for (int value : new int[] {1, 2, 3}) {
+    if (value % 2 != 0) {
+        total += value;
+    }
+}
+
+String label = total &gt; 0 ? "有结果" : "无结果";
+</pre>
+<p>
+    switch 可用于多分支选择。Java 14 起 switch 表达式正式发布；较新的模式匹配语法请查看
+    <span class="important">Java 版本演进</span>
+    页面，并留意所选 JDK 上特性的正式或预览状态。
+</p>
+<h2>
+    方法和参数
+</h2>
+<p>
+    方法声明包含返回类型、名称和参数。没有返回值时使用
+    <span class="important">void</span>；
+    方法可用
+    <span class="important">return</span>
+    返回结果。Java 参数始终按值传递：基本类型传递其值，引用类型传递引用值的副本。
+</p>
+<pre tag="javascript">
+static int add(int left, int right) {
+    return left + right;
+}
+
+int result = add(2, 3);
+</pre>
+<p>
+    方法重载允许同一类中出现同名但参数列表不同的方法；仅返回类型不同不能构成重载。可变参数
+    <span class="important">String... values</span>
+    在方法内部按数组处理，并且每个方法最多只能有一个可变参数，且必须位于参数列表末尾。
+</p>

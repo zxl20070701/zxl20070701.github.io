@@ -1,0 +1,192 @@
+<header>
+    图生视频入门
+</header>
+<p>
+    图生视频只做一件事：给模型一张图，让它把这张图变成一小段有运动的视频，画面内容尽量不变。它是做分镜短片的主力方式，因为第一帧是你定的，风格才连得起来。
+</p>
+<p>
+    整个流程是四步：出首帧 → 拷进 input → 打开图生视频工作流 → 写运镜提示词运行。下面逐步说明。
+</p>
+<h2>
+    一、前置：比文生视频多一个模型
+</h2>
+<p>
+    视频侧的三个文件和图生视频完全共用，另外还需要一个出首帧的图像模型：
+</p>
+<pre>
+models/diffusion_models/Wan2.2-TI2V-5B-Q5_K_M.gguf     视频主模型
+models/text_encoders/umt5-xxl-encoder-Q5_K_M.gguf     视频编码器
+models/vae/wan2.2_vae.safetensors                      视频 VAE
+models/checkpoints/Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors   出图模型，6.6 GB
+custom_nodes/ComfyUI-GGUF                              GGUF 加载插件
+</pre>
+<p>
+    Juggernaut 是整合了 CLIP 的完整 checkpoint，单文件就能跑，不需要再单独配编码器和 VAE。它偏写实、暗调表现好，适合旧木、纸张、暖光这类场景。
+</p>
+<h2>
+    二、第一步：出首帧
+</h2>
+<p>
+    出首帧不需要另做一套，就是「文生图入门」那一节的工作流：顶部「Templates」→ 图像分类搜 <code>sdxl</code>，选「SDXL1.0：文生图（简单）」，然后把 checkpoint 换成 Juggernaut、空 Latent 改 768×1344、KSampler 改 28 步 / cfg 6.5。采样器和调度器（<code>dpmpp_2m</code>+<code>karras</code>）模板已经选好了，不用动。这几步那边写得很细，这里不重复。
+</p>
+<p>
+    不同的是：这一张图的构图必须由你定死，因为它是整个镜头的第一帧，后面视频只是让它动起来，改不了构图。所以宁可多抽几次种子，挑一张构图干净的再往下走。
+</p>
+<p>
+    照这个值改：
+</p>
+<pre>
+分辨率    768×1344     竖屏 9:16，和视频画幅保持一致
+steps     28
+cfg       6.5
+sampler   dpmpp_2m
+scheduler karras
+</pre>
+<p>
+    实测单张约 2.5 分钟，第一次加载 6.6 GB 模型时总计 4 分 49 秒。产物在 Save Image 的 <code>filename_prefix</code> 指向的位置，模板默认是 <code>~/Desktop/ComfyUI/output/ComfyUI_00001_.png</code>，建议提前把前缀改成 <code>shot/shot1_key</code> 这类名字，多镜头时才分得清。
+</p>
+<div class="tips">
+    提示词分两段写。前半段是<b>风格锚</b>，每个镜头都一样，一个字都别改：
+    <code>cinematic film still, 35mm, low-key lighting, single warm tungsten light source, aged dark wood, muted amber and teal palette, film grain, no people</code>。
+    后半段才是这一镜独有的空间描述。风格锚是全片看起来像一部片子的唯一保证。
+</div>
+<h2>
+    三、第二步：把首帧拷进 input
+</h2>
+<p>
+    Load Image 节点只能选 <code>input/</code> 目录里的文件，看不到 <code>output/</code>。所以必须手动搬一次：
+</p>
+<pre>
+cp ~/Desktop/ComfyUI/output/shot/shot1_key_00001_.png \
+   ~/Desktop/ComfyUI/input/wan_shot1_start.png
+</pre>
+<p>
+    第一行的源路径换成你自己实际那一步产出的文件名。忘记这一步的典型症状：在 Load Image 的下拉里翻半天找不到刚出的图。
+</p>
+<h2>
+    四、第三步：打开图生视频工作流
+</h2>
+<p>
+    还是用那个官方模板：顶部「Templates」→ 视频分类选「Wan 2.2 5B视频生成」。它天生带着图生视频需要的连接，关键的一条就在这：
+</p>
+<pre>
+Load Image ──IMAGE──→ Wan22ImageToVideoLatent.start_image
+</pre>
+<p>
+    就是这个 <code>start_image</code> 输入口，决定第一帧长什么样。其余管线（主模型、编码器、VAE、采样、合成）和文生视频完全一样。
+</p>
+<p>
+    要改的只有三项：两个加载节点换成 GGUF 版（<code>Unet Loader (GGUF)</code> 选 5B 的 gguf、<code>CLIP Loader (GGUF)</code> 的 <code>type</code> 选 <code>wan</code>，做法见「文生视频入门」第二节）、<code>Wan22ImageToVideoLatent</code> 从 1280×704 改成 480×832、帧数从 121 改成 33，再把步数从 20 降到 12。
+</p>
+<div class="tips">
+    VAE 加载器不用动，官方模板用的就是 <code>wan2.2_vae.safetensors</code>，正好和 GGUF 那套配套。
+</div>
+<p>
+    如果你手滑把这条线断开了，重新接也很简单：从 <code>Load Image</code> 右侧的 IMAGE 圆点拖一条线，落到 <code>Wan22ImageToVideoLatent</code> 左侧的 <code>start_image</code> 圆点上。这个输入是可选的，不连就是纯文生视频。
+</p>
+<p>
+    Load Image 的上传按钮也可以直接用：点「choose file to upload」选本地图片，它会自动拷进 input 目录并出现在下拉里。
+</p>
+<h2>
+    五、第四步：写运镜提示词
+</h2>
+<p>
+    这一步最反直觉：<b>不要重复描述画面内容</b>。首帧已经把内容定死了，你再写一遍"暗木楼梯、暖台灯"，模型会试图把这些东西重新画一遍，画面就会跳。
+</p>
+<p>
+    只写三件事：镜头怎么动、光怎么变、什么东西在动。
+</p>
+<pre>
+The camera slowly pushes forward and slightly upward along the old wooden
+staircase toward the half-open bookstore door, warm tungsten lamp light flickers
+gently, dust motes drift through the beam, subtle handheld breathing motion,
+no people appear
+</pre>
+<p>
+    负向提示词建议固定带上这几组：
+</p>
+<pre>
+fast motion, camera shake, zoom out, people entering, faces,
+bright, overexposed, static, subtitle, watermark, text
+</pre>
+<p>
+    <code>faces</code> 和 <code>people entering</code> 是为了守住"不出现正脸"这条线，5B 模型画脸很容易崩，全片靠手、背影、物件叙事更稳。
+</p>
+<h2>
+    六、参数与时长
+</h2>
+<pre>
+分辨率      480×832      竖屏
+length      33           4n+1，见下表
+steps       12           图生视频 12 步就够，比文生视频少
+cfg         5
+sampler     uni_pc
+scheduler   simple
+shift       8
+fps         24
+</pre>
+<pre>
+33 帧  ≈ 1.4 秒   实测总耗时 11~13 分钟
+49 帧  ≈ 2.0 秒
+81 帧  ≈ 3.4 秒
+121 帧 ≈ 5.0 秒   约四倍耗时，内存压力也更大
+</pre>
+<p>
+    需要理解一个换算关系：脚本里一个 8 秒的镜头，用 33 帧只能出 1.4 秒，要么跑 121 帧（约 45 分钟），要么拆成 2~3 段 1.4 秒素材在剪辑里接起来。后者更现实，因为每一段都能单独重跑。
+</p>
+<h2>
+    七、实测耗时
+</h2>
+<pre>
+图生视频 / 12 步 / 480×832 / 33 帧
+  采样 9 分 06 秒，总耗时 11 分 29 秒（约 46 秒/步）
+
+同一台机器、换成 SDXL 出的首帧再跑一次
+  采样 10 分 26 秒，总耗时 13 分 26 秒
+  （慢的原因不是首帧，是上一轮出图模型还占着内存）
+</pre>
+<h2>
+    八、多镜头怎么保持一致
+</h2>
+<p>
+    一致性不靠运气，靠三件固定的事：
+</p>
+<p>
+    <b>一是风格锚。</b>所有首帧共用前面那串固定词，只换后半段的主体。
+</p>
+<p>
+    <b>二是同一模型同一分辨率。</b>中途别换 checkpoint、别改画幅，换一次整片色调就会漂。
+</p>
+<p>
+    <b>三是命名和分镜序号对齐。</b>
+</p>
+<pre>
+output/shot/
+  shot1_key.png     shot1_v1.mp4
+  shot2_key.png     shot2_v1.mp4
+  ...
+</pre>
+<p>
+    剪辑时按序号排就是脚本的顺序，不会乱。要重跑某一镜，改前缀里的序号即可，别的不用动。
+</p>
+<h2>
+    九、两个已知缺陷
+</h2>
+<p>
+    <b>末帧偏色。</b>33 帧往后亮度会抬升、整体偏暖。首帧还原得很准，问题只出在尾部。缓解办法：把 steps 压到 12 以下、提示词里明确写光线稳定、或者多段拼接时后期统一调色。
+</p>
+<p>
+    <b>运动幅度有限。</b>5B 模型做大动作会崩，它擅长的是缓推、微移、光晕变化这类小动作。分镜里"人物进门""转身"这类动作不要指望它，改用手持运动或背影代替。
+</p>
+<div class="warn">
+    提示词里出现"人物正脸"哪怕只是 <code>a man's face</code>，出来的也会是一张变形的脸。宁可拍背影和手，也不要冒险。
+</div>
+<h2>
+    十、跑完之后
+</h2>
+<p>
+    生成出来的只是画面素材，还没有声音和字幕。成片还需要配音、字幕、环境音和调色，这些用剪辑工具完成。如果要做多条镜头，可以一个跑着的时候继续改提示词点运行，ComfyUI 会排队执行，不用等它结束。
+</p>
+<div class="tips">
+    建议顺序：先只做片头第一镜和片尾最后一镜，确认整片调性对了，再批量铺中间镜头。风格锚一旦要改，已经跑的全部作废，这是最贵的一步。
+</div>

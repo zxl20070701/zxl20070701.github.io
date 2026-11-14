@@ -1,0 +1,48 @@
+<header>
+    生命周期与常用命令
+</header>
+<h2>
+    常用命令
+</h2>
+<p>
+    在pom.xml所在目录运行命令。使用Maven Wrapper时，将mvn替换为./mvnw（Windows使用mvnw.cmd）。
+</p>
+<pre tag="bash">
+# 清理上一次构建生成的文件
+mvn clean
+
+# 编译主代码
+mvn compile
+
+# 运行测试
+mvn test
+
+# 编译、测试并打包
+mvn package
+
+# 执行验证阶段并生成制品
+mvn verify
+
+# 将构建制品安装到本机Maven仓库，供本机其他项目使用
+mvn install
+
+# 查看依赖树
+mvn dependency:tree
+</pre>
+<h2>
+    理解构建生命周期
+</h2>
+<p>
+    Maven有clean、default和site等构建生命周期。执行同一生命周期中较后的阶段时，会先执行该阶段之前的阶段；例如package会先编译并运行测试。打包文件通常生成在target目录。
+</p>
+<p>
+    install会在package等阶段之后，把构建制品安装到本机Maven仓库；它不会发布到远程仓库。
+</p>
+<h2>
+    常见问题
+</h2>
+<ul>
+    <li>编译提示Java版本不兼容：检查java -version、JAVA_HOME和pom.xml中的maven.compiler.release是否一致。</li>
+    <li>测试失败：查看Maven输出中的测试报告，确认代码和测试依赖配置正确。</li>
+    <li>需要重新检查远程依赖更新：运行mvn -U package。</li>
+</ul>

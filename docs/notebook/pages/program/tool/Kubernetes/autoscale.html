@@ -1,0 +1,244 @@
+<header>
+    探针与自动扩缩容
+</header>
+<p>
+    本篇介绍两个让服务「更健壮、更省资源」的能力：
+    <span class="special">探针（Probe）</span>
+    用来判断容器的健康状态，
+    <span class="special">HPA</span>
+    用来根据负载自动调整副本数。
+</p>
+<h2>
+    三种探针
+</h2>
+<table>
+    <thead>
+        <tr>
+            <th>探针</th>
+            <th>作用</th>
+            <th>失败后果</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="special">startupProbe</span></td>
+            <td>判断容器是否启动完成</td>
+            <td>超过阈值则重启容器（启动期间禁用其它探针）</td>
+        </tr>
+        <tr>
+            <td><span class="special">readinessProbe</span></td>
+            <td>判断容器是否准备好接收流量</td>
+            <td>从 Service 的后端列表中移除</td>
+        </tr>
+        <tr>
+            <td><span class="special">livenessProbe</span></td>
+            <td>判断容器是否还活着</td>
+            <td>重启容器</td>
+        </tr>
+    </tbody>
+</table>
+<div class="tips">
+    记忆方式：<span class="special">startup</span>
+    管启动，
+    <span class="special">readiness</span>
+    管「能不能接流量」，
+    <span class="special">liveness</span>
+    管「要不要重启」。
+</div>
+<h2>
+    配置探针
+</h2>
+<pre tag="yaml">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+        - name: hello
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 5
+</pre>
+<p>
+    各参数的作用：
+</p>
+<ul>
+    <li>
+        <span class="special">initialDelaySeconds</span>：容器启动后等待多久才开始探测，避免因为启动慢而误判失败。
+    </li>
+    <li>
+        <span class="special">periodSeconds</span>：多久探测一次。
+    </li>
+    <li>
+        <span class="special">timeoutSeconds</span>：单次探测的超时时间。
+    </li>
+    <li>
+        <span class="special">failureThreshold</span>：连续失败几次才算探测失败，默认 3 次。
+    </li>
+    <li>
+        <span class="special">successThreshold</span>：连续成功几次算成功，默认 1 次（liveness 只能是 1）。
+    </li>
+</ul>
+<p>
+    除了 httpGet，还可以使用
+    <span class="special">exec</span>
+    （在容器内执行命令）、
+    <span class="special">tcpSocket</span>
+    （检查端口能否连通）和
+    <span class="special">grpc</span>
+    探针：
+</p>
+<pre tag="yaml">
+          livenessProbe:
+            exec:
+              command:
+                - cat
+                - /tmp/healthy
+            initialDelaySeconds: 5
+            periodSeconds: 10
+</pre>
+<h2>
+    启动探针解决慢启动问题
+</h2>
+<p>
+    有些应用启动要花几十秒，如果只靠 livenessProbe，会在启动过程中被误杀。此时用 startupProbe「保护」启动阶段：
+</p>
+<pre tag="yaml">
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 10
+</pre>
+<p>
+    上面的配置意味着：启动后最多容忍
+    <span class="special">30 × 5 = 150 秒</span>
+    的启动时间；一旦启动探针成功，就切换到由 livenessProbe 接管。
+</p>
+<h2>
+    水平自动扩缩容（HPA）
+</h2>
+<p>
+    HPA 根据 Pod 的 CPU、内存或自定义指标自动调整 Deployment 的副本数。
+</p>
+<pre tag="yaml">
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hello-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: hello
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+</pre>
+<p>
+    字段含义：
+</p>
+<ul>
+    <li>
+        <span class="special">minReplicas / maxReplicas</span>：副本数的上下限。
+    </li>
+    <li>
+        <span class="special">averageUtilization</span>：目标 CPU 使用率百分比（相对于 requests 的比例）。
+    </li>
+</ul>
+<p>
+    应用后查看状态：
+</p>
+<pre tag="bash">
+kubectl apply -f hpa.yaml
+kubectl get hpa
+kubectl describe hpa hello-hpa
+</pre>
+<pre>
+NAME       REFERENCE              TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+hello-hpa   Deployment/hello      0%/50%         2         10        2          30s
+</pre>
+<div class="warn">
+    HPA 依赖
+    <span class="important">metrics-server</span>
+    才能采集到 CPU/内存指标。kind 默认不带 metrics-server，需要额外安装，否则
+    <span class="special">TARGETS</span>
+    会一直显示
+    <span class="special">&lt;unknown&gt;</span>
+    ，HPA 不会生效。
+</div>
+<h2>
+    手动压测验证
+</h2>
+<p>
+    扩缩容是异步的，触发后需要等待一段时间。可以手动制造负载来观察效果：
+</p>
+<pre tag="bash">
+# 进入某个 Pod
+kubectl exec -it hello-xxxxx -- sh
+
+# 在容器内循环消耗 CPU
+while true; do echo "x"; done
+</pre>
+<p>
+    然后观察副本数变化：
+</p>
+<pre tag="bash">
+kubectl get pods -w
+kubectl get hpa
+</pre>
+<div class="tips">
+    如果集群没有装 metrics-server，也可以用
+    <span class="special">kubectl top pods</span>
+    看资源使用（同样依赖 metrics-server），或者
+    <span class="special">kubectl top nodes</span>
+    看节点整体负载。
+</div>
+<h2>
+    垂直扩缩容
+</h2>
+<p>
+    HPA 调整的是副本数（水平扩缩），VPA（VerticalPodAutoscaler）调整的是单个 Pod 的资源额度（垂直扩缩）。需要注意的是，
+    <span class="important">VPA 触发的调整会导致 Pod 重建</span>
+    ，在生产环境中要谨慎使用。
+</p>
+<pre tag="bash">
+# 查看 VPA（需要安装 VPA 组件）
+kubectl get vpa
+</pre>
